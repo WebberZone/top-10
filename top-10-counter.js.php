@@ -26,7 +26,7 @@ function tptn_disp_count() {
 		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
 		$cntaccess = (($resultscount) ? $resultscount->cntaccess : 0);
 		
-		echo 'document.write("Test: '.$before_count.$cntaccess.$after_count.'")';
+		echo 'document.write("'.$before_count.$cntaccess.$after_count.'")';
 	}
 }
 tptn_disp_count();
