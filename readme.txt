@@ -29,7 +29,7 @@ You can then display the page view count on individual pages as well as display 
 
 == Changelog ==
 
-* 1.0 - Release
+* 1.0.1 - Release
 
 
 == Frequently Asked Questions ==
