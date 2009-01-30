@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.0
+Version:     1.0.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count visits per post and display the top 10 posts. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
 Author:      Ajay D'Souza
