@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.0.1
+Version:     1.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
-Description: Count visits per post and display the top 10 posts. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
+Description: Count visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
 Author:      Ajay D'Souza
 Author URI:  http://ajaydsouza.com/
 */
@@ -38,63 +38,18 @@ function tptn_add_viewed_count() {
 	
 	if(is_single() || is_page()) {
 		$id = intval($post->ID);
-		if(defined('WP_CACHE') && WP_CACHE) { ?>
-			<!-- Start of Top 10 JS -->
-			<?php wp_print_scripts(array('sack')); ?>
-			<script type="text/javascript">
-			//<![CDATA[
-				top_ten_count = new sack("<?php bloginfo( 'wpurl' ); ?>/wp-content/plugins/top-10/top-10_ajax.php");    
-				top_ten_count.setVar( "top_ten_id", <?php echo $id ?> );
-				top_ten_count.method = 'GET';
-				top_ten_count.onError = function() { alert('Ajax error' )};
-				top_ten_count.runAJAX();
-				top_ten_count = null;
-			//]]>
-			</script>
-			<!-- Start of Top 10 JS -->
-		<?php } else {
-			$results = $wpdb->get_results("select postnumber, cntaccess from $table_name where postnumber = '$id'");
-			$test = 0;
-			if ($results) {
-				foreach ($results as $result) {
-					$wpdb->query("update $table_name set cntaccess = cntaccess + 1 where postnumber = $result->postnumber");
-					$test = 1;
-				}
-			}
-			if ($test == 0) {
-				$wpdb->query("insert into $table_name (postnumber, cntaccess) values('$id', '1')");
-			}
-		}
+		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
+		echo $output;
 	}
 }
 
-// Function to show post count
-function tptn_show_post_count() {
-	global $wpdb, $post;
-	$id = intval($post->ID);
-	$table_name = $wpdb->prefix . "top_ten";
-	$tptn_settings = tptn_read_options();
-	$before_count = $tptn_settings['before_count'];
-	$after_count = $tptn_settings['after_count'];
-	
-	$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
-	$cntaccess = (($resultscount) ? $resultscount->cntaccess : 0);
-
-	return $before_count.$cntaccess.$after_count;
-}
-
 function tptn_pc_content($content) {
-	
 	global $single, $post;
 	$tptn_settings = tptn_read_options();
 	$id = intval($post->ID);
 
 	if(($single)&&($tptn_settings['add_to_content'])) {
-		if(defined('WP_CACHE') && WP_CACHE) {
-			$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
-		} else {
-			$output = tptn_show_post_count();
-		}
+		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 		return $content.$output;
 	} else {
 		return $content;
@@ -103,7 +58,10 @@ function tptn_pc_content($content) {
 add_filter('the_content', 'tptn_pc_content');
 
 function echo_tptn_post_count() {
-	$output = tptn_show_post_count();
+	global $post;
+	$id = intval($post->ID);
+
+	$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 	echo $output;
 }
 
@@ -115,7 +73,12 @@ function tptn_show_pop_posts() {
 	$tptn_settings = tptn_read_options();
 	$limit = $tptn_settings['limit'];
 	
-	$results = $wpdb->get_results("select postnumber, cntaccess from $table_name ORDER BY cntaccess DESC LIMIT $limit");
+	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
+
+	$results = $wpdb->get_results($sql);
 	
 	echo '<div id="crp_related">'.$tptn_settings['title'];
 	echo '<ul>';
@@ -126,19 +89,56 @@ function tptn_show_pop_posts() {
 	}
 	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
 	echo '</ul>';
-	echo '</div><br/><br/>';
-
+	echo '</div>';
 }
+// Create a WordPress Widget for Popular Posts
+function widget_tptn_pop($args) {	
+	global $wpdb, $siteurl, $tableposts, $id;
+
+	extract($args); // extracts before_widget,before_title,after_title,after_widget
+
+	$table_name = $wpdb->prefix . "top_ten";
+	$tptn_settings = tptn_read_options();
+	$limit = $tptn_settings['limit'];
+	
+	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
+
+	$results = $wpdb->get_results($sql);
+	
+	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts'));
+	
+	echo $before_widget;
+	echo $before_title.$title.$after_title;
+	echo '<ul>';
+	if ($results) {
+		foreach ($results as $result) {
+			echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a> ('.$result->cntaccess.')</li>';
+		}
+	}
+	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+	echo '</ul>';
+
+	echo $after_widget;
+}
+
+function init_tptn(){
+	register_sidebar_widget(__('Popular Posts'), 'widget_tptn_pop');
+}
+add_action("plugins_loaded", "init_tptn");
+ 
 
 // Default Options
 function tptn_default_options() {
-	$title = __('<h3>Popular Posts:</h3>');
+	$title = __('<h3>Popular Posts</h3>');
 
 	$tptn_settings = 	Array (
 						show_credit => true,	// Add link to plugin page of my blog in top posts list
 						add_to_content => true,		// Add post count to content (only on single pages)
-						before_count => '(Visited ',	// Text to display before the count
-						after_count => ' times)',	// Text to display after the count
+						exclude_pages => true,		// Exclude Pages
+						count_disp_form => '(Visited %totalcount% times)',	// Format to display the count
 						title => $title,		// Add before the content
 						limit => '10',	// How many posts to display?
 						);
@@ -156,9 +156,10 @@ function tptn_read_options() {
 	unset($tptn_settings[0]); // produced by the (array) casting when there's nothing in the DB
 	
 	foreach ($defaults as $k=>$v) {
-		if (!isset($tptn_settings[$k]))
+		if (!isset($tptn_settings[$k])) {
 			$tptn_settings[$k] = $v;
-		$tptn_settings_changed = true;	
+			$tptn_settings_changed = true;
+		}
 	}
 	if ($tptn_settings_changed == true)
 		update_option('ald_tptn_settings', $tptn_settings);

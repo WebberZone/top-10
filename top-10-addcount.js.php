@@ -1,4 +1,6 @@
 <?php
+//"top-10-addcount.js.php" Add count to database
+Header("content-type: application/x-javascript");
 
 if (!function_exists('add_action')) {
 	$wp_root = '../../..';
