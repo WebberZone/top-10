@@ -12,9 +12,9 @@ function tptn_options() {
 	if($_POST['tptn_save']){
 		$tptn_settings[title] = ($_POST['title']);
 		$tptn_settings[limit] = ($_POST['limit']);
-		$tptn_settings[before_count] = ($_POST['before_count']);
-		$tptn_settings[after_count] = ($_POST['after_count']);
+		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
 		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
+		$tptn_settings[exclude_pages] = (($_POST['exclude_pages']) ? true : false);
 		$tptn_settings[show_credit] = (($_POST['show_credit']) ? true : false);
 		
 		update_option('ald_tptn_settings', $tptn_settings);
@@ -59,17 +59,11 @@ function tptn_options() {
     </legend>
     <p>
       <label>
-      <?php _e('Text to display before the post count: ','ald_tptn_plugin'); ?>
-      <input type="textbox" name="before_count" id="before_count" value="<?php echo stripslashes($tptn_settings[before_count]); ?>">
+      <?php _e('Format to display the count in: ','ald_tptn_plugin'); ?><br />
+      <textarea name="count_disp_form" id="count_disp_form" cols="45" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings[count_disp_form])); ?></textarea>
       </label>
     </p>
-    <p>
-      <label>
-      <?php _e('Text to display after the post count: ','ald_tptn_plugin'); ?>
-      <input type="textbox" name="after_count" id="after_count" value="<?php echo stripslashes($tptn_settings[after_count]); ?>">
-      </label>
-    </p>
-	<p><?php _e('e.g. the default options displays <code>(Visited 123 times)</code>','ald_tptn_plugin'); ?></p>
+	<p><?php _e('Use <code>%totalcount%</code> to display the total count. e.g. the default options displays <code>(Visited 123 times)</code>','ald_tptn_plugin'); ?></p>
     <p>
       <label>
       <?php _e('Number of popular posts to display: ','ald_tptn_plugin'); ?>
@@ -80,6 +74,12 @@ function tptn_options() {
       <label>
       <?php _e('Title of popular posts: ','ald_tptn_plugin'); ?>
       <input type="textbox" name="title" id="title" value="<?php echo stripslashes($tptn_settings[title]); ?>">
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="exclude_pages" id="exclude_pages" <?php if ($tptn_settings[exclude_pages]) echo 'checked="checked"' ?> />
+      <?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.','ald_tptn_plugin'); ?>
       </label>
     </p>
     <p>
@@ -105,7 +105,7 @@ function tptn_options() {
 
 }
 
-
+/* Add menu item in WP-Admin */
 function tptn_adminmenu() {
 	if (function_exists('current_user_can')) {
 		// In WordPress 2.x
@@ -124,8 +124,39 @@ function tptn_adminmenu() {
 		add_options_page(__("Top 10", 'myald_tptn_plugin'), __("Top 10", 'myald_tptn_plugin'), 9, 'tptn_options', 'tptn_options');
 		}
 }
-
-
 add_action('admin_menu', 'tptn_adminmenu');
+
+
+/* Create a Dashboard Widget */
+function tptn_pop_dashboard() {
+	global $wpdb, $siteurl, $tableposts, $id;
+
+	$table_name = $wpdb->prefix . "top_ten";
+	$tptn_settings = tptn_read_options();
+	$limit = $tptn_settings['limit'];
+	
+	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
+
+	$results = $wpdb->get_results($sql);
+	
+	echo '<ul>';
+	if ($results) {
+		foreach ($results as $result) {
+			echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a> ('.$result->cntaccess.')</li>';
+		}
+	}
+	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+	echo '</ul>';
+}
+ 
+function tptn_pop_dashboard_setup() {
+	if (function_exists('wp_add_dashboard_widget')) {
+		wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts' ), 'tptn_pop_dashboard' );
+	}
+}
+add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
 
 ?>
