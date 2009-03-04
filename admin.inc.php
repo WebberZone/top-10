@@ -11,10 +11,13 @@ function tptn_options() {
 
 	if($_POST['tptn_save']){
 		$tptn_settings[title] = ($_POST['title']);
+		$tptn_settings[title_daily] = ($_POST['title_daily']);
 		$tptn_settings[limit] = ($_POST['limit']);
 		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
 		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
 		$tptn_settings[exclude_pages] = (($_POST['exclude_pages']) ? true : false);
+		$tptn_settings[track_authors] = (($_POST['track_authors']) ? true : false);
+		$tptn_settings[pv_in_admin] = (($_POST['pv_in_admin']) ? true : false);
 		$tptn_settings[show_credit] = (($_POST['show_credit']) ? true : false);
 		
 		update_option('ald_tptn_settings', $tptn_settings);
@@ -60,10 +63,10 @@ function tptn_options() {
     <p>
       <label>
       <?php _e('Format to display the count in: ','ald_tptn_plugin'); ?><br />
-      <textarea name="count_disp_form" id="count_disp_form" cols="45" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings[count_disp_form])); ?></textarea>
+      <textarea name="count_disp_form" id="count_disp_form" cols="50" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings[count_disp_form])); ?></textarea>
       </label>
     </p>
-	<p><?php _e('Use <code>%totalcount%</code> to display the total count. e.g. the default options displays <code>(Visited 123 times)</code>','ald_tptn_plugin'); ?></p>
+	<p><?php _e('Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>','ald_tptn_plugin'); ?></p>
     <p>
       <label>
       <?php _e('Number of popular posts to display: ','ald_tptn_plugin'); ?>
@@ -78,8 +81,26 @@ function tptn_options() {
     </p>
     <p>
       <label>
+      <?php _e('Title of daily popular posts: ','ald_tptn_plugin'); ?>
+      <input type="textbox" name="title_daily" id="title_daily" value="<?php echo stripslashes($tptn_settings[title_daily]); ?>">
+      </label>
+    </p>
+    <p>
+      <label>
       <input type="checkbox" name="exclude_pages" id="exclude_pages" <?php if ($tptn_settings[exclude_pages]) echo 'checked="checked"' ?> />
       <?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.','ald_tptn_plugin'); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings[track_authors]) echo 'checked="checked"' ?> />
+      <?php _e('Track visits of authors on their own posts?','ald_tptn_plugin'); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings[pv_in_admin]) echo 'checked="checked"' ?> />
+      <?php _e('Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count','ald_tptn_plugin'); ?>
       </label>
     </p>
     <p>
@@ -128,6 +149,7 @@ add_action('admin_menu', 'tptn_adminmenu');
 
 
 /* Create a Dashboard Widget */
+// Dashboard for Popular Posts
 function tptn_pop_dashboard() {
 	global $wpdb, $siteurl, $tableposts, $id;
 
@@ -138,6 +160,33 @@ function tptn_pop_dashboard() {
 	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
 	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+	$sql .= "AND post_status = 'publish' ";
+	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
+
+	$results = $wpdb->get_results($sql);
+	
+	echo '<ul>';
+	if ($results) {
+		foreach ($results as $result) {
+			echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a> ('.$result->cntaccess.')</li>';
+		}
+	}
+	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+	echo '</ul>';
+}
+ 
+// Dashboard for Daily Popular Posts
+function tptn_pop_daily_dashboard() {
+	global $wpdb, $siteurl, $tableposts, $id;
+
+	$table_name = $wpdb->prefix . "top_ten_daily";
+	$tptn_settings = tptn_read_options();
+	$limit = $tptn_settings['limit'];
+	
+	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+	$sql .= "AND post_status = 'publish' ";
 	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
 
 	$results = $wpdb->get_results($sql);
@@ -155,8 +204,59 @@ function tptn_pop_dashboard() {
 function tptn_pop_dashboard_setup() {
 	if (function_exists('wp_add_dashboard_widget')) {
 		wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts' ), 'tptn_pop_dashboard' );
+		wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular' ), 'tptn_pop_daily_dashboard' );
 	}
 }
 add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
+
+/* Display page views on the Edit Posts / Pages screen */
+// Add an extra column
+function tptn_column($cols) {
+	$tptn_settings = tptn_read_options();
+	
+	if ($tptn_settings[pv_in_admin])	$cols['tptn'] = __('Total / Today\'s Views','ald_tptn_plugin');
+	return $cols;
+}
+
+// Display page views for each column
+function tptn_value($column_name, $id) {
+	$tptn_settings = tptn_read_options();
+	if (($column_name == 'tptn')&&($tptn_settings[pv_in_admin])) {
+		global $wpdb;
+		
+		$table_name = $wpdb->prefix . "top_ten";
+		
+		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
+		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
+
+		$cntaccess .= ' / ';
+		
+		$table_name = $wpdb->prefix . "top_ten_daily";
+		
+		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
+		$cntaccess .= number_format((($resultscount) ? $resultscount->cntaccess : 0));
+		echo $cntaccess;
+	}
+}
+
+// Output CSS for width of new column
+function tptn_css() {
+?>
+<style type="text/css">
+	#tptn { width: 50px; }
+</style>
+<?php	
+}
+
+// Actions/Filters for various tables and the css output
+add_filter('manage_posts_columns', 'tptn_column');
+add_action('manage_posts_custom_column', 'tptn_value', 10, 2);
+add_filter('manage_pages_columns', 'tptn_column');
+add_action('manage_pages_custom_column', 'tptn_value', 10, 2);
+add_filter('manage_media_columns', 'tptn_column');
+add_action('manage_media_custom_column', 'tptn_value', 10, 2);
+add_filter('manage_link-manager_columns', 'tptn_column');
+add_action('manage_link_custom_column', 'tptn_value', 10, 2);
+add_action('admin_head', 'tptn_css');
 
 ?>

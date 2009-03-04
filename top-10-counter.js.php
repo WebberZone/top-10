@@ -16,6 +16,7 @@ function tptn_disp_count() {
 	global $wpdb;
 	
 	$table_name = $wpdb->prefix . "top_ten";
+	$table_name_daily = $wpdb->prefix . "top_ten_daily";
 	$tptn_settings = tptn_read_options();
 	$count_disp_form = htmlspecialchars(stripslashes($tptn_settings[count_disp_form]));
 	
@@ -24,8 +25,12 @@ function tptn_disp_count() {
 
 		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
 		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
-		
 		$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
+		
+		// Now process daily count
+		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name_daily WHERE postnumber = $id");
+		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
+		$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
 		
 		echo 'document.write("'.$count_disp_form.'")';
 	}
