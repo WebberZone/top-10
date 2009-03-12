@@ -23,13 +23,15 @@ function tptn_disp_count() {
 	$id = intval($_GET['top_ten_id']);
 	if($id > 0) {
 
-		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
+		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM $table_name WHERE postnumber = $id");
 		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
 		$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
 		
 		// Now process daily count
-		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name_daily WHERE postnumber = $id");
-		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
+		$daily_range = $tptn_settings[daily_range]. ' DAY';
+		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name_daily WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
+		$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 0));
 		$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
 		
 		echo 'document.write("'.$count_disp_form.'")';

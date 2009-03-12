@@ -28,6 +28,11 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 = Changelog =
 
+* 1.3
+	- "Daily Popular" can now be selected over user selectable number of days.
+	- Option to turn off display of number of pageviews in popular posts list
+	- Option to make "Daily Popular" list compatible with caching plugins
+	- Posts > Top 10 page to view detailed list of popular posts
 * 1.2
 	- Do not display Drafts in Related Posts anymore
 	- Option to disable tracking author visits on their own posts
@@ -52,6 +57,8 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 5. Goto Appearance > Widgets to add the Popular Posts sidebar widget to your theme
 
+6. Goto Posts > Top 10 to view the list of popular posts
+
 
 
 == Frequently Asked Questions ==
@@ -60,6 +67,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 WordPress 2.5 or above
 
+= Can this plugin replace Google Analytics? =
+
+Never. This plugin is designed to only track the number of pageviews on your blog posts and display the same. It cannot replace Google Analytics or any other full fledged statistics application.
 
 = Can I customize what is displayed? =
 
