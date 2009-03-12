@@ -20,28 +20,30 @@ function tptn_inc_count() {
 	
 	$id = intval($_GET['top_ten_id']);
 	if($id > 0) {
-		$results = $wpdb->get_results("select postnumber, cntaccess from $table_name where postnumber = '$id'");
+		$results = $wpdb->get_results("SELECT postnumber, cntaccess FROM $table_name WHERE postnumber = '$id'");
 		$test = 0;
 		if ($results) {
 			foreach ($results as $result) {
-				$wpdb->query("update $table_name set cntaccess = cntaccess + 1 where postnumber = $result->postnumber");
+				$wpdb->query("UPDATE $table_name SET cntaccess = cntaccess + 1 WHERE postnumber = $result->postnumber");
 				$test = 1;
 			}
 		}
 		if ($test == 0) {
-			$wpdb->query("insert into $table_name (postnumber, cntaccess) values('$id', '1')");
+			$wpdb->query("INSERT INTO $table_name (postnumber, cntaccess) VALUES('$id', '1')");
 		}
 		// Now update daily count
-		$results = $wpdb->get_results("select postnumber, cntaccess from $top_ten_daily where postnumber = '$id'");
+		$current_date = $wpdb->get_var("SELECT CURDATE() ");
+
+		$results = $wpdb->get_results("SELECT postnumber, cntaccess, dp_date FROM $top_ten_daily WHERE postnumber = '$id' AND dp_date = '$current_date' ");
 		$test = 0;
 		if ($results) {
 			foreach ($results as $result) {
-				$wpdb->query("update $top_ten_daily set cntaccess = cntaccess + 1 where postnumber = $result->postnumber");
+				$wpdb->query("UPDATE $top_ten_daily SET cntaccess = cntaccess + 1 WHERE postnumber = $result->postnumber AND dp_date = '$current_date' ");
 				$test = 1;
 			}
 		}
 		if ($test == 0) {
-			$wpdb->query("insert into $top_ten_daily (postnumber, cntaccess) values('$id', '1')");
+			$wpdb->query("INSERT INTO $top_ten_daily (postnumber, cntaccess, dp_date) VALUES('$id', '1', '$current_date' )");
 		}
 	}
 }
