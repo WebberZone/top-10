@@ -1,14 +1,17 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.3
+Version:     1.4
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
 Author:      Ajay D'Souza
 Author URI:  http://ajaydsouza.com/
 */
 
-//if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
+if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
+define('ALD_TPTN_DIR', dirname(__FILE__));
+define('TPTN_LOCAL_NAME', 'tptn');
+
 if (!function_exists('add_action')) {
 	$wp_root = '../../..';
 	if (file_exists($wp_root.'/wp-load.php')) {
@@ -22,11 +25,14 @@ global $tptn_db_version;
 $tptn_db_version = "2.8";
 
 function ald_tptn_init() {
-     load_plugin_textdomain('myald_tptn_plugin', PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)));
+	//* Begin Localization Code */
+	$tc_localizationName = TPTN_LOCAL_NAME;
+	$tc_comments_locale = get_locale();
+	$tc_comments_mofile = ALD_TPTN_DIR . "/languages/" . $tc_localizationName . "-". $tc_comments_locale.".mo";
+	load_textdomain($tc_localizationName, $tc_comments_mofile);
+	//* End Localization Code */
 }
 add_action('init', 'ald_tptn_init');
-
-define('ALD_TPTN_DIR', dirname(__FILE__));
 
 /*********************************************************************
 *				Main Function (Do not edit)							*
@@ -56,14 +62,17 @@ function tptn_pc_content($content) {
 	$tptn_settings = tptn_read_options();
 	$id = intval($post->ID);
 
-	if(($single)&&($tptn_settings['add_to_content'])) {
+	if((is_single())&&($tptn_settings['add_to_content'])) {
+		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
+		return $content.$output;
+	} elseif((is_page())&&($tptn_settings['count_on_pages'])) {
 		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 		return $content.$output;
 	} else {
 		return $content;
 	}
 }
-add_filter('the_content', 'tptn_pc_content');
+add_filter('the_content', 'tptn_pc_content',9001);
 
 // Function to manually display count
 function echo_tptn_post_count() {
@@ -89,7 +98,7 @@ function tptn_show_pop_posts() {
 
 	$results = $wpdb->get_results($sql);
 	
-	echo '<div id="crp_related">'.$tptn_settings['title'];
+	echo '<div id="tptn_related">'.$tptn_settings['title'];
 	echo '<ul>';
 	if ($results) {
 		foreach ($results as $result) {
@@ -126,7 +135,7 @@ function tptn_show_daily_pop_posts() {
 
 		$results = $wpdb->get_results($sql);
 		
-		$output .= '<div id="crp_related">'.$tptn_settings['title_daily'];
+		$output .= '<div id="tptn_related">'.$tptn_settings['title_daily'];
 		$output .= '<ul>';
 		if ($results) {
 			foreach ($results as $result) {
@@ -144,13 +153,14 @@ function tptn_show_daily_pop_posts() {
 
 // Default Options
 function tptn_default_options() {
-	$title = __('<h3>Popular Posts</h3>','ald_tptn_plugin');
-	$title_daily = __('<h3>Daily Popular</h3>','ald_tptn_plugin');
+	$title = __('<h3>Popular Posts</h3>',TPTN_LOCAL_NAME);
+	$title_daily = __('<h3>Daily Popular</h3>',TPTN_LOCAL_NAME);
 
 	$tptn_settings = 	Array (
 						show_credit => true,			// Add link to plugin page of my blog in top posts list
-						add_to_content => true,			// Add post count to content (only on single pages)
+						add_to_content => true,			// Add post count to content (only on single posts)
 						exclude_pages => true,			// Exclude Pages
+						count_on_pages => true,			// Display on pages
 						track_authors => false,			// Track Authors visits
 						pv_in_admin => true,			// Add an extra column on edit posts/pages to display page views?
 						disp_list_count => true,		// Display count in popular lists?
@@ -290,7 +300,7 @@ function widget_tptn_pop_daily($args) {
 	$tptn_settings = tptn_read_options();
 	$limit = $tptn_settings['limit'];
 	
-	$title = (($tptn_settings['title_daily']) ? strip_tags($tptn_settings['title_daily']) : __('Daily Popular'));
+	$title = (($tptn_settings['title_daily']) ? strip_tags($tptn_settings['title_daily']) : __('Daily Popular',TPTN_LOCAL_NAME));
 	echo $before_widget;
 	echo $before_title.$title.$after_title;
 		
@@ -341,7 +351,7 @@ function widget_tptn_pop($args) {
 
 	$results = $wpdb->get_results($sql);
 	
-	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts'));
+	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts',TPTN_LOCAL_NAME));
 	
 	echo $before_widget;
 	echo $before_title.$title.$after_title;
@@ -360,8 +370,8 @@ function widget_tptn_pop($args) {
 }
 
 function init_tptn(){
-	register_sidebar_widget(__('Popular Posts','ald_tptn_plugin'), 'widget_tptn_pop');
-	register_sidebar_widget(__('Daily Popular','ald_tptn_plugin'), 'widget_tptn_pop_daily');
+	register_sidebar_widget(__('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
+	register_sidebar_widget(__('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
 }
 add_action("plugins_loaded", "init_tptn");
  
