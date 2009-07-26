@@ -26,23 +26,31 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Works with caching plugins like WP-Super-Cache
 
 
-= Changelog =
+== Changelog ==
 
-* 1.3
-	- "Daily Popular" can now be selected over user selectable number of days.
-	- Option to turn off display of number of pageviews in popular posts list
-	- Option to make "Daily Popular" list compatible with caching plugins
-	- Posts > Top 10 page to view detailed list of popular posts
-* 1.2
-	- Do not display Drafts in Related Posts anymore
-	- Option to disable tracking author visits on their own posts
-	- Display top posts for the current day
-* 1.1
-	- Added the Popular Posts sidebar widget in your theme. Find it under <strong>Appearance > Widgets</strong>
-	- Uses JavaScript by default to count. Hence, better support for different caching plugins
-	- Change format to display count. Now, a single textarea instead of two text boxes.
-	- Added WordPress 2.7 Dashboard widget to display popular posts on your Dashboard
-* 1.0.1 - Release
+= 1.4 =
+* Added localisation support
+* Separate options to display number of views on posts and pages
+
+= 1.3 =
+* "Daily Popular" can now be selected over user selectable number of days.
+* Option to turn off display of number of pageviews in popular posts list
+* Option to make "Daily Popular" list compatible with caching plugins
+* Posts > Top 10 page to view detailed list of popular posts
+
+= 1.2 =
+* Do not display Drafts in Related Posts anymore
+* Option to disable tracking author visits on their own posts
+* Display top posts for the current day
+
+= 1.1 =
+* Added the Popular Posts sidebar widget in your theme. Find it under <strong>Appearance > Widgets</strong>
+* Uses JavaScript by default to count. Hence, better support for different caching plugins
+* Change format to display count. Now, a single textarea instead of two text boxes.
+* Added WordPress 2.7 Dashboard widget to display popular posts on your Dashboard
+
+= 1.0.1 =
+* Release
 
 
 == Installation ==

@@ -2,6 +2,10 @@
 /**********************************************************************
 *					Admin Page										*
 *********************************************************************/
+if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
+define('ALD_TPTN_DIR', dirname(__FILE__));
+if (!defined('TPTN_LOCAL_NAME')) define('TPTN_LOCAL_NAME', 'tptn');
+
 function tptn_options() {
 	
 	global $wpdb;
@@ -17,6 +21,7 @@ function tptn_options() {
 		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
 		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
 		$tptn_settings[exclude_pages] = (($_POST['exclude_pages']) ? true : false);
+		$tptn_settings[count_on_pages] = (($_POST['count_on_pages']) ? true : false);
 		$tptn_settings[track_authors] = (($_POST['track_authors']) ? true : false);
 		$tptn_settings[pv_in_admin] = (($_POST['pv_in_admin']) ? true : false);
 		$tptn_settings[disp_list_count] = (($_POST['disp_list_count']) ? true : false);
@@ -25,7 +30,7 @@ function tptn_options() {
 		
 		update_option('ald_tptn_settings', $tptn_settings);
 		
-		$str = '<div id="message" class="updated fade"><p>'. __('Options saved successfully.','ald_tptn_plugin') .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __('Options saved successfully.',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
 	
@@ -34,7 +39,7 @@ function tptn_options() {
 		$tptn_settings = tptn_default_options();
 		update_option('ald_tptn_settings', $tptn_settings);
 		
-		$str = '<div id="message" class="updated fade"><p>'. __('Options set to Default.','ald_tptn_plugin') .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __('Options set to Default.',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
 ?>
@@ -45,100 +50,106 @@ function tptn_options() {
     <fieldset class="options">
     <legend>
     <h3>
-      <?php _e('Support the Development','ald_tptn_plugin'); ?>
+      <?php _e('Support the Development',TPTN_LOCAL_NAME); ?>
     </h3>
     </legend>
     <p>
-      <?php _e('If you find ','ald_tptn_plugin'); ?>
+      <?php _e('If you find ',TPTN_LOCAL_NAME); ?>
       <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10</a>
-      <?php _e('useful, please do','ald_tptn_plugin'); ?>
-      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=donate@ajaydsouza.com&amp;item_name=Top%10%20(From%20WP-Admin)&amp;no_shipping=1&amp;return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cancel_return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cn=Note%20to%20Author&amp;tax=0&amp;currency_code=USD&amp;bn=PP-DonationsBF&amp;charset=UTF-8" title="Donate via PayPal"><?php _e('drop in your contribution','ald_tptn_plugin'); ?></a>.
-	  (<a href="http://ajaydsouza.com/donate/"><?php _e('Some reasons why you should.','ald_tptn_plugin'); ?></a>)</p>
+      <?php _e('useful, please do',TPTN_LOCAL_NAME); ?>
+      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=donate@ajaydsouza.com&amp;item_name=Top%10%20(From%20WP-Admin)&amp;no_shipping=1&amp;return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cancel_return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cn=Note%20to%20Author&amp;tax=0&amp;currency_code=USD&amp;bn=PP-DonationsBF&amp;charset=UTF-8" title="Donate via PayPal"><?php _e('drop in your contribution',TPTN_LOCAL_NAME); ?></a>.
+	  (<a href="http://ajaydsouza.com/donate/"><?php _e('Some reasons why you should.',TPTN_LOCAL_NAME); ?></a>)</p>
     </fieldset>
   </div>
   <form method="post" id="tptn_options" name="tptn_options" style="border: #ccc 1px solid; padding: 10px">
     <fieldset class="options">
     <legend>
     <h3>
-      <?php _e('Options:','ald_tptn_plugin'); ?>
+      <?php _e('Options:',TPTN_LOCAL_NAME); ?>
     </h3>
     </legend>
     <p>
       <label>
-      <?php _e('Format to display the count in: ','ald_tptn_plugin'); ?><br />
+      <?php _e('Format to display the count in: ',TPTN_LOCAL_NAME); ?><br />
       <textarea name="count_disp_form" id="count_disp_form" cols="50" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings[count_disp_form])); ?></textarea>
       </label>
     </p>
-	<p><?php _e('Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>','ald_tptn_plugin'); ?></p>
+	<p><?php _e('Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>',TPTN_LOCAL_NAME); ?></p>
     <p>
       <label>
-      <?php _e('Number of popular posts to display: ','ald_tptn_plugin'); ?>
+      <?php _e('Number of popular posts to display: ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="limit" id="limit" value="<?php echo stripslashes($tptn_settings[limit]); ?>">
       </label>
     </p>
     <p>
       <label>
-      <?php _e('Title of popular posts: ','ald_tptn_plugin'); ?>
+      <?php _e('Title of popular posts: ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="title" id="title" value="<?php echo stripslashes($tptn_settings[title]); ?>">
       </label>
     </p>
     <p>
       <label>
-      <?php _e('Title of daily popular posts: ','ald_tptn_plugin'); ?>
+      <?php _e('Title of daily popular posts: ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="title_daily" id="title_daily" value="<?php echo stripslashes($tptn_settings[title_daily]); ?>">
       </label>
     </p>
     <p>
       <label>
-      <?php _e('Daily Popular should contain views of how many days? ','ald_tptn_plugin'); ?>
+      <?php _e('Daily Popular should contain views of how many days? ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings[daily_range]); ?>">
       </label>
     </p>
     <p>
       <label>
       <input type="checkbox" name="exclude_pages" id="exclude_pages" <?php if ($tptn_settings[exclude_pages]) echo 'checked="checked"' ?> />
-      <?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.','ald_tptn_plugin'); ?>
-      </label>
-    </p>
-    <p>
-      <label>
-      <input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings[track_authors]) echo 'checked="checked"' ?> />
-      <?php _e('Track visits of authors on their own posts?','ald_tptn_plugin'); ?>
-      </label>
-    </p>
-    <p>
-      <label>
-      <input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ($tptn_settings[disp_list_count]) echo 'checked="checked"' ?> />
-      <?php _e('Display number of page views in popular lists?','ald_tptn_plugin'); ?>
-      </label>
-    </p>
-    <p>
-      <label>
-      <input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings[d_use_js]) echo 'checked="checked"' ?> />
-      <?php _e('Force daily posts\' list to be dynamic? This options uses JavaScript to load the post and can increase your page load time','ald_tptn_plugin'); ?>
-      </label>
-    </p>
-    <p>
-      <label>
-      <input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings[pv_in_admin]) echo 'checked="checked"' ?> />
-      <?php _e('Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count','ald_tptn_plugin'); ?>
+      <?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.',TPTN_LOCAL_NAME); ?>
       </label>
     </p>
     <p>
       <label>
       <input type="checkbox" name="add_to_content" id="add_to_content" <?php if ($tptn_settings[add_to_content]) echo 'checked="checked"' ?> />
-      <?php _e('Add post count to content?','ald_tptn_plugin'); ?>
+      <?php _e('Display number of views on posts?',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="count_on_pages" id="count_on_pages" <?php if ($tptn_settings[count_on_pages]) echo 'checked="checked"' ?> />
+      <?php _e('Display number of views on pages?',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings[track_authors]) echo 'checked="checked"' ?> />
+      <?php _e('Track visits of authors on their own posts?',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ($tptn_settings[disp_list_count]) echo 'checked="checked"' ?> />
+      <?php _e('Display number of page views in popular lists?',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings[d_use_js]) echo 'checked="checked"' ?> />
+      <?php _e('Force daily posts\' list to be dynamic? This options uses JavaScript to load the post and can increase your page load time',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
+    <p>
+      <label>
+      <input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings[pv_in_admin]) echo 'checked="checked"' ?> />
+      <?php _e('Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count',TPTN_LOCAL_NAME); ?>
       </label>
     </p>
     <p>
       <label>
       <input type="checkbox" name="show_credit" id="show_credit" <?php if ($tptn_settings[show_credit]) echo 'checked="checked"' ?> />
-      <?php _e('A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!','ald_tptn_plugin'); ?>
+      <?php _e('A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!',TPTN_LOCAL_NAME); ?>
       </label>
     </p>
     <p>
       <input type="submit" name="tptn_save" id="tptn_save" value="Save Options" style="border:#00CC00 1px solid" />
-      <input name="tptn_default" type="submit" id="tptn_default" value="Default Options" style="border:#FF0000 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?','ald_tptn_plugin'); ?>')) return false;" />
+      <input name="tptn_default" type="submit" id="tptn_default" value="Default Options" style="border:#FF0000 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
     </p>
     </fieldset>
   </form>
@@ -154,7 +165,7 @@ function tptn_manage() {
 
 	echo '<div class="wrap">';
 	echo '<h2>';
-	if (!$daily) echo 'Popular Posts'; else echo 'Daily Popular Posts';
+	if (!$daily) _e('Popular Posts',TPTN_LOCAL_NAME); else _e('Daily Popular Posts',TPTN_LOCAL_NAME);
 	echo '</h2>';
 	echo '<div style="border: #ccc 1px solid; padding: 10px">';
 	echo tptn_pop_display($daily,$paged,$limit);
@@ -177,8 +188,8 @@ function tptn_adminmenu() {
 	}
 
 	if ((function_exists('add_options_page'))&&($tptn_is_admin)) {
-		add_options_page(__("Top 10", 'myald_tptn_plugin'), __("Top 10", 'myald_tptn_plugin'), 9, 'tptn_options', 'tptn_options');
-		add_posts_page(__("Popular Posts", 'myald_tptn_plugin'), __("Top 10", 'myald_tptn_plugin'), 9, 'tptn_manage', 'tptn_manage');
+		add_options_page(__("Top 10", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_options', 'tptn_options');
+		add_posts_page(__("Popular Posts", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_manage', 'tptn_manage');
 	}
 }
 add_action('admin_menu', 'tptn_adminmenu');
@@ -257,11 +268,17 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	$output = '<div id="tptn_popular_posts">';
 	$output .= '<table width="100%" border="0">
 	 <tr>
-	  <td width="50%" align="left">
-		Results <strong>'.$first.'</strong> - <strong>'.$last.'</strong> of <strong>'.$numrows.'</strong>
+	  <td width="50%" align="left">';
+	$output .= __('Results',TPTN_LOCAL_NAME);
+	$output .= ' <strong>'.$first.'</strong> - <strong>'.$last.'</strong> ';
+	$output .= __('of',TPTN_LOCAL_NAME);
+	$output .= ' <strong>'.$numrows.'</strong>
 	  </td>
-	  <td width="50%" align="right">
-		Page <strong>'.$current.'</strong> of <strong>'.$total.'</strong>
+	  <td width="50%" align="right">';
+	$output .= __('Page',TPTN_LOCAL_NAME);
+	$output .= ' <strong>'.$current.'</strong> ';
+	$output .= __('of',TPTN_LOCAL_NAME);
+	$output .= ' <strong>'.$total.'</strong>
 	  </td>
 	 </tr>
 	 <tr>
@@ -271,12 +288,17 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	  <td align="left">';
 	
 	if(!$daily) {
-		$output .= '<a href="./edit.php?page=tptn_manage&daily=1">View Daily Popular Posts</a></td>';
+		$output .= '<a href="./edit.php?page=tptn_manage&daily=1">';
+		$output .= __('View Daily Popular Posts',TPTN_LOCAL_NAME);
+		$output .= '</a></td>';
 	} else {
-		$output .= '<a href="./edit.php?page=tptn_manage&daily=0">View Overall Popular Posts</a></td>';
+		$output .= '<a href="./edit.php?page=tptn_manage&daily=0">';
+		$output .= __('View Overall Popular Posts',TPTN_LOCAL_NAME);
+		$output .= '</a></td>';
 	}
-	$output .= '<td align="right">
-		Results per-page: <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=10">10</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=20">20</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=50">50</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=100">100</a> 
+	$output .= '<td align="right">';
+	$output .= __('Results per-page:',TPTN_LOCAL_NAME);
+	$output .= ' <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=10">10</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=20">20</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=50">50</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=100">100</a> 
 	  </td>
 	 </tr>
 	 <tr>
@@ -298,22 +320,27 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	$output .=   '<p align="center">';
 	if ($page != 0) { // Don't show back link if current page is first page.
 		$back_page = $page - $limit;
-		$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$back_page&daily=$daily&limit=$limit\">&laquo; Previous</a>    \n";
+		$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$back_page&daily=$daily&limit=$limit\">&laquo; ";
+		$output .=  __('Previous',TPTN_LOCAL_NAME);
+		$output .=  "</a>\n";
 	}
 
 	for ($i=1; $i <= $pages; $i++) // loop through each page and give link to it.
 	{
 		$ppage = $limit*($i - 1);
 		if ($ppage == $page){
-		$output .=  ("<b>$i</b>\n");} // If current page don't give link, just text.
+			$output .=  "<b>$i</b>\n";
+		} // If current page don't give link, just text.
 		else{
-			$output .=  ("<a href=\"./edit.php?page=tptn_manage&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n");
+			$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n";
 		}
 	}
 
 	if (!((($page+$limit) / $limit) >= $pages) && $pages != 1) { // If last page don't give next link.
 		$next_page = $page + $limit;
-		$output .=  "    <a href=\"./edit.php?page=tptn_manage&paged=$next_page&daily=$daily&limit=$limit\">Next &raquo;</a>";
+		$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$next_page&daily=$daily&limit=$limit\">";
+		$output .=  __('Next',TPTN_LOCAL_NAME);
+		$output .=  " &raquo;</a>";
 	}
 	$output .=   '</p>';
 	$output .=   '<p style="text-align:center;border-top: #000 1px solid">Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></p>';
@@ -334,8 +361,8 @@ function tptn_pop_daily_dashboard() {
  
 function tptn_pop_dashboard_setup() {
 	if (function_exists('wp_add_dashboard_widget')) {
-		wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts' ), 'tptn_pop_dashboard' );
-		wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular' ), 'tptn_pop_daily_dashboard' );
+		wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts',TPTN_LOCAL_NAME ), 'tptn_pop_dashboard' );
+		wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular',TPTN_LOCAL_NAME ), 'tptn_pop_daily_dashboard' );
 	}
 }
 add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
@@ -346,7 +373,7 @@ add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
 function tptn_column($cols) {
 	$tptn_settings = tptn_read_options();
 	
-	if ($tptn_settings[pv_in_admin])	$cols['tptn'] = __('Total / Today\'s Views','ald_tptn_plugin');
+	if ($tptn_settings[pv_in_admin])	$cols['tptn'] = __('Total / Today\'s Views',TPTN_LOCAL_NAME);
 	return $cols;
 }
 
