@@ -32,7 +32,7 @@ function tptn_daily_lists() {
 
 	$results = $wpdb->get_results($sql);
 	
-	$output = '<div id="crp_related">';
+	$output = '<div id="tptn_related_daily">';
 	if(!$is_widget) $output .= $tptn_settings['title_daily'];
 	$output .= '<ul>';
 	if ($results) {
