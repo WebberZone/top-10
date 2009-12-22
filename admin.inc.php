@@ -42,6 +42,18 @@ function tptn_options() {
 		$str = '<div id="message" class="updated fade"><p>'. __('Options set to Default.',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
+
+	if ($_POST['tptn_trunc_all']){
+		tptn_trunc_count(false);
+		$str = '<div id="message" class="updated fade"><p>'. __('Top 10 popular posts reset',TPTN_LOCAL_NAME) .'</p></div>';
+		echo $str;
+	}
+
+	if ($_POST['tptn_trunc_daily']){
+		tptn_trunc_count(true);
+		$str = '<div id="message" class="updated fade"><p>'. __('Top 10 daily popular posts reset',TPTN_LOCAL_NAME) .'</p></div>';
+		echo $str;
+	}
 ?>
 
 <div class="wrap">
@@ -148,8 +160,18 @@ function tptn_options() {
       </label>
     </p>
     <p>
-      <input type="submit" name="tptn_save" id="tptn_save" value="Save Options" style="border:#00CC00 1px solid" />
-      <input name="tptn_default" type="submit" id="tptn_default" value="Default Options" style="border:#FF0000 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
+      <input type="submit" name="tptn_save" id="tptn_save" value="Save Options" style="border:#0c0 1px solid" />
+      <input name="tptn_default" type="submit" id="tptn_default" value="Default Options" style="border:#f00 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
+    </p>
+    <h4>
+      <?php _e('Reset count',TPTN_LOCAL_NAME); ?>
+    </h4>
+    <p>
+      <?php _e('This cannot be reversed. Make sure that your database has been backed up before proceeding',TPTN_LOCAL_NAME); ?>
+    </p>
+    <p>
+      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="Reset Popular Posts" style="border:#900 1px solid" onclick="if (!confirm('<?php _e('Are you sure you want to reset the popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
+      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="Reset Daily Popular Posts" style="border:#C00 1px solid" onclick="if (!confirm('<?php _e('Are you sure you want to reset the daily popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
     </p>
     </fieldset>
   </form>
@@ -214,7 +236,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 		$sql .= "ORDER BY cntaccess DESC";
 	} else {
 		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
 	
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
@@ -394,7 +416,7 @@ function tptn_value($column_name, $id) {
 		$table_name = $wpdb->prefix . "top_ten_daily";
 
 		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
 		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
 		$cntaccess .= number_format((($resultscount) ? $resultscount->sumCount : 0));
 		

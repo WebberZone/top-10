@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.4
+Version:     1.4.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
 Author:      Ajay D'Souza
@@ -38,8 +38,8 @@ add_action('init', 'ald_tptn_init');
 *				Main Function (Do not edit)							*
 ********************************************************************/
 // Update post views
-add_action('wp_head','tptn_add_viewed_count');
-function tptn_add_viewed_count() {
+add_filter('the_content','tptn_add_viewed_count',9000);
+function tptn_add_viewed_count($content) {
 	global $post, $wpdb, $single;
 	$table_name = $wpdb->prefix . "top_ten";
 	$tptn_settings = tptn_read_options();
@@ -51,10 +51,17 @@ function tptn_add_viewed_count() {
 		if (!(($post_author)&&(!$tptn_settings['track_authors']))) {
 			$id = intval($post->ID);
 			$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
-			echo $output;
+			return $content.$output;
 		}
+		else {
+			return $content;
+		} 
 	}
+	else {
+		return $content;
+	} 
 }
+
 
 // Function to add count to content
 function tptn_pc_content($content) {
@@ -124,7 +131,7 @@ function tptn_show_daily_pop_posts() {
 		$output .= '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-daily.js.php"></script>';
 	} else {
 		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
 		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
@@ -135,7 +142,7 @@ function tptn_show_daily_pop_posts() {
 
 		$results = $wpdb->get_results($sql);
 		
-		$output .= '<div id="tptn_related">'.$tptn_settings['title_daily'];
+		$output .= '<div id="tptn_related_daily">'.$tptn_settings['title_daily'];
 		$output .= '<ul>';
 		if ($results) {
 			foreach ($results as $result) {
@@ -277,16 +284,16 @@ function tptn_install() {
 }
 if (function_exists('register_activation_hook')) {
 	register_activation_hook(__FILE__,'tptn_install');
-	//register_activation_hook(__FILE__, 'tptn_cron_install');
 }
 
 
-// Function to delete all rows in the daily posts table
-function tptn_trunc_count() {
+// Function to delete all rows in the posts table
+function tptn_trunc_count($daily = false) {
 	global $wpdb;
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	$table_name = $wpdb->prefix . "top_ten";
+	if ($daily) $table_name .= "_daily";
 
-	$sql = "TRUNCATE TABLE $table_name_daily";
+	$sql = "TRUNCATE TABLE $table_name";
 	$wpdb->query($sql);
 }
 
@@ -308,7 +315,7 @@ function widget_tptn_pop_daily($args) {
 		echo '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-daily.js.php?widget=1"></script>';
 	} else {
 		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
 		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;

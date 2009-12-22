@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 2.8.2
+Tested up to: 2.9
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -23,10 +23,15 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Sidebar widgets available for daily popular and overall popular posts.
 * View list of daily and/or overall popular posts from within the dashboard itself
 * Clean uninstall if you choose to delete the plugin from within WP-Admin
-* Works with caching plugins like WP-Super-Cache
+* Works with caching plugins like WP-Super-Cache and W3 Total Cache
 
 
 == Changelog ==
+
+= 1.4.1 =
+* Fixed compatibility with WordPress 2.9 
+* Fixed XHTML validation errors in output code
+* Added buttons to reset post count of overall and daily posts
 
 = 1.4 =
 * Added localisation support
