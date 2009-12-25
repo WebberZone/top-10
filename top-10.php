@@ -3,7 +3,7 @@
 Plugin Name: Top 10
 Version:     1.4.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
-Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>.  <a href="options-general.php?page=tptn_options">Configure...</a>
+Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
 Author URI:  http://ajaydsouza.com/
 */
@@ -11,6 +11,17 @@ Author URI:  http://ajaydsouza.com/
 if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
 define('ALD_TPTN_DIR', dirname(__FILE__));
 define('TPTN_LOCAL_NAME', 'tptn');
+
+// Pre-2.6 compatibility
+if ( !defined('WP_CONTENT_URL') )
+	define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
+if ( !defined('WP_CONTENT_DIR') )
+	define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+// Guess the location
+$tptn_path = WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__));
+$tptn_url = WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__));
+
+
 
 if (!function_exists('add_action')) {
 	$wp_root = '../../..';
@@ -40,7 +51,7 @@ add_action('init', 'ald_tptn_init');
 // Update post views
 add_filter('the_content','tptn_add_viewed_count',9000);
 function tptn_add_viewed_count($content) {
-	global $post, $wpdb, $single;
+	global $post, $wpdb, $single,$tptn_url,$tptn_path;
 	$table_name = $wpdb->prefix . "top_ten";
 	$tptn_settings = tptn_read_options();
 	
@@ -50,7 +61,7 @@ function tptn_add_viewed_count($content) {
 	if((is_single() || is_page())) {
 		if (!(($post_author)&&(!$tptn_settings['track_authors']))) {
 			$id = intval($post->ID);
-			$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
+			$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
 			return $content.$output;
 		}
 		else {
@@ -65,15 +76,15 @@ function tptn_add_viewed_count($content) {
 
 // Function to add count to content
 function tptn_pc_content($content) {
-	global $single, $post;
+	global $single, $post,$tptn_url,$tptn_path;
 	$tptn_settings = tptn_read_options();
 	$id = intval($post->ID);
 
 	if((is_single())&&($tptn_settings['add_to_content'])) {
-		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
+		$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 		return $content.$output;
 	} elseif((is_page())&&($tptn_settings['count_on_pages'])) {
-		$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
+		$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 		return $content.$output;
 	} else {
 		return $content;
@@ -83,52 +94,27 @@ add_filter('the_content', 'tptn_pc_content',9001);
 
 // Function to manually display count
 function echo_tptn_post_count() {
-	global $post;
+	global $post,$tptn_url,$tptn_path;
 	$id = intval($post->ID);
 
-	$output = '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
+	$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
 	echo $output;
 }
 
-// Function to show popular posts
-function tptn_show_pop_posts() {
+// Function to return popular posts
+function tptn_pop_posts( $daily = false , $widget = false ) {
 	global $wpdb, $siteurl, $tableposts, $id;
-	$table_name = $wpdb->prefix . "top_ten";
+	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
+		else $table_name = $wpdb->prefix . "top_ten";
 	$tptn_settings = tptn_read_options();
 	$limit = $tptn_settings['limit'];
-	
-	$sql = "SELECT postnumber, cntaccess , ID, post_type, post_status ";
-	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
-	$sql .= "AND post_status = 'publish' ";
-	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
 
-	$results = $wpdb->get_results($sql);
-	
-	echo '<div id="tptn_related">'.$tptn_settings['title'];
-	echo '<ul>';
-	if ($results) {
-		foreach ($results as $result) {
-			echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-			if ($tptn_settings['disp_list_count']) echo ' ('.$result->cntaccess.')';
-			echo '</li>';
-		}
-	}
-	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
-	echo '</ul>';
-	echo '</div>';
-}
-
-// Function to show daily popular posts
-function tptn_show_daily_pop_posts() {
-	global $wpdb, $siteurl, $tableposts, $id;
-	$table_name = $wpdb->prefix . "top_ten_daily";
-	$tptn_settings = tptn_read_options();
-	$limit = $tptn_settings['limit'];
-	
-	$output = '';
-	if ($tptn_settings['d_use_js']) {
-		$output .= '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-daily.js.php"></script>';
+	if (!$daily) {
+		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
+		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
+		$sql .= "AND post_status = 'publish' ";
+		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	} else {
 		$daily_range = $tptn_settings[daily_range]. ' DAY';
 		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
@@ -139,29 +125,110 @@ function tptn_show_daily_pop_posts() {
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
 		$sql .= "GROUP BY postnumber ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
+	}
+	$results = $wpdb->get_results($sql);
+	$output = '';
 
-		$results = $wpdb->get_results($sql);
-		
-		$output .= '<div id="tptn_related_daily">'.$tptn_settings['title_daily'];
-		$output .= '<ul>';
-		if ($results) {
-			foreach ($results as $result) {
-				$output .= '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-				if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
-				$output .= '</li>';
+	if (!$widget) {
+		if (!$daily) {
+			$output .= '<div id="tptn_related">'.$tptn_settings['title'];
+		} else {
+			$output .= '<div id="tptn_related_daily">'.$tptn_settings['title_daily'];
+		}
+	}
+	
+	if ($results) {
+		$output .= $tptn_settings['before_list'];
+		foreach ($results as $result) {
+			$title = trim(stripslashes(get_the_title($result->postnumber)));
+			$output .= $tptn_settings['before_list_item'];
+
+			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
+				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
+				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
+					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title));
+				} else {
+					$postimage = get_post_meta($result->postnumber, 'post-image', true);
+					if ($postimage) {
+						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					} else {
+						$output .= '<img src="'.$tptn_settings[thumb_default].'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					}
+				}
+				$output .= '</a> ';
 			}
+			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
+				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
+			}		
+			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
+			$output .= $tptn_settings['after_list_item'];
 		}
 		if ($tptn_settings['show_credit']) $output .= '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
-		$output .= '</ul>';
-		$output .= '</div>';
+		$output .= $tptn_settings['after_list'];
 	}
-	echo $output;
+	if (!$widget) $output .= '</div>';
+
+	return $output;
+}
+
+// Function to show popular posts
+function tptn_show_pop_posts() {
+	echo tptn_pop_posts(false,false);
+}
+
+// Function to show daily popular posts
+function tptn_show_daily_pop_posts() {
+	global $tptn_url;
+	$tptn_settings = tptn_read_options();
+	if ($tptn_settings['d_use_js']) {
+		echo '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
+	} else {
+		echo tptn_pop_posts(true,false);
+	}
+}
+
+// Create a WordPress Widget for Daily Popular Posts
+function widget_tptn_pop_daily($args) {	
+	global $wpdb, $siteurl, $tableposts, $id,$tptn_url;
+
+	extract($args); // extracts before_widget,before_title,after_title,after_widget
+
+	$tptn_settings = tptn_read_options();
+	$title = (($tptn_settings['title_daily']) ? strip_tags($tptn_settings['title_daily']) : __('Daily Popular',TPTN_LOCAL_NAME));
+
+	echo $before_widget;
+	echo $before_title.$title.$after_title;
+		
+	if ($tptn_settings['d_use_js']) {
+		echo '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
+	} else {
+		echo tptn_pop_posts(true,true);
+	}
+
+	echo $after_widget;
+}
+
+// Create a WordPress Widget for Popular Posts
+function widget_tptn_pop($args) {	
+	global $wpdb, $siteurl, $tableposts, $id;
+
+	extract($args); // extracts before_widget,before_title,after_title,after_widget
+
+	$tptn_settings = tptn_read_options();
+	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts',TPTN_LOCAL_NAME));
+	
+	echo $before_widget;
+	echo $before_title.$title.$after_title;
+	echo tptn_pop_posts(false,true);
+	echo $after_widget;
 }
 
 // Default Options
 function tptn_default_options() {
+	global $tptn_url;
 	$title = __('<h3>Popular Posts</h3>',TPTN_LOCAL_NAME);
 	$title_daily = __('<h3>Daily Popular</h3>',TPTN_LOCAL_NAME);
+	$thumb_default = $tptn_url.'/default.png';
 
 	$tptn_settings = 	Array (
 						show_credit => true,			// Add link to plugin page of my blog in top posts list
@@ -177,6 +244,15 @@ function tptn_default_options() {
 						title_daily => $title_daily,	// Title of Daily Popular
 						limit => '10',					// How many posts to display?
 						daily_range => '1',				// Daily Popular will contain posts of how many days?
+						before_list => '<ul>',			// Before the entire list
+						after_list => '</ul>',			// After the entire list
+						before_list_item => '<li>',		// Before each list item
+						after_list_item => '</li>',		// After each list item
+						post_thumb_op => 'text_only',	// Display only text in posts
+						thumb_height => '100',			// Height of thumbnails
+						thumb_width => '100',			// Width of thumbnails
+						thumb_meta => 'post-image',		// Meta field that is used to store the location of default thumbnail image
+						thumb_default => $thumb_default,	// Default thumbnail image
 						);
 	return $tptn_settings;
 }
@@ -297,84 +373,6 @@ function tptn_trunc_count($daily = false) {
 	$wpdb->query($sql);
 }
 
-// Create a WordPress Widget for Daily Popular Posts
-function widget_tptn_pop_daily($args) {	
-	global $wpdb, $siteurl, $tableposts, $id;
-
-	extract($args); // extracts before_widget,before_title,after_title,after_widget
-
-	$table_name = $wpdb->prefix . "top_ten_daily";
-	$tptn_settings = tptn_read_options();
-	$limit = $tptn_settings['limit'];
-	
-	$title = (($tptn_settings['title_daily']) ? strip_tags($tptn_settings['title_daily']) : __('Daily Popular',TPTN_LOCAL_NAME));
-	echo $before_widget;
-	echo $before_title.$title.$after_title;
-		
-	if ($tptn_settings['d_use_js']) {
-		echo '<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/top-10/top-10-daily.js.php?widget=1"></script>';
-	} else {
-		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
-		
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
-		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
-		$sql .= "GROUP BY postnumber ";
-		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
-
-		$results = $wpdb->get_results($sql);
-		
-		echo '<ul>';
-		if ($results) {
-			foreach ($results as $result) {
-				echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-				if ($tptn_settings['disp_list_count']) echo ' ('.$result->sumCount.')';
-				echo '</li>';
-			}
-		}
-		if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
-		echo '</ul>';
-	}
-	
-	echo $after_widget;
-}
-
-// Create a WordPress Widget for Popular Posts
-function widget_tptn_pop($args) {	
-	global $wpdb, $siteurl, $tableposts, $id;
-
-	extract($args); // extracts before_widget,before_title,after_title,after_widget
-
-	$table_name = $wpdb->prefix . "top_ten";
-	$tptn_settings = tptn_read_options();
-	$limit = $tptn_settings['limit'];
-	
-	$sql = "SELECT postnumber, cntaccess , ID, post_type ";
-	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-	if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
-	$sql .= "ORDER BY cntaccess DESC LIMIT $limit";
-
-	$results = $wpdb->get_results($sql);
-	
-	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts',TPTN_LOCAL_NAME));
-	
-	echo $before_widget;
-	echo $before_title.$title.$after_title;
-	echo '<ul>';
-	if ($results) {
-		foreach ($results as $result) {
-			echo '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-			if ($tptn_settings['disp_list_count']) echo ' ('.$result->cntaccess.')';
-			echo '</li>';
-		}
-	}
-	if ($tptn_settings['show_credit']) echo '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
-	echo '</ul>';
-
-	echo $after_widget;
-}
 
 function init_tptn(){
 	register_sidebar_widget(__('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
@@ -385,6 +383,25 @@ add_action("plugins_loaded", "init_tptn");
 // This function adds an Options page in WP Admin
 if (is_admin() || strstr($_SERVER['PHP_SELF'], 'wp-admin/')) {
 	require_once(ALD_TPTN_DIR . "/admin.inc.php");
+
+// Add meta links
+function tptn_plugin_actions( $links, $file ) {
+	$plugin = plugin_basename(__FILE__);
+ 
+	// create link
+	if ($file == $plugin) {
+		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', tptn_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.org">' . __('Support', tptn_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', tptn_LOCAL_NAME ) . '</a>';
+	}
+	return $links;
 }
+global $wp_version;
+if ( version_compare( $wp_version, '2.8alpha', '>' ) )
+	add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 ); // only 2.8 and higher
+else add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
+
+}
+
 
 ?>

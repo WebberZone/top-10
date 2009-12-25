@@ -17,7 +17,7 @@ function tptn_options() {
 		$tptn_settings[title] = ($_POST['title']);
 		$tptn_settings[title_daily] = ($_POST['title_daily']);
 		$tptn_settings[daily_range] = ($_POST['daily_range']);
-		$tptn_settings[limit] = ($_POST['limit']);
+		$tptn_settings[limit] = intval($_POST['limit']);
 		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
 		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
 		$tptn_settings[exclude_pages] = (($_POST['exclude_pages']) ? true : false);
@@ -27,6 +27,16 @@ function tptn_options() {
 		$tptn_settings[disp_list_count] = (($_POST['disp_list_count']) ? true : false);
 		$tptn_settings[d_use_js] = (($_POST['d_use_js']) ? true : false);
 		$tptn_settings[show_credit] = (($_POST['show_credit']) ? true : false);
+
+		$tptn_settings[post_thumb_op] = $_POST['post_thumb_op'];
+		$tptn_settings[before_list] = $_POST['before_list'];
+		$tptn_settings[after_list] = $_POST['after_list'];
+		$tptn_settings[before_list_item] = $_POST['before_list_item'];
+		$tptn_settings[after_list_item] = $_POST['after_list_item'];
+		$tptn_settings[thumb_meta] = $_POST['thumb_meta'];
+		$tptn_settings[thumb_default] = $_POST['thumb_default'];
+		$tptn_settings[thumb_height] = intval($_POST['thumb_height']);
+		$tptn_settings[thumb_width] = intval($_POST['thumb_width']);
 		
 		update_option('ald_tptn_settings', $tptn_settings);
 		
@@ -95,18 +105,6 @@ function tptn_options() {
     </p>
     <p>
       <label>
-      <?php _e('Title of popular posts: ',TPTN_LOCAL_NAME); ?>
-      <input type="textbox" name="title" id="title" value="<?php echo stripslashes($tptn_settings[title]); ?>">
-      </label>
-    </p>
-    <p>
-      <label>
-      <?php _e('Title of daily popular posts: ',TPTN_LOCAL_NAME); ?>
-      <input type="textbox" name="title_daily" id="title_daily" value="<?php echo stripslashes($tptn_settings[title_daily]); ?>">
-      </label>
-    </p>
-    <p>
-      <label>
       <?php _e('Daily Popular should contain views of how many days? ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings[daily_range]); ?>">
       </label>
@@ -159,6 +157,81 @@ function tptn_options() {
       <?php _e('A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!',TPTN_LOCAL_NAME); ?>
       </label>
     </p>
+    <h4>
+      <?php _e('Output Options:',TPTN_LOCAL_NAME); ?>
+    </h4>
+    <p>
+      <label>
+      <?php _e('Title of popular posts: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="title" id="title" value="<?php echo stripslashes($tptn_settings[title]); ?>">
+      </label>
+    </p>
+    <p>
+      <label>
+      <?php _e('Title of daily popular posts: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="title_daily" id="title_daily" value="<?php echo stripslashes($tptn_settings[title_daily]); ?>">
+      </label>
+    </p>
+	<h4><?php _e('Customize the output:',TPTN_LOCAL_NAME); ?></h4>
+	<p>
+      <label>
+      <?php _e('HTML to display before the list of posts: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="before_list" id="before_list" value="<?php echo attribute_escape(stripslashes($tptn_settings[before_list])); ?>">
+      </label>
+	</p>
+	<p>
+      <label>
+      <?php _e('HTML to display before each list item: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="before_list_item" id="before_list_item" value="<?php echo attribute_escape(stripslashes($tptn_settings[before_list_item])); ?>">
+      </label>
+	</p>
+	<p>
+      <label>
+      <?php _e('HTML to display after each list item: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="after_list_item" id="after_list_item" value="<?php echo attribute_escape(stripslashes($tptn_settings[after_list_item])); ?>">
+      </label>
+	</p>
+	<p>
+      <label>
+      <?php _e('HTML to display after the list of posts: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="after_list" id="after_list" value="<?php echo attribute_escape(stripslashes($tptn_settings[after_list])); ?>">
+      </label>
+	</p>
+	<h4><?php _e('Post thumbnail options:',TPTN_LOCAL_NAME); ?></h4>
+	<p>
+		<label>
+		<input type="radio" name="post_thumb_op" value="inline" id="post_thumb_op_0" <?php if ($tptn_settings['post_thumb_op']=='inline') echo 'checked="checked"' ?> />
+		<?php _e('Display thumbnails inline with posts',TPTN_LOCAL_NAME); ?></label>
+		<br />
+		<label>
+		<input type="radio" name="post_thumb_op" value="thumbs_only" id="post_thumb_op_1" <?php if ($tptn_settings['post_thumb_op']=='thumbs_only') echo 'checked="checked"' ?> />
+		<?php _e('Display only thumbnails, no text',TPTN_LOCAL_NAME); ?></label>
+		<br />
+		<label>
+		<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_2" <?php if ($tptn_settings['post_thumb_op']=='text_only') echo 'checked="checked"' ?> />
+		<?php _e('Do not display thumbnails, only text.',TPTN_LOCAL_NAME); ?></label>
+		<br />
+	</p>
+    <p>
+      <label>
+      <?php _e('Post thumbnail meta field (the meta should point contain the image source): ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_meta])); ?>">
+      </label>
+    </p>
+    <p><strong><?php _e('Thumbnail dimensions:',TPTN_LOCAL_NAME); ?></strong><br />
+      <label>
+      <?php _e('Max width: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_width])); ?>" style="width:30px">px
+      </label>
+	  <br />
+      <label>
+      <?php _e('Max height: ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_height])); ?>" style="width:30px">px
+      </label>
+    </p>
+	<p><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified below:',TPTN_LOCAL_NAME); ?>
+	<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_default])); ?>" style="width:500px">
+	</p>
     <p>
       <input type="submit" name="tptn_save" id="tptn_save" value="Save Options" style="border:#0c0 1px solid" />
       <input name="tptn_default" type="submit" id="tptn_default" value="Default Options" style="border:#f00 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
