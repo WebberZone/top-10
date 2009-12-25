@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-25 17:35+0530\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao@gmail.com>\n"
 "Language-Team: Gianni Diurno | http://gidibao.net/ <gidibao@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,14 +24,12 @@ msgid "Options set to Default."
 msgstr "Opzioni impostate alle predefinite."
 
 #: admin.inc.php:58
-#, fuzzy
 msgid "Top 10 popular posts reset"
-msgstr "Titolo per gli articoli più popolari:"
+msgstr "Ripristino 10 articoli più popolari"
 
 #: admin.inc.php:64
-#, fuzzy
 msgid "Top 10 daily popular posts reset"
-msgstr "Titolo per gli articoli più popolari del giorno:"
+msgstr "Ripristino 10 articoli più popolari del giorno"
 
 #: admin.inc.php:75
 msgid "Support the Development"
@@ -106,9 +104,8 @@ msgid "A link to the plugin is added as an extra list item to the list of popula
 msgstr "Nella lista dei tuoi articoli più popolari é stato aggiunto un link alla pagina del plugin. Ti sarei molto grato qualora non disattivassi questa opzione!"
 
 #: admin.inc.php:161
-#, fuzzy
 msgid "Output Options:"
-msgstr "Opzioni:"
+msgstr "Opzioni output:"
 
 #: admin.inc.php:165
 msgid "Title of popular posts: "
@@ -120,61 +117,59 @@ msgstr "Titolo per gli articoli più popolari del giorno:"
 
 #: admin.inc.php:175
 msgid "Customize the output:"
-msgstr ""
+msgstr "Personalizzazione output:"
 
 #: admin.inc.php:178
 msgid "HTML to display before the list of posts: "
-msgstr ""
+msgstr "HTML da mostrare davanti alla lista degli articoli:"
 
 #: admin.inc.php:184
 msgid "HTML to display before each list item: "
-msgstr ""
+msgstr "HTML da mostrare davanti ad ogni singola lista:"
 
 #: admin.inc.php:190
-#, fuzzy
 msgid "HTML to display after each list item: "
-msgstr "Formato per il conteggio:"
+msgstr "HTML da mostrare dopo ogni lista:"
 
 #: admin.inc.php:196
 msgid "HTML to display after the list of posts: "
-msgstr ""
+msgstr "HTML da mostrare dopo la lista degli articoli:"
 
 #: admin.inc.php:200
 msgid "Post thumbnail options:"
-msgstr ""
+msgstr "Opzioni miniature articolo:"
 
 #: admin.inc.php:204
-#, fuzzy
 msgid "Display thumbnails inline with posts"
-msgstr "Desideri mostrare il numero delle visualizzazioni negli articoli?"
+msgstr "Desideri mostrare gli articoli con le miniature inline?"
 
 #: admin.inc.php:208
 msgid "Display only thumbnails, no text"
-msgstr ""
+msgstr "Mostra le sole miniature, nessun testo"
 
 #: admin.inc.php:212
 msgid "Do not display thumbnails, only text."
-msgstr ""
+msgstr "Non mostrare le miniature, solo testo."
 
 #: admin.inc.php:217
 msgid "Post thumbnail meta field (the meta should point contain the image source): "
-msgstr ""
+msgstr "Campo meta per le miniature (il valore deve puntare alla immagine):"
 
 #: admin.inc.php:221
 msgid "Thumbnail dimensions:"
-msgstr ""
+msgstr "Dimensione miniature:"
 
 #: admin.inc.php:223
 msgid "Max width: "
-msgstr ""
+msgstr "Larghezza massima:"
 
 #: admin.inc.php:228
 msgid "Max height: "
-msgstr ""
+msgstr "Altezza massima:"
 
 #: admin.inc.php:232
 msgid "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified below:"
-msgstr ""
+msgstr "Come prima operazione, il plugin controllerà la presenza di una miniatura nell'articolo. Nel caso in cui non fosse presente, verificherà il campo meta. Qualora non fosse disponibile, mostrerà l'immagine predefinita come specificato qui sotto:"
 
 #: admin.inc.php:237
 msgid "Do you want to set options to Default?"
@@ -182,19 +177,19 @@ msgstr "Desideri ripristinare alle predefinite?"
 
 #: admin.inc.php:240
 msgid "Reset count"
-msgstr ""
+msgstr "Ripristino conteggio"
 
 #: admin.inc.php:243
 msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
-msgstr ""
+msgstr "Questa operazione non é reversibile. Effettua il backup del database prima di procedere"
 
 #: admin.inc.php:246
 msgid "Are you sure you want to reset the popular posts?"
-msgstr ""
+msgstr "Sei certo di volere ripristinare gli articoli più popolari?"
 
 #: admin.inc.php:247
 msgid "Are you sure you want to reset the daily popular posts?"
-msgstr ""
+msgstr "Sei certo di volere ripristinare gli articoli più popolari del giorno?"
 
 #: admin.inc.php:263
 #: admin.inc.php:287
@@ -266,13 +261,13 @@ msgstr "<h3>I più letti di oggi</h3>"
 
 #: top-10.php:393
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #: top-10.php:394
 msgid "Support"
-msgstr ""
+msgstr "Supporto"
 
 #: top-10.php:395
 msgid "Donate"
-msgstr ""
+msgstr "Donazione"
 
