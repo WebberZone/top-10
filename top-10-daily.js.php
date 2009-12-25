@@ -34,16 +34,37 @@ function tptn_daily_lists() {
 	
 	$output = '<div id="tptn_related_daily">';
 	if(!$is_widget) $output .= $tptn_settings['title_daily'];
-	$output .= '<ul>';
+
 	if ($results) {
+		$output .= $tptn_settings['before_list'];
 		foreach ($results as $result) {
-			$output .= '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
+			$title = trim(stripslashes(get_the_title($result->postnumber)));
+			$output .= $tptn_settings['before_list_item'];
+
+			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
+				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
+				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
+					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title));
+				} else {
+					$postimage = get_post_meta($result->postnumber, 'post-image', true);
+					if ($postimage) {
+						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					} else {
+						$output .= '<img src="'.$tptn_settings[thumb_default].'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					}
+				}
+				$output .= '</a> ';
+			}
+			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
+				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
+			}		
 			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
-			$output .= '</li>';
+			$output .= $tptn_settings['after_list_item'];
 		}
+		if ($tptn_settings['show_credit']) $output .= '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+		$output .= $tptn_settings['after_list'];
 	}
-	if ($tptn_settings['show_credit']) $output .= '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
-	$output .= '</ul>';
+	
 	$output .= '</div>';
 
 	echo "document.write('".$output."')";
