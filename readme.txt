@@ -30,6 +30,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 == Changelog ==
 
 = 1.5 =
+* Fixed some compatibility issues with WordPress 2.9 and YARPP
+
+= 1.5 =
 * Added support for post thumbnails feature of WordPress 2.9
 
 = 1.4.1 =
