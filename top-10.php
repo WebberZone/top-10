@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.5
+Version:     1.5.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -49,7 +49,7 @@ add_action('init', 'ald_tptn_init');
 *				Main Function (Do not edit)							*
 ********************************************************************/
 // Update post views
-add_filter('the_content','tptn_add_viewed_count',9000);
+add_filter('the_content','tptn_add_viewed_count');
 function tptn_add_viewed_count($content) {
 	global $post, $wpdb, $single,$tptn_url,$tptn_path;
 	$table_name = $wpdb->prefix . "top_ten";
@@ -90,7 +90,7 @@ function tptn_pc_content($content) {
 		return $content;
 	}
 }
-add_filter('the_content', 'tptn_pc_content',9001);
+add_filter('the_content', 'tptn_pc_content');
 
 // Function to manually display count
 function echo_tptn_post_count() {
