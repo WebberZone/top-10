@@ -29,7 +29,10 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Changelog ==
 
-= 1.5 =
+= 1.5.2 =
+* Fixed: Fixed display of post thumbnails using postmeta field
+
+= 1.5.1 =
 * Fixed some compatibility issues with WordPress 2.9 and YARPP
 
 = 1.5 =
