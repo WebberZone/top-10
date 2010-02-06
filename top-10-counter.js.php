@@ -18,7 +18,7 @@ function tptn_disp_count() {
 	$table_name = $wpdb->prefix . "top_ten";
 	$table_name_daily = $wpdb->prefix . "top_ten_daily";
 	$tptn_settings = tptn_read_options();
-	$count_disp_form = htmlspecialchars(stripslashes($tptn_settings[count_disp_form]));
+	$count_disp_form = stripslashes($tptn_settings[count_disp_form]);
 	
 	$id = intval($_GET['top_ten_id']);
 	if($id > 0) {

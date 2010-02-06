@@ -1,5 +1,5 @@
 === Top 10 ===
-Tags: top 10, popular posts, top posts, counter, daily popular, page views, statistics
+Tags: top 10, counter, popular posts, top posts, daily popular, page views, statistics
 Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
@@ -28,6 +28,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 
 == Changelog ==
+
+= 1.5.3 =
+* Added: You can now use HTML in the counter display
 
 = 1.5.2 =
 * Fixed: Fixed display of post thumbnails using postmeta field

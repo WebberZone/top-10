@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.5.2
+Version:     1.5.3
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -13,13 +13,18 @@ define('ALD_TPTN_DIR', dirname(__FILE__));
 define('TPTN_LOCAL_NAME', 'tptn');
 
 // Pre-2.6 compatibility
-if ( !defined('WP_CONTENT_URL') )
-	define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-if ( !defined('WP_CONTENT_DIR') )
-	define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+if ( ! defined( 'WP_CONTENT_URL' ) )
+      define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
+if ( ! defined( 'WP_CONTENT_DIR' ) )
+      define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+if ( ! defined( 'WP_PLUGIN_URL' ) )
+      define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
+if ( ! defined( 'WP_PLUGIN_DIR' ) )
+      define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
+
 // Guess the location
-$tptn_path = WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__));
-$tptn_url = WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__));
+$tptn_path = WP_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__));
+$tptn_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
 
 
 

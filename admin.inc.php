@@ -16,7 +16,7 @@ function tptn_options() {
 	if($_POST['tptn_save']){
 		$tptn_settings[title] = ($_POST['title']);
 		$tptn_settings[title_daily] = ($_POST['title_daily']);
-		$tptn_settings[daily_range] = ($_POST['daily_range']);
+		$tptn_settings[daily_range] = intval($_POST['daily_range']);
 		$tptn_settings[limit] = intval($_POST['limit']);
 		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
 		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
