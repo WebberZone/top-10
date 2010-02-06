@@ -61,7 +61,7 @@ function tptn_daily_lists() {
 			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
 			$output .= $tptn_settings['after_list_item'];
 		}
-		if ($tptn_settings['show_credit']) $output .= '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+		if ($tptn_settings['show_credit']) $output .= $tptn_settings['before_list_item'].'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a>'.$tptn_settings['after_list_item'];
 		$output .= $tptn_settings['after_list'];
 	}
 	
