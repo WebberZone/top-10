@@ -37,6 +37,9 @@ function tptn_options() {
 		$tptn_settings[thumb_default] = $_POST['thumb_default'];
 		$tptn_settings[thumb_height] = intval($_POST['thumb_height']);
 		$tptn_settings[thumb_width] = intval($_POST['thumb_width']);
+		$tptn_settings[scan_images] = (($_POST['scan_images']) ? true : false);
+		$tptn_settings[show_excerpt] = (($_POST['show_excerpt']) ? true : false);
+		$tptn_settings[excerpt_length] = intval($_POST['excerpt_length']);
 		
 		update_option('ald_tptn_settings', $tptn_settings);
 		
@@ -67,22 +70,8 @@ function tptn_options() {
 ?>
 
 <div class="wrap">
-  <h2>Top 10 </h2>
-  <div style="border: #ccc 1px solid; padding: 10px">
-    <fieldset class="options">
-    <legend>
-    <h3>
-      <?php _e('Support the Development',TPTN_LOCAL_NAME); ?>
-    </h3>
-    </legend>
-    <p>
-      <?php _e('If you find ',TPTN_LOCAL_NAME); ?>
-      <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10</a>
-      <?php _e('useful, please do',TPTN_LOCAL_NAME); ?>
-      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=donate@ajaydsouza.com&amp;item_name=Top%10%20(From%20WP-Admin)&amp;no_shipping=1&amp;return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cancel_return=http://ajaydsouza.com/wordpress/plugins/top-10/&amp;cn=Note%20to%20Author&amp;tax=0&amp;currency_code=USD&amp;bn=PP-DonationsBF&amp;charset=UTF-8" title="Donate via PayPal"><?php _e('drop in your contribution',TPTN_LOCAL_NAME); ?></a>.
-	  (<a href="http://ajaydsouza.com/donate/"><?php _e('Some reasons why you should.',TPTN_LOCAL_NAME); ?></a>)</p>
-    </fieldset>
-  </div>
+  <h2>Top 10</h2>
+  <div id="options-div">
   <form method="post" id="tptn_options" name="tptn_options" style="border: #ccc 1px solid; padding: 10px">
     <fieldset class="options">
     <legend>
@@ -172,6 +161,18 @@ function tptn_options() {
       <input type="textbox" name="title_daily" id="title_daily" value="<?php echo stripslashes($tptn_settings[title_daily]); ?>">
       </label>
     </p>
+    <p>
+      <label>
+      <input type="checkbox" name="show_excerpt" id="show_excerpt" <?php if ($tptn_settings[show_excerpt]) echo 'checked="checked"' ?> />
+      <strong><?php _e('Show post excerpt in list?',TPTN_LOCAL_NAME); ?></strong>
+      </label>
+    </p>
+    <p>
+      <label>
+      <?php _e('Length of excerpt (in words): ',TPTN_LOCAL_NAME); ?>
+      <input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes($tptn_settings[excerpt_length]); ?>">
+      </label>
+    </p>
 	<h4><?php _e('Customize the output:',TPTN_LOCAL_NAME); ?></h4>
 	<p>
       <label>
@@ -218,6 +219,12 @@ function tptn_options() {
       <input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_meta])); ?>">
       </label>
     </p>
+    <p>
+      <label>
+      <input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings[scan_images]) echo 'checked="checked"' ?> />
+      <?php _e('If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?>
+      </label>
+    </p>
     <p><strong><?php _e('Thumbnail dimensions:',TPTN_LOCAL_NAME); ?></strong><br />
       <label>
       <?php _e('Max width: ',TPTN_LOCAL_NAME); ?>
@@ -249,6 +256,44 @@ function tptn_options() {
     </fieldset>
   </form>
 </div>
+  <div id="side">
+	<div class="side-widget">
+	<span class="title"><?php _e('Quick links') ?></span>				
+	<ul>
+		<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/"><?php _e('Top 10 ');_e('plugin page',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/wordpress/plugins/"><?php _e('Other plugins',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/"><?php _e('Ajay\'s blog',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.org"><?php _e('Support forum',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://twitter.com/ajaydsouza"><?php _e('Follow @ajaydsouza on Twitter',TPTN_LOCAL_NAME) ?></a></li>
+	</ul>
+	</div>
+	<div class="side-widget">
+	<span class="title"><?php _e('Recent developments',TPTN_LOCAL_NAME) ?></span>				
+	<?php require_once(ABSPATH . WPINC . '/rss.php'); wp_widget_rss_output('http://ajaydsouza.com/archives/category/wordpress/plugins/feed/', array('items' => 5, 'show_author' => 0, 'show_date' => 1));
+	?>
+	</div>
+	<div class="side-widget">
+		<span class="title"><?php _e('Support the development',TPTN_LOCAL_NAME) ?></span>
+		<div id="donate-form">
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_xclick">
+			<input type="hidden" name="business" value="KGVN7LJLLZCMY">
+			<input type="hidden" name="lc" value="IN">
+			<input type="hidden" name="item_name" value="Donation for Top 10">
+			<input type="hidden" name="item_number" value="crp">
+			<strong><?php _e('Enter amount in USD: ',TPTN_LOCAL_NAME) ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
+			<input type="hidden" name="currency_code" value="USD">
+			<input type="hidden" name="button_subtype" value="services">
+			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
+			<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php _e('Send your donation to the author of',TPTN_LOCAL_NAME) ?> Top 10?">
+			<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+		</div>
+	</div>
+  </div>
+  
+</div>
+
 <?php
 
 }
@@ -283,12 +328,19 @@ function tptn_adminmenu() {
 	}
 
 	if ((function_exists('add_options_page'))&&($tptn_is_admin)) {
-		add_options_page(__("Top 10", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_options', 'tptn_options');
+		$plugin_page = add_options_page(__("Top 10", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_options', 'tptn_options');
+		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 		add_posts_page(__("Popular Posts", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_manage', 'tptn_manage');
 	}
 }
 add_action('admin_menu', 'tptn_adminmenu');
 
+function tptn_adminhead() {
+	global $tptn_url;
+
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin-styles.css" />
+<?php }
 
 /* Create a Dashboard Widget */
 function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
@@ -308,9 +360,11 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 		$sql .= "AND post_status = 'publish' ";
 		$sql .= "ORDER BY cntaccess DESC";
 	} else {
-		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
-	
+		$daily_range = $tptn_settings[daily_range]-1;
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
+		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
@@ -488,8 +542,11 @@ function tptn_value($column_name, $id) {
 		// Now process daily count
 		$table_name = $wpdb->prefix . "top_ten_daily";
 
-		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
+		$daily_range = $tptn_settings[daily_range]-1;
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
+		
 		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
 		$cntaccess .= number_format((($resultscount) ? $resultscount->sumCount : 0));
 		

@@ -32,7 +32,7 @@ function tptn_inc_count() {
 			$wpdb->query("INSERT INTO $table_name (postnumber, cntaccess) VALUES('$id', '1')");
 		}
 		// Now update daily count
-		$current_date = $wpdb->get_var("SELECT CURDATE() ");
+		$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 
 		$results = $wpdb->get_results("SELECT postnumber, cntaccess, dp_date FROM $top_ten_daily WHERE postnumber = '$id' AND dp_date = '$current_date' ");
 		$test = 0;

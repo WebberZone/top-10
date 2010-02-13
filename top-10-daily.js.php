@@ -20,8 +20,10 @@ function tptn_daily_lists() {
 	
 	$tptn_settings = tptn_read_options();
 	$limit = $tptn_settings['limit'];
-	$daily_range = $tptn_settings[daily_range]. ' DAY';
-	$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL $daily_range), INTERVAL 1 DAY) ");
+	$daily_range = $tptn_settings[daily_range]-1;
+	$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+	$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+	$current_date = date ( 'Y-m-j' , $current_date );
 	
 	$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 	$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;

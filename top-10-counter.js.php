@@ -28,10 +28,13 @@ function tptn_disp_count() {
 		$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
 		
 		// Now process daily count
-		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
+		$daily_range = $tptn_settings[daily_range];
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
+
 		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
-		$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 0));
+		$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
 		$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
 		
 		echo 'document.write("'.$count_disp_form.'")';

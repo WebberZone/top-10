@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') && !defined('WP_UNINSTALL_PLUGIN') ) {
 }
 	global $wpdb;
    	$table_name = $wpdb->prefix . "top_ten";
-   	$table_name_daily = $wpdb->prefix . "table_name_daily";
+   	$table_name_daily = $wpdb->prefix . $table_name."_daily";
 
 	$sql = "DROP TABLE $table_name";
 	$wpdb->query($sql);
