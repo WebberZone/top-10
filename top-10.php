@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.5.3
+Version:     1.6
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -115,16 +115,18 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 	$limit = $tptn_settings['limit'];
 
 	if (!$daily) {
-		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
+		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status, post_content ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	} else {
-		$daily_range = $tptn_settings[daily_range]. ' DAY';
-		$current_date = $wpdb->get_var("SELECT DATE_ADD(DATE_SUB(CURDATE(), INTERVAL ".$daily_range."), INTERVAL 1 DAY) ");
+		$daily_range = $tptn_settings[daily_range] - 1;
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
 		
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
+		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status, post_content ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
@@ -151,20 +153,27 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
 				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
 				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
-					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title));
+					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb'));
 				} else {
-					$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);
-					if ($postimage) {
-						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
-					} else {
-						$output .= '<img src="'.$tptn_settings[thumb_default].'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
+					if ((!$postimage)&&($tptn_settings['scan_images'])) {
+						preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
+						// any image there?
+						if( isset( $matches ) && $matches[1][0] ) {
+							$postimage = $matches[1][0]; // we need the first one only!
+						}
 					}
+					if (!$postimage) $postimage = $tptn_settings[thumb_default];
+					$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" class="tptn_thumb" />';
 				}
 				$output .= '</a> ';
 			}
 			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
 				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
 			}		
+			if ($tptn_settings['show_excerpt']) {
+				$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->post_content,$tptn_settings['excerpt_length']).'</span>';
+			}
 			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
 			$output .= $tptn_settings['after_list_item'];
 		}
@@ -258,6 +267,9 @@ function tptn_default_options() {
 						thumb_width => '100',			// Width of thumbnails
 						thumb_meta => 'post-image',		// Meta field that is used to store the location of default thumbnail image
 						thumb_default => $thumb_default,	// Default thumbnail image
+						scan_images => false,			// Scan post for images
+						show_excerpt => false,			// Show description in list item
+						excerpt_length => '10',			// Length of characters
 						);
 	return $tptn_settings;
 }
@@ -378,13 +390,33 @@ function tptn_trunc_count($daily = false) {
 	$wpdb->query($sql);
 }
 
-
 function init_tptn(){
 	register_sidebar_widget(__('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
 	register_sidebar_widget(__('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
 }
 add_action("plugins_loaded", "init_tptn");
  
+// Function to create an excerpt for the post
+ function tptn_excerpt($content,$excerpt_length){
+	$out = strip_tags($content);
+	$blah = explode(' ',$out);
+	if (!$excerpt_length) $excerpt_length = 10;
+	if(count($blah) > $excerpt_length){
+		$k = $excerpt_length;
+		$use_dotdotdot = 1;
+	}else{
+		$k = count($blah);
+		$use_dotdotdot = 0;
+	}
+	$excerpt = '';
+	for($i=0; $i<$k; $i++){
+		$excerpt .= $blah[$i].' ';
+	}
+	$excerpt .= ($use_dotdotdot) ? '...' : '';
+	$out = $excerpt;
+	return $out;
+}
+
 // This function adds an Options page in WP Admin
 if (is_admin() || strstr($_SERVER['PHP_SELF'], 'wp-admin/')) {
 	require_once(ALD_TPTN_DIR . "/admin.inc.php");
@@ -395,9 +427,9 @@ function tptn_plugin_actions( $links, $file ) {
  
 	// create link
 	if ($file == $plugin) {
-		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', tptn_LOCAL_NAME ) . '</a>';
-		$links[] = '<a href="http://ajaydsouza.org">' . __('Support', tptn_LOCAL_NAME ) . '</a>';
-		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', tptn_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.org">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', TPTN_LOCAL_NAME ) . '</a>';
 	}
 	return $links;
 }

@@ -29,6 +29,12 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Changelog ==
 
+= 1.6 =
+* Added: Added support for excerpts and detection of first image in the post
+* Added: Daily posts are tracked using the blog time instead of server time
+* Fixed: On the first visit, display 1 instead of 0
+* Fixed: Fixed uninstall script
+
 = 1.5.3 =
 * Added: You can now use HTML in the counter display
 
