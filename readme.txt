@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 2.9.1
+Tested up to: 2.9.2
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -28,6 +28,12 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 
 == Changelog ==
+
+= 1.6.1 =
+* Turned the credit option to false by default. This setting won't effect current users.
+* Turned off borders on post thumbnails. You can customise the CSS class "tptn_thumb" to style the post thumbnail.
+* The plugin will now display a list of changes in the WordPress Admin > Plugins area whenever an update is available
+* Fixed: Display of caching plugin compliant daily top posts lists 
 
 = 1.6 =
 * Added: Added support for excerpts and detection of first image in the post
@@ -75,6 +81,11 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 = 1.0.1 =
 * Release
+
+== Upgrade Notice ==
+
+= 1.6.1 =
+* Turned the credit option to false by default. This setting won't effect current users.
 
 
 == Installation ==

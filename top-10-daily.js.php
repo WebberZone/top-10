@@ -46,20 +46,27 @@ function tptn_daily_lists() {
 			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
 				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
 				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
-					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title));
+					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
 				} else {
-					$postimage = get_post_meta($result->postnumber, 'post-image', true);
-					if ($postimage) {
-						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
-					} else {
-						$output .= '<img src="'.$tptn_settings[thumb_default].'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" />';
+					$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
+					if ((!$postimage)&&($tptn_settings['scan_images'])) {
+						preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
+						// any image there?
+						if( isset( $matches ) && $matches[1][0] ) {
+							$postimage = $matches[1][0]; // we need the first one only!
+						}
 					}
+					if (!$postimage) $postimage = $tptn_settings[thumb_default];
+					$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" border="0" class="tptn_thumb" />';
 				}
 				$output .= '</a> ';
 			}
 			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
 				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
 			}		
+			if ($tptn_settings['show_excerpt']) {
+				$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->post_content,$tptn_settings['excerpt_length']).'</span>';
+			}
 			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
 			$output .= $tptn_settings['after_list_item'];
 		}

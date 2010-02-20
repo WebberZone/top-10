@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.6
+Version:     1.6.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -153,7 +153,7 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
 				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
 				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
-					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb'));
+					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
 				} else {
 					$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
 					if ((!$postimage)&&($tptn_settings['scan_images'])) {
@@ -164,7 +164,7 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 						}
 					}
 					if (!$postimage) $postimage = $tptn_settings[thumb_default];
-					$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" class="tptn_thumb" />';
+					$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" border="0" class="tptn_thumb" />';
 				}
 				$output .= '</a> ';
 			}
@@ -245,7 +245,7 @@ function tptn_default_options() {
 	$thumb_default = $tptn_url.'/default.png';
 
 	$tptn_settings = 	Array (
-						show_credit => true,			// Add link to plugin page of my blog in top posts list
+						show_credit => false,			// Add link to plugin page of my blog in top posts list
 						add_to_content => true,			// Add post count to content (only on single posts)
 						exclude_pages => true,			// Exclude Pages
 						count_on_pages => true,			// Display on pages
@@ -438,7 +438,30 @@ if ( version_compare( $wp_version, '2.8alpha', '>' ) )
 	add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 ); // only 2.8 and higher
 else add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
 
+// Display message about plugin update option
+function tptn_check_version($file, $plugin_data) {
+	global $wp_version;
+	static $this_plugin;
+	$wp_version = str_replace(".","",$wp_version);
+	if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
+	if ($file == $this_plugin){
+		$current = $wp_version < 28 ? get_option('update_plugins') : get_transient('update_plugins');
+		if (!isset($current->response[$file])) return false;
+
+		$columns =  $wp_version < 28 ? 5 : 3;
+		$url = 'http://svn.wp-plugins.org/top-10/trunk/update-info.txt';
+		$update = wp_remote_fopen($url);
+		if ($update != "") {
+			echo '<tr class="plugin-update-tr"><td colspan="'.$columns.'" class="plugin-update"><div class="update-message">';
+			echo $update;
+			echo '</div></td></tr>';
+		}
+	}
 }
+add_action('after_plugin_row', 'tptn_check_version', 10, 2);
+
+
+} // End admin.inc
 
 
 ?>
