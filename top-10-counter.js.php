@@ -24,7 +24,7 @@ function tptn_disp_count() {
 	if($id > 0) {
 
 		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
-		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 0));
+		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 1));
 		$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
 		
 		// Now process daily count

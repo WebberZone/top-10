@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 2.9.2
+Tested up to: 2.9.3
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -28,6 +28,12 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 
 == Changelog ==
+
+= 1.6.2 =
+* Fixed: Multiple rows being created for same ID
+* Fixed: Counter display
+* Added: New button to clear the duplicate rows in the tables
+* Fixed: Top 10 should be lighter on the server now
 
 = 1.6.1 =
 * Turned the credit option to false by default. This setting won't effect current users.

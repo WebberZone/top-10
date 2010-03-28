@@ -67,6 +67,13 @@ function tptn_options() {
 		$str = '<div id="message" class="updated fade"><p>'. __('Top 10 daily popular posts reset',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
+
+	if ($_POST['tptn_clean_duplicates']){
+		tptn_clean_duplicates(true);
+		tptn_clean_duplicates(false);
+		$str = '<div id="message" class="updated fade"><p>'. __('Tables cleaned of duplicate rows',TPTN_LOCAL_NAME) .'</p></div>';
+		echo $str;
+	}
 ?>
 
 <div class="wrap">
@@ -252,6 +259,7 @@ function tptn_options() {
     <p>
       <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="Reset Popular Posts" style="border:#900 1px solid" onclick="if (!confirm('<?php _e('Are you sure you want to reset the popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
       <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="Reset Daily Popular Posts" style="border:#C00 1px solid" onclick="if (!confirm('<?php _e('Are you sure you want to reset the daily popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
+      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="Clear duplicates" style="border:#600 1px solid" onclick="if (!confirm('<?php _e('This will delete the duplicate entries in the tables. Proceed?',TPTN_LOCAL_NAME); ?>')) return false;" />
     </p>
     </fieldset>
   </form>
@@ -280,7 +288,7 @@ function tptn_options() {
 			<input type="hidden" name="business" value="KGVN7LJLLZCMY">
 			<input type="hidden" name="lc" value="IN">
 			<input type="hidden" name="item_name" value="Donation for Top 10">
-			<input type="hidden" name="item_number" value="crp">
+			<input type="hidden" name="item_number" value="tptn">
 			<strong><?php _e('Enter amount in USD: ',TPTN_LOCAL_NAME) ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
 			<input type="hidden" name="currency_code" value="USD">
 			<input type="hidden" name="button_subtype" value="services">
@@ -342,6 +350,18 @@ function tptn_adminhead() {
 <link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin-styles.css" />
 <?php }
 
+// Function to delete all rows in the posts table
+function tptn_clean_duplicates($daily = false) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "top_ten";
+	if ($daily) $table_name .= "_daily";
+	$count = 0;
+
+	$wpdb->query("CREATE TEMPORARY TABLE ".$table_name."_temp AS SELECT * FROM ".$table_name." GROUP BY postnumber");
+	$wpdb->query("TRUNCATE TABLE $table_name");
+	$wpdb->query("INSERT INTO ".$table_name." SELECT * FROM ".$table_name."_temp");
+}
+
 /* Create a Dashboard Widget */
 function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	global $wpdb, $siteurl, $tableposts, $id;
@@ -354,11 +374,11 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	if (!($page)) $page = 0; // Default page value.
 
 	if(!$daily) {
-		$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
-		$sql .= "ORDER BY cntaccess DESC";
+		$sql .= "ORDER BY sumCount DESC";
 	} else {
 		$daily_range = $tptn_settings[daily_range]-1;
 		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
