@@ -1,5 +1,5 @@
-* Fixed: Multiple rows being created for same ID
-* Fixed: Counter display
-* Added: New button to clear the duplicate rows in the tables
+* Fixed: Multiple rows being created for same ID<br />
+* Fixed: Counter display<br />
+* Added: New button to clear the duplicate rows in the tables<br />
 * Fixed: Top 10 should be lighter on the server now
 
