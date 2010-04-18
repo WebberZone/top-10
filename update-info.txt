@@ -1,5 +1,3 @@
-* Fixed: Multiple rows being created for same ID<br />
-* Fixed: Counter display<br />
-* Added: New button to clear the duplicate rows in the tables<br />
-* Fixed: Top 10 should be lighter on the server now
+* Fixed: PHP errors on certain installs<br />
+* Added: Dutch language
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-29 00:12+0530\n"
+"POT-Creation-Date: 2010-04-18 20:46+0530\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Elvis (fweb.org.ru) <kopper@rkmail.ru>\n"
@@ -76,7 +76,8 @@ msgid "Display number of page views in popular lists?"
 msgstr "Показывать количество просмотров записей/страниц в списке Популярных записей?"
 
 #: admin.inc.php:141
-msgid "Force daily posts' list to be dynamic? This options uses JavaScript to load the post and can increase your page load time"
+#, fuzzy
+msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Сделать список Популярных записей динамичным? Опция использует JavaScript , и это может увеличить время загрузки страниц"
 
 #: admin.inc.php:147
@@ -144,7 +145,8 @@ msgid "Do not display thumbnails, only text."
 msgstr "Отображать только текст, без превью"
 
 #: admin.inc.php:225
-msgid "Post thumbnail meta field (the meta should point contain the image source): "
+#, fuzzy
+msgid "Post thumbnail meta field (the meta should point to the image source): "
 msgstr "Введите сюда используемое вашей темой имя произвольного поля (мета-поле) для вывода превью:"
 
 #: admin.inc.php:232

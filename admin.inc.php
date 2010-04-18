@@ -138,7 +138,7 @@ function tptn_options() {
     <p>
       <label>
       <input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings[d_use_js]) echo 'checked="checked"' ?> />
-      <?php _e('Force daily posts\' list to be dynamic? This options uses JavaScript to load the post and can increase your page load time',TPTN_LOCAL_NAME); ?>
+      <?php _e('Force daily posts\' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time',TPTN_LOCAL_NAME); ?>
       </label>
     </p>
     <p>
@@ -222,7 +222,7 @@ function tptn_options() {
 	</p>
     <p>
       <label>
-      <?php _e('Post thumbnail meta field (the meta should point contain the image source): ',TPTN_LOCAL_NAME); ?>
+      <?php _e('Post thumbnail meta field (the meta should point to the image source): ',TPTN_LOCAL_NAME); ?>
       <input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_meta])); ?>">
       </label>
     </p>

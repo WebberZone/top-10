@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 2.9.3
+Tested up to: 3.0
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -28,6 +28,10 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 
 == Changelog ==
+
+= 1.6.3 =
+* Fixed: PHP errors on certain installs
+* Added: Dutch language
 
 = 1.6.2 =
 * Fixed: Multiple rows being created for same ID
