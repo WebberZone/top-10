@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.6.2
+Version:     1.6.3
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -245,31 +245,31 @@ function tptn_default_options() {
 	$thumb_default = $tptn_url.'/default.png';
 
 	$tptn_settings = 	Array (
-						show_credit => false,			// Add link to plugin page of my blog in top posts list
-						add_to_content => true,			// Add post count to content (only on single posts)
-						exclude_pages => true,			// Exclude Pages
-						count_on_pages => true,			// Display on pages
-						track_authors => false,			// Track Authors visits
-						pv_in_admin => true,			// Add an extra column on edit posts/pages to display page views?
-						disp_list_count => true,		// Display count in popular lists?
-						d_use_js => false,				// Use JavaScript for displaying daily posts
-						count_disp_form => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
-						title => $title,				// Title of Popular Posts
-						title_daily => $title_daily,	// Title of Daily Popular
-						limit => '10',					// How many posts to display?
-						daily_range => '1',				// Daily Popular will contain posts of how many days?
-						before_list => '<ul>',			// Before the entire list
-						after_list => '</ul>',			// After the entire list
-						before_list_item => '<li>',		// Before each list item
-						after_list_item => '</li>',		// After each list item
-						post_thumb_op => 'text_only',	// Display only text in posts
-						thumb_height => '100',			// Height of thumbnails
-						thumb_width => '100',			// Width of thumbnails
-						thumb_meta => 'post-image',		// Meta field that is used to store the location of default thumbnail image
-						thumb_default => $thumb_default,	// Default thumbnail image
-						scan_images => false,			// Scan post for images
-						show_excerpt => false,			// Show description in list item
-						excerpt_length => '10',			// Length of characters
+						'show_credit' => false,			// Add link to plugin page of my blog in top posts list
+						'add_to_content' => true,			// Add post count to content (only on single posts)
+						'exclude_pages' => true,			// Exclude Pages
+						'count_on_pages' => true,			// Display on pages
+						'track_authors' => false,			// Track Authors visits
+						'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
+						'disp_list_count' => true,		// Display count in popular lists?
+						'd_use_js' => false,				// Use JavaScript for displaying daily posts
+						'count_disp_form' => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
+						'title' => $title,				// Title of Popular Posts
+						'title_daily' => $title_daily,	// Title of Daily Popular
+						'limit' => '10',					// How many posts to display?
+						'daily_range' => '1',				// Daily Popular will contain posts of how many days?
+						'before_list' => '<ul>',			// Before the entire list
+						'after_list' => '</ul>',			// After the entire list
+						'before_list_item' => '<li>',		// Before each list item
+						'after_list_item' => '</li>',		// After each list item
+						'post_thumb_op' => 'text_only',	// Display only text in posts
+						'thumb_height' => '100',			// Height of thumbnails
+						'thumb_width' => '100',			// Width of thumbnails
+						'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
+						'thumb_default' => $thumb_default,	// Default thumbnail image
+						'scan_images' => false,			// Scan post for images
+						'show_excerpt' => false,			// Show description in list item
+						'excerpt_length' => '10',			// Length of characters
 						);
 	return $tptn_settings;
 }
