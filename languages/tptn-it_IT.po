@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-18 20:46+0530\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno |gidibao.net <gidibao[at]gmail[dot]com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "Ripristino 10 articoli più popolari del giorno"
 
 #: admin.inc.php:74
 msgid "Tables cleaned of duplicate rows"
-msgstr ""
+msgstr "I duplicati sono stati rimossi dalle tabelle"
 
 #: admin.inc.php:86
 msgid "Options:"
@@ -76,7 +76,6 @@ msgid "Display number of page views in popular lists?"
 msgstr "Desideri mostrare il numero delle visualizzazioni per pagina nella lista dei più popolari?"
 
 #: admin.inc.php:141
-#, fuzzy
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Desideri che la lista degli articoli odierni sia dinamica? Questa opzione utilizza un JavaScript per il caricamento dell'articolo e di conseguenza potrà fare aumentare i tempi di caricamento della stessa pagina"
 
@@ -145,9 +144,8 @@ msgid "Do not display thumbnails, only text."
 msgstr "Non mostrare le miniature, solo testo."
 
 #: admin.inc.php:225
-#, fuzzy
 msgid "Post thumbnail meta field (the meta should point to the image source): "
-msgstr "Campo meta per le miniature (il valore deve puntare alla immagine):"
+msgstr "Campo meta per le miniature (il meta deve puntare alla immagine):"
 
 #: admin.inc.php:232
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
@@ -191,7 +189,7 @@ msgstr "Sei certo di volere ripristinare gli articoli più popolari del giorno?"
 
 #: admin.inc.php:262
 msgid "This will delete the duplicate entries in the tables. Proceed?"
-msgstr ""
+msgstr "Questa operazione cancelerà i duplicati dalle tabelle. Procedi?"
 
 #: admin.inc.php:269
 msgid "Quick links"
