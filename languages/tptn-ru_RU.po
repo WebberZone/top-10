@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 20:46+0530\n"
+"POT-Creation-Date: 2010-04-20 09:47+0530\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Elvis (fweb.org.ru) <kopper@rkmail.ru>\n"
@@ -33,7 +33,7 @@ msgstr "Сбросить статистику популярных записе�
 
 #: admin.inc.php:74
 msgid "Tables cleaned of duplicate rows"
-msgstr ""
+msgstr "Все повторяющиеся записи в статистике были удалены"
 
 #: admin.inc.php:86
 msgid "Options:"
@@ -76,7 +76,6 @@ msgid "Display number of page views in popular lists?"
 msgstr "Показывать количество просмотров записей/страниц в списке Популярных записей?"
 
 #: admin.inc.php:141
-#, fuzzy
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Сделать список Популярных записей динамичным? Опция использует JavaScript , и это может увеличить время загрузки страниц"
 
@@ -102,11 +101,11 @@ msgstr "Заголовок списка Популярных сегодня за
 
 #: admin.inc.php:174
 msgid "Show post excerpt in list?"
-msgstr ""
+msgstr "Показывать текст записи в списке?"
 
 #: admin.inc.php:179
 msgid "Length of excerpt (in words): "
-msgstr ""
+msgstr "Длина выводимого текста (в словах):"
 
 #: admin.inc.php:183
 msgid "Customize the output:"
@@ -145,13 +144,12 @@ msgid "Do not display thumbnails, only text."
 msgstr "Отображать только текст, без превью"
 
 #: admin.inc.php:225
-#, fuzzy
 msgid "Post thumbnail meta field (the meta should point to the image source): "
-msgstr "Введите сюда используемое вашей темой имя произвольного поля (мета-поле) для вывода превью:"
+msgstr "Введите сюда название произвольного поля (мета-поле) для вывода превью:"
 
 #: admin.inc.php:232
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
-msgstr ""
+msgstr "Если название для мета-поля не установлено, то плагин будет выводить первое изображение из записи. Это может слегка увеличить загрузку в первый раз, так как будет создаваться уменьшенная копия изображения"
 
 #: admin.inc.php:235
 msgid "Thumbnail dimensions:"
@@ -191,54 +189,51 @@ msgstr "Вы уверены, что хотите сбросить статист
 
 #: admin.inc.php:262
 msgid "This will delete the duplicate entries in the tables. Proceed?"
-msgstr ""
+msgstr "Будет произведено удаление дублирующихся щаписей из статистики. Продолжить?"
 
 #: admin.inc.php:269
 msgid "Quick links"
-msgstr ""
+msgstr "Полезные ссылки"
 
 #: admin.inc.php:271
-#, fuzzy
 msgid "Top 10 "
 msgstr "Топ 10 записей"
 
 #: admin.inc.php:271
 msgid "plugin page"
-msgstr ""
+msgstr "страница плагина"
 
 #: admin.inc.php:272
 msgid "Other plugins"
-msgstr ""
+msgstr "Другие плагины автора"
 
 #: admin.inc.php:273
 msgid "Ajay's blog"
-msgstr ""
+msgstr "Блог Ajay"
 
 #: admin.inc.php:274
-#, fuzzy
 msgid "Support forum"
 msgstr "Поддержка (англ.)"
 
 #: admin.inc.php:275
 msgid "Follow @ajaydsouza on Twitter"
-msgstr ""
+msgstr "Следуй за @ajaydsouza в Twitter"
 
 #: admin.inc.php:279
 msgid "Recent developments"
-msgstr ""
+msgstr "Последние разработки"
 
 #: admin.inc.php:284
-#, fuzzy
 msgid "Support the development"
 msgstr "Поддержать автора плагина"
 
 #: admin.inc.php:292
 msgid "Enter amount in USD: "
-msgstr ""
+msgstr "Сколько вы готовы пожертвовать (в USD):"
 
 #: admin.inc.php:296
 msgid "Send your donation to the author of"
-msgstr ""
+msgstr "Отправьте пожертвование автору"
 
 #: admin.inc.php:316
 #: admin.inc.php:341
