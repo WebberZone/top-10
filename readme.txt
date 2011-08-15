@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 3.0
+Tested up to: 3.3
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
