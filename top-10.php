@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.6.3
+Version:     1.7
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -112,7 +112,9 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
 		else $table_name = $wpdb->prefix . "top_ten";
 	$tptn_settings = tptn_read_options();
-	$limit = $tptn_settings['limit'];
+	$limit = $tptn_settings['limit']*5;
+	
+	$exclude_categories = explode(',',$tptn_settings['exclude_categories']);
 
 	if (!$daily) {
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status, post_content ";
@@ -134,6 +136,8 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	}
 	$results = $wpdb->get_results($sql);
+	$counter = 0;
+
 	$output = '';
 
 	if (!$widget) {
@@ -147,37 +151,50 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 	if ($results) {
 		$output .= $tptn_settings['before_list'];
 		foreach ($results as $result) {
-			$title = trim(stripslashes(get_the_title($result->postnumber)));
-			$output .= $tptn_settings['before_list_item'];
+			$categorys = get_the_category($result->postnumber);	//Fetch categories of the plugin
+			$p_in_c = false;	// Variable to check if post exists in a particular category
 
-			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
-				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
-				if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
-					$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
-				} else {
-					$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
-					if ((!$postimage)&&($tptn_settings['scan_images'])) {
-						preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
-						// any image there?
-						if( isset( $matches ) && $matches[1][0] ) {
-							$postimage = $matches[1][0]; // we need the first one only!
+			foreach ($categorys as $cat) {	// Loop to check if post exists in excluded category
+				$p_in_c = (in_array($cat->cat_ID, $exclude_categories)) ? true : false;
+				if ($p_in_c) break;	// End loop if post found in category
+			}
+
+			$title = trim(stripslashes(get_the_title($result->postnumber)));
+
+			if (!$p_in_c) {
+				$output .= $tptn_settings['before_list_item'];
+
+				if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
+					$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
+					if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
+						$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
+					} else {
+						$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
+						if ((!$postimage)&&($tptn_settings['scan_images'])) {
+							preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
+							// any image there?
+							if( isset( $matches ) && $matches[1][0] ) {
+								$postimage = $matches[1][0]; // we need the first one only!
+							}
 						}
+						if (!$postimage) $postimage = $tptn_settings[thumb_default];
+						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" border="0" class="tptn_thumb" />';
 					}
-					if (!$postimage) $postimage = $tptn_settings[thumb_default];
-					$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" border="0" class="tptn_thumb" />';
+					$output .= '</a> ';
 				}
-				$output .= '</a> ';
+				if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
+					$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
+				}		
+				if ($tptn_settings['show_excerpt']) {
+					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->post_content,$tptn_settings['excerpt_length']).'</span>';
+				}
+				if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
+				$output .= $tptn_settings['after_list_item'];
+				$counter++; 
 			}
-			if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
-				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
-			}		
-			if ($tptn_settings['show_excerpt']) {
-				$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->post_content,$tptn_settings['excerpt_length']).'</span>';
-			}
-			if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
-			$output .= $tptn_settings['after_list_item'];
+			if ($counter == $limit/5) break;	// End loop when related posts limit is reached
 		}
-		if ($tptn_settings['show_credit']) $output .= '<li>Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></li>';
+		if ($tptn_settings['show_credit']) $output .= $tptn_settings['before_list_item'].'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a>'.$tptn_settings['after_list_item'];
 		$output .= $tptn_settings['after_list'];
 	}
 	if (!$widget) $output .= '</div>';
@@ -270,6 +287,8 @@ function tptn_default_options() {
 						'scan_images' => false,			// Scan post for images
 						'show_excerpt' => false,			// Show description in list item
 						'excerpt_length' => '10',			// Length of characters
+						'exclude_categories' => '',		// Exclude these categories
+						'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
 						);
 	return $tptn_settings;
 }
@@ -391,8 +410,14 @@ function tptn_trunc_count($daily = false) {
 }
 
 function init_tptn(){
-	register_sidebar_widget(__('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
-	register_sidebar_widget(__('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
+
+	if (function_exists('wp_register_sidebar_widget')) {
+		wp_register_sidebar_widget('widget_tptn_pop', __('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
+		wp_register_sidebar_widget('widget_tptn_pop_daily', __('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
+	} else {
+		register_sidebar_widget(__('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
+		register_sidebar_widget(__('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
+	}
 }
 add_action("plugins_loaded", "init_tptn");
  
@@ -428,7 +453,7 @@ function tptn_plugin_actions( $links, $file ) {
 	// create link
 	if ($file == $plugin) {
 		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>';
-		$links[] = '<a href="http://ajaydsouza.org">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.com/support/">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
 		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', TPTN_LOCAL_NAME ) . '</a>';
 	}
 	return $links;

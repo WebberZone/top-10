@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 20:46+0530\n"
+"POT-Creation-Date: 2011-08-17 20:09-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
+"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Gianni Diurno |gidibao.net <gidibao[at]gmail[dot]com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,305 +15,309 @@ msgstr ""
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:46
+#: admin.inc.php:57
 msgid "Options saved successfully."
 msgstr "Le opzioni sono state salvate con successo."
 
-#: admin.inc.php:55
+#: admin.inc.php:66
 msgid "Options set to Default."
 msgstr "Opzioni impostate alle predefinite."
 
-#: admin.inc.php:61
+#: admin.inc.php:72
 msgid "Top 10 popular posts reset"
 msgstr "Ripristino 10 articoli più popolari"
 
-#: admin.inc.php:67
+#: admin.inc.php:78
 msgid "Top 10 daily popular posts reset"
 msgstr "Ripristino 10 articoli più popolari del giorno"
 
-#: admin.inc.php:74
+#: admin.inc.php:85
 msgid "Tables cleaned of duplicate rows"
 msgstr "I duplicati sono stati rimossi dalle tabelle"
 
-#: admin.inc.php:86
+#: admin.inc.php:97
 msgid "Options:"
 msgstr "Opzioni:"
 
-#: admin.inc.php:91
+#: admin.inc.php:102
 msgid "Format to display the count in: "
 msgstr "Formato per il conteggio:"
 
-#: admin.inc.php:95
+#: admin.inc.php:106
 msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr "Utilizza <code>%totalcount%</code> per potere mostrare il computo totale e <code>%dailycount%</code> per visualizzare quello del giorno corrente. Ad esempio, le opzioni predefinite verranno mostrate online con un <code>(letto 123 volte, 23 visite odierne)</code>"
 
-#: admin.inc.php:98
+#: admin.inc.php:109
 msgid "Number of popular posts to display: "
 msgstr "Numero degli articoli più popolari da mostrare:"
 
-#: admin.inc.php:104
+#: admin.inc.php:115
 msgid "Daily Popular should contain views of how many days? "
 msgstr "Quanti giorni desideri siano considerati per il computo delle visualizzazioni per articoli più popolari del giorno?"
 
-#: admin.inc.php:111
+#: admin.inc.php:122
 msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
 msgstr "Desideri escludere le pagine dalla visualizzazione per gli articoli più popolari? Il numero delle visualizzazioni continuerà ad essere comunque aggiornato."
 
-#: admin.inc.php:117
+#: admin.inc.php:128
 msgid "Display number of views on posts?"
 msgstr "Desideri mostrare il numero delle visualizzazioni negli articoli?"
 
-#: admin.inc.php:123
+#: admin.inc.php:134
 msgid "Display number of views on pages?"
 msgstr "Desideri mostrare il numero delle visualizzazioni nelle pagine?"
 
-#: admin.inc.php:129
+#: admin.inc.php:140
 msgid "Track visits of authors on their own posts?"
 msgstr "Desideri che vengano conteggiate anche le visite da parte dell'amministatore del sito?"
 
-#: admin.inc.php:135
+#: admin.inc.php:146
 msgid "Display number of page views in popular lists?"
 msgstr "Desideri mostrare il numero delle visualizzazioni per pagina nella lista dei più popolari?"
 
-#: admin.inc.php:141
+#: admin.inc.php:152
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Desideri che la lista degli articoli odierni sia dinamica? Questa opzione utilizza un JavaScript per il caricamento dell'articolo e di conseguenza potrà fare aumentare i tempi di caricamento della stessa pagina"
 
-#: admin.inc.php:147
+#: admin.inc.php:158
 msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
 msgstr "Desideri mostrare il totale delle visualizzazioni sotto Modifica Articoli/Pagine in WP-Admin? Se sì, verrà aggiunta una nuova sezione (a nome Top 10) con i conteggi nel dettaglio"
 
-#: admin.inc.php:153
+#: admin.inc.php:164
 msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
 msgstr "Nella lista dei tuoi articoli più popolari é stato aggiunto un link alla pagina del plugin. Ti sarei molto grato qualora non disattivassi questa opzione!"
 
-#: admin.inc.php:157
+#: admin.inc.php:168
 msgid "Output Options:"
 msgstr "Opzioni output:"
 
-#: admin.inc.php:161
+#: admin.inc.php:172
 msgid "Title of popular posts: "
 msgstr "Titolo per gli articoli più popolari:"
 
-#: admin.inc.php:167
+#: admin.inc.php:178
 msgid "Title of daily popular posts: "
 msgstr "Titolo per gli articoli più popolari del giorno:"
 
-#: admin.inc.php:174
+#: admin.inc.php:185
 msgid "Show post excerpt in list?"
 msgstr "Desideri mostrare gli estratti?"
 
-#: admin.inc.php:179
+#: admin.inc.php:190
 msgid "Length of excerpt (in words): "
 msgstr "Lunghezza estratto (in parole):"
 
-#: admin.inc.php:183
+#: admin.inc.php:194
+msgid "Exclude Categories: "
+msgstr ""
+
+#: admin.inc.php:209
 msgid "Customize the output:"
 msgstr "Personalizzazione output:"
 
-#: admin.inc.php:186
+#: admin.inc.php:212
 msgid "HTML to display before the list of posts: "
 msgstr "HTML da mostrare davanti alla lista degli articoli:"
 
-#: admin.inc.php:192
+#: admin.inc.php:218
 msgid "HTML to display before each list item: "
 msgstr "HTML da mostrare davanti ad ogni singola lista:"
 
-#: admin.inc.php:198
+#: admin.inc.php:224
 msgid "HTML to display after each list item: "
 msgstr "HTML da mostrare dopo ogni lista:"
 
-#: admin.inc.php:204
+#: admin.inc.php:230
 msgid "HTML to display after the list of posts: "
 msgstr "HTML da mostrare dopo la lista degli articoli:"
 
-#: admin.inc.php:208
+#: admin.inc.php:234
 msgid "Post thumbnail options:"
 msgstr "Opzioni miniature articolo:"
 
-#: admin.inc.php:212
+#: admin.inc.php:238
 msgid "Display thumbnails inline with posts"
 msgstr "Desideri mostrare gli articoli con le miniature inline?"
 
-#: admin.inc.php:216
+#: admin.inc.php:242
 msgid "Display only thumbnails, no text"
 msgstr "Mostra le sole miniature, nessun testo"
 
-#: admin.inc.php:220
+#: admin.inc.php:246
 msgid "Do not display thumbnails, only text."
 msgstr "Non mostrare le miniature, solo testo."
 
-#: admin.inc.php:225
+#: admin.inc.php:251
 msgid "Post thumbnail meta field (the meta should point to the image source): "
 msgstr "Campo meta per le miniature (il meta deve puntare alla immagine):"
 
-#: admin.inc.php:232
+#: admin.inc.php:258
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
 msgstr "Se il postmeta non fosse stato impostato, il plugin estrarrà dall'articolo la prima immagine. Questa operazione potrebbe rallentare il caricamento del tuo articolo nel caso in cui la prima immagine corelata fosse di grandi dimensioni"
 
-#: admin.inc.php:235
+#: admin.inc.php:261
 msgid "Thumbnail dimensions:"
 msgstr "Dimensione miniature:"
 
-#: admin.inc.php:237
+#: admin.inc.php:263
 msgid "Max width: "
 msgstr "Larghezza massima:"
 
-#: admin.inc.php:242
+#: admin.inc.php:268
 msgid "Max height: "
 msgstr "Altezza massima:"
 
-#: admin.inc.php:246
+#: admin.inc.php:272
 msgid "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified below:"
 msgstr "Come prima operazione, il plugin controllerà la presenza di una miniatura nell'articolo. Nel caso in cui non fosse presente, verificherà il campo meta. Qualora non fosse disponibile, mostrerà l'immagine predefinita come specificato qui sotto:"
 
-#: admin.inc.php:251
+#: admin.inc.php:277
 msgid "Do you want to set options to Default?"
 msgstr "Desideri ripristinare alle predefinite?"
 
-#: admin.inc.php:254
+#: admin.inc.php:280
 msgid "Reset count"
 msgstr "Ripristino conteggio"
 
-#: admin.inc.php:257
+#: admin.inc.php:283
 msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr "Questa operazione non é reversibile. Effettua il backup del database prima di procedere"
 
-#: admin.inc.php:260
+#: admin.inc.php:286
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Sei certo di volere ripristinare gli articoli più popolari?"
 
-#: admin.inc.php:261
+#: admin.inc.php:287
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr "Sei certo di volere ripristinare gli articoli più popolari del giorno?"
 
-#: admin.inc.php:262
+#: admin.inc.php:288
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Questa operazione cancelerà i duplicati dalle tabelle. Procedi?"
 
-#: admin.inc.php:269
+#: admin.inc.php:295
 msgid "Quick links"
 msgstr "Collegamenti veloci"
 
-#: admin.inc.php:271
+#: admin.inc.php:297
 msgid "Top 10 "
 msgstr "Top 10"
 
-#: admin.inc.php:271
+#: admin.inc.php:297
 msgid "plugin page"
 msgstr "pagina plugin"
 
-#: admin.inc.php:272
+#: admin.inc.php:298
 msgid "Other plugins"
 msgstr "Altri plugin"
 
-#: admin.inc.php:273
+#: admin.inc.php:299
 msgid "Ajay's blog"
 msgstr "Il blog di Ajay"
 
-#: admin.inc.php:274
-msgid "Support forum"
-msgstr "Forum di supporto"
-
-#: admin.inc.php:275
-msgid "Follow @ajaydsouza on Twitter"
-msgstr "Segui @ajaydsouza su Twitter"
-
-#: admin.inc.php:279
-msgid "Recent developments"
-msgstr "Sviluppi recenti"
-
-#: admin.inc.php:284
-msgid "Support the development"
-msgstr "Sostieni lo sviluppo"
-
-#: admin.inc.php:292
-msgid "Enter amount in USD: "
-msgstr "Inserisci la cifra in USD: "
-
-#: admin.inc.php:296
-msgid "Send your donation to the author of"
-msgstr "Invia la tua donazione all'autore di"
-
-#: admin.inc.php:316
-#: admin.inc.php:341
-#: admin.inc.php:533
-#: top-10.php:232
-#: top-10.php:394
-msgid "Popular Posts"
-msgstr "Gli articoli più popolari"
-
-#: admin.inc.php:316
-msgid "Daily Popular Posts"
-msgstr "Gli articoli più popolari di oggi"
-
-#: admin.inc.php:339
-#: admin.inc.php:341
-msgid "Top 10"
-msgstr "Top 10"
-
-#: admin.inc.php:441
-msgid "Results"
-msgstr "Risultati"
-
-#: admin.inc.php:443
-#: admin.inc.php:449
-msgid "of"
-msgstr "di"
-
-#: admin.inc.php:447
-msgid "Page"
-msgstr "Pagina"
-
-#: admin.inc.php:461
-msgid "View Daily Popular Posts"
-msgstr "Visualizza gli articoli più letti di oggi"
-
-#: admin.inc.php:465
-msgid "View Overall Popular Posts"
-msgstr "Visualizza panoramica articoli più popolari"
-
-#: admin.inc.php:469
-msgid "Results per-page:"
-msgstr "Risultati per pagina:"
-
-#: admin.inc.php:493
-msgid "Previous"
-msgstr "Precedente"
-
-#: admin.inc.php:511
-msgid "Next"
-msgstr "Successiva"
-
-#: admin.inc.php:534
-#: top-10.php:211
-#: top-10.php:395
-msgid "Daily Popular"
-msgstr "I più letti di oggi"
-
-#: admin.inc.php:545
-msgid "Total / Today's Views"
-msgstr "Totale / Visualizzazioni odierne"
-
-#: top-10.php:243
-msgid "<h3>Popular Posts</h3>"
-msgstr "<h3>Articoli più letti</h3>"
-
-#: top-10.php:244
-msgid "<h3>Daily Popular</h3>"
-msgstr "<h3>I più letti di oggi</h3>"
-
-#: top-10.php:430
-msgid "Settings"
-msgstr "Impostazioni"
-
-#: top-10.php:431
+#: admin.inc.php:300
+#: top-10.php:450
 msgid "Support"
 msgstr "Supporto"
 
-#: top-10.php:432
+#: admin.inc.php:301
+msgid "Follow @ajaydsouza on Twitter"
+msgstr "Segui @ajaydsouza su Twitter"
+
+#: admin.inc.php:305
+msgid "Recent developments"
+msgstr "Sviluppi recenti"
+
+#: admin.inc.php:310
+msgid "Support the development"
+msgstr "Sostieni lo sviluppo"
+
+#: admin.inc.php:318
+msgid "Enter amount in USD: "
+msgstr "Inserisci la cifra in USD: "
+
+#: admin.inc.php:322
+msgid "Send your donation to the author of"
+msgstr "Invia la tua donazione all'autore di"
+
+#: admin.inc.php:342
+#: admin.inc.php:367
+#: admin.inc.php:570
+#: top-10.php:249
+#: top-10.php:413
+msgid "Popular Posts"
+msgstr "Gli articoli più popolari"
+
+#: admin.inc.php:342
+msgid "Daily Popular Posts"
+msgstr "Gli articoli più popolari di oggi"
+
+#: admin.inc.php:365
+#: admin.inc.php:367
+msgid "Top 10"
+msgstr "Top 10"
+
+#: admin.inc.php:478
+msgid "Results"
+msgstr "Risultati"
+
+#: admin.inc.php:480
+#: admin.inc.php:486
+msgid "of"
+msgstr "di"
+
+#: admin.inc.php:484
+msgid "Page"
+msgstr "Pagina"
+
+#: admin.inc.php:498
+msgid "View Daily Popular Posts"
+msgstr "Visualizza gli articoli più letti di oggi"
+
+#: admin.inc.php:502
+msgid "View Overall Popular Posts"
+msgstr "Visualizza panoramica articoli più popolari"
+
+#: admin.inc.php:506
+msgid "Results per-page:"
+msgstr "Risultati per pagina:"
+
+#: admin.inc.php:530
+msgid "Previous"
+msgstr "Precedente"
+
+#: admin.inc.php:548
+msgid "Next"
+msgstr "Successiva"
+
+#: admin.inc.php:571
+#: top-10.php:228
+#: top-10.php:414
+msgid "Daily Popular"
+msgstr "I più letti di oggi"
+
+#: admin.inc.php:582
+msgid "Total / Today's Views"
+msgstr "Totale / Visualizzazioni odierne"
+
+#: top-10.php:260
+msgid "<h3>Popular Posts</h3>"
+msgstr "<h3>Articoli più letti</h3>"
+
+#: top-10.php:261
+msgid "<h3>Daily Popular</h3>"
+msgstr "<h3>I più letti di oggi</h3>"
+
+#: top-10.php:449
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: top-10.php:451
 msgid "Donate"
 msgstr "Donazione"
+
+#~ msgid "Support forum"
+#~ msgstr "Forum di supporto"
 
 #~ msgid "If you find "
 #~ msgstr "Avessi trovato utile il mio"

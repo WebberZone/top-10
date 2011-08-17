@@ -40,6 +40,17 @@ function tptn_options() {
 		$tptn_settings[scan_images] = (($_POST['scan_images']) ? true : false);
 		$tptn_settings[show_excerpt] = (($_POST['show_excerpt']) ? true : false);
 		$tptn_settings[excerpt_length] = intval($_POST['excerpt_length']);
+		$tptn_settings[exclude_cat_slugs] = ($_POST['exclude_cat_slugs']);
+
+		$exclude_categories_slugs = explode(", ",$tptn_settings[exclude_cat_slugs]);
+		
+		$exclude_categories = '';
+		foreach ($exclude_categories_slugs as $exclude_categories_slug) {
+			$catObj = get_category_by_slug($exclude_categories_slug);
+			$exclude_categories .= $catObj->term_id . ',';
+		}
+		$tptn_settings[exclude_categories] = substr($exclude_categories, 0, -2);
+
 		
 		update_option('ald_tptn_settings', $tptn_settings);
 		
@@ -180,6 +191,21 @@ function tptn_options() {
       <input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes($tptn_settings[excerpt_length]); ?>">
       </label>
     </p>
+    <p><?php _e('Exclude Categories: ',tptn_LOCAL_NAME); ?></p>
+	<div style="position:relative;text-align:left">
+		<table id="MYCUSTOMFLOATER" class="myCustomFloater" style="position:absolute;top:50px;left:0;background-color:#cecece;display:none;visibility:hidden">
+		<tr><td><!--
+				please see: http://chrisholland.blogspot.com/2004/09/geekstuff-css-display-inline-block.html
+				to explain why i'm using a table here.
+				You could replace the table/tr/td with a DIV, but you'd have to specify it's width and height
+				-->
+			<div class="myCustomFloaterContent">
+			you should never be seeing this
+			</div>
+		</td></tr>
+		</table>
+		<textarea class="wickEnabled:MYCUSTOMFLOATER" cols="50" rows="3" wrap="virtual" name="exclude_cat_slugs"><?php echo (stripslashes($tptn_settings[exclude_cat_slugs])); ?></textarea>
+	</div>
 	<h4><?php _e('Customize the output:',TPTN_LOCAL_NAME); ?></h4>
 	<p>
       <label>
@@ -271,7 +297,7 @@ function tptn_options() {
 		<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/"><?php _e('Top 10 ');_e('plugin page',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://ajaydsouza.com/wordpress/plugins/"><?php _e('Other plugins',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://ajaydsouza.com/"><?php _e('Ajay\'s blog',TPTN_LOCAL_NAME) ?></a></li>
-		<li><a href="http://ajaydsouza.org"><?php _e('Support forum',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/support"><?php _e('Support',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://twitter.com/ajaydsouza"><?php _e('Follow @ajaydsouza on Twitter',TPTN_LOCAL_NAME) ?></a></li>
 	</ul>
 	</div>
@@ -347,7 +373,18 @@ function tptn_adminhead() {
 	global $tptn_url;
 
 ?>
+<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/wick/wick.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin-styles.css" />
+<script type="text/javascript" language="JavaScript">
+function checkForm() {
+answer = true;
+if (siw && siw.selectingSomething)
+	answer = false;
+return answer;
+}//
+</script>
+<script type="text/javascript" src="<?php echo $tptn_url ?>/wick/sample_data.js.php"></script>
+<script type="text/javascript" src="<?php echo $tptn_url ?>/wick/wick.js"></script>
 <?php }
 
 // Function to delete all rows in the posts table

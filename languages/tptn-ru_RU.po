@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 09:47+0530\n"
+"POT-Creation-Date: 2011-08-17 20:09-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Elvis (fweb.org.ru) <kopper@rkmail.ru>\n"
@@ -15,305 +15,309 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:46
+#: admin.inc.php:57
 msgid "Options saved successfully."
 msgstr "Настройки сохранены."
 
-#: admin.inc.php:55
+#: admin.inc.php:66
 msgid "Options set to Default."
 msgstr "Настройки сброшены."
 
-#: admin.inc.php:61
+#: admin.inc.php:72
 msgid "Top 10 popular posts reset"
 msgstr "Сбросить статистику популярных записей"
 
-#: admin.inc.php:67
+#: admin.inc.php:78
 msgid "Top 10 daily popular posts reset"
 msgstr "Сбросить статистику популярных записей за сегодня"
 
-#: admin.inc.php:74
+#: admin.inc.php:85
 msgid "Tables cleaned of duplicate rows"
 msgstr "Все повторяющиеся записи в статистике были удалены"
 
-#: admin.inc.php:86
+#: admin.inc.php:97
 msgid "Options:"
 msgstr "Настройки плагина:"
 
-#: admin.inc.php:91
+#: admin.inc.php:102
 msgid "Format to display the count in: "
 msgstr "В поле ниже вы можете настроить формат отображения количества просмотров за день, за все время для записей/страниц:"
 
-#: admin.inc.php:95
+#: admin.inc.php:106
 msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr "Используйте <code>%totalcount%</code> чтобы вывести общее число просмотров, а <code>%dailycount%</code> - просмотры за сутки. Например: <code>(Запись просмотрена 123 раза, сегодня просмотров было 23)</code>."
 
-#: admin.inc.php:98
+#: admin.inc.php:109
 msgid "Number of popular posts to display: "
 msgstr "Количество Популярных записей в списке:"
 
-#: admin.inc.php:104
+#: admin.inc.php:115
 msgid "Daily Popular should contain views of how many days? "
 msgstr "За сколько дней считать просмотры для списка Популярных сегодня записей?"
 
-#: admin.inc.php:111
+#: admin.inc.php:122
 msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
 msgstr "Исключить страницы из списка Популярных записей? Количество просмотров для страниц будет продолжать подсчитываться"
 
-#: admin.inc.php:117
+#: admin.inc.php:128
 msgid "Display number of views on posts?"
 msgstr "Показывать количество просмотров записи в ее \"теле\"?"
 
-#: admin.inc.php:123
+#: admin.inc.php:134
 msgid "Display number of views on pages?"
 msgstr "Показывать количество просмотров страницы в ее \"теле\"?"
 
-#: admin.inc.php:129
+#: admin.inc.php:140
 msgid "Track visits of authors on their own posts?"
 msgstr "Учитывать просмотры записей, сделанные их же авторами?"
 
-#: admin.inc.php:135
+#: admin.inc.php:146
 msgid "Display number of page views in popular lists?"
 msgstr "Показывать количество просмотров записей/страниц в списке Популярных записей?"
 
-#: admin.inc.php:141
+#: admin.inc.php:152
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Сделать список Популярных записей динамичным? Опция использует JavaScript , и это может увеличить время загрузки страниц"
 
-#: admin.inc.php:147
+#: admin.inc.php:158
 msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
 msgstr "Отображать количество просмотров записей/страниц в админке? Для этого будет добавлена отдельная колонка в wp-admin/edit.php"
 
-#: admin.inc.php:153
+#: admin.inc.php:164
 msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
 msgstr "Оставить ссылку на плагин под списками Популярных записей? Автор плагина был бы очень благодарен Вам, если Вы ее все же оставите!"
 
-#: admin.inc.php:157
+#: admin.inc.php:168
 msgid "Output Options:"
 msgstr "Настройки плагина:"
 
-#: admin.inc.php:161
+#: admin.inc.php:172
 msgid "Title of popular posts: "
 msgstr "Заголовок списка Популярных записей:"
 
-#: admin.inc.php:167
+#: admin.inc.php:178
 msgid "Title of daily popular posts: "
 msgstr "Заголовок списка Популярных сегодня записей:"
 
-#: admin.inc.php:174
+#: admin.inc.php:185
 msgid "Show post excerpt in list?"
 msgstr "Показывать текст записи в списке?"
 
-#: admin.inc.php:179
+#: admin.inc.php:190
 msgid "Length of excerpt (in words): "
 msgstr "Длина выводимого текста (в словах):"
 
-#: admin.inc.php:183
+#: admin.inc.php:194
+msgid "Exclude Categories: "
+msgstr ""
+
+#: admin.inc.php:209
 msgid "Customize the output:"
 msgstr "Настройки оформления списка:"
 
-#: admin.inc.php:186
+#: admin.inc.php:212
 msgid "HTML to display before the list of posts: "
 msgstr "HTML-тег, используемый перед списком:"
 
-#: admin.inc.php:192
+#: admin.inc.php:218
 msgid "HTML to display before each list item: "
 msgstr "HTML-тег, используемый перед каждым пунктом в списке:"
 
-#: admin.inc.php:198
+#: admin.inc.php:224
 msgid "HTML to display after each list item: "
 msgstr "HTML-тег, используемый после каждого пункта в списке:"
 
-#: admin.inc.php:204
+#: admin.inc.php:230
 msgid "HTML to display after the list of posts: "
 msgstr "HTML-тег, используемый после списка:"
 
-#: admin.inc.php:208
+#: admin.inc.php:234
 msgid "Post thumbnail options:"
 msgstr "Настройки превью к записям:"
 
-#: admin.inc.php:212
+#: admin.inc.php:238
 msgid "Display thumbnails inline with posts"
 msgstr "Отображать и превью, и текст"
 
-#: admin.inc.php:216
+#: admin.inc.php:242
 msgid "Display only thumbnails, no text"
 msgstr "Отображать только превью, без текста"
 
-#: admin.inc.php:220
+#: admin.inc.php:246
 msgid "Do not display thumbnails, only text."
 msgstr "Отображать только текст, без превью"
 
-#: admin.inc.php:225
+#: admin.inc.php:251
 msgid "Post thumbnail meta field (the meta should point to the image source): "
 msgstr "Введите сюда название произвольного поля (мета-поле) для вывода превью:"
 
-#: admin.inc.php:232
+#: admin.inc.php:258
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
 msgstr "Если название для мета-поля не установлено, то плагин будет выводить первое изображение из записи. Это может слегка увеличить загрузку в первый раз, так как будет создаваться уменьшенная копия изображения"
 
-#: admin.inc.php:235
+#: admin.inc.php:261
 msgid "Thumbnail dimensions:"
 msgstr "Размеры выводимого изображения (превью):"
 
-#: admin.inc.php:237
+#: admin.inc.php:263
 msgid "Max width: "
 msgstr "Ширина:"
 
-#: admin.inc.php:242
+#: admin.inc.php:268
 msgid "Max height: "
 msgstr "Высота:"
 
-#: admin.inc.php:246
+#: admin.inc.php:272
 msgid "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified below:"
 msgstr "В первую очередь, плагин проверит, есть ли у записи превью (проверка по заданному ранее произвольному мета-полю). Если же превью нет - будет выводиться картинка по-умолчанию:"
 
-#: admin.inc.php:251
+#: admin.inc.php:277
 msgid "Do you want to set options to Default?"
 msgstr "Сбросить настройки плагина?"
 
-#: admin.inc.php:254
+#: admin.inc.php:280
 msgid "Reset count"
 msgstr "Сбросить статистику"
 
-#: admin.inc.php:257
+#: admin.inc.php:283
 msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr "Сброс статистики не может быть обращен. Перед тем, как сбрасывать все, убедитесь, что у вас есть копия вашей базы данных!"
 
-#: admin.inc.php:260
+#: admin.inc.php:286
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Вы уверены, что хотите сбросить статистику для Популярных записей?"
 
-#: admin.inc.php:261
+#: admin.inc.php:287
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr "Вы уверены, что хотите сбросить статистику для Популярных сегодня записей?"
 
-#: admin.inc.php:262
+#: admin.inc.php:288
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Будет произведено удаление дублирующихся щаписей из статистики. Продолжить?"
 
-#: admin.inc.php:269
+#: admin.inc.php:295
 msgid "Quick links"
 msgstr "Полезные ссылки"
 
-#: admin.inc.php:271
+#: admin.inc.php:297
 msgid "Top 10 "
 msgstr "Топ 10 записей"
 
-#: admin.inc.php:271
+#: admin.inc.php:297
 msgid "plugin page"
 msgstr "страница плагина"
 
-#: admin.inc.php:272
+#: admin.inc.php:298
 msgid "Other plugins"
 msgstr "Другие плагины автора"
 
-#: admin.inc.php:273
+#: admin.inc.php:299
 msgid "Ajay's blog"
 msgstr "Блог Ajay"
 
-#: admin.inc.php:274
-msgid "Support forum"
-msgstr "Поддержка (англ.)"
-
-#: admin.inc.php:275
-msgid "Follow @ajaydsouza on Twitter"
-msgstr "Следуй за @ajaydsouza в Twitter"
-
-#: admin.inc.php:279
-msgid "Recent developments"
-msgstr "Последние разработки"
-
-#: admin.inc.php:284
-msgid "Support the development"
-msgstr "Поддержать автора плагина"
-
-#: admin.inc.php:292
-msgid "Enter amount in USD: "
-msgstr "Сколько вы готовы пожертвовать (в USD):"
-
-#: admin.inc.php:296
-msgid "Send your donation to the author of"
-msgstr "Отправьте пожертвование автору"
-
-#: admin.inc.php:316
-#: admin.inc.php:341
-#: admin.inc.php:533
-#: top-10.php:232
-#: top-10.php:394
-msgid "Popular Posts"
-msgstr "Популярные записи"
-
-#: admin.inc.php:316
-msgid "Daily Popular Posts"
-msgstr "Популярные сегодня записи"
-
-#: admin.inc.php:339
-#: admin.inc.php:341
-msgid "Top 10"
-msgstr "Топ 10 записей"
-
-#: admin.inc.php:441
-msgid "Results"
-msgstr "Результаты"
-
-#: admin.inc.php:443
-#: admin.inc.php:449
-msgid "of"
-msgstr "из"
-
-#: admin.inc.php:447
-msgid "Page"
-msgstr "Страница"
-
-#: admin.inc.php:461
-msgid "View Daily Popular Posts"
-msgstr "Посмотреть все Популярные сегодня записи"
-
-#: admin.inc.php:465
-msgid "View Overall Popular Posts"
-msgstr "Посмотреть все Популярные записи"
-
-#: admin.inc.php:469
-msgid "Results per-page:"
-msgstr "Результатов на страницу:"
-
-#: admin.inc.php:493
-msgid "Previous"
-msgstr "Предыдущая страница"
-
-#: admin.inc.php:511
-msgid "Next"
-msgstr "Следующая страница"
-
-#: admin.inc.php:534
-#: top-10.php:211
-#: top-10.php:395
-msgid "Daily Popular"
-msgstr "Популярные сегодня записи"
-
-#: admin.inc.php:545
-msgid "Total / Today's Views"
-msgstr "Всего/Сегодня"
-
-#: top-10.php:243
-msgid "<h3>Popular Posts</h3>"
-msgstr "<h3>Популярные записи</h3>"
-
-#: top-10.php:244
-msgid "<h3>Daily Popular</h3>"
-msgstr "<h3>Популярные сегодня записи</h3>"
-
-#: top-10.php:430
-msgid "Settings"
-msgstr "Настроки плагина"
-
-#: top-10.php:431
+#: admin.inc.php:300
+#: top-10.php:450
 msgid "Support"
 msgstr "Поддержка (англ.)"
 
-#: top-10.php:432
+#: admin.inc.php:301
+msgid "Follow @ajaydsouza on Twitter"
+msgstr "Следуй за @ajaydsouza в Twitter"
+
+#: admin.inc.php:305
+msgid "Recent developments"
+msgstr "Последние разработки"
+
+#: admin.inc.php:310
+msgid "Support the development"
+msgstr "Поддержать автора плагина"
+
+#: admin.inc.php:318
+msgid "Enter amount in USD: "
+msgstr "Сколько вы готовы пожертвовать (в USD):"
+
+#: admin.inc.php:322
+msgid "Send your donation to the author of"
+msgstr "Отправьте пожертвование автору"
+
+#: admin.inc.php:342
+#: admin.inc.php:367
+#: admin.inc.php:570
+#: top-10.php:249
+#: top-10.php:413
+msgid "Popular Posts"
+msgstr "Популярные записи"
+
+#: admin.inc.php:342
+msgid "Daily Popular Posts"
+msgstr "Популярные сегодня записи"
+
+#: admin.inc.php:365
+#: admin.inc.php:367
+msgid "Top 10"
+msgstr "Топ 10 записей"
+
+#: admin.inc.php:478
+msgid "Results"
+msgstr "Результаты"
+
+#: admin.inc.php:480
+#: admin.inc.php:486
+msgid "of"
+msgstr "из"
+
+#: admin.inc.php:484
+msgid "Page"
+msgstr "Страница"
+
+#: admin.inc.php:498
+msgid "View Daily Popular Posts"
+msgstr "Посмотреть все Популярные сегодня записи"
+
+#: admin.inc.php:502
+msgid "View Overall Popular Posts"
+msgstr "Посмотреть все Популярные записи"
+
+#: admin.inc.php:506
+msgid "Results per-page:"
+msgstr "Результатов на страницу:"
+
+#: admin.inc.php:530
+msgid "Previous"
+msgstr "Предыдущая страница"
+
+#: admin.inc.php:548
+msgid "Next"
+msgstr "Следующая страница"
+
+#: admin.inc.php:571
+#: top-10.php:228
+#: top-10.php:414
+msgid "Daily Popular"
+msgstr "Популярные сегодня записи"
+
+#: admin.inc.php:582
+msgid "Total / Today's Views"
+msgstr "Всего/Сегодня"
+
+#: top-10.php:260
+msgid "<h3>Popular Posts</h3>"
+msgstr "<h3>Популярные записи</h3>"
+
+#: top-10.php:261
+msgid "<h3>Daily Popular</h3>"
+msgstr "<h3>Популярные сегодня записи</h3>"
+
+#: top-10.php:449
+msgid "Settings"
+msgstr "Настроки плагина"
+
+#: top-10.php:451
 msgid "Donate"
 msgstr "Сделать пожертвование"
+
+#~ msgid "Support forum"
+#~ msgstr "Поддержка (англ.)"
 
 #~ msgid "If you find "
 #~ msgstr "Если плагин"
