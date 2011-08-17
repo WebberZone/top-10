@@ -19,15 +19,25 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Counts daily and total page views on single posts and pages
 * Display the count on the single posts and pages
 * Customize the text that can be displayed
-* Display a list of daily and/or overall popular posts by page count. The number can be customized.
-* Sidebar widgets available for daily popular and overall popular posts.
+* Display a list of daily and/or overall popular posts by page count. The number can be customized
+* Sidebar widgets available for daily popular and overall popular posts
+* Exclude posts from select categories from appearing in the top posts list
 * View list of daily and/or overall popular posts from within the dashboard itself
 * Clean uninstall if you choose to delete the plugin from within WP-Admin
 * Works with caching plugins like WP-Super-Cache and W3 Total Cache
 * Display post thumbnails or text or both
 
+== Screenshots ==
+
+1. Top-10 options in WP-Admin
+
 
 == Changelog ==
+
+= 1.7 =
+* Added: Excludes posts in the top lists from select categories
+* Modified: Performance improvements
+* Modified: Better compatibility with the latest versions of WordPress. If you are using the sidebar widgets, please readd them to your theme under Appearance > Widgets
 
 = 1.6.3 =
 * Fixed: PHP errors on certain installs
@@ -94,8 +104,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.6.1 =
-* Turned the credit option to false by default. This setting won't effect current users.
+= 1.7 =
+* Added: Excludes posts in the top lists from select categories
+* Modified: Performance improvements
 
 
 == Installation ==
@@ -132,6 +143,4 @@ For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-1
 
 = Support =
 
-All questions need to be redirected at the Support Forum at http://ajaydsouza.org/
-
-No support questions will be entertained in the comments or via email.
+Read how you can receive support for this plugin at http://ajaydsouza.com/support
