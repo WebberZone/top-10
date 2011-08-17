@@ -35,7 +35,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 == Changelog ==
 
 = 1.7 =
-* Added: Excludes posts in the top lists from select categories
+* Added: Exclude posts in the top lists from select categories
 * Modified: Performance improvements
 * Modified: Better compatibility with the latest versions of WordPress. If you are using the sidebar widgets, please readd them to your theme under Appearance > Widgets
 
