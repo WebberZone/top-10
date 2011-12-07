@@ -1,3 +1,0 @@
-* Added: Exclude posts in the top lists from select categories<br />
-* Modified: Performance improvements<br />
-* Modified: Better compatibility with the latest versions of WordPress. If you are using the sidebar widgets, please readd them to your theme under Appearance > Widgets
