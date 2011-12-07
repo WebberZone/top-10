@@ -34,6 +34,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Changelog ==
 
+= 1.7.5 =
+* Added: Now supports multiple WordPress widgets
+
 = 1.7 =
 * Added: Exclude posts in the top lists from select categories
 * Modified: Performance improvements

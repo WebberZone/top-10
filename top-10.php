@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.7
+Version:     1.7.5
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -219,27 +219,60 @@ function tptn_show_daily_pop_posts() {
 }
 
 // Create a WordPress Widget for Daily Popular Posts
+class WidgetTopTenDaily extends WP_Widget
+{
+	function WidgetTopTenDaily()
+	{
+		$widget_ops = array('classname' => 'widget_tptn_pop_daily', 'description' => __( 'Display the posts popular today') );
+		$this->WP_Widget('widget_tptn_pop_daily', __('Daily Popular',TPTN_LOCAL_NAME), $widget_ops);
+	}
+	
+	function widget($args, $instance)
+	{
+		echo widget_tptn_pop_daily($args);
+	} 
+}
+
+// Output for Daily Popular Posts Widget
 function widget_tptn_pop_daily($args) {	
 	global $wpdb, $siteurl, $tableposts, $id,$tptn_url;
 
 	extract($args); // extracts before_widget,before_title,after_title,after_widget
 
 	$tptn_settings = tptn_read_options();
-	$title = (($tptn_settings['title_daily']) ? strip_tags($tptn_settings['title_daily']) : __('Daily Popular',TPTN_LOCAL_NAME));
+	$title = (($tptn_settings['title_daily']) ? $tptn_settings['title_daily'] : __('Daily Popular',TPTN_LOCAL_NAME));
+		//strip_tags($tptn_settings['title_daily']) : __('Daily Popular',TPTN_LOCAL_NAME));
 
-	echo $before_widget;
-	echo $before_title.$title.$after_title;
-		
+	$output = $before_widget;
+	$output .= $before_title.$title.$after_title;
+	
 	if ($tptn_settings['d_use_js']) {
-		echo '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
+		$output .= '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
 	} else {
-		echo tptn_pop_posts(true,true);
+		$output .= tptn_pop_posts(true,true);
 	}
-
-	echo $after_widget;
+	
+	$output .= $after_widget;
+	
+	return apply_filters('tptn_widget_pop_daily',$output);
 }
 
-// Create a WordPress Widget for Popular Posts
+// Create a Wordpress Widget for Popular Posts
+class WidgetTopTen extends WP_Widget
+{
+	function WidgetTopTen()
+	{
+		$widget_ops = array('classname' => 'widget_tptn_pop', 'description' => __( 'Display the posts popular this week') );
+		$this->WP_Widget('widget_tptn_pop',__('Popular Posts',TPTN_LOCAL_NAME), $widget_ops);
+	}
+	
+	function widget($args, $instance)
+	{
+		echo widget_tptn_pop($args);
+	} 
+}
+
+// Output of the Popular Posts Widget
 function widget_tptn_pop($args) {	
 	global $wpdb, $siteurl, $tableposts, $id;
 
@@ -248,10 +281,12 @@ function widget_tptn_pop($args) {
 	$tptn_settings = tptn_read_options();
 	$title = (($tptn_settings['title']) ? strip_tags($tptn_settings['title']) : __('Popular Posts',TPTN_LOCAL_NAME));
 	
-	echo $before_widget;
-	echo $before_title.$title.$after_title;
-	echo tptn_pop_posts(false,true);
-	echo $after_widget;
+	$output = $before_widget;
+	$output .= $before_title.$title.$after_title;
+	$output .= tptn_pop_posts(false,true);
+	$output .= $after_widget;
+	
+	return apply_filters('tptn_widget_pop',$output);
 }
 
 // Default Options
@@ -411,7 +446,10 @@ function tptn_trunc_count($daily = false) {
 
 function init_tptn(){
 
-	if (function_exists('wp_register_sidebar_widget')) {
+	if (function_exists('register_widget')) { 
+		register_widget('WidgetTopTenDaily');
+		register_widget('WidgetTopTen');
+	} else if (function_exists('wp_register_sidebar_widget')) {
 		wp_register_sidebar_widget('widget_tptn_pop', __('Popular Posts',TPTN_LOCAL_NAME), 'widget_tptn_pop');
 		wp_register_sidebar_widget('widget_tptn_pop_daily', __('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
 	} else {
@@ -419,8 +457,8 @@ function init_tptn(){
 		register_sidebar_widget(__('Daily Popular',TPTN_LOCAL_NAME), 'widget_tptn_pop_daily');
 	}
 }
-add_action("plugins_loaded", "init_tptn");
- 
+add_action('init', 'init_tptn', 1); 
+
 // Function to create an excerpt for the post
  function tptn_excerpt($content,$excerpt_length){
 	$out = strip_tags($content);
@@ -462,29 +500,6 @@ global $wp_version;
 if ( version_compare( $wp_version, '2.8alpha', '>' ) )
 	add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 ); // only 2.8 and higher
 else add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
-
-// Display message about plugin update option
-function tptn_check_version($file, $plugin_data) {
-	global $wp_version;
-	static $this_plugin;
-	$wp_version = str_replace(".","",$wp_version);
-	if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
-	if ($file == $this_plugin){
-		$current = $wp_version < 28 ? get_option('update_plugins') : get_transient('update_plugins');
-		if (!isset($current->response[$file])) return false;
-
-		$columns =  $wp_version < 28 ? 5 : 3;
-		$url = 'http://svn.wp-plugins.org/top-10/trunk/update-info.txt';
-		$update = wp_remote_fopen($url);
-		if ($update != "") {
-			echo '<tr class="plugin-update-tr"><td colspan="'.$columns.'" class="plugin-update"><div class="update-message">';
-			echo $update;
-			echo '</div></td></tr>';
-		}
-	}
-}
-add_action('after_plugin_row', 'tptn_check_version', 10, 2);
-
 
 } // End admin.inc
 

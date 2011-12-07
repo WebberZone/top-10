@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-17 22:17-0000\n"
+"POT-Creation-Date: 2011-12-07 00:36-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Lets Be Famous <ray.s@letsbefamous.com>\n"
@@ -228,7 +228,7 @@ msgid "Ajay's blog"
 msgstr ""
 
 #: admin.inc.php:300
-#: top-10.php:456
+#: top-10.php:494
 msgid "Support"
 msgstr ""
 
@@ -257,9 +257,10 @@ msgstr ""
 #: admin.inc.php:342
 #: admin.inc.php:367
 #: admin.inc.php:570
-#: top-10.php:249
-#: top-10.php:415
-#: top-10.php:418
+#: top-10.php:266
+#: top-10.php:282
+#: top-10.php:453
+#: top-10.php:456
 msgid "Popular Posts"
 msgstr "Poist Coitianta"
 
@@ -306,9 +307,10 @@ msgid "Next"
 msgstr "Ar Aghaidh"
 
 #: admin.inc.php:571
-#: top-10.php:228
-#: top-10.php:416
-#: top-10.php:419
+#: top-10.php:227
+#: top-10.php:243
+#: top-10.php:454
+#: top-10.php:457
 msgid "Daily Popular"
 msgstr "laethúil Coitianta"
 
@@ -316,19 +318,27 @@ msgstr "laethúil Coitianta"
 msgid "Total / Today's Views"
 msgstr "laethúil Coitianta"
 
-#: top-10.php:260
+#: top-10.php:226
+msgid "Display the posts popular today"
+msgstr ""
+
+#: top-10.php:265
+msgid "Display the posts popular this week"
+msgstr ""
+
+#: top-10.php:295
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Poist Coitianta  </ h3>"
 
-#: top-10.php:261
+#: top-10.php:296
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3> laethúil Coitianta </ h3>"
 
-#: top-10.php:455
+#: top-10.php:493
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:457
+#: top-10.php:495
 msgid "Donate"
 msgstr ""
 

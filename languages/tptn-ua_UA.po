@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-02 07:34-0000\n"
+"POT-Creation-Date: 2011-12-07 00:36-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Alexandr K.\n"
+"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Alyona Lompar <alyona.lompar@aol.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,7 +216,7 @@ msgid "Ajay's blog"
 msgstr "Блог Ajay"
 
 #: admin.inc.php:300
-#: top-10.php:456
+#: top-10.php:494
 msgid "Support"
 msgstr "Підтримка (англ.)"
 
@@ -243,9 +243,10 @@ msgstr "Відправте пожертву автору"
 #: admin.inc.php:342
 #: admin.inc.php:367
 #: admin.inc.php:570
-#: top-10.php:249
-#: top-10.php:415
-#: top-10.php:418
+#: top-10.php:266
+#: top-10.php:282
+#: top-10.php:453
+#: top-10.php:456
 msgid "Popular Posts"
 msgstr "Популярні записи"
 
@@ -292,9 +293,10 @@ msgid "Next"
 msgstr "Наступна сторінка"
 
 #: admin.inc.php:571
-#: top-10.php:228
-#: top-10.php:416
-#: top-10.php:419
+#: top-10.php:227
+#: top-10.php:243
+#: top-10.php:454
+#: top-10.php:457
 msgid "Daily Popular"
 msgstr "Популярні сьогодні записи"
 
@@ -302,19 +304,27 @@ msgstr "Популярні сьогодні записи"
 msgid "Total / Today's Views"
 msgstr "Всього/Сьогодні"
 
-#: top-10.php:260
+#: top-10.php:226
+msgid "Display the posts popular today"
+msgstr ""
+
+#: top-10.php:265
+msgid "Display the posts popular this week"
+msgstr ""
+
+#: top-10.php:295
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Популярні записи</h3>"
 
-#: top-10.php:261
+#: top-10.php:296
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Популярні сьогодні записи</h3>"
 
-#: top-10.php:455
+#: top-10.php:493
 msgid "Settings"
 msgstr "Налаштування плагіна"
 
-#: top-10.php:457
+#: top-10.php:495
 msgid "Donate"
 msgstr "Зробити внесок"
 

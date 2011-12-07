@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 v1.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-17 20:09-0000\n"
+"POT-Creation-Date: 2011-12-07 00:36-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WPPG.me <info@wppg.me>\n"
@@ -220,7 +220,7 @@ msgid "Ajay's blog"
 msgstr "De blog van Ajay"
 
 #: admin.inc.php:300
-#: top-10.php:450
+#: top-10.php:494
 msgid "Support"
 msgstr "Ondersteuning"
 
@@ -247,8 +247,10 @@ msgstr "Zend je donatie naar de auteur van "
 #: admin.inc.php:342
 #: admin.inc.php:367
 #: admin.inc.php:570
-#: top-10.php:249
-#: top-10.php:413
+#: top-10.php:266
+#: top-10.php:282
+#: top-10.php:453
+#: top-10.php:456
 msgid "Popular Posts"
 msgstr "Populaire Berichten"
 
@@ -295,8 +297,10 @@ msgid "Next"
 msgstr "Volgende"
 
 #: admin.inc.php:571
-#: top-10.php:228
-#: top-10.php:414
+#: top-10.php:227
+#: top-10.php:243
+#: top-10.php:454
+#: top-10.php:457
 msgid "Daily Popular"
 msgstr "Dagelijks Populair"
 
@@ -304,19 +308,27 @@ msgstr "Dagelijks Populair"
 msgid "Total / Today's Views"
 msgstr "Totale Weergaves / Weergaves van Vandaag"
 
-#: top-10.php:260
+#: top-10.php:226
+msgid "Display the posts popular today"
+msgstr ""
+
+#: top-10.php:265
+msgid "Display the posts popular this week"
+msgstr ""
+
+#: top-10.php:295
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Populaire Berichten</h3>"
 
-#: top-10.php:261
+#: top-10.php:296
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Dagelijks Populair</h3>"
 
-#: top-10.php:449
+#: top-10.php:493
 msgid "Settings"
 msgstr "Instellingen"
 
-#: top-10.php:451
+#: top-10.php:495
 msgid "Donate"
 msgstr "Doneer"
 
