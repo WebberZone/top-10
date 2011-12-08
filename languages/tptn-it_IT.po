@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-07 00:36-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
-"Language-Team: Gianni Diurno |gidibao.net <gidibao[at]gmail[dot]com>\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
+"Language-Team: Gianni Diurno |gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -109,7 +109,7 @@ msgstr "Lunghezza estratto (in parole):"
 
 #: admin.inc.php:194
 msgid "Exclude Categories: "
-msgstr ""
+msgstr "Escludi categorie:"
 
 #: admin.inc.php:209
 msgid "Customize the output:"
@@ -306,11 +306,11 @@ msgstr "Totale / Visualizzazioni odierne"
 
 #: top-10.php:226
 msgid "Display the posts popular today"
-msgstr ""
+msgstr "Mostra gli articoli più popolari di oggi"
 
 #: top-10.php:265
 msgid "Display the posts popular this week"
-msgstr ""
+msgstr "Mostra articoli più popolari settimana in corso"
 
 #: top-10.php:295
 msgid "<h3>Popular Posts</h3>"
