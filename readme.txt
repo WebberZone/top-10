@@ -34,6 +34,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Changelog ==
 
+= 1.7.6 =
+* Fixed: Bug with Daily posts widget created an extra header tag in certain themes
+
 = 1.7.5 =
 * Added: Now supports multiple WordPress widgets
 
