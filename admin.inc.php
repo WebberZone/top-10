@@ -37,6 +37,7 @@ function tptn_options() {
 		$tptn_settings[thumb_default] = $_POST['thumb_default'];
 		$tptn_settings[thumb_height] = intval($_POST['thumb_height']);
 		$tptn_settings[thumb_width] = intval($_POST['thumb_width']);
+		$tptn_settings[thumb_default_show] = (($_POST['thumb_default_show']) ? true : false);
 		$tptn_settings[scan_images] = (($_POST['scan_images']) ? true : false);
 		$tptn_settings[show_excerpt] = (($_POST['show_excerpt']) ? true : false);
 		$tptn_settings[excerpt_length] = intval($_POST['excerpt_length']);
@@ -235,14 +236,18 @@ function tptn_options() {
 	<p>
 		<label>
 		<input type="radio" name="post_thumb_op" value="inline" id="post_thumb_op_0" <?php if ($tptn_settings['post_thumb_op']=='inline') echo 'checked="checked"' ?> />
-		<?php _e('Display thumbnails inline with posts',TPTN_LOCAL_NAME); ?></label>
+		<?php _e('Display thumbnails inline with posts, before title',TPTN_LOCAL_NAME); ?></label>
 		<br />
 		<label>
-		<input type="radio" name="post_thumb_op" value="thumbs_only" id="post_thumb_op_1" <?php if ($tptn_settings['post_thumb_op']=='thumbs_only') echo 'checked="checked"' ?> />
+		<input type="radio" name="post_thumb_op" value="after" id="post_thumb_op_1" <?php if ($tptn_settings['post_thumb_op']=='after') echo 'checked="checked"' ?> />
+		<?php _e('Display thumbnails inline with posts, after title',TPTN_LOCAL_NAME); ?></label>
+		<br />
+		<label>
+		<input type="radio" name="post_thumb_op" value="thumbs_only" id="post_thumb_op_2" <?php if ($tptn_settings['post_thumb_op']=='thumbs_only') echo 'checked="checked"' ?> />
 		<?php _e('Display only thumbnails, no text',TPTN_LOCAL_NAME); ?></label>
 		<br />
 		<label>
-		<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_2" <?php if ($tptn_settings['post_thumb_op']=='text_only') echo 'checked="checked"' ?> />
+		<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_3" <?php if ($tptn_settings['post_thumb_op']=='text_only') echo 'checked="checked"' ?> />
 		<?php _e('Do not display thumbnails, only text.',TPTN_LOCAL_NAME); ?></label>
 		<br />
 	</p>
@@ -269,7 +274,7 @@ function tptn_options() {
       <input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_height])); ?>" style="width:30px">px
       </label>
     </p>
-	<p><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified below:',TPTN_LOCAL_NAME); ?>
+	<p><label><input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings[thumb_default_show]) echo 'checked="checked"' ?> /> <?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></label><br />
 	<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_default])); ?>" style="width:500px">
 	</p>
     <p>
@@ -310,9 +315,9 @@ function tptn_options() {
 		<span class="title"><?php _e('Support the development',TPTN_LOCAL_NAME) ?></span>
 		<div id="donate-form">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			<input type="hidden" name="cmd" value="_xclick">
-			<input type="hidden" name="business" value="KGVN7LJLLZCMY">
-			<input type="hidden" name="lc" value="IN">
+			<input type="hidden" name="cmd" value="_donations">
+			<input type="hidden" name="business" value="donations@ajaydsouza.com">
+			<input type="hidden" name="lc" value="GB">
 			<input type="hidden" name="item_name" value="Donation for Top 10">
 			<input type="hidden" name="item_number" value="tptn">
 			<strong><?php _e('Enter amount in USD: ',TPTN_LOCAL_NAME) ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />

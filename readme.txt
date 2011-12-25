@@ -4,7 +4,7 @@ Contributors: Ajay, Mark Ghosh
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 2.5
-Tested up to: 3.3
+Tested up to: 3.4
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -33,6 +33,14 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 
 == Changelog ==
+
+= 1.8 =
+* Added: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
+* Added: Thumbnail settings now reflect max width and max height instead of fixed width and height
+* Added: Option to display thumbnails before or after the title
+* Added: Option to not display thumbnails instead of the default thumbnail
+* Added: Counts are now neatly formatted with commas
+* Modified: Minor tweaks to improve performance
 
 = 1.7.6 =
 * Fixed: Bug with Daily posts widget created an extra header tag in certain themes
@@ -110,9 +118,13 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.7 =
-* Added: Excludes posts in the top lists from select categories
-* Modified: Performance improvements
+= 1.8 =
+* Added: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
+* Added: Thumbnail settings now reflect max width and max height instead of fixed width and height
+* Added: Option to display thumbnails before or after the title
+* Added: Option to not display thumbnails instead of the default thumbnail
+* Added: Counts are now neatly formatted with commas
+* Modified: Minor tweaks to improve performance
 
 
 == Installation ==

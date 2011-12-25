@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 v1.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-07 00:36-0000\n"
+"POT-Creation-Date: 2011-12-25 07:22-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WPPG.me <info@wppg.me>\n"
@@ -17,320 +17,336 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:57
+#: admin.inc.php:58
 msgid "Options saved successfully."
 msgstr "Opties succesvol opgeslagen."
 
-#: admin.inc.php:66
+#: admin.inc.php:67
 msgid "Options set to Default."
 msgstr "Opties ingesteld op Standaard."
 
-#: admin.inc.php:72
+#: admin.inc.php:73
 msgid "Top 10 popular posts reset"
 msgstr "Reset Top 10 populaire berichten"
 
-#: admin.inc.php:78
+#: admin.inc.php:79
 msgid "Top 10 daily popular posts reset"
 msgstr "Reset Top 10 dagelijkse populaire berichten"
 
-#: admin.inc.php:85
+#: admin.inc.php:86
 msgid "Tables cleaned of duplicate rows"
 msgstr "Dubbele rijen zijn verwijderd uit de tabellen"
 
-#: admin.inc.php:97
+#: admin.inc.php:98
 msgid "Options:"
 msgstr "Opties:"
 
-#: admin.inc.php:102
+#: admin.inc.php:103
 msgid "Format to display the count in: "
 msgstr "Formaat om de optelling te laten zien:"
 
-#: admin.inc.php:106
+#: admin.inc.php:107
 msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr "Gebruik <code>%totalcount%</ code> om de totale telling en <code>%dailycount%</ code> om de dagelijkse telling te laten zien. De standaardopties geven bijvoorbeeld <code>(123 keer bezocht, 23 bezoeken vandaag)</ code> weer."
 
-#: admin.inc.php:109
+#: admin.inc.php:110
 msgid "Number of popular posts to display: "
 msgstr "Aantal populaire berichten om weer te geven:"
 
-#: admin.inc.php:115
+#: admin.inc.php:116
 msgid "Daily Popular should contain views of how many days? "
 msgstr "Van hoeveel dagen moet Dagelijks Populair weergaves bevatten ?"
 
-#: admin.inc.php:122
+#: admin.inc.php:123
 msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
 msgstr "Uitsluiten van Pagina's in de weergave van Populaire berichten? Het aantal bekeken pagina's zal verder worden geteld."
 
-#: admin.inc.php:128
+#: admin.inc.php:129
 msgid "Display number of views on posts?"
 msgstr "Geef het aantal berichtweergaves weer?"
 
-#: admin.inc.php:134
+#: admin.inc.php:135
 msgid "Display number of views on pages?"
 msgstr "Geef het aantal paginaweergaves weer?"
 
-#: admin.inc.php:140
+#: admin.inc.php:141
 msgid "Track visits of authors on their own posts?"
 msgstr "Registreer bezoeken van auteurs aan hun eigen berichten?"
 
-#: admin.inc.php:146
+#: admin.inc.php:147
 msgid "Display number of page views in popular lists?"
 msgstr "Laat het aantal paginaweergaves zien in populaire lijsten?"
 
-#: admin.inc.php:152
+#: admin.inc.php:153
 #, fuzzy
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "Forceer de dagelijkse berichtenlijst dynamisch te zijn. Deze optie gebruikt JavaScript om het bericht te laden en kan de laadtijd van de pagina verhogen"
 
-#: admin.inc.php:158
+#: admin.inc.php:159
 msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
 msgstr "Laat het aantal paginaweergaves zien op de bewerk berichten/pagina's in WP-Admin. Een extra kolom is toegevoegd met de telling"
 
-#: admin.inc.php:164
+#: admin.inc.php:165
 msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
 msgstr "Een link naar de plugin is toegevoegd als een exta item aan de lijst met populaire berichten. Het is niet verplicht, maar wordt ten zeerste gewaardeerd!"
 
-#: admin.inc.php:168
+#: admin.inc.php:169
 msgid "Output Options:"
 msgstr "Output Opties:"
 
-#: admin.inc.php:172
+#: admin.inc.php:173
 msgid "Title of popular posts: "
 msgstr "Titel van populaire berichten:"
 
-#: admin.inc.php:178
+#: admin.inc.php:179
 msgid "Title of daily popular posts: "
 msgstr "Titel van dagelijkse populaire berichten:"
 
-#: admin.inc.php:185
+#: admin.inc.php:186
 msgid "Show post excerpt in list?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: admin.inc.php:190
+#: admin.inc.php:191
 msgid "Length of excerpt (in words): "
 msgstr "Lengte van de samenvatting (in woorden):"
 
-#: admin.inc.php:194
+#: admin.inc.php:195
 msgid "Exclude Categories: "
 msgstr ""
 
-#: admin.inc.php:209
+#: admin.inc.php:210
 msgid "Customize the output:"
 msgstr "Aanpassen van de output:"
 
-#: admin.inc.php:212
+#: admin.inc.php:213
 msgid "HTML to display before the list of posts: "
 msgstr "Te weergeven HTML voor de lijst met berichten:"
 
-#: admin.inc.php:218
+#: admin.inc.php:219
 msgid "HTML to display before each list item: "
 msgstr "Te weergeven HTML voor elk lijst item:"
 
-#: admin.inc.php:224
+#: admin.inc.php:225
 msgid "HTML to display after each list item: "
 msgstr "Te weergeven HTML na elk lijst item:"
 
-#: admin.inc.php:230
+#: admin.inc.php:231
 msgid "HTML to display after the list of posts: "
 msgstr "Te weergeven HTML na de lijst met berichten:"
 
-#: admin.inc.php:234
+#: admin.inc.php:235
 msgid "Post thumbnail options:"
 msgstr "Bericht miniatuurafbeelding opties:"
 
-#: admin.inc.php:238
-msgid "Display thumbnails inline with posts"
+#: admin.inc.php:239
+#, fuzzy
+msgid "Display thumbnails inline with posts, before title"
 msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
 
-#: admin.inc.php:242
+#: admin.inc.php:243
+#, fuzzy
+msgid "Display thumbnails inline with posts, after title"
+msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
+
+#: admin.inc.php:247
 msgid "Display only thumbnails, no text"
 msgstr "Geef alleen miniatuurafbeeldingen weer, geen text"
 
-#: admin.inc.php:246
+#: admin.inc.php:251
 msgid "Do not display thumbnails, only text."
 msgstr "Geef geen miniatuurafbeeldingen weer, alleen text"
 
-#: admin.inc.php:251
+#: admin.inc.php:256
 #, fuzzy
 msgid "Post thumbnail meta field (the meta should point to the image source): "
 msgstr "Bericht miniatuurafbeelding meta veld (de meta zou moeten verwijzen naar de afbeeldingsbron):"
 
-#: admin.inc.php:258
+#: admin.inc.php:263
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
 msgstr "Wanneer het bericht meta veld niet ingesteld is moet de plugin de eerste afbeelding uit het bericht halen. Dit kan het laden van het bericht vertragen wanneer de eerste afbeelding in de gerelateerde berichten groot is qua bestandsgrootte"
 
-#: admin.inc.php:261
+#: admin.inc.php:266
 msgid "Thumbnail dimensions:"
 msgstr "Afmetingen miniatuurafbeelding:"
 
-#: admin.inc.php:263
+#: admin.inc.php:268
 msgid "Max width: "
 msgstr "Maximale breedte:"
 
-#: admin.inc.php:268
+#: admin.inc.php:273
 msgid "Max height: "
 msgstr "Maximale hoogte:"
 
-#: admin.inc.php:272
-msgid "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified below:"
-msgstr "De plugin zal eerst controleren of het bericht een miniatuurafbeelding bevat. Als het geen miniatuurafbeelding bevat dan zal de plugin het meta veld controleren. Als dit veld niet beschikbaar is toont de plugin de standaard afbeelding zoals hieronder  aangegeven:"
-
 #: admin.inc.php:277
+msgid "If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown."
+msgstr ""
+
+#: admin.inc.php:282
 msgid "Do you want to set options to Default?"
 msgstr "Wil je de opties terugzetten naar standaard?"
 
-#: admin.inc.php:280
+#: admin.inc.php:285
 msgid "Reset count"
 msgstr "Reset telling"
 
-#: admin.inc.php:283
+#: admin.inc.php:288
 msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr "Dit kan niet ongedaan worden gemaakt. Zorg ervoor dat je een backup van je database gemaakt hebt voordat je verder gaat"
 
-#: admin.inc.php:286
+#: admin.inc.php:291
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Ben je er zeker van dat je de populaire berichten wilt resetten?"
 
-#: admin.inc.php:287
+#: admin.inc.php:292
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr "Ben je er zeker van dat je de dagelijkse populaire berichten wilt resetten?"
 
-#: admin.inc.php:288
+#: admin.inc.php:293
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Hiermee verwijdert u de dubbele vermeldingen in de tabellen. Doorgaan?"
 
-#: admin.inc.php:295
+#: admin.inc.php:300
 msgid "Quick links"
 msgstr "Quick links"
 
-#: admin.inc.php:297
+#: admin.inc.php:302
 msgid "Top 10 "
 msgstr "Top 10 "
 
-#: admin.inc.php:297
+#: admin.inc.php:302
 msgid "plugin page"
 msgstr "plugin pagina"
 
-#: admin.inc.php:298
+#: admin.inc.php:303
 msgid "Other plugins"
 msgstr "Andere plugins"
 
-#: admin.inc.php:299
+#: admin.inc.php:304
 msgid "Ajay's blog"
 msgstr "De blog van Ajay"
 
-#: admin.inc.php:300
-#: top-10.php:494
+#: admin.inc.php:305
+#: top-10.php:515
 msgid "Support"
 msgstr "Ondersteuning"
 
-#: admin.inc.php:301
+#: admin.inc.php:306
 msgid "Follow @ajaydsouza on Twitter"
 msgstr "Volg @ajaydsouza via Twitter"
 
-#: admin.inc.php:305
+#: admin.inc.php:310
 msgid "Recent developments"
 msgstr "Recente ontwikkelingen"
 
-#: admin.inc.php:310
+#: admin.inc.php:315
 msgid "Support the development"
 msgstr "Ondersteun de ontwikkeling"
 
-#: admin.inc.php:318
+#: admin.inc.php:323
 msgid "Enter amount in USD: "
 msgstr "Voer het bedrag in in USD:"
 
-#: admin.inc.php:322
+#: admin.inc.php:327
 msgid "Send your donation to the author of"
 msgstr "Zend je donatie naar de auteur van "
 
-#: admin.inc.php:342
-#: admin.inc.php:367
-#: admin.inc.php:570
-#: top-10.php:266
-#: top-10.php:282
-#: top-10.php:453
-#: top-10.php:456
+#: admin.inc.php:347
+#: admin.inc.php:372
+#: admin.inc.php:575
+#: top-10.php:257
+#: top-10.php:273
+#: top-10.php:445
+#: top-10.php:448
 msgid "Popular Posts"
 msgstr "Populaire Berichten"
 
-#: admin.inc.php:342
+#: admin.inc.php:347
 msgid "Daily Popular Posts"
 msgstr "Dagelijkse Populaire Berichten"
 
-#: admin.inc.php:365
-#: admin.inc.php:367
+#: admin.inc.php:370
+#: admin.inc.php:372
 msgid "Top 10"
 msgstr "Top 10"
 
-#: admin.inc.php:478
+#: admin.inc.php:483
 msgid "Results"
 msgstr "Resultaten"
 
-#: admin.inc.php:480
-#: admin.inc.php:486
+#: admin.inc.php:485
+#: admin.inc.php:491
 msgid "of"
 msgstr "van"
 
-#: admin.inc.php:484
+#: admin.inc.php:489
 msgid "Page"
 msgstr "Pagina"
 
-#: admin.inc.php:498
+#: admin.inc.php:503
 msgid "View Daily Popular Posts"
 msgstr "Bekijk de Dagelijkse Populaire Berichten"
 
-#: admin.inc.php:502
+#: admin.inc.php:507
 msgid "View Overall Popular Posts"
 msgstr "Bekijk het Totaal Populaire Berichten"
 
-#: admin.inc.php:506
+#: admin.inc.php:511
 msgid "Results per-page:"
 msgstr "Resultaten per pagina:"
 
-#: admin.inc.php:530
+#: admin.inc.php:535
 msgid "Previous"
 msgstr "Vorige"
 
-#: admin.inc.php:548
+#: admin.inc.php:553
 msgid "Next"
 msgstr "Volgende"
 
-#: admin.inc.php:571
-#: top-10.php:227
-#: top-10.php:243
-#: top-10.php:454
-#: top-10.php:457
+#: admin.inc.php:576
+#: top-10.php:219
+#: top-10.php:235
+#: top-10.php:446
+#: top-10.php:449
 msgid "Daily Popular"
 msgstr "Dagelijks Populair"
 
-#: admin.inc.php:582
+#: admin.inc.php:587
 msgid "Total / Today's Views"
 msgstr "Totale Weergaves / Weergaves van Vandaag"
 
-#: top-10.php:226
+#: top-10.php:218
 msgid "Display the posts popular today"
 msgstr ""
 
-#: top-10.php:265
+#: top-10.php:256
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:295
+#: top-10.php:286
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Populaire Berichten</h3>"
 
-#: top-10.php:296
+#: top-10.php:287
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Dagelijks Populair</h3>"
 
-#: top-10.php:493
+#: top-10.php:514
 msgid "Settings"
 msgstr "Instellingen"
 
-#: top-10.php:495
+#: top-10.php:516
 msgid "Donate"
 msgstr "Doneer"
+
+#~ msgid ""
+#~ "The plugin will first check if the post contains a thumbnail. If it "
+#~ "doesn't then it will check the meta field. If this is not available, then "
+#~ "it will show the default image as specified below:"
+#~ msgstr ""
+#~ "De plugin zal eerst controleren of het bericht een miniatuurafbeelding "
+#~ "bevat. Als het geen miniatuurafbeelding bevat dan zal de plugin het meta "
+#~ "veld controleren. Als dit veld niet beschikbaar is toont de plugin de "
+#~ "standaard afbeelding zoals hieronder  aangegeven:"
 
 #~ msgid "Support forum"
 #~ msgstr "Ondersteuningsforum"
