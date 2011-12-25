@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-17 22:14-0000\n"
+"POT-Creation-Date: 2011-12-25 07:22-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Outshine Solutions <ashish@outshinesolutions.com>\n"
@@ -12,315 +12,333 @@ msgstr ""
 "X-Poedit-Language: Hindi\n"
 "X-Poedit-Country: INDIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:57
+#: admin.inc.php:58
 msgid "Options saved successfully."
 msgstr "विकल्प सफलतापूर्वक बचाया."
 
-#: admin.inc.php:66
+#: admin.inc.php:67
 msgid "Options set to Default."
 msgstr "विकल्प डिफ़ॉल्ट से तैयार है."
 
-#: admin.inc.php:72
+#: admin.inc.php:73
 #, fuzzy
 msgid "Top 10 popular posts reset"
 msgstr "लोकप्रिय पदों का शीर्षक:"
 
-#: admin.inc.php:78
+#: admin.inc.php:79
 #, fuzzy
 msgid "Top 10 daily popular posts reset"
 msgstr "दैनिक लोकप्रिय पदों का शीर्षक:"
 
-#: admin.inc.php:85
+#: admin.inc.php:86
 msgid "Tables cleaned of duplicate rows"
 msgstr ""
 
-#: admin.inc.php:97
+#: admin.inc.php:98
 msgid "Options:"
 msgstr "विकल्प हैं:"
 
-#: admin.inc.php:102
+#: admin.inc.php:103
 msgid "Format to display the count in: "
 msgstr "प्रारूप में गिनती प्रदर्शित करने के लिए:"
 
-#: admin.inc.php:106
+#: admin.inc.php:107
 msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr "का प्रयोग करें <code>% totalcount% </ कोड> कुल संख्या प्रदर्शित करने के लिए और <code>% dailycount% </ कोड> को दैनिक गणना प्रदर्शन. उदाहरण डिफ़ॉल्ट विकल्प प्रदर्शित <code> (दौरा 123 बार, 23 का दौरा आज) </ कोड>"
 
-#: admin.inc.php:109
+#: admin.inc.php:110
 msgid "Number of popular posts to display: "
 msgstr "लोकप्रिय पदों की संख्या प्रदर्शित करने के लिए:"
 
-#: admin.inc.php:115
+#: admin.inc.php:116
 msgid "Daily Popular should contain views of how many days? "
 msgstr "दैनिक लोकप्रिय कितने दिनों के विचारों को शामिल करना चाहिए?"
 
-#: admin.inc.php:122
+#: admin.inc.php:123
 msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
 msgstr "लोकप्रिय के प्रदर्शन में पेज बाहर निकालें पोस्ट? पन्नों पर विचार की संख्या की गिनती जारी रहेगी."
 
-#: admin.inc.php:128
+#: admin.inc.php:129
 msgid "Display number of views on posts?"
 msgstr "पदों पर विचारों के प्रदर्शन की संख्या?"
 
-#: admin.inc.php:134
+#: admin.inc.php:135
 msgid "Display number of views on pages?"
 msgstr "पन्नों पर विचार के प्रदर्शन की संख्या?"
 
-#: admin.inc.php:140
+#: admin.inc.php:141
 msgid "Track visits of authors on their own posts?"
 msgstr "ट्रैक लेखक के अपने पदों पर यात्रा?"
 
-#: admin.inc.php:146
+#: admin.inc.php:147
 msgid "Display number of page views in popular lists?"
 msgstr "लोकप्रिय सूची में पृष्ठ विचारों का प्रदर्शन नंबर?"
 
-#: admin.inc.php:152
+#: admin.inc.php:153
 #, fuzzy
 msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
 msgstr "सेना दैनिक 'पदों की सूची गतिशील हो? इस विकल्प को पद भार जावास्क्रिप्ट का उपयोग करता है और अपने पृष्ठ लोड समय बढ़ा सकते हैं"
 
-#: admin.inc.php:158
+#: admin.inc.php:159
 msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
 msgstr "प्रदर्शन संपादित करें पदों पर पृष्ठ विचार / WP में पृष्ठों-व्यवस्थापक? एक अतिरिक्त कॉलम गिनती के साथ जोड़ दिया है"
 
-#: admin.inc.php:164
+#: admin.inc.php:165
 msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
 msgstr "प्लगइन के लिए एक कड़ी लोकप्रिय पदों की सूची के लिए एक अतिरिक्त सूची आइटम के रूप में जोड़ा है. नहीं अनिवार्य है, लेकिन धन्यवाद यदि तुम इसे करो!"
 
-#: admin.inc.php:168
+#: admin.inc.php:169
 #, fuzzy
 msgid "Output Options:"
 msgstr "विकल्प हैं:"
 
-#: admin.inc.php:172
+#: admin.inc.php:173
 msgid "Title of popular posts: "
 msgstr "लोकप्रिय पदों का शीर्षक:"
 
-#: admin.inc.php:178
+#: admin.inc.php:179
 msgid "Title of daily popular posts: "
 msgstr "दैनिक लोकप्रिय पदों का शीर्षक:"
 
-#: admin.inc.php:185
+#: admin.inc.php:186
 msgid "Show post excerpt in list?"
 msgstr ""
 
-#: admin.inc.php:190
+#: admin.inc.php:191
 msgid "Length of excerpt (in words): "
 msgstr ""
 
-#: admin.inc.php:194
+#: admin.inc.php:195
 msgid "Exclude Categories: "
 msgstr ""
 
-#: admin.inc.php:209
+#: admin.inc.php:210
 msgid "Customize the output:"
 msgstr ""
 
-#: admin.inc.php:212
+#: admin.inc.php:213
 msgid "HTML to display before the list of posts: "
 msgstr ""
 
-#: admin.inc.php:218
+#: admin.inc.php:219
 msgid "HTML to display before each list item: "
 msgstr ""
 
-#: admin.inc.php:224
+#: admin.inc.php:225
 #, fuzzy
 msgid "HTML to display after each list item: "
 msgstr "प्रारूप में गिनती प्रदर्शित करने के लिए:"
 
-#: admin.inc.php:230
+#: admin.inc.php:231
 msgid "HTML to display after the list of posts: "
 msgstr ""
 
-#: admin.inc.php:234
+#: admin.inc.php:235
 msgid "Post thumbnail options:"
 msgstr ""
 
-#: admin.inc.php:238
+#: admin.inc.php:239
 #, fuzzy
-msgid "Display thumbnails inline with posts"
+msgid "Display thumbnails inline with posts, before title"
 msgstr "पदों पर विचारों के प्रदर्शन की संख्या?"
 
-#: admin.inc.php:242
+#: admin.inc.php:243
+#, fuzzy
+msgid "Display thumbnails inline with posts, after title"
+msgstr "पदों पर विचारों के प्रदर्शन की संख्या?"
+
+#: admin.inc.php:247
 msgid "Display only thumbnails, no text"
 msgstr ""
 
-#: admin.inc.php:246
+#: admin.inc.php:251
 msgid "Do not display thumbnails, only text."
 msgstr ""
 
-#: admin.inc.php:251
+#: admin.inc.php:256
 msgid "Post thumbnail meta field (the meta should point to the image source): "
 msgstr ""
 
-#: admin.inc.php:258
+#: admin.inc.php:263
 msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
 msgstr ""
 
-#: admin.inc.php:261
+#: admin.inc.php:266
 msgid "Thumbnail dimensions:"
 msgstr ""
 
-#: admin.inc.php:263
+#: admin.inc.php:268
 msgid "Max width: "
 msgstr ""
 
-#: admin.inc.php:268
+#: admin.inc.php:273
 msgid "Max height: "
 msgstr ""
 
-#: admin.inc.php:272
-msgid "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified below:"
+#: admin.inc.php:277
+msgid "If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: admin.inc.php:277
+#: admin.inc.php:282
 msgid "Do you want to set options to Default?"
 msgstr "क्या आप डिफ़ॉल्ट विकल्प सेट करना चाहते हैं?"
 
-#: admin.inc.php:280
+#: admin.inc.php:285
 msgid "Reset count"
 msgstr ""
 
-#: admin.inc.php:283
+#: admin.inc.php:288
 msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr ""
 
-#: admin.inc.php:286
+#: admin.inc.php:291
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: admin.inc.php:287
+#: admin.inc.php:292
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: admin.inc.php:288
+#: admin.inc.php:293
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: admin.inc.php:295
+#: admin.inc.php:300
 msgid "Quick links"
 msgstr ""
 
-#: admin.inc.php:297
+#: admin.inc.php:302
 #, fuzzy
 msgid "Top 10 "
 msgstr "शीर्ष 10"
 
-#: admin.inc.php:297
+#: admin.inc.php:302
 msgid "plugin page"
 msgstr ""
 
-#: admin.inc.php:298
+#: admin.inc.php:303
 msgid "Other plugins"
 msgstr ""
 
-#: admin.inc.php:299
+#: admin.inc.php:304
 msgid "Ajay's blog"
 msgstr ""
 
-#: admin.inc.php:300
-#: top-10.php:456
+#: admin.inc.php:305
+#: top-10.php:515
 msgid "Support"
 msgstr ""
 
-#: admin.inc.php:301
+#: admin.inc.php:306
 msgid "Follow @ajaydsouza on Twitter"
 msgstr ""
 
-#: admin.inc.php:305
+#: admin.inc.php:310
 msgid "Recent developments"
 msgstr ""
 
-#: admin.inc.php:310
+#: admin.inc.php:315
 #, fuzzy
 msgid "Support the development"
 msgstr "समर्थन विकास"
 
-#: admin.inc.php:318
+#: admin.inc.php:323
 msgid "Enter amount in USD: "
 msgstr ""
 
-#: admin.inc.php:322
+#: admin.inc.php:327
 msgid "Send your donation to the author of"
 msgstr ""
 
-#: admin.inc.php:342
-#: admin.inc.php:367
-#: admin.inc.php:570
-#: top-10.php:249
-#: top-10.php:415
-#: top-10.php:418
+#: admin.inc.php:347
+#: admin.inc.php:372
+#: admin.inc.php:575
+#: top-10.php:257
+#: top-10.php:273
+#: top-10.php:445
+#: top-10.php:448
 msgid "Popular Posts"
 msgstr "लोकप्रिय पोस्ट्स "
 
-#: admin.inc.php:342
+#: admin.inc.php:347
 msgid "Daily Popular Posts"
 msgstr "दैनिक लोकप्रिय पोस्ट्स "
 
-#: admin.inc.php:365
-#: admin.inc.php:367
+#: admin.inc.php:370
+#: admin.inc.php:372
 msgid "Top 10"
 msgstr "शीर्ष 10"
 
-#: admin.inc.php:478
+#: admin.inc.php:483
 msgid "Results"
 msgstr "परिणाम"
 
-#: admin.inc.php:480
-#: admin.inc.php:486
+#: admin.inc.php:485
+#: admin.inc.php:491
 msgid "of"
 msgstr "का"
 
-#: admin.inc.php:484
+#: admin.inc.php:489
 msgid "Page"
 msgstr "पृष्ठ"
 
-#: admin.inc.php:498
+#: admin.inc.php:503
 msgid "View Daily Popular Posts"
 msgstr "देखें दैनिक लोकप्रिय पोस्ट्स "
 
-#: admin.inc.php:502
+#: admin.inc.php:507
 msgid "View Overall Popular Posts"
 msgstr "देखें दैनिक लोकप्रिय पोस्ट्स "
 
-#: admin.inc.php:506
+#: admin.inc.php:511
 msgid "Results per-page:"
 msgstr "प्रति परिणाम पृष्ठ:"
 
-#: admin.inc.php:530
+#: admin.inc.php:535
 msgid "Previous"
 msgstr "पिछला"
 
-#: admin.inc.php:548
+#: admin.inc.php:553
 msgid "Next"
 msgstr "अगला"
 
-#: admin.inc.php:571
-#: top-10.php:228
-#: top-10.php:416
-#: top-10.php:419
+#: admin.inc.php:576
+#: top-10.php:219
+#: top-10.php:235
+#: top-10.php:446
+#: top-10.php:449
 msgid "Daily Popular"
 msgstr "दैनिक लोकप्रिय"
 
-#: admin.inc.php:582
+#: admin.inc.php:587
 msgid "Total / Today's Views"
 msgstr "कुल / आज दर्शाव"
 
-#: top-10.php:260
+#: top-10.php:218
+msgid "Display the posts popular today"
+msgstr ""
+
+#: top-10.php:256
+msgid "Display the posts popular this week"
+msgstr ""
+
+#: top-10.php:286
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3> लोकप्रिय  पोस्ट्स  </ h3>"
 
-#: top-10.php:261
+#: top-10.php:287
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3> दैनिक लोकप्रिय </ h3>"
 
-#: top-10.php:455
+#: top-10.php:514
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:457
+#: top-10.php:516
 msgid "Donate"
 msgstr ""
 

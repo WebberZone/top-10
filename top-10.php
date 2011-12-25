@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.7.6
+Version:     1.8
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -117,7 +117,7 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 	$exclude_categories = explode(',',$tptn_settings['exclude_categories']);
 
 	if (!$daily) {
-		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status, post_content ";
+		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
@@ -128,7 +128,7 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 		$current_date = date ( 'Y-m-j' , $current_date );
 		
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status, post_content ";
+		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
@@ -164,32 +164,24 @@ function tptn_pop_posts( $daily = false , $widget = false ) {
 			if (!$p_in_c) {
 				$output .= $tptn_settings['before_list_item'];
 
-				if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='thumbs_only')) {
-					$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">';
-					if ((function_exists('has_post_thumbnail')) && (has_post_thumbnail($result->postnumber))) {
-						$output .= get_the_post_thumbnail( $result->postnumber, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
-					} else {
-						$postimage = get_post_meta($result->postnumber, $tptn_settings[thumb_meta], true);	// Check 
-						if ((!$postimage)&&($tptn_settings['scan_images'])) {
-							preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
-							// any image there?
-							if( isset( $matches ) && $matches[1][0] ) {
-								$postimage = $matches[1][0]; // we need the first one only!
-							}
-						}
-						if (!$postimage) $postimage = $tptn_settings[thumb_default];
-						$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" width="'.$tptn_settings[thumb_width].'" height="'.$tptn_settings[thumb_height].'" border="0" class="tptn_thumb" />';
-					}
-					$output .= '</a> ';
+				$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark" class="tptn_link">'; // Add beginning of link
+				if ($tptn_settings['post_thumb_op']=='after') {
+					$output .= $title; // Add title if post thumbnail is to be displayed after
 				}
-				if (($tptn_settings['post_thumb_op']=='inline')||($tptn_settings['post_thumb_op']=='text_only')) {
-					$output .= '<a href="'.get_permalink($result->postnumber).'" rel="bookmark">'.$title.'</a>';
-				}		
+				if ($tptn_settings['post_thumb_op']=='inline' || $tptn_settings['post_thumb_op']=='after' || $tptn_settings['post_thumb_op']=='thumbs_only') {
+					$output .= tptn_get_the_post_thumbnail($result->postnumber);
+				}
+				if ($tptn_settings['post_thumb_op']=='inline' || $tptn_settings['post_thumb_op']=='text_only') {
+					$output .= $title; // Add title when required by settings
+				}
+				$output .= '</a>'; // Close the link
 				if ($tptn_settings['show_excerpt']) {
-					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->post_content,$tptn_settings['excerpt_length']).'</span>';
+					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->postnumber,$tptn_settings['excerpt_length']).'</span>';
 				}
-				if ($tptn_settings['disp_list_count']) $output .= ' ('.$result->sumCount.')';
-				$output .= $tptn_settings['after_list_item'];
+				if ($tptn_settings['disp_list_count']) {
+          $output .= ' ('.number_format($result->sumCount).')';
+        }
+		$output .= $tptn_settings['after_list_item'];
 				$counter++; 
 			}
 			if ($counter == $limit/5) break;	// End loop when related posts limit is reached
@@ -314,10 +306,11 @@ function tptn_default_options() {
 						'before_list_item' => '<li>',		// Before each list item
 						'after_list_item' => '</li>',		// After each list item
 						'post_thumb_op' => 'text_only',	// Display only text in posts
-						'thumb_height' => '100',			// Height of thumbnails
-						'thumb_width' => '100',			// Width of thumbnails
+						'thumb_height' => '100',			// Max height of thumbnails
+						'thumb_width' => '100',			// Max width of thumbnails
 						'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
 						'thumb_default' => $thumb_default,	// Default thumbnail image
+						'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
 						'scan_images' => false,			// Scan post for images
 						'show_excerpt' => false,			// Show description in list item
 						'excerpt_length' => '10',			// Length of characters
@@ -458,8 +451,37 @@ function init_tptn(){
 }
 add_action('init', 'init_tptn', 1); 
 
+// Function to get the post thumbnail
+function tptn_get_the_post_thumbnail($postid) {
+
+	$result = get_post($postid);
+	$tptn_settings = tptn_read_options();
+	$output = '';
+
+	if (function_exists('has_post_thumbnail') && has_post_thumbnail($result->ID)) {
+		$output .= get_the_post_thumbnail($result->ID, array($tptn_settings[thumb_width],$tptn_settings[thumb_height]), array('title' => $title,'alt' => $title, 'class' => 'tptn_thumb', 'border' => '0'));
+	} else {
+		$postimage = get_post_meta($result->ID, $tptn_settings[thumb_meta], true);	// Check
+		if (!$postimage && $tptn_settings['scan_images']) {
+			preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
+			// any image there?
+			if (isset($matches) && $matches[1][0]) {
+				$postimage = $matches[1][0]; // we need the first one only!
+			}
+		}
+		if (!$postimage) $postimage = get_post_meta($result->ID, '_video_thumbnail', true); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
+		if ($tptn_settings['thumb_default_show'] && !$postimage) $postimage = $tptn_settings[thumb_default]; // If no thumb found and settings permit, use default thumb
+		if ($postimage) {
+		  $output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" style="max-width:'.$tptn_settings[thumb_width].'px;max-height:'.$tptn_settings[thumb_height].'px;" border="0" class="tptn_thumb" />';
+		}
+	}
+	
+	return $output;
+}
+
 // Function to create an excerpt for the post
- function tptn_excerpt($content,$excerpt_length){
+ function tptn_excerpt($id,$excerpt_length){
+	$content = get_post($id)->post_content;
 	$out = strip_tags($content);
 	$blah = explode(' ',$out);
 	if (!$excerpt_length) $excerpt_length = 10;
