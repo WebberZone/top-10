@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-25 07:22-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno |gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -136,14 +136,12 @@ msgid "Post thumbnail options:"
 msgstr "Opzioni miniature articolo:"
 
 #: admin.inc.php:239
-#, fuzzy
 msgid "Display thumbnails inline with posts, before title"
-msgstr "Desideri mostrare gli articoli con le miniature inline?"
+msgstr "Mostra gli articoli con le miniature inline prima del titolo"
 
 #: admin.inc.php:243
-#, fuzzy
 msgid "Display thumbnails inline with posts, after title"
-msgstr "Desideri mostrare gli articoli con le miniature inline?"
+msgstr "Mostra gli articoli con le miniature inline dopo il titolo"
 
 #: admin.inc.php:247
 msgid "Display only thumbnails, no text"
@@ -175,7 +173,7 @@ msgstr "Altezza massima:"
 
 #: admin.inc.php:277
 msgid "If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown."
-msgstr ""
+msgstr "Se attiva, in assenza di miniatura ne mostrerà una predefinita da URL qui sotto. Se inattiva e senza miniatura, non verrà mostrata nessuna immagine."
 
 #: admin.inc.php:282
 msgid "Do you want to set options to Default?"
