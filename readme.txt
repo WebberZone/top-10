@@ -19,7 +19,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Counts daily and total page views on single posts and pages
 * Display the count on the single posts and pages
 * Customize the text that can be displayed
-* Display a list of daily and/or overall popular posts by page count. The number can be customized
+* Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed
 * Sidebar widgets available for daily popular and overall popular posts
 * Exclude posts from select categories from appearing in the top posts list
 * View list of daily and/or overall popular posts from within the dashboard itself
@@ -32,7 +32,16 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 1. Top-10 options in WP-Admin
 
 
+== Upgrade Notice ==
+
+= 1.8.1 =
+* Fixed: Dashboard widgets linking
+
+
 == Changelog ==
+
+= 1.8.1 =
+* Fixed: Dashboard widgets linking
 
 = 1.8 =
 * Added: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
@@ -116,16 +125,6 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 = 1.0.1 =
 * Release
 
-== Upgrade Notice ==
-
-= 1.8 =
-* Added: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
-* Added: Thumbnail settings now reflect max width and max height instead of fixed width and height
-* Added: Option to display thumbnails before or after the title
-* Added: Option to not display thumbnails instead of the default thumbnail
-* Added: Counts are now neatly formatted with commas
-* Modified: Minor tweaks to improve performance
-
 
 == Installation ==
 
@@ -158,6 +157,7 @@ Never. This plugin is designed to only track the number of pageviews on your blo
 All options can be customized within the Options page in WP-Admin itself
 
 For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
+
 
 = Support =
 

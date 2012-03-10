@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-25 07:20-0000\n"
+"POT-Creation-Date: 2012-03-10 08:42-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Bohdan Zograf <bozograf@gmail.com>\n"
@@ -202,53 +202,64 @@ msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Cədvəldəki dublikat yazılar silinəcəklər. Davam edək?"
 
 #: admin.inc.php:300
+#: admin.inc.php:360
 msgid "Quick links"
 msgstr "Faydalı istenadlar"
 
 #: admin.inc.php:302
+#: admin.inc.php:362
 msgid "Top 10 "
 msgstr "Top 10 yazılar"
 
 #: admin.inc.php:302
+#: admin.inc.php:362
 msgid "plugin page"
 msgstr "plaginin səhifəsi"
 
 #: admin.inc.php:303
+#: admin.inc.php:363
 msgid "Other plugins"
 msgstr "Digər plaginlər"
 
 #: admin.inc.php:304
+#: admin.inc.php:364
 msgid "Ajay's blog"
 msgstr "Ajay-in blogu"
 
 #: admin.inc.php:305
+#: admin.inc.php:365
 #: top-10.php:515
 msgid "Support"
 msgstr "Dəstək"
 
 #: admin.inc.php:306
+#: admin.inc.php:366
 msgid "Follow @ajaydsouza on Twitter"
 msgstr "Twitter-də @ajaydsouza ardınca get "
 
 #: admin.inc.php:310
+#: admin.inc.php:370
 msgid "Recent developments"
 msgstr "Son inkişaflar"
 
 #: admin.inc.php:315
+#: admin.inc.php:375
 msgid "Support the development"
 msgstr "İnkişafı dəstək vermək"
 
 #: admin.inc.php:323
+#: admin.inc.php:383
 msgid "Enter amount in USD: "
 msgstr "Miiqdarı USD ilə daxil et:"
 
 #: admin.inc.php:327
+#: admin.inc.php:387
 msgid "Send your donation to the author of"
 msgstr "Müəlifə ianə göndərin "
 
 #: admin.inc.php:347
-#: admin.inc.php:372
-#: admin.inc.php:575
+#: admin.inc.php:414
+#: admin.inc.php:618
 #: top-10.php:257
 #: top-10.php:273
 #: top-10.php:445
@@ -260,45 +271,45 @@ msgstr "Populyar yazılar"
 msgid "Daily Popular Posts"
 msgstr "Gündəlik Populyar Yazılar"
 
-#: admin.inc.php:370
-#: admin.inc.php:372
+#: admin.inc.php:412
+#: admin.inc.php:414
 msgid "Top 10"
 msgstr "Top 10 yazılar"
 
-#: admin.inc.php:483
+#: admin.inc.php:526
 msgid "Results"
 msgstr "Nəticələr"
 
-#: admin.inc.php:485
-#: admin.inc.php:491
+#: admin.inc.php:528
+#: admin.inc.php:534
 msgid "of"
 msgstr "-dən "
 
-#: admin.inc.php:489
+#: admin.inc.php:532
 msgid "Page"
 msgstr "Səhifə"
 
-#: admin.inc.php:503
+#: admin.inc.php:546
 msgid "View Daily Popular Posts"
 msgstr "Gündəlik Populyar Yazılara Baxmaq"
 
-#: admin.inc.php:507
+#: admin.inc.php:550
 msgid "View Overall Popular Posts"
 msgstr "Bütün Populyar Yazılara Baxmaq"
 
-#: admin.inc.php:511
+#: admin.inc.php:554
 msgid "Results per-page:"
 msgstr "Səhifə üzrə nəticələr:"
 
-#: admin.inc.php:535
+#: admin.inc.php:578
 msgid "Previous"
 msgstr "Əvvəlki"
 
-#: admin.inc.php:553
+#: admin.inc.php:596
 msgid "Next"
 msgstr "Sonrakı"
 
-#: admin.inc.php:576
+#: admin.inc.php:619
 #: top-10.php:219
 #: top-10.php:235
 #: top-10.php:446
@@ -306,7 +317,7 @@ msgstr "Sonrakı"
 msgid "Daily Popular"
 msgstr "Gündəlik Populyar"
 
-#: admin.inc.php:587
+#: admin.inc.php:630
 msgid "Total / Today's Views"
 msgstr "Ümümi/ Bu günkü baxış"
 

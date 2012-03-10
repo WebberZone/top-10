@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 v1.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-25 07:22-0000\n"
+"POT-Creation-Date: 2012-03-10 08:43-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WPPG.me <info@wppg.me>\n"
@@ -206,53 +206,64 @@ msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Hiermee verwijdert u de dubbele vermeldingen in de tabellen. Doorgaan?"
 
 #: admin.inc.php:300
+#: admin.inc.php:360
 msgid "Quick links"
 msgstr "Quick links"
 
 #: admin.inc.php:302
+#: admin.inc.php:362
 msgid "Top 10 "
 msgstr "Top 10 "
 
 #: admin.inc.php:302
+#: admin.inc.php:362
 msgid "plugin page"
 msgstr "plugin pagina"
 
 #: admin.inc.php:303
+#: admin.inc.php:363
 msgid "Other plugins"
 msgstr "Andere plugins"
 
 #: admin.inc.php:304
+#: admin.inc.php:364
 msgid "Ajay's blog"
 msgstr "De blog van Ajay"
 
 #: admin.inc.php:305
+#: admin.inc.php:365
 #: top-10.php:515
 msgid "Support"
 msgstr "Ondersteuning"
 
 #: admin.inc.php:306
+#: admin.inc.php:366
 msgid "Follow @ajaydsouza on Twitter"
 msgstr "Volg @ajaydsouza via Twitter"
 
 #: admin.inc.php:310
+#: admin.inc.php:370
 msgid "Recent developments"
 msgstr "Recente ontwikkelingen"
 
 #: admin.inc.php:315
+#: admin.inc.php:375
 msgid "Support the development"
 msgstr "Ondersteun de ontwikkeling"
 
 #: admin.inc.php:323
+#: admin.inc.php:383
 msgid "Enter amount in USD: "
 msgstr "Voer het bedrag in in USD:"
 
 #: admin.inc.php:327
+#: admin.inc.php:387
 msgid "Send your donation to the author of"
 msgstr "Zend je donatie naar de auteur van "
 
 #: admin.inc.php:347
-#: admin.inc.php:372
-#: admin.inc.php:575
+#: admin.inc.php:414
+#: admin.inc.php:618
 #: top-10.php:257
 #: top-10.php:273
 #: top-10.php:445
@@ -264,45 +275,45 @@ msgstr "Populaire Berichten"
 msgid "Daily Popular Posts"
 msgstr "Dagelijkse Populaire Berichten"
 
-#: admin.inc.php:370
-#: admin.inc.php:372
+#: admin.inc.php:412
+#: admin.inc.php:414
 msgid "Top 10"
 msgstr "Top 10"
 
-#: admin.inc.php:483
+#: admin.inc.php:526
 msgid "Results"
 msgstr "Resultaten"
 
-#: admin.inc.php:485
-#: admin.inc.php:491
+#: admin.inc.php:528
+#: admin.inc.php:534
 msgid "of"
 msgstr "van"
 
-#: admin.inc.php:489
+#: admin.inc.php:532
 msgid "Page"
 msgstr "Pagina"
 
-#: admin.inc.php:503
+#: admin.inc.php:546
 msgid "View Daily Popular Posts"
 msgstr "Bekijk de Dagelijkse Populaire Berichten"
 
-#: admin.inc.php:507
+#: admin.inc.php:550
 msgid "View Overall Popular Posts"
 msgstr "Bekijk het Totaal Populaire Berichten"
 
-#: admin.inc.php:511
+#: admin.inc.php:554
 msgid "Results per-page:"
 msgstr "Resultaten per pagina:"
 
-#: admin.inc.php:535
+#: admin.inc.php:578
 msgid "Previous"
 msgstr "Vorige"
 
-#: admin.inc.php:553
+#: admin.inc.php:596
 msgid "Next"
 msgstr "Volgende"
 
-#: admin.inc.php:576
+#: admin.inc.php:619
 #: top-10.php:219
 #: top-10.php:235
 #: top-10.php:446
@@ -310,7 +321,7 @@ msgstr "Volgende"
 msgid "Daily Popular"
 msgstr "Dagelijks Populair"
 
-#: admin.inc.php:587
+#: admin.inc.php:630
 msgid "Total / Today's Views"
 msgstr "Totale Weergaves / Weergaves van Vandaag"
 
