@@ -302,7 +302,7 @@ function tptn_options() {
 		<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/"><?php _e('Top 10 ');_e('plugin page',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://ajaydsouza.com/wordpress/plugins/"><?php _e('Other plugins',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://ajaydsouza.com/"><?php _e('Ajay\'s blog',TPTN_LOCAL_NAME) ?></a></li>
-		<li><a href="http://ajaydsouza.com/support"><?php _e('Support',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/support/"><?php _e('Support',TPTN_LOCAL_NAME) ?></a></li>
 		<li><a href="http://twitter.com/ajaydsouza"><?php _e('Follow @ajaydsouza on Twitter',TPTN_LOCAL_NAME) ?></a></li>
 	</ul>
 	</div>
@@ -346,9 +346,51 @@ function tptn_manage() {
 	echo '<h2>';
 	if (!$daily) _e('Popular Posts',TPTN_LOCAL_NAME); else _e('Daily Popular Posts',TPTN_LOCAL_NAME);
 	echo '</h2>';
-	echo '<div style="border: #ccc 1px solid; padding: 10px">';
+	echo '<div style="border: #ccc 1px solid; padding: 10px" id="options-div">';
 	echo tptn_pop_display($daily,$paged,$limit);
-	echo '</div></div>';
+	echo '</div>';
+	tptn_admin_side();
+	echo '</div>';
+}
+
+function tptn_admin_side() {
+?>
+  <div id="side">
+	<div class="side-widget">
+	<span class="title"><?php _e('Quick links') ?></span>				
+	<ul>
+		<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/"><?php _e('Top 10 ');_e('plugin page',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/wordpress/plugins/"><?php _e('Other plugins',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/"><?php _e('Ajay\'s blog',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://ajaydsouza.com/support/"><?php _e('Support',TPTN_LOCAL_NAME) ?></a></li>
+		<li><a href="http://twitter.com/ajaydsouza"><?php _e('Follow @ajaydsouza on Twitter',TPTN_LOCAL_NAME) ?></a></li>
+	</ul>
+	</div>
+	<div class="side-widget">
+	<span class="title"><?php _e('Recent developments',TPTN_LOCAL_NAME) ?></span>				
+	<?php require_once(ABSPATH . WPINC . '/rss.php'); wp_widget_rss_output('http://ajaydsouza.com/archives/category/wordpress/plugins/feed/', array('items' => 5, 'show_author' => 0, 'show_date' => 1));
+	?>
+	</div>
+	<div class="side-widget">
+		<span class="title"><?php _e('Support the development',TPTN_LOCAL_NAME) ?></span>
+		<div id="donate-form">
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_donations">
+			<input type="hidden" name="business" value="donations@ajaydsouza.com">
+			<input type="hidden" name="lc" value="GB">
+			<input type="hidden" name="item_name" value="Donation for Top 10">
+			<input type="hidden" name="item_number" value="tptn">
+			<strong><?php _e('Enter amount in USD: ',TPTN_LOCAL_NAME) ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
+			<input type="hidden" name="currency_code" value="USD">
+			<input type="hidden" name="button_subtype" value="services">
+			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
+			<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php _e('Send your donation to the author of',TPTN_LOCAL_NAME) ?> Top 10?">
+			<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+		</div>
+	</div>
+  </div>
+<?php
 }
 
 /* Add menu item in WP-Admin */
@@ -369,7 +411,8 @@ function tptn_adminmenu() {
 	if ((function_exists('add_options_page'))&&($tptn_is_admin)) {
 		$plugin_page = add_options_page(__("Top 10", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_options', 'tptn_options');
 		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
-		add_posts_page(__("Popular Posts", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_manage', 'tptn_manage');
+		$plugin_page = add_posts_page(__("Popular Posts", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_manage', 'tptn_manage');
+		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 	}
 }
 add_action('admin_menu', 'tptn_adminmenu');
@@ -405,7 +448,7 @@ function tptn_clean_duplicates($daily = false) {
 }
 
 /* Create a Dashboard Widget */
-function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
+function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = false) {
 	global $wpdb, $siteurl, $tableposts, $id;
 
 	$table_name = $wpdb->prefix . "top_ten";
@@ -460,11 +503,11 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	else{$last = $numrows;} // If last results page, last result equals total number of results.
 	
 	if(!$daily) {
-		$sql = "SELECT postnumber, cntaccess , ID, post_type ";
+		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		if ($tptn_settings['exclude_pages']) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
-		$sql .= "ORDER BY cntaccess DESC LIMIT $page, $limit";
+		$sql .= "ORDER BY sumCount DESC LIMIT $page, $limit";
 	} else {
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
@@ -498,7 +541,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	 <tr>
 	  <td align="left">';
 	
-	if(!$daily) {
+	if(($daily && $widget) || (!$daily && !$widget)) {
 		$output .= '<a href="./edit.php?page=tptn_manage&daily=1">';
 		$output .= __('View Daily Popular Posts',TPTN_LOCAL_NAME);
 		$output .= '</a></td>';
@@ -522,7 +565,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
 	if ($results) {
 		foreach ($results as $result) {
 			$output .= '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-			if ($daily) $output .= ' ('.$result->sumCount.')'; else $output .= ' ('.$result->cntaccess.')';
+			$output .= ' ('.number_format($result->sumCount).')';
 			$output .= '</li>';
 		}
 	}
@@ -563,11 +606,11 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10) {
  
 // Dashboard for Popular Posts
 function tptn_pop_dashboard() {
-	echo tptn_pop_display(false,0,10);
+	echo tptn_pop_display(false,0,10,true);
 }
 // Dashboard for Daily Popular Posts
 function tptn_pop_daily_dashboard() {
-	echo tptn_pop_display(true,0,10);
+	echo tptn_pop_display(true,0,10,true);
 }
  
 function tptn_pop_dashboard_setup() {
