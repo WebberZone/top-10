@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Top 10\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-23 21:31-0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
+"Language-Team: Web Geeks\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Romanian\n"
+"X-Poedit-Country: Romania\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin.inc.php:58
+msgid "Options saved successfully."
+msgstr "Opţiuni salvat cu succes."
+
+#: admin.inc.php:67
+msgid "Options set to Default."
+msgstr "Opţiunile setate la valorile implicite."
+
+#: admin.inc.php:73
+msgid "Top 10 popular posts reset"
+msgstr "Top 10 populare posturi Resetare"
+
+#: admin.inc.php:79
+msgid "Top 10 daily popular posts reset"
+msgstr "Top 10 posturi populare daily Reiniţializare"
+
+#: admin.inc.php:86
+msgid "Tables cleaned of duplicate rows"
+msgstr "Tabelele curățate de rânduri duplicat"
+
+#: admin.inc.php:98
+msgid "Options:"
+msgstr "Opţiuni:"
+
+#: admin.inc.php:103
+msgid "Format to display the count in: "
+msgstr "Format pentru a afişa numărul în: "
+
+#: admin.inc.php:107
+msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
+msgstr "Utilizaţi <code>% totalcount %</code> pentru a afişa numărul total şi <code>% dailycount %</code> pentru a afişa numărul de zi cu zi. exemplu afişează opţiunile implicite <code>(vizitat 123 ori, 23 vizite azi)</code>"
+
+#: admin.inc.php:110
+msgid "Number of popular posts to display: "
+msgstr "Numărul de posturi populare pentru a afişa: "
+
+#: admin.inc.php:116
+msgid "Daily Popular should contain views of how many days? "
+msgstr "Popular de zi cu zi ar trebui să conțină vizualizări de câte zile? "
+
+#: admin.inc.php:123
+msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
+msgstr "Exclude paginile în afişarea de posturi populare? Număr de vizualizări pe pagini va continua să fie numărate."
+
+#: admin.inc.php:129
+msgid "Display number of views on posts?"
+msgstr "Afişează numărul de vizualizări pe posturi?"
+
+#: admin.inc.php:135
+msgid "Display number of views on pages?"
+msgstr "Afişează numărul de vizualizări pe pagini?"
+
+#: admin.inc.php:141
+msgid "Track visits of authors on their own posts?"
+msgstr "Track vizite de autori pe posturile lor proprii?"
+
+#: admin.inc.php:147
+msgid "Display number of page views in popular lists?"
+msgstr "Afişează numărul de vizualizări de pagini în listele popular?"
+
+#: admin.inc.php:153
+msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
+msgstr "Vigoare lista de zi cu zi de posturi să fie dinamic? Această opţiune utilizează JavaScript pentru a încărca post şi poate creşte timpul încărcare pagină"
+
+#: admin.inc.php:159
+msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
+msgstr "Afişarea de vizualizări de pagină pe Editare posturi/pagini în WP-Admin? O coloană suplimentară se adaugă cu contele"
+
+#: admin.inc.php:165
+msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
+msgstr "Un link pentru a plugin-ul se adaugă ca un element suplimentar lista la lista de posturi populare. Nu obligatoriu, dar Multumesc dacă tu a face it!"
+
+#: admin.inc.php:169
+msgid "Output Options:"
+msgstr "Opţiuni de ieşire:"
+
+#: admin.inc.php:173
+msgid "Title of popular posts: "
+msgstr "Titlul de posturi populare: "
+
+#: admin.inc.php:179
+msgid "Title of daily popular posts: "
+msgstr "Titlul de zi cu zi de posturi populare: "
+
+#: admin.inc.php:186
+msgid "Show post excerpt in list?"
+msgstr "Afişează post extras din lista?"
+
+#: admin.inc.php:191
+msgid "Length of excerpt (in words): "
+msgstr "Lungimea extras (în cuvinte): "
+
+#: admin.inc.php:195
+msgid "Exclude Categories: "
+msgstr "Excludeţi categorii: "
+
+#: admin.inc.php:210
+msgid "Customize the output:"
+msgstr "Personaliza ieşire:"
+
+#: admin.inc.php:213
+msgid "HTML to display before the list of posts: "
+msgstr "HTML pentru a afişa înainte de lista de posturi: "
+
+#: admin.inc.php:219
+msgid "HTML to display before each list item: "
+msgstr "HTML pentru a afişa înainte de fiecare element din listă: "
+
+#: admin.inc.php:225
+msgid "HTML to display after each list item: "
+msgstr "HTML pentru a afişa după fiecare element din listă: "
+
+#: admin.inc.php:231
+msgid "HTML to display after the list of posts: "
+msgstr "HTML pentru a afişa după lista de posturi: "
+
+#: admin.inc.php:235
+msgid "Post thumbnail options:"
+msgstr "Post Opţiuni pictograme:"
+
+#: admin.inc.php:239
+msgid "Display thumbnails inline with posts, before title"
+msgstr "Afişare miniaturi inline cu posturi, înainte de titlu"
+
+#: admin.inc.php:243
+msgid "Display thumbnails inline with posts, after title"
+msgstr "Afişare miniaturi inline cu posturi, după titlul"
+
+#: admin.inc.php:247
+msgid "Display only thumbnails, no text"
+msgstr "Afişa numai miniaturi, nici un text"
+
+#: admin.inc.php:251
+msgid "Do not display thumbnails, only text."
+msgstr "Nu se afişează miniaturi, numai textul."
+
+#: admin.inc.php:256
+msgid "Post thumbnail meta field (the meta should point to the image source): "
+msgstr "Post miniaturi meta câmp (meta ar trebui să punct de imagine sursă): "
+
+#: admin.inc.php:263
+msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
+msgstr "Dacă postmeta nu este setată, apoi trebuie să plugin-ul extrage prima imagine din post. Acest lucru poate încetini încărcarea de post dumneavoastră dacă prima imagine în legate de posturi este mare în mărime fişier"
+
+#: admin.inc.php:266
+msgid "Thumbnail dimensions:"
+msgstr "Dimensiunile miniatură:"
+
+#: admin.inc.php:268
+msgid "Max width: "
+msgstr "Max Lăţime: "
+
+#: admin.inc.php:273
+msgid "Max height: "
+msgstr "Max înălţime: "
+
+#: admin.inc.php:277
+msgid "If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown."
+msgstr "Dacă verificat, atunci când este găsit nici un thumbnail, arată o implicit la URL-ul de mai jos. În cazul în care nu a verificat şi este găsit nici un thumbnail, imaginea nu va fi indicat."
+
+#: admin.inc.php:282
+msgid "Do you want to set options to Default?"
+msgstr "Doriţi să setaţi opţiunile la valorile implicite?"
+
+#: admin.inc.php:285
+msgid "Reset count"
+msgstr "Reiniţializare count"
+
+#: admin.inc.php:288
+msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
+msgstr "Acest lucru poate fi inversat. Asiguraţi-vă că baza de date a fost sprijinit înainte de a continua"
+
+#: admin.inc.php:291
+msgid "Are you sure you want to reset the popular posts?"
+msgstr "Sigur reiniţializaţi posturi populare?"
+
+#: admin.inc.php:292
+msgid "Are you sure you want to reset the daily popular posts?"
+msgstr "Sigur reiniţializaţi posturi populare zilnic?"
+
+#: admin.inc.php:293
+msgid "This will delete the duplicate entries in the tables. Proceed?"
+msgstr "Aceasta va şterge intrările dublate în tabele. Continuaţi?"
+
+#: admin.inc.php:300
+#: admin.inc.php:360
+msgid "Quick links"
+msgstr "Legături rapide pentru"
+
+#: admin.inc.php:302
+#: admin.inc.php:362
+msgid "Top 10 "
+msgstr "Top 10 "
+
+#: admin.inc.php:302
+#: admin.inc.php:362
+msgid "plugin page"
+msgstr "plug-in pagina"
+
+#: admin.inc.php:303
+#: admin.inc.php:363
+msgid "Other plugins"
+msgstr "Alte plugin-uri"
+
+#: admin.inc.php:304
+#: admin.inc.php:364
+msgid "Ajay's blog"
+msgstr "Ajay's blog"
+
+#: admin.inc.php:305
+#: admin.inc.php:365
+#: top-10.php:515
+msgid "Support"
+msgstr "Suport"
+
+#: admin.inc.php:306
+#: admin.inc.php:366
+msgid "Follow @ajaydsouza on Twitter"
+msgstr "Urmaţi @ ajaydsouza pe Twitter"
+
+#: admin.inc.php:310
+#: admin.inc.php:370
+msgid "Recent developments"
+msgstr "Evoluţiile recente"
+
+#: admin.inc.php:315
+#: admin.inc.php:375
+msgid "Support the development"
+msgstr "Sprijinirea dezvoltării"
+
+#: admin.inc.php:323
+#: admin.inc.php:383
+msgid "Enter amount in USD: "
+msgstr "Introduceţi valoarea în USD: "
+
+#: admin.inc.php:327
+#: admin.inc.php:387
+msgid "Send your donation to the author of"
+msgstr "Trimite donatie autorului"
+
+#: admin.inc.php:347
+#: admin.inc.php:414
+#: admin.inc.php:618
+#: top-10.php:257
+#: top-10.php:273
+#: top-10.php:445
+#: top-10.php:448
+msgid "Popular Posts"
+msgstr "Posturi populare"
+
+#: admin.inc.php:347
+msgid "Daily Popular Posts"
+msgstr "Posturi populare de zi cu zi"
+
+#: admin.inc.php:412
+#: admin.inc.php:414
+msgid "Top 10"
+msgstr "Top 10"
+
+#: admin.inc.php:526
+msgid "Results"
+msgstr "Rezultatele"
+
+#: admin.inc.php:528
+#: admin.inc.php:534
+msgid "of"
+msgstr "de"
+
+#: admin.inc.php:532
+msgid "Page"
+msgstr "Pagină"
+
+#: admin.inc.php:546
+msgid "View Daily Popular Posts"
+msgstr "Vizualizare zi posturi populare"
+
+#: admin.inc.php:550
+msgid "View Overall Popular Posts"
+msgstr "Vedere de ansamblu posturi populare"
+
+#: admin.inc.php:554
+msgid "Results per-page:"
+msgstr "Rezultate pe pagină:"
+
+#: admin.inc.php:578
+msgid "Previous"
+msgstr "Anterioară"
+
+#: admin.inc.php:596
+msgid "Next"
+msgstr "Următorul"
+
+#: admin.inc.php:619
+#: top-10.php:219
+#: top-10.php:235
+#: top-10.php:446
+#: top-10.php:449
+msgid "Daily Popular"
+msgstr "Daily populare"
+
+#: admin.inc.php:630
+msgid "Total / Today's Views"
+msgstr "Total / astăzi lui vizitări"
+
+#: top-10.php:218
+msgid "Display the posts popular today"
+msgstr "Afişa posturi populare de astăzi"
+
+#: top-10.php:256
+msgid "Display the posts popular this week"
+msgstr "Afişa posturi populare în această săptămână"
+
+#: top-10.php:286
+msgid "<h3>Popular Posts</h3>"
+msgstr "<h3>Posturi populare</h3>"
+
+#: top-10.php:287
+msgid "<h3>Daily Popular</h3>"
+msgstr "<h3>Daily populare</h3>"
+
+#: top-10.php:514
+msgid "Settings"
+msgstr "Setări"
+
+#: top-10.php:516
+msgid "Donate"
+msgstr "Dona"
+
