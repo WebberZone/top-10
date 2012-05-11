@@ -1,0 +1,344 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Top 10\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-11 21:57-0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
+"Language-Team: Ajay D'Souza <me@ajaydsouza.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin.inc.php:58
+msgid "Options saved successfully."
+msgstr "Configuraciones guardadas con éxito"
+
+#: admin.inc.php:67
+msgid "Options set to Default."
+msgstr "Los parametros se configuran de manera predeterminada"
+
+#: admin.inc.php:73
+msgid "Top 10 popular posts reset"
+msgstr "Reiniciar el Top de los 10 posts más populares"
+
+#: admin.inc.php:79
+msgid "Top 10 daily popular posts reset"
+msgstr "Reiniciar el Top de los 10 posts diarios más populares"
+
+#: admin.inc.php:86
+msgid "Tables cleaned of duplicate rows"
+msgstr "Las filas duplicadas han sido eliminadas"
+
+#: admin.inc.php:98
+msgid "Options:"
+msgstr "Los parametros"
+
+#: admin.inc.php:103
+msgid "Format to display the count in: "
+msgstr "El formato de visualización de la cuenta: "
+
+#: admin.inc.php:107
+msgid "Use <code>%totalcount%</code> to display the total count and <code>%dailycount%</code> to display the daily count. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>"
+msgstr "Utilizar <code>%totalcount%</code> para mostrar el número total y <code>%dailycount%</code> para mostrar el número al día. Por ejemplo, los ajustes predeterminados se muestran<code> (Visitado 123 veces, 23 visitas hoy)</code>"
+
+#: admin.inc.php:110
+msgid "Number of popular posts to display: "
+msgstr "Mostrar el número de posts más populares"
+
+#: admin.inc.php:116
+msgid "Daily Popular should contain views of how many days? "
+msgstr "Los post diarios más populares deben contener el número de visitas al día"
+
+#: admin.inc.php:123
+msgid "Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted."
+msgstr "¿Excluir la Páginas que muestran los posts más Populares? También será contado el número de visitas"
+
+#: admin.inc.php:129
+msgid "Display number of views on posts?"
+msgstr "¿Mostrar la cantidad de audiencia de los posts?"
+
+#: admin.inc.php:135
+msgid "Display number of views on pages?"
+msgstr "¿Mostrar el número de accesos a las páginas?"
+
+#: admin.inc.php:141
+msgid "Track visits of authors on their own posts?"
+msgstr "¿Observar las visitas de los autores a sus propios posts?"
+
+#: admin.inc.php:147
+msgid "Display number of page views in popular lists?"
+msgstr "¿Mostrar el número de visitas de la página en las listas más populares?"
+
+#: admin.inc.php:153
+msgid "Force daily posts' list to be dynamic? This option uses JavaScript to load the post and can increase your page load time"
+msgstr "¿Hacer la lista de los posts diarios más dinámica? Esta opción utiliza JavaScript para cargar el post y también puede aumentar el tiempo de carga"
+
+#: admin.inc.php:159
+msgid "Display page views on Edit posts/pages in WP-Admin? An extra column is added with the count"
+msgstr "¿Mostrar la cantidad de audiencias de la página en  Editar los posts/las páginas en WP-Admin? Una columna adicional  se agrega a la cuenta"
+
+#: admin.inc.php:165
+msgid "A link to the plugin is added as an extra list item to the list of popular posts. Not mandatory, but thanks if you do it!"
+msgstr "Un enlace al plugin se agrega al cuadro de los posts más populares, como un elemento de una lista adicional. Esto no es obligatorio, pero le agradeceríamos al hacerlo!"
+
+#: admin.inc.php:169
+msgid "Output Options:"
+msgstr "Los Parámetros Resultantes"
+
+#: admin.inc.php:173
+msgid "Title of popular posts: "
+msgstr "El título de los posts más populares"
+
+#: admin.inc.php:179
+msgid "Title of daily popular posts: "
+msgstr "El título de los posts diarios más populares"
+
+#: admin.inc.php:186
+msgid "Show post excerpt in list?"
+msgstr "¿Mostrar un fragmento del post en la lista?"
+
+#: admin.inc.php:191
+msgid "Length of excerpt (in words): "
+msgstr "La longitud del fragmento(en palabras):"
+
+#: admin.inc.php:195
+msgid "Exclude Categories: "
+msgstr "Excluir las Categorías"
+
+#: admin.inc.php:210
+msgid "Customize the output:"
+msgstr "Personalizar el resultado:"
+
+#: admin.inc.php:213
+msgid "HTML to display before the list of posts: "
+msgstr "HTML mostrar antes de la lista de posts:"
+
+#: admin.inc.php:219
+msgid "HTML to display before each list item: "
+msgstr "HTML mostrar ante cada elemento de la lista:"
+
+#: admin.inc.php:225
+msgid "HTML to display after each list item: "
+msgstr "HTML mostrar después de cada elemento de la lista:"
+
+#: admin.inc.php:231
+msgid "HTML to display after the list of posts: "
+msgstr "HTML mostrar después de la lista de posts:"
+
+#: admin.inc.php:235
+msgid "Post thumbnail options:"
+msgstr "Los parámetros del thumbnail:"
+
+#: admin.inc.php:239
+msgid "Display thumbnails inline with posts, before title"
+msgstr "Mostrar el thumbnails en línea con los posts, antes del título"
+
+#: admin.inc.php:243
+msgid "Display thumbnails inline with posts, after title"
+msgstr "Mostrar el thumbnails en línea con los posts, después del título"
+
+#: admin.inc.php:247
+msgid "Display only thumbnails, no text"
+msgstr "Mostrar solamente thumbnails, no el texto"
+
+#: admin.inc.php:251
+msgid "Do not display thumbnails, only text."
+msgstr "No mostrar thumbnails, sólo el texto"
+
+#: admin.inc.php:256
+msgid "Post thumbnail meta field (the meta should point to the image source): "
+msgstr "Publicar el post con el enlace, con referencia a la imagen reducida (el enlace debe indicar a la imagen original)\""
+
+#: admin.inc.php:263
+msgid "If the postmeta is not set, then should the plugin extract the first image from the post. This can slow down the loading of your post if the first image in the related posts is large in file-size"
+msgstr "Si el parámetro postmeta no está instalado, entonces el plugin debería retirar la primera imagen del post. Esto puede retrasar la carga de su post, en caso que la primera imagen de los posts correspondientes es muy grande en tamaño de archivo "
+
+#: admin.inc.php:266
+msgid "Thumbnail dimensions:"
+msgstr "La extensión de la imagen reducida:"
+
+#: admin.inc.php:268
+msgid "Max width: "
+msgstr "El ancho máximo:"
+
+#: admin.inc.php:273
+msgid "Max height: "
+msgstr "La altura máxima"
+
+#: admin.inc.php:277
+msgid "If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown."
+msgstr "En caso de verificar el post y al no encontrar ninguna imagen reducida, hay que mostrar de forma predeterminada de la URL de abajo. Si no está verificado el post y tampoco está encontrada la imagen reducida, entonces no hay que mostrarla."
+
+#: admin.inc.php:282
+msgid "Do you want to set options to Default?"
+msgstr "¿Quiere configurar las opciones de forma predeterminada?"
+
+#: admin.inc.php:285
+msgid "Reset count"
+msgstr "Reiniciar los ajustes"
+
+#: admin.inc.php:288
+msgid "This cannot be reversed. Make sure that your database has been backed up before proceeding"
+msgstr "Esta operación no puede ser anulada. Antes de anular, asegúrese de que si ha sido creada una copia de seguridad para su base de datos."
+
+#: admin.inc.php:291
+msgid "Are you sure you want to reset the popular posts?"
+msgstr "¿Está seguro de que desea reiniciar los posts más populares?"
+
+#: admin.inc.php:292
+msgid "Are you sure you want to reset the daily popular posts?"
+msgstr "¿Está seguro de que desea reiniciar los posts diarios más populares?"
+
+#: admin.inc.php:293
+msgid "This will delete the duplicate entries in the tables. Proceed?"
+msgstr "Esta acción eliminará las entradas duplicadas en las tablas. ¿Continuar?"
+
+#: admin.inc.php:300
+#: admin.inc.php:360
+msgid "Quick links"
+msgstr "Enlaces rápidos"
+
+#: admin.inc.php:302
+#: admin.inc.php:362
+msgid "Top 10 "
+msgstr "Тоp 10"
+
+#: admin.inc.php:302
+#: admin.inc.php:362
+msgid "plugin page"
+msgstr "página plugin"
+
+#: admin.inc.php:303
+#: admin.inc.php:363
+msgid "Other plugins"
+msgstr "Otros plugins"
+
+#: admin.inc.php:304
+#: admin.inc.php:364
+msgid "Ajay's blog"
+msgstr "Blog de Ajay"
+
+#: admin.inc.php:305
+#: admin.inc.php:365
+#: top-10.php:515
+msgid "Support"
+msgstr "Apoyo"
+
+#: admin.inc.php:306
+#: admin.inc.php:366
+msgid "Follow @ajaydsouza on Twitter"
+msgstr "Seguir @ajaydsouza en Twitter"
+
+#: admin.inc.php:310
+#: admin.inc.php:370
+msgid "Recent developments"
+msgstr "Evolución reciente"
+
+#: admin.inc.php:315
+#: admin.inc.php:375
+msgid "Support the development"
+msgstr "Apoyar al elaborador"
+
+#: admin.inc.php:323
+#: admin.inc.php:383
+msgid "Enter amount in USD: "
+msgstr "Ingresar las cifras en USD"
+
+#: admin.inc.php:327
+#: admin.inc.php:387
+msgid "Send your donation to the author of"
+msgstr "Enviar su subvención al autor"
+
+#: admin.inc.php:347
+#: admin.inc.php:414
+#: admin.inc.php:618
+#: top-10.php:257
+#: top-10.php:273
+#: top-10.php:445
+#: top-10.php:448
+msgid "Popular Posts"
+msgstr "Los posts más populares"
+
+#: admin.inc.php:347
+msgid "Daily Popular Posts"
+msgstr "Los posts diarios más populares"
+
+#: admin.inc.php:412
+#: admin.inc.php:414
+msgid "Top 10"
+msgstr "Тоp 10"
+
+#: admin.inc.php:526
+msgid "Results"
+msgstr "Resultados"
+
+#: admin.inc.php:528
+#: admin.inc.php:534
+msgid "of"
+msgstr "de, a "
+
+#: admin.inc.php:532
+msgid "Page"
+msgstr "La página"
+
+#: admin.inc.php:546
+msgid "View Daily Popular Posts"
+msgstr "Ver los posts diarios más populares"
+
+#: admin.inc.php:550
+msgid "View Overall Popular Posts"
+msgstr "Ver los posts más populares"
+
+#: admin.inc.php:554
+msgid "Results per-page:"
+msgstr "Los resultados por página:"
+
+#: admin.inc.php:578
+msgid "Previous"
+msgstr "Precedentes"
+
+#: admin.inc.php:596
+msgid "Next"
+msgstr "Siguientes"
+
+#: admin.inc.php:619
+#: top-10.php:219
+#: top-10.php:235
+#: top-10.php:446
+#: top-10.php:449
+msgid "Daily Popular"
+msgstr "Diario Populares"
+
+#: admin.inc.php:630
+msgid "Total / Today's Views"
+msgstr "Total/Visitas de hoy"
+
+#: top-10.php:218
+msgid "Display the posts popular today"
+msgstr "Mostrar los posts populares de hoy"
+
+#: top-10.php:256
+msgid "Display the posts popular this week"
+msgstr "Mostrar los posts populares de esta semana"
+
+#: top-10.php:286
+msgid "<h3>Popular Posts</h3>"
+msgstr "Los posts populares"
+
+#: top-10.php:287
+msgid "<h3>Daily Popular</h3>"
+msgstr "Diario Populares"
+
+#: top-10.php:514
+msgid "Settings"
+msgstr "Los ajustes"
+
+#: top-10.php:516
+msgid "Donate"
+msgstr "Subvencionar"
+
