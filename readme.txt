@@ -40,12 +40,13 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 2. Top-10 options - Output options
 3. Top-10 options - Custom styles
 4. Top-10 options - Maintenance
+5. Top-10 widget options
 
 
 == Upgrade Notice ==
 
 = 1.9 =
-* Timthumb support; performance tweaks; cleaner settings page; new dashboard widget, new default thumbnail, scheduled maintenance and more...
+* Timthumb support; performance tweaks; cleaner settings page; new dashboard widget; new default thumbnail; custom CSS; scheduled maintenance and more...
 
 
 == Changelog ==
@@ -56,6 +57,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Added: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page 
 * Added: Customise what to display when there are no top posts detected
 * Added: New scheduled maintenance to clear up daily tables and optimise performance
+* Added: Custom CSS code to style the output. Check out the available styles in the <a href="http://wordpress.org/extend/plugins/top-10/faq/">FAQ</a>.
 * Modified: New "default.png" file based on from KDE’s <a href="http://www.oxygen-icons.org/">Oxygen icon set</a>
 * Modified: Dashboard list of posts now displays all the top posts and pages instead of the filtered list based on Settings.
 * Modified: Dashboard widget now has options to customise the widget. Old widgets have been deleted
@@ -232,6 +234,7 @@ Below are a few features that I plan on implementing in future versions of the p
 * Multi-site support
 * Ready-made styles
 * Upload your own default thumbnail
+* Retain select historic data when running the scheduled maintenance
 
 If you would like a feature to be added, or if you already have the code for the feature, you can let us know by <a href="http://wordpress.org/support/plugin/top-10">posting in this forum</a>.
 
