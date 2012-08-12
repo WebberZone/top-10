@@ -23,19 +23,32 @@ function tptn_disp_count() {
 	$id = intval($_GET['top_ten_id']);
 	if($id > 0) {
 
-		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
-		$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 1));
-		$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
+		// Total count per post
+		if (strpos($count_disp_form, "%totalcount%") !== false) {
+			$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
+			$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 1));
+			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
+		}
 		
 		// Now process daily count
-		$daily_range = $tptn_settings[daily_range];
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-		$current_date = date ( 'Y-m-j' , $current_date );
-
-		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
-		$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
-		$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
+		if (strpos($count_disp_form, "%dailycount%") !== false) {
+			$daily_range = $tptn_settings[daily_range];
+			$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+			$current_date = date ( 'Y-m-j' , $current_date );
+	
+			$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
+			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
+			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
+		}
+		
+		// Now process overall count
+		if (strpos($count_disp_form, "%overallcount%") !== false) {
+			$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
+			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
+			$count_disp_form = str_replace("%overallcount%", $cntaccess, $count_disp_form);
+		}
+				
 		
 		echo 'document.write("'.$count_disp_form.'")';
 	}
