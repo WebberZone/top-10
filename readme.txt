@@ -1,10 +1,11 @@
 === Top 10 ===
 Tags: top 10, counter, popular posts, top posts, daily popular, page views, statistics
-Contributors: Ajay, Mark Ghosh
+Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 2.5
-Tested up to: 3.4
+Requires at least: 3.0
+Tested up to: 3.5
+License: GPLv2 or later
 
 
 Track daily and total visits on your blog posts and display the count as well as popular posts.
@@ -17,28 +18,49 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 = Features =
 * Counts daily and total page views on single posts and pages
-* Display the count on the single posts and pages
-* Customize the text that can be displayed
+* Display the count on the single posts and/or pages. Customize the text that can be displayed
 * Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed
+* Thumbnail support
+	* Support for WordPress post thumbnails
+	* Auto-extract the first image in your post to be displayed as a thumbnail
+	* Manually enter the URL of the thumbnail via <a href="http://codex.wordpress.org/Custom_Fields">WordPress meta fields</a>
+	* Use timthumb to resize images
 * Sidebar widgets available for daily popular and overall popular posts
 * Exclude posts from select categories from appearing in the top posts list
-* View list of daily and/or overall popular posts from within the dashboard itself
+* View list of daily and/or overall popular posts from within the dashboard
+* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area
+* Customise which HTML tags to use for displaying the output in case you don't prefer the default `list` format
 * Clean uninstall if you choose to delete the plugin from within WP-Admin
-* Works with caching plugins like WP-Super-Cache and W3 Total Cache
-* Display post thumbnails or text or both
+* Works with caching plugins like WP-Super-Cache, W3 Total Cache or Quick Cache
+
 
 == Screenshots ==
 
-1. Top-10 options in WP-Admin
+1. Top-10 options - General options
+2. Top-10 options - Output options
+3. Top-10 options - Custom styles
+4. Top-10 options - Maintenance
 
 
 == Upgrade Notice ==
 
-= 1.8.1 =
-* Fixed: Dashboard widgets linking
+= 1.9 =
+* Timthumb support; performance tweaks; cleaner settings page; new dashboard widget, new default thumbnail, scheduled maintenance and more...
 
 
 == Changelog ==
+
+= 1.9 =
+* Added: Option to use timthumb to resize thumbnails
+* Added: New variable **%overallcount%** that will display the total pageviews on the blog across all posts
+* Added: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page 
+* Added: Customise what to display when there are no top posts detected
+* Added: New scheduled maintenance to clear up daily tables and optimise performance
+* Modified: New "default.png" file based on from KDE’s <a href="http://www.oxygen-icons.org/">Oxygen icon set</a>
+* Modified: Dashboard list of posts now displays all the top posts and pages instead of the filtered list based on Settings.
+* Modified: Dashboard widget now has options to customise the widget. Old widgets have been deleted
+* Modified: When fetching the first image, plugin ignores external images
+* Modified: Minor performance tweaks
 
 = 1.8.1 =
 * Fixed: Dashboard widgets linking
@@ -134,31 +156,82 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 3. Activate the Plugin in WP-Admin. 
 
-4. Goto Settings > Top 10 to configure
+4. Goto **Settings &raquo; Top 10** to configure
 
-5. Goto Appearance > Widgets to add the Popular Posts sidebar widget to your theme
+5. Goto **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
 
-6. Goto Posts > Top 10 to view the list of popular posts
+6. Goto **Posts &raquo; Top 10** to view the list of popular posts
 
 
 
 == Frequently Asked Questions ==
 
-= What are the requirements for this plugin? =
+If your question isn't listed here, please post a comment at the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced support, please see <a href="http://ajaydsouza.com/support/">details here</a>.
 
-WordPress 2.5 or above
+= How can I customise the output? =
+
+Several customization options are available via the Settings page in WordPress Admin. You can access this via <strong>Settings &raquo; Top 10</strong>
+
+The plugin also provides you with a set of CSS classes that allow you to style your posts by adding code to the *style.css* sheet. In a future version, I will be adding in CSS support within the plugins Settings page.
+
+The following CSS classes / IDs are available:
+
+* **tptn_related**: ID of the main wrapper `div`. This is only displayed on singular pages, i.e. post, page and attachment
+
+* **tptn_related**: Class of the main wrapper `div`. If you are displaying the related posts on non-singular pages, then you should style this
+
+* **tptn_title**: Class of the `span` tag for title of the post
+
+* **tptn_excerpt**: Class of the `span` tag for excerpt (if included)
+
+* **tptn_thumb**: Class of the post thumbnail `img` tag
+
+For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
+
+= How does the plugin select thumbnails? =
+
+The plugin selects thumbnails in the following order:
+
+1. Post Thumbnail image: The image that you can set while editing your post in WordPress &raquo; New Post screen
+
+2. Post meta field: This is the meta field value you can use when editing your post. The default is `post-image`
+
+3. First image in the post: The plugin will try to fetch the first image in the post
+
+3. Video Thumbnails: Meta field set by <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a>
+
+4. Default Thumbnail: If enabled, it will use the default thumbnail that you specify in the Settings screen
+
+The plugin uses <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> to generate thumbnails by default. Depending on the configuration of your webhost you might run into certain problems. Please check out <a href="http://www.binarymoon.co.uk/2010/11/timthumb-hints-tips/">the timthumb troubleshooting page</a> regarding permission settings for the folder and files.
 
 = Can this plugin replace Google Analytics? =
 
 Never. This plugin is designed to only track the number of pageviews on your blog posts and display the same. It cannot replace Google Analytics or any other full fledged statistics application.
 
-= Can I customize what is displayed? =
+= Manual install =
 
-All options can be customized within the Options page in WP-Admin itself
+You may choose to not display the post count automatically. If you do so, then in order to display the post count, you will need to add `<?php if(function_exists('echo_tptn_post_count')) echo_tptn_post_count(); ?>`.
 
-For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
+In order to display the most popular posts, you will need to add `<?php if(function_exists('tptn_show_pop_posts')) tptn_show_pop_posts(); ?>`.
 
+In order to display the most popular posts, you will need to add `<?php if(function_exists('tptn_show_daily_pop_posts')) tptn_show_daily_pop_posts(); ?>`.
 
-= Support =
+You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme.
 
-Read how you can receive support for this plugin at http://ajaydsouza.com/support
+== Wishlist ==
+
+Below are a few features that I plan on implementing in future versions of the plugin. However, there is no fixed time-frame for this and largely depends on how much time I can contribute to development.
+
+* Select random posts if there are no similar posts
+* Top posts by comments
+* Smart tracking of hits, i.e. no update on page reload of same visitors within a certain time period
+* Shortcode support
+* Exclude display on select categories and tags
+* Exclude display on select posts 
+* Custom post support
+* Multi-site support
+* Ready-made styles
+* Upload your own default thumbnail
+
+If you would like a feature to be added, or if you already have the code for the feature, you can let us know by <a href="http://wordpress.org/support/plugin/top-10">posting in this forum</a>.
+
