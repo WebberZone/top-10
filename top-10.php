@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9
+Version:     1.9.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -518,12 +518,17 @@ function tptn_trunc_count($daily = false) {
 }
 
 // Filter function to resize post thumbnail. Filters out tp10_postimage
-function ald_scale_thumbs($postimage, $thumb_width, $thumb_height) {
+function ald_scale_thumbs($postimage, $thumb_width, $thumb_height, $thumb_timthumb) {
 	global $ald_url;
-	$new_pi = $ald_url.'/timthumb/timthumb.php?src='.urlencode($postimage).'&amp;w='.$thumb_width.'&amp;h='.$thumb_height.'&amp;zc=1&amp;q=75';
+	
+	if ($thumb_timthumb) {
+		$new_pi = $ald_url.'/timthumb/timthumb.php?src='.urlencode($postimage).'&amp;w='.$thumb_width.'&amp;h='.$thumb_height.'&amp;zc=1&amp;q=75';		
+	} else {
+		$new_pi = $postimage;
+	}
 	return $new_pi;
 }
-add_filter('tp10_postimage', 'ald_scale_thumbs', 10, 3);
+add_filter('tp10_postimage', 'ald_scale_thumbs', 10, 4);
 
 // Function to truncate daily run
 add_action('ald_tptn_hook', 'ald_tptn');
