@@ -59,15 +59,18 @@ function tptn_options() {
 		$tptn_settings[exclude_categories] = substr($exclude_categories, 0, -2);
 
 		// Cron maintenance functions
-		$tptn_settings[cron_hour] = intval($_POST['cron_hour']);
-		$tptn_settings[cron_min] = intval($_POST['cron_min']);
-		$tptn_settings[cron_recurrence] = $_POST['cron_recurrence'];
-		if ($_POST['cron_on']) {
+		if ( ($_POST['cron_on']) && ( ($tptn_settings[cron_on]==false) || (intval($_POST['cron_hour'])!=$tptn_settings[cron_hour]) || (intval($_POST['cron_min'])!=$tptn_settings[cron_min]) || ($_POST['cron_recurrence']!=$tptn_settings[cron_recurrence]) ) ) {
 			$tptn_settings[cron_on] = true;
+			$tptn_settings[cron_hour] = intval($_POST['cron_hour']);
+			$tptn_settings[cron_min] = intval($_POST['cron_min']);
+			$tptn_settings[cron_recurrence] = $_POST['cron_recurrence'];
+			
 			tptn_enable_run($tptn_settings[cron_hour], $tptn_settings[cron_min], $tptn_settings[cron_recurrence]);
-		} else {
+			echo '<div id="message" class="updated fade"><p>' . __('Scheduled maintenance enabled / modified',TPTN_LOCAL_NAME) .'</p></div>';
+		} elseif ($_POST['cron_on']==false) {
 			$tptn_settings[cron_on] = false;
 			tptn_disable_run();
+			echo '<div id="message" class="updated fade"><p>'. __('Scheduled maintenance disabled',TPTN_LOCAL_NAME) .'</p></div>';
 		}
 			
 		update_option('ald_tptn_settings', $tptn_settings);
@@ -263,7 +266,7 @@ function tptn_options() {
 			<td><input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_meta])); ?>"> <br /><?php _e('The value of this field should contain the image source and is set in the <em>Add New Post</em> screen',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="scan_images"><?php _e('If the postmeta is not set, then should the plugin extract the first image from the post?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings[scan_images]) echo 'checked="checked"' ?> /> <br /><?php _e('This can slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings[scan_images]) echo 'checked="checked"' ?> /> <br /><?php _e('This could slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_default_show"><?php _e('Use default thumbnail? ',TPTN_LOCAL_NAME); ?></label></th>
 			<td><input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings[thumb_default_show]) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></td>
@@ -289,9 +292,14 @@ function tptn_options() {
 		  <?php _e('Maintenance',TPTN_LOCAL_NAME); ?>
 		</h3>
 			<table class="form-table">
+			<tr style="vertical-align: top; "><th scope="row" colspan="2">
+			<?php _e('Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs.',TPTN_LOCAL_NAME); ?>
+			<em><?php _e('Note: When scheduled maintenance is enabled, WordPress will run the cron job everytime the job is rescheduled (i.e. you change the settings below). This causes the daily posts table to reset.',TPTN_LOCAL_NAME); ?></em>
+			</th>
+			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="cron_on"><?php _e('Enable scheduled maintenance of daily tables:',TPTN_LOCAL_NAME); ?></label></th>
 			<td><input type="checkbox" name="cron_on" id="cron_on" <?php if ($tptn_settings[cron_on]) echo 'checked="checked"' ?> />
-			<br /><?php _e('Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs',TPTN_LOCAL_NAME); ?>
+			<br />
 			</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="cron_hour"><?php _e('Time to run maintenance',TPTN_LOCAL_NAME); ?></label></th>

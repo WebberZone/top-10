@@ -45,11 +45,17 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9 =
-* Timthumb support; performance tweaks; cleaner settings page; new dashboard widget; new default thumbnail; custom CSS; scheduled maintenance and more...
-
+= 1.9.1 =
+* Fixed: Plugin will now only reschedule the cron job if there any settings are changed related to it.
+* Modified: If timthumb is disabled, WordPress post thumbnails are no longer resized using timthumb.
+* Modified: Extra check for post featured thumbnails to ensure that the src is not missed.
 
 == Changelog ==
+
+= 1.9.1 =
+* Fixed: Plugin will now only reschedule the cron job if there any settings are changed related to it
+* Modified: If timthumb is disabled, WordPress post thumbnails are no longer resized using timthumb
+* Modified: Extra check for post featured thumbnails to ensure that the src is not missed
 
 = 1.9 =
 * Added: Option to use timthumb to resize thumbnails
@@ -206,10 +212,6 @@ The plugin selects thumbnails in the following order:
 
 The plugin uses <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> to generate thumbnails by default. Depending on the configuration of your webhost you might run into certain problems. Please check out <a href="http://www.binarymoon.co.uk/2010/11/timthumb-hints-tips/">the timthumb troubleshooting page</a> regarding permission settings for the folder and files.
 
-= Can this plugin replace Google Analytics? =
-
-Never. This plugin is designed to only track the number of pageviews on your blog posts and display the same. It cannot replace Google Analytics or any other full fledged statistics application.
-
 = Manual install =
 
 You may choose to not display the post count automatically. If you do so, then in order to display the post count, you will need to add `<?php if(function_exists('echo_tptn_post_count')) echo_tptn_post_count(); ?>`.
@@ -219,6 +221,15 @@ In order to display the most popular posts, you will need to add `<?php if(funct
 In order to display the most popular posts, you will need to add `<?php if(function_exists('tptn_show_daily_pop_posts')) tptn_show_daily_pop_posts(); ?>`.
 
 You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme.
+
+= Can this plugin replace Google Analytics? =
+
+Never. This plugin is designed to only track the number of pageviews on your blog posts and display the same. It cannot replace Google Analytics or any other full fledged statistics application.
+
+= How does the scheduled maintenance work maintenance work? =
+
+When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and truncate the `wp_top_ten_daily` table. 
+*Note: If you enable this option, WordPress will execute this job when it is scheduled the first time*
 
 == Wishlist ==
 

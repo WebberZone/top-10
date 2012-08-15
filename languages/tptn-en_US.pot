@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-12 16:55-0000\n"
+"POT-Creation-Date: 2012-08-15 07:39-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Ajay D'Souza <me@ajaydsouza.com>\n"
@@ -14,101 +14,109 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:75
+#: admin.inc.php:69
+msgid "Scheduled maintenance enabled / modified"
+msgstr ""
+
+#: admin.inc.php:73
+msgid "Scheduled maintenance disabled"
+msgstr ""
+
+#: admin.inc.php:78
 msgid "Options saved successfully."
 msgstr ""
 
-#: admin.inc.php:84
+#: admin.inc.php:87
 msgid "Options set to Default."
 msgstr ""
 
-#: admin.inc.php:90
+#: admin.inc.php:93
 msgid "Top 10 popular posts reset"
 msgstr ""
 
-#: admin.inc.php:96
+#: admin.inc.php:99
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: admin.inc.php:103
+#: admin.inc.php:106
 msgid "Duplicate rows cleaned from tables"
 msgstr ""
 
-#: admin.inc.php:124
+#: admin.inc.php:127
 msgid "General options"
 msgstr ""
 
-#: admin.inc.php:127
+#: admin.inc.php:130
 msgid "Number of popular posts to display: "
 msgstr ""
 
-#: admin.inc.php:130
+#: admin.inc.php:133
 msgid "Daily Popular should contain views of how many days? "
 msgstr ""
 
-#: admin.inc.php:133
+#: admin.inc.php:136
 msgid ""
 "Exclude Pages in display of Popular Posts? Number of views on Pages will "
 "continue to be counted."
 msgstr ""
 
-#: admin.inc.php:136
+#: admin.inc.php:139
 msgid "Exclude Categories: "
 msgstr ""
 
-#: admin.inc.php:154
+#: admin.inc.php:157
 msgid "Display number of views on:"
 msgstr ""
 
-#: admin.inc.php:155
+#: admin.inc.php:158
 msgid "Posts"
 msgstr ""
 
-#: admin.inc.php:156
+#: admin.inc.php:159
 msgid "Pages"
 msgstr ""
 
-#: admin.inc.php:159
+#: admin.inc.php:162
 msgid "Track visits of authors on their own posts?"
 msgstr ""
 
-#: admin.inc.php:163
+#: admin.inc.php:166
 msgid "Display number of page views in popular lists?"
 msgstr ""
 
-#: admin.inc.php:167
+#: admin.inc.php:170
 msgid "Force daily posts' list to be dynamic?"
 msgstr ""
 
-#: admin.inc.php:169
+#: admin.inc.php:172
 msgid ""
 "This option uses JavaScript to load the post and can increase your page load "
 "time"
 msgstr ""
 
-#: admin.inc.php:172
+#: admin.inc.php:175
 msgid "Display page views on Posts > All Posts in Admin"
 msgstr ""
 
-#: admin.inc.php:176
+#: admin.inc.php:179
 msgid "Link to Top 10 plugin page"
 msgstr ""
 
-#: admin.inc.php:178
+#: admin.inc.php:181
 msgid ""
 "A link to the plugin is added as an extra list item to the list of popular "
 "posts"
 msgstr ""
 
-#: admin.inc.php:185
+#: admin.inc.php:188
 msgid "Output Options"
 msgstr ""
 
-#: admin.inc.php:188
+#: admin.inc.php:191
 msgid "Format to display the count in: "
 msgstr ""
 
-#: admin.inc.php:191
+#: admin.inc.php:194
 msgid ""
 "Use <code>%totalcount%</code> to display the total count, <code>%dailycount"
 "%</code> to display the daily count and <code>%overallcount%</code> to "
@@ -116,344 +124,351 @@ msgid ""
 "options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr ""
 
-#: admin.inc.php:193
+#: admin.inc.php:196
 msgid "Title of popular posts: "
 msgstr ""
 
-#: admin.inc.php:196
+#: admin.inc.php:199
 msgid "Title of daily popular posts: "
 msgstr ""
 
-#: admin.inc.php:199
+#: admin.inc.php:202
 msgid "When there are no posts, what should be shown?"
 msgstr ""
 
-#: admin.inc.php:203
+#: admin.inc.php:206
 msgid "Blank Output"
 msgstr ""
 
-#: admin.inc.php:207
+#: admin.inc.php:210
 msgid "Display:"
 msgstr ""
 
-#: admin.inc.php:211
+#: admin.inc.php:214
 msgid "Show post excerpt in list?"
 msgstr ""
 
-#: admin.inc.php:214
+#: admin.inc.php:217
 msgid "Length of excerpt (in words): "
 msgstr ""
 
-#: admin.inc.php:217
+#: admin.inc.php:220
 msgid "Customize the output:"
 msgstr ""
 
-#: admin.inc.php:219
+#: admin.inc.php:222
 msgid "HTML to display before the list of posts: "
 msgstr ""
 
-#: admin.inc.php:222
+#: admin.inc.php:225
 msgid "HTML to display before each list item: "
 msgstr ""
 
-#: admin.inc.php:225
+#: admin.inc.php:228
 msgid "HTML to display after each list item: "
 msgstr ""
 
-#: admin.inc.php:228
+#: admin.inc.php:231
 msgid "HTML to display after the list of posts: "
 msgstr ""
 
-#: admin.inc.php:231
+#: admin.inc.php:234
 msgid "Post thumbnail options:"
 msgstr ""
 
-#: admin.inc.php:233
+#: admin.inc.php:236
 msgid "Location of post thumbnail:"
 msgstr ""
 
-#: admin.inc.php:237
+#: admin.inc.php:240
 msgid "Display thumbnails inline with posts, before title"
 msgstr ""
 
-#: admin.inc.php:241
+#: admin.inc.php:244
 msgid "Display thumbnails inline with posts, after title"
 msgstr ""
 
-#: admin.inc.php:245
+#: admin.inc.php:248
 msgid "Display only thumbnails, no text"
 msgstr ""
 
-#: admin.inc.php:249
+#: admin.inc.php:252
 msgid "Do not display thumbnails, only text."
 msgstr ""
 
-#: admin.inc.php:253
+#: admin.inc.php:256
 msgid "Maximum width of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:256
+#: admin.inc.php:259
 msgid "Maximum height of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:259
+#: admin.inc.php:262
 msgid "Use timthumb to generate thumbnails? "
 msgstr ""
 
-#: admin.inc.php:260
+#: admin.inc.php:263
 msgid ""
 "If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/"
 "\">timthumb</a> will be used to generate thumbnails"
 msgstr ""
 
-#: admin.inc.php:262
+#: admin.inc.php:265
 msgid "Post thumbnail meta field name: "
 msgstr ""
 
-#: admin.inc.php:263
+#: admin.inc.php:266
 msgid ""
 "The value of this field should contain the image source and is set in the "
 "<em>Add New Post</em> screen"
 msgstr ""
 
-#: admin.inc.php:265
+#: admin.inc.php:268
 msgid ""
 "If the postmeta is not set, then should the plugin extract the first image "
 "from the post?"
 msgstr ""
 
-#: admin.inc.php:266
+#: admin.inc.php:269
 msgid ""
-"This can slow down the loading of your page if the first image in the "
+"This could slow down the loading of your page if the first image in the "
 "related posts is large in file-size"
 msgstr ""
 
-#: admin.inc.php:268
+#: admin.inc.php:271
 msgid "Use default thumbnail? "
 msgstr ""
 
-#: admin.inc.php:269
+#: admin.inc.php:272
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: admin.inc.php:271
+#: admin.inc.php:274
 msgid "Default thumbnail: "
 msgstr ""
 
-#: admin.inc.php:272
+#: admin.inc.php:275
 msgid ""
 "The plugin will first check if the post contains a thumbnail. If it doesn't "
 "then it will check the meta field. If this is not available, then it will "
 "show the default image as specified above"
 msgstr ""
 
-#: admin.inc.php:278
+#: admin.inc.php:281
 msgid "Custom Styles"
 msgstr ""
 
-#: admin.inc.php:281
+#: admin.inc.php:284
 msgid "Custom CSS to add to header:"
 msgstr ""
 
-#: admin.inc.php:284
+#: admin.inc.php:287
 msgid ""
 "Do not include <code>style</code> tags. Check out the <a href=\"http://"
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> for "
 "available CSS classes to style."
 msgstr ""
 
-#: admin.inc.php:289
+#: admin.inc.php:292
 msgid "Maintenance"
 msgstr ""
 
-#: admin.inc.php:292
-msgid "Enable scheduled maintenance of daily tables:"
-msgstr ""
-
-#: admin.inc.php:294
+#: admin.inc.php:296
 msgid ""
 "Over time the Daily Top 10 database grows in size, which reduces the "
 "performance of the plugin. Cleaning the database at regular intervals could "
-"improve performance, especially on high traffic blogs"
+"improve performance, especially on high traffic blogs."
 msgstr ""
 
 #: admin.inc.php:297
-msgid "Time to run maintenance"
+msgid ""
+"Note: When scheduled maintenance is enabled, WordPress will run the cron job "
+"everytime the job is rescheduled (i.e. you change the settings below). This "
+"causes the daily posts table to reset."
 msgstr ""
 
 #: admin.inc.php:300
-msgid "How often should the maintenance be run:"
+msgid "Enable scheduled maintenance of daily tables:"
 msgstr ""
 
-#: admin.inc.php:304
-msgid "Daily"
+#: admin.inc.php:305
+msgid "Time to run maintenance"
 msgstr ""
 
 #: admin.inc.php:308
-msgid "Weekly"
+msgid "How often should the maintenance be run:"
 msgstr ""
 
 #: admin.inc.php:312
-msgid "Fortnightly"
+msgid "Daily"
 msgstr ""
 
 #: admin.inc.php:316
+msgid "Weekly"
+msgstr ""
+
+#: admin.inc.php:320
+msgid "Fortnightly"
+msgstr ""
+
+#: admin.inc.php:324
 msgid "Monthly"
 msgstr ""
 
-#: admin.inc.php:325
+#: admin.inc.php:333
 msgid "The cron job has been scheduled. Maintenance will run "
 msgstr ""
 
-#: admin.inc.php:330
+#: admin.inc.php:338
 msgid "The cron job is missing. Please resave this page to add the job"
 msgstr ""
 
-#: admin.inc.php:335
+#: admin.inc.php:343
 msgid "Maintenance is turned off"
 msgstr ""
 
-#: admin.inc.php:343
+#: admin.inc.php:351
 msgid "Reset count"
 msgstr ""
 
-#: admin.inc.php:346
+#: admin.inc.php:354
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
 msgstr ""
 
-#: admin.inc.php:349
+#: admin.inc.php:357
 msgid "Reset Popular Posts"
 msgstr ""
 
-#: admin.inc.php:349
+#: admin.inc.php:357
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: admin.inc.php:350
+#: admin.inc.php:358
 msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: admin.inc.php:350
+#: admin.inc.php:358
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: admin.inc.php:351
+#: admin.inc.php:359
 msgid "Clear duplicates"
 msgstr ""
 
-#: admin.inc.php:351
+#: admin.inc.php:359
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: admin.inc.php:355
+#: admin.inc.php:363
 msgid "Save Options"
 msgstr ""
 
-#: admin.inc.php:356
+#: admin.inc.php:364
 msgid "Default Options"
 msgstr ""
 
-#: admin.inc.php:356
+#: admin.inc.php:364
 msgid "Do you want to set options to Default?"
 msgstr ""
 
-#: admin.inc.php:382 admin.inc.php:461 admin.inc.php:667 top-10.php:258
+#: admin.inc.php:390 admin.inc.php:469 admin.inc.php:675 top-10.php:258
 msgid "Popular Posts"
 msgstr ""
 
-#: admin.inc.php:382
+#: admin.inc.php:390
 msgid "Daily Popular Posts"
 msgstr ""
 
-#: admin.inc.php:404
+#: admin.inc.php:412
 msgid "Support the development"
 msgstr ""
 
-#: admin.inc.php:412
+#: admin.inc.php:420
 msgid "Enter amount in USD: "
 msgstr ""
 
-#: admin.inc.php:416
+#: admin.inc.php:424
 msgid "Send your donation to the author of"
 msgstr ""
 
-#: admin.inc.php:422
+#: admin.inc.php:430
 msgid "Follow us on Facebook"
 msgstr ""
 
-#: admin.inc.php:426
+#: admin.inc.php:434
 msgid "Quick Links"
 msgstr ""
 
-#: admin.inc.php:428
+#: admin.inc.php:436
 msgid "Top 10 plugin page"
 msgstr ""
 
-#: admin.inc.php:429
+#: admin.inc.php:437
 msgid "Other plugins"
 msgstr ""
 
-#: admin.inc.php:430
+#: admin.inc.php:438
 msgid "Ajay's blog"
 msgstr ""
 
-#: admin.inc.php:431 top-10.php:583
+#: admin.inc.php:439 top-10.php:588
 msgid "Support"
 msgstr ""
 
-#: admin.inc.php:432
+#: admin.inc.php:440
 msgid "Follow @ajaydsouza on Twitter"
 msgstr ""
 
-#: admin.inc.php:436
+#: admin.inc.php:444
 msgid "Recent developments"
 msgstr ""
 
-#: admin.inc.php:459 admin.inc.php:461
+#: admin.inc.php:467 admin.inc.php:469
 msgid "Top 10"
 msgstr ""
 
-#: admin.inc.php:575
+#: admin.inc.php:583
 msgid "Results"
 msgstr ""
 
-#: admin.inc.php:577 admin.inc.php:583
+#: admin.inc.php:585 admin.inc.php:591
 msgid "of"
 msgstr ""
 
-#: admin.inc.php:581
+#: admin.inc.php:589
 msgid "Page"
 msgstr ""
 
-#: admin.inc.php:595
+#: admin.inc.php:603
 msgid "View Daily Popular Posts"
 msgstr ""
 
-#: admin.inc.php:599
+#: admin.inc.php:607
 msgid "View Overall Popular Posts"
 msgstr ""
 
-#: admin.inc.php:603
+#: admin.inc.php:611
 msgid "Results per-page:"
 msgstr ""
 
-#: admin.inc.php:627
+#: admin.inc.php:635
 msgid "Previous"
 msgstr ""
 
-#: admin.inc.php:645
+#: admin.inc.php:653
 msgid "Next"
 msgstr ""
 
-#: admin.inc.php:668
+#: admin.inc.php:676
 msgid "Daily Popular"
 msgstr ""
 
-#: admin.inc.php:679
+#: admin.inc.php:687
 msgid "Total / Today's Views"
 msgstr ""
 
@@ -517,22 +532,22 @@ msgstr ""
 msgid "No top posts yet"
 msgstr ""
 
-#: top-10.php:560
+#: top-10.php:565
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:561
+#: top-10.php:566
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:562
+#: top-10.php:567
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:582
+#: top-10.php:587
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:584
+#: top-10.php:589
 msgid "Donate"
 msgstr ""

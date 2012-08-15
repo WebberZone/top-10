@@ -34,9 +34,9 @@ if (!function_exists(ald_get_the_post_thumbnail)) { function ald_get_the_post_th
 	$output = '';
 	$title = get_the_title($postid);
 	
-	if (function_exists('has_post_thumbnail') && has_post_thumbnail($result->ID)) {
+	if (function_exists('has_post_thumbnail') && ( (wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) )!='') || (wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) )!= false) ) ) {
 		$postimage = wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) );
-		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height );
+		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height, $thumb_timthumb );
 		$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" style="max-width:'.$thumb_width.'px;max-height:'.$thumb_height.'px;" border="0" class="'.$class.'" />';
 
 //		$output .= get_the_post_thumbnail($result->ID, array($thumb_width,$thumb_height), array('title' => $title,'alt' => $title, 'class' => $class, 'border' => '0'));
