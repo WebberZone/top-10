@@ -1,10 +1,10 @@
-=== Top 10 ===
+=== Top 10  - Popular posts plugin for WordPress ===
 Tags: top 10, counter, popular posts, top posts, daily popular, page views, statistics
 Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.0
-Tested up to: 3.5
+Tested up to: 3.6
 License: GPLv2 or later
 
 
@@ -45,12 +45,17 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.1 =
-* Fixed: Plugin will now only reschedule the cron job if there any settings are changed related to it.
-* Modified: If timthumb is disabled, WordPress post thumbnails are no longer resized using timthumb.
-* Modified: Extra check for post featured thumbnails to ensure that the src is not missed.
+= 1.9.2 =
+* New menu structure, new option to exclude tracking of admin visits, performance improvements, bug fixes
 
 == Changelog ==
+
+= 1.9.2 =
+* Added: Top 10 now has its own menu in the administration area. Access settings and view your top posts directly under the new menu: "Top 10"
+* Added: New classes **tptn_counter** and **tptn_list_count** to style the displayed count
+* Added: New option "Always display latest count for the post" to not use JavaScript to display the counts for a post. This speeds up since no external JS file is used to display the count. Ideal for those not using caching plugins or are not particularly worried if the counts are slightly older.
+* Fixed: PHP notices when WP_DEBUG is turned on
+* Modified: Updated timthumb.php
 
 = 1.9.1 =
 * Fixed: Plugin will now only reschedule the cron job if there any settings are changed related to it
@@ -164,11 +169,11 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 3. Activate the Plugin in WP-Admin. 
 
-4. Goto **Settings &raquo; Top 10** to configure
+4. Go to **Top 10** to configure
 
-5. Goto **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
+5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
 
-6. Goto **Posts &raquo; Top 10** to view the list of popular posts
+6. Go to **Top 10 &raquo; Overall Popular Posts** and **Top 10 &raquo; Daily Popular Posts** to view the list of popular posts
 
 
 
@@ -193,6 +198,10 @@ The following CSS classes / IDs are available:
 * **tptn_excerpt**: Class of the `span` tag for excerpt (if included)
 
 * **tptn_thumb**: Class of the post thumbnail `img` tag
+
+* **tptn_list_count**: Class of the `span` tag for post count in top posts list
+
+* **tptn_counter**: Class of the `div` tag that wraps the post count that is driven by the field "Format to display the count in: " under 'Output Options'
 
 For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
 
@@ -245,7 +254,7 @@ Below are a few features that I plan on implementing in future versions of the p
 * Multi-site support
 * Ready-made styles
 * Upload your own default thumbnail
-* Retain select historic data when running the scheduled maintenance
+
 
 If you would like a feature to be added, or if you already have the code for the feature, you can let us know by <a href="http://wordpress.org/support/plugin/top-10">posting in this forum</a>.
 

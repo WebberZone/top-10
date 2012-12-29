@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.1
+Version:     1.9.2
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -50,31 +50,36 @@ function ald_tptn_init() {
 add_action('init', 'ald_tptn_init');
 
 /*********************************************************************
-*				Main Function (Do not edit)							*
+*				Main Functions 										*
 ********************************************************************/
 // Update post views
 add_filter('the_content','tptn_add_viewed_count');
 function tptn_add_viewed_count($content) {
 	global $post, $wpdb, $single,$tptn_url,$tptn_path;
 	$table_name = $wpdb->prefix . "top_ten";
-	$tptn_settings = tptn_read_options();
-	
-	$current_user = wp_get_current_user(); 
-	$post_author = ( $current_user->ID == $post->post_author ? true : false );
 
 	if((is_single() || is_page())) {
-		if (!(($post_author)&&(!$tptn_settings['track_authors']))) {
+
+		$tptn_settings = tptn_read_options();
+	
+		$current_user = wp_get_current_user(); 
+		$post_author = ( $current_user->ID == $post->post_author ? true : false );
+		$current_user_admin = ( (current_user_can( 'manage_options' )) ? true : false );
+		
+		$include_code = true;
+		if ( ($post_author) && (!$tptn_settings['track_authors']) ) $include_code = false;
+		if ( ($current_user_admin) && (!$tptn_settings['track_admins']) ) $include_code = false;
+
+		if ($include_code) {
 			$id = intval($post->ID);
 			$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
 			return $content.$output;
-		}
-		else {
+		} else {
 			return $content;
 		} 
-	}
-	else {
+	} else {
 		return $content;
-	} 
+	}
 }
 
 
@@ -85,11 +90,9 @@ function tptn_pc_content($content) {
 	$id = intval($post->ID);
 
 	if((is_single())&&($tptn_settings['add_to_content'])) {
-		$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
-		return $content.$output;
+		return $content.echo_tptn_post_count(0);
 	} elseif((is_page())&&($tptn_settings['count_on_pages'])) {
-		$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
-		return $content.$output;
+		return $content.echo_tptn_post_count(0);
 	} else {
 		return $content;
 	}
@@ -97,12 +100,69 @@ function tptn_pc_content($content) {
 add_filter('the_content', 'tptn_pc_content');
 
 // Function to manually display count
-function echo_tptn_post_count() {
+function echo_tptn_post_count($echo=1) {
 	global $post,$tptn_url,$tptn_path;
+	$tptn_settings = tptn_read_options();
 	$id = intval($post->ID);
+	
+	$nonce_action = 'tptn-nonce-'.$id;
+    $nonce = wp_create_nonce($nonce_action);
 
-	$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'"></script>';
-	echo $output;
+	if ($tptn_settings['dynamic_post_count']) {
+		$output = '<div class="tptn_counter" id="tptn_counter_'.$id.'"><script type="text/javascript" src="'.$tptn_url.'/top-10-counter.js.php?top_ten_id='.$id.'&amp;_wpnonce='.$nonce.'"></script></div>';
+	} else {
+		$output = '<div class="tptn_counter" id="tptn_counter_'.$id.'">'.get_tptn_post_count($id).'</div>';
+	}
+	
+	if ($echo) {
+		echo $output;
+	} else {
+		return $output;
+	}
+}
+
+// Return the post count
+function get_tptn_post_count($id) {
+	global $wpdb;
+	
+	$table_name = $wpdb->prefix . "top_ten";
+	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	$tptn_settings = tptn_read_options();
+	$count_disp_form = stripslashes($tptn_settings['count_disp_form']);
+	
+	if($id > 0) {
+
+		// Total count per post
+		if (strpos($count_disp_form, "%totalcount%") !== false) {
+			$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
+			$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 1));
+			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
+		}
+		
+		// Now process daily count
+		if (strpos($count_disp_form, "%dailycount%") !== false) {
+			$daily_range = $tptn_settings['daily_range'];
+			$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+			$current_date = date ( 'Y-m-j' , $current_date );
+	
+			$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
+			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
+			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
+		}
+		
+		// Now process overall count
+		if (strpos($count_disp_form, "%overallcount%") !== false) {
+			$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
+			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
+			$count_disp_form = str_replace("%overallcount%", $cntaccess, $count_disp_form);
+		}
+				
+		
+		return $count_disp_form;
+	} else {
+		return 0;
+	}
 }
 
 // Function to return popular posts
@@ -128,7 +188,6 @@ function tptn_pop_posts( $args ) {
 }
 
 function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $show_excerpt = false, $post_thumb_op = 'text_only', $daily_range = '1' ) {
-// function get_tptn_pop_posts( $daily = false , $widget = false, $limit, $show_excerpt, $post_thumb_op, $daily_range ) {
 	global $wpdb, $siteurl, $tableposts, $id;
 	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
 		else $table_name = $wpdb->prefix . "top_ten";
@@ -193,16 +252,16 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 					$output .= $title; // Add title if post thumbnail is to be displayed after
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='after' || $post_thumb_op=='thumbs_only') {
-					$output .= ald_get_the_post_thumbnail('postid='.$result->postnumber.'&thumb_height='.$tptn_settings[thumb_height].'&thumb_width='.$tptn_settings[thumb_width].'&thumb_meta='.$tptn_settings[thumb_meta].'&thumb_default='.$tptn_settings[thumb_default].'&thumb_default_show='.$tptn_settings[thumb_default_show].'&thumb_timthumb='.$tptn_settings[thumb_timthumb].'&scan_images='.$tptn_settings[scan_images].'&class=tptn_thumb&filter=tp10_postimage');
+					$output .= tptn_get_the_post_thumbnail('postid='.$result->postnumber.'&thumb_height='.$tptn_settings['thumb_height'].'&thumb_width='.$tptn_settings['thumb_width'].'&thumb_meta='.$tptn_settings['thumb_meta'].'&thumb_default='.$tptn_settings['thumb_default'].'&thumb_default_show='.$tptn_settings['thumb_default_show'].'&thumb_timthumb='.$tptn_settings['thumb_timthumb'].'&scan_images='.$tptn_settings['scan_images'].'&class=tptn_thumb&filter=tptn_postimage');
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='text_only') {
 					$output .= $title; // Add title when required by settings
 				}
 				$output .= '</a>'; // Close the link
 				if ($show_excerpt) {
-					$output .= '<span class="tptn_excerpt"> '.ald_excerpt($result->postnumber,$tptn_settings['excerpt_length']).'</span>';
+					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->postnumber,$tptn_settings['excerpt_length']).'</span>';
 				}
-				if ($tptn_settings['disp_list_count']) $output .= ' ('.number_format($result->sumCount).')';
+				if ($tptn_settings['disp_list_count']) $output .= ' <span class="tptn_list_count">('.number_format($result->sumCount).')</span>';
 		        
 				$output .= $tptn_settings['after_list_item'];
 				$counter++; 
@@ -241,7 +300,7 @@ function tptn_header() {
 	global $wpdb, $post, $single;
 
 	$tptn_settings = tptn_read_options();
-	$tptn_custom_CSS = stripslashes($tptn_settings[custom_CSS]);
+	$tptn_custom_CSS = stripslashes($tptn_settings['custom_CSS']);
 	
 	// Add CSS to header 
 	if ($tptn_custom_CSS != '') {
@@ -249,7 +308,9 @@ function tptn_header() {
 	}
 }
 	
-// Create a Wordpress Widget for Popular Posts
+/*********************************************************************
+*				WordPress Widgets									*
+********************************************************************/
 class WidgetTopTen extends WP_Widget
 {
 	function WidgetTopTen()
@@ -320,13 +381,13 @@ class WidgetTopTen extends WP_Widget
 		
 		$tptn_settings = tptn_read_options();
 
-		$title = apply_filters('widget_title', empty($instance['title']) ? strip_tags($tptn_settings[title]) : $instance['title']);
+		$title = apply_filters('widget_title', empty($instance['title']) ? strip_tags($tptn_settings['title']) : $instance['title']);
 		$limit = $instance['limit'];
 		$show_excerpt = $instance['show_excerpt'];
 		$post_thumb_op = $instance['post_thumb_op'];
-		if (empty($limit)) $limit = $tptn_settings[limit];
+		if (empty($limit)) $limit = $tptn_settings['limit'];
 		$daily_range = $instance['daily_range'];
-		if (empty($daily_range)) $daily_range = $tptn_settings[daily_range];
+		if (empty($daily_range)) $daily_range = $tptn_settings['daily_range'];
 		$daily = $instance['daily'];
 		$daily = (($daily=="daily") ? true : false);
 
@@ -361,6 +422,9 @@ function init_tptn(){
 add_action('init', 'init_tptn', 1); 
 
 
+/*********************************************************************
+*				Default options										*
+********************************************************************/
 // Default Options
 function tptn_default_options() {
 	global $tptn_url;
@@ -375,11 +439,13 @@ function tptn_default_options() {
 						'exclude_pages' => true,			// Exclude Pages
 						'count_on_pages' => true,			// Display on pages
 						'track_authors' => false,			// Track Authors visits
+						'track_admins' => true,			// Track Admin visits
 						'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
-						'blank_output' => true,		// Blank output?
+						'blank_output' => false,		// Blank output? Default is "blank Output test"
 						'blank_output_text' => $blank_output_text,		// Blank output text
 						'disp_list_count' => true,		// Display count in popular lists?
 						'd_use_js' => false,				// Use JavaScript for displaying daily posts
+						'dynamic_post_count' => true,		// Use JavaScript for displaying the post count
 						'count_disp_form' => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
 						'title' => $title,				// Title of Popular Posts
 						'title_daily' => $title_daily,	// Title of Daily Popular
@@ -517,8 +583,11 @@ function tptn_trunc_count($daily = false) {
 	$wpdb->query($sql);
 }
 
+/*********************************************************************
+*				Utility Functions									*
+********************************************************************/
 // Filter function to resize post thumbnail. Filters out tp10_postimage
-function ald_scale_thumbs($postimage, $thumb_width, $thumb_height, $thumb_timthumb) {
+function tptn_scale_thumbs($postimage, $thumb_width, $thumb_height, $thumb_timthumb) {
 	global $ald_url;
 	
 	if ($thumb_timthumb) {
@@ -528,8 +597,95 @@ function ald_scale_thumbs($postimage, $thumb_width, $thumb_height, $thumb_timthu
 	}
 	return $new_pi;
 }
-add_filter('tp10_postimage', 'ald_scale_thumbs', 10, 4);
+add_filter('tptn_postimage', 'tptn_scale_thumbs', 10, 4);
 
+// Function to get the post thumbnail
+function tptn_get_the_post_thumbnail($args = array()) {
+
+	global $ald_url;
+	$defaults = array(
+		'postid' => '',
+		'thumb_height' => '50',			// Max height of thumbnails
+		'thumb_width' => '50',			// Max width of thumbnails
+		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
+		'thumb_default' => '',	// Default thumbnail image
+		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
+		'thumb_timthumb' => true,	// Use timthumb
+		'scan_images' => false,			// Scan post for images
+		'class' => 'tptn_thumb',			// Class of the thumbnail
+		'filter' => 'tptn_postimage',			// Class of the thumbnail
+	);
+	
+	// Parse incomming $args into an array and merge it with $defaults
+	$args = wp_parse_args( $args, $defaults );
+	
+	// OPTIONAL: Declare each item in $args as its own variable i.e. $type, $before.
+	extract( $args, EXTR_SKIP );
+
+	$result = get_post($postid);
+
+	$output = '';
+	$title = get_the_title($postid);
+	
+	if (function_exists('has_post_thumbnail') && ( (wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) )!='') || (wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) )!= false) ) ) {
+		$postimage = wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) );
+		
+		if ( ($postimage[1] < $thumb_width) || ($postimage[2] < $thumb_height) ) $postimage = wp_get_attachment_image_src( get_post_thumbnail_id($result->ID) , 'full' ); 
+		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height, $thumb_timthumb );
+		$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" style="max-width:'.$thumb_width.'px;max-height:'.$thumb_height.'px;" border="0" class="'.$class.'" />';
+
+//		$output .= get_the_post_thumbnail($result->ID, array($thumb_width,$thumb_height), array('title' => $title,'alt' => $title, 'class' => $class, 'border' => '0'));
+	} else {
+		$postimage = get_post_meta($result->ID, $thumb_meta, true);	// Check
+		if (!$postimage && $scan_images) {
+			preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
+			// any image there?
+			if (isset($matches) && $matches[1][0]) {
+				if (((strpos($matches[1][0], parse_url(get_option('home'),PHP_URL_HOST)) !== false) && (strpos($matches[1][0], 'http://') !== false))|| ((strpos($matches[1][0], 'http://') === false))) {
+					$postimage = $matches[1][0]; // we need the first one only!
+				}
+			}
+		}
+		if (!$postimage) $postimage = get_post_meta($result->ID, '_video_thumbnail', true); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
+		if ($thumb_default_show && !$postimage) $postimage = $thumb_default; // If no thumb found and settings permit, use default thumb
+		if ($postimage) {
+			if ($thumb_timthumb) {
+				$output .= '<img src="'.$ald_url.'/timthumb/timthumb.php?src='.urlencode($postimage).'&amp;w='.$thumb_width.'&amp;h='.$thumb_height.'&amp;zc=1&amp;q=75" alt="'.$title.'" title="'.$title.'" style="max-width:'.$thumb_width.'px;max-height:'.$thumb_height.'px;" border="0" class="'.$class.'" />';
+			} else {
+				$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" style="max-width:'.$thumb_width.'px;max-height:'.$thumb_height.'px;" border="0" class="'.$class.'" />';
+			}
+		}
+	}
+	
+	return $output;
+}
+
+// Function to create an excerpt for the post
+function tptn_excerpt($postid,$excerpt_length){
+	$content = get_post($postid)->post_excerpt;
+	if ($content=='') $content = get_post($postid)->post_content;
+	$out = strip_tags($content);
+	$blah = explode(' ',$out);
+	if (!$excerpt_length) $excerpt_length = 10;
+	if(count($blah) > $excerpt_length){
+		$k = $excerpt_length;
+		$use_dotdotdot = 1;
+	}else{
+		$k = count($blah);
+		$use_dotdotdot = 0;
+	}
+	$excerpt = '';
+	for($i=0; $i<$k; $i++){
+		$excerpt .= $blah[$i].' ';
+	}
+	$excerpt .= ($use_dotdotdot) ? '...' : '';
+	$out = $excerpt;
+	return $out;
+}
+
+/*********************************************************************
+*				Cron Functions 										*
+********************************************************************/
 // Function to truncate daily run
 add_action('ald_tptn_hook', 'ald_tptn');
 function ald_tptn() {
@@ -541,10 +697,10 @@ function tptn_enable_run($hour, $min, $recurrence) {
 	if (function_exists('wp_schedule_event')) {
 		// Invoke WordPress internal cron
 		if (!wp_next_scheduled('ald_tptn_hook')) {
-			wp_schedule_event( mktime($hour,$min), $recurrence, 'ald_tptn_hook' );
+			wp_schedule_event( mktime($hour,$min, 0), $recurrence, 'ald_tptn_hook' );
 		} else {
 			wp_clear_scheduled_hook('ald_tptn_hook');
-			wp_schedule_event( mktime($hour,$min), $recurrence, 'ald_tptn_hook' );
+			wp_schedule_event( mktime($hour,$min, 0), $recurrence, 'ald_tptn_hook' );
 		}
 	}
 }
@@ -570,30 +726,43 @@ function ald_more_reccurences() {
 add_filter('cron_schedules', 'ald_more_reccurences');
 }
 
-// Include framework file
-	require_once(ALD_TPTN_DIR . "/ald-framework.inc.php");
 
+/*********************************************************************
+*				Admin interface										*
+********************************************************************/
 
 // This function adds an Options page in WP Admin
 if (is_admin() || strstr($_SERVER['PHP_SELF'], 'wp-admin/')) {
 	require_once(ALD_TPTN_DIR . "/admin.inc.php");
 
-// Add meta links
-function tptn_plugin_actions( $links, $file ) {
-	$plugin = plugin_basename(__FILE__);
- 
-	// create link
-	if ($file == $plugin) {
-		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>';
-		$links[] = '<a href="http://ajaydsouza.com/support/">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
-		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', TPTN_LOCAL_NAME ) . '</a>';
+	// Adding WordPress plugin action links
+	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'tptn_plugin_actions_links' );
+	function tptn_plugin_actions_links( $links ) {
+	
+		return array_merge(
+			array(
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>'
+			),
+			$links
+		);
+	
 	}
-	return $links;
-}
-global $wp_version;
-if ( version_compare( $wp_version, '2.8alpha', '>' ) )
-	add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 ); // only 2.8 and higher
-else add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
+	// Add meta links
+	function tptn_plugin_actions( $links, $file ) {
+		$plugin = plugin_basename(__FILE__);
+	 
+		// create link
+		if ($file == $plugin) {
+	//		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>';
+			$links[] = '<a href="http://ajaydsouza.com/support/">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
+			$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', TPTN_LOCAL_NAME ) . '</a>';
+		}
+		return $links;
+	}
+	global $wp_version;
+	if ( version_compare( $wp_version, '2.8alpha', '>' ) )
+		add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 ); // only 2.8 and higher
+	else add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
 
 } // End admin.inc
 
