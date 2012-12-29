@@ -2,14 +2,24 @@
 //"top-10-addcount.js.php" Add count to database
 Header("content-type: application/x-javascript");
 
-if (!function_exists('add_action')) {
-	$wp_root = '../../..';
-	if (file_exists($wp_root.'/wp-load.php')) {
-		require_once($wp_root.'/wp-load.php');
-	} else {
-		require_once($wp_root.'/wp-config.php');
-	}
+// Force a short-init since we just need core WP, not the entire framework stack
+define( 'SHORTINIT', true );
+
+// Build the wp-config.php path from a plugin/theme
+$wp_config_path = dirname( dirname( dirname( __FILE__ ) ) );
+$wp_config_filename = '/wp-config.php';
+
+// Check if the file exists in the root or one level up
+if( !file_exists( $wp_config_path . $wp_config_filename ) ) {
+    // Just in case the user may have placed wp-config.php one more level up from the root
+    $wp_config_filename = dirname( $wp_config_path ) . $wp_config_filename;
 }
+// Require the wp-config.php file
+require( $wp_config_filename );
+
+// Include the now instantiated global $wpdb Class for use
+global $wpdb;
+
 
 // Ajax Increment Counter
 tptn_inc_count();

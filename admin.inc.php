@@ -13,62 +13,64 @@ function tptn_options() {
 
 	$tptn_settings = tptn_read_options();
 
-	if($_POST['tptn_save']){
-		$tptn_settings[title] = ($_POST['title']);
-		$tptn_settings[title_daily] = ($_POST['title_daily']);
-		$tptn_settings[daily_range] = intval($_POST['daily_range']);
-		$tptn_settings[limit] = intval($_POST['limit']);
-		$tptn_settings[count_disp_form] = ($_POST['count_disp_form']);
-		$tptn_settings[add_to_content] = (($_POST['add_to_content']) ? true : false);
-		$tptn_settings[exclude_pages] = (($_POST['exclude_pages']) ? true : false);
-		$tptn_settings[count_on_pages] = (($_POST['count_on_pages']) ? true : false);
-		$tptn_settings[track_authors] = (($_POST['track_authors']) ? true : false);
-		$tptn_settings[pv_in_admin] = (($_POST['pv_in_admin']) ? true : false);
-		$tptn_settings[disp_list_count] = (($_POST['disp_list_count']) ? true : false);
-		$tptn_settings[d_use_js] = (($_POST['d_use_js']) ? true : false);
-		$tptn_settings[show_credit] = (($_POST['show_credit']) ? true : false);
-		$tptn_settings[blank_output] = (($_POST['blank_output'] == 'blank' ) ? true : false);
-		$tptn_settings[blank_output_text] = $_POST['blank_output_text'];
+	if((isset($_POST['tptn_save']))&&($_POST['tptn_save'])) {
+		$tptn_settings['title'] = ($_POST['title']);
+		$tptn_settings['title_daily'] = ($_POST['title_daily']);
+		$tptn_settings['daily_range'] = intval($_POST['daily_range']);
+		$tptn_settings['limit'] = intval($_POST['limit']);
+		$tptn_settings['count_disp_form'] = ($_POST['count_disp_form']);
+		$tptn_settings['add_to_content'] = (isset($_POST['add_to_content']) ? true : false);
+		$tptn_settings['exclude_pages'] = (isset($_POST['exclude_pages']) ? true : false);
+		$tptn_settings['count_on_pages'] = (isset($_POST['count_on_pages']) ? true : false);
+		$tptn_settings['track_authors'] = (isset($_POST['track_authors']) ? true : false);
+		$tptn_settings['track_admins'] = (isset($_POST['track_admins']) ? true : false);
+		$tptn_settings['pv_in_admin'] = (isset($_POST['pv_in_admin']) ? true : false);
+		$tptn_settings['disp_list_count'] = (isset($_POST['disp_list_count']) ? true : false);
+		$tptn_settings['d_use_js'] = (isset($_POST['d_use_js']) ? true : false);
+		$tptn_settings['dynamic_post_count'] = (isset($_POST['dynamic_post_count']) ? true : false);
+		$tptn_settings['show_credit'] = (isset($_POST['show_credit']) ? true : false);
+		$tptn_settings['blank_output'] = (($_POST['blank_output'] == 'blank' ) ? true : false);
+		$tptn_settings['blank_output_text'] = $_POST['blank_output_text'];
 
-		$tptn_settings[post_thumb_op] = $_POST['post_thumb_op'];
-		$tptn_settings[before_list] = $_POST['before_list'];
-		$tptn_settings[after_list] = $_POST['after_list'];
-		$tptn_settings[before_list_item] = $_POST['before_list_item'];
-		$tptn_settings[after_list_item] = $_POST['after_list_item'];
-		$tptn_settings[thumb_meta] = $_POST['thumb_meta'];
-		$tptn_settings[thumb_default] = $_POST['thumb_default'];
-		$tptn_settings[thumb_height] = intval($_POST['thumb_height']);
-		$tptn_settings[thumb_width] = intval($_POST['thumb_width']);
-		$tptn_settings[thumb_default_show] = (($_POST['thumb_default_show']) ? true : false);
-		$tptn_settings[thumb_timthumb] = (($_POST['thumb_timthumb']) ? true : false);
-		$tptn_settings[scan_images] = (($_POST['scan_images']) ? true : false);
-		$tptn_settings[show_excerpt] = (($_POST['show_excerpt']) ? true : false);
-		$tptn_settings[excerpt_length] = intval($_POST['excerpt_length']);
-		$tptn_settings[custom_CSS] = $_POST['custom_CSS'];
+		$tptn_settings['post_thumb_op'] = $_POST['post_thumb_op'];
+		$tptn_settings['before_list'] = $_POST['before_list'];
+		$tptn_settings['after_list'] = $_POST['after_list'];
+		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
+		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
+		$tptn_settings['thumb_meta'] = $_POST['thumb_meta'];
+		$tptn_settings['thumb_default'] = $_POST['thumb_default'];
+		$tptn_settings['thumb_height'] = intval($_POST['thumb_height']);
+		$tptn_settings['thumb_width'] = intval($_POST['thumb_width']);
+		$tptn_settings['thumb_default_show'] = (isset($_POST['thumb_default_show']) ? true : false);
+		$tptn_settings['thumb_timthumb'] = (isset($_POST['thumb_timthumb']) ? true : false);
+		$tptn_settings['scan_images'] = (isset($_POST['scan_images']) ? true : false);
+		$tptn_settings['show_excerpt'] = (isset($_POST['show_excerpt']) ? true : false);
+		$tptn_settings['excerpt_length'] = intval($_POST['excerpt_length']);
+		$tptn_settings['custom_CSS'] = $_POST['custom_CSS'];
 
 		// Exclude categories
-		$tptn_settings[exclude_cat_slugs] = ($_POST['exclude_cat_slugs']);
+		$tptn_settings['exclude_cat_slugs'] = ($_POST['exclude_cat_slugs']);
 
-		$exclude_categories_slugs = explode(", ",$tptn_settings[exclude_cat_slugs]);
+		$exclude_categories_slugs = explode(", ",$tptn_settings['exclude_cat_slugs']);
 
 		$exclude_categories = '';
 		foreach ($exclude_categories_slugs as $exclude_categories_slug) {
 			$catObj = get_category_by_slug($exclude_categories_slug);
-			$exclude_categories .= $catObj->term_id . ',';
+			if (isset($catObj->term_id)) $exclude_categories .= $catObj->term_id . ',';
 		}
-		$tptn_settings[exclude_categories] = substr($exclude_categories, 0, -2);
+		$tptn_settings['exclude_categories'] = substr($exclude_categories, 0, -2);
 
 		// Cron maintenance functions
-		if ( ($_POST['cron_on']) && ( ($tptn_settings[cron_on]==false) || (intval($_POST['cron_hour'])!=$tptn_settings[cron_hour]) || (intval($_POST['cron_min'])!=$tptn_settings[cron_min]) || ($_POST['cron_recurrence']!=$tptn_settings[cron_recurrence]) ) ) {
-			$tptn_settings[cron_on] = true;
-			$tptn_settings[cron_hour] = intval($_POST['cron_hour']);
-			$tptn_settings[cron_min] = intval($_POST['cron_min']);
-			$tptn_settings[cron_recurrence] = $_POST['cron_recurrence'];
+		if ( ($_POST['cron_on']) && ( ($tptn_settings['cron_on']==false) || (intval($_POST['cron_hour'])!=$tptn_settings['cron_hour']) || (intval($_POST['cron_min'])!=$tptn_settings['cron_min']) || ($_POST['cron_recurrence']!=$tptn_settings['cron_recurrence']) ) ) {
+			$tptn_settings['cron_on'] = true;
+			$tptn_settings['cron_hour'] = intval($_POST['cron_hour']);
+			$tptn_settings['cron_min'] = intval($_POST['cron_min']);
+			$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
 			
-			tptn_enable_run($tptn_settings[cron_hour], $tptn_settings[cron_min], $tptn_settings[cron_recurrence]);
+			tptn_enable_run($tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence']);
 			echo '<div id="message" class="updated fade"><p>' . __('Scheduled maintenance enabled / modified',TPTN_LOCAL_NAME) .'</p></div>';
 		} elseif ($_POST['cron_on']==false) {
-			$tptn_settings[cron_on] = false;
+			$tptn_settings['cron_on'] = false;
 			tptn_disable_run();
 			echo '<div id="message" class="updated fade"><p>'. __('Scheduled maintenance disabled',TPTN_LOCAL_NAME) .'</p></div>';
 		}
@@ -79,7 +81,7 @@ function tptn_options() {
 		echo $str;
 	}
 	
-	if ($_POST['tptn_default']){
+	if((isset($_POST['tptn_default']))&&($_POST['tptn_default'])) {
 		delete_option('ald_tptn_settings');
 		$tptn_settings = tptn_default_options();
 		update_option('ald_tptn_settings', $tptn_settings);
@@ -88,19 +90,19 @@ function tptn_options() {
 		echo $str;
 	}
 
-	if ($_POST['tptn_trunc_all']){
+	if((isset($_POST['tptn_trunc_all']))&&($_POST['tptn_trunc_all'])) {
 		tptn_trunc_count(false);
 		$str = '<div id="message" class="updated fade"><p>'. __('Top 10 popular posts reset',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
 
-	if ($_POST['tptn_trunc_daily']){
+	if((isset($_POST['tptn_trunc_daily']))&&($_POST['tptn_trunc_daily'])) {
 		tptn_trunc_count(true);
 		$str = '<div id="message" class="updated fade"><p>'. __('Top 10 daily popular posts reset',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
 	}
 
-	if ($_POST['tptn_clean_duplicates']){
+	if((isset($_POST['tptn_clean_duplicates']))&&($_POST['tptn_clean_duplicates'])) {
 		tptn_clean_duplicates(true);
 		tptn_clean_duplicates(false);
 		$str = '<div id="message" class="updated fade"><p>'. __('Duplicate rows cleaned from tables',TPTN_LOCAL_NAME) .'</p></div>';
@@ -128,13 +130,13 @@ function tptn_options() {
 		</h3>
 			<table class="form-table">
 			<tr style="vertical-align: top;"><th scope="row"><label for="limit"><?php _e('Number of popular posts to display: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="limit" id="limit" value="<?php echo attribute_escape(stripslashes($tptn_settings[limit])); ?>"></td>
+			<td><input type="textbox" name="limit" id="limit" value="<?php echo esc_attr(stripslashes($tptn_settings['limit'])); ?>"></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="daily_range"><?php _e('Daily Popular should contain views of how many days? ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings[daily_range]); ?>"></td>
+			<td><input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings['daily_range']); ?>"></td>
 			</tr>
-			<tr style="vertical-align: top;"><th scope="row"><label for="exclude_pages"><?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="exclude_pages" id="exclude_pages" <?php if ($tptn_settings[exclude_pages]) echo 'checked="checked"' ?> /></td>
+			<tr style="vertical-align: top;"><th scope="row"><label for="exclude_pages"><?php _e('Exclude Pages?',TPTN_LOCAL_NAME); ?></label></th>
+			<td><input type="checkbox" name="exclude_pages" id="exclude_pages" <?php if ($tptn_settings['exclude_pages']) echo 'checked="checked"' ?> /><br /><?php _e('Exclude Pages in display of Popular Posts? Number of views on Pages will continue to be counted.',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="exclude_cat_slugs"><?php _e('Exclude Categories: ',TPTN_LOCAL_NAME); ?></label></th>
 			<td>
@@ -150,34 +152,40 @@ function tptn_options() {
 						</div>
 					</td></tr>
 					</table>
-					<textarea class="wickEnabled:MYCUSTOMFLOATER" cols="50" rows="3" wrap="virtual" name="exclude_cat_slugs"><?php echo (stripslashes($tptn_settings[exclude_cat_slugs])); ?></textarea>
+					<textarea class="wickEnabled:MYCUSTOMFLOATER" cols="50" rows="3" wrap="virtual" name="exclude_cat_slugs"><?php echo (stripslashes($tptn_settings['exclude_cat_slugs'])); ?></textarea>
+					<br /><?php _e('Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options',TPTN_LOCAL_NAME); ?>
 				</div>
 			</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><?php _e('Display number of views on:',TPTN_LOCAL_NAME); ?></th>
-			<td><input type="checkbox" name="add_to_content" id="add_to_content" <?php if ($tptn_settings[add_to_content]) echo 'checked="checked"' ?> /> <?php _e('Posts',TPTN_LOCAL_NAME); ?><br />
-			<input type="checkbox" name="count_on_pages" id="count_on_pages" <?php if ($tptn_settings[count_on_pages]) echo 'checked="checked"' ?> /> <?php _e('Pages',TPTN_LOCAL_NAME); ?>
+			<td><input type="checkbox" name="add_to_content" id="add_to_content" <?php if ($tptn_settings['add_to_content']) echo 'checked="checked"' ?> /> <?php _e('Posts',TPTN_LOCAL_NAME); ?><br />
+			<input type="checkbox" name="count_on_pages" id="count_on_pages" <?php if ($tptn_settings['count_on_pages']) echo 'checked="checked"' ?> /> <?php _e('Pages',TPTN_LOCAL_NAME); ?>
 			</td>
 			</tr>
+			<tr style="vertical-align: top;"><th scope="row"><label for="dynamic_post_count"><?php _e('Always display latest post count',TPTN_LOCAL_NAME); ?></label></th>
+			<td><input type="checkbox" name="dynamic_post_count" id="dynamic_post_count" <?php if ($tptn_settings['dynamic_post_count']) echo 'checked="checked"' ?> /><br />
+			<?php _e('This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts',TPTN_LOCAL_NAME); ?></td>
+			</tr>
+
+			<tr style="vertical-align: top;"><th scope="row"><label for="d_use_js"><?php _e('Always display latest post count in the daily lists',TPTN_LOCAL_NAME); ?></label></th>
+			<td><input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings['d_use_js']) echo 'checked="checked"' ?> /><br />
+			<?php _e('This option uses JavaScript and will increase your page load time',TPTN_LOCAL_NAME); ?></td>
+			</tr>
+
 			<tr style="vertical-align: top;"><th scope="row"><label for="track_authors"><?php _e('Track visits of authors on their own posts?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings[track_authors]) echo 'checked="checked"' ?> /></td>
+			<td><input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings['track_authors']) echo 'checked="checked"' ?> /></td>
 			</tr>
 
-			<tr style="vertical-align: top;"><th scope="row"><label for="disp_list_count"><?php _e('Display number of page views in popular lists?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ($tptn_settings[disp_list_count]) echo 'checked="checked"' ?> /></td>
-			</tr>
-
-			<tr style="vertical-align: top;"><th scope="row"><label for="d_use_js"><?php _e('Force daily posts\' list to be dynamic?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings[d_use_js]) echo 'checked="checked"' ?> /><br />
-			<?php _e('This option uses JavaScript to load the post and can increase your page load time',TPTN_LOCAL_NAME); ?></td>
+			<tr style="vertical-align: top;"><th scope="row"><label for="track_admins"><?php _e('Track visits of admins?',TPTN_LOCAL_NAME); ?></label></th>
+			<td><input type="checkbox" name="track_admins" id="track_admins" <?php if ($tptn_settings['track_admins']) echo 'checked="checked"' ?> /></td>
 			</tr>
 
 			<tr style="vertical-align: top;"><th scope="row"><label for="pv_in_admin"><?php _e('Display page views on Posts > All Posts in Admin',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings[pv_in_admin]) echo 'checked="checked"' ?> /></td>
+			<td><input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings['pv_in_admin']) echo 'checked="checked"' ?> /></td>
 			</tr>
 
 			<tr style="vertical-align: top;"><th scope="row"><label for="show_credit"><?php _e('Link to Top 10 plugin page',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="show_credit" id="show_credit" <?php if ($tptn_settings[show_credit]) echo 'checked="checked"' ?> /><br />
+			<td><input type="checkbox" name="show_credit" id="show_credit" <?php if ($tptn_settings['show_credit']) echo 'checked="checked"' ?> /><br />
 			<?php _e('A link to the plugin is added as an extra list item to the list of popular posts',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 
@@ -189,15 +197,15 @@ function tptn_options() {
 		</h3>
 			<table class="form-table">
 			<tr style="vertical-align: top;"><th scope="row"><label for="title"><?php _e('Format to display the count in: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><textarea name="count_disp_form" id="count_disp_form" cols="50" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings[count_disp_form])); ?></textarea>
+			<td><textarea name="count_disp_form" id="count_disp_form" cols="50" rows="5"><?php echo htmlspecialchars(stripslashes($tptn_settings['count_disp_form'])); ?></textarea>
 			<br />
 			<?php _e('Use <code>%totalcount%</code> to display the total count, <code>%dailycount%</code> to display the daily count and <code>%overallcount%</code> to display the overall count across all posts on the blog. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="title"><?php _e('Title of popular posts: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="title" id="title" value="<?php echo attribute_escape(stripslashes($tptn_settings[title])); ?>"  style="width:250px" /></td>
+			<td><input type="textbox" name="title" id="title" value="<?php echo esc_attr(stripslashes($tptn_settings['title'])); ?>"  style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="title_daily"><?php _e('Title of daily popular posts: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="title_daily" id="title_daily" value="<?php echo attribute_escape(stripslashes($tptn_settings[title_daily])); ?>"  style="width:250px" /></td>
+			<td><input type="textbox" name="title_daily" id="title_daily" value="<?php echo esc_attr(stripslashes($tptn_settings['title_daily'])); ?>"  style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="blank_output"><?php _e('When there are no posts, what should be shown?',TPTN_LOCAL_NAME); ?></label></th>
 			<td>
@@ -208,28 +216,31 @@ function tptn_options() {
 				<label>
 				<input type="radio" name="blank_output" value="customs" id="blank_output_1" <?php if (!$tptn_settings['blank_output']) echo 'checked="checked"' ?> />
 				<?php _e('Display:',TPTN_LOCAL_NAME); ?></label>
-				<input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo attribute_escape(stripslashes($tptn_settings[blank_output_text])); ?>"  style="width:250px" />
+				<input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo esc_attr(stripslashes($tptn_settings['blank_output_text'])); ?>"  style="width:250px" />
 			</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="show_excerpt"><?php _e('Show post excerpt in list?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="show_excerpt" id="show_excerpt" <?php if ($tptn_settings[show_excerpt]) echo 'checked="checked"' ?> /></td>
+			<td><input type="checkbox" name="show_excerpt" id="show_excerpt" <?php if ($tptn_settings['show_excerpt']) echo 'checked="checked"' ?> /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="excerpt_length"><?php _e('Length of excerpt (in words): ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes($tptn_settings[excerpt_length]); ?>" /></td>
+			<td><input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes($tptn_settings['excerpt_length']); ?>" /></td>
+			</tr>
+			<tr style="vertical-align: top;"><th scope="row"><label for="disp_list_count"><?php _e('Display number of page views in popular lists?',TPTN_LOCAL_NAME); ?></label></th>
+			<td><input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ($tptn_settings['disp_list_count']) echo 'checked="checked"' ?> /></td>
 			</tr>
 			<tr style="vertical-align: top; background: #eee"><th scope="row" colspan="2"><?php _e('Customize the output:',TPTN_LOCAL_NAME); ?></th>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="before_list"><?php _e('HTML to display before the list of posts: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="before_list" id="before_list" value="<?php echo attribute_escape(stripslashes($tptn_settings[before_list])); ?>" style="width:250px" /></td>
+			<td><input type="textbox" name="before_list" id="before_list" value="<?php echo esc_attr(stripslashes($tptn_settings['before_list'])); ?>" style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="before_list_item"><?php _e('HTML to display before each list item: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="before_list_item" id="before_list_item" value="<?php echo attribute_escape(stripslashes($tptn_settings[before_list_item])); ?>" style="width:250px" /></td>
+			<td><input type="textbox" name="before_list_item" id="before_list_item" value="<?php echo esc_attr(stripslashes($tptn_settings['before_list_item'])); ?>" style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="after_list_item"><?php _e('HTML to display after each list item: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="after_list_item" id="after_list_item" value="<?php echo attribute_escape(stripslashes($tptn_settings[after_list_item])); ?>" style="width:250px" /></td>
+			<td><input type="textbox" name="after_list_item" id="after_list_item" value="<?php echo esc_attr(stripslashes($tptn_settings['after_list_item'])); ?>" style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="after_list"><?php _e('HTML to display after the list of posts: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="after_list" id="after_list" value="<?php echo attribute_escape(stripslashes($tptn_settings[after_list])); ?>" style="width:250px" /></td>
+			<td><input type="textbox" name="after_list" id="after_list" value="<?php echo esc_attr(stripslashes($tptn_settings['after_list'])); ?>" style="width:250px" /></td>
 			</tr>
 			<tr style="vertical-align: top; background: #eee"><th scope="row" colspan="2"><?php _e('Post thumbnail options:',TPTN_LOCAL_NAME); ?></th>
 			</tr>
@@ -254,25 +265,25 @@ function tptn_options() {
 			</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_width"><?php _e('Maximum width of the thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_width])); ?>" style="width:30px" />px</td>
+			<td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_width'])); ?>" style="width:30px" />px</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_height"><?php _e('Maximum height of the thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_height])); ?>" style="width:30px" />px</td>
+			<td><input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_height'])); ?>" style="width:30px" />px</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_timthumb"><?php _e('Use timthumb to generate thumbnails? ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="thumb_timthumb" id="thumb_timthumb" <?php if ($tptn_settings[thumb_timthumb]) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="checkbox" name="thumb_timthumb" id="thumb_timthumb" <?php if ($tptn_settings['thumb_timthumb']) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_meta"><?php _e('Post thumbnail meta field name: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_meta])); ?>"> <br /><?php _e('The value of this field should contain the image source and is set in the <em>Add New Post</em> screen',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_meta'])); ?>"> <br /><?php _e('The value of this field should contain the image source and is set in the <em>Add New Post</em> screen',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="scan_images"><?php _e('If the postmeta is not set, then should the plugin extract the first image from the post?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings[scan_images]) echo 'checked="checked"' ?> /> <br /><?php _e('This could slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings['scan_images']) echo 'checked="checked"' ?> /> <br /><?php _e('This could slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_default_show"><?php _e('Use default thumbnail? ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings[thumb_default_show]) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings['thumb_default_show']) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="thumb_default"><?php _e('Default thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo attribute_escape(stripslashes($tptn_settings[thumb_default])); ?>" style="width:500px"> <br /><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified above',TPTN_LOCAL_NAME); ?></td>
+			<td><input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_default'])); ?>" style="width:500px"> <br /><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified above',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			</table>
 		</div>
@@ -283,7 +294,7 @@ function tptn_options() {
 			<table class="form-table">
 			<tr style="vertical-align: top; "><th scope="row" colspan="2"><?php _e('Custom CSS to add to header:',TPTN_LOCAL_NAME); ?></th>
 			</tr>
-			<tr style="vertical-align: top; "><td scope="row" colspan="2"><textarea name="custom_CSS" id="custom_CSS" rows="15" cols="80"><?php echo stripslashes($tptn_settings[custom_CSS]); ?></textarea>
+			<tr style="vertical-align: top; "><td scope="row" colspan="2"><textarea name="custom_CSS" id="custom_CSS" rows="15" cols="80"><?php echo stripslashes($tptn_settings['custom_CSS']); ?></textarea>
 			<br /><em><?php _e('Do not include <code>style</code> tags. Check out the <a href="http://wordpress.org/extend/plugins/top-10/faq/" target="_blank">FAQ</a> for available CSS classes to style.',TPTN_LOCAL_NAME); ?></em></td></tr>
 			</table>		
 		</div>
@@ -298,12 +309,12 @@ function tptn_options() {
 			</th>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="cron_on"><?php _e('Enable scheduled maintenance of daily tables:',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="cron_on" id="cron_on" <?php if ($tptn_settings[cron_on]) echo 'checked="checked"' ?> />
+			<td><input type="checkbox" name="cron_on" id="cron_on" <?php if ($tptn_settings['cron_on']) echo 'checked="checked"' ?> />
 			<br />
 			</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="cron_hour"><?php _e('Time to run maintenance',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="textbox" name="cron_hour" id="cron_hour" value="<?php echo attribute_escape(stripslashes($tptn_settings[cron_hour])); ?>" style="width:10px" /> : <input type="textbox" name="cron_min" id="cron_min" value="<?php echo attribute_escape(stripslashes($tptn_settings[cron_min])); ?>" style="width:10px" /> hrs</td>
+			<td><input type="textbox" name="cron_hour" id="cron_hour" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_hour'])); ?>" style="width:10px" /> : <input type="textbox" name="cron_min" id="cron_min" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_min'])); ?>" style="width:10px" /> hrs</td>
 			</tr>
 			<tr style="vertical-align: top;"><th scope="row"><label for="cron_recurrence"><?php _e('How often should the maintenance be run:',TPTN_LOCAL_NAME); ?></label></th>
 			<td>
@@ -327,7 +338,7 @@ function tptn_options() {
 			</tr>
 			<tr style="vertical-align: top;"><td scope="row" colspan="2">
 				<?php 
-				if ($tptn_settings[cron_on]) {
+				if ($tptn_settings['cron_on']) {
 					if (wp_next_scheduled('ald_tptn_hook')) {
 						echo '<span style="color:#0c0">';
 						_e('The cron job has been scheduled. Maintenance will run ',TPTN_LOCAL_NAME);
@@ -361,7 +372,7 @@ function tptn_options() {
 		</div>
 		<p>
 		  <input type="submit" name="tptn_save" id="tptn_save" value="<?php _e('Save Options',TPTN_LOCAL_NAME); ?>" style="border:#0C0 1px solid" />
-		  <input name="tptn_default" type="submit" id="tptn_default" value="<?php _e('Default Options',TPTN_LOCAL_NAME); ?>" style="border:#F00 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
+		  <input type="submit" name="tptn_default" id="tptn_default" value="<?php _e('Default Options',TPTN_LOCAL_NAME); ?>" style="border:#F00 1px solid" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
 		</p>
 		</fieldset>
 	  </form>
@@ -375,11 +386,16 @@ function tptn_options() {
 
 }
 
-function tptn_manage() {
-	$paged = intval($_GET['paged']);
-	$limit = intval($_GET['limit']);
-	$exclude_pages = intval($_GET['exclude_pages']);
-	$daily = $_GET['daily'];
+function tptn_manage_daily() {
+	tptn_manage(1);
+}
+
+function tptn_manage($daily = 0) {
+
+	$paged = (isset($_GET['paged']) ? intval($_GET['paged']) : 0);
+	$limit = (isset($_GET['limit']) ? intval($_GET['limit']) : 0);
+	$exclude_pages = (isset($_GET['exclude_pages']) ? intval($_GET['exclude_pages']) : 0);
+	$daily = (isset($_GET['daily']) ? intval($_GET['daily']) : $daily);
 
 ?>
 
@@ -427,8 +443,10 @@ function tptn_admin_side() {
 			</div>
 		</div>
 		<div class="side-widget">
-		<span class="title"><?php _e('Follow us on Facebook',TPTN_LOCAL_NAME) ?></span>				
+		<span class="title"><?php _e('Follow us',TPTN_LOCAL_NAME) ?></span>				
 		<iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fajaydsouzacom&amp;width=292&amp;height=62&amp;colorscheme=light&amp;show_faces=false&amp;border_color&amp;stream=false&amp;header=true&amp;appId=113175385243" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
+		<div style="text-align:center"><a href="https://twitter.com/ajaydsouza" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @ajaydsouza</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
 		</div>
 		<div class="side-widget">
 		<span class="title"><?php _e('Quick Links',TPTN_LOCAL_NAME) ?></span>				
@@ -442,7 +460,7 @@ function tptn_admin_side() {
 		</div>
 		<div class="side-widget">
 		<span class="title"><?php _e('Recent developments',TPTN_LOCAL_NAME) ?></span>				
-		<?php require_once(ABSPATH . WPINC . '/rss.php'); wp_widget_rss_output('http://ajaydsouza.com/archives/category/wordpress/plugins/feed/', array('items' => 5, 'show_author' => 0, 'show_date' => 1));
+		<?php require_once(ABSPATH . WPINC . '/class-simplepie.php'); wp_widget_rss_output('http://ajaydsouza.com/archives/category/wordpress/plugins/feed/', array('items' => 5, 'show_author' => 0, 'show_date' => 1));
 		?>
 		</div>
 <?php
@@ -450,24 +468,18 @@ function tptn_admin_side() {
 
 /* Add menu item in WP-Admin */
 function tptn_adminmenu() {
-	if (function_exists('current_user_can')) {
-		// In WordPress 2.x
-		if (current_user_can('manage_options')) {
-			$tptn_is_admin = true;
-		}
-	} else {
-		// In WordPress 1.x
-		global $user_ID;
-		if (user_can_edit_user($user_ID, 0)) {
-			$tptn_is_admin = true;
-		}
-	}
 
-	if ((function_exists('add_options_page'))&&($tptn_is_admin)) {
-		$plugin_page = add_options_page(__("Top 10", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_options', 'tptn_options');
+	if (function_exists('add_menu_page')) {
+
+		$plugin_page = add_menu_page(__("Top 10 Settings", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 'manage_options', 'tptn_options', 'tptn_options');
 		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
-		$plugin_page = add_posts_page(__("Popular Posts", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 9, 'tptn_manage', 'tptn_manage');
+
+		$plugin_page = add_submenu_page( 'tptn_options', __("Overall Popular Posts", TPTN_LOCAL_NAME), __("Overall Popular Posts", TPTN_LOCAL_NAME), 'manage_options', 'tptn_manage', 'tptn_manage');
 		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+
+		$plugin_page = add_submenu_page( 'tptn_options', __("Daily Popular Posts", TPTN_LOCAL_NAME), __("Daily Popular Posts", TPTN_LOCAL_NAME), 'manage_options', 'tptn_manage_daily', 'tptn_manage_daily');
+		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+
 	}
 }
 add_action('admin_menu', 'tptn_adminmenu');
@@ -522,7 +534,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 		$sql .= "AND post_status = 'publish' ";
 		$sql .= "ORDER BY sumCount DESC";
 	} else {
-		$daily_range = $tptn_settings[daily_range]-1;
+		$daily_range = $tptn_settings['daily_range']-1;
 		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 		$current_date = date ( 'Y-m-j' , $current_date );
@@ -599,25 +611,35 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	  <td align="left">';
 	
 	if(($daily && $widget) || (!$daily && !$widget)) {
-		$output .= '<a href="./edit.php?page=tptn_manage&daily=1">';
+		$output .= '<a href="./admin.php?page=tptn_manage_daily">';
 		$output .= __('View Daily Popular Posts',TPTN_LOCAL_NAME);
 		$output .= '</a></td>';
+		$output .= '<td align="right">';
+		if (!$widget) $output .= __('Results per-page:',TPTN_LOCAL_NAME);
+		if (!$widget) $output .= ' <a href="./admin.php?page=tptn_manage&limit=10">10</a> | <a href="./admin.php?page=tptn_manage&limit=20">20</a> | <a href="./admin.php?page=tptn_manage&limit=50">50</a> | <a href="./admin.php?page=tptn_manage&limit=100">100</a> ';
+		$output .= ' 	  </td>
+		 </tr>
+		 <tr>
+		  <td colspan="2" align="right"><hr /></td>
+		 </tr>
+		</table>';
 	} else {
-		$output .= '<a href="./edit.php?page=tptn_manage&daily=0">';
+		$output .= '<a href="./admin.php?page=tptn_manage">';
 		$output .= __('View Overall Popular Posts',TPTN_LOCAL_NAME);
 		$output .= '</a></td>';
+		$output .= '<td align="right">';
+		if (!$widget) $output .= __('Results per-page:',TPTN_LOCAL_NAME);
+		if (!$widget) $output .= ' <a href="./admin.php?page=tptn_manage_daily&limit=10">10</a> | <a href="./admin.php?page=tptn_manage_daily&limit=20">20</a> | <a href="./admin.php?page=tptn_manage_daily&limit=50">50</a> | <a href="./admin.php?page=tptn_manage_daily&limit=100">100</a> ';
+		$output .= ' 	  </td>
+		 </tr>
+		 <tr>
+		  <td colspan="2" align="right"><hr /></td>
+		 </tr>
+		</table>';
 	}
-	$output .= '<td align="right">';
-	$output .= __('Results per-page:',TPTN_LOCAL_NAME);
-	$output .= ' <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=10">10</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=20">20</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=50">50</a> | <a href="./edit.php?page=tptn_manage&daily='.$daily.'&limit=100">100</a> ';
-	$output .= ' 	  </td>
-	 </tr>
-	 <tr>
-	  <td colspan="2" align="right"><hr /></td>
-	 </tr>
-	</table>';
 
-
+	$dailytag = ($daily) ? '_daily' : '';
+	
 	$output .=   '<ul>';
 	if ($results) {
 		foreach ($results as $result) {
@@ -631,7 +653,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	$output .=   '<p align="center">';
 	if ($page != 0) { // Don't show back link if current page is first page.
 		$back_page = $page - $limit;
-		$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$back_page&daily=$daily&limit=$limit\">&laquo; ";
+		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$back_page&daily=$daily&limit=$limit\">&laquo; ";
 		$output .=  __('Previous',TPTN_LOCAL_NAME);
 		$output .=  "</a>\n";
 	}
@@ -643,13 +665,13 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 			$output .=  "<b>$i</b>\n";
 		} // If current page don't give link, just text.
 		else{
-			$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n";
+			$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n";
 		}
 	}
 
 	if (!((($page+$limit) / $limit) >= $pages) && $pages != 1) { // If last page don't give next link.
 		$next_page = $page + $limit;
-		$output .=  "<a href=\"./edit.php?page=tptn_manage&paged=$next_page&daily=$daily&limit=$limit\">";
+		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$next_page&daily=$daily&limit=$limit\">";
 		$output .=  __('Next',TPTN_LOCAL_NAME);
 		$output .=  " &raquo;</a>";
 	}
@@ -684,14 +706,14 @@ add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
 function tptn_column($cols) {
 	$tptn_settings = tptn_read_options();
 	
-	if ($tptn_settings[pv_in_admin])	$cols['tptn'] = __('Total / Today\'s Views',TPTN_LOCAL_NAME);
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn'] = __('Total / Today\'s Views',TPTN_LOCAL_NAME);
 	return $cols;
 }
 
 // Display page views for each column
 function tptn_value($column_name, $id) {
 	$tptn_settings = tptn_read_options();
-	if (($column_name == 'tptn')&&($tptn_settings[pv_in_admin])) {
+	if (($column_name == 'tptn')&&($tptn_settings['pv_in_admin'])) {
 		global $wpdb;
 		
 		$table_name = $wpdb->prefix . "top_ten";
@@ -704,7 +726,7 @@ function tptn_value($column_name, $id) {
 		// Now process daily count
 		$table_name = $wpdb->prefix . "top_ten_daily";
 
-		$daily_range = $tptn_settings[daily_range]-1;
+		$daily_range = $tptn_settings['daily_range']-1;
 		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 		$current_date = date ( 'Y-m-j' , $current_date );

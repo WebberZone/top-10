@@ -2,55 +2,36 @@
 //"top-10-counter.js.php" Display number of page views
 Header("content-type: application/x-javascript");
 
-if (!function_exists('add_action')) {
-	$wp_root = '../../..';
-	if (file_exists($wp_root.'/wp-load.php')) {
-		require_once($wp_root.'/wp-load.php');
-	} else {
-		require_once($wp_root.'/wp-config.php');
-	}
+// Build the wp-config.php path from a plugin/theme
+$wp_config_path = dirname( dirname( dirname( __FILE__ ) ) );
+$wp_config_filename = '/wp-load.php';
+
+// Check if the file exists in the root or one level up
+if( !file_exists( $wp_config_path . $wp_config_filename ) ) {
+    // Just in case the user may have placed wp-config.php one more level up from the root
+    $wp_config_filename = dirname( $wp_config_path ) . $wp_config_filename;
 }
+// Require the wp-config.php file
+require( $wp_config_filename );
+
+// Include the now instantiated global $wpdb Class for use
+global $wpdb;
+
+$nonce=$_REQUEST['_wpnonce'];
+$id = intval($_GET['top_ten_id']);
+$nonce_action = 'tptn-nonce-'.$id;
+if (! wp_verify_nonce($nonce, $nonce_action) ) die("Security check");
 
 // Display counter using Ajax
 function tptn_disp_count() {
 	global $wpdb;
 	
-	$table_name = $wpdb->prefix . "top_ten";
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
-	$tptn_settings = tptn_read_options();
-	$count_disp_form = stripslashes($tptn_settings[count_disp_form]);
-	
 	$id = intval($_GET['top_ten_id']);
 	if($id > 0) {
 
-		// Total count per post
-		if (strpos($count_disp_form, "%totalcount%") !== false) {
-			$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
-			$cntaccess = number_format((($resultscount) ? $resultscount->cntaccess : 1));
-			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
-		}
-		
-		// Now process daily count
-		if (strpos($count_disp_form, "%dailycount%") !== false) {
-			$daily_range = $tptn_settings[daily_range];
-			$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-			$current_date = date ( 'Y-m-j' , $current_date );
-	
-			$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
-			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
-			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
-		}
-		
-		// Now process overall count
-		if (strpos($count_disp_form, "%overallcount%") !== false) {
-			$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
-			$cntaccess = number_format((($resultscount) ? $resultscount->sumCount : 1));
-			$count_disp_form = str_replace("%overallcount%", $cntaccess, $count_disp_form);
-		}
-				
-		
-		echo 'document.write("'.$count_disp_form.'")';
+		$output = get_tptn_post_count($id);
+
+		echo 'document.write("'.$output.'")';
 	}
 }
 tptn_disp_count();
