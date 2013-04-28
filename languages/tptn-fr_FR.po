@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-29 18:46-0000\n"
+"POT-Creation-Date: 2013-04-28 23:25-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Ajay D'Souza <me@ajaydsouza.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin.inc.php:71
@@ -392,10 +392,24 @@ msgid "Maintenance is turned off"
 msgstr ""
 
 #: admin.inc.php:362
+#, fuzzy
+msgid "Save Options"
+msgstr "Options:"
+
+#: admin.inc.php:363
+#, fuzzy
+msgid "Default Options"
+msgstr "Paramètres de sortie"
+
+#: admin.inc.php:363
+msgid "Do you want to set options to Default?"
+msgstr "Définir les paramètres par défaut?"
+
+#: admin.inc.php:367
 msgid "Reset count"
 msgstr "Réinitialiser le compteur"
 
-#: admin.inc.php:365
+#: admin.inc.php:370
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
@@ -403,48 +417,34 @@ msgstr ""
 "Cette action ne peut être annulée. Assurez-vous que la base de données a été "
 "sauvegardée avant de poursuivre."
 
-#: admin.inc.php:368
+#: admin.inc.php:373
 #, fuzzy
 msgid "Reset Popular Posts"
 msgstr "Postes populaires"
 
-#: admin.inc.php:368
+#: admin.inc.php:373
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Êtes-vous sûr de vouloir annuler les postes populaires?"
 
-#: admin.inc.php:369
+#: admin.inc.php:374
 #, fuzzy
 msgid "Reset Daily Popular Posts"
 msgstr "Postes populaires journaliers"
 
-#: admin.inc.php:369
+#: admin.inc.php:374
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr "Êtes-vous sûr de vouloir annuler les postes populaires journaliers?"
 
-#: admin.inc.php:370
+#: admin.inc.php:375
 msgid "Clear duplicates"
 msgstr ""
 
-#: admin.inc.php:370
+#: admin.inc.php:375
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 "Cela supprimera les doubles des enregistrements dans les tableaux. Continuer?"
 
-#: admin.inc.php:374
-#, fuzzy
-msgid "Save Options"
-msgstr "Options:"
-
-#: admin.inc.php:375
-#, fuzzy
-msgid "Default Options"
-msgstr "Paramètres de sortie"
-
-#: admin.inc.php:375
-msgid "Do you want to set options to Default?"
-msgstr "Définir les paramètres par défaut?"
-
-#: admin.inc.php:406 admin.inc.php:697 top-10.php:319
+#: admin.inc.php:406 admin.inc.php:697 top-10.php:329
 msgid "Popular Posts"
 msgstr "Postes populaires"
 
@@ -486,7 +486,7 @@ msgstr "Autres plugins"
 msgid "Ajay's blog"
 msgstr "Blog Ajay"
 
-#: admin.inc.php:457 top-10.php:757
+#: admin.inc.php:457 top-10.php:766
 msgid "Support"
 msgstr "Service d'assistance"
 
@@ -552,90 +552,90 @@ msgstr "Populaires journaliers"
 msgid "Total / Today's Views"
 msgstr "Total/aujourd'hui visionnages"
 
-#: top-10.php:318
+#: top-10.php:328
 msgid "Display the posts popular this week"
 msgstr "Afficher les postes populaires de la semaine"
 
-#: top-10.php:332
+#: top-10.php:342
 msgid "Title"
 msgstr ""
 
-#: top-10.php:337
+#: top-10.php:347
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:342
+#: top-10.php:352
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:343
+#: top-10.php:353
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:348
+#: top-10.php:358
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:352
+#: top-10.php:362
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Options thumbnail des messages:"
 
-#: top-10.php:354
+#: top-10.php:364
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Afficher le thumbnail encastré et les messages avant l'en-tête"
 
-#: top-10.php:355
+#: top-10.php:365
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Afficher le thumbnail encastré et les messages après l'en-tête"
 
-#: top-10.php:356
+#: top-10.php:366
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Afficher uniquement le thumbnail, sans le texte"
 
-#: top-10.php:357
+#: top-10.php:367
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Ne pas afficher le thumbnail, uniquement le texte"
 
-#: top-10.php:362
+#: top-10.php:372
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Afficher le fragment du message dans la liste?"
 
-#: top-10.php:431
+#: top-10.php:441
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Postes populaires</h3>"
 
-#: top-10.php:432
+#: top-10.php:442
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Populaires Journaliers</h3>"
 
-#: top-10.php:433
+#: top-10.php:443
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Annuler le top 10 des enregistrements les plus populaires"
 
-#: top-10.php:721
+#: top-10.php:731
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:722
+#: top-10.php:732
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:723
+#: top-10.php:733
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:744
+#: top-10.php:754
 msgid "Settings"
 msgstr "Paramètres"
 
-#: top-10.php:758
+#: top-10.php:767
 msgid "Donate"
 msgstr "Conribuer"
 

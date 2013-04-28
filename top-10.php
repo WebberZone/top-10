@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.2
+Version:     1.9.3
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -52,6 +52,10 @@ add_action('init', 'ald_tptn_init');
 /*********************************************************************
 *				Main Functions 										*
 ********************************************************************/
+global $tptn_settings;
+$tptn_settings = tptn_read_options();
+
+
 // Update post views
 add_filter('the_content','tptn_add_viewed_count');
 function tptn_add_viewed_count($content) {
@@ -60,7 +64,7 @@ function tptn_add_viewed_count($content) {
 
 	if((is_single() || is_page())) {
 
-		$tptn_settings = tptn_read_options();
+		global $tptn_settings;
 	
 		$current_user = wp_get_current_user(); 
 		$post_author = ( $current_user->ID == $post->post_author ? true : false );
@@ -86,7 +90,7 @@ function tptn_add_viewed_count($content) {
 // Function to add count to content
 function tptn_pc_content($content) {
 	global $single, $post,$tptn_url,$tptn_path;
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	$id = intval($post->ID);
 
 	if((is_single())&&($tptn_settings['add_to_content'])) {
@@ -102,7 +106,7 @@ add_filter('the_content', 'tptn_pc_content');
 // Function to manually display count
 function echo_tptn_post_count($echo=1) {
 	global $post,$tptn_url,$tptn_path;
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	$id = intval($post->ID);
 	
 	$nonce_action = 'tptn-nonce-'.$id;
@@ -127,7 +131,7 @@ function get_tptn_post_count($id) {
 	
 	$table_name = $wpdb->prefix . "top_ten";
 	$table_name_daily = $wpdb->prefix . "top_ten_daily";
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	$count_disp_form = stripslashes($tptn_settings['count_disp_form']);
 	
 	if($id > 0) {
@@ -191,7 +195,7 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 	global $wpdb, $siteurl, $tableposts, $id;
 	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
 		else $table_name = $wpdb->prefix . "top_ten";
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	$limit = empty($limit) ? $tptn_settings['limit']*5 : $limit*5;
 	$show_excerpt = empty($show_excerpt) ? $tptn_settings['show_excerpt'] : $show_excerpt;
 	$post_thumb_op = empty($post_thumb_op) ? $tptn_settings['post_thumb_op'] : $post_thumb_op;
@@ -228,6 +232,12 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 			$output .= '<div id="tptn_related">'.$tptn_settings['title'];
 		} else {
 			$output .= '<div id="tptn_related_daily">'.$tptn_settings['title_daily'];
+		}
+	} else {
+		if (!$daily) {
+			$output .= '<div class="tptn_posts">'.$tptn_settings['title'];
+		} else {
+			$output .= '<div class="tptn_posts_daily">'.$tptn_settings['title_daily'];
 		}
 	}
 	
@@ -268,7 +278,7 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 			}
 			if ($counter == $limit/5) break;	// End loop when related posts limit is reached
 		}
-		if ($tptn_settings['show_credit']) $output .= $tptn_settings['before_list_item'].'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a>'.$tptn_settings['after_list_item'];
+		if ($tptn_settings['show_credit']) $output .= $tptn_settings['before_list_item'].'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/" rel="nofollow">Top 10 plugin</a>'.$tptn_settings['after_list_item'];
 		$output .= $tptn_settings['after_list'];
 	} else {
 		$output .= ($tptn_settings['blank_output']) ? '' : $tptn_settings['blank_output_text'];
@@ -286,7 +296,7 @@ function tptn_show_pop_posts() {
 // Function to show daily popular posts
 function tptn_show_daily_pop_posts() {
 	global $tptn_url;
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	if ($tptn_settings['d_use_js']) {
 		echo '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
 	} else {
@@ -299,7 +309,7 @@ add_action('wp_head','tptn_header');
 function tptn_header() {
 	global $wpdb, $post, $single;
 
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	$tptn_custom_CSS = stripslashes($tptn_settings['custom_CSS']);
 	
 	// Add CSS to header 
@@ -379,7 +389,7 @@ class WidgetTopTen extends WP_Widget
 		
 		extract($args, EXTR_SKIP);
 		
-		$tptn_settings = tptn_read_options();
+		global $tptn_settings;
 
 		$title = apply_filters('widget_title', empty($instance['title']) ? strip_tags($tptn_settings['title']) : $instance['title']);
 		$limit = $instance['limit'];
@@ -640,7 +650,7 @@ function tptn_get_the_post_thumbnail($args = array()) {
 		if (!$postimage && $scan_images) {
 			preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
 			// any image there?
-			if (isset($matches) && $matches[1][0]) {
+			if (isset($matches[1][0]) && $matches[1][0]) {
 				if (((strpos($matches[1][0], parse_url(get_option('home'),PHP_URL_HOST)) !== false) && (strpos($matches[1][0], 'http://') !== false))|| ((strpos($matches[1][0], 'http://') === false))) {
 					$postimage = $matches[1][0]; // we need the first one only!
 				}
@@ -753,7 +763,6 @@ if (is_admin() || strstr($_SERVER['PHP_SELF'], 'wp-admin/')) {
 	 
 		// create link
 		if ($file == $plugin) {
-	//		$links[] = '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __('Settings', TPTN_LOCAL_NAME ) . '</a>';
 			$links[] = '<a href="http://ajaydsouza.com/support/">' . __('Support', TPTN_LOCAL_NAME ) . '</a>';
 			$links[] = '<a href="http://ajaydsouza.com/donate/">' . __('Donate', TPTN_LOCAL_NAME ) . '</a>';
 		}

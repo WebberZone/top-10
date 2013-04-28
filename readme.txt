@@ -45,10 +45,16 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.2 =
-* New menu structure, new option to exclude tracking of admin visits, performance improvements, bug fixes
+= 1.9.3 =
+* IMPORTANT security update: Fixed possible XSS vulnerability; bug fixes
+
 
 == Changelog ==
+
+= 1.9.3 =
+* Important security update: Fixed possible XSS vulnerability
+* Fixed: Exclude categories was not excluding posts correctly
+* Added: Classes `tptn_posts` and `tptn_posts_daily` for the widgets that let you easily style the lists
 
 = 1.9.2 =
 * Added: Top 10 now has its own menu in the administration area. Access settings and view your top posts directly under the new menu: "Top 10"
