@@ -45,11 +45,15 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.3 =
+= 1.9.4 =
 * IMPORTANT security update: Fixed possible XSS vulnerability; bug fixes
 
 
 == Changelog ==
+
+= 1.9.4 =
+* Fixes a bug in the widget introduces in 1.9.3
+
 
 = 1.9.3 =
 * Important security update: Fixed possible XSS vulnerability

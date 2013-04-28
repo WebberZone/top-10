@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.3
+Version:     1.9.4
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -235,9 +235,9 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 		}
 	} else {
 		if (!$daily) {
-			$output .= '<div class="tptn_posts">'.$tptn_settings['title'];
+			$output .= '<div class="tptn_posts">';
 		} else {
-			$output .= '<div class="tptn_posts_daily">'.$tptn_settings['title_daily'];
+			$output .= '<div class="tptn_posts_daily">';
 		}
 	}
 	
@@ -283,7 +283,7 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = '10', $s
 	} else {
 		$output .= ($tptn_settings['blank_output']) ? '' : $tptn_settings['blank_output_text'];
 	}
-	if (!$widget) $output .= '</div>';
+	$output .= '</div>';
 
 	return $output;
 }
