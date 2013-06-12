@@ -45,25 +45,32 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.4 =
-* IMPORTANT security update: Fixed possible XSS vulnerability; bug fixes
+= 1.9.5 =
+* New: Disable daily or overall counters, bug fixes;
+Check out the Changelog for complete details
 
 
 == Changelog ==
 
+= 1.9.5 =
+* New: CSS class `tptn_title` that can be used to style the title of the posts
+* New: Option to disable Daily or Overall counters
+* Fixed: Counter to work with different directory structures. *Thanks Nathan for the fix*
+* Fixed: To make it work with W3 Total Cache. *Thanks Angelo for the fix*
+* Modified: timthumb will now work if you have JetPack Proton activated
+
 = 1.9.4 =
 * Fixes a bug in the widget introduces in 1.9.3
-
 
 = 1.9.3 =
 * Important security update: Fixed possible XSS vulnerability
 * Fixed: Exclude categories was not excluding posts correctly
-* Added: Classes `tptn_posts` and `tptn_posts_daily` for the widgets that let you easily style the lists
+* New: Classes `tptn_posts` and `tptn_posts_daily` for the widgets that let you easily style the lists
 
 = 1.9.2 =
-* Added: Top 10 now has its own menu in the administration area. Access settings and view your top posts directly under the new menu: "Top 10"
-* Added: New classes **tptn_counter** and **tptn_list_count** to style the displayed count
-* Added: New option "Always display latest count for the post" to not use JavaScript to display the counts for a post. This speeds up since no external JS file is used to display the count. Ideal for those not using caching plugins or are not particularly worried if the counts are slightly older.
+* New: Top 10 now has its own menu in the administration area. Access settings and view your top posts directly under the new menu: "Top 10"
+* New: New classes **tptn_counter** and **tptn_list_count** to style the displayed count
+* New: New option "Always display latest count for the post" to not use JavaScript to display the counts for a post. This speeds up since no external JS file is used to display the count. Ideal for those not using caching plugins or are not particularly worried if the counts are slightly older.
 * Fixed: PHP notices when WP_DEBUG is turned on
 * Modified: Updated timthumb.php
 
@@ -73,12 +80,12 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Modified: Extra check for post featured thumbnails to ensure that the src is not missed
 
 = 1.9 =
-* Added: Option to use timthumb to resize thumbnails
-* Added: New variable **%overallcount%** that will display the total pageviews on the blog across all posts
-* Added: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page 
-* Added: Customise what to display when there are no top posts detected
-* Added: New scheduled maintenance to clear up daily tables and optimise performance
-* Added: Custom CSS code to style the output. Check out the available styles in the <a href="http://wordpress.org/extend/plugins/top-10/faq/">FAQ</a>.
+* New: Option to use timthumb to resize thumbnails
+* New: New variable **%overallcount%** that will display the total pageviews on the blog across all posts
+* New: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page 
+* New: Customise what to display when there are no top posts detected
+* New: New scheduled maintenance to clear up daily tables and optimise performance
+* New: Custom CSS code to style the output. Check out the available styles in the <a href="http://wordpress.org/extend/plugins/top-10/faq/">FAQ</a>.
 * Modified: New "default.png" file based on from KDE’s <a href="http://www.oxygen-icons.org/">Oxygen icon set</a>
 * Modified: Dashboard list of posts now displays all the top posts and pages instead of the filtered list based on Settings.
 * Modified: Dashboard widget now has options to customise the widget. Old widgets have been deleted
@@ -89,32 +96,32 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Fixed: Dashboard widgets linking
 
 = 1.8 =
-* Added: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
-* Added: Thumbnail settings now reflect max width and max height instead of fixed width and height
-* Added: Option to display thumbnails before or after the title
-* Added: Option to not display thumbnails instead of the default thumbnail
-* Added: Counts are now neatly formatted with commas
+* New: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
+* New: Thumbnail settings now reflect max width and max height instead of fixed width and height
+* New: Option to display thumbnails before or after the title
+* New: Option to not display thumbnails instead of the default thumbnail
+* New: Counts are now neatly formatted with commas
 * Modified: Minor tweaks to improve performance
 
 = 1.7.6 =
 * Fixed: Bug with Daily posts widget created an extra header tag in certain themes
 
 = 1.7.5 =
-* Added: Now supports multiple WordPress widgets
+* New: Now supports multiple WordPress widgets
 
 = 1.7 =
-* Added: Exclude posts in the top lists from select categories
+* New: Exclude posts in the top lists from select categories
 * Modified: Performance improvements
 * Modified: Better compatibility with the latest versions of WordPress. If you are using the sidebar widgets, please readd them to your theme under Appearance > Widgets
 
 = 1.6.3 =
 * Fixed: PHP errors on certain installs
-* Added: Dutch language
+* New: Dutch language
 
 = 1.6.2 =
 * Fixed: Multiple rows being created for same ID
 * Fixed: Counter display
-* Added: New button to clear the duplicate rows in the tables
+* New: New button to clear the duplicate rows in the tables
 * Fixed: Top 10 should be lighter on the server now
 
 = 1.6.1 =
@@ -124,13 +131,13 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * Fixed: Display of caching plugin compliant daily top posts lists 
 
 = 1.6 =
-* Added: Added support for excerpts and detection of first image in the post
-* Added: Daily posts are tracked using the blog time instead of server time
+* New: Added support for excerpts and detection of first image in the post
+* New: Daily posts are tracked using the blog time instead of server time
 * Fixed: On the first visit, display 1 instead of 0
 * Fixed: Fixed uninstall script
 
 = 1.5.3 =
-* Added: You can now use HTML in the counter display
+* New: You can now use HTML in the counter display
 
 = 1.5.2 =
 * Fixed: Fixed display of post thumbnails using postmeta field
