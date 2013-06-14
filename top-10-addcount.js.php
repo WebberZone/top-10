@@ -23,7 +23,7 @@ function tptn_inc_count() {
 	if($id > 0) {
 		if ( ($activate_counter == 1) || ($activate_counter == 11) ) $wpdb->query("INSERT INTO $table_name (postnumber, cntaccess) VALUES('$id', '1') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ");
 		$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		if ( $activate_counter == 10 ) $wpdb->query("INSERT INTO $top_ten_daily (postnumber, cntaccess, dp_date) VALUES('$id', '1', '$current_date' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ");
+		if ( ($activate_counter == 1) || ($activate_counter == 11) ) $wpdb->query("INSERT INTO $top_ten_daily (postnumber, cntaccess, dp_date) VALUES('$id', '1', '$current_date' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ");
 	}
 }
 
