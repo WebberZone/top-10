@@ -45,12 +45,15 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.5 =
-* New: Disable daily or overall counters, bug fixes;
+= 1.9.6 =
+* New: Fixed the daily count error that was introduced in 1.9.5;
 Check out the Changelog for complete details
 
 
 == Changelog ==
+
+= 1.9.6 =
+* Fixed: Daily count was not updated
 
 = 1.9.5 =
 * New: CSS class `tptn_title` that can be used to style the title of the posts
