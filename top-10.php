@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.6
+Version:     1.9.7
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -70,7 +70,14 @@ function tptn_add_viewed_count($content) {
 			$id = intval($post->ID);
 			$activate_counter = ($tptn_settings['activate_overall'] ? 1 : 0);
 			$activate_counter = $activate_counter + ($tptn_settings['activate_daily'] ? 10 : 0 );
-			if ($activate_counter>0) $output = '<script type="text/javascript">jQuery.ajax("' .$tptn_url. '/top-10-addcount.js.php?top_ten_id=' .$id. '&activate_counter=' . $activate_counter . '&top10_rnd=" + (new Date()).getTime() + "-" + Math.floor(Math.random()*100000));</script>';
+			if ($activate_counter>0) {
+				if ($tptn_settings['cache_fix']) {
+					$output = '<script type="text/javascript">jQuery.ajax({url: "' .$tptn_url. '/top-10-addcount.js.php", data: {top_ten_id: ' .$id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';				
+				} else {
+					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
+				}
+			}
+			
 			return $content.$output;
 		} else {
 			return $content;
@@ -80,6 +87,20 @@ function tptn_add_viewed_count($content) {
 	}
 }
 add_filter('the_content','tptn_add_viewed_count');
+
+
+/**
+ * Enqueue Scripts.
+ * 
+ * @access public
+ * @return void
+ */
+function tptn_enqueue_scripts() {
+		global $tptn_settings;
+	
+		if ($tptn_settings['cache_fix']) wp_enqueue_script( 'jquery' );
+}
+add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_scripts action hook to link only on the front-end
 
 
 /**
@@ -544,6 +565,7 @@ function tptn_default_options() {
 						'cron_recurrence' => 'weekly',	// Frequency of cron
 						'activate_daily' => true,	// Activate the daily count
 						'activate_overall' => true,	// activate overall count
+						'cache_fix' => false,		// Temporary fix for W3 Total Cache
 						);
 	return $tptn_settings;
 }

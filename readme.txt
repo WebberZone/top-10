@@ -45,12 +45,14 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.6 =
-* New: Fixed the daily count error that was introduced in 1.9.5;
-Check out the Changelog for complete details
+= 1.9.7 =
+* New: Option to toggle using jQuery on to track counts. Potential fix for counters not working.
 
 
 == Changelog ==
+
+= 1.9.7 =
+* New: Option to toggle using jQuery on to track counts. Potential fix for counters not working.
 
 = 1.9.6 =
 * Fixed: Daily count was not updated

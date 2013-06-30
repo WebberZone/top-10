@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-12 07:29-0000\n"
+"POT-Creation-Date: 2013-06-30 14:29-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Alyona Lompar <alyona.lompar@aol.com>\n"
@@ -15,61 +15,72 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:79
+#: admin.inc.php:81
 msgid "Scheduled maintenance enabled / modified"
 msgstr ""
 
-#: admin.inc.php:83
+#: admin.inc.php:85
 msgid "Scheduled maintenance disabled"
 msgstr ""
 
-#: admin.inc.php:88
+#: admin.inc.php:90
 msgid "Options saved successfully."
 msgstr "Установки збережені."
 
-#: admin.inc.php:97
+#: admin.inc.php:99
 msgid "Options set to Default."
 msgstr "Установки скинуті."
 
-#: admin.inc.php:103
+#: admin.inc.php:105
 msgid "Top 10 popular posts reset"
 msgstr "Скинути статистику найпопулярніших записів"
 
-#: admin.inc.php:109
+#: admin.inc.php:111
 msgid "Top 10 daily popular posts reset"
 msgstr "Скинути статистику найпопулярніших записів за сьогодні"
 
-#: admin.inc.php:116
+#: admin.inc.php:118
 msgid "Duplicate rows cleaned from tables"
 msgstr ""
 
-#: admin.inc.php:137
+#: admin.inc.php:139
 msgid "General options"
 msgstr ""
 
-#: admin.inc.php:141
+#: admin.inc.php:143
 msgid "Enable Overall stats"
 msgstr ""
 
-#: admin.inc.php:146
+#: admin.inc.php:148
 msgid "Enable Daily stats"
 msgstr ""
 
-#: admin.inc.php:151
+#: admin.inc.php:153
+msgid "W3 Total Cache fix:"
+msgstr ""
+
+#: admin.inc.php:155
+msgid ""
+"This will try to prevent W3 Total Cache from caching the addcount script of "
+"the plugin. Try toggling this option in case you find that our posts are not "
+"tracked."
+msgstr ""
+
+#: admin.inc.php:159
 msgid "Number of popular posts to display: "
 msgstr "Кількість Популярних записів у списку:"
 
-#: admin.inc.php:155
+#: admin.inc.php:163
 msgid "Daily Popular should contain views of how many days? "
 msgstr ""
 "За скільки днів вважати перегляди для списку Популярних сьогодні записів?"
 
-#: admin.inc.php:159
+#: admin.inc.php:167
 #, fuzzy
 msgid "Exclude Pages?"
 msgstr "Виключити Категорії:"
 
-#: admin.inc.php:160
+#: admin.inc.php:168
 msgid ""
 "Exclude Pages in display of Popular Posts? Number of views on Pages will "
 "continue to be counted."
@@ -77,71 +88,71 @@ msgstr ""
 "Виключити сторінки зі списку Популярних записів? Кількість переглядів для "
 "сторінок продовжуватиме підраховуватися"
 
-#: admin.inc.php:163
+#: admin.inc.php:171
 msgid "Exclude Categories: "
 msgstr "Виключити Категорії:"
 
-#: admin.inc.php:178
+#: admin.inc.php:186
 msgid ""
 "Comma separated list of category slugs. The field above has an autocomplete "
 "so simply start typing in the starting letters and it will prompt you with "
 "options"
 msgstr ""
 
-#: admin.inc.php:183
+#: admin.inc.php:191
 #, fuzzy
 msgid "Display number of views on:"
 msgstr "Показувати кількість переглядів запису?"
 
-#: admin.inc.php:185
+#: admin.inc.php:193
 msgid "Posts"
 msgstr ""
 
-#: admin.inc.php:186
+#: admin.inc.php:194
 #, fuzzy
 msgid "Pages"
 msgstr "Сторінка"
 
-#: admin.inc.php:189
+#: admin.inc.php:197
 msgid "Always display latest post count"
 msgstr ""
 
-#: admin.inc.php:191
+#: admin.inc.php:199
 msgid ""
 "This option uses JavaScript and will increase your page load time. Turn this "
 "off if you are not using caching plugins or are OK with displaying older "
 "cached counts"
 msgstr ""
 
-#: admin.inc.php:194
+#: admin.inc.php:202
 msgid "Always display latest post count in the daily lists"
 msgstr ""
 
-#: admin.inc.php:196
+#: admin.inc.php:204
 #, fuzzy
 msgid "This option uses JavaScript and will increase your page load time"
 msgstr ""
 "Зробити список Популярних записів динамічним? Опція використовує JavaScript, "
 "і це може збільшити час завантаження сторінок"
 
-#: admin.inc.php:199
+#: admin.inc.php:207
 msgid "Track visits of authors on their own posts?"
 msgstr "Враховувати перегляди записів, зроблені їхніми ж авторами?"
 
-#: admin.inc.php:202
+#: admin.inc.php:210
 #, fuzzy
 msgid "Track visits of admins?"
 msgstr "Враховувати перегляди записів, зроблені їхніми ж авторами?"
 
-#: admin.inc.php:205
+#: admin.inc.php:213
 msgid "Display page views on Posts > All Posts in Admin"
 msgstr ""
 
-#: admin.inc.php:208
+#: admin.inc.php:216
 msgid "Link to Top 10 plugin page"
 msgstr ""
 
-#: admin.inc.php:210
+#: admin.inc.php:218
 #, fuzzy
 msgid ""
 "A link to the plugin is added as an extra list item to the list of popular "
@@ -150,18 +161,18 @@ msgstr ""
 "Залишити посилання на плагін під списками Популярних записів? Автор плагіна "
 "був би дуже вдячний Вам, якщо Ви її все ж залишите!"
 
-#: admin.inc.php:217
+#: admin.inc.php:225
 #, fuzzy
 msgid "Output Options"
 msgstr "Установки плагіна:"
 
-#: admin.inc.php:220
+#: admin.inc.php:228
 msgid "Format to display the count in: "
 msgstr ""
 "У полі нижче ви можете налаштувати формат відображення кількості переглядів "
 "за день, за весь час для записів/сторінок:"
 
-#: admin.inc.php:222
+#: admin.inc.php:230
 #, fuzzy
 msgid ""
 "Use <code>%totalcount%</code> to display the total count, <code>%dailycount"
@@ -173,115 +184,115 @@ msgstr ""
 "переглядів, а <code>%dailycount%</code> - перегляди за добу. Наприклад: "
 "<code>(Запис переглянуто 123 рази, сьогодні переглядів - 23)</code>."
 
-#: admin.inc.php:225
+#: admin.inc.php:233
 msgid "Title of popular posts: "
 msgstr "Заголовок списку Популярних записів:"
 
-#: admin.inc.php:228
+#: admin.inc.php:236
 msgid "Title of daily popular posts: "
 msgstr "Заголовок списку Популярних сьогодні записів:"
 
-#: admin.inc.php:231
+#: admin.inc.php:239
 msgid "When there are no posts, what should be shown?"
 msgstr ""
 
-#: admin.inc.php:235
+#: admin.inc.php:243
 msgid "Blank Output"
 msgstr ""
 
-#: admin.inc.php:239
+#: admin.inc.php:247
 msgid "Display:"
 msgstr ""
 
-#: admin.inc.php:243
+#: admin.inc.php:251
 msgid "Show post excerpt in list?"
 msgstr "Показувати текст запису в списку?"
 
-#: admin.inc.php:246
+#: admin.inc.php:254
 msgid "Length of excerpt (in words): "
 msgstr "Довжина виведеного тексту (в словах):"
 
-#: admin.inc.php:249
+#: admin.inc.php:257
 msgid "Display number of page views in popular lists?"
 msgstr ""
 "Показувати кількість переглядів записів/сторінок в списку Популярних записів?"
 
-#: admin.inc.php:252
+#: admin.inc.php:260
 msgid "Customize the output:"
 msgstr "Установки оформлення списку:"
 
-#: admin.inc.php:254
+#: admin.inc.php:262
 msgid "HTML to display before the list of posts: "
 msgstr "HTML-тег, який використовується перед списком:"
 
-#: admin.inc.php:257
+#: admin.inc.php:265
 msgid "HTML to display before each list item: "
 msgstr "HTML-тег, який використовується перед кожним пунктом у списку:"
 
-#: admin.inc.php:260
+#: admin.inc.php:268
 msgid "HTML to display after each list item: "
 msgstr "HTML-тег, який використовується після кожного пункту в списку:"
 
-#: admin.inc.php:263
+#: admin.inc.php:271
 msgid "HTML to display after the list of posts: "
 msgstr "HTML-тег, який використовується після списку:"
 
-#: admin.inc.php:266
+#: admin.inc.php:274
 msgid "Post thumbnail options:"
 msgstr "Установки превью до записів:"
 
-#: admin.inc.php:268
+#: admin.inc.php:276
 msgid "Location of post thumbnail:"
 msgstr ""
 
-#: admin.inc.php:272
+#: admin.inc.php:280
 #, fuzzy
 msgid "Display thumbnails inline with posts, before title"
 msgstr "Відображати і превью, і текст"
 
-#: admin.inc.php:276
+#: admin.inc.php:284
 #, fuzzy
 msgid "Display thumbnails inline with posts, after title"
 msgstr "Відображати і превью, і текст"
 
-#: admin.inc.php:280
+#: admin.inc.php:288
 msgid "Display only thumbnails, no text"
 msgstr "Показувати тільки превью, без тексту"
 
-#: admin.inc.php:284
+#: admin.inc.php:292
 msgid "Do not display thumbnails, only text."
 msgstr "Показувати лише текст, без превью"
 
-#: admin.inc.php:288
+#: admin.inc.php:296
 msgid "Maximum width of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:291
+#: admin.inc.php:299
 msgid "Maximum height of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:294
+#: admin.inc.php:302
 msgid "Use timthumb to generate thumbnails? "
 msgstr ""
 
-#: admin.inc.php:295
+#: admin.inc.php:303
 msgid ""
 "If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/"
 "\">timthumb</a> will be used to generate thumbnails"
 msgstr ""
 
-#: admin.inc.php:297
+#: admin.inc.php:305
 #, fuzzy
 msgid "Post thumbnail meta field name: "
 msgstr "Установки превью до записів:"
 
-#: admin.inc.php:298
+#: admin.inc.php:306
 msgid ""
 "The value of this field should contain the image source and is set in the "
 "<em>Add New Post</em> screen"
 msgstr ""
 
-#: admin.inc.php:300
+#: admin.inc.php:308
 #, fuzzy
 msgid ""
 "If the postmeta is not set, then should the plugin extract the first image "
@@ -291,7 +302,7 @@ msgstr ""
 "зображення із запису. Це може злегка збільшити завантаження в перший раз, "
 "так як буде створюватися зменшена копія зображення"
 
-#: admin.inc.php:301
+#: admin.inc.php:309
 #, fuzzy
 msgid ""
 "This could slow down the loading of your page if the first image in the "
@@ -301,21 +312,21 @@ msgstr ""
 "зображення із запису. Це може злегка збільшити завантаження в перший раз, "
 "так як буде створюватися зменшена копія зображення"
 
-#: admin.inc.php:303
+#: admin.inc.php:311
 msgid "Use default thumbnail? "
 msgstr ""
 
-#: admin.inc.php:304
+#: admin.inc.php:312
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: admin.inc.php:306
+#: admin.inc.php:314
 msgid "Default thumbnail: "
 msgstr ""
 
-#: admin.inc.php:307
+#: admin.inc.php:315
 #, fuzzy
 msgid ""
 "The plugin will first check if the post contains a thumbnail. If it doesn't "
@@ -326,98 +337,98 @@ msgstr ""
 "заданому раніше мета-полю). Якщо ж превью нема - буде виводитися картинка за "
 "замовчунням:"
 
-#: admin.inc.php:313
+#: admin.inc.php:321
 msgid "Custom Styles"
 msgstr ""
 
-#: admin.inc.php:316
+#: admin.inc.php:324
 msgid "Custom CSS to add to header:"
 msgstr ""
 
-#: admin.inc.php:319
+#: admin.inc.php:327
 msgid ""
 "Do not include <code>style</code> tags. Check out the <a href=\"http://"
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> for "
 "available CSS classes to style."
 msgstr ""
 
-#: admin.inc.php:326
+#: admin.inc.php:334
 msgid "Maintenance"
 msgstr ""
 
-#: admin.inc.php:330
+#: admin.inc.php:338
 msgid ""
 "Over time the Daily Top 10 database grows in size, which reduces the "
 "performance of the plugin. Cleaning the database at regular intervals could "
 "improve performance, especially on high traffic blogs."
 msgstr ""
 
-#: admin.inc.php:331
+#: admin.inc.php:339
 msgid ""
 "Note: When scheduled maintenance is enabled, WordPress will run the cron job "
 "everytime the job is rescheduled (i.e. you change the settings below). This "
 "causes the daily posts table to reset."
 msgstr ""
 
-#: admin.inc.php:334
+#: admin.inc.php:342
 msgid "Enable scheduled maintenance of daily tables:"
 msgstr ""
 
-#: admin.inc.php:338
+#: admin.inc.php:346
 msgid "Time to run maintenance"
 msgstr ""
 
-#: admin.inc.php:341
+#: admin.inc.php:349
 msgid "How often should the maintenance be run:"
 msgstr ""
 
-#: admin.inc.php:345
+#: admin.inc.php:353
 msgid "Daily"
 msgstr ""
 
-#: admin.inc.php:349
+#: admin.inc.php:357
 msgid "Weekly"
 msgstr ""
 
-#: admin.inc.php:353
+#: admin.inc.php:361
 msgid "Fortnightly"
 msgstr ""
 
-#: admin.inc.php:357
+#: admin.inc.php:365
 msgid "Monthly"
 msgstr ""
 
-#: admin.inc.php:366
+#: admin.inc.php:374
 msgid "The cron job has been scheduled. Maintenance will run "
 msgstr ""
 
-#: admin.inc.php:371
+#: admin.inc.php:379
 msgid "The cron job is missing. Please resave this page to add the job"
 msgstr ""
 
-#: admin.inc.php:376
+#: admin.inc.php:384
 msgid "Maintenance is turned off"
 msgstr ""
 
-#: admin.inc.php:384
+#: admin.inc.php:392
 #, fuzzy
 msgid "Save Options"
 msgstr "Установки плагіна:"
 
-#: admin.inc.php:385
+#: admin.inc.php:393
 #, fuzzy
 msgid "Default Options"
 msgstr "Установки плагіна:"
 
-#: admin.inc.php:385
+#: admin.inc.php:393
 msgid "Do you want to set options to Default?"
 msgstr "Скинути налаштування плагіна?"
 
-#: admin.inc.php:389
+#: admin.inc.php:397
 msgid "Reset count"
 msgstr "Скинути статистику"
 
-#: admin.inc.php:392
+#: admin.inc.php:400
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
@@ -425,221 +436,221 @@ msgstr ""
 "Скидання статистики не може бути обернена. Перед тим, як скидати все, "
 "переконайтесь, що у вас є копія вашої бази даних!"
 
-#: admin.inc.php:395
+#: admin.inc.php:403
 #, fuzzy
 msgid "Reset Popular Posts"
 msgstr "Популярні записи"
 
-#: admin.inc.php:395
+#: admin.inc.php:403
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Ви впевнені, що хочете скинути статистику для Популярних записів?"
 
-#: admin.inc.php:396
+#: admin.inc.php:404
 #, fuzzy
 msgid "Reset Daily Popular Posts"
 msgstr "Популярні сьогодні записи"
 
-#: admin.inc.php:396
+#: admin.inc.php:404
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 "Ви впевнені, що хочете скинути статистику для Популярних сьогодні записів?"
 
-#: admin.inc.php:397
+#: admin.inc.php:405
 msgid "Clear duplicates"
 msgstr ""
 
-#: admin.inc.php:397
+#: admin.inc.php:405
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Буде проведено видалення дубльованих запісів з статистики. Продовжити?"
 
-#: admin.inc.php:441 admin.inc.php:787 top-10.php:383
+#: admin.inc.php:449 admin.inc.php:795 top-10.php:404
 msgid "Popular Posts"
 msgstr "Популярні записи"
 
-#: admin.inc.php:441 admin.inc.php:528
+#: admin.inc.php:449 admin.inc.php:536
 msgid "Daily Popular Posts"
 msgstr "Популярні сьогодні записи"
 
-#: admin.inc.php:469
+#: admin.inc.php:477
 msgid "Support the development"
 msgstr "Підтримати автора плагіна"
 
-#: admin.inc.php:477
+#: admin.inc.php:485
 msgid "Enter amount in USD: "
 msgstr "Скільки ви готові пожертвувати (в USD):"
 
-#: admin.inc.php:481
+#: admin.inc.php:489
 msgid "Send your donation to the author of"
 msgstr "Відправте пожертву автору"
 
-#: admin.inc.php:487
+#: admin.inc.php:495
 msgid "Follow us"
 msgstr ""
 
-#: admin.inc.php:493
+#: admin.inc.php:501
 #, fuzzy
 msgid "Quick Links"
 msgstr "Корисні посилання"
 
-#: admin.inc.php:495
+#: admin.inc.php:503
 #, fuzzy
 msgid "Top 10 plugin page"
 msgstr "Сторінка плагіна"
 
-#: admin.inc.php:496
+#: admin.inc.php:504
 msgid "Other plugins"
 msgstr "Інші плагіни автора"
 
-#: admin.inc.php:497
+#: admin.inc.php:505
 msgid "Ajay's blog"
 msgstr "Блог Ajay"
 
-#: admin.inc.php:498 top-10.php:899
+#: admin.inc.php:506 top-10.php:921
 msgid "Support"
 msgstr "Підтримка (англ.)"
 
-#: admin.inc.php:502
+#: admin.inc.php:510
 msgid "Recent developments"
 msgstr "Останні розробки"
 
-#: admin.inc.php:519 admin.inc.php:522
+#: admin.inc.php:527 admin.inc.php:530
 #, fuzzy
 msgid "Top 10 Settings"
 msgstr "Налаштування плагіна"
 
-#: admin.inc.php:519
+#: admin.inc.php:527
 msgid "Top 10"
 msgstr "Топ 10 записів"
 
-#: admin.inc.php:525
+#: admin.inc.php:533
 #, fuzzy
 msgid "Overall Popular Posts"
 msgstr "Подивитися всі Популярні записи"
 
-#: admin.inc.php:667
+#: admin.inc.php:675
 msgid "Results"
 msgstr "Результати"
 
-#: admin.inc.php:669 admin.inc.php:675
+#: admin.inc.php:677 admin.inc.php:683
 msgid "of"
 msgstr "з"
 
-#: admin.inc.php:673
+#: admin.inc.php:681
 msgid "Page"
 msgstr "Сторінка"
 
-#: admin.inc.php:687
+#: admin.inc.php:695
 msgid "View Daily Popular Posts"
 msgstr "Подивитися всі Популярні сьогодні записи"
 
-#: admin.inc.php:690 admin.inc.php:703
+#: admin.inc.php:698 admin.inc.php:711
 msgid "Results per-page:"
 msgstr "Результатів на сторінку:"
 
-#: admin.inc.php:700
+#: admin.inc.php:708
 msgid "View Overall Popular Posts"
 msgstr "Подивитися всі Популярні записи"
 
-#: admin.inc.php:729
+#: admin.inc.php:737
 msgid "Previous"
 msgstr "Попередня сторінка"
 
-#: admin.inc.php:747
+#: admin.inc.php:755
 msgid "Next"
 msgstr "Наступна сторінка"
 
-#: admin.inc.php:788
+#: admin.inc.php:796
 msgid "Daily Popular"
 msgstr "Популярні сьогодні записи"
 
-#: admin.inc.php:804
+#: admin.inc.php:812
 msgid "Total / Today's Views"
 msgstr "Всього/Сьогодні"
 
-#: top-10.php:382
+#: top-10.php:403
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:396
+#: top-10.php:417
 msgid "Title"
 msgstr ""
 
-#: top-10.php:401
+#: top-10.php:422
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:406
+#: top-10.php:427
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:407
+#: top-10.php:428
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:412
+#: top-10.php:433
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:416
+#: top-10.php:437
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Установки превью до записів:"
 
-#: top-10.php:418
+#: top-10.php:439
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Відображати і превью, і текст"
 
-#: top-10.php:419
+#: top-10.php:440
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Відображати і превью, і текст"
 
-#: top-10.php:420
+#: top-10.php:441
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Показувати тільки превью, без тексту"
 
-#: top-10.php:421
+#: top-10.php:442
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Показувати лише текст, без превью"
 
-#: top-10.php:426
+#: top-10.php:447
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Показувати текст запису в списку?"
 
-#: top-10.php:501
+#: top-10.php:522
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Популярні записи</h3>"
 
-#: top-10.php:502
+#: top-10.php:523
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Популярні сьогодні записи</h3>"
 
-#: top-10.php:503
+#: top-10.php:524
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Скинути статистику найпопулярніших записів"
 
-#: top-10.php:865
+#: top-10.php:887
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:866
+#: top-10.php:888
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:867
+#: top-10.php:889
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:887
+#: top-10.php:909
 msgid "Settings"
 msgstr "Налаштування плагіна"
 
-#: top-10.php:900
+#: top-10.php:922
 msgid "Donate"
 msgstr "Зробити внесок"
 

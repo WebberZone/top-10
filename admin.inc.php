@@ -56,6 +56,8 @@ function tptn_options() {
 		$tptn_settings['excerpt_length'] = intval($_POST['excerpt_length']);
 		$tptn_settings['custom_CSS'] = $_POST['custom_CSS'];
 
+		$tptn_settings['cache_fix'] = (isset($_POST['cache_fix']) ? true : false);
+
 		// Exclude categories
 		$tptn_settings['exclude_cat_slugs'] = ($_POST['exclude_cat_slugs']);
 
@@ -145,6 +147,12 @@ function tptn_options() {
 			<tr>
 			  <th scope="row"><label for="activate_daily"><?php _e('Enable Daily stats',TPTN_LOCAL_NAME); ?></label></th>
 			  <td><input type="checkbox" name="activate_daily" id="activate_daily" <?php if ($tptn_settings['activate_daily']) echo 'checked="checked"' ?> />
+			  </td>
+			</tr>
+			<tr>
+			  <th scope="row"><label for="cache_fix"><?php _e('W3 Total Cache fix:',TPTN_LOCAL_NAME); ?></label></th>
+			  <td><input type="checkbox" name="cache_fix" id="cache_fix" <?php if ($tptn_settings['cache_fix']) echo 'checked="checked"' ?> />
+			    <p class="description"><?php _e('This will try to prevent W3 Total Cache from caching the addcount script of the plugin. Try toggling this option in case you find that our posts are not tracked.',TPTN_LOCAL_NAME); ?></p>
 			  </td>
 			</tr>
 			<tr>
