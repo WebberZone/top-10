@@ -4,7 +4,7 @@ Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.0
-Tested up to: 3.6
+Tested up to: 3.7
 License: GPLv2 or later
 
 
@@ -45,14 +45,28 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.7 =
-* New: Option to toggle using jQuery on to track counts. Potential fix for counters not working.
+= 1.9.8 =
+New: Custom post support, options to exclude posts by ID, add nofollow attribute to links, open links in new window, change in thumbnail width and height settings.
+Check the Changelog for more information
 
 
 == Changelog ==
 
+= 1.9.8 =
+* New: Custom post support. Choose which custom post types to display in the top posts
+* New: More display options. Select which archives you want to display the post count
+* New: Option to open links in new window
+* New: Option to add nofollow attribute to links
+* New: Option to exclude posts by ID in the list of top posts being displayed
+* New: Option to prevent display of the Visit Count on posts by ID
+* New: Option to choose between using CSS styles or HTML attributes for thumbnail width and height. *HTML width and height attributes are default* 
+* New: Option to restrict the title to fixed number of characters
+* New: Option to add the date to the list
+* Modified: Numbers are now formatted based on the locale
+* Fixed: Plugin will now create thumbnails from the first image in gallery custom posts
+
 = 1.9.7 =
-* New: Option to toggle using jQuery on to track counts. Potential fix for counters not working.
+* New: Option to toggle using jQuery ON to track counts. Potential fix for counters not working.
 
 = 1.9.6 =
 * Fixed: Daily count was not updated
