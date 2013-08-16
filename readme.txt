@@ -45,12 +45,15 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.8 =
+= 1.9.8.1 =
 New: Custom post support, options to exclude posts by ID, add nofollow attribute to links, open links in new window, change in thumbnail width and height settings.
 Check the Changelog for more information
 
 
 == Changelog ==
+
+= 1.9.8.1 =
+* Fixed: Correct numbers of posts were not being fetched
 
 = 1.9.8 =
 * New: Custom post support. Choose which custom post types to display in the top posts
