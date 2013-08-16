@@ -516,7 +516,6 @@ function tptn_manage($daily = 0) {
 
 	$paged = (isset($_GET['paged']) ? intval($_GET['paged']) : 0);
 	$limit = (isset($_GET['limit']) ? intval($_GET['limit']) : 0);
-	$exclude_pages = (isset($_GET['exclude_pages']) ? intval($_GET['exclude_pages']) : 0);
 	$daily = (isset($_GET['daily']) ? intval($_GET['daily']) : $daily);
 
 ?>
@@ -532,7 +531,7 @@ function tptn_manage($daily = 0) {
 	  </div>
 
 	  <div id="options-div">
-		  <?php echo tptn_pop_display($daily,$paged,$limit,false,$exclude_pages); ?>
+		  <?php echo tptn_pop_display($daily,$paged,$limit,false); ?>
 	  </div> <!-- End options-div -->
 
 	  </div> <!-- End inside -->
@@ -673,10 +672,9 @@ function tptn_clean_duplicates($daily = false) {
  * @param int $page (default: 0) Which page of the lists are we on?
  * @param int $limit (default: 10) Maximum number of posts per page
  * @param bool $widget (default: false) Is this a WordPress widget?
- * @param int $exclude_pages (default: 0) Include / exclude pages
  * @return void
  */
-function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = false, $exclude_pages = 0) {
+function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = false) {
 	global $wpdb, $siteurl, $tableposts, $id;
 
 	$table_name = $wpdb->prefix . "top_ten";
@@ -685,12 +683,21 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	$tptn_settings = tptn_read_options();
 	if (!($limit)) $limit = $tptn_settings['limit'];
 	if (!($page)) $page = 0; // Default page value.
+	parse_str($tptn_settings['post_types'],$post_types);	// Save post types in $post_types variable
+
 
 	if(!$daily) {
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		if ($exclude_pages) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
+		$sql .= "AND ( ";
+		$multiple = false;
+		foreach ($post_types as $post_type) {
+			if ( $multiple ) $sql .= ' OR ';
+			$sql .= " post_type = '".$post_type."' ";
+			$multiple = true;
+		}
+		$sql .=" ) ";
 		$sql .= "ORDER BY sumCount DESC";
 	} else {
 		$daily_range = $tptn_settings['daily_range']-1;
@@ -700,8 +707,15 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		if ($exclude_pages) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
+		$sql .= "AND ( ";
+		$multiple = false;
+		foreach ($post_types as $post_type) {
+			if ( $multiple ) $sql .= ' OR ';
+			$sql .= " post_type = '".$post_type."' ";
+			$multiple = true;
+		}
+		$sql .=" ) ";
 		$sql .= "GROUP BY postnumber ";
 		$sql .= "ORDER BY sumCount DESC";
 	}
@@ -733,14 +747,28 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	if(!$daily) {
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		if ($exclude_pages) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' ";
+		$sql .= "AND ( ";
+		$multiple = false;
+		foreach ($post_types as $post_type) {
+			if ( $multiple ) $sql .= ' OR ';
+			$sql .= " post_type = '".$post_type."' ";
+			$multiple = true;
+		}
+		$sql .=" ) ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $page, $limit";
 	} else {
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		if ($exclude_pages) $sql .= "AND post_type = 'post' ";
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
+		$sql .= "AND ( ";
+		$multiple = false;
+		foreach ($post_types as $post_type) {
+			if ( $multiple ) $sql .= ' OR ';
+			$sql .= " post_type = '".$post_type."' ";
+			$multiple = true;
+		}
+		$sql .=" ) ";
 		$sql .= "GROUP BY postnumber ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $page, $limit";
 	}
