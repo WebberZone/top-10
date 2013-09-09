@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.8.1
+Version:     1.9.8.2
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -214,7 +214,7 @@ function get_tptn_post_count($id) {
 		
 		// Now process daily count
 		if (strpos($count_disp_form, "%dailycount%") !== false) {
-			$daily_range = $tptn_settings['daily_range'];
+			$daily_range = $tptn_settings['daily_range']-1;
 			$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 			$current_date = date ( 'Y-m-j' , $current_date );
@@ -251,6 +251,7 @@ function tptn_pop_posts( $args ) {
 		'is_widget' => FALSE,
 		'daily' => FALSE,
 		'echo' => FALSE,
+		'strict_limit' => FALSE,
 	);
 	$defaults = array_merge($defaults, tptn_read_options());
 	
@@ -260,7 +261,7 @@ function tptn_pop_posts( $args ) {
 	// OPTIONAL: Declare each item in $args as its own variable i.e. $type, $before.
 	extract( $args, EXTR_SKIP );
 
-	if ($echo) { 	
+/*	if ($echo) { 	
 		echo get_tptn_pop_posts($daily, $is_widget, $limit, $show_excerpt, $post_thumb_op, $daily_range);
 	} else { 
 		return get_tptn_pop_posts($daily, $is_widget, $limit, $show_excerpt, $post_thumb_op, $daily_range); 
@@ -272,39 +273,41 @@ function tptn_pop_posts( $args ) {
  * 
  * @access public
  * @param bool $daily (default: false)
- * @param bool $widget (default: false)
+ * @param bool $is_widget (default: false)
  * @param string $limit (default: '10')
  * @param bool $show_excerpt (default: false)
  * @param string $post_thumb_op (default: 'text_only')
  * @param string $daily_range (default: '1')
  * @return string Output of posts
  */
-function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $show_excerpt = false, $post_thumb_op = false, $daily_range = false, $strict_limit = false ) {
+// function get_tptn_pop_posts( $daily = false , $is_widget = false, $limit = false, $show_excerpt = false, $post_thumb_op = false, $daily_range = false, $strict_limit = false ) {
 	global $wpdb, $siteurl, $tableposts, $id;
-	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
-		else $table_name = $wpdb->prefix . "top_ten";
 	global $tptn_settings;
 	
-	if (empty($limit)) $limit = stripslashes($tptn_settings['limit']);
+	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
+		else $table_name = $wpdb->prefix . "top_ten";
+	
+	//if (empty($limit)) $limit = stripslashes($tptn_settings['limit']);
 	$limit = ($strict_limit) ? $limit : ($limit*5);	
 
-	$show_excerpt = empty($show_excerpt) ? $tptn_settings['show_excerpt'] : $show_excerpt;
-	$post_thumb_op = empty($post_thumb_op) ? $tptn_settings['post_thumb_op'] : $post_thumb_op;
-	$daily_range = empty($daily_range) ? $tptn_settings['daily_range'] : $daily_range;
+	//$show_excerpt = empty($show_excerpt) ? $tptn_settings['show_excerpt'] : $show_excerpt;
+	//$post_thumb_op = empty($post_thumb_op) ? $tptn_settings['post_thumb_op'] : $post_thumb_op;
+	//$daily_range = empty($daily_range) ? $tptn_settings['daily_range'] : $daily_range;
 	
-	$exclude_categories = explode(',',$tptn_settings['exclude_categories']);
+	$exclude_categories = explode(',',$exclude_categories);
 
-	$target_attribute = (($tptn_settings['link_new_window']) ? ' target="_blank" ' : ' ' );
-	$rel_attribute = (($tptn_settings['link_nofollow']) ? ' nofollow' : '' );
-	$show_date = $tptn_settings['show_date'];
+	$target_attribute = ($link_new_window) ? ' target="_blank" ' : ' ';
+	$rel_attribute = ($link_nofollow) ? ' nofollow' : '';
+	//$show_date = $tptn_settings['show_date'];
+	//$show_author = $tptn_settings['show_author'];
 	
-	parse_str($tptn_settings['post_types'],$post_types);	// Save post types in $post_types variable
+	parse_str($post_types,$post_types);	// Save post types in $post_types variable
 
 	if (!$daily) {
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' ";
-		if ($tptn_settings['exclude_post_ids']!='') $sql .= "AND ID NOT IN (".$tptn_settings['exclude_post_ids'].") ";
+		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (".$exclude_post_ids.") ";
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
@@ -315,15 +318,20 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $
 		$sql .=" ) ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	} else {
-		$daily_range = $daily_range - 1;
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-		$current_date = date ( 'Y-m-j' , $current_date );
+//		$daily_range = $daily_range - 1;
+//		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+//		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+//		$current_date = date ( 'Y-m-j' , $current_date );
+
+		$current_time = current_time( 'timestamp', 0 );
+		$current_time = $current_time - $daily_range * 3600 * 24;
+		$current_date = date( 'Y-m-j', $current_time );
+		
 		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
-		if ($tptn_settings['exclude_post_ids']!='') $sql .= "AND ID NOT IN (".$tptn_settings['exclude_post_ids'].") ";
+		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (".$exclude_post_ids.") ";
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
@@ -340,11 +348,11 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $
 
 	$output = '';
 
-	if (!$widget) {
+	if (!$is_widget) {
 		if (!$daily) {
-			$output .= '<div id="tptn_related" class="tptn_posts">'.apply_filters('tptn_heading_title',$tptn_settings['title']);
+			$output .= '<div id="tptn_related" class="tptn_posts">'.apply_filters('tptn_heading_title',$title);
 		} else {
-			$output .= '<div id="tptn_related_daily" class="tptn_posts_daily">'.apply_filters('tptn_heading_title',$tptn_settings['title_daily']);
+			$output .= '<div id="tptn_related_daily" class="tptn_posts_daily">'.apply_filters('tptn_heading_title',$title_daily);
 		}
 	} else {
 		if (!$daily) {
@@ -355,7 +363,7 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $
 	}
 	
 	if ($results) {
-		$output .= $tptn_settings['before_list'];
+		$output .= $before_list;
 		foreach ($results as $result) {
 			$sumcount = $result->sumCount;
 			$result = get_post($result->ID);	// Let's get the Post using the ID
@@ -368,39 +376,46 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $
 			}
 
 			//$title = trim(stripslashes(get_the_title($result->ID)));
-			$title = tptn_max_formatted_content(get_the_title($result->ID),$tptn_settings['title_length']);
+			$title = tptn_max_formatted_content(get_the_title($result->ID),$title_length);
 
 			if (!$p_in_c) {
-				$output .= $tptn_settings['before_list_item'];
+				$output .= $before_list_item;
 
 				$output .= '<a href="'.get_permalink($result->ID).'" rel="bookmark'.$rel_attribute.'" '.$target_attribute.'class="tptn_link">'; // Add beginning of link
 				if ($post_thumb_op=='after') {
 					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='after' || $post_thumb_op=='thumbs_only') {
-					$output .= tptn_get_the_post_thumbnail('postid='.$result->ID.'&thumb_height='.$tptn_settings['thumb_height'].'&thumb_width='.$tptn_settings['thumb_width'].'&thumb_meta='.$tptn_settings['thumb_meta'].'&thumb_html='.$tptn_settings['thumb_html'].'&thumb_default='.$tptn_settings['thumb_default'].'&thumb_default_show='.$tptn_settings['thumb_default_show'].'&thumb_timthumb='.$tptn_settings['thumb_timthumb'].'&scan_images='.$tptn_settings['scan_images'].'&class=tptn_thumb&filter=tptn_postimage');
+					$output .= tptn_get_the_post_thumbnail('postid='.$result->ID.'&thumb_height='.$thumb_height.'&thumb_width='.$thumb_width.'&thumb_meta='.$thumb_meta.'&thumb_html='.$thumb_html.'&thumb_default='.$thumb_default.'&thumb_default_show='.$thumb_default_show.'&thumb_timthumb='.$thumb_timthumb.'&scan_images='.$scan_images.'&class=tptn_thumb&filter=tptn_postimage');
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='text_only') {
 					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings
 				}
 				$output .= '</a>'; // Close the link
+				if ($show_author) {
+					$author_info = get_userdata($result->post_author);
+					$author_name = ucwords(trim(stripslashes($author_info->user_nicename)));
+					$author_link = get_author_posts_url( $author_info->ID );
+					
+					$output .= '<span class="tptn_author"> '.__(' Posted by ', TPTN_LOCAL_NAME ).'<a href="'.$author_link.'">'.$author_name.'</a></span> ';
+				}
 				if ($show_date) {
 					$output .= '<span class="tptn_date"> '.mysql2date(get_option('date_format','d/m/y'), $result->post_date).'</span> ';
 				}
 				if ($show_excerpt) {
-					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->ID,$tptn_settings['excerpt_length']).'</span>';
+					$output .= '<span class="tptn_excerpt"> '.tptn_excerpt($result->ID,$excerpt_length).'</span>';
 				}
-				if ($tptn_settings['disp_list_count']) $output .= ' <span class="tptn_list_count">('.number_format_i18n($sumcount).')</span>';
+				if ($disp_list_count) $output .= ' <span class="tptn_list_count">('.number_format_i18n($sumcount).')</span>';
 		        
-				$output .= $tptn_settings['after_list_item'];
+				$output .= $after_list_item;
 				$counter++; 
 			}
 			if ($counter == $limit/5) break;	// End loop when related posts limit is reached
 		}
-		if ($tptn_settings['show_credit']) $output .= $tptn_settings['before_list_item'].'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/" rel="nofollow">Top 10 plugin</a>'.$tptn_settings['after_list_item'];
-		$output .= $tptn_settings['after_list'];
+		if ($show_credit) $output .= $before_list_item.'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/" rel="nofollow">Top 10 plugin</a>'.$after_list_item;
+		$output .= $after_list;
 	} else {
-		$output .= ($tptn_settings['blank_output']) ? '' : $tptn_settings['blank_output_text'];
+		$output .= ($blank_output) ? '' : $blank_output_text;
 	}
 	$output .= '</div>';
 
@@ -414,8 +429,8 @@ function get_tptn_pop_posts( $daily = false , $widget = false, $limit = false, $
  * @access public
  * @return void
  */
-function tptn_show_pop_posts() {
-	echo tptn_pop_posts('daily=0&is_widget=0');
+function tptn_show_pop_posts( $args = NULL ) {
+	echo tptn_pop_posts( $args );
 }
 
 
@@ -469,47 +484,71 @@ class WidgetTopTen extends WP_Widget
 	}
 	
 	function form($instance) {
-		$title = esc_attr($instance['title']);
-		$limit = esc_attr($instance['limit']);
-		$show_excerpt = esc_attr($instance['show_excerpt']);
-		$post_thumb_op = esc_attr($instance['post_thumb_op']);
-		$daily = esc_attr($instance['daily']);
-		$daily_range = esc_attr($instance['daily_range']);
+		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+		$limit = isset($instance['limit']) ? esc_attr($instance['limit']) : '';
+		$show_excerpt = isset($instance['show_excerpt']) ? esc_attr($instance['show_excerpt']) : '';
+		$show_author = isset($instance['show_author']) ? esc_attr($instance['show_author']) : '';
+		$show_date = isset($instance['show_date']) ? esc_attr($instance['show_date']) : '';
+		$post_thumb_op = isset($instance['post_thumb_op']) ? esc_attr($instance['post_thumb_op']) : '';
+		$thumb_height = isset($instance['thumb_height']) ? esc_attr($instance['thumb_height']) : '';
+		$thumb_width = isset($instance['thumb_width']) ? esc_attr($instance['thumb_width']) : '';
+		$daily = isset($instance['daily']) ? esc_attr($instance['daily']) : '';
+		$daily_range = isset($instance['daily_range']) ? esc_attr($instance['daily_range']) : '';
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id('title'); ?>">
-		<?php _e('Title', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo attribute_escape($title); ?>" /> 
-		</label>
+			<label for="<?php echo $this->get_field_id('title'); ?>">
+			<?php _e('Title', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /> 
+			</label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('limit'); ?>">
-		<?php _e('No. of posts', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="text" value="<?php echo attribute_escape($limit); ?>" /> 
-		</label>
+			<label for="<?php echo $this->get_field_id('limit'); ?>">
+			<?php _e('No. of posts', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="text" value="<?php echo esc_attr($limit); ?>" /> 
+			</label>
 		</p>
 		<p>
-		<select class="widefat" id="<?php echo $this->get_field_id('daily'); ?>" name="<?php echo $this->get_field_name('daily'); ?>">
-		  <option value="overall" <?php if ($daily=='overall') echo 'selected="selected"' ?>><?php _e('Overall', TPTN_LOCAL_NAME); ?></option>
-		  <option value="daily" <?php if ($daily=='daily') echo 'selected="selected"' ?>><?php _e('Custom time period (Enter below)', TPTN_LOCAL_NAME); ?></option>
-		</select>
+			<select class="widefat" id="<?php echo $this->get_field_id('daily'); ?>" name="<?php echo $this->get_field_name('daily'); ?>">
+			  <option value="overall" <?php if ($daily=='overall') echo 'selected="selected"' ?>><?php _e('Overall', TPTN_LOCAL_NAME); ?></option>
+			  <option value="daily" <?php if ($daily=='daily') echo 'selected="selected"' ?>><?php _e('Custom time period (Enter below)', TPTN_LOCAL_NAME); ?></option>
+			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('daily_range'); ?>">
-		<?php _e('Range in number of days (applies only to custom option above)', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('daily_range'); ?>" name="<?php echo $this->get_field_name('daily_range'); ?>" type="text" value="<?php echo attribute_escape($daily_range); ?>" /> 
-		</label>
+			<label for="<?php echo $this->get_field_id('daily_range'); ?>">
+			<?php _e('Range in number of days (applies only to custom option above)', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('daily_range'); ?>" name="<?php echo $this->get_field_name('daily_range'); ?>" type="text" value="<?php echo esc_attr($daily_range); ?>" /> 
+			</label>
 		</p>
 		<p>
-		<?php _e('Thumbnail options', TPTN_LOCAL_NAME); ?>: <br />
-		<select class="widefat" id="<?php echo $this->get_field_id('post_thumb_op'); ?>" name="<?php echo $this->get_field_name('post_thumb_op'); ?>">
-		  <option value="inline" <?php if ($post_thumb_op=='inline') echo 'selected="selected"' ?>><?php _e('Thumbnails inline, before title',TPTN_LOCAL_NAME); ?></option>
-		  <option value="after" <?php if ($post_thumb_op=='after') echo 'selected="selected"' ?>><?php _e('Thumbnails inline, after title',TPTN_LOCAL_NAME); ?></option>
-		  <option value="thumbs_only" <?php if ($post_thumb_op=='thumbs_only') echo 'selected="selected"' ?>><?php _e('Only thumbnails, no text',TPTN_LOCAL_NAME); ?></option>
-		  <option value="text_only" <?php if ($post_thumb_op=='text_only') echo 'selected="selected"' ?>><?php _e('No thumbnails, only text.',TPTN_LOCAL_NAME); ?></option>
-		</select>
+			<label for="<?php echo $this->get_field_id('show_excerpt'); ?>">
+			<input id="<?php echo $this->get_field_id('show_excerpt'); ?>" name="<?php echo $this->get_field_name('show_excerpt'); ?>" type="checkbox" <?php if ($show_excerpt) echo 'checked="checked"' ?> /> <?php _e(' Show excerpt?', TPTN_LOCAL_NAME); ?>
+			</label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('show_excerpt'); ?>">
-		<input id="<?php echo $this->get_field_id('show_excerpt'); ?>" name="<?php echo $this->get_field_name('show_excerpt'); ?>" type="checkbox" <?php if ($show_excerpt) echo 'checked="checked"' ?> /> <?php _e(' Show excerpt?', TPTN_LOCAL_NAME); ?>
-		</label>
+			<label for="<?php echo $this->get_field_id('show_author'); ?>">
+			<input id="<?php echo $this->get_field_id('show_author'); ?>" name="<?php echo $this->get_field_name('show_author'); ?>" type="checkbox" <?php if ($show_author) echo 'checked="checked"' ?> /> <?php _e(' Show author?', TPTN_LOCAL_NAME); ?>
+			</label>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('show_date'); ?>">
+			<input id="<?php echo $this->get_field_id('show_date'); ?>" name="<?php echo $this->get_field_name('show_date'); ?>" type="checkbox" <?php if ($show_date) echo 'checked="checked"' ?> /> <?php _e(' Show date?', TPTN_LOCAL_NAME); ?>
+			</label>
+		</p>
+		<p>
+			<?php _e('Thumbnail options', TPTN_LOCAL_NAME); ?>: <br />
+			<select class="widefat" id="<?php echo $this->get_field_id('post_thumb_op'); ?>" name="<?php echo $this->get_field_name('post_thumb_op'); ?>">
+			  <option value="inline" <?php if ($post_thumb_op=='inline') echo 'selected="selected"' ?>><?php _e('Thumbnails inline, before title',TPTN_LOCAL_NAME); ?></option>
+			  <option value="after" <?php if ($post_thumb_op=='after') echo 'selected="selected"' ?>><?php _e('Thumbnails inline, after title',TPTN_LOCAL_NAME); ?></option>
+			  <option value="thumbs_only" <?php if ($post_thumb_op=='thumbs_only') echo 'selected="selected"' ?>><?php _e('Only thumbnails, no text',TPTN_LOCAL_NAME); ?></option>
+			  <option value="text_only" <?php if ($post_thumb_op=='text_only') echo 'selected="selected"' ?>><?php _e('No thumbnails, only text.',TPTN_LOCAL_NAME); ?></option>
+			</select>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('thumb_height'); ?>">
+			<?php _e('Thumbnail height', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('thumb_height'); ?>" name="<?php echo $this->get_field_name('thumb_height'); ?>" type="text" value="<?php echo esc_attr($thumb_height); ?>" /> 
+			</label>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('thumb_width'); ?>">
+			<?php _e('Thumbnail width', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('thumb_width'); ?>" name="<?php echo $this->get_field_name('thumb_width'); ?>" type="text" value="<?php echo esc_attr($thumb_width); ?>" /> 
+			</label>
 		</p>
 		<?php
 	} //ending form creation
@@ -520,7 +559,11 @@ class WidgetTopTen extends WP_Widget
 		$instance['daily'] = ($new_instance['daily']);
 		$instance['daily_range'] = strip_tags($new_instance['daily_range']);
 		$instance['show_excerpt'] = ($new_instance['show_excerpt']);
+		$instance['show_author'] = ($new_instance['show_author']);
+		$instance['show_date'] = ($new_instance['show_date']);
 		$instance['post_thumb_op'] = ($new_instance['post_thumb_op']);
+		$instance['thumb_height'] = ($new_instance['thumb_height']);
+		$instance['thumb_width'] = ($new_instance['thumb_width']);
 		return $instance;
 	} //ending update
 	function widget($args, $instance) {
@@ -532,13 +575,11 @@ class WidgetTopTen extends WP_Widget
 
 		$title = apply_filters('widget_title', empty($instance['title']) ? strip_tags($tptn_settings['title']) : $instance['title']);
 		$limit = $instance['limit'];
-		$show_excerpt = $instance['show_excerpt'];
-		$post_thumb_op = $instance['post_thumb_op'];
 		if (empty($limit)) $limit = $tptn_settings['limit'];
-		$daily_range = $instance['daily_range'];
-		if (empty($daily_range)) $daily_range = $tptn_settings['daily_range'];
-		$daily = $instance['daily'];
-		$daily = (($daily=="daily") ? true : false);
+
+		$daily_range = (empty($instance['daily_range'])) ? $tptn_settings['daily_range'] : $instance['daily_range'];
+
+		$daily = ($instance['daily']=="daily") ? true : false;
 
 		$output = $before_widget;
 		$output .= $before_title . $title . $after_title;
@@ -547,10 +588,36 @@ class WidgetTopTen extends WP_Widget
 			if ($tptn_settings['d_use_js']) {
 				$output .= '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
 			} else {
-				$output .= tptn_pop_posts('daily=1&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
+				// $output .= tptn_pop_posts('daily=1&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
+				$output .= tptn_pop_posts( array(
+					'is_widget' => 1,
+					'limit' => $limit,
+					'daily' => 1,
+					'daily_range' => $instance['daily_range'],
+					'show_excerpt' => $instance['show_excerpt'],
+					'show_author' => $instance['show_author'],
+					'show_date' => $instance['show_date'],
+					'post_thumb_op' => $instance['post_thumb_op'],
+					'thumb_height' => $instance['thumb_height'],
+					'thumb_width' => $instance['thumb_width'],
+				) );
+				
 			}
 		} else {
-			$output .= tptn_pop_posts('daily=0&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
+			// $output .= tptn_pop_posts('daily=0&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
+			$output .= tptn_pop_posts( array(
+				'is_widget' => 1,
+				'limit' => $limit,
+				'daily' => 0,
+				'daily_range' => $daily_range,
+				'show_excerpt' => $instance['show_excerpt'],
+				'show_author' => $instance['show_author'],
+				'show_date' => $instance['show_date'],
+				'post_thumb_op' => $instance['post_thumb_op'],
+				'thumb_height' => $instance['thumb_height'],
+				'thumb_width' => $instance['thumb_width'],
+			) );
+			
 		}
 
 		$output .= $after_widget;
@@ -632,6 +699,7 @@ function tptn_default_options() {
 						'scan_images' => true,			// Scan post for images
 						'show_excerpt' => false,			// Show description in list item
 						'show_date' => false,			// Show date in list item
+						'show_author' => false,			// Show author in list item
 						'excerpt_length' => '10',			// Length of characters
 						'title_length' => '60',		// Limit length of post title
 						'exclude_categories' => '',		// Exclude these categories
@@ -921,7 +989,7 @@ function tptn_get_first_image( $postID ) {
 function tptn_excerpt($postid,$excerpt_length){
 	$content = get_post($postid)->post_excerpt;
 	if ($content=='') $content = get_post($postid)->post_content;
-	$out = strip_tags($content);
+	$out = strip_tags(strip_shortcodes($content));
 	$blah = explode(' ',$out);
 	if (!$excerpt_length) $excerpt_length = 10;
 	if(count($blah) > $excerpt_length){
