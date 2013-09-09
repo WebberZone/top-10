@@ -30,7 +30,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * View list of daily and/or overall popular posts from within the dashboard
 * Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area
 * Customise which HTML tags to use for displaying the output in case you don't prefer the default `list` format
-* Clean uninstall if you choose to delete the plugin from within WP-Admin
+* Clean uninstall if you choose to delete the plugin from within WP-Admin, but why would you?
 * Works with caching plugins like WP-Super-Cache, W3 Total Cache or Quick Cache
 
 
@@ -45,12 +45,20 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.8.1 =
-New: Custom post support, options to exclude posts by ID, add nofollow attribute to links, open links in new window, change in thumbnail width and height settings.
-Check the Changelog for more information
-
+= 1.9.8.2 =
+New: Option to add author; shortcodes are stripped from excerpts; bug fixes;
+Check the Changelog for more details
 
 == Changelog ==
+
+= 1.9.8.2 =
+* New: Option to add author
+* New: More options for the Widgets to configure the post lists 
+* Modified: Shortcodes are now stripped from excerpts
+* New: Added *s3.amazonaws.com* to list of allowed sites that timthumb can fetch images from
+* Fixed: Counter was not always displayed on posts
+* New: All Posts / All Pages have separate *sortable* columns for total and daily counts 
+* Fixed: Warning messages with WP_DEBUG mode ON
 
 = 1.9.8.1 =
 * Fixed: Correct numbers of posts were not being fetched
@@ -214,6 +222,7 @@ Check the Changelog for more information
 
 6. Go to **Top 10 &raquo; Overall Popular Posts** and **Top 10 &raquo; Daily Popular Posts** to view the list of popular posts
 
+Alternatively, search for **Top 10** from Plugins &raquo; Top 10 within your WordPress admin.
 
 
 == Frequently Asked Questions ==

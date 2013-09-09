@@ -136,6 +136,7 @@ if(! isset($ALLOWED_SITES)){
 		'wordpress.com',
 		'wordpress.org',
 		'wp.com',
+		's3.amazonaws.com',
 	);
 }
 // -------------------------------------------------------------

@@ -72,6 +72,7 @@ function tptn_options() {
 		$tptn_settings['excerpt_length'] = intval($_POST['excerpt_length']);
 		$tptn_settings['title_length'] = intval($_POST['title_length']);
 		$tptn_settings['show_date'] = (isset($_POST['show_date']) ? true : false);
+		$tptn_settings['show_author'] = (isset($_POST['show_author']) ? true : false);
 		$tptn_settings['custom_CSS'] = wp_kses_post($_POST['custom_CSS']);
 
 		$tptn_settings['link_new_window'] = (isset($_POST['link_new_window']) ? true : false);
@@ -245,7 +246,7 @@ function tptn_options() {
 			</tr>
 			<tr><th scope="row"><label for="dynamic_post_count"><?php _e('Always display latest post count',TPTN_LOCAL_NAME); ?></label></th>
 			  <td><input type="checkbox" name="dynamic_post_count" id="dynamic_post_count" <?php if ($tptn_settings['dynamic_post_count']) echo 'checked="checked"' ?> />
-			    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts',TPTN_LOCAL_NAME); ?></p>
+			    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts. When you enable this option, the daily widget will not use the options set there, but options will need to be set on this screen.',TPTN_LOCAL_NAME); ?></p>
 			  </td>
 			</tr>
 			<tr><th scope="row"><label for="d_use_js"><?php _e('Always display latest post count in the daily lists',TPTN_LOCAL_NAME); ?></label></th>
@@ -303,8 +304,11 @@ function tptn_options() {
 			<tr><th scope="row"><label for="excerpt_length"><?php _e('Length of excerpt (in words): ',TPTN_LOCAL_NAME); ?></label></th>
 			  <td><input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes($tptn_settings['excerpt_length']); ?>" /></td>
 			</tr>
+			<tr><th scope="row"><label for="show_author"><?php _e('Show post author in list?',TPTN_LOCAL_NAME); ?></label></th>
+				<td><input type="checkbox" name="show_author" id="show_author" <?php if ($tptn_settings['show_author']) echo 'checked="checked"' ?> /></td>
+			</tr>
 			<tr><th scope="row"><label for="show_date"><?php _e('Show post date in list?',TPTN_LOCAL_NAME); ?></label></th>
-			<td><input type="checkbox" name="show_date" id="show_date" <?php if ($tptn_settings['show_date']) echo 'checked="checked"' ?> /></td>
+				<td><input type="checkbox" name="show_date" id="show_date" <?php if ($tptn_settings['show_date']) echo 'checked="checked"' ?> /></td>
 			</tr>
 			<tr><th scope="row"><label for="title_length"><?php _e('Limit post title length (in characters)',TPTN_LOCAL_NAME); ?></label></th>
 			<td><input type="textbox" name="title_length" id="title_length" value="<?php echo stripslashes($tptn_settings['title_length']); ?>" /></td>
@@ -916,9 +920,12 @@ add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
 function tptn_column($cols) {
 	$tptn_settings = tptn_read_options();
 	
-	if ($tptn_settings['pv_in_admin'])	$cols['tptn'] = __('Total / Today\'s Views',TPTN_LOCAL_NAME);
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = __('Total Views',TPTN_LOCAL_NAME);
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = __('Today\'s Views',TPTN_LOCAL_NAME);
 	return $cols;
 }
+add_filter('manage_posts_columns', 'tptn_column');
+add_filter('manage_pages_columns', 'tptn_column');
 
 
 /**
@@ -930,18 +937,20 @@ function tptn_column($cols) {
  * @return void
  */
 function tptn_value($column_name, $id) {
+	global $wpdb;
 	$tptn_settings = tptn_read_options();
-	if (($column_name == 'tptn')&&($tptn_settings['pv_in_admin'])) {
-		global $wpdb;
+
+	// Add Total count
+	if (($column_name == 'tptn_total')&&($tptn_settings['pv_in_admin'])) {
 		
 		$table_name = $wpdb->prefix . "top_ten";
 		
-		$resultscount = $wpdb->get_row("select postnumber, cntaccess from $table_name WHERE postnumber = $id");
+		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess from $table_name WHERE postnumber = $id");
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
-
-		$cntaccess .= ' / ';
-		
-		// Now process daily count
+	}
+	
+	// Now process daily count
+	if (($column_name == 'tptn_daily')&&($tptn_settings['pv_in_admin'])) {
 		$table_name = $wpdb->prefix . "top_ten_daily";
 
 		$daily_range = $tptn_settings['daily_range']-1;
@@ -951,11 +960,63 @@ function tptn_value($column_name, $id) {
 		
 		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
 		$cntaccess .= number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
-		
-		echo $cntaccess;
 	}
+	
+	echo $cntaccess;
 }
+add_action('manage_posts_custom_column', 'tptn_value', 10, 2);
+add_action('manage_pages_custom_column', 'tptn_value', 10, 2);
 
+
+/**
+ * Regiter the columns as sortable.
+ * 
+ * @access public
+ * @param mixed $cols
+ * @return void
+ */
+function tptn_column_register_sortable( $cols ) {
+	$tptn_settings = tptn_read_options();
+	
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = 'tptn_total';
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = 'tptn_daily';
+	return $cols;
+}
+add_filter( 'manage_edit-post_sortable_columns', 'tptn_column_register_sortable' );
+add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable' );
+
+
+function tptn_column_clauses( $clauses, $wp_query ) {
+	global $wpdb;
+	$tptn_settings = tptn_read_options();
+
+	if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' == $wp_query->query['orderby'] ) {
+
+		$table_name = $wpdb->prefix . "top_ten";
+		$clauses['join'] .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
+		$clauses['orderby']  = "cntaccess ";
+		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get('order') ) ) ? 'ASC' : 'DESC';
+	}
+
+	if ( isset( $wp_query->query['orderby'] ) && 'tptn_daily' == $wp_query->query['orderby'] ) {
+
+		$table_name = $wpdb->prefix . "top_ten_daily";
+	
+		$daily_range = $tptn_settings['daily_range'] - 1;
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
+		
+		$clauses['join'] .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
+		$clauses['where'] .= " AND {$table_name}.dp_date >= '$current_date' ";
+		$clauses['groupby'] = "{$table_name}.postnumber";
+		$clauses['orderby']  = "SUM({$table_name}.cntaccess) ";
+		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get('order') ) ) ? 'ASC' : 'DESC';
+	}
+
+	return $clauses;
+}
+add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
 
 /**
  * Output CSS for width of new column.
@@ -966,20 +1027,10 @@ function tptn_value($column_name, $id) {
 function tptn_css() {
 ?>
 <style type="text/css">
-	#tptn { width: 50px; }
+	#tptn_total, #tptn_daily { width: 100px; }
 </style>
 <?php	
 }
-
-// Actions/Filters for various tables and the css output
-add_filter('manage_posts_columns', 'tptn_column');
-add_action('manage_posts_custom_column', 'tptn_value', 10, 2);
-add_filter('manage_pages_columns', 'tptn_column');
-add_action('manage_pages_custom_column', 'tptn_value', 10, 2);
-add_filter('manage_media_columns', 'tptn_column');
-add_action('manage_media_custom_column', 'tptn_value', 10, 2);
-add_filter('manage_link-manager_columns', 'tptn_column');
-add_action('manage_link_custom_column', 'tptn_value', 10, 2);
-add_action('admin_head', 'tptn_css');
+//add_action('admin_head', 'tptn_css');
 
 ?>

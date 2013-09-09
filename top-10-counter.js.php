@@ -17,10 +17,7 @@ require( $wp_config_filename );
 // Include the now instantiated global $wpdb Class for use
 global $wpdb;
 
-$nonce=$_REQUEST['_wpnonce'];
 $id = intval($_GET['top_ten_id']);
-$nonce_action = 'tptn-nonce-'.$id;
-if (! wp_verify_nonce($nonce, $nonce_action) ) die("Security check");
 
 // Display counter using Ajax
 function tptn_disp_count() {

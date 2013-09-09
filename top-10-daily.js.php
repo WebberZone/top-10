@@ -15,7 +15,7 @@ if (!function_exists('add_action')) {
 function tptn_daily_lists() {
 	global $wpdb, $siteurl, $tableposts, $id;
 
-	$is_widget = intval($_GET['widget']);
+	$is_widget = intval($_GET['is_widget']);
 	
 	if($is_widget) {
 		$output = tptn_pop_posts('daily=1&is_widget=1');
