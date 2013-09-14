@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.8.2
+Version:     1.9.8.3
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -247,6 +247,9 @@ function get_tptn_post_count($id) {
  * @return void
  */
 function tptn_pop_posts( $args ) {
+	global $wpdb, $siteurl, $tableposts, $id;
+	global $tptn_settings;
+	
 	$defaults = array(
 		'is_widget' => FALSE,
 		'daily' => FALSE,
@@ -261,45 +264,15 @@ function tptn_pop_posts( $args ) {
 	// OPTIONAL: Declare each item in $args as its own variable i.e. $type, $before.
 	extract( $args, EXTR_SKIP );
 
-/*	if ($echo) { 	
-		echo get_tptn_pop_posts($daily, $is_widget, $limit, $show_excerpt, $post_thumb_op, $daily_range);
-	} else { 
-		return get_tptn_pop_posts($daily, $is_widget, $limit, $show_excerpt, $post_thumb_op, $daily_range); 
-	}
-}
-
-/**
- * Get the popular posts.
- * 
- * @access public
- * @param bool $daily (default: false)
- * @param bool $is_widget (default: false)
- * @param string $limit (default: '10')
- * @param bool $show_excerpt (default: false)
- * @param string $post_thumb_op (default: 'text_only')
- * @param string $daily_range (default: '1')
- * @return string Output of posts
- */
-// function get_tptn_pop_posts( $daily = false , $is_widget = false, $limit = false, $show_excerpt = false, $post_thumb_op = false, $daily_range = false, $strict_limit = false ) {
-	global $wpdb, $siteurl, $tableposts, $id;
-	global $tptn_settings;
-	
 	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
 		else $table_name = $wpdb->prefix . "top_ten";
 	
-	//if (empty($limit)) $limit = stripslashes($tptn_settings['limit']);
 	$limit = ($strict_limit) ? $limit : ($limit*5);	
 
-	//$show_excerpt = empty($show_excerpt) ? $tptn_settings['show_excerpt'] : $show_excerpt;
-	//$post_thumb_op = empty($post_thumb_op) ? $tptn_settings['post_thumb_op'] : $post_thumb_op;
-	//$daily_range = empty($daily_range) ? $tptn_settings['daily_range'] : $daily_range;
-	
 	$exclude_categories = explode(',',$exclude_categories);
 
-	$target_attribute = ($link_new_window) ? ' target="_blank" ' : ' ';
-	$rel_attribute = ($link_nofollow) ? ' nofollow' : '';
-	//$show_date = $tptn_settings['show_date'];
-	//$show_author = $tptn_settings['show_author'];
+	$target_attribute = ($link_new_window) ? ' target="_blank" ' : ' ';	// Set Target attribute
+	$rel_attribute = ($link_nofollow) ? ' nofollow' : '';	// Set nofollow attribute
 	
 	parse_str($post_types,$post_types);	// Save post types in $post_types variable
 
@@ -318,15 +291,9 @@ function tptn_pop_posts( $args ) {
 		$sql .=" ) ";
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	} else {
-//		$daily_range = $daily_range - 1;
-//		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-//		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-//		$current_date = date ( 'Y-m-j' , $current_date );
-
 		$current_time = current_time( 'timestamp', 0 );
-		$current_time = $current_time - $daily_range * 3600 * 24;
+		$current_time = $current_time - ($daily_range-1) * 3600 * 24;
 		$current_date = date( 'Y-m-j', $current_time );
-		
 		
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
@@ -375,7 +342,6 @@ function tptn_pop_posts( $args ) {
 				if ($p_in_c) break;	// End loop if post found in category
 			}
 
-			//$title = trim(stripslashes(get_the_title($result->ID)));
 			$title = tptn_max_formatted_content(get_the_title($result->ID),$title_length);
 
 			if (!$p_in_c) {
@@ -480,7 +446,7 @@ class WidgetTopTen extends WP_Widget
 	function WidgetTopTen()
 	{
 		$widget_ops = array('classname' => 'widget_tptn_pop', 'description' => __( 'Display the posts popular this week',TPTN_LOCAL_NAME) );
-		$this->WP_Widget('widget_tptn_pop',__('Popular Posts',TPTN_LOCAL_NAME), $widget_ops);
+		$this->WP_Widget('widget_tptn_pop',__('Popular Posts [Top 10]',TPTN_LOCAL_NAME), $widget_ops);
 	}
 	
 	function form($instance) {
@@ -489,10 +455,10 @@ class WidgetTopTen extends WP_Widget
 		$show_excerpt = isset($instance['show_excerpt']) ? esc_attr($instance['show_excerpt']) : '';
 		$show_author = isset($instance['show_author']) ? esc_attr($instance['show_author']) : '';
 		$show_date = isset($instance['show_date']) ? esc_attr($instance['show_date']) : '';
-		$post_thumb_op = isset($instance['post_thumb_op']) ? esc_attr($instance['post_thumb_op']) : '';
+		$post_thumb_op = isset($instance['post_thumb_op']) ? esc_attr($instance['post_thumb_op']) : 'text_only';
 		$thumb_height = isset($instance['thumb_height']) ? esc_attr($instance['thumb_height']) : '';
 		$thumb_width = isset($instance['thumb_width']) ? esc_attr($instance['thumb_width']) : '';
-		$daily = isset($instance['daily']) ? esc_attr($instance['daily']) : '';
+		$daily = isset($instance['daily']) ? esc_attr($instance['daily']) : 'overall';
 		$daily_range = isset($instance['daily_range']) ? esc_attr($instance['daily_range']) : '';
 		?>
 		<p>
@@ -588,12 +554,11 @@ class WidgetTopTen extends WP_Widget
 			if ($tptn_settings['d_use_js']) {
 				$output .= '<script type="text/javascript" src="'.$tptn_url.'/top-10-daily.js.php?widget=1"></script>';
 			} else {
-				// $output .= tptn_pop_posts('daily=1&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
 				$output .= tptn_pop_posts( array(
 					'is_widget' => 1,
 					'limit' => $limit,
 					'daily' => 1,
-					'daily_range' => $instance['daily_range'],
+					'daily_range' => $daily_range,
 					'show_excerpt' => $instance['show_excerpt'],
 					'show_author' => $instance['show_author'],
 					'show_date' => $instance['show_date'],
@@ -604,7 +569,6 @@ class WidgetTopTen extends WP_Widget
 				
 			}
 		} else {
-			// $output .= tptn_pop_posts('daily=0&is_widget=1&limit='.$limit.'&show_excerpt='.$show_excerpt.'&post_thumb_op='.$post_thumb_op.'&daily_range='.$daily_range);
 			$output .= tptn_pop_posts( array(
 				'is_widget' => 1,
 				'limit' => $limit,
@@ -665,12 +629,12 @@ function tptn_default_options() {
 	$tptn_settings = 	Array (
 						'show_credit' => false,			// Add link to plugin page of my blog in top posts list
 						'add_to_content' => true,			// Add post count to content (only on single posts)
-						'count_on_pages' => true,			// Display on pages
-						'add_to_feed' => true,		// Add related posts to feed (full)
-						'add_to_home' => false,		// Add related posts to home page
-						'add_to_category_archives' => false,		// Add related posts to category archives
-						'add_to_tag_archives' => false,		// Add related posts to tag archives
-						'add_to_archives' => false,		// Add related posts to other archives
+						'count_on_pages' => true,			// Add post count to pages
+						'add_to_feed' => false,		// Add post count to feed (full)
+						'add_to_home' => false,		// Add post count to home page
+						'add_to_category_archives' => false,		// Add post count to category archives
+						'add_to_tag_archives' => false,		// Add post count to tag archives
+						'add_to_archives' => false,		// Add post count to other archives
 						'track_authors' => false,			// Track Authors visits
 						'track_admins' => true,			// Track Admin visits
 						'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
@@ -688,7 +652,7 @@ function tptn_default_options() {
 						'after_list' => '</ul>',			// After the entire list
 						'before_list_item' => '<li>',		// Before each list item
 						'after_list_item' => '</li>',		// After each list item
-						'post_thumb_op' => 'inline',	// Display only text in posts
+						'post_thumb_op' => 'text_only',	// Display only text in posts
 						'thumb_height' => '50',			// Max height of thumbnails
 						'thumb_width' => '50',			// Max width of thumbnails
 						'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?

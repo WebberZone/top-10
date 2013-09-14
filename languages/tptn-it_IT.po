@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-01 12:50-0000\n"
+"POT-Creation-Date: 2013-09-14 13:30-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Gianni Diurno |gidibao.net & charmingpress.com\n"
@@ -540,7 +540,7 @@ msgstr ""
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Questa operazione cancelerà i duplicati dalle tabelle. Procedi?"
 
-#: admin.inc.php:531 admin.inc.php:906 top-10.php:476
+#: admin.inc.php:531 admin.inc.php:906
 msgid "Popular Posts"
 msgstr "Gli articoli più popolari"
 
@@ -582,7 +582,7 @@ msgstr "Altri plugin"
 msgid "Ajay's blog"
 msgstr "Il blog di Ajay"
 
-#: admin.inc.php:588 top-10.php:1123
+#: admin.inc.php:588 top-10.php:1094
 msgid "Support"
 msgstr "Supporto"
 
@@ -650,113 +650,118 @@ msgstr "Totale / Visualizzazioni odierne"
 msgid "Today's Views"
 msgstr "Totale / Visualizzazioni odierne"
 
-#: top-10.php:393
+#: top-10.php:366
 msgid " Posted by "
 msgstr ""
 
-#: top-10.php:475
+#: top-10.php:448
 msgid "Display the posts popular this week"
 msgstr "Mostra articoli più popolari settimana in corso"
 
-#: top-10.php:493
+#: top-10.php:449
+#, fuzzy
+msgid "Popular Posts [Top 10]"
+msgstr "Gli articoli più popolari"
+
+#: top-10.php:466
 msgid "Title"
 msgstr ""
 
-#: top-10.php:498
+#: top-10.php:471
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:503
+#: top-10.php:476
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:504
+#: top-10.php:477
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:509
+#: top-10.php:482
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:514
+#: top-10.php:487
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Desideri mostrare gli estratti?"
 
-#: top-10.php:519
+#: top-10.php:492
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:524
+#: top-10.php:497
 #, fuzzy
 msgid " Show date?"
 msgstr "Desideri mostrare gli estratti?"
 
-#: top-10.php:528
+#: top-10.php:501
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Opzioni miniature articolo:"
 
-#: top-10.php:530
+#: top-10.php:503
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Mostra gli articoli con le miniature inline prima del titolo"
 
-#: top-10.php:531
+#: top-10.php:504
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Mostra gli articoli con le miniature inline dopo il titolo"
 
-#: top-10.php:532
+#: top-10.php:505
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Mostra le sole miniature, nessun testo"
 
-#: top-10.php:533
+#: top-10.php:506
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Non mostrare le miniature, solo testo."
 
-#: top-10.php:538
+#: top-10.php:511
 #, fuzzy
 msgid "Thumbnail height"
 msgstr "Opzioni miniature articolo:"
 
-#: top-10.php:543
+#: top-10.php:516
 #, fuzzy
 msgid "Thumbnail width"
 msgstr "Opzioni miniature articolo:"
 
-#: top-10.php:646
+#: top-10.php:617
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Articoli più letti</h3>"
 
-#: top-10.php:647
+#: top-10.php:618
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>I più letti di oggi</h3>"
 
-#: top-10.php:648
+#: top-10.php:619
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Ripristino 10 articoli più popolari"
 
-#: top-10.php:1089
+#: top-10.php:1060
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1090
+#: top-10.php:1061
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1091
+#: top-10.php:1062
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1111
+#: top-10.php:1082
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: top-10.php:1124
+#: top-10.php:1095
 msgid "Donate"
 msgstr "Donazione"
 

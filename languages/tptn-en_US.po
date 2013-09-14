@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-09 21:04-0000\n"
+"POT-Creation-Date: 2013-09-14 13:28-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Ajay D'Souza <me@ajaydsouza.com>\n"
@@ -489,7 +489,7 @@ msgstr ""
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: admin.inc.php:531 admin.inc.php:906 top-10.php:483
+#: admin.inc.php:531 admin.inc.php:906
 msgid "Popular Posts"
 msgstr ""
 
@@ -529,7 +529,7 @@ msgstr ""
 msgid "Ajay's blog"
 msgstr ""
 
-#: admin.inc.php:588 top-10.php:1130
+#: admin.inc.php:588 top-10.php:1094
 msgid "Support"
 msgstr ""
 
@@ -593,102 +593,106 @@ msgstr ""
 msgid "Today's Views"
 msgstr ""
 
-#: top-10.php:400
+#: top-10.php:366
 msgid " Posted by "
 msgstr ""
 
-#: top-10.php:482
+#: top-10.php:448
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:500
+#: top-10.php:449
+msgid "Popular Posts [Top 10]"
+msgstr ""
+
+#: top-10.php:466
 msgid "Title"
 msgstr ""
 
-#: top-10.php:505
+#: top-10.php:471
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:510
+#: top-10.php:476
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:511
+#: top-10.php:477
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:516
+#: top-10.php:482
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:521
+#: top-10.php:487
 msgid " Show excerpt?"
 msgstr ""
 
-#: top-10.php:526
+#: top-10.php:492
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:531
+#: top-10.php:497
 msgid " Show date?"
 msgstr ""
 
-#: top-10.php:535
+#: top-10.php:501
 msgid "Thumbnail options"
 msgstr ""
 
-#: top-10.php:537
+#: top-10.php:503
 msgid "Thumbnails inline, before title"
 msgstr ""
 
-#: top-10.php:538
+#: top-10.php:504
 msgid "Thumbnails inline, after title"
 msgstr ""
 
-#: top-10.php:539
+#: top-10.php:505
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: top-10.php:540
+#: top-10.php:506
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: top-10.php:545
+#: top-10.php:511
 msgid "Thumbnail height"
 msgstr ""
 
-#: top-10.php:550
+#: top-10.php:516
 msgid "Thumbnail width"
 msgstr ""
 
-#: top-10.php:653
+#: top-10.php:617
 msgid "<h3>Popular Posts</h3>"
 msgstr ""
 
-#: top-10.php:654
+#: top-10.php:618
 msgid "<h3>Daily Popular</h3>"
 msgstr ""
 
-#: top-10.php:655
+#: top-10.php:619
 msgid "No top posts yet"
 msgstr ""
 
-#: top-10.php:1096
+#: top-10.php:1060
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1097
+#: top-10.php:1061
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1098
+#: top-10.php:1062
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1118
+#: top-10.php:1082
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:1131
+#: top-10.php:1095
 msgid "Donate"
 msgstr ""
