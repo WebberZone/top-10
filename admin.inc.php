@@ -978,8 +978,8 @@ add_action('manage_pages_custom_column', 'tptn_value', 10, 2);
 function tptn_column_register_sortable( $cols ) {
 	$tptn_settings = tptn_read_options();
 	
-	if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = 'tptn_total';
-	if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = 'tptn_daily';
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = array('tptn_total', true);
+	if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = array('tptn_daily', true);
 	return $cols;
 }
 add_filter( 'manage_edit-post_sortable_columns', 'tptn_column_register_sortable' );
@@ -1031,6 +1031,6 @@ function tptn_css() {
 </style>
 <?php	
 }
-//add_action('admin_head', 'tptn_css');
+add_action('admin_head', 'tptn_css');
 
 ?>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-01 12:50-0000\n"
+"POT-Creation-Date: 2013-09-14 13:29-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: FatCow <zhr@tut.by>\n"
@@ -513,7 +513,7 @@ msgstr ""
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: admin.inc.php:531 admin.inc.php:906 top-10.php:476
+#: admin.inc.php:531 admin.inc.php:906
 msgid "Popular Posts"
 msgstr "Папулярныя запісы"
 
@@ -554,7 +554,7 @@ msgstr ""
 msgid "Ajay's blog"
 msgstr ""
 
-#: admin.inc.php:588 top-10.php:1123
+#: admin.inc.php:588 top-10.php:1094
 msgid "Support"
 msgstr ""
 
@@ -622,106 +622,111 @@ msgstr "Усяго / Сёння праглядаў"
 msgid "Today's Views"
 msgstr "Усяго / Сёння праглядаў"
 
-#: top-10.php:393
+#: top-10.php:366
 msgid " Posted by "
 msgstr ""
 
-#: top-10.php:475
+#: top-10.php:448
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:493
+#: top-10.php:449
+#, fuzzy
+msgid "Popular Posts [Top 10]"
+msgstr "Папулярныя запісы"
+
+#: top-10.php:466
 msgid "Title"
 msgstr ""
 
-#: top-10.php:498
+#: top-10.php:471
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:503
+#: top-10.php:476
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:504
+#: top-10.php:477
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:509
+#: top-10.php:482
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:514
+#: top-10.php:487
 msgid " Show excerpt?"
 msgstr ""
 
-#: top-10.php:519
+#: top-10.php:492
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:524
+#: top-10.php:497
 msgid " Show date?"
 msgstr ""
 
-#: top-10.php:528
+#: top-10.php:501
 msgid "Thumbnail options"
 msgstr ""
 
-#: top-10.php:530
+#: top-10.php:503
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Паказваць колькасць праглядаў запісу ў яе \"целе\"?"
 
-#: top-10.php:531
+#: top-10.php:504
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Паказваць колькасць праглядаў запісу ў яе \"целе\"?"
 
-#: top-10.php:532
+#: top-10.php:505
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: top-10.php:533
+#: top-10.php:506
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: top-10.php:538
+#: top-10.php:511
 msgid "Thumbnail height"
 msgstr ""
 
-#: top-10.php:543
+#: top-10.php:516
 msgid "Thumbnail width"
 msgstr ""
 
-#: top-10.php:646
+#: top-10.php:617
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Папулярныя запісы</h3>"
 
-#: top-10.php:647
+#: top-10.php:618
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Папулярныя сёння запісы</h3>"
 
-#: top-10.php:648
+#: top-10.php:619
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Загаловак блока Папулярных запісаў:"
 
-#: top-10.php:1089
+#: top-10.php:1060
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1090
+#: top-10.php:1061
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1091
+#: top-10.php:1062
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1111
+#: top-10.php:1082
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:1124
+#: top-10.php:1095
 msgid "Donate"
 msgstr ""
 

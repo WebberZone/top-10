@@ -8,7 +8,7 @@ Tested up to: 3.7
 License: GPLv2 or later
 
 
-Track daily and total visits on your blog posts and display the count as well as popular posts.
+Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
 == Description ==
 
@@ -17,21 +17,22 @@ WordPress doesn't count page views by default. <a href="http://ajaydsouza.com/wo
 Includes a sidebar widget to display the popular posts. And, all settings can be configured from within your WordPress Admin area itself! You can choose to disable tracking of author visits on their own posts.
 
 = Features =
-* Counts daily and total page views on single posts and pages
-* Display the count on the single posts and/or pages. Customize the text that can be displayed
-* Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed
-* Thumbnail support
+* **Page counter**:Counts daily and total page views on single posts, pages and *custom post types*
+* **Display the count**: Customize the text that can be displayed
+* **Show off popular posts**: Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed plus loads of other customisation options
+* **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
+* **Customisable output**: 
+	* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area under "Custom Styles"
+	* Pick your own HTML tags to use for displaying the output in case you don't prefer the default `list` format
+* **Thumbnail support**
 	* Support for WordPress post thumbnails
 	* Auto-extract the first image in your post to be displayed as a thumbnail
 	* Manually enter the URL of the thumbnail via <a href="http://codex.wordpress.org/Custom_Fields">WordPress meta fields</a>
-	* Use timthumb to resize images
-* Sidebar widgets available for daily popular and overall popular posts
-* Exclude posts from select categories from appearing in the top posts list
-* View list of daily and/or overall popular posts from within the dashboard
-* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area
-* Customise which HTML tags to use for displaying the output in case you don't prefer the default `list` format
-* Clean uninstall if you choose to delete the plugin from within WP-Admin, but why would you?
-* Works with caching plugins like WP-Super-Cache, W3 Total Cache or Quick Cache
+	* Use timthumb to crop and resize images
+* **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
+* **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 will also add two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
+* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data. But why would you?
+* **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 
 
 == Screenshots ==
@@ -45,11 +46,17 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.8.2 =
-New: Option to add author; shortcodes are stripped from excerpts; bug fixes;
-Check the Changelog for more details
+= 1.9.8.3 =
+Fixed Daily count was selecting an extra date when using the widget; Admin columns will be sorted by descending order by default
+
 
 == Changelog ==
+
+= 1.9.8.3 =
+* Fixed: Daily count was selecting an extra date when using the widget
+* Fixed: Default settings for the widget weren't initiated correctly in some cases
+* Modified: Admin columns of Total and Daily views will be sorted by descending order by default. Click again to sort in ascending order
+* Modified: Admin columns are fixed to 100px width by default instead of `auto`.
 
 = 1.9.8.2 =
 * New: Option to add author
@@ -222,7 +229,7 @@ Check the Changelog for more details
 
 6. Go to **Top 10 &raquo; Overall Popular Posts** and **Top 10 &raquo; Daily Popular Posts** to view the list of popular posts
 
-Alternatively, search for **Top 10** from Plugins &raquo; Top 10 within your WordPress admin.
+Alternatively, search for **Top 10** from Plugins &raquo; Add New within your WordPress admin.
 
 
 == Frequently Asked Questions ==
@@ -298,7 +305,6 @@ Below are a few features that I plan on implementing in future versions of the p
 * Shortcode support
 * Exclude display on select categories and tags
 * Exclude display on select posts 
-* Custom post support
 * Multi-site support
 * Ready-made styles
 * Upload your own default thumbnail

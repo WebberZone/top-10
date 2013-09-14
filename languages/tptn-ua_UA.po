@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-01 12:51-0000\n"
+"POT-Creation-Date: 2013-09-14 13:30-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Alyona Lompar <alyona.lompar@aol.com>\n"
@@ -531,7 +531,7 @@ msgstr ""
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Буде проведено видалення дубльованих запісів з статистики. Продовжити?"
 
-#: admin.inc.php:531 admin.inc.php:906 top-10.php:476
+#: admin.inc.php:531 admin.inc.php:906
 msgid "Popular Posts"
 msgstr "Популярні записи"
 
@@ -573,7 +573,7 @@ msgstr "Інші плагіни автора"
 msgid "Ajay's blog"
 msgstr "Блог Ajay"
 
-#: admin.inc.php:588 top-10.php:1123
+#: admin.inc.php:588 top-10.php:1094
 msgid "Support"
 msgstr "Підтримка (англ.)"
 
@@ -641,113 +641,118 @@ msgstr "Всього/Сьогодні"
 msgid "Today's Views"
 msgstr "Всього/Сьогодні"
 
-#: top-10.php:393
+#: top-10.php:366
 msgid " Posted by "
 msgstr ""
 
-#: top-10.php:475
+#: top-10.php:448
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:493
+#: top-10.php:449
+#, fuzzy
+msgid "Popular Posts [Top 10]"
+msgstr "Популярні записи"
+
+#: top-10.php:466
 msgid "Title"
 msgstr ""
 
-#: top-10.php:498
+#: top-10.php:471
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:503
+#: top-10.php:476
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:504
+#: top-10.php:477
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:509
+#: top-10.php:482
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:514
+#: top-10.php:487
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Показувати текст запису в списку?"
 
-#: top-10.php:519
+#: top-10.php:492
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:524
+#: top-10.php:497
 #, fuzzy
 msgid " Show date?"
 msgstr "Показувати текст запису в списку?"
 
-#: top-10.php:528
+#: top-10.php:501
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Установки превью до записів:"
 
-#: top-10.php:530
+#: top-10.php:503
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Відображати і превью, і текст"
 
-#: top-10.php:531
+#: top-10.php:504
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Відображати і превью, і текст"
 
-#: top-10.php:532
+#: top-10.php:505
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Показувати тільки превью, без тексту"
 
-#: top-10.php:533
+#: top-10.php:506
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Показувати лише текст, без превью"
 
-#: top-10.php:538
+#: top-10.php:511
 #, fuzzy
 msgid "Thumbnail height"
 msgstr "Установки превью до записів:"
 
-#: top-10.php:543
+#: top-10.php:516
 #, fuzzy
 msgid "Thumbnail width"
 msgstr "Установки превью до записів:"
 
-#: top-10.php:646
+#: top-10.php:617
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Популярні записи</h3>"
 
-#: top-10.php:647
+#: top-10.php:618
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Популярні сьогодні записи</h3>"
 
-#: top-10.php:648
+#: top-10.php:619
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Скинути статистику найпопулярніших записів"
 
-#: top-10.php:1089
+#: top-10.php:1060
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1090
+#: top-10.php:1061
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1091
+#: top-10.php:1062
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1111
+#: top-10.php:1082
 msgid "Settings"
 msgstr "Налаштування плагіна"
 
-#: top-10.php:1124
+#: top-10.php:1095
 msgid "Donate"
 msgstr "Зробити внесок"
 
