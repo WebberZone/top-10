@@ -46,11 +46,14 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.8.3 =
-Fixed Daily count was selecting an extra date when using the widget; Admin columns will be sorted by descending order by default
+= 1.9.8.4 =
+Fixed PHP notice errors on Admin pages
 
 
 == Changelog ==
+
+= 1.9.8.3 =
+* Fixed PHP notices on Admin pages
 
 = 1.9.8.3 =
 * Fixed: Daily count was selecting an extra date when using the widget
@@ -294,6 +297,19 @@ Never. This plugin is designed to only track the number of pageviews on your blo
 
 When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and truncate the `wp_top_ten_daily` table. 
 *Note: If you enable this option, WordPress will execute this job when it is scheduled the first time*
+
+= How to make the columns on the Custom Posts pages sortable? =
+Add the following code to your functions.php file of your theme.
+
+`
+add_filter( 'manage_edit-{$cpt}_sortable_columns', 'tptn_column_register_sortable' );
+`
+
+Replace `{$cpt}` by the slug of your custom post type. E.g. to make the columns on your 'projects' post type sortable, you will need to add:
+`
+add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sortable' );
+`
+
 
 == Wishlist ==
 

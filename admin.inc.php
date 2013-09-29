@@ -3,8 +3,8 @@
 *					Admin Page										*
 *********************************************************************/
 if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
-if (!defined('ALD_TPTN_DIR')) define('ALD_TPTN_DIR', dirname(__FILE__));
-if (!defined('TPTN_LOCAL_NAME')) define('TPTN_LOCAL_NAME', 'tptn');
+//if (!defined('ALD_TPTN_DIR')) define('ALD_TPTN_DIR', dirname(__FILE__));
+//if (!defined('TPTN_LOCAL_NAME')) define('TPTN_LOCAL_NAME', 'tptn');
 
 /**
  * Plugin settings.
@@ -93,7 +93,7 @@ function tptn_options() {
 		$tptn_settings['exclude_categories'] = (isset($exclude_categories)) ? join(',', $exclude_categories) : '';
 
 		// Cron maintenance functions
-		if ( ($_POST['cron_on']) && ( ($tptn_settings['cron_on']==false) || (intval($_POST['cron_hour'])!=$tptn_settings['cron_hour']) || (intval($_POST['cron_min'])!=$tptn_settings['cron_min']) || ($_POST['cron_recurrence']!=$tptn_settings['cron_recurrence']) ) ) {
+		if ( isset($_POST['cron_on']) && ( ($tptn_settings['cron_on']==false) || (intval($_POST['cron_hour'])!=$tptn_settings['cron_hour']) || (intval($_POST['cron_min'])!=$tptn_settings['cron_min']) || ($_POST['cron_recurrence']!=$tptn_settings['cron_recurrence']) ) ) {
 			$tptn_settings['cron_on'] = true;
 			$tptn_settings['cron_hour'] = intval($_POST['cron_hour']);
 			$tptn_settings['cron_min'] = intval($_POST['cron_min']);
@@ -101,7 +101,7 @@ function tptn_options() {
 			
 			tptn_enable_run($tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence']);
 			echo '<div id="message" class="updated fade"><p>' . __('Scheduled maintenance enabled / modified',TPTN_LOCAL_NAME) .'</p></div>';
-		} elseif ($_POST['cron_on']==false) {
+		} else {
 			$tptn_settings['cron_on'] = false;
 			tptn_disable_run();
 			echo '<div id="message" class="updated fade"><p>'. __('Scheduled maintenance disabled',TPTN_LOCAL_NAME) .'</p></div>';
@@ -938,7 +938,7 @@ add_filter('manage_pages_columns', 'tptn_column');
  */
 function tptn_value($column_name, $id) {
 	global $wpdb;
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 
 	// Add Total count
 	if (($column_name == 'tptn_total')&&($tptn_settings['pv_in_admin'])) {
@@ -947,6 +947,7 @@ function tptn_value($column_name, $id) {
 		
 		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess from $table_name WHERE postnumber = $id");
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
+		echo $cntaccess;
 	}
 	
 	// Now process daily count
@@ -959,10 +960,9 @@ function tptn_value($column_name, $id) {
 		$current_date = date ( 'Y-m-j' , $current_date );
 		
 		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
-		$cntaccess .= number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
+		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
+		echo $cntaccess;
 	}
-	
-	echo $cntaccess;
 }
 add_action('manage_posts_custom_column', 'tptn_value', 10, 2);
 add_action('manage_pages_custom_column', 'tptn_value', 10, 2);
@@ -986,6 +986,14 @@ add_filter( 'manage_edit-post_sortable_columns', 'tptn_column_register_sortable'
 add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable' );
 
 
+/**
+ * Add custom post clauses to sort the columns.
+ * 
+ * @access public
+ * @param mixed $clauses
+ * @param mixed $wp_query
+ * @return void
+ */
 function tptn_column_clauses( $clauses, $wp_query ) {
 	global $wpdb;
 	$tptn_settings = tptn_read_options();
@@ -1017,6 +1025,7 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 	return $clauses;
 }
 add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
+
 
 /**
  * Output CSS for width of new column.
