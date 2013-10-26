@@ -46,13 +46,21 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 
 == Upgrade Notice ==
 
-= 1.9.8.4 =
-Fixed PHP notice errors on Admin pages
-
+= 1.9.8.5 =
+Author display name is used now, cleaner pagination, new function to get the post count only. 
+Refer to the changelog for more details
 
 == Changelog ==
 
-= 1.9.8.3 =
+= 1.9.8.5 =
+* Modified: Including the author in the list will now use the Display Name which is set under “Display name publicly as” in the User Profile page
+* Fixed: If the Thumbnail meta field is omitted under Output Options, the plugin will automatically revert to its default value i.e. "post-image"
+* Modified: Cleaner pagination when viewing the Top posts in the Admin section
+* New: Function `get_tptn_post_count_only` to get just the post count. Use it by passing the Post ID and the type of count (total, daily or overall): `get_tptn_post_count_only($id = FALSE, $count = 'total')`
+* New: Class `tptn_after_thumb` that wraps around all items of the list after the post thumbnail. This allows you to cleanly style all items to float to the right of the thumbnail
+* Modified: Updated timthumb
+
+= 1.9.8.4 =
 * Fixed PHP notices on Admin pages
 
 = 1.9.8.3 =
@@ -309,22 +317,3 @@ Replace `{$cpt}` by the slug of your custom post type. E.g. to make the columns 
 `
 add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sortable' );
 `
-
-
-== Wishlist ==
-
-Below are a few features that I plan on implementing in future versions of the plugin. However, there is no fixed time-frame for this and largely depends on how much time I can contribute to development.
-
-* Select random posts if there are no similar posts
-* Top posts by comments
-* Smart tracking of hits, i.e. no update on page reload of same visitors within a certain time period
-* Shortcode support
-* Exclude display on select categories and tags
-* Exclude display on select posts 
-* Multi-site support
-* Ready-made styles
-* Upload your own default thumbnail
-
-
-If you would like a feature to be added, or if you already have the code for the feature, you can let us know by <a href="http://wordpress.org/support/plugin/top-10">posting in this forum</a>.
-

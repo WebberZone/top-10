@@ -3,8 +3,6 @@
 *					Admin Page										*
 *********************************************************************/
 if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
-//if (!defined('ALD_TPTN_DIR')) define('ALD_TPTN_DIR', dirname(__FILE__));
-//if (!defined('TPTN_LOCAL_NAME')) define('TPTN_LOCAL_NAME', 'tptn');
 
 /**
  * Plugin settings.
@@ -59,7 +57,7 @@ function tptn_options() {
 		$tptn_settings['after_list'] = $_POST['after_list'];
 		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
 		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
-		$tptn_settings['thumb_meta'] = $_POST['thumb_meta'];
+		$tptn_settings['thumb_meta'] = (''==$_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta']);
 		$tptn_settings['thumb_default'] = $_POST['thumb_default'];
 		$tptn_settings['thumb_html'] = $_POST['thumb_html'];
 		$tptn_settings['thumb_height'] = intval($_POST['thumb_height']);
@@ -383,19 +381,34 @@ function tptn_options() {
 			  </td>
 			</tr>
 			<tr><th scope="row"><label for="thumb_timthumb"><?php _e('Use timthumb to generate thumbnails? ',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="checkbox" name="thumb_timthumb" id="thumb_timthumb" <?php if ($tptn_settings['thumb_timthumb']) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></td>
+			  <td>
+				  <input type="checkbox" name="thumb_timthumb" id="thumb_timthumb" <?php if ($tptn_settings['thumb_timthumb']) echo 'checked="checked"' ?> /> 
+				  <p class="description"><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></p>
+			  </td>
 			</tr>
 			<tr><th scope="row"><label for="thumb_meta"><?php _e('Post thumbnail meta field name: ',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_meta'])); ?>"> <br /><?php _e('The value of this field should contain the image source and is set in the <em>Add New Post</em> screen',TPTN_LOCAL_NAME); ?></td>
+			  <td>
+			  	<input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_meta'])); ?>"> 
+			  	<p class="description"><?php _e('The value of this field should contain the image source and is set in the <em>Add New Post</em> screen',TPTN_LOCAL_NAME); ?></p>
+			  </td>
 			</tr>
 			<tr><th scope="row"><label for="scan_images"><?php _e('If the postmeta is not set, then should the plugin extract the first image from the post?',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings['scan_images']) echo 'checked="checked"' ?> /> <br /><?php _e('This could slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></td>
+			  <td>
+			  	<input type="checkbox" name="scan_images" id="scan_images" <?php if ($tptn_settings['scan_images']) echo 'checked="checked"' ?> />
+			  	<p class="description"><?php _e('This could slow down the loading of your page if the first image in the related posts is large in file-size',TPTN_LOCAL_NAME); ?></p>
+			  </td>
 			</tr>
 			<tr><th scope="row"><label for="thumb_default_show"><?php _e('Use default thumbnail? ',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings['thumb_default_show']) echo 'checked="checked"' ?> /> <br /><?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></td>
+			  <td>
+			  	<input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ($tptn_settings['thumb_default_show']) echo 'checked="checked"' ?> /> 
+			  	<p class="description"><?php _e('If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.',TPTN_LOCAL_NAME); ?></p>
+			  </td>
 			</tr>
 			<tr><th scope="row"><label for="thumb_default"><?php _e('Default thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_default'])); ?>" style="width:500px"> <br /><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified above',TPTN_LOCAL_NAME); ?></td>
+			  <td>
+			  	<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_default'])); ?>" style="width:500px">
+			  	<p class="description"><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified above',TPTN_LOCAL_NAME); ?></p>
+			  </td>
 			</tr>
 			</table>
 		</div>
@@ -407,7 +420,7 @@ function tptn_options() {
 			<tr style="vertical-align: top; "><th scope="row" colspan="2"><?php _e('Custom CSS to add to header:',TPTN_LOCAL_NAME); ?></th>
 			</tr>
 			<tr style="vertical-align: top; "><td scope="row" colspan="2"><textarea name="custom_CSS" id="custom_CSS" rows="15" cols="80"><?php echo stripslashes($tptn_settings['custom_CSS']); ?></textarea>
-			   <p class="description"><em><?php _e('Do not include <code>style</code> tags. Check out the <a href="http://wordpress.org/extend/plugins/top-10/faq/" target="_blank">FAQ</a> for available CSS classes to style.',TPTN_LOCAL_NAME); ?></em></p>
+			   <p class="description"><?php _e('Do not include <code>style</code> tags. Check out the <a href="http://wordpress.org/extend/plugins/top-10/faq/" target="_blank">FAQ</a> for available CSS classes to style.',TPTN_LOCAL_NAME); ?></p>
 			  </td>
 			</tr>
 		  </table>		
@@ -849,12 +862,22 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 		$output .=  "</a>\n";
 	}
 
+	$pagination_range = 4;
 	for ($i=1; $i <= $pages; $i++) // loop through each page and give link to it.
 	{
+		if($i >= $current+$pagination_range && $i <$pages){
+			if($i == $current+$pagination_range){
+				$output .= '&hellip;&nbsp;';
+			}
+			continue;
+		}
+		if($i < $current-$pagination_range+1 && $i <$pages){
+			continue;
+		}
+
 		$ppage = $limit*($i - 1);
 		if ($ppage == $page){
-			$output .=  "<b>$i</b>\n";
-		} // If current page don't give link, just text.
+		$output .=  ("<span class='current'>$i</span>\n");} // If current page don't give link, just text.
 		else{
 			$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n";
 		}
