@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.8.4
+Version:     1.9.8.5
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -77,13 +77,13 @@ function tptn_add_viewed_count($content) {
 					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
 				}
 			}
-			
-			return $content.$output."<!-- Inside INCLUDE -->";
+			$output = apply_filters('tptn_viewed_count',$output);
+			return $content.$output;
 		} else {
-			return $content."<!-- Outside INCLUDE -->";
+			return $content;
 		} 
 	} else {
-		return $content."<!-- Ouside Singular -->";
+		return $content;
 	}
 }
 add_filter('the_content','tptn_add_viewed_count');
@@ -232,12 +232,52 @@ function get_tptn_post_count($id) {
 		}
 				
 		
-		return $count_disp_form;
+		return apply_filters('tptn_post_count',$count_disp_form);
 	} else {
 		return 0;
 	}
 }
 
+/**
+ * Returns the post count.
+ * 
+ * @access public
+ * @param mixed $id (default: FALSE) Post ID
+ * @param string $count (default: 'total') Which count to return. total, daily or overall
+ * @return void
+ */
+function get_tptn_post_count_only($id = FALSE, $count = 'total') {
+	global $wpdb;
+	
+	$table_name = $wpdb->prefix . "top_ten";
+	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	global $tptn_settings;
+	
+	if($id > 0) {
+		switch ($count) {
+			case 'total':
+				$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 1));
+				break;
+			case 'daily':
+				$daily_range = $tptn_settings['daily_range']-1;
+				$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+				$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+				$current_date = date ( 'Y-m-j' , $current_date );
+		
+				$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
+				break;
+			case 'overall':
+				$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
+				break;
+		}
+		return apply_filters('tptn_post_count_only',$cntaccess);
+	} else {
+		return 0;
+	}
+}
 
 /**
  * Function to return popular posts.
@@ -255,6 +295,7 @@ function tptn_pop_posts( $args ) {
 		'daily' => FALSE,
 		'echo' => FALSE,
 		'strict_limit' => FALSE,
+		'posts_only' => FALSE,
 	);
 	$defaults = array_merge($defaults, tptn_read_options());
 	
@@ -311,6 +352,8 @@ function tptn_pop_posts( $args ) {
 		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
 	}
 	$results = $wpdb->get_results($sql);
+	if($posts_only) return apply_filters('tptn_pop_posts_array',$results);		// Return the array of posts only if the variable is set	
+	
 	$counter = 0;
 
 	$output = '';
@@ -333,8 +376,9 @@ function tptn_pop_posts( $args ) {
 		$output .= $before_list;
 		foreach ($results as $result) {
 			$sumcount = $result->sumCount;
-			$result = get_post($result->ID);	// Let's get the Post using the ID
-			$categorys = get_the_category($result->ID);	//Fetch categories of the plugin
+			$result = get_post(apply_filters('tptn_post_id',$result->ID));	// Let's get the Post using the ID
+
+			$categorys = get_the_category(apply_filters('tptn_post_cat_id',$result->ID));	//Fetch categories of the plugin
 			$p_in_c = false;	// Variable to check if post exists in a particular category
 
 			foreach ($categorys as $cat) {	// Loop to check if post exists in excluded category
@@ -347,23 +391,28 @@ function tptn_pop_posts( $args ) {
 			if (!$p_in_c) {
 				$output .= $before_list_item;
 
-				$output .= '<a href="'.get_permalink($result->ID).'" rel="bookmark'.$rel_attribute.'" '.$target_attribute.'class="tptn_link">'; // Add beginning of link
 				if ($post_thumb_op=='after') {
+					$output .= '<a href="'.get_permalink($result->ID).'" rel="bookmark'.$rel_attribute.'" '.$target_attribute.'class="tptn_link">'; // Add beginning of link
 					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after
+					$output .= '</a>'; // Close the link
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='after' || $post_thumb_op=='thumbs_only') {
+					$output .= '<a href="'.get_permalink($result->ID).'" rel="bookmark'.$rel_attribute.'" '.$target_attribute.'class="tptn_link">'; // Add beginning of link
 					$output .= tptn_get_the_post_thumbnail('postid='.$result->ID.'&thumb_height='.$thumb_height.'&thumb_width='.$thumb_width.'&thumb_meta='.$thumb_meta.'&thumb_html='.$thumb_html.'&thumb_default='.$thumb_default.'&thumb_default_show='.$thumb_default_show.'&thumb_timthumb='.$thumb_timthumb.'&scan_images='.$scan_images.'&class=tptn_thumb&filter=tptn_postimage');
+					$output .= '</a>'; // Close the link
 				}
 				if ($post_thumb_op=='inline' || $post_thumb_op=='text_only') {
+					$output .= '<span class="tptn_after_thumb">';
+					$output .= '<a href="'.get_permalink($result->ID).'" rel="bookmark'.$rel_attribute.'" '.$target_attribute.'class="tptn_link">'; // Add beginning of link
 					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings
+					$output .= '</a>'; // Close the link
 				}
-				$output .= '</a>'; // Close the link
 				if ($show_author) {
 					$author_info = get_userdata($result->post_author);
-					$author_name = ucwords(trim(stripslashes($author_info->user_nicename)));
+					$author_name = ucwords(trim(stripslashes($author_info->display_name)));
 					$author_link = get_author_posts_url( $author_info->ID );
 					
-					$output .= '<span class="tptn_author"> '.__(' Posted by ', TPTN_LOCAL_NAME ).'<a href="'.$author_link.'">'.$author_name.'</a></span> ';
+					$output .= '<span class="tptn_author"> '.__(' by ', TPTN_LOCAL_NAME ).'<a href="'.$author_link.'">'.$author_name.'</a></span> ';
 				}
 				if ($show_date) {
 					$output .= '<span class="tptn_date"> '.mysql2date(get_option('date_format','d/m/y'), $result->post_date).'</span> ';
@@ -373,6 +422,10 @@ function tptn_pop_posts( $args ) {
 				}
 				if ($disp_list_count) $output .= ' <span class="tptn_list_count">('.number_format_i18n($sumcount).')</span>';
 		        
+				if ($post_thumb_op=='inline' || $post_thumb_op=='text_only') {
+					$output .= '</span>';
+				}
+				
 				$output .= $after_list_item;
 				$counter++; 
 			}
@@ -385,7 +438,7 @@ function tptn_pop_posts( $args ) {
 	}
 	$output .= '</div>';
 
-	return $output;
+	return apply_filters('tptn_pop_posts',$output);
 }
 
 
