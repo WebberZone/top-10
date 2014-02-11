@@ -1,9 +1,9 @@
 # Top 10  - Popular posts plugin for WordPress
 
-**Stable tag**: trunk
-**Requires at least**: 3.0
-**Tested up to**: 3.9
-**License**: [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
+__Requires:__ 3.0
+__Tested up to:__ 3.9
+__License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
+
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
