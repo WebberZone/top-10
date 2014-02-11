@@ -1,6 +1,9 @@
 # Top 10  - Popular posts plugin for WordPress
 
-**Licensed under GPLv2 or later**
+**Stable tag**: trunk
+**Requires at least**: 3.0
+**Tested up to**: 3.9
+**License**: [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
@@ -28,6 +31,12 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 will also add two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
 * **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data. But why would you?
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
+
+
+## Screenshots
+![General Options](https://raw.github.com/ajaydsouza/top-10/master/screenshot-1.png)
+_Top 10 settings page - General Options._
+
 
 
 ## Installation
