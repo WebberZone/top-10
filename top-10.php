@@ -587,16 +587,17 @@ class WidgetTopTen extends WP_Widget
 	} //ending form creation
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['limit'] = ($new_instance['limit']);
-		$instance['daily'] = ($new_instance['daily']);
-		$instance['daily_range'] = strip_tags($new_instance['daily_range']);
-		$instance['show_excerpt'] = ($new_instance['show_excerpt']);
-		$instance['show_author'] = ($new_instance['show_author']);
-		$instance['show_date'] = ($new_instance['show_date']);
-		$instance['post_thumb_op'] = ($new_instance['post_thumb_op']);
-		$instance['thumb_height'] = ($new_instance['thumb_height']);
-		$instance['thumb_width'] = ($new_instance['thumb_width']);
+		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+		$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $instance['title'] ) : '';
+		$instance['limit'] = isset( $new_instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
+		$instance['daily'] = isset( $new_instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
+		$instance['daily_range'] = isset( $new_instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
+		$instance['show_excerpt'] = isset( $new_instance['show_excerpt'] ) ? esc_attr( $new_instance['show_excerpt'] ) : '';
+		$instance['show_author'] = isset( $new_instance['show_author'] ) ? esc_attr( $new_instance['show_author'] ) : '';
+		$instance['show_date'] = isset( $new_instance['show_date'] ) ? esc_attr( $new_instance['show_date'] ) : '';
+		$instance['post_thumb_op'] = isset( $new_instance['post_thumb_op'] ) ? esc_attr( $new_instance['post_thumb_op'] ) : 'text_only';
+		$instance['thumb_height'] = isset( $new_instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : '';
+		$instance['thumb_width'] = isset( $new_instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : '';
 		return $instance;
 	} //ending update
 	function widget($args, $instance) {
@@ -659,18 +660,18 @@ class WidgetTopTen extends WP_Widget
 }
 
 /**
- * Initialise the plugin.
+ * Initialise the widget.
  * 
  * @access public
  * @return void
  */
-function init_tptn(){
+function tptn_register_widget() {
 
 	if (function_exists('register_widget')) { 
 		register_widget('WidgetTopTen');
 	}
 }
-add_action('init', 'init_tptn', 1); 
+add_action('widgets_init', 'tptn_register_widget', 1); 
 
 
 /**
