@@ -50,7 +50,7 @@ $tptn_settings = tptn_read_options();
  * @return string Filtered content
  */
 function tptn_add_viewed_count($content) {
-	global $post, $wpdb, $single,$tptn_url,$tptn_path;
+	global $post, $wpdb, $single, $tptn_url, $tptn_path;
 	$table_name = $wpdb->prefix . "top_ten";
 
 	if(is_singular()) {
@@ -115,7 +115,7 @@ function tptn_pc_content($content) {
 	global $tptn_settings;
 
 	$exclude_on_post_ids = explode(',',$tptn_settings['exclude_on_post_ids']);
-	//$p_in_c = (in_array($post->ID, $exclude_on_post_ids)) ? true : false;
+
 	if (in_array($post->ID, $exclude_on_post_ids)) return $content;	// Exit without adding related posts
 	
 	if((is_single())&&($tptn_settings['add_to_content'])) {
@@ -195,7 +195,7 @@ function echo_tptn_post_count($echo=1) {
  * @param int|string $id Post ID
  * @return int Post count
  */
-function get_tptn_post_count($id) {
+function get_tptn_post_count($id = FALSE) {
 	global $wpdb;
 	
 	$table_name = $wpdb->prefix . "top_ten";
@@ -207,7 +207,7 @@ function get_tptn_post_count($id) {
 
 		// Total count per post
 		if (strpos($count_disp_form, "%totalcount%") !== false) {
-			$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
+			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" ), $id );
 			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 1));
 			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
 		}
@@ -219,7 +219,7 @@ function get_tptn_post_count($id) {
 			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 			$current_date = date ( 'Y-m-j' , $current_date );
 	
-			$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
+			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber "), array($id, $current_date) );
 			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
 			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
 		}
@@ -256,7 +256,7 @@ function get_tptn_post_count_only($id = FALSE, $count = 'total') {
 	if($id > 0) {
 		switch ($count) {
 			case 'total':
-				$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess FROM ".$table_name." WHERE postnumber = ".$id);
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" ), $id );
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 1));
 				break;
 			case 'daily':
@@ -265,7 +265,7 @@ function get_tptn_post_count_only($id = FALSE, $count = 'total') {
 				$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 				$current_date = date ( 'Y-m-j' , $current_date );
 		
-				$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM ".$table_name_daily." WHERE postnumber = ".$id." AND dp_date >= '".$current_date."' GROUP BY postnumber ");
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber "), array($id, $current_date) );
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
 				break;
 			case 'overall':
@@ -297,7 +297,7 @@ function tptn_pop_posts( $args ) {
 		'strict_limit' => FALSE,
 		'posts_only' => FALSE,
 	);
-	$defaults = array_merge($defaults, tptn_read_options());
+	$defaults = array_merge($defaults, $tptn_settings);
 	
 	// Parse incomming $args into an array and merge it with $defaults
 	$args = wp_parse_args( $args, $defaults );
@@ -305,8 +305,11 @@ function tptn_pop_posts( $args ) {
 	// OPTIONAL: Declare each item in $args as its own variable i.e. $type, $before.
 	extract( $args, EXTR_SKIP );
 
-	if ($daily) $table_name = $wpdb->prefix . "top_ten_daily"; 
-		else $table_name = $wpdb->prefix . "top_ten";
+	if ($daily) {
+		$table_name = $wpdb->prefix . "top_ten_daily"; 
+	} else {
+		$table_name = $wpdb->prefix . "top_ten";
+	}
 	
 	$limit = ($strict_limit) ? $limit : ($limit*5);	
 
@@ -318,40 +321,51 @@ function tptn_pop_posts( $args ) {
 	parse_str($post_types,$post_types);	// Save post types in $post_types variable
 
 	if (!$daily) {
+		$args = array(
+			$exclude_post_ids,
+		);
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' ";
-		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (".$exclude_post_ids.") ";
+		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (%s) ";
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
 			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
+			$sql .= " post_type = '%s' ";
 			$multiple = true;
+			$args[] = $post_type;	// Add the post types to the $args array
 		}
 		$sql .=" ) ";
-		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
+		$sql .= "ORDER BY sumCount DESC LIMIT %d";
+		$args[] = $limit;
 	} else {
 		$current_time = current_time( 'timestamp', 0 );
 		$current_time = $current_time - ($daily_range-1) * 3600 * 24;
 		$current_date = date( 'Y-m-j', $current_time );
 		
+		$args = array(
+			$current_date,
+			$exclude_post_ids,
+		);
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
-		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (".$exclude_post_ids.") ";
+		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+		$sql .= "AND post_status = 'publish' AND dp_date >= '%s' ";
+		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (%s) ";
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
 			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
+			$sql .= " post_type = '%s' ";
 			$multiple = true;
+			$args[] = $post_type;	// Add the post types to the $args array
 		}
 		$sql .=" ) ";
 		$sql .= "GROUP BY postnumber ";
-		$sql .= "ORDER BY sumCount DESC LIMIT $limit";
+		$sql .= "ORDER BY sumCount DESC LIMIT %d";
+		$args[] = $limit;
 	}
-	$results = $wpdb->get_results($sql);
+	$results = $wpdb->get_results( $wpdb->prepare( $sql , $args ) );
 	if($posts_only) return apply_filters('tptn_pop_posts_array',$results);		// Return the array of posts only if the variable is set	
 	
 	$counter = 0;
