@@ -90,21 +90,6 @@ function tptn_options() {
 		}
 		$tptn_settings['exclude_categories'] = (isset($exclude_categories)) ? join(',', $exclude_categories) : '';
 
-		// Cron maintenance functions
-		if ( isset($_POST['cron_on']) && ( ($tptn_settings['cron_on']==false) || (intval($_POST['cron_hour'])!=$tptn_settings['cron_hour']) || (intval($_POST['cron_min'])!=$tptn_settings['cron_min']) || ($_POST['cron_recurrence']!=$tptn_settings['cron_recurrence']) ) ) {
-			$tptn_settings['cron_on'] = true;
-			$tptn_settings['cron_hour'] = intval($_POST['cron_hour']);
-			$tptn_settings['cron_min'] = intval($_POST['cron_min']);
-			$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
-			
-			tptn_enable_run($tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence']);
-			echo '<div id="message" class="updated fade"><p>' . __('Scheduled maintenance enabled / modified',TPTN_LOCAL_NAME) .'</p></div>';
-		} else {
-			$tptn_settings['cron_on'] = false;
-			tptn_disable_run();
-			echo '<div id="message" class="updated fade"><p>'. __('Scheduled maintenance disabled',TPTN_LOCAL_NAME) .'</p></div>';
-		}
-			
 		$wp_post_types	= get_post_types( array(
 			'public'	=> true,
 		) );
@@ -148,6 +133,25 @@ function tptn_options() {
 		tptn_clean_duplicates(true);
 		tptn_clean_duplicates(false);
 		$str = '<div id="message" class="updated fade"><p>'. __('Duplicate rows cleaned from tables',TPTN_LOCAL_NAME) .'</p></div>';
+		echo $str;
+	}
+
+	if((isset($_POST['tptn_mnts_save']))&&( check_admin_referer('tptn-plugin') ) ) {
+		$tptn_settings['cron_hour'] = intval($_POST['cron_hour']);
+		$tptn_settings['cron_min'] = intval($_POST['cron_min']);
+		$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
+		if ( isset($_POST['cron_on']) ) {
+			$tptn_settings['cron_on'] = true;
+			tptn_enable_run( $tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence'] );
+			$str = '<div id="message" class="updated fade"><p>' . __('Scheduled maintenance enabled / modified',TPTN_LOCAL_NAME) .'</p></div>';
+		} else {
+			$tptn_settings['cron_on'] = false;
+			tptn_disable_run();
+			$str = '<div id="message" class="updated fade"><p>'. __('Scheduled maintenance disabled',TPTN_LOCAL_NAME) .'</p></div>';
+		}
+		update_option('ald_tptn_settings', $tptn_settings);
+		$tptn_settings = tptn_read_options();
+		
 		echo $str;
 	}
 ?>
@@ -425,10 +429,30 @@ function tptn_options() {
 			</tr>
 		  </table>		
 		</div>
-		<div class="tabbertab">
+		<p>
+		  <input type="submit" name="tptn_save" id="tptn_save" value="<?php _e('Save Options',TPTN_LOCAL_NAME); ?>" class="button button-primary" />
+		  <input type="submit" name="tptn_default" id="tptn_default" value="<?php _e('Default Options',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
+		</p>
+		</fieldset>
+	    <h3>
+	      <?php _e('Reset count',TPTN_LOCAL_NAME); ?>
+	    </h3>
+	    <p>
+	      <?php _e('This cannot be reversed. Make sure that your database has been backed up before proceeding',TPTN_LOCAL_NAME); ?>
+	    </p>
+	    <p>
+	      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php _e('Reset Popular Posts',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Are you sure you want to reset the popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
+	      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php _e('Reset Daily Popular Posts',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Are you sure you want to reset the daily popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
+	      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php _e('Clear duplicates',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('This will delete the duplicate entries in the tables. Proceed?',TPTN_LOCAL_NAME); ?>')) return false;" />
+	    </p>
+	    
+		<?php wp_nonce_field('tptn-plugin'); ?>
+	  </form>
+	    
 		<h3>
 		  <?php _e('Maintenance',TPTN_LOCAL_NAME); ?>
 		</h3>
+	  <form method="post" id="tptn_mnts_options" name="tptn_mnts_options" onsubmit="return checkForm()">
 		  <table class="form-table">
 			<tr style="vertical-align: top; "><th scope="row" colspan="2">
 			    <?php _e('Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs.',TPTN_LOCAL_NAME); ?>
@@ -440,7 +464,7 @@ function tptn_options() {
 			</td>
 			</tr>
 			<tr><th scope="row"><label for="cron_hour"><?php _e('Time to run maintenance',TPTN_LOCAL_NAME); ?></label></th>
-			  <td><input type="textbox" name="cron_hour" id="cron_hour" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_hour'])); ?>" style="width:10px" /> : <input type="textbox" name="cron_min" id="cron_min" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_min'])); ?>" style="width:10px" /> hrs</td>
+			  <td><input type="textbox" name="cron_hour" id="cron_hour" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_hour'])); ?>" style="width:50px" /> <?php _e('hrs',TPTN_LOCAL_NAME); ?> : <input type="textbox" name="cron_min" id="cron_min" value="<?php echo esc_attr(stripslashes($tptn_settings['cron_min'])); ?>" style="width:50px" /> <?php _e('min',TPTN_LOCAL_NAME); ?></td>
 			</tr>
 			<tr><th scope="row"><label for="cron_recurrence"><?php _e('How often should the maintenance be run:',TPTN_LOCAL_NAME); ?></label></th>
 			  <td>
@@ -483,23 +507,9 @@ function tptn_options() {
 				?>				
 			</td></tr>
 			</table>
-		</div>
 		<p>
-		  <input type="submit" name="tptn_save" id="tptn_save" value="<?php _e('Save Options',TPTN_LOCAL_NAME); ?>" class="button button-primary" />
-		  <input type="submit" name="tptn_default" id="tptn_default" value="<?php _e('Default Options',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Do you want to set options to Default?',TPTN_LOCAL_NAME); ?>')) return false;" />
+		  <input type="submit" name="tptn_mnts_save" id="tptn_mnts_save" value="<?php _e('Save Options',TPTN_LOCAL_NAME); ?>" class="button button-primary" />
 		</p>
-		</fieldset>
-	    <h3>
-	      <?php _e('Reset count',TPTN_LOCAL_NAME); ?>
-	    </h3>
-	    <p>
-	      <?php _e('This cannot be reversed. Make sure that your database has been backed up before proceeding',TPTN_LOCAL_NAME); ?>
-	    </p>
-	    <p>
-	      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php _e('Reset Popular Posts',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Are you sure you want to reset the popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
-	      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php _e('Reset Daily Popular Posts',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('Are you sure you want to reset the daily popular posts?',TPTN_LOCAL_NAME); ?>')) return false;" />
-	      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php _e('Clear duplicates',TPTN_LOCAL_NAME); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e('This will delete the duplicate entries in the tables. Proceed?',TPTN_LOCAL_NAME); ?>')) return false;" />
-	    </p>
 		<?php wp_nonce_field('tptn-plugin'); ?>
 	  </form>
 	</div>

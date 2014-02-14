@@ -1123,11 +1123,20 @@ if (!function_exists('ald_more_reccurences')) {
  * @return void
  */
 function ald_more_reccurences() {
-	return array(
-		'weekly' => array('interval' => 604800, 'display' => __( 'Once Weekly', TPTN_LOCAL_NAME )),
-		'fortnightly' => array('interval' => 1209600, 'display' => __( 'Once Fortnightly', TPTN_LOCAL_NAME )),
-		'monthly' => array('interval' => 2419200, 'display' => __( 'Once Monthly', TPTN_LOCAL_NAME )),
+	// add a 'weekly' interval
+	$schedules['weekly'] = array(
+		'interval' => 604800,
+		'display' => __('Once Weekly', TPTN_LOCAL_NAME)
 	);
+	$schedules['fortnightly'] = array(
+		'interval' => 1209600,
+		'display' => __('Once Fortnightly', TPTN_LOCAL_NAME)
+	);
+	$schedules['monthly'] = array(
+		'interval' => 2635200,
+		'display' => __('Once Monthly', TPTN_LOCAL_NAME)
+	);
+	return $schedules;
 }
 add_filter('cron_schedules', 'ald_more_reccurences');
 }
