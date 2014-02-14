@@ -3,7 +3,7 @@ Tags: top 10, counter, popular posts, top posts, daily popular, page views, stat
 Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 3.0
+Requires at least: 3.3
 Tested up to: 3.9
 License: GPLv2 or later
 
@@ -35,6 +35,9 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 
 
+If you're looking for a plugin to display related, look no further than my other plugin <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>
+
+
 == Screenshots ==
 
 1. Top-10 options - General options
@@ -51,6 +54,9 @@ Author display name is used now, cleaner pagination, new function to get the pos
 Refer to the changelog for more details
 
 == Changelog ==
+
+= 1.9.9 =
+* Fixed: mySQL error messages due to improper escaping
 
 = 1.9.8.5 =
 * Modified: Including the author in the list will now use the Display Name which is set under “Display name publicly as” in the User Profile page
