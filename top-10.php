@@ -321,13 +321,14 @@ function tptn_pop_posts( $args ) {
 	parse_str($post_types,$post_types);	// Save post types in $post_types variable
 
 	if (!$daily) {
-		$args = array(
-			$exclude_post_ids,
-		);
+		$args = array();
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' ";
-		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (%s) ";
+		if ($exclude_post_ids!='') { 
+			$sql .= "AND ID NOT IN (%s) ";
+			$args[] = $exclude_post_ids;	// Add the post types to the $args array
+		}
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
@@ -346,12 +347,14 @@ function tptn_pop_posts( $args ) {
 		
 		$args = array(
 			$current_date,
-			$exclude_post_ids,
 		);
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' AND dp_date >= '%s' ";
-		if ($exclude_post_ids!='') $sql .= "AND ID NOT IN (%s) ";
+		if ($exclude_post_ids!='') { 
+			$sql .= "AND ID NOT IN (%s) ";
+			$args[] = $exclude_post_ids;	// Add the post types to the $args array
+		}
 		$sql .= "AND ( ";
 		$multiple = false;
 		foreach ($post_types as $post_type) {
@@ -593,18 +596,17 @@ class WidgetTopTen extends WP_Widget
 	} //ending form creation
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
-		$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : '';
-		$instance['limit'] = isset( $new_instance['limit'] ) ? esc_attr( $new_instance['limit'] ) : '';
-		$instance['daily'] = isset( $new_instance['daily'] ) ? esc_attr( $new_instance['daily'] ) : 'overall';
-		$instance['daily_range'] = isset( $new_instance['daily_range'] ) ? esc_attr( $new_instance['daily_range'] ) : '';
-		$instance['disp_list_count'] = isset( $new_instance['disp_list_count'] ) ? esc_attr( $new_instance['disp_list_count'] ) : '';
-		$instance['show_excerpt'] = isset( $new_instance['show_excerpt'] ) ? esc_attr( $new_instance['show_excerpt'] ) : '';
-		$instance['show_author'] = isset( $new_instance['show_author'] ) ? esc_attr( $new_instance['show_author'] ) : '';
-		$instance['show_date'] = isset( $new_instance['show_date'] ) ? esc_attr( $new_instance['show_date'] ) : '';
-		$instance['post_thumb_op'] = isset( $new_instance['post_thumb_op'] ) ? esc_attr( $new_instance['post_thumb_op'] ) : 'text_only';
-		$instance['thumb_height'] = isset( $new_instance['thumb_height'] ) ? esc_attr( $new_instance['thumb_height'] ) : '';
-		$instance['thumb_width'] = isset( $new_instance['thumb_width'] ) ? esc_attr( $new_instance['thumb_width'] ) : '';
+		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['limit'] = ($new_instance['limit']);
+		$instance['daily'] = ($new_instance['daily']);
+		$instance['daily_range'] = strip_tags($new_instance['daily_range']);
+		$instance['disp_list_count'] = ($new_instance['disp_list_count']);
+		$instance['show_excerpt'] = ($new_instance['show_excerpt']);
+		$instance['show_author'] = ($new_instance['show_author']);
+		$instance['show_date'] = ($new_instance['show_date']);
+		$instance['post_thumb_op'] = ($new_instance['post_thumb_op']);
+		$instance['thumb_height'] = ($new_instance['thumb_height']);
+		$instance['thumb_width'] = ($new_instance['thumb_width']);
 		return $instance;
 	} //ending update
 	function widget($args, $instance) {
@@ -684,6 +686,23 @@ add_action('widgets_init', 'tptn_register_widget', 1);
 
 
 /**
+ * Enqueue styles.
+ * 
+ * @access public
+ * @return void
+ */
+function tptn_heading_styles() {
+	global $tptn_settings;
+	
+	if ($tptn_settings['include_default_style']) {
+		wp_register_style('tptn_list_style', plugins_url('css/default-style.css', __FILE__));
+		wp_enqueue_style('tptn_list_style');
+	}
+}
+add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );  
+
+
+/**
  * Default Options.
  * 
  * @access public
@@ -723,7 +742,7 @@ function tptn_default_options() {
 						'disp_list_count' => true,		// Display count in popular lists?
 						'd_use_js' => false,				// Use JavaScript for displaying daily posts
 						'dynamic_post_count' => true,		// Use JavaScript for displaying the post count
-						'count_disp_form' => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
+						'count_disp_form' => '(Visited %totalcount% time(s), %dailycount% visit(s) today)',	// Format to display the count
 
 						'title' => $title,				// Title of Popular Posts
 						'title_daily' => $title_daily,	// Title of Daily Popular
@@ -757,6 +776,7 @@ function tptn_default_options() {
 						'exclude_on_post_ids' => '', 	// Comma separate list of page/post IDs to not display related posts on
 
 						'custom_CSS' => '',			// Custom CSS to style the output
+						'include_default_style' => false,	// Include default Top 10 style
 
 						'activate_daily' => true,	// Activate the daily count
 						'activate_overall' => true,	// activate overall count

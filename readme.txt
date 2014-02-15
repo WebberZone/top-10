@@ -56,6 +56,7 @@ Refer to the changelog for more details
 == Changelog ==
 
 = 1.9.9 =
+* New: Default style to make those popular posts a little pretty. Remember to choose **Thumbnails inline, before title** under 'Thumbnail options'
 * New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
 * New: Class `tptn_posts_widget` for the widgets
 * Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts 
