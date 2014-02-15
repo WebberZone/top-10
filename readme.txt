@@ -57,6 +57,8 @@ Refer to the changelog for more details
 
 = 1.9.9 =
 * New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
+* New: Class `tptn_posts_widget` for the widgets
+* Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts 
 * Modified: New admin interface keeping mobile first in mind
 * Modified: Optimised widgets loading
 * Fixed: mySQL error messages due to improper escaping

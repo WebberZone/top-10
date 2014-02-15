@@ -380,9 +380,9 @@ function tptn_pop_posts( $args ) {
 		}
 	} else {
 		if (!$daily) {
-			$output .= '<div class="tptn_posts">';
+			$output .= '<div class="tptn_posts tptn_posts_widget">';
 		} else {
-			$output .= '<div class="tptn_posts_daily">';
+			$output .= '<div class="tptn_posts_daily tptn_posts_widget">';
 		}
 	}
 	
@@ -519,6 +519,7 @@ class WidgetTopTen extends WP_Widget
 	function form($instance) {
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
 		$limit = isset($instance['limit']) ? esc_attr($instance['limit']) : '';
+		$disp_list_count = isset($instance['disp_list_count']) ? esc_attr($instance['disp_list_count']) : true;
 		$show_excerpt = isset($instance['show_excerpt']) ? esc_attr($instance['show_excerpt']) : '';
 		$show_author = isset($instance['show_author']) ? esc_attr($instance['show_author']) : '';
 		$show_date = isset($instance['show_date']) ? esc_attr($instance['show_date']) : '';
@@ -547,6 +548,11 @@ class WidgetTopTen extends WP_Widget
 		<p>
 			<label for="<?php echo $this->get_field_id('daily_range'); ?>">
 			<?php _e('Range in number of days (applies only to custom option above)', TPTN_LOCAL_NAME); ?>: <input class="widefat" id="<?php echo $this->get_field_id('daily_range'); ?>" name="<?php echo $this->get_field_name('daily_range'); ?>" type="text" value="<?php echo esc_attr($daily_range); ?>" /> 
+			</label>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('disp_list_count'); ?>">
+			<input id="<?php echo $this->get_field_id('disp_list_count'); ?>" name="<?php echo $this->get_field_name('disp_list_count'); ?>" type="checkbox" <?php if ($disp_list_count) echo 'checked="checked"' ?> /> <?php _e(' Show count?', TPTN_LOCAL_NAME); ?>
 			</label>
 		</p>
 		<p>
@@ -588,16 +594,17 @@ class WidgetTopTen extends WP_Widget
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
-		$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $instance['title'] ) : '';
-		$instance['limit'] = isset( $new_instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
-		$instance['daily'] = isset( $new_instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
-		$instance['daily_range'] = isset( $new_instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
+		$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : '';
+		$instance['limit'] = isset( $new_instance['limit'] ) ? esc_attr( $new_instance['limit'] ) : '';
+		$instance['daily'] = isset( $new_instance['daily'] ) ? esc_attr( $new_instance['daily'] ) : 'overall';
+		$instance['daily_range'] = isset( $new_instance['daily_range'] ) ? esc_attr( $new_instance['daily_range'] ) : '';
+		$instance['disp_list_count'] = isset( $new_instance['disp_list_count'] ) ? esc_attr( $new_instance['disp_list_count'] ) : '';
 		$instance['show_excerpt'] = isset( $new_instance['show_excerpt'] ) ? esc_attr( $new_instance['show_excerpt'] ) : '';
 		$instance['show_author'] = isset( $new_instance['show_author'] ) ? esc_attr( $new_instance['show_author'] ) : '';
 		$instance['show_date'] = isset( $new_instance['show_date'] ) ? esc_attr( $new_instance['show_date'] ) : '';
 		$instance['post_thumb_op'] = isset( $new_instance['post_thumb_op'] ) ? esc_attr( $new_instance['post_thumb_op'] ) : 'text_only';
-		$instance['thumb_height'] = isset( $new_instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : '';
-		$instance['thumb_width'] = isset( $new_instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : '';
+		$instance['thumb_height'] = isset( $new_instance['thumb_height'] ) ? esc_attr( $new_instance['thumb_height'] ) : '';
+		$instance['thumb_width'] = isset( $new_instance['thumb_width'] ) ? esc_attr( $new_instance['thumb_width'] ) : '';
 		return $instance;
 	} //ending update
 	function widget($args, $instance) {
@@ -633,6 +640,7 @@ class WidgetTopTen extends WP_Widget
 					'post_thumb_op' => $instance['post_thumb_op'],
 					'thumb_height' => $instance['thumb_height'],
 					'thumb_width' => $instance['thumb_width'],
+					'disp_list_count' => $instance['disp_list_count'],
 				) );
 				
 			}
@@ -648,6 +656,7 @@ class WidgetTopTen extends WP_Widget
 				'post_thumb_op' => $instance['post_thumb_op'],
 				'thumb_height' => $instance['thumb_height'],
 				'thumb_width' => $instance['thumb_width'],
+				'disp_list_count' => $instance['disp_list_count'],
 			) );
 			
 		}

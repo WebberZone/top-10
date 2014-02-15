@@ -994,7 +994,6 @@ function tptn_value($column_name, $id) {
 
 	// Add Total count
 	if (($column_name == 'tptn_total')&&($tptn_settings['pv_in_admin'])) {
-		
 		$table_name = $wpdb->prefix . "top_ten";
 		
 		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, cntaccess from {$table_name} WHERE postnumber = %d", $id ) );
@@ -1013,6 +1012,25 @@ function tptn_value($column_name, $id) {
 		
 		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date) );
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
+		echo $cntaccess;
+	}
+
+	// Now process both
+	if (($column_name == 'tptn_both')&&($tptn_settings['pv_in_admin'])) {
+		$table_name = $wpdb->prefix . "top_ten";
+		
+		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, cntaccess from {$table_name} WHERE postnumber = %d", $id ) );
+		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
+
+		$table_name = $wpdb->prefix . "top_ten_daily";
+
+		$daily_range = $tptn_settings['daily_range']-1;
+		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
+		$current_date = date ( 'Y-m-j' , $current_date );
+		
+		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date) );
+		$cntaccess .= ' / '.number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
 		echo $cntaccess;
 	}
 }
@@ -1088,7 +1106,7 @@ add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
 function tptn_css() {
 ?>
 <style type="text/css">
-	#tptn_total, #tptn_daily { width: 100px; }
+	#tptn_total, #tptn_daily, #tptn_both { max-width: 100px; }
 </style>
 <?php	
 }
