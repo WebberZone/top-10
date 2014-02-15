@@ -49,9 +49,9 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 1.9.8.6 =
-Author display name is used now, cleaner pagination, new function to get the post count only. 
-Refer to the changelog for more details
+= 1.9.9 =
+New default style, new shortcodes, admin interface, option to disable counts from non-admin and lots more... 
+Refer to the Changeog for more details
 
 == Changelog ==
 
@@ -286,6 +286,40 @@ The following CSS classes / IDs are available:
 * **tptn_counter**: Class of the `div` tag that wraps the post count that is driven by the field "Format to display the count in: " under 'Output Options'
 
 For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
+
+= Shortcodes =
+
+You can insert the popular posts anywhere in your post using the `[tptn_list]` shortcode. The plugin takes three optional attributes `limit`, `heading` and `daily` as follows:
+
+`[tptn_list limit="5" heading="1" daily="0"]`
+
+*limit* : Maximum number of posts to return. The actual number displayed may be lower depending on the category / post exclusion settings.
+
+*heading* : By default, the heading you specify in **Title of popular posts:** under **Output options** will be displayed. You can override this by specifying your own heading e.g.
+
+`
+<h3>Top posts</h3>
+[tptn_list limit="2" heading="0"] 
+`
+*daily* : If set to 1, then the shortcode will return the daily popular posts list
+
+
+You can also display the number of visits using the `[tptn_views]` shortcode. The plugin takes one optional attribute `daily` as follows:
+
+`[tptn_views daily="0"]`
+
+*daily* : If set to 1, then the shortcode will return the number of _daily_ views
+
+
+= Filters =
+
+The plugin includes the following filters that allows you to customise the output for several section using <a href="http://codex.wordpress.org/Function_Reference/add_filter">add_filter</a>.
+
+*tptn_heading_title* : Filter for heading title of the posts. This is the text that you enter under *Output options > Title of related posts*
+
+*tptn_title* : Filter for the post title for each of the related posts
+
+I'll be adding more filters eventually. If you are looking for any particular filter do raise a post in the <a href="http://wordpress.org/support/plugin/contextual-related-posts">support forum</a> requesting the same.
 
 = How does the plugin select thumbnails? =
 

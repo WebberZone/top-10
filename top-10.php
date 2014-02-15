@@ -1202,6 +1202,46 @@ add_filter('cron_schedules', 'ald_more_reccurences');
 
 
 /*********************************************************************
+*				Shortcode functions									*
+********************************************************************/
+/**
+ * Creates a shortcode [tptn_list limit="5" heading="1" daily="0"].
+ * 
+ * @access public
+ * @param array $atts
+ * @param string $content (default: null)
+ * @return void
+ */
+function tptn_shortcode( $atts, $content = null ) {
+	extract( shortcode_atts( array(
+	  'limit' => '5',
+	  'heading' => '1',
+	  'daily' => '0',
+	  ), $atts ) );
+	
+	$heading = 1 - $heading;	  
+	return tptn_pop_posts('is_widget='.$heading.'&limit='.$limit.'&daily='.$daily);
+}
+add_shortcode( 'tptn_list', 'tptn_shortcode' );
+
+/**
+ * Creates a shortcode [tptn_views daily="0"].
+ * 
+ * @access public
+ * @param array $atts
+ * @param string $content (default: null)
+ * @return void
+ */
+function tptn_shortcode_views($atts , $content=null) {
+	extract( shortcode_atts( array(
+	  'daily' => '0',
+	  ), $atts ) );
+	
+	return get_tptn_post_count_only( get_the_ID(), ( $daily ? 'daily' : 'total' ) );
+}
+add_shortcode( 'tptn_views', 'tptn_shortcode_views' );
+
+/*********************************************************************
 *				Admin interface										*
 ********************************************************************/
 // This function adds an Options page in WP Admin
