@@ -703,23 +703,29 @@ function tptn_default_options() {
 						'add_to_category_archives' => false,		// Add post count to category archives
 						'add_to_tag_archives' => false,		// Add post count to tag archives
 						'add_to_archives' => false,		// Add post count to other archives
+
 						'track_authors' => false,			// Track Authors visits
 						'track_admins' => true,			// Track Admin visits
 						'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
+						'show_count_non_admins' => true,	// Show counts to non-admins
+						
 						'blank_output' => false,		// Blank output? Default is "blank Output test"
 						'blank_output_text' => $blank_output_text,		// Blank output text
 						'disp_list_count' => true,		// Display count in popular lists?
 						'd_use_js' => false,				// Use JavaScript for displaying daily posts
 						'dynamic_post_count' => true,		// Use JavaScript for displaying the post count
 						'count_disp_form' => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
+
 						'title' => $title,				// Title of Popular Posts
 						'title_daily' => $title_daily,	// Title of Daily Popular
 						'limit' => '10',					// How many posts to display?
 						'daily_range' => '1',				// Daily Popular will contain posts of how many days?
+
 						'before_list' => '<ul>',			// Before the entire list
 						'after_list' => '</ul>',			// After the entire list
 						'before_list_item' => '<li>',		// Before each list item
 						'after_list_item' => '</li>',		// After each list item
+
 						'post_thumb_op' => 'text_only',	// Display only text in posts
 						'thumb_height' => '50',			// Max height of thumbnails
 						'thumb_width' => '50',			// Max width of thumbnails
@@ -729,26 +735,31 @@ function tptn_default_options() {
 						'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
 						'thumb_timthumb' => true,	// Use timthumb
 						'scan_images' => true,			// Scan post for images
+
 						'show_excerpt' => false,			// Show description in list item
+						'excerpt_length' => '10',			// Length of characters
 						'show_date' => false,			// Show date in list item
 						'show_author' => false,			// Show author in list item
-						'excerpt_length' => '10',			// Length of characters
 						'title_length' => '60',		// Limit length of post title
+
 						'exclude_categories' => '',		// Exclude these categories
 						'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
 						'exclude_post_ids' => '',	// Comma separated list of page / post IDs that are to be excluded in the results
 						'exclude_on_post_ids' => '', 	// Comma separate list of page/post IDs to not display related posts on
+
 						'custom_CSS' => '',			// Custom CSS to style the output
-						'cron_on' => false,		// Run cron daily?
-						'cron_hour' => '0',		// Cron Hour
-						'cron_min' => '0',		// Cron Minute
-						'cron_recurrence' => 'weekly',	// Frequency of cron
+
 						'activate_daily' => true,	// Activate the daily count
 						'activate_overall' => true,	// activate overall count
 						'cache_fix' => false,		// Temporary fix for W3 Total Cache
 						'post_types' => $post_types,		// WordPress custom post types
 						'link_new_window' => false,			// Open link in new window - Includes target="_blank" to links
 						'link_nofollow' => false,			// Includes rel="nofollow" to links
+
+						'cron_on' => false,		// Run cron daily?
+						'cron_hour' => '0',		// Cron Hour
+						'cron_min' => '0',		// Cron Minute
+						'cron_recurrence' => 'weekly',	// Frequency of cron
 						);
 	return $tptn_settings;
 }

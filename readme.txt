@@ -56,9 +56,11 @@ Refer to the changelog for more details
 == Changelog ==
 
 = 1.9.9 =
-* Fixed: mySQL error messages due to improper escaping
-* Modified: Optimised widgets loading
+* New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
 * Modified: New admin interface keeping mobile first in mind
+* Modified: Optimised widgets loading
+* Fixed: mySQL error messages due to improper escaping
+* Modified: Lot's of code optimisation and cleanup
 
 = 1.9.8.5 =
 * Modified: Including the author in the list will now use the Display Name which is set under “Display name publicly as” in the User Profile page
