@@ -73,7 +73,9 @@ function tptn_options() {
 		$tptn_settings['title_length'] = intval($_POST['title_length']);
 		$tptn_settings['show_date'] = (isset($_POST['show_date']) ? true : false);
 		$tptn_settings['show_author'] = (isset($_POST['show_author']) ? true : false);
+
 		$tptn_settings['custom_CSS'] = wp_kses_post($_POST['custom_CSS']);
+		$tptn_settings['include_default_style'] = (isset($_POST['include_default_style']) ? true : false);
 
 		$tptn_settings['link_new_window'] = (isset($_POST['link_new_window']) ? true : false);
 		$tptn_settings['link_nofollow'] = (isset($_POST['link_nofollow']) ? true : false);
@@ -425,6 +427,12 @@ function tptn_options() {
 	      <h3 class='hndle'><span><?php _e('Custom CSS',TPTN_LOCAL_NAME); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
+				<tr><th scope="row"><label for="include_default_style"><?php _e('Use default style included in the plugin?',TPTN_LOCAL_NAME); ?></label></th>
+				  <td>
+				  	<input type="checkbox" name="include_default_style" id="include_default_style" <?php if ($tptn_settings['include_default_style']) echo 'checked="checked"' ?> /> 
+				  	<p class="description"><?php _e('Top 10 includes a default style that makes your popular posts list to look pretty. Check the box above if you want to use this. You will need to select <strong>Thumbnails inline, before title</strong> in Output Options or in the Widget.',TPTN_LOCAL_NAME); ?></p>
+				  </td>
+				</tr>
 				<tr><th scope="row" colspan="2"><?php _e('Custom CSS to add to header:',TPTN_LOCAL_NAME); ?></th>
 				</tr>
 				<tr><td scope="row" colspan="2"><textarea name="custom_CSS" id="custom_CSS" rows="15" cols="80" style="width:100%"><?php echo stripslashes($tptn_settings['custom_CSS']); ?></textarea>
