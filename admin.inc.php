@@ -117,6 +117,7 @@ function tptn_options() {
 		delete_option('ald_tptn_settings');
 		$tptn_settings = tptn_default_options();
 		update_option('ald_tptn_settings', $tptn_settings);
+		tptn_disable_run();
 		
 		$str = '<div id="message" class="updated fade"><p>'. __('Options set to Default.',TPTN_LOCAL_NAME) .'</p></div>';
 		echo $str;
@@ -378,10 +379,10 @@ function tptn_options() {
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_width"><?php _e('Width of the thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_width'])); ?>" style="width:30px" />px</td>
+				  <td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_width'])); ?>" style="width:40px" />px</td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_height"><?php _e('Height of the thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_height'])); ?>" style="width:30px" />px</td>
+				  <td><input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr(stripslashes($tptn_settings['thumb_height'])); ?>" style="width:40px" />px</td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_html"><?php _e('Style attributes / Width and Height HTML attributes:',TPTN_LOCAL_NAME); ?></label></th>
 				  <td>
@@ -462,10 +463,10 @@ function tptn_options() {
 	      <h3 class='hndle'><span><?php _e('Maintenance',TPTN_LOCAL_NAME); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
-				<tr><th scope="row" colspan="2">
-				    <?php _e('Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs.',TPTN_LOCAL_NAME); ?><br />
-				    <em><?php _e('Note: When scheduled maintenance is enabled, WordPress will run the cron job everytime the job is rescheduled (i.e. you change the settings below). This causes the daily posts table to reset.',TPTN_LOCAL_NAME); ?></em>
-				  </th>
+				<tr><td scope="row" colspan="2">
+				    <p class="description"><?php _e('Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than 90 days.',TPTN_LOCAL_NAME); ?><br />
+				    <strong><?php _e('Note: When scheduled maintenance is enabled, WordPress will run the cron job everytime the job is rescheduled (i.e. you change the settings below).',TPTN_LOCAL_NAME); ?></strong>
+				  </td>
 				</tr>
 				<tr><th scope="row"><label for="cron_on"><?php _e('Enable scheduled maintenance of daily tables:',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="checkbox" name="cron_on" id="cron_on" <?php if ($tptn_settings['cron_on']) echo 'checked="checked"' ?> />
@@ -496,7 +497,7 @@ function tptn_options() {
 				</tr>
 				<tr><td scope="row" colspan="2">
 					<?php 
-					if ($tptn_settings['cron_on']) {
+					if ( ($tptn_settings['cron_on']) || wp_next_scheduled('ald_tptn_hook') ) {
 						if (wp_next_scheduled('ald_tptn_hook')) {
 							echo '<span style="color:#0c0">';
 							_e('The cron job has been scheduled. Maintenance will run ',TPTN_LOCAL_NAME);
@@ -711,7 +712,7 @@ function tptn_adminhead() {
 	.postbox.closed .handlediv:before {
 		content: '\f140';
 	}
-	h2:before {
+	.wrap h2:before {
 	    content: "\f204";
 	    display: inline-block;
 	    -webkit-font-smoothing: antialiased;

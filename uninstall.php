@@ -10,6 +10,7 @@ if ( !defined('ABSPATH') && !defined('WP_UNINSTALL_PLUGIN') ) {
 	$wpdb->query($sql);
 	$sql = "DROP TABLE $table_name_daily";
 	$wpdb->query($sql);
+	if (wp_next_scheduled('ald_tptn_hook')) wp_clear_scheduled_hook('ald_tptn_hook');
 	delete_option('ald_tptn_settings');
 	delete_option('tptn_db_version');
 ?>
