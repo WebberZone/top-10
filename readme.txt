@@ -49,7 +49,7 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 1.9.8.5 =
+= 1.9.8.6 =
 Author display name is used now, cleaner pagination, new function to get the post count only. 
 Refer to the changelog for more details
 
@@ -57,6 +57,8 @@ Refer to the changelog for more details
 
 = 1.9.9 =
 * Fixed: mySQL error messages due to improper escaping
+* Modified: Optimised widgets loading
+* Modified: New admin interface keeping mobile first in mind
 
 = 1.9.8.5 =
 * Modified: Including the author in the list will now use the Display Name which is set under “Display name publicly as” in the User Profile page
