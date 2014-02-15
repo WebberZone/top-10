@@ -29,6 +29,7 @@ function tptn_options() {
 		$tptn_settings['daily_range'] = intval($_POST['daily_range']);
 		$tptn_settings['limit'] = intval($_POST['limit']);
 		$tptn_settings['count_disp_form'] = ($_POST['count_disp_form']);
+		$tptn_settings['count_disp_form_zero'] = ($_POST['count_disp_form_zero']);
 		$tptn_settings['exclude_on_post_ids'] = wp_kses_post($_POST['exclude_on_post_ids']);
 		$tptn_settings['exclude_post_ids'] = wp_kses_post($_POST['exclude_post_ids']);
 
@@ -282,9 +283,14 @@ function tptn_options() {
 	      <h3 class='hndle'><span><?php _e('Output options',TPTN_LOCAL_NAME); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
-				<tr><th scope="row"><label for="title"><?php _e('Format to display the count in: ',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><textarea name="count_disp_form" id="count_disp_form" cols="50" rows="5" style="width:100%"><?php echo htmlspecialchars(stripslashes($tptn_settings['count_disp_form'])); ?></textarea>
+				<tr><th scope="row"><label for="title"><?php _e('Format to display the post views:',TPTN_LOCAL_NAME); ?></label></th>
+				  <td><textarea name="count_disp_form" id="count_disp_form" cols="50" rows="3" style="width:100%"><?php echo htmlspecialchars(stripslashes($tptn_settings['count_disp_form'])); ?></textarea>
 				    <p class="description"><?php _e('Use <code>%totalcount%</code> to display the total count, <code>%dailycount%</code> to display the daily count and <code>%overallcount%</code> to display the overall count across all posts on the blog. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>',TPTN_LOCAL_NAME); ?>
+				  </td>
+				</tr>
+				<tr><th scope="row"><label for="title"><?php _e('What do display when there are no visits?',TPTN_LOCAL_NAME); ?></label></th>
+				  <td><textarea name="count_disp_form_zero" id="count_disp_form_zero" cols="50" rows="3" style="width:100%"><?php echo htmlspecialchars(stripslashes($tptn_settings['count_disp_form_zero'])); ?></textarea>
+				    <p class="description"><?php _e("This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.",TPTN_LOCAL_NAME); ?>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="title"><?php _e('Title of popular posts: ',TPTN_LOCAL_NAME); ?></label></th>
