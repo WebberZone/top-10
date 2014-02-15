@@ -365,8 +365,8 @@ function tptn_pop_posts( $args ) {
 		$sql .= "ORDER BY sumCount DESC LIMIT %d";
 		$args[] = $limit;
 	}
+	if($posts_only) return apply_filters('tptn_pop_posts_array', $wpdb->get_results( $wpdb->prepare( $sql , $args ) , ARRAY_A) );		// Return the array of posts only if the variable is set	
 	$results = $wpdb->get_results( $wpdb->prepare( $sql , $args ) );
-	if($posts_only) return apply_filters('tptn_pop_posts_array',$results);		// Return the array of posts only if the variable is set	
 	
 	$counter = 0;
 
