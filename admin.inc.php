@@ -766,59 +766,19 @@ function tptn_clean_duplicates($daily = false) {
  * @param bool $widget (default: false) Is this a WordPress widget?
  * @return void
  */
-function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = false) {
+function tptn_pop_display($daily = FALSE, $page = 0, $limit = FALSE, $widget = FALSE) {
 	global $wpdb, $siteurl, $tableposts, $id;
 
 	$table_name = $wpdb->prefix . "top_ten";
 	if ($daily) $table_name .= "_daily";	// If we're viewing daily posts, set this to true
 	
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	if (!($limit)) $limit = $tptn_settings['limit'];
 	if (!($page)) $page = 0; // Default page value.
 	parse_str($tptn_settings['post_types'],$post_types);	// Save post types in $post_types variable
 
-
-	if(!$daily) {
-		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND post_status = 'publish' ";
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ($post_types as $post_type) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
-			$multiple = true;
-		}
-		$sql .=" ) ";
-		$sql .= "ORDER BY sumCount DESC";
-	} else {
-		$daily_range = $tptn_settings['daily_range']-1;
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-		$current_date = date ( 'Y-m-j' , $current_date );
-		
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ($post_types as $post_type) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
-			$multiple = true;
-		}
-		$sql .=" ) ";
-		$sql .= "GROUP BY postnumber ";
-		$sql .= "ORDER BY sumCount DESC";
-	}
-
-	$results = $wpdb->get_results($sql);
-	$numrows = 0;
-	if ($results) {
-		foreach ($results as $result) {
-			$numrows++;
-		}
-	}
+	$results = tptn_pop_posts('posts_only=1&limit=99999&strict_limit=1&is_widget=1&exclude_post_ids=0&daily='.$daily); 
+	$numrows = count($results);
 	
 	$pages = intval($numrows/$limit); // Number of results pages.
 
@@ -836,36 +796,7 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	if (!((($page + $limit) / $limit) >= $pages) && $pages != 1) {$last = $page + $limit;} //If not last results page, last result equals $page plus $limit.
 	else{$last = $numrows;} // If last results page, last result equals total number of results.
 	
-	if(!$daily) {
-		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND post_status = 'publish' ";
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ($post_types as $post_type) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
-			$multiple = true;
-		}
-		$sql .=" ) ";
-		$sql .= "ORDER BY sumCount DESC LIMIT $page, $limit";
-	} else {
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
-		$sql .= "FROM $table_name INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND post_status = 'publish' AND dp_date >= '$current_date' ";
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ($post_types as $post_type) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '".$post_type."' ";
-			$multiple = true;
-		}
-		$sql .=" ) ";
-		$sql .= "GROUP BY postnumber ";
-		$sql .= "ORDER BY sumCount DESC LIMIT $page, $limit";
-	}
-
-	$results = $wpdb->get_results($sql);
+	$results = array_slice($results, $page,$limit);
 
 	$output = '<div id="tptn_popular_posts">';
 	$output .= '<table width="100%" border="0">
@@ -922,8 +853,8 @@ function tptn_pop_display($daily = false, $page = 0, $limit = 10, $widget = fals
 	$output .=   '<ul>';
 	if ($results) {
 		foreach ($results as $result) {
-			$output .= '<li><a href="'.get_permalink($result->postnumber).'">'.get_the_title($result->postnumber).'</a>';
-			$output .= ' ('.number_format_i18n($result->sumCount).')';
+			$output .= '<li><a href="'.get_permalink($result['postnumber']).'">'.get_the_title($result['postnumber']).'</a>';
+			$output .= ' ('.number_format_i18n($result['sumCount']).')';
 			$output .= '</li>';
 		}
 	}
@@ -1043,7 +974,7 @@ function tptn_value($column_name, $id) {
 		
 		$table_name = $wpdb->prefix . "top_ten";
 		
-		$resultscount = $wpdb->get_row("SELECT postnumber, cntaccess from $table_name WHERE postnumber = $id");
+		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, cntaccess from {$table_name} WHERE postnumber = %d", $id ) );
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
 		echo $cntaccess;
 	}
@@ -1057,7 +988,7 @@ function tptn_value($column_name, $id) {
 		$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 		$current_date = date ( 'Y-m-j' , $current_date );
 		
-		$resultscount = $wpdb->get_row("SELECT postnumber, SUM(cntaccess) as sumCount FROM $table_name WHERE postnumber = $id AND dp_date >= '$current_date' GROUP BY postnumber ");
+		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date) );
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
 		echo $cntaccess;
 	}
@@ -1139,5 +1070,6 @@ function tptn_css() {
 <?php	
 }
 add_action('admin_head', 'tptn_css');
+
 
 ?>
