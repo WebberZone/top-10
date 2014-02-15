@@ -202,37 +202,45 @@ function get_tptn_post_count($id = FALSE) {
 	$table_name_daily = $wpdb->prefix . "top_ten_daily";
 	global $tptn_settings;
 	$count_disp_form = stripslashes($tptn_settings['count_disp_form']);
+	$count_disp_form_zero = stripslashes($tptn_settings['count_disp_form_zero']);
+	$totalcntaccess = get_tptn_post_count_only($id,'total');
 	
 	if($id > 0) {
 
 		// Total count per post
-		if (strpos($count_disp_form, "%totalcount%") !== false) {
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" , $id ) );
-			$cntaccess = number_format_i18n( ( ($resultscount) ? $resultscount->cntaccess : 1 ) );
-			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
+		if ( (strpos($count_disp_form, "%totalcount%") !== false) || (strpos($count_disp_form_zero, "%totalcount%") !== false) ) {
+			if ( (0 == $totalcntaccess) && (!is_singular()) ) {
+				$count_disp_form_zero = str_replace("%totalcount%", $totalcntaccess, $count_disp_form_zero);
+			} else {
+				$count_disp_form = str_replace("%totalcount%", (0 == $totalcntaccess ? $totalcntaccess+1 : $totalcntaccess), $count_disp_form);
+			}
 		}
 		
 		// Now process daily count
-		if (strpos($count_disp_form, "%dailycount%") !== false) {
-			$daily_range = $tptn_settings['daily_range']-1;
-			$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-			$current_date = date ( 'Y-m-j' , $current_date );
-	
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", array($id, $current_date) ) );
-			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
-			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
+		if ( (strpos($count_disp_form, "%dailycount%") !== false) || (strpos($count_disp_form_zero, "%dailycount%") !== false) ) {
+			$cntaccess = get_tptn_post_count_only($id,'daily');
+			if ( (0 == $totalcntaccess) && (!is_singular()) ) {
+				$count_disp_form_zero = str_replace("%dailycount%", $cntaccess, $count_disp_form_zero);
+			} else {
+				$count_disp_form = str_replace("%dailycount%", (0 == $cntaccess ? $cntaccess+1 : $cntaccess), $count_disp_form);
+			}
 		}
 		
 		// Now process overall count
-		if (strpos($count_disp_form, "%overallcount%") !== false) {
-			$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
-			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
-			$count_disp_form = str_replace("%overallcount%", $cntaccess, $count_disp_form);
+		if ( (strpos($count_disp_form, "%overallcount%") !== false) || (strpos($count_disp_form_zero, "%overallcount%") !== false) ) {
+			$cntaccess = get_tptn_post_count_only($id,'overall');
+			if ( (0 == $cntaccess) && (!is_singular()) ) {
+				$count_disp_form_zero = str_replace("%overallcount%", $cntaccess, $count_disp_form_zero);
+			} else {
+				$count_disp_form = str_replace("%overallcount%", (0 == $cntaccess ? $cntaccess+1 : $cntaccess), $count_disp_form);
+			}
 		}
-				
 		
-		return apply_filters('tptn_post_count',$count_disp_form);
+		if ( (0 == $totalcntaccess) && (!is_singular()) ) {
+			return apply_filters('tptn_post_count',$count_disp_form_zero);
+		} else {
+			return apply_filters('tptn_post_count',$count_disp_form);
+		}
 	} else {
 		return 0;
 	}
@@ -256,8 +264,8 @@ function get_tptn_post_count_only($id = FALSE, $count = 'total') {
 	if($id > 0) {
 		switch ($count) {
 			case 'total':
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" ), $id );
-				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 1));
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" , $id ) );
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
 				break;
 			case 'daily':
 				$daily_range = $tptn_settings['daily_range']-1;
@@ -265,12 +273,12 @@ function get_tptn_post_count_only($id = FALSE, $count = 'total') {
 				$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 				$current_date = date ( 'Y-m-j' , $current_date );
 		
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber "), array($id, $current_date) );
-				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", array($id, $current_date) ) );
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
 				break;
 			case 'overall':
 				$resultscount = $wpdb->get_row("SELECT SUM(cntaccess) as sumCount FROM ".$table_name);
-				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
+				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
 				break;
 		}
 		return apply_filters('tptn_post_count_only',$cntaccess);
@@ -742,7 +750,8 @@ function tptn_default_options() {
 						'disp_list_count' => true,		// Display count in popular lists?
 						'd_use_js' => false,				// Use JavaScript for displaying daily posts
 						'dynamic_post_count' => true,		// Use JavaScript for displaying the post count
-						'count_disp_form' => '(Visited %totalcount% time(s), %dailycount% visit(s) today)',	// Format to display the count
+						'count_disp_form' => '(Visited %totalcount% time, %dailycount% visit today)',	// Format to display the count
+						'count_disp_form_zero' => 'No visits yet',	// What to display where there are no hits?
 
 						'title' => $title,				// Title of Popular Posts
 						'title_daily' => $title_daily,	// Title of Daily Popular
