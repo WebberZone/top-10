@@ -45,6 +45,8 @@ function tptn_options() {
 		$tptn_settings['track_authors'] = (isset($_POST['track_authors']) ? true : false);
 		$tptn_settings['track_admins'] = (isset($_POST['track_admins']) ? true : false);
 		$tptn_settings['pv_in_admin'] = (isset($_POST['pv_in_admin']) ? true : false);
+		$tptn_settings['show_count_non_admins'] = (isset($_POST['show_count_non_admins']) ? true : false);
+
 		$tptn_settings['disp_list_count'] = (isset($_POST['disp_list_count']) ? true : false);
 		$tptn_settings['d_use_js'] = (isset($_POST['d_use_js']) ? true : false);
 		$tptn_settings['dynamic_post_count'] = (isset($_POST['dynamic_post_count']) ? true : false);
@@ -253,11 +255,21 @@ function tptn_options() {
 				<tr><th scope="row"><label for="track_admins"><?php _e('Track visits of admins?',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="checkbox" name="track_admins" id="track_admins" <?php if ($tptn_settings['track_admins']) echo 'checked="checked"' ?> /></td>
 				</tr>
-				<tr><th scope="row"><label for="pv_in_admin"><?php _e('Display page views on Posts > All Posts in Admin',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings['pv_in_admin']) echo 'checked="checked"' ?> /></td>
+				<tr><th scope="row"><label for="pv_in_admin"><?php _e('Display page views on Posts and Pages in Admin',TPTN_LOCAL_NAME); ?></label></th>
+				  <td>
+				    <input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php if ($tptn_settings['pv_in_admin']) echo 'checked="checked"' ?> />
+					<p class="description"><?php _e("Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages",TPTN_LOCAL_NAME); ?></p>
+				  </td>
+				</tr>
+				<tr><th scope="row"><label for="show_count_non_admins"><?php _e('Show number of views to non-admins',TPTN_LOCAL_NAME); ?></label></th>
+				  <td>
+				    <input type="checkbox" name="show_count_non_admins" id="show_count_non_admins" <?php if ($tptn_settings['show_count_non_admins']) echo 'checked="checked"' ?> />
+					<p class="description"><?php _e("If you disable this then non-admins won't see the above columns or view the independent pages with the top posts",TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr><th scope="row"><label for="show_credit"><?php _e('Link to Top 10 plugin page',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="checkbox" name="show_credit" id="show_credit" <?php if ($tptn_settings['show_credit']) echo 'checked="checked"' ?> />
+				  <td>
+				    <input type="checkbox" name="show_credit" id="show_credit" <?php if ($tptn_settings['show_credit']) echo 'checked="checked"' ?> />
 				    <p class="description"><?php _e('A link to the plugin is added as an extra list item to the list of popular posts',TPTN_LOCAL_NAME); ?></p>
 				  </td>
 				</tr>
@@ -639,7 +651,7 @@ function tptn_adminmenu() {
 
 	if (function_exists('add_menu_page')) {
 
-		$plugin_page = add_menu_page(__("Top 10 Settings", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 'manage_options', 'tptn_options', 'tptn_options');
+		$plugin_page = add_menu_page(__("Top 10 Settings", TPTN_LOCAL_NAME), __("Top 10", TPTN_LOCAL_NAME), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol');
 		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
 		$plugin_page = add_submenu_page( 'tptn_options', __("Top 10 Settings", TPTN_LOCAL_NAME), __("Top 10 Settings", TPTN_LOCAL_NAME), 'manage_options', 'tptn_options', 'tptn_options');
@@ -684,6 +696,14 @@ function tptn_adminhead() {
 	}
 	.postbox.closed .handlediv:before {
 		content: '\f140';
+	}
+	h2:before {
+	    content: "\f204";
+	    display: inline-block;
+	    -webkit-font-smoothing: antialiased;
+	    font: normal 29px/1 'dashicons';
+	    vertical-align: middle;
+	    margin-right: 0.3em;
 	}
 	</style>
 	
@@ -802,16 +822,12 @@ function tptn_pop_display($daily = FALSE, $page = 0, $limit = FALSE, $widget = F
 	$output .= '<table width="100%" border="0">
 	 <tr>
 	  <td width="50%" align="left">';
-	$output .= __('Results',TPTN_LOCAL_NAME);
-	$output .= ' <strong>'.$first.'</strong> - <strong>'.$last.'</strong> ';
-	$output .= __('of',TPTN_LOCAL_NAME);
-	$output .= ' <strong>'.$numrows.'</strong>
+	$output .= sprintf( __('Results %1$s to %2$s of %3$s',TPTN_LOCAL_NAME), '<strong>'.$first.'</strong>', '<strong>'.$last.'</strong>', '<strong>'.$numrows.'</strong>');
+	$output .= '
 	  </td>
 	  <td width="50%" align="right">';
-	$output .= __('Page',TPTN_LOCAL_NAME);
-	$output .= ' <strong>'.$current.'</strong> ';
-	$output .= __('of',TPTN_LOCAL_NAME);
-	$output .= ' <strong>'.$total.'</strong>
+	$output .= sprintf( __('Page %s of %s',TPTN_LOCAL_NAME), '<strong>'.$current.'</strong>', '<strong>'.$total.'</strong>' );
+	$output .= '
 	  </td>
 	 </tr>
 	 <tr>
@@ -931,9 +947,13 @@ function tptn_pop_daily_dashboard() {
  * @return void
  */
 function tptn_pop_dashboard_setup() {
-	if (function_exists('wp_add_dashboard_widget')) {
-		wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts',TPTN_LOCAL_NAME ), 'tptn_pop_dashboard' );
-		wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular',TPTN_LOCAL_NAME ), 'tptn_pop_daily_dashboard' );
+	global $tptn_settings;
+	
+	if ( ( current_user_can('manage_options') ) || ( $tptn_settings['show_count_non_admins'] ) ) {
+		if (function_exists('wp_add_dashboard_widget')) {
+			wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts',TPTN_LOCAL_NAME ), 'tptn_pop_dashboard' );
+			wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular',TPTN_LOCAL_NAME ), 'tptn_pop_daily_dashboard' );
+		}
 	}
 }
 add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
@@ -947,10 +967,13 @@ add_action('wp_dashboard_setup', 'tptn_pop_dashboard_setup');
  * @return void
  */
 function tptn_column($cols) {
-	$tptn_settings = tptn_read_options();
+	global $tptn_settings;
 	
-	if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = __('Total Views',TPTN_LOCAL_NAME);
-	if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = __('Today\'s Views',TPTN_LOCAL_NAME);
+	if ( ( current_user_can('manage_options') ) || ( $tptn_settings['show_count_non_admins'] ) ) {
+		if ($tptn_settings['pv_in_admin'])	$cols['tptn_total'] = __('Total Views',TPTN_LOCAL_NAME);
+		if ($tptn_settings['pv_in_admin'])	$cols['tptn_daily'] = __('Today\'s Views',TPTN_LOCAL_NAME);
+		if ($tptn_settings['pv_in_admin'])	$cols['tptn_both'] = __('Views',TPTN_LOCAL_NAME);
+	}
 	return $cols;
 }
 add_filter('manage_posts_columns', 'tptn_column');
