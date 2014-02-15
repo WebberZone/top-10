@@ -93,12 +93,8 @@ You can insert the popular posts anywhere in your post using the `[tptn_list]` s
 
 *limit* : Maximum number of posts to return. The actual number displayed may be lower depending on the category / post exclusion settings.
 
-*heading* : By default, the heading you specify in **Title of popular posts:** under **Output options** will be displayed. You can override this by specifying your own heading e.g.
+*heading* : By default, the heading you specify in **Title of popular posts:** under **Output options** will be displayed.
 
-`
-<h3>Top posts</h3>
-[tptn_list limit="2" heading="0"] 
-`
 *daily* : If set to 1, then the shortcode will return the daily popular posts list
 
 
