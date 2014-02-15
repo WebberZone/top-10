@@ -207,8 +207,8 @@ function get_tptn_post_count($id = FALSE) {
 
 		// Total count per post
 		if (strpos($count_disp_form, "%totalcount%") !== false) {
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" ), $id );
-			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 1));
+			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" , $id ) );
+			$cntaccess = number_format_i18n( ( ($resultscount) ? $resultscount->cntaccess : 1 ) );
 			$count_disp_form = str_replace("%totalcount%", $cntaccess, $count_disp_form);
 		}
 		
@@ -219,7 +219,7 @@ function get_tptn_post_count($id = FALSE) {
 			$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 			$current_date = date ( 'Y-m-j' , $current_date );
 	
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber "), array($id, $current_date) );
+			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", array($id, $current_date) ) );
 			$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 1));
 			$count_disp_form = str_replace("%dailycount%", $cntaccess, $count_disp_form);
 		}
