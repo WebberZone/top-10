@@ -63,7 +63,9 @@ Refer to the changelog for more details
 * Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts 
 * Modified: New admin interface keeping mobile first in mind
 * Modified: Optimised widgets loading
+* Modified: Cron job will now delete entries from the daily table older than 90 days
 * Fixed: mySQL error messages due to improper escaping
+* Fixed: Plugin no longer overwrites cron schedules
 * Modified: Lot's of code optimisation and cleanup
 
 = 1.9.8.5 =

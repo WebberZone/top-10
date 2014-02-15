@@ -1124,7 +1124,16 @@ function tptn_max_formatted_content($content, $MaxLength = -1) {
  * @return void
  */
 function ald_tptn() {
-	tptn_trunc_count(true);
+	global $tptn_settings;
+
+	$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+	$current_date = strtotime ( '-90 DAY' , strtotime ( $current_time ) );
+	$current_date = date ( 'Y-m-j' , $current_date );
+
+	$resultscount = $wpdb->get_row( $wpdb->prepare( "DELETE FROM {$table_name_daily} dp_date <= '%s' ", $current_date ) );
+	
+	
+	//tptn_trunc_count(true);
 }
 add_action('ald_tptn_hook', 'ald_tptn');
 
