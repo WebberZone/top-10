@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-26 22:06-0000\n"
+"POT-Creation-Date: 2014-02-16 13:53-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Bohdan Zograf <bozograf@gmail.com>\n"
@@ -15,167 +15,198 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:101
-msgid "Scheduled maintenance enabled / modified"
-msgstr ""
-
-#: admin.inc.php:105
-msgid "Scheduled maintenance disabled"
-msgstr ""
-
-#: admin.inc.php:122
+#: admin.inc.php:112
 msgid "Options saved successfully."
 msgstr "Opsiyalar müvəffəqiyyətlə yaddaşda saxlanılıb."
 
-#: admin.inc.php:131
+#: admin.inc.php:122
 msgid "Options set to Default."
 msgstr "Opsiyalalr standard opsiyasına qaytarılıb."
 
-#: admin.inc.php:137
+#: admin.inc.php:128
 msgid "Top 10 popular posts reset"
 msgstr "10 populyar yazı statisticasını pozmaq"
 
-#: admin.inc.php:143
+#: admin.inc.php:134
 msgid "Top 10 daily popular posts reset"
 msgstr "10 gündəlik populyar yazı statisticasını pozmaq"
 
-#: admin.inc.php:150
+#: admin.inc.php:141
 msgid "Duplicate rows cleaned from tables"
 msgstr ""
 
-#: admin.inc.php:171
+#: admin.inc.php:152
+msgid "Scheduled maintenance enabled / modified"
+msgstr ""
+
+#: admin.inc.php:156
+msgid "Scheduled maintenance disabled"
+msgstr ""
+
+#: admin.inc.php:172
 msgid "General options"
 msgstr ""
 
-#: admin.inc.php:175
+#: admin.inc.php:176
 msgid "Enable Overall stats"
 msgstr ""
 
-#: admin.inc.php:180
+#: admin.inc.php:181
 msgid "Enable Daily stats"
 msgstr ""
 
-#: admin.inc.php:185
+#: admin.inc.php:186
 msgid "W3 Total Cache fix:"
 msgstr ""
 
-#: admin.inc.php:187
+#: admin.inc.php:188
 msgid ""
 "This will try to prevent W3 Total Cache from caching the addcount script of "
 "the plugin. Try toggling this option in case you find that our posts are not "
 "tracked."
 msgstr ""
 
-#: admin.inc.php:191
+#: admin.inc.php:192
 msgid "Number of popular posts to display: "
 msgstr "Populyar postların miqdarının nümayişi:"
 
-#: admin.inc.php:195
+#: admin.inc.php:194
+msgid ""
+"Maximum number of posts that will be displayed in the list. This option is "
+"used if you don't specify the number of posts in the widget or shortcodes"
+msgstr ""
+
+#: admin.inc.php:198
 msgid "Daily Popular should contain views of how many days? "
 msgstr ""
 "Gündəlik Populyar yazılar neçə gün ərzində baxılışı özündə əks etdirməlidir?"
 
-#: admin.inc.php:198
+#: admin.inc.php:200
+msgid ""
+"Instead of displaying popular posts fromt he past day, this setting lets you "
+"display posts for as many days as you want. This can be overridden in the "
+"widget."
+msgstr ""
+
+#: admin.inc.php:203
 msgid "Post types to include in results (including custom post types)"
 msgstr ""
 
-#: admin.inc.php:209
+#: admin.inc.php:214
 msgid "List of post or page IDs to exclude from the results: "
 msgstr ""
 
-#: admin.inc.php:213
+#: admin.inc.php:216 admin.inc.php:352
+msgid "Enter comma separated list of IDs. e.g. 188,320,500"
+msgstr ""
+
+#: admin.inc.php:220
 msgid "Exclude Categories: "
 msgstr ""
 
-#: admin.inc.php:228
+#: admin.inc.php:235
 msgid ""
 "Comma separated list of category slugs. The field above has an autocomplete "
 "so simply start typing in the starting letters and it will prompt you with "
 "options"
 msgstr ""
 
-#: admin.inc.php:233
+#: admin.inc.php:240
 #, fuzzy
 msgid "Display number of views on:"
 msgstr "Posta baxılmasının miqdarını göstərmək lazımdır?"
 
-#: admin.inc.php:235
+#: admin.inc.php:242
 msgid "Posts"
 msgstr ""
 
-#: admin.inc.php:236
+#: admin.inc.php:243
 #, fuzzy
 msgid "Pages"
 msgstr "Səhifə"
 
-#: admin.inc.php:237
+#: admin.inc.php:244
 msgid "Home page"
 msgstr ""
 
-#: admin.inc.php:238
+#: admin.inc.php:245
 msgid "Feeds"
 msgstr ""
 
-#: admin.inc.php:239
+#: admin.inc.php:246
 msgid "Category archives"
 msgstr ""
 
-#: admin.inc.php:240
+#: admin.inc.php:247
 msgid "Tag archives"
 msgstr ""
 
-#: admin.inc.php:241
+#: admin.inc.php:248
 msgid "Other archives"
 msgstr ""
 
-#: admin.inc.php:242
+#: admin.inc.php:249
 msgid ""
 "If you choose to disable this, please add <code>&lt;?php if(function_exists"
 "('echo_ald_tptn')) echo_ald_tptn(); ?&gt;</code> to your template file where "
 "you want it displayed"
 msgstr ""
 
-#: admin.inc.php:245
+#: admin.inc.php:252
 msgid "Always display latest post count"
 msgstr ""
 
-#: admin.inc.php:247
+#: admin.inc.php:254
 msgid ""
 "This option uses JavaScript and will increase your page load time. Turn this "
 "off if you are not using caching plugins or are OK with displaying older "
-"cached counts. When you enable this option, the daily widget will not use "
-"the options set there, but options will need to be set on this screen."
+"cached counts."
 msgstr ""
 
-#: admin.inc.php:250
-msgid "Always display latest post count in the daily lists"
-msgstr ""
-
-#: admin.inc.php:252
-#, fuzzy
-msgid "This option uses JavaScript and will increase your page load time"
-msgstr ""
-"Polulyar yazılışları siyahını dinamik etmək lazımdır? Bu opsiya JavaScript-i "
-"istifadə edir və bu səhifənin yükləmə vaxtını uzada bilər"
-
-#: admin.inc.php:255
+#: admin.inc.php:257
 msgid "Track visits of authors on their own posts?"
 msgstr "Müəllif tərəfindən edilmiş yazıları nəzərə almaq lazımdır?"
 
-#: admin.inc.php:258
+#: admin.inc.php:259
+msgid ""
+"Disabling this option will stop authors visits tracked on their own posts"
+msgstr ""
+
+#: admin.inc.php:262
 #, fuzzy
 msgid "Track visits of admins?"
 msgstr "Müəllif tərəfindən edilmiş yazıları nəzərə almaq lazımdır?"
 
-#: admin.inc.php:261
-msgid "Display page views on Posts > All Posts in Admin"
+#: admin.inc.php:264
+msgid "Disabling this option will stop admin visits being tracked."
 msgstr ""
 
-#: admin.inc.php:264
+#: admin.inc.php:267
+msgid "Display page views on Posts and Pages in Admin"
+msgstr ""
+
+#: admin.inc.php:270
+msgid ""
+"Adds three columns called Total Views, Today's Views and Views to All Posts "
+"and All Pages"
+msgstr ""
+
+#: admin.inc.php:273
+#, fuzzy
+msgid "Show number of views to non-admins"
+msgstr "Səhifədə baxılmasının miqdarını göstərmək lazımdır?"
+
+#: admin.inc.php:276
+msgid ""
+"If you disable this then non-admins won't see the above columns or view the "
+"independent pages with the top posts"
+msgstr ""
+
+#: admin.inc.php:279
 msgid "Link to Top 10 plugin page"
 msgstr ""
 
-#: admin.inc.php:266
+#: admin.inc.php:282
 #, fuzzy
 msgid ""
 "A link to the plugin is added as an extra list item to the list of popular "
@@ -184,16 +215,17 @@ msgstr ""
 "Popyulyar siyahının altnda ssılkanı qoymaq lazımdır? Plaginin müəllifi Siz "
 "onu qoyduğunuz halda Sizə çox minnətdar olardı!"
 
-#: admin.inc.php:273
+#: admin.inc.php:289
 #, fuzzy
-msgid "Output Options"
+msgid "Output options"
 msgstr "Plaginin kökləmələri:"
 
-#: admin.inc.php:276
-msgid "Format to display the count in: "
+#: admin.inc.php:292
+#, fuzzy
+msgid "Format to display the post views:"
 msgstr "Miqdarı göstərən format:"
 
-#: admin.inc.php:278
+#: admin.inc.php:294
 #, fuzzy
 msgid ""
 "Use <code>%totalcount%</code> to display the total count, <code>%dailycount"
@@ -205,159 +237,177 @@ msgstr ""
 "edin, <code>%dailycount%</code>  - gün ərzində baxılmış. Məsələn: <code>"
 "(Yazı 123 dəfə baxılıb, bu gün 23 dəfə baxılmışdır)</code>."
 
-#: admin.inc.php:281
-msgid "Title of popular posts: "
-msgstr "Populyar yazılarının başlığı:"
-
-#: admin.inc.php:284
-msgid "Title of daily popular posts: "
-msgstr "Gündəlik populyual yazılışların başlığı:"
-
-#: admin.inc.php:287
-msgid "When there are no posts, what should be shown?"
-msgstr ""
-
-#: admin.inc.php:291
-msgid "Blank Output"
-msgstr ""
-
-#: admin.inc.php:295
-msgid "Display:"
+#: admin.inc.php:297
+msgid "What do display when there are no visits?"
 msgstr ""
 
 #: admin.inc.php:299
+msgid ""
+"This text applies only when there are 0 hits for the post and it isn't a "
+"single page. e.g. if you display post views on the homepage or archives then "
+"this text will be used. To override this, just enter the same text as above "
+"option."
+msgstr ""
+
+#: admin.inc.php:302
+msgid "Title of popular posts: "
+msgstr "Populyar yazılarının başlığı:"
+
+#: admin.inc.php:305
+msgid "Title of daily popular posts: "
+msgstr "Gündəlik populyual yazılışların başlığı:"
+
+#: admin.inc.php:308
+msgid "When there are no posts, what should be shown?"
+msgstr ""
+
+#: admin.inc.php:312
+msgid "Blank Output"
+msgstr ""
+
+#: admin.inc.php:316
+msgid "Display:"
+msgstr ""
+
+#: admin.inc.php:320
 msgid "Show post excerpt in list?"
 msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: admin.inc.php:302
+#: admin.inc.php:323
 msgid "Length of excerpt (in words): "
 msgstr "Çıxardılmış mətnin uzunluğu (söz ilə):"
 
-#: admin.inc.php:305
+#: admin.inc.php:326
 #, fuzzy
 msgid "Show post author in list?"
 msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: admin.inc.php:308
+#: admin.inc.php:329
 #, fuzzy
 msgid "Show post date in list?"
 msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: admin.inc.php:311
+#: admin.inc.php:332
 msgid "Limit post title length (in characters)"
 msgstr ""
 
-#: admin.inc.php:314
-msgid "Display number of page views in popular lists?"
-msgstr "Populyar siyahıda baxılmış səhifənin miqdarını göstərmək lazımdır? "
+#: admin.inc.php:335
+#, fuzzy
+msgid "Show view count in list?"
+msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: admin.inc.php:317
+#: admin.inc.php:338
+msgid "Always display latest post count in the daily lists?"
+msgstr ""
+
+#: admin.inc.php:340
+msgid ""
+"This option uses JavaScript and will increase your page load time. When you "
+"enable this option, the daily widget will not use the options set there, but "
+"options will need to be set on this screen."
+msgstr ""
+
+#: admin.inc.php:343
 msgid "Open links in new window"
 msgstr ""
 
-#: admin.inc.php:320
+#: admin.inc.php:346
 msgid "Add nofollow attribute to links in the list"
 msgstr ""
 
-#: admin.inc.php:323
+#: admin.inc.php:349
 msgid "Exclude display of related posts on these posts / pages"
 msgstr ""
 
-#: admin.inc.php:326
-msgid "Enter comma separated list of IDs. e.g. 188,320,500"
-msgstr ""
-
-#: admin.inc.php:329
-msgid "Customize the output:"
+#: admin.inc.php:355
+#, fuzzy
+msgid "Customise the list HTML"
 msgstr "Suiyahı formasının kökləmələri:"
 
-#: admin.inc.php:331
+#: admin.inc.php:357
 msgid "HTML to display before the list of posts: "
 msgstr "Siyahıdan qabaq istifadə edilən HTML-teqi:"
 
-#: admin.inc.php:334
+#: admin.inc.php:360
 msgid "HTML to display before each list item: "
 msgstr "Siyahıda hər maddənin qabağında istifadə edilən HTML-teqi:"
 
-#: admin.inc.php:337
+#: admin.inc.php:363
 msgid "HTML to display after each list item: "
 msgstr "Siyahıda hər maddədən sonra istifadə edilən HTML-teqi: "
 
-#: admin.inc.php:340
+#: admin.inc.php:366
 msgid "HTML to display after the list of posts: "
 msgstr "Siyahıdan sonra istifadə edilən HTML-teqi:"
 
-#: admin.inc.php:343
+#: admin.inc.php:369
 msgid "Post thumbnail options:"
 msgstr "Yazılışlara əvvəlcədən baxma kökləmələri:"
 
-#: admin.inc.php:345
+#: admin.inc.php:371
 msgid "Location of post thumbnail:"
 msgstr ""
 
-#: admin.inc.php:349
+#: admin.inc.php:375
 #, fuzzy
 msgid "Display thumbnails inline with posts, before title"
 msgstr "Mətni və əvvəlcədən baxışı göstərmək"
 
-#: admin.inc.php:353
+#: admin.inc.php:379
 #, fuzzy
 msgid "Display thumbnails inline with posts, after title"
 msgstr "Mətni və əvvəlcədən baxışı göstərmək"
 
-#: admin.inc.php:357
+#: admin.inc.php:383
 msgid "Display only thumbnails, no text"
 msgstr "Yalnız əvvəlcədən baxışı göstərmək, mətnsiz"
 
-#: admin.inc.php:361
+#: admin.inc.php:387
 msgid "Do not display thumbnails, only text."
 msgstr "Yalnız mətini göstərmək, əvəlcədən baxışsız"
 
-#: admin.inc.php:365
+#: admin.inc.php:391
 msgid "Width of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:368
+#: admin.inc.php:394
 msgid "Height of the thumbnail: "
 msgstr ""
 
-#: admin.inc.php:371
+#: admin.inc.php:397
 msgid "Style attributes / Width and Height HTML attributes:"
 msgstr ""
 
-#: admin.inc.php:375
-msgid ""
-"Style attributes are used for width and height. <code>style=\"max-width:"
+#: admin.inc.php:401
+msgid "Style attributes are used for width and height."
 msgstr ""
 
-#: admin.inc.php:379
-msgid ""
-"HTML width and height attributes are used for width and height. <code>width="
-"\""
+#: admin.inc.php:405
+msgid "HTML width and height attributes are used for width and height."
 msgstr ""
 
-#: admin.inc.php:383
+#: admin.inc.php:409
 msgid "Use timthumb to generate thumbnails? "
 msgstr ""
 
-#: admin.inc.php:386
+#: admin.inc.php:412
 msgid ""
-"If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/"
-"\">timthumb</a> will be used to generate thumbnails"
+"If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/\" "
+"target=\"_blank\">timthumb</a> will be used to generate thumbnails"
 msgstr ""
 
-#: admin.inc.php:389
+#: admin.inc.php:415
 #, fuzzy
 msgid "Post thumbnail meta field name: "
 msgstr "Yazılışlara əvvəlcədən baxma kökləmələri:"
 
-#: admin.inc.php:392
+#: admin.inc.php:418
 msgid ""
 "The value of this field should contain the image source and is set in the "
 "<em>Add New Post</em> screen"
 msgstr ""
 
-#: admin.inc.php:395
+#: admin.inc.php:421
 #, fuzzy
 msgid ""
 "If the postmeta is not set, then should the plugin extract the first image "
@@ -367,7 +417,7 @@ msgstr ""
 "şəkilil çıxardacaq. Balaca kopyasını yaradılması ilə əlaqədar olaraq  bu "
 "birinci dəfə şəkilin yükləməsini bir az uzada bilər. "
 
-#: admin.inc.php:398
+#: admin.inc.php:424
 #, fuzzy
 msgid ""
 "This could slow down the loading of your page if the first image in the "
@@ -377,21 +427,21 @@ msgstr ""
 "şəkilil çıxardacaq. Balaca kopyasını yaradılması ilə əlaqədar olaraq  bu "
 "birinci dəfə şəkilin yükləməsini bir az uzada bilər. "
 
-#: admin.inc.php:401
+#: admin.inc.php:427
 msgid "Use default thumbnail? "
 msgstr ""
 
-#: admin.inc.php:404
+#: admin.inc.php:430
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: admin.inc.php:407
+#: admin.inc.php:433
 msgid "Default thumbnail: "
 msgstr ""
 
-#: admin.inc.php:410
+#: admin.inc.php:437
 #, fuzzy
 msgid ""
 "The plugin will first check if the post contains a thumbnail. If it doesn't "
@@ -402,98 +452,118 @@ msgstr ""
 "əvvəlcədən verilmiş sərbəst meta-sahə üzrə). Agər əvvəlcədən baxış yoxdursan "
 "onda standard şəkil çıxarılacaq:"
 
-#: admin.inc.php:417
-msgid "Custom Styles"
+#: admin.inc.php:444
+msgid "Custom CSS"
 msgstr ""
 
-#: admin.inc.php:420
+#: admin.inc.php:447
+msgid "Use default style included in the plugin?"
+msgstr ""
+
+#: admin.inc.php:450
+msgid ""
+"Top 10 includes a default style that makes your popular posts list to look "
+"pretty. Check the box above if you want to use this. You will need to select "
+"<strong>Thumbnails inline, before title</strong> in Output Options or in the "
+"Widget."
+msgstr ""
+
+#: admin.inc.php:453
 msgid "Custom CSS to add to header:"
 msgstr ""
 
-#: admin.inc.php:423
+#: admin.inc.php:456
 msgid ""
 "Do not include <code>style</code> tags. Check out the <a href=\"http://"
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> for "
 "available CSS classes to style."
 msgstr ""
 
-#: admin.inc.php:430
-msgid "Maintenance"
-msgstr ""
-
-#: admin.inc.php:434
-msgid ""
-"Over time the Daily Top 10 database grows in size, which reduces the "
-"performance of the plugin. Cleaning the database at regular intervals could "
-"improve performance, especially on high traffic blogs."
-msgstr ""
-
-#: admin.inc.php:435
-msgid ""
-"Note: When scheduled maintenance is enabled, WordPress will run the cron job "
-"everytime the job is rescheduled (i.e. you change the settings below). This "
-"causes the daily posts table to reset."
-msgstr ""
-
-#: admin.inc.php:438
-msgid "Enable scheduled maintenance of daily tables:"
-msgstr ""
-
-#: admin.inc.php:442
-msgid "Time to run maintenance"
-msgstr ""
-
-#: admin.inc.php:445
-msgid "How often should the maintenance be run:"
-msgstr ""
-
-#: admin.inc.php:449
-msgid "Daily"
-msgstr ""
-
-#: admin.inc.php:453
-msgid "Weekly"
-msgstr ""
-
-#: admin.inc.php:457
-msgid "Fortnightly"
-msgstr ""
-
-#: admin.inc.php:461
-msgid "Monthly"
-msgstr ""
-
-#: admin.inc.php:470
-msgid "The cron job has been scheduled. Maintenance will run "
-msgstr ""
-
-#: admin.inc.php:475
-msgid "The cron job is missing. Please resave this page to add the job"
-msgstr ""
-
-#: admin.inc.php:480
-msgid "Maintenance is turned off"
-msgstr ""
-
-#: admin.inc.php:488
+#: admin.inc.php:463 admin.inc.php:529
 #, fuzzy
 msgid "Save Options"
 msgstr "Opsiyalar:"
 
-#: admin.inc.php:489
+#: admin.inc.php:464
 #, fuzzy
 msgid "Default Options"
 msgstr "Plaginin kökləmələri:"
 
-#: admin.inc.php:489
+#: admin.inc.php:464
 msgid "Do you want to set options to Default?"
 msgstr "Siz plaginin kökləmələrin standard etmək lazımdır?"
 
-#: admin.inc.php:493
+#: admin.inc.php:473
+msgid "Maintenance"
+msgstr ""
+
+#: admin.inc.php:477
+msgid ""
+"Over time the Daily Top 10 database grows in size, which reduces the "
+"performance of the plugin. Cleaning the database at regular intervals could "
+"improve performance, especially on high traffic blogs. Enabling maintenance "
+"will automatically delete entries older than 90 days."
+msgstr ""
+
+#: admin.inc.php:478
+msgid ""
+"Note: When scheduled maintenance is enabled, WordPress will run the cron job "
+"everytime the job is rescheduled (i.e. you change the settings below)."
+msgstr ""
+
+#: admin.inc.php:481
+msgid "Enable scheduled maintenance of daily tables:"
+msgstr ""
+
+#: admin.inc.php:485
+msgid "Time to run maintenance"
+msgstr ""
+
+#: admin.inc.php:486
+msgid "hrs"
+msgstr ""
+
+#: admin.inc.php:486
+msgid "min"
+msgstr ""
+
+#: admin.inc.php:488
+msgid "How often should the maintenance be run:"
+msgstr ""
+
+#: admin.inc.php:492
+msgid "Daily"
+msgstr ""
+
+#: admin.inc.php:496
+msgid "Weekly"
+msgstr ""
+
+#: admin.inc.php:500
+msgid "Fortnightly"
+msgstr ""
+
+#: admin.inc.php:504
+msgid "Monthly"
+msgstr ""
+
+#: admin.inc.php:513
+msgid "The cron job has been scheduled. Maintenance will run "
+msgstr ""
+
+#: admin.inc.php:518
+msgid "The cron job is missing. Please resave this page to add the job"
+msgstr ""
+
+#: admin.inc.php:523
+msgid "Maintenance is turned off"
+msgstr ""
+
+#: admin.inc.php:537
 msgid "Reset count"
 msgstr "Statistikanı sbros etmək"
 
-#: admin.inc.php:496
+#: admin.inc.php:540
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
@@ -501,259 +571,292 @@ msgstr ""
 "Statistikanın sbrosu geriya qaytarmaq olmaz. Sbros etməkdən qabaq əmin olun "
 "ki, Sizin məlumat bazasının kopiyası var!"
 
-#: admin.inc.php:499
+#: admin.inc.php:543
 #, fuzzy
 msgid "Reset Popular Posts"
 msgstr "Populyar yazılar"
 
-#: admin.inc.php:499
+#: admin.inc.php:543
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 "Siz əminsiniz ki, Populyar yazıları statistikanı sbros etmək istəyirsiniz?"
 
-#: admin.inc.php:500
+#: admin.inc.php:544
 #, fuzzy
 msgid "Reset Daily Popular Posts"
 msgstr "Gündəlik Populyar Yazılar"
 
-#: admin.inc.php:500
+#: admin.inc.php:544
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 "Siz əminsiniz ki, gündəlik populyar yazıları statistikanı sbros etmək "
 "istəyirsiniz?"
 
-#: admin.inc.php:501
+#: admin.inc.php:545
 msgid "Clear duplicates"
 msgstr ""
 
-#: admin.inc.php:501
+#: admin.inc.php:545
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Cədvəldəki dublikat yazılar silinəcəklər. Davam edək?"
 
-#: admin.inc.php:544 admin.inc.php:929
+#: admin.inc.php:593 admin.inc.php:979
 msgid "Popular Posts"
 msgstr "Populyar yazılar"
 
-#: admin.inc.php:544 admin.inc.php:631
+#: admin.inc.php:593 admin.inc.php:688
 msgid "Daily Popular Posts"
 msgstr "Gündəlik Populyar Yazılar"
 
-#: admin.inc.php:572
+#: admin.inc.php:621
 msgid "Support the development"
 msgstr "İnkişafı dəstək vermək"
 
-#: admin.inc.php:580
+#: admin.inc.php:630
 msgid "Enter amount in USD: "
 msgstr "Miiqdarı USD ilə daxil et:"
 
-#: admin.inc.php:584
+#: admin.inc.php:634
 msgid "Send your donation to the author of"
 msgstr "Müəlifə ianə göndərin "
 
-#: admin.inc.php:590
-msgid "Follow us"
+#: admin.inc.php:641
+msgid "Follow me"
 msgstr ""
 
-#: admin.inc.php:596
+#: admin.inc.php:651
 #, fuzzy
-msgid "Quick Links"
+msgid "Quick links"
 msgstr "Faydalı istenadlar"
 
-#: admin.inc.php:598
+#: admin.inc.php:655
 #, fuzzy
 msgid "Top 10 plugin page"
 msgstr "plaginin səhifəsi"
 
-#: admin.inc.php:599
+#: admin.inc.php:656
 msgid "Other plugins"
 msgstr "Digər plaginlər"
 
-#: admin.inc.php:600
+#: admin.inc.php:657
 msgid "Ajay's blog"
 msgstr "Ajay-in blogu"
 
-#: admin.inc.php:601 top-10.php:1147
+#: admin.inc.php:658
+msgid "FAQ"
+msgstr ""
+
+#: admin.inc.php:659 top-10.php:1271
 msgid "Support"
 msgstr "Dəstək"
 
-#: admin.inc.php:605
-msgid "Recent developments"
-msgstr "Son inkişaflar"
+#: admin.inc.php:660
+msgid "Reviews"
+msgstr ""
 
-#: admin.inc.php:622 admin.inc.php:625
+#: admin.inc.php:679 admin.inc.php:682
 #, fuzzy
 msgid "Top 10 Settings"
 msgstr "Kökləmələr"
 
-#: admin.inc.php:622
+#: admin.inc.php:679
 msgid "Top 10"
 msgstr "Top 10 yazılar"
 
-#: admin.inc.php:628
+#: admin.inc.php:685
 #, fuzzy
 msgid "Overall Popular Posts"
 msgstr "Bütün Populyar Yazılara Baxmaq"
 
-#: admin.inc.php:799
-msgid "Results"
-msgstr "Nəticələr"
+#: admin.inc.php:850
+#, php-format
+msgid "Results %1$s to %2$s of %3$s"
+msgstr ""
 
-#: admin.inc.php:801 admin.inc.php:807
-msgid "of"
-msgstr "-dən "
+#: admin.inc.php:854
+#, php-format
+msgid "Page %s of %s"
+msgstr ""
 
-#: admin.inc.php:805
-msgid "Page"
-msgstr "Səhifə"
-
-#: admin.inc.php:819
+#: admin.inc.php:866
 msgid "View Daily Popular Posts"
 msgstr "Gündəlik Populyar Yazılara Baxmaq"
 
-#: admin.inc.php:822 admin.inc.php:835
+#: admin.inc.php:869 admin.inc.php:882
 msgid "Results per-page:"
 msgstr "Səhifə üzrə nəticələr:"
 
-#: admin.inc.php:832
+#: admin.inc.php:879
 msgid "View Overall Popular Posts"
 msgstr "Bütün Populyar Yazılara Baxmaq"
 
-#: admin.inc.php:861
+#: admin.inc.php:908
 msgid "Previous"
 msgstr "Əvvəlki"
 
-#: admin.inc.php:889
+#: admin.inc.php:936
 msgid "Next"
 msgstr "Sonrakı"
 
-#: admin.inc.php:930
+#: admin.inc.php:980
 msgid "Daily Popular"
 msgstr "Gündəlik Populyar"
 
-#: admin.inc.php:946
+#: admin.inc.php:998
 #, fuzzy
 msgid "Total Views"
 msgstr "Ümümi/ Bu günkü baxış"
 
-#: admin.inc.php:947
+#: admin.inc.php:999
 #, fuzzy
 msgid "Today's Views"
 msgstr "Ümümi/ Bu günkü baxış"
 
-#: top-10.php:415
+#: admin.inc.php:1000
+#, fuzzy
+msgid "Views"
+msgstr "Ümümi/ Bu günkü baxış"
+
+#: top-10.php:440
 msgid " by "
 msgstr ""
 
-#: top-10.php:501
+#: top-10.php:526
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:502
+#: top-10.php:527
 #, fuzzy
 msgid "Popular Posts [Top 10]"
 msgstr "Populyar yazılar"
 
-#: top-10.php:519
+#: top-10.php:545
 msgid "Title"
 msgstr ""
 
-#: top-10.php:524
+#: top-10.php:550
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:529
+#: top-10.php:555
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:530
+#: top-10.php:556
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:535
+#: top-10.php:561
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:540
+#: top-10.php:566
+#, fuzzy
+msgid " Show count?"
+msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
+
+#: top-10.php:571
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: top-10.php:545
+#: top-10.php:576
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:550
+#: top-10.php:581
 #, fuzzy
 msgid " Show date?"
 msgstr "Yazılış mətnini siyahıda göstərmək lazımdır?"
 
-#: top-10.php:554
+#: top-10.php:585
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Yazılışlara əvvəlcədən baxma kökləmələri:"
 
-#: top-10.php:556
+#: top-10.php:587
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Mətni və əvvəlcədən baxışı göstərmək"
 
-#: top-10.php:557
+#: top-10.php:588
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Mətni və əvvəlcədən baxışı göstərmək"
 
-#: top-10.php:558
+#: top-10.php:589
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Yalnız əvvəlcədən baxışı göstərmək, mətnsiz"
 
-#: top-10.php:559
+#: top-10.php:590
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Yalnız mətini göstərmək, əvəlcədən baxışsız"
 
-#: top-10.php:564
+#: top-10.php:595
 #, fuzzy
 msgid "Thumbnail height"
 msgstr "Yazılışlara əvvəlcədən baxma kökləmələri:"
 
-#: top-10.php:569
+#: top-10.php:600
 #, fuzzy
 msgid "Thumbnail width"
 msgstr "Yazılışlara əvvəlcədən baxma kökləmələri:"
 
-#: top-10.php:670
+#: top-10.php:721
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Populyar yazılar</h3>"
 
-#: top-10.php:671
+#: top-10.php:722
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Gündəlik Populyar</h3>"
 
-#: top-10.php:672
+#: top-10.php:723
 #, fuzzy
 msgid "No top posts yet"
 msgstr "10 populyar yazı statisticasını pozmaq"
 
-#: top-10.php:1113
+#: top-10.php:1188
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1114
+#: top-10.php:1192
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1115
+#: top-10.php:1196
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1135
+#: top-10.php:1259
 msgid "Settings"
 msgstr "Kökləmələr"
 
-#: top-10.php:1148
+#: top-10.php:1272
 msgid "Donate"
 msgstr "İanə etmək"
+
+#, fuzzy
+#~ msgid "This option uses JavaScript and will increase your page load time"
+#~ msgstr ""
+#~ "Polulyar yazılışları siyahını dinamik etmək lazımdır? Bu opsiya "
+#~ "JavaScript-i istifadə edir və bu səhifənin yükləmə vaxtını uzada bilər"
+
+#~ msgid "Display number of page views in popular lists?"
+#~ msgstr "Populyar siyahıda baxılmış səhifənin miqdarını göstərmək lazımdır? "
+
+#~ msgid "Recent developments"
+#~ msgstr "Son inkişaflar"
+
+#~ msgid "Results"
+#~ msgstr "Nəticələr"
+
+#~ msgid "of"
+#~ msgstr "-dən "
+
+#~ msgid "Page"
+#~ msgstr "Səhifə"
 
 #~ msgid ""
 #~ "Exclude Pages in display of Popular Posts? Number of views on Pages will "
@@ -767,9 +870,6 @@ msgstr "İanə etmək"
 
 #~ msgid "Tables cleaned of duplicate rows"
 #~ msgstr "Silinmiş dublikat sirası cədvəli"
-
-#~ msgid "Display number of views on pages?"
-#~ msgstr "Səhifədə baxılmasının miqdarını göstərmək lazımdır?"
 
 #~ msgid ""
 #~ "Display page views on Edit posts/pages in WP-Admin? An extra column is "
