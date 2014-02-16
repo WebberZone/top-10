@@ -196,7 +196,9 @@ function tptn_options() {
 				</tr>
 				<tr>
 				  <th scope="row"><label for="daily_range"><?php _e('Daily Popular should contain views of how many days? ',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings['daily_range']); ?>"></td>
+				  <td><input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes($tptn_settings['daily_range']); ?>">
+				    <p class="description"><?php _e("Instead of displaying popular posts fromt he past day, this setting lets you display posts for as many days as you want. This can be overridden in the widget.",TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr><th scope="row"><?php _e('Post types to include in results (including custom post types)',TPTN_LOCAL_NAME); ?></th>
 					<td>
@@ -210,7 +212,9 @@ function tptn_options() {
 					</td>
 				</tr>
 				<tr><th scope="row"><label for="exclude_post_ids"><?php _e('List of post or page IDs to exclude from the results: ',TPTN_LOCAL_NAME); ?></label></th>
-				<td><input type="textbox" name="exclude_post_ids" id="exclude_post_ids" value="<?php echo esc_attr(stripslashes($tptn_settings['exclude_post_ids'])); ?>"  style="width:250px"></td>
+				<td><input type="textbox" name="exclude_post_ids" id="exclude_post_ids" value="<?php echo esc_attr(stripslashes($tptn_settings['exclude_post_ids'])); ?>"  style="width:250px">
+					<p class="description"><?php _e('Enter comma separated list of IDs. e.g. 188,320,500',TPTN_LOCAL_NAME); ?></p>
+				</td>
 				</tr>
 				<tr>
 				  <th scope="row"><label for="exclude_cat_slugs"><?php _e('Exclude Categories: ',TPTN_LOCAL_NAME); ?></label></th>
@@ -247,19 +251,18 @@ function tptn_options() {
 				</tr>
 				<tr><th scope="row"><label for="dynamic_post_count"><?php _e('Always display latest post count',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="checkbox" name="dynamic_post_count" id="dynamic_post_count" <?php if ($tptn_settings['dynamic_post_count']) echo 'checked="checked"' ?> />
-				    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts. When you enable this option, the daily widget will not use the options set there, but options will need to be set on this screen.',TPTN_LOCAL_NAME); ?></p>
-				  </td>
-				</tr>
-				<tr><th scope="row"><label for="d_use_js"><?php _e('Always display latest post count in the daily lists',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings['d_use_js']) echo 'checked="checked"' ?> />
-				    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time',TPTN_LOCAL_NAME); ?></p>
+				    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.',TPTN_LOCAL_NAME); ?></p>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="track_authors"><?php _e('Track visits of authors on their own posts?',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings['track_authors']) echo 'checked="checked"' ?> /></td>
+				  <td><input type="checkbox" name="track_authors" id="track_authors" <?php if ($tptn_settings['track_authors']) echo 'checked="checked"' ?> />
+				    <p class="description"><?php _e('Disabling this option will stop authors visits tracked on their own posts',TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr><th scope="row"><label for="track_admins"><?php _e('Track visits of admins?',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="checkbox" name="track_admins" id="track_admins" <?php if ($tptn_settings['track_admins']) echo 'checked="checked"' ?> /></td>
+				  <td><input type="checkbox" name="track_admins" id="track_admins" <?php if ($tptn_settings['track_admins']) echo 'checked="checked"' ?> />
+				    <p class="description"><?php _e('Disabling this option will stop admin visits being tracked.',TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr><th scope="row"><label for="pv_in_admin"><?php _e('Display page views on Posts and Pages in Admin',TPTN_LOCAL_NAME); ?></label></th>
 				  <td>
@@ -329,8 +332,13 @@ function tptn_options() {
 				<tr><th scope="row"><label for="title_length"><?php _e('Limit post title length (in characters)',TPTN_LOCAL_NAME); ?></label></th>
 				<td><input type="textbox" name="title_length" id="title_length" value="<?php echo stripslashes($tptn_settings['title_length']); ?>" /></td>
 				</tr>
-				<tr><th scope="row"><label for="disp_list_count"><?php _e('Display number of page views in popular lists?',TPTN_LOCAL_NAME); ?></label></th>
+				<tr><th scope="row"><label for="disp_list_count"><?php _e('Show view count in list?',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ($tptn_settings['disp_list_count']) echo 'checked="checked"' ?> /></td>
+				</tr>
+				<tr><th scope="row"><label for="d_use_js"><?php _e('Always display latest post count in the daily lists?',TPTN_LOCAL_NAME); ?></label></th>
+				  <td><input type="checkbox" name="d_use_js" id="d_use_js" <?php if ($tptn_settings['d_use_js']) echo 'checked="checked"' ?> />
+				    <p class="description"><?php _e('This option uses JavaScript and will increase your page load time. When you enable this option, the daily widget will not use the options set there, but options will need to be set on this screen.',TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr><th scope="row"><label for="link_new_window	"><?php _e('Open links in new window',TPTN_LOCAL_NAME); ?></label></th>
 				<td><input type="checkbox" name="link_new_window" id="link_new_window" <?php if ($tptn_settings['link_new_window']) echo 'checked="checked"' ?> /></td>
@@ -344,7 +352,7 @@ function tptn_options() {
 					<p class="description"><?php _e('Enter comma separated list of IDs. e.g. 188,320,500',TPTN_LOCAL_NAME); ?></p>
 				</td>
 				</tr>
-				<tr style="vertical-align: top; background: #eee"><th scope="row" colspan="2"><?php _e('Customize the output:',TPTN_LOCAL_NAME); ?></th>
+				<tr style="background: #eee"><th scope="row" colspan="2"><?php _e('Customise the list HTML',TPTN_LOCAL_NAME); ?></th>
 				</tr>
 				<tr><th scope="row"><label for="before_list"><?php _e('HTML to display before the list of posts: ',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="textbox" name="before_list" id="before_list" value="<?php echo esc_attr(stripslashes($tptn_settings['before_list'])); ?>" style="width:250px" /></td>
@@ -358,7 +366,7 @@ function tptn_options() {
 				<tr><th scope="row"><label for="after_list"><?php _e('HTML to display after the list of posts: ',TPTN_LOCAL_NAME); ?></label></th>
 				  <td><input type="textbox" name="after_list" id="after_list" value="<?php echo esc_attr(stripslashes($tptn_settings['after_list'])); ?>" style="width:250px" /></td>
 				</tr>
-				<tr style="vertical-align: top; background: #eee"><th scope="row" colspan="2"><?php _e('Post thumbnail options:',TPTN_LOCAL_NAME); ?></th>
+				<tr style="background: #eee"><th scope="row" colspan="2"><?php _e('Post thumbnail options:',TPTN_LOCAL_NAME); ?></th>
 				</tr>
 				<tr><th scope="row"><label for="post_thumb_op"><?php _e('Location of post thumbnail:',TPTN_LOCAL_NAME); ?></label></th>
 				  <td>
@@ -390,18 +398,18 @@ function tptn_options() {
 				  <td>
 					<label>
 					<input type="radio" name="thumb_html" value="css" id="thumb_html_0" <?php if ($tptn_settings['thumb_html']=='css') echo 'checked="checked"' ?> />
-					<?php _e('Style attributes are used for width and height. <code>style="max-width:'.$tptn_settings['thumb_width'].'px;max-height:'.$tptn_settings['thumb_height'].'px;"</code>',TPTN_LOCAL_NAME); ?></label>
+					<?php _e('Style attributes are used for width and height.',TPTN_LOCAL_NAME); ?> <br /><code>style="max-width:<?php echo $tptn_settings['thumb_width'] ?>px;max-height:<?php echo $tptn_settings['thumb_height'] ?>px;"</code></label>
 					<br />
 					<label>
 					<input type="radio" name="thumb_html" value="html" id="thumb_html_1" <?php if ($tptn_settings['thumb_html']=='html') echo 'checked="checked"' ?> />
-					<?php _e('HTML width and height attributes are used for width and height. <code>width="'.$tptn_settings['thumb_width'].'" height="'.$tptn_settings['thumb_height'].'"</code>',TPTN_LOCAL_NAME); ?></label>
+					<?php _e('HTML width and height attributes are used for width and height.',TPTN_LOCAL_NAME); ?> <br /><code>width="<?php echo $tptn_settings['thumb_width'] ?>" height="<?php echo $tptn_settings['thumb_height'] ?>"</code></label>
 					<br />
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_timthumb"><?php _e('Use timthumb to generate thumbnails? ',TPTN_LOCAL_NAME); ?></label></th>
 				  <td>
 					  <input type="checkbox" name="thumb_timthumb" id="thumb_timthumb" <?php if ($tptn_settings['thumb_timthumb']) echo 'checked="checked"' ?> /> 
-					  <p class="description"><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></p>
+					  <p class="description"><?php _e('If checked, <a href="http://www.binarymoon.co.uk/projects/timthumb/" target="_blank">timthumb</a> will be used to generate thumbnails',TPTN_LOCAL_NAME); ?></p>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_meta"><?php _e('Post thumbnail meta field name: ',TPTN_LOCAL_NAME); ?></label></th>
@@ -425,7 +433,7 @@ function tptn_options() {
 				<tr><th scope="row"><label for="thumb_default"><?php _e('Default thumbnail: ',TPTN_LOCAL_NAME); ?></label></th>
 				  <td>
 				  	<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_default'] ) ); ?>" style="width:100%"> <br />
-				  	<?php if( $tptn_settings['thumb_default'] != '' ) echo "<img src='{$tptn_settings['thumb_default']}' />"; ?>
+				  	<?php if( $tptn_settings['thumb_default'] != '' ) echo "<img src='{$tptn_settings['thumb_default']}' style='max-width:200px' />"; ?>
 				  	<p class="description"><?php _e('The plugin will first check if the post contains a thumbnail. If it doesn\'t then it will check the meta field. If this is not available, then it will show the default image as specified above',TPTN_LOCAL_NAME); ?></p>
 				  </td>
 				</tr>

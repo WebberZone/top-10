@@ -22,6 +22,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Show off popular posts**: Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed plus loads of other customisation options
 * **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
 * **Customisable output**: 
+	* Top 10 includes a default CSS style to make your popular posts list look pretty. Choose **Thumbnails inline, before title** under 'Thumbnail options' when using this option
 	* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area under "Custom Styles"
 	* Pick your own HTML tags to use for displaying the output in case you don't prefer the default `list` format
 * **Thumbnail support**
@@ -29,13 +30,14 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 	* Auto-extract the first image in your post to be displayed as a thumbnail
 	* Manually enter the URL of the thumbnail via <a href="http://codex.wordpress.org/Custom_Fields">WordPress meta fields</a>
 	* Use timthumb to crop and resize images
+* **Shortcodes**: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
 * **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
 * **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 will also add two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
-* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data. But why would you?
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
+* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data. But why would you?
 
 
-If you're looking for a plugin to display related, look no further than my other plugin <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>
+If you're looking for a plugin to display related, look no further than my other plugin <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>.
 
 
 == Screenshots ==
@@ -50,13 +52,13 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 1.9.9 =
-New default style, new shortcodes, admin interface, option to disable counts from non-admin and lots more... 
+New default style, new shortcodes, responsive admin interface, option to disable counts from non-admin and lots more... 
 Refer to the Changeog for more details
 
 == Changelog ==
 
 = 1.9.9 =
-* New: Default style to make those popular posts a little pretty. Remember to choose **Thumbnails inline, before title** under 'Thumbnail options'
+* New: Default style to make those popular posts a little pretty. Choose **Thumbnails inline, before title** under 'Thumbnail options'
 * New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
 * New: Option to display different text when there are no hits on the post on non single posts e.g. home page, archives, etc.
 * New: Class `tptn_posts_widget` for the widgets
@@ -244,6 +246,14 @@ Refer to the Changeog for more details
 
 == Installation ==
 
+= WordPress install =
+1. Navigate to Plugins within your WordPress Admin Area
+
+2. Click "Add new" and in the search box enter "Top 10" and select "Keyword" from the dropdown
+
+3. Find the plugin in the list (usually the first result) and click "Install Now"
+
+= Manual install =
 1. Download the plugin
 
 2. Extract the contents of top-10.zip to wp-content/plugins/ folder. You should get a folder called top-10.
@@ -256,12 +266,10 @@ Refer to the Changeog for more details
 
 6. Go to **Top 10 &raquo; Overall Popular Posts** and **Top 10 &raquo; Daily Popular Posts** to view the list of popular posts
 
-Alternatively, search for **Top 10** from Plugins &raquo; Add New within your WordPress admin.
-
 
 == Frequently Asked Questions ==
 
-If your question isn't listed here, please post a comment at the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced support, please see <a href="http://ajaydsouza.com/support/">details here</a>.
+If your question isn't listed here, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced *paid* support, please see <a href="http://ajaydsouza.com/support/">details here</a>.
 
 = How can I customise the output? =
 
