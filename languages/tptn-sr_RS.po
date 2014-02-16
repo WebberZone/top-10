@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-26 22:06-0000\n"
+"POT-Creation-Date: 2014-02-16 13:53-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Ajay D'Souza <me@ajaydsouza.com>\n"
@@ -15,51 +15,51 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.inc.php:101
-msgid "Scheduled maintenance enabled / modified"
-msgstr "Raspored održavanja omogućen modifikovan"
-
-#: admin.inc.php:105
-msgid "Scheduled maintenance disabled"
-msgstr "Raspoed održavanja onemogućen"
-
-#: admin.inc.php:122
+#: admin.inc.php:112
 msgid "Options saved successfully."
 msgstr "Opcije uspešno sašuvane"
 
-#: admin.inc.php:131
+#: admin.inc.php:122
 msgid "Options set to Default."
 msgstr "Opcije podešene po Default-u."
 
-#: admin.inc.php:137
+#: admin.inc.php:128
 msgid "Top 10 popular posts reset"
 msgstr "Resetuj Top 10 popularnih postova"
 
-#: admin.inc.php:143
+#: admin.inc.php:134
 msgid "Top 10 daily popular posts reset"
 msgstr "Resetuj Top 10 dnevnih popularnih postova"
 
-#: admin.inc.php:150
+#: admin.inc.php:141
 msgid "Duplicate rows cleaned from tables"
 msgstr "Umnoži redove očišćene sa tabela"
 
-#: admin.inc.php:171
+#: admin.inc.php:152
+msgid "Scheduled maintenance enabled / modified"
+msgstr "Raspored održavanja omogućen modifikovan"
+
+#: admin.inc.php:156
+msgid "Scheduled maintenance disabled"
+msgstr "Raspoed održavanja onemogućen"
+
+#: admin.inc.php:172
 msgid "General options"
 msgstr "Opšta pitanja"
 
-#: admin.inc.php:175
+#: admin.inc.php:176
 msgid "Enable Overall stats"
 msgstr "Omogući statistiku svega"
 
-#: admin.inc.php:180
+#: admin.inc.php:181
 msgid "Enable Daily stats"
 msgstr "Omogući dnevne statistike"
 
-#: admin.inc.php:185
+#: admin.inc.php:186
 msgid "W3 Total Cache fix:"
 msgstr "W3 Total Cache fix:"
 
-#: admin.inc.php:187
+#: admin.inc.php:188
 msgid ""
 "This will try to prevent W3 Total Cache from caching the addcount script of "
 "the plugin. Try toggling this option in case you find that our posts are not "
@@ -69,27 +69,44 @@ msgstr ""
 "plugina. Pokušajte da toglujete ovu opciju u slučaju da otkrijete da naši "
 "postovi nisu praćeni."
 
-#: admin.inc.php:191
+#: admin.inc.php:192
 msgid "Number of popular posts to display: "
 msgstr "Broj popularnih postova za prikaz."
 
-#: admin.inc.php:195
+#: admin.inc.php:194
+msgid ""
+"Maximum number of posts that will be displayed in the list. This option is "
+"used if you don't specify the number of posts in the widget or shortcodes"
+msgstr ""
+
+#: admin.inc.php:198
 msgid "Daily Popular should contain views of how many days? "
 msgstr "Dnevni popularni bi trebali da sadrže preglede od koliko dana?"
 
-#: admin.inc.php:198
+#: admin.inc.php:200
+msgid ""
+"Instead of displaying popular posts fromt he past day, this setting lets you "
+"display posts for as many days as you want. This can be overridden in the "
+"widget."
+msgstr ""
+
+#: admin.inc.php:203
 msgid "Post types to include in results (including custom post types)"
 msgstr "Tipovi postova da uključe rezultate (uključujući i custom post tipove)"
 
-#: admin.inc.php:209
+#: admin.inc.php:214
 msgid "List of post or page IDs to exclude from the results: "
 msgstr "Lista postova ili IDs stranice da budu isključeni iz rezultata"
 
-#: admin.inc.php:213
+#: admin.inc.php:216 admin.inc.php:352
+msgid "Enter comma separated list of IDs. e.g. 188,320,500"
+msgstr "Unesite zarezom odvojenu listu IDa npr.188,320,500"
+
+#: admin.inc.php:220
 msgid "Exclude Categories: "
 msgstr "Isključene kategorije"
 
-#: admin.inc.php:228
+#: admin.inc.php:235
 msgid ""
 "Comma separated list of category slugs. The field above has an autocomplete "
 "so simply start typing in the starting letters and it will prompt you with "
@@ -98,41 +115,41 @@ msgstr ""
 "Zarezima separatisana lista kategorije. Polje iznad je autokompletno tako da "
 "jednostavno samo počnite da kucate ključna slova i pokazaće vam se opcije"
 
-#: admin.inc.php:233
+#: admin.inc.php:240
 #, fuzzy
 msgid "Display number of views on:"
 msgstr "Afficher le nombre des visionnages du message?"
 
-#: admin.inc.php:235
+#: admin.inc.php:242
 msgid "Posts"
 msgstr "Postovi"
 
-#: admin.inc.php:236
+#: admin.inc.php:243
 #, fuzzy
 msgid "Pages"
 msgstr "Page"
 
-#: admin.inc.php:237
+#: admin.inc.php:244
 msgid "Home page"
 msgstr "Početna stranica"
 
-#: admin.inc.php:238
+#: admin.inc.php:245
 msgid "Feeds"
 msgstr "Feeds"
 
-#: admin.inc.php:239
+#: admin.inc.php:246
 msgid "Category archives"
 msgstr "Kategorija arhiva"
 
-#: admin.inc.php:240
+#: admin.inc.php:247
 msgid "Tag archives"
 msgstr "Tag arhiva"
 
-#: admin.inc.php:241
+#: admin.inc.php:248
 msgid "Other archives"
 msgstr "Druge arhive"
 
-#: admin.inc.php:242
+#: admin.inc.php:249
 msgid ""
 "If you choose to disable this, please add <code>&lt;?php if(function_exists"
 "('echo_ald_tptn')) echo_ald_tptn(); ?&gt;</code> to your template file where "
@@ -142,16 +159,16 @@ msgstr ""
 "(function_exists('echo_ald_tptn')) echo_ald_tptn();?&gt;</code>   vašem "
 "template fajlu gde želite da bude prikazano.   "
 
-#: admin.inc.php:245
+#: admin.inc.php:252
 msgid "Always display latest post count"
 msgstr "Uvek prikaži posldenje brojanje posta"
 
-#: admin.inc.php:247
+#: admin.inc.php:254
+#, fuzzy
 msgid ""
 "This option uses JavaScript and will increase your page load time. Turn this "
 "off if you are not using caching plugins or are OK with displaying older "
-"cached counts. When you enable this option, the daily widget will not use "
-"the options set there, but options will need to be set on this screen."
+"cached counts."
 msgstr ""
 "Ovu opciju koristi JavaScript i povećaće vreme ušitavanje vaše stranice. "
 "Ugasite ovo ako ne koristite caching pluginove ili se slažete sa "
@@ -159,38 +176,53 @@ msgstr ""
 "widget neće koristiti opcije koje su nameštene tu, ali opcije će morati da "
 "se podese na ovom ekranu."
 
-#: admin.inc.php:250
-msgid "Always display latest post count in the daily lists"
-msgstr "Uvek prikaži poslednje brojanje posta u dnevnoj listi"
-
-#: admin.inc.php:252
-#, fuzzy
-msgid "This option uses JavaScript and will increase your page load time"
-msgstr ""
-"Rendre la liste des postes journaliers dynamiques? Cette option fait appel à "
-"JavaScript, le chargement du poste peut augmenter le temps du chargement de "
-"la page"
-
-#: admin.inc.php:255
+#: admin.inc.php:257
 msgid "Track visits of authors on their own posts?"
 msgstr ""
 "Opcije koriste JavaScript i povećaće vreme učitavanja vaše stranicePratite "
 "posete autora na njihovim postovima?"
 
-#: admin.inc.php:258
+#: admin.inc.php:259
+msgid ""
+"Disabling this option will stop authors visits tracked on their own posts"
+msgstr ""
+
+#: admin.inc.php:262
 #, fuzzy
 msgid "Track visits of admins?"
 msgstr "Suivre les visites des auteurs de leurs propres messages?"
 
-#: admin.inc.php:261
-msgid "Display page views on Posts > All Posts in Admin"
+#: admin.inc.php:264
+msgid "Disabling this option will stop admin visits being tracked."
+msgstr ""
+
+#: admin.inc.php:267
+#, fuzzy
+msgid "Display page views on Posts and Pages in Admin"
 msgstr "Prikaži preglede stranice na Posts > All Posts u Admin"
 
-#: admin.inc.php:264
+#: admin.inc.php:270
+msgid ""
+"Adds three columns called Total Views, Today's Views and Views to All Posts "
+"and All Pages"
+msgstr ""
+
+#: admin.inc.php:273
+#, fuzzy
+msgid "Show number of views to non-admins"
+msgstr "Afficher le nombre des visionnages sur les pages?"
+
+#: admin.inc.php:276
+msgid ""
+"If you disable this then non-admins won't see the above columns or view the "
+"independent pages with the top posts"
+msgstr ""
+
+#: admin.inc.php:279
 msgid "Link to Top 10 plugin page"
 msgstr "Povežite se na Top 10 plugin stranicu"
 
-#: admin.inc.php:266
+#: admin.inc.php:282
 #, fuzzy
 msgid ""
 "A link to the plugin is added as an extra list item to the list of popular "
@@ -200,16 +232,17 @@ msgstr ""
 "le répertoire des enregistrements populaires. Cela n'est pas obligatoire, "
 "mais nous vous y remercions!"
 
-#: admin.inc.php:273
+#: admin.inc.php:289
 #, fuzzy
-msgid "Output Options"
+msgid "Output options"
 msgstr "Paramètres de sortie"
 
-#: admin.inc.php:276
-msgid "Format to display the count in: "
+#: admin.inc.php:292
+#, fuzzy
+msgid "Format to display the post views:"
 msgstr "Format za prikaz brojanja u:"
 
-#: admin.inc.php:278
+#: admin.inc.php:294
 #, fuzzy
 msgid ""
 "Use <code>%totalcount%</code> to display the total count, <code>%dailycount"
@@ -222,155 +255,183 @@ msgstr ""
 "utiliser par exemple, les paramètres d'affichage par défaut <code>(Visited "
 "123 times, 23 visits today)</code>"
 
-#: admin.inc.php:281
+#: admin.inc.php:297
+msgid "What do display when there are no visits?"
+msgstr ""
+
+#: admin.inc.php:299
+msgid ""
+"This text applies only when there are 0 hits for the post and it isn't a "
+"single page. e.g. if you display post views on the homepage or archives then "
+"this text will be used. To override this, just enter the same text as above "
+"option."
+msgstr ""
+
+#: admin.inc.php:302
 msgid "Title of popular posts: "
 msgstr "Naslov popularnih postova:"
 
-#: admin.inc.php:284
+#: admin.inc.php:305
 msgid "Title of daily popular posts: "
 msgstr "Naslov popularnih dnevnih postova:"
 
-#: admin.inc.php:287
+#: admin.inc.php:308
 msgid "When there are no posts, what should be shown?"
 msgstr "Kada nema postova šta da prikažemo?"
 
-#: admin.inc.php:291
+#: admin.inc.php:312
 msgid "Blank Output"
 msgstr "Prazan izlaz"
 
-#: admin.inc.php:295
+#: admin.inc.php:316
 msgid "Display:"
 msgstr "Prikaz:"
 
-#: admin.inc.php:299
+#: admin.inc.php:320
 msgid "Show post excerpt in list?"
 msgstr "Pokaži post izvoda na listi?"
 
-#: admin.inc.php:302
+#: admin.inc.php:323
 msgid "Length of excerpt (in words): "
 msgstr "Dužina izvoda (u rečima):"
 
-#: admin.inc.php:305
+#: admin.inc.php:326
 #, fuzzy
 msgid "Show post author in list?"
 msgstr "Afficher le fragment du message dans la liste?"
 
-#: admin.inc.php:308
+#: admin.inc.php:329
 #, fuzzy
 msgid "Show post date in list?"
 msgstr "Afficher le fragment du message dans la liste?"
 
-#: admin.inc.php:311
+#: admin.inc.php:332
 msgid "Limit post title length (in characters)"
 msgstr "Limit dužine postova naslova (u karakterima)"
 
-#: admin.inc.php:314
-msgid "Display number of page views in popular lists?"
-msgstr "Prikaži broj pregleda stranica u popularnim listama?"
+#: admin.inc.php:335
+#, fuzzy
+msgid "Show view count in list?"
+msgstr "Afficher le fragment du message dans la liste?"
 
-#: admin.inc.php:317
+#: admin.inc.php:338
+#, fuzzy
+msgid "Always display latest post count in the daily lists?"
+msgstr "Uvek prikaži poslednje brojanje posta u dnevnoj listi"
+
+#: admin.inc.php:340
+#, fuzzy
+msgid ""
+"This option uses JavaScript and will increase your page load time. When you "
+"enable this option, the daily widget will not use the options set there, but "
+"options will need to be set on this screen."
+msgstr ""
+"Ovu opciju koristi JavaScript i povećaće vreme ušitavanje vaše stranice. "
+"Ugasite ovo ako ne koristite caching pluginove ili se slažete sa "
+"prikazivanjem starijih cache brojanja. Kada omogućite ovu opciju, dnevni "
+"widget neće koristiti opcije koje su nameštene tu, ali opcije će morati da "
+"se podese na ovom ekranu."
+
+#: admin.inc.php:343
 msgid "Open links in new window"
 msgstr "Otvori linkove u novim prozorima"
 
-#: admin.inc.php:320
+#: admin.inc.php:346
 msgid "Add nofollow attribute to links in the list"
 msgstr "Dodaj nofollow atribut linkovima u listi"
 
-#: admin.inc.php:323
+#: admin.inc.php:349
 msgid "Exclude display of related posts on these posts / pages"
 msgstr "Isključi pregled vezanih postova na ovim postovima-stranicama"
 
-#: admin.inc.php:326
-msgid "Enter comma separated list of IDs. e.g. 188,320,500"
-msgstr "Unesite zarezom odvojenu listu IDa npr.188,320,500"
-
-#: admin.inc.php:329
-msgid "Customize the output:"
+#: admin.inc.php:355
+#, fuzzy
+msgid "Customise the list HTML"
 msgstr "Sredite output:"
 
-#: admin.inc.php:331
+#: admin.inc.php:357
 msgid "HTML to display before the list of posts: "
 msgstr "HTML tza prikaz pre liste postova:"
 
-#: admin.inc.php:334
+#: admin.inc.php:360
 msgid "HTML to display before each list item: "
 msgstr "HTML za prikaz svake stavke sa liste:"
 
-#: admin.inc.php:337
+#: admin.inc.php:363
 msgid "HTML to display after each list item: "
 msgstr "HTML tza prikaz posle svake stavke sa liste:"
 
-#: admin.inc.php:340
+#: admin.inc.php:366
 msgid "HTML to display after the list of posts: "
 msgstr "HTML za prikaz posle liste postova:"
 
-#: admin.inc.php:343
+#: admin.inc.php:369
 msgid "Post thumbnail options:"
 msgstr "Post thumbnail opcije:"
 
-#: admin.inc.php:345
+#: admin.inc.php:371
 msgid "Location of post thumbnail:"
 msgstr "Lokacija posta thumbnaila:"
 
-#: admin.inc.php:349
+#: admin.inc.php:375
 msgid "Display thumbnails inline with posts, before title"
 msgstr "Prikaži thumbnails inline sa postovima pre naslova"
 
-#: admin.inc.php:353
+#: admin.inc.php:379
 msgid "Display thumbnails inline with posts, after title"
 msgstr "Prikaži thumbnails inline sa postovima posle naslova"
 
-#: admin.inc.php:357
+#: admin.inc.php:383
 msgid "Display only thumbnails, no text"
 msgstr "Prikaži samo  thumbnails, bez teksta"
 
-#: admin.inc.php:361
+#: admin.inc.php:387
 msgid "Do not display thumbnails, only text."
 msgstr "Ne prikazujte thumbnails, samo tekst"
 
-#: admin.inc.php:365
+#: admin.inc.php:391
 msgid "Width of the thumbnail: "
 msgstr "Širina thumbnaila:"
 
-#: admin.inc.php:368
+#: admin.inc.php:394
 msgid "Height of the thumbnail: "
 msgstr "Visina thumbnaila:"
 
-#: admin.inc.php:371
+#: admin.inc.php:397
 msgid "Style attributes / Width and Height HTML attributes:"
 msgstr "Stil atributa /širina i visina HTML atributa:"
 
-#: admin.inc.php:375
-msgid ""
-"Style attributes are used for width and height. <code>style=\"max-width:"
+#: admin.inc.php:401
+#, fuzzy
+msgid "Style attributes are used for width and height."
 msgstr ""
 "Stilovi atributa su korišćeni za čirinu i visinu. <code>style=\"max-width:"
 
-#: admin.inc.php:379
-msgid ""
-"HTML width and height attributes are used for width and height. <code>width="
-"\""
+#: admin.inc.php:405
+#, fuzzy
+msgid "HTML width and height attributes are used for width and height."
 msgstr ""
 "HTML širina i visina atributa se  koristi za širinu i visinu.<code>width=\""
 
-#: admin.inc.php:383
+#: admin.inc.php:409
 msgid "Use timthumb to generate thumbnails? "
 msgstr "Upotreba timthumb za generisanja thumbnails?"
 
-#: admin.inc.php:386
+#: admin.inc.php:412
+#, fuzzy
 msgid ""
-"If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/"
-"\">timthumb</a> will be used to generate thumbnails"
+"If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/\" "
+"target=\"_blank\">timthumb</a> will be used to generate thumbnails"
 msgstr ""
 "Ak je čekirano, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/"
 "\">timthumb</a> će se koristiti za generisanje thumbnails-a"
 
-#: admin.inc.php:389
+#: admin.inc.php:415
 #, fuzzy
 msgid "Post thumbnail meta field name: "
 msgstr "Options thumbnail des messages:"
 
-#: admin.inc.php:392
+#: admin.inc.php:418
 msgid ""
 "The value of this field should contain the image source and is set in the "
 "<em>Add New Post</em> screen"
@@ -378,7 +439,7 @@ msgstr ""
 "Vrednost ovog polja bi trebala da sadrži source slike i njne postavke u "
 "<em>Add New Post</em> ekranu"
 
-#: admin.inc.php:395
+#: admin.inc.php:421
 #, fuzzy
 msgid ""
 "If the postmeta is not set, then should the plugin extract the first image "
@@ -389,7 +450,7 @@ msgstr ""
 "première image de la résolution correspondante du fichier est de taille "
 "supérieure"
 
-#: admin.inc.php:398
+#: admin.inc.php:424
 #, fuzzy
 msgid ""
 "This could slow down the loading of your page if the first image in the "
@@ -400,11 +461,11 @@ msgstr ""
 "première image de la résolution correspondante du fichier est de taille "
 "supérieure"
 
-#: admin.inc.php:401
+#: admin.inc.php:427
 msgid "Use default thumbnail? "
 msgstr "Koristite default thumbnail?"
 
-#: admin.inc.php:404
+#: admin.inc.php:430
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
@@ -412,11 +473,11 @@ msgstr ""
 "Ako je čekirano, kada nijedna thumnail nije pronadjena prikaži default iz "
 "URLa ispod. Ako nije čekirano i nema thumbnaila, slika neće biti prikazana."
 
-#: admin.inc.php:407
+#: admin.inc.php:433
 msgid "Default thumbnail: "
 msgstr "Default thumbnail:"
 
-#: admin.inc.php:410
+#: admin.inc.php:437
 msgid ""
 "The plugin will first check if the post contains a thumbnail. If it doesn't "
 "then it will check the meta field. If this is not available, then it will "
@@ -426,15 +487,28 @@ msgstr ""
 "proveriti meta polje. Ako to nije dopstupno, onda će vam pokazati default "
 "sliku kao što je odredjeno iznad"
 
-#: admin.inc.php:417
-msgid "Custom Styles"
+#: admin.inc.php:444
+#, fuzzy
+msgid "Custom CSS"
 msgstr "Custom stilovi"
 
-#: admin.inc.php:420
+#: admin.inc.php:447
+msgid "Use default style included in the plugin?"
+msgstr ""
+
+#: admin.inc.php:450
+msgid ""
+"Top 10 includes a default style that makes your popular posts list to look "
+"pretty. Check the box above if you want to use this. You will need to select "
+"<strong>Thumbnails inline, before title</strong> in Output Options or in the "
+"Widget."
+msgstr ""
+
+#: admin.inc.php:453
 msgid "Custom CSS to add to header:"
 msgstr "Custom CSS je dodat header-u"
 
-#: admin.inc.php:423
+#: admin.inc.php:456
 msgid ""
 "Do not include <code>style</code> tags. Check out the <a href=\"http://"
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> for "
@@ -444,91 +518,101 @@ msgstr ""
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> za "
 "dostupne CSS klase za stilizovanje."
 
-#: admin.inc.php:430
+#: admin.inc.php:463 admin.inc.php:529
+#, fuzzy
+msgid "Save Options"
+msgstr "Options:"
+
+#: admin.inc.php:464
+#, fuzzy
+msgid "Default Options"
+msgstr "Paramètres de sortie"
+
+#: admin.inc.php:464
+msgid "Do you want to set options to Default?"
+msgstr "Da li želite da postavite opcije na Default?"
+
+#: admin.inc.php:473
 msgid "Maintenance"
 msgstr "Održavanje"
 
-#: admin.inc.php:434
+#: admin.inc.php:477
+#, fuzzy
 msgid ""
 "Over time the Daily Top 10 database grows in size, which reduces the "
 "performance of the plugin. Cleaning the database at regular intervals could "
-"improve performance, especially on high traffic blogs."
+"improve performance, especially on high traffic blogs. Enabling maintenance "
+"will automatically delete entries older than 90 days."
 msgstr ""
 "Vremenom Dailz Top 10 baza podataka će se povećati, što smanjuje performanse "
 "plugina. Čišćenje baze podataka u regularnim intervalima može poboljšati "
 "performanse naročito na blogovima sa velikim saobraćajem."
 
-#: admin.inc.php:435
+#: admin.inc.php:478
+#, fuzzy
 msgid ""
 "Note: When scheduled maintenance is enabled, WordPress will run the cron job "
-"everytime the job is rescheduled (i.e. you change the settings below). This "
-"causes the daily posts table to reset."
+"everytime the job is rescheduled (i.e. you change the settings below)."
 msgstr ""
 "Beleška: Kada je omogućen raspored održavanja, WordPress će pokrenuti "
 "kroniranje svaki put kada se poslu promeni raspored (npr. ako promenite "
 "postavke ispod) Ovo prouzrokuje dnevne postove tabele za resetovanje."
 
-#: admin.inc.php:438
+#: admin.inc.php:481
 msgid "Enable scheduled maintenance of daily tables:"
 msgstr "Omogući raspored održavanja u dnevnim tabelama"
 
-#: admin.inc.php:442
+#: admin.inc.php:485
 msgid "Time to run maintenance"
 msgstr "Pokrenuti održavanje"
 
-#: admin.inc.php:445
+#: admin.inc.php:486
+msgid "hrs"
+msgstr ""
+
+#: admin.inc.php:486
+msgid "min"
+msgstr ""
+
+#: admin.inc.php:488
 msgid "How often should the maintenance be run:"
 msgstr "Održavanje ne treba često da se pokreće"
 
-#: admin.inc.php:449
+#: admin.inc.php:492
 msgid "Daily"
 msgstr "Dnevno"
 
-#: admin.inc.php:453
+#: admin.inc.php:496
 msgid "Weekly"
 msgstr "Nedeljno"
 
-#: admin.inc.php:457
+#: admin.inc.php:500
 msgid "Fortnightly"
 msgstr "Na dve nedelje"
 
-#: admin.inc.php:461
+#: admin.inc.php:504
 msgid "Monthly"
 msgstr "Mesečno"
 
-#: admin.inc.php:470
+#: admin.inc.php:513
 msgid "The cron job has been scheduled. Maintenance will run "
 msgstr "Kroniranje je zakazano. Održavanje će se pokrenuti"
 
-#: admin.inc.php:475
+#: admin.inc.php:518
 msgid "The cron job is missing. Please resave this page to add the job"
 msgstr ""
 "Nedostaje kroniranje. Molim vas ponovo sašuvajte ovu stranicu da  biste "
 "dodali posao"
 
-#: admin.inc.php:480
+#: admin.inc.php:523
 msgid "Maintenance is turned off"
 msgstr "Održavanje je ugašeno"
 
-#: admin.inc.php:488
-#, fuzzy
-msgid "Save Options"
-msgstr "Options:"
-
-#: admin.inc.php:489
-#, fuzzy
-msgid "Default Options"
-msgstr "Paramètres de sortie"
-
-#: admin.inc.php:489
-msgid "Do you want to set options to Default?"
-msgstr "Da li želite da postavite opcije na Default?"
-
-#: admin.inc.php:493
+#: admin.inc.php:537
 msgid "Reset count"
 msgstr "Resetuj brojanje"
 
-#: admin.inc.php:496
+#: admin.inc.php:540
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
@@ -536,256 +620,291 @@ msgstr ""
 "Ovo ne možete da proništite. Proverite da li vam je baza podataka sačuvana u "
 "back up-u pre nego što nastavite"
 
-#: admin.inc.php:499
+#: admin.inc.php:543
 #, fuzzy
 msgid "Reset Popular Posts"
 msgstr "Postes populaires"
 
-#: admin.inc.php:499
+#: admin.inc.php:543
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Da li ste sigurni da želite da resetujete popularne postove?"
 
-#: admin.inc.php:500
+#: admin.inc.php:544
 #, fuzzy
 msgid "Reset Daily Popular Posts"
 msgstr "Postes populaires journaliers"
 
-#: admin.inc.php:500
+#: admin.inc.php:544
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr "Da li ste sigurni da želite da resetujete dnevne popularne postove?"
 
-#: admin.inc.php:501
+#: admin.inc.php:545
 msgid "Clear duplicates"
 msgstr "Obrišite duplikate"
 
-#: admin.inc.php:501
+#: admin.inc.php:545
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Ovo će obrisati duple unose u tabelama. Nastaviti?"
 
-#: admin.inc.php:544 admin.inc.php:929
+#: admin.inc.php:593 admin.inc.php:979
 msgid "Popular Posts"
 msgstr "Popularni postovi"
 
-#: admin.inc.php:544 admin.inc.php:631
+#: admin.inc.php:593 admin.inc.php:688
 msgid "Daily Popular Posts"
 msgstr "Dnevni popularni postovi"
 
-#: admin.inc.php:572
+#: admin.inc.php:621
 msgid "Support the development"
 msgstr "Podrška razvoju"
 
-#: admin.inc.php:580
+#: admin.inc.php:630
 msgid "Enter amount in USD: "
 msgstr "Unesite veličinu u USD:"
 
-#: admin.inc.php:584
+#: admin.inc.php:634
 msgid "Send your donation to the author of"
 msgstr "Pošalji vašu donaciju autoru"
 
-#: admin.inc.php:590
-msgid "Follow us"
+#: admin.inc.php:641
+#, fuzzy
+msgid "Follow me"
 msgstr "Pratite nas"
 
-#: admin.inc.php:596
+#: admin.inc.php:651
 #, fuzzy
-msgid "Quick Links"
+msgid "Quick links"
 msgstr "Liens rapides"
 
-#: admin.inc.php:598
+#: admin.inc.php:655
 #, fuzzy
 msgid "Top 10 plugin page"
 msgstr "Page de plugin"
 
-#: admin.inc.php:599
+#: admin.inc.php:656
 msgid "Other plugins"
 msgstr "Brzi linkovi"
 
-#: admin.inc.php:600
+#: admin.inc.php:657
 msgid "Ajay's blog"
 msgstr "Ajayov blog"
 
-#: admin.inc.php:601 top-10.php:1147
+#: admin.inc.php:658
+msgid "FAQ"
+msgstr ""
+
+#: admin.inc.php:659 top-10.php:1271
 msgid "Support"
 msgstr "Podrška"
 
-#: admin.inc.php:605
-msgid "Recent developments"
-msgstr "Trenutni razvoj"
+#: admin.inc.php:660
+msgid "Reviews"
+msgstr ""
 
-#: admin.inc.php:622 admin.inc.php:625
+#: admin.inc.php:679 admin.inc.php:682
 #, fuzzy
 msgid "Top 10 Settings"
 msgstr "Paramètres"
 
-#: admin.inc.php:622
+#: admin.inc.php:679
 msgid "Top 10"
 msgstr "Top 10"
 
-#: admin.inc.php:628
+#: admin.inc.php:685
 #, fuzzy
 msgid "Overall Popular Posts"
 msgstr "Voir tous les postes populaires"
 
-#: admin.inc.php:799
-msgid "Results"
-msgstr "rezultati"
+#: admin.inc.php:850
+#, php-format
+msgid "Results %1$s to %2$s of %3$s"
+msgstr ""
 
-#: admin.inc.php:801 admin.inc.php:807
-msgid "of"
-msgstr "od"
+#: admin.inc.php:854
+#, php-format
+msgid "Page %s of %s"
+msgstr ""
 
-#: admin.inc.php:805
-msgid "Page"
-msgstr "Stranice"
-
-#: admin.inc.php:819
+#: admin.inc.php:866
 msgid "View Daily Popular Posts"
 msgstr "Pregledaj dnevne popularne postove"
 
-#: admin.inc.php:822 admin.inc.php:835
+#: admin.inc.php:869 admin.inc.php:882
 msgid "Results per-page:"
 msgstr "Rezultat po stranici:"
 
-#: admin.inc.php:832
+#: admin.inc.php:879
 msgid "View Overall Popular Posts"
 msgstr "Pregledaj sve popularne postove"
 
-#: admin.inc.php:861
+#: admin.inc.php:908
 msgid "Previous"
 msgstr "Prethodni"
 
-#: admin.inc.php:889
+#: admin.inc.php:936
 msgid "Next"
 msgstr "Sledeći"
 
-#: admin.inc.php:930
+#: admin.inc.php:980
 msgid "Daily Popular"
 msgstr "Dnevno popularno"
 
-#: admin.inc.php:946
+#: admin.inc.php:998
 #, fuzzy
 msgid "Total Views"
 msgstr "Total/aujourd'hui visionnages"
 
-#: admin.inc.php:947
+#: admin.inc.php:999
 #, fuzzy
 msgid "Today's Views"
 msgstr "Total/aujourd'hui visionnages"
 
-#: top-10.php:415
+#: admin.inc.php:1000
+#, fuzzy
+msgid "Views"
+msgstr "Total/aujourd'hui visionnages"
+
+#: top-10.php:440
 msgid " by "
 msgstr ""
 
-#: top-10.php:501
+#: top-10.php:526
 msgid "Display the posts popular this week"
 msgstr "Prikazati postove popularne ove nedelje"
 
-#: top-10.php:502
+#: top-10.php:527
 #, fuzzy
 msgid "Popular Posts [Top 10]"
 msgstr "Postes populaires"
 
-#: top-10.php:519
+#: top-10.php:545
 msgid "Title"
 msgstr "Naslov"
 
-#: top-10.php:524
+#: top-10.php:550
 msgid "No. of posts"
 msgstr "Broj postova"
 
-#: top-10.php:529
+#: top-10.php:555
 msgid "Overall"
 msgstr "Sve ukupno"
 
-#: top-10.php:530
+#: top-10.php:556
 msgid "Custom time period (Enter below)"
 msgstr "Vremenski period (unesite ispod)"
 
-#: top-10.php:535
+#: top-10.php:561
 msgid "Range in number of days (applies only to custom option above)"
 msgstr "Raspon dana (odnosi se samo na iznad)"
 
-#: top-10.php:540
+#: top-10.php:566
+#, fuzzy
+msgid " Show count?"
+msgstr "Prikaži autora?"
+
+#: top-10.php:571
 #, fuzzy
 msgid " Show excerpt?"
 msgstr "Afficher le fragment du message dans la liste?"
 
-#: top-10.php:545
+#: top-10.php:576
 msgid " Show author?"
 msgstr "Prikaži autora?"
 
-#: top-10.php:550
+#: top-10.php:581
 #, fuzzy
 msgid " Show date?"
 msgstr "Afficher le fragment du message dans la liste?"
 
-#: top-10.php:554
+#: top-10.php:585
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Options thumbnail des messages:"
 
-#: top-10.php:556
+#: top-10.php:587
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Afficher le thumbnail encastré et les messages avant l'en-tête"
 
-#: top-10.php:557
+#: top-10.php:588
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Afficher le thumbnail encastré et les messages après l'en-tête"
 
-#: top-10.php:558
+#: top-10.php:589
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Afficher uniquement le thumbnail, sans le texte"
 
-#: top-10.php:559
+#: top-10.php:590
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Ne pas afficher le thumbnail, uniquement le texte"
 
-#: top-10.php:564
+#: top-10.php:595
 #, fuzzy
 msgid "Thumbnail height"
 msgstr "Options thumbnail des messages:"
 
-#: top-10.php:569
+#: top-10.php:600
 #, fuzzy
 msgid "Thumbnail width"
 msgstr "Options thumbnail des messages:"
 
-#: top-10.php:670
+#: top-10.php:721
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Popularni Postovi</h3>"
 
-#: top-10.php:671
+#: top-10.php:722
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Dnevni popularni</h3>"
 
-#: top-10.php:672
+#: top-10.php:723
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Annuler le top 10 des enregistrements les plus populaires"
 
-#: top-10.php:1113
+#: top-10.php:1188
 msgid "Once Weekly"
 msgstr "Jednom nedeljno"
 
-#: top-10.php:1114
+#: top-10.php:1192
 msgid "Once Fortnightly"
 msgstr "Jednom u dve nedelje"
 
-#: top-10.php:1115
+#: top-10.php:1196
 msgid "Once Monthly"
 msgstr "Jednom mesečno"
 
-#: top-10.php:1135
+#: top-10.php:1259
 msgid "Settings"
 msgstr "Postavke"
 
-#: top-10.php:1148
+#: top-10.php:1272
 msgid "Donate"
 msgstr "Donirajte"
+
+#, fuzzy
+#~ msgid "This option uses JavaScript and will increase your page load time"
+#~ msgstr ""
+#~ "Rendre la liste des postes journaliers dynamiques? Cette option fait "
+#~ "appel à JavaScript, le chargement du poste peut augmenter le temps du "
+#~ "chargement de la page"
+
+#~ msgid "Display number of page views in popular lists?"
+#~ msgstr "Prikaži broj pregleda stranica u popularnim listama?"
+
+#~ msgid "Recent developments"
+#~ msgstr "Trenutni razvoj"
+
+#~ msgid "Results"
+#~ msgstr "rezultati"
+
+#~ msgid "of"
+#~ msgstr "od"
+
+#~ msgid "Page"
+#~ msgstr "Stranice"
 
 #~ msgid " Posted by "
 #~ msgstr "Postovano od strane"
@@ -806,9 +925,6 @@ msgstr "Donirajte"
 
 #~ msgid "Tables cleaned of duplicate rows"
 #~ msgstr "Supprimer les lignes répétitives du tableau"
-
-#~ msgid "Display number of views on pages?"
-#~ msgstr "Afficher le nombre des visionnages sur les pages?"
 
 #~ msgid ""
 #~ "Display page views on Edit posts/pages in WP-Admin? An extra column is "
