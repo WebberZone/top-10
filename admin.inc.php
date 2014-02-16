@@ -190,7 +190,9 @@ function tptn_options() {
 				</tr>
 				<tr>
 				  <th scope="row"><label for="limit"><?php _e('Number of popular posts to display: ',TPTN_LOCAL_NAME); ?></label></th>
-				  <td><input type="textbox" name="limit" id="limit" value="<?php echo esc_attr(stripslashes($tptn_settings['limit'])); ?>"></td>
+				  <td><input type="textbox" name="limit" id="limit" value="<?php echo esc_attr(stripslashes($tptn_settings['limit'])); ?>">
+				    <p class="description"><?php _e("Maximum number of posts that will be displayed in the list. This option is used if you don't specify the number of posts in the widget or shortcodes",TPTN_LOCAL_NAME); ?></p>
+				  </td>
 				</tr>
 				<tr>
 				  <th scope="row"><label for="daily_range"><?php _e('Daily Popular should contain views of how many days? ',TPTN_LOCAL_NAME); ?></label></th>

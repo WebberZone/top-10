@@ -30,14 +30,17 @@ function tptn_inc_count() {
 	$str = '';
 	
 	$id = intval($_GET['top_ten_id']);
+	$activate_counter = intval($_GET['activate_counter']);
 	if($id > 0) {
-		$tt = $wpdb->query( $wpdb->prepare("INSERT INTO {$table_name} (postnumber, cntaccess) VALUES('%d', '1') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id ) );
-		$str .= ($tt === FALSE) ? 'tte' : 'tt'.$tt;
-		
-		$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$ttd = $wpdb->query( $wpdb->prepare("INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date) VALUES('%d', '1', '%s' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date ) );
-		$str .= ($ttd === FALSE) ? ' ttde' : ' ttd'.$ttd;
-		
+		if ( (1==$activate_counter) || (11==$activate_counter) ) {
+			$tt = $wpdb->query( $wpdb->prepare("INSERT INTO {$table_name} (postnumber, cntaccess) VALUES('%d', '1') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id ) );
+			$str .= ($tt === FALSE) ? 'tte' : 'tt'.$tt;
+		}
+		if ( (10==$activate_counter) || (11==$activate_counter) ) {
+			$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+			$ttd = $wpdb->query( $wpdb->prepare("INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date) VALUES('%d', '1', '%s' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date ) );
+			$str .= ($ttd === FALSE) ? ' ttde' : ' ttd'.$ttd;
+		}
 	}
 	echo '<!-- '.$str.' -->';
 }

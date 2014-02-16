@@ -74,7 +74,7 @@ function tptn_add_viewed_count($content) {
 				if ($tptn_settings['cache_fix']) {
 					$output = '<script type="text/javascript">jQuery.ajax({url: "' .$tptn_url. '/top-10-addcount.js.php", data: {top_ten_id: ' .$id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';				
 				} else {
-					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'"></script>';
+					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'&amp;activate_counter='.$activate_counter.'"></script>';
 				}
 			}
 			$output = apply_filters('tptn_viewed_count',$output);
@@ -1213,8 +1213,10 @@ add_filter('cron_schedules', 'ald_more_reccurences');
  * @return void
  */
 function tptn_shortcode( $atts, $content = null ) {
+	global $tptn_settings;
+	
 	extract( shortcode_atts( array(
-	  'limit' => '5',
+	  'limit' => $tptn_settings['limit'],
 	  'heading' => '1',
 	  'daily' => '0',
 	  ), $atts ) );
