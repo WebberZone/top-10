@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.9
+Version:     1.9.9.1
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -1123,19 +1123,19 @@ function tptn_max_formatted_content($content, $MaxLength = -1) {
  * @access public
  * @return void
  */
-function ald_tptn() {
-	global $tptn_settings;
+function ald_tptn_cron() {
+	global $tptn_settings, $wpdb;
+	
+	$table_name_daily = $wpdb->prefix . "top_ten_daily";
 
 	$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 	$current_date = strtotime ( '-90 DAY' , strtotime ( $current_time ) );
 	$current_date = date ( 'Y-m-j' , $current_date );
 
-	$resultscount = $wpdb->get_row( $wpdb->prepare( "DELETE FROM {$table_name_daily} dp_date <= '%s' ", $current_date ) );
+	$resultscount = $wpdb->query( $wpdb->prepare( "DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ", $current_date ) );
 	
-	
-	//tptn_trunc_count(true);
 }
-add_action('ald_tptn_hook', 'ald_tptn');
+add_action('ald_tptn_hook', 'ald_tptn_cron');
 
 
 /**
