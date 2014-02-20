@@ -528,7 +528,7 @@ class WidgetTopTen extends WP_Widget
 	function form($instance) {
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
 		$limit = isset($instance['limit']) ? esc_attr($instance['limit']) : '';
-		$disp_list_count = isset($instance['disp_list_count']) ? esc_attr($instance['disp_list_count']) : true;
+		$disp_list_count = isset($instance['disp_list_count']) ? esc_attr($instance['disp_list_count']) : '';
 		$show_excerpt = isset($instance['show_excerpt']) ? esc_attr($instance['show_excerpt']) : '';
 		$show_author = isset($instance['show_author']) ? esc_attr($instance['show_author']) : '';
 		$show_date = isset($instance['show_date']) ? esc_attr($instance['show_date']) : '';
