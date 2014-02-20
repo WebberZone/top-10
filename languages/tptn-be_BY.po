@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-16 13:53-0000\n"
+"POT-Creation-Date: 2014-02-20 23:16-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: FatCow <zhr@tut.by>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin.inc.php:112
@@ -148,9 +148,9 @@ msgstr ""
 
 #: admin.inc.php:249
 msgid ""
-"If you choose to disable this, please add <code>&lt;?php if(function_exists"
-"('echo_ald_tptn')) echo_ald_tptn(); ?&gt;</code> to your template file where "
-"you want it displayed"
+"If you choose to disable this, please add <code>&lt;?php "
+"if(function_exists('echo_ald_tptn')) echo_ald_tptn(); ?&gt;</code> to your "
+"template file where you want it displayed"
 msgstr ""
 
 #: admin.inc.php:252
@@ -235,8 +235,8 @@ msgid ""
 "options displays <code>(Visited 123 times, 23 visits today)</code>"
 msgstr ""
 "Выкарыстоўвайце <code>%totalcount%</code> каб паказваць агульны лік "
-"праглядаў, а <code>%dailycount%</code> - прагляды за суткі. Напрыклад: <code>"
-"(Прагледжана 123 раз, 23 разу прагляду сёння)</code>"
+"праглядаў, а <code>%dailycount%</code> - прагляды за суткі. Напрыклад: "
+"<code>(Прагледжана 123 раз, 23 разу прагляду сёння)</code>"
 
 #: admin.inc.php:297
 msgid "What do display when there are no visits?"
@@ -625,7 +625,7 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: admin.inc.php:659 top-10.php:1271
+#: admin.inc.php:659 top-10.php:1267
 msgid "Support"
 msgstr ""
 
@@ -696,115 +696,115 @@ msgstr "Усяго / Сёння праглядаў"
 msgid "Views"
 msgstr "Усяго / Сёння праглядаў"
 
-#: top-10.php:440
+#: top-10.php:438
 msgid " by "
 msgstr ""
 
-#: top-10.php:526
+#: top-10.php:524
 msgid "Display the posts popular this week"
 msgstr ""
 
-#: top-10.php:527
+#: top-10.php:525
 #, fuzzy
 msgid "Popular Posts [Top 10]"
 msgstr "Папулярныя запісы"
 
-#: top-10.php:545
+#: top-10.php:543
 msgid "Title"
 msgstr ""
 
-#: top-10.php:550
+#: top-10.php:548
 msgid "No. of posts"
 msgstr ""
 
-#: top-10.php:555
+#: top-10.php:553
 msgid "Overall"
 msgstr ""
 
-#: top-10.php:556
+#: top-10.php:554
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: top-10.php:561
+#: top-10.php:559
 msgid "Range in number of days (applies only to custom option above)"
 msgstr ""
 
-#: top-10.php:566
+#: top-10.php:564
 msgid " Show count?"
 msgstr ""
 
-#: top-10.php:571
+#: top-10.php:569
 msgid " Show excerpt?"
 msgstr ""
 
-#: top-10.php:576
+#: top-10.php:574
 msgid " Show author?"
 msgstr ""
 
-#: top-10.php:581
+#: top-10.php:579
 msgid " Show date?"
 msgstr ""
 
-#: top-10.php:585
+#: top-10.php:583
 msgid "Thumbnail options"
 msgstr ""
 
-#: top-10.php:587
+#: top-10.php:585
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Паказваць колькасць праглядаў запісу ў яе \"целе\"?"
 
-#: top-10.php:588
+#: top-10.php:586
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Паказваць колькасць праглядаў запісу ў яе \"целе\"?"
 
-#: top-10.php:589
+#: top-10.php:587
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: top-10.php:590
+#: top-10.php:588
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: top-10.php:595
+#: top-10.php:593
 msgid "Thumbnail height"
 msgstr ""
 
-#: top-10.php:600
+#: top-10.php:598
 msgid "Thumbnail width"
 msgstr ""
 
-#: top-10.php:721
+#: top-10.php:719
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Папулярныя запісы</h3>"
 
-#: top-10.php:722
+#: top-10.php:720
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Папулярныя сёння запісы</h3>"
 
-#: top-10.php:723
+#: top-10.php:721
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Загаловак блока Папулярных запісаў:"
 
-#: top-10.php:1188
+#: top-10.php:1184
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1192
+#: top-10.php:1188
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1196
+#: top-10.php:1192
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1259
+#: top-10.php:1255
 msgid "Settings"
 msgstr ""
 
-#: top-10.php:1272
+#: top-10.php:1268
 msgid "Donate"
 msgstr ""
 
