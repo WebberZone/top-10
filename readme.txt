@@ -51,11 +51,16 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 1.9.9.1 =
-New default style, new shortcodes, responsive admin interface, option to disable counts from non-admin and lots more... 
-Refer to the Changeog for more details
+= 1.9.9.2 =
+Bug fixes for widget, exclude posts and thumbnail detection. 
+Refer to the Changelog for more details
 
 == Changelog ==
+
+= 1.9.9.2 =
+* Fixed: Show count in widget was always checked
+* Fixed: "List of post or page IDs to exclude from the results" did not work for more than one post
+* Fixed: First image in the post was not detected in some cases. First image attached is now prioritised over image detection to speed things up
 
 = 1.9.9.1 =
 * Fixed: Maintenance cron wasn't running properly
