@@ -30,8 +30,8 @@ function tptn_options() {
 		$tptn_settings['limit'] = intval($_POST['limit']);
 		$tptn_settings['count_disp_form'] = ($_POST['count_disp_form']);
 		$tptn_settings['count_disp_form_zero'] = ($_POST['count_disp_form_zero']);
-		$tptn_settings['exclude_on_post_ids'] = wp_kses_post($_POST['exclude_on_post_ids']);
-		$tptn_settings['exclude_post_ids'] = wp_kses_post($_POST['exclude_post_ids']);
+		$tptn_settings['exclude_on_post_ids'] = $_POST['exclude_on_post_ids'] == '' ? '' : implode(',', array_map('intval', explode(",", $_POST['exclude_on_post_ids'])));
+		$tptn_settings['exclude_post_ids'] = $_POST['exclude_post_ids'] == '' ? '' : implode(',', array_map('intval', explode(",", $_POST['exclude_post_ids'])));
 
 		$tptn_settings['add_to_content'] = (isset($_POST['add_to_content']) ? true : false);
 		$tptn_settings['count_on_pages'] = (isset($_POST['count_on_pages']) ? true : false);
