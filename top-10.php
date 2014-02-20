@@ -334,8 +334,7 @@ function tptn_pop_posts( $args ) {
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' ";
 		if ($exclude_post_ids!='') { 
-			$sql .= "AND ID NOT IN (%s) ";
-			$args[] = $exclude_post_ids;	// Add the post types to the $args array
+			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
 		}
 		$sql .= "AND ( ";
 		$multiple = false;
@@ -360,8 +359,7 @@ function tptn_pop_posts( $args ) {
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
 		$sql .= "AND post_status = 'publish' AND dp_date >= '%s' ";
 		if ($exclude_post_ids!='') { 
-			$sql .= "AND ID NOT IN (%s) ";
-			$args[] = $exclude_post_ids;	// Add the post types to the $args array
+			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
 		}
 		$sql .= "AND ( ";
 		$multiple = false;
