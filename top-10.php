@@ -1002,16 +1002,14 @@ function tptn_get_the_post_thumbnail($args = array()) {
 
 	} else {
 		$postimage = get_post_meta($result->ID, $thumb_meta, true);	// Check
+		if (!$postimage) $postimage = tptn_get_first_image($result->ID);	// Get the first image
 		if (!$postimage && $scan_images) {
 			preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
 			// any image there?
 			if (isset($matches[1][0]) && $matches[1][0]) {
-				if (((strpos($matches[1][0], parse_url(get_option('home'),PHP_URL_HOST)) !== false) && (strpos($matches[1][0], 'http://') !== false))|| ((strpos($matches[1][0], 'http://') === false))) {
 					$postimage = preg_replace('/\?.*/', '', $matches[1][0]); // we need the first one only!
-				}
 			}
 		}
-		if (!$postimage) $postimage = tptn_get_first_image($result->ID);	// Get the first image
 		if (!$postimage) $postimage = get_post_meta($result->ID, '_video_thumbnail', true); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
 		if ($thumb_default_show && !$postimage) $postimage = $thumb_default; // If no thumb found and settings permit, use default thumb
 		if ($postimage) {
