@@ -1138,4 +1138,98 @@ function tptn_css() {
 add_action('admin_head', 'tptn_css');
 
 
+/**
+ * Function to add meta box in Write screens.
+ * 
+ * @access public
+ * @param text $post_type
+ * @param object $post
+ * @return void
+ */
+function tptn_add_meta_box( $post_type, $post ) {
+
+    	add_meta_box( 
+    		'tptn_metabox', 
+    		__( 'Top 10', TPTN_LOCAL_NAME ), 
+    		'tptn_call_meta_box', 
+    		$post_type, 
+    		'advanced', 
+    		'default' 
+    	);
+
+}
+add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
+
+
+/**
+ * Function to call the meta box.
+ * 
+ * @access public
+ * @return void
+ */
+function tptn_call_meta_box() {
+	global $post, $tptn_settings;
+	
+	// Add an nonce field so we can check for it later.
+	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
+	
+	$results = get_post_meta( $post->ID, $tptn_settings['thumb_meta'], true );
+	$value = ( $results ) ? $results : '';
+?>
+	<p>
+		<label for="thumb_meta"><?php _e( "Location of thumbnail:", TPTN_LOCAL_NAME ); ?></label>
+		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_attr( $value ) ?>" style="width:100%" />
+		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Settings &raquo; Related Posts &raquo; Output Options", TPTN_LOCAL_NAME ); ?></em>
+		<em><?php _e( "The URL above is saved in the meta field: ", TPTN_LOCAL_NAME ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+	</p>
+
+	<?php 
+	if ( $results ) {
+		echo '<img src="' . $value . '" style="max-width:100%" />';
+	}
+}
+
+
+/**
+ * Function to save the meta box.
+ * 
+ * @access public
+ * @param mixed $post_id
+ * @return void
+ */
+function tptn_save_meta_box( $post_id ) {
+	global $tptn_settings;
+
+    // Bail if we're doing an auto save
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+     
+    // if our nonce isn't there, or we can't verify it, bail
+    if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tptn_meta_box_nonce'], 'tptn_meta_box' ) ) return;
+     
+    // if our current user can't edit this post, bail
+    if ( ! current_user_can( 'edit_post' ) ) return;
+    
+    if ( isset( $_POST['thumb_meta'] ) ) {
+    	$thumb_meta = $_POST['thumb_meta'] == '' ? '' : $_POST['thumb_meta'];
+    }
+    
+	$tptn_post_meta = get_post_meta( $post_id, $tptn_settings['thumb_meta'], true );
+	if ( $tptn_post_meta && '' != $tptn_post_meta ) {
+		$gotmeta = true;
+	} else {
+		$gotmeta = false;
+	}
+
+	if ( $gotmeta && '' != $thumb_meta ) {
+		update_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
+	} elseif ( ! $gotmeta && '' != $thumb_meta ) {
+		add_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
+	} else {
+		delete_post_meta( $post_id, $tptn_settings['thumb_meta'] );
+	}
+
+}
+add_action( 'save_post', 'tptn_save_meta_box' );
+
+
 ?>
