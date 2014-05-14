@@ -4,7 +4,7 @@ Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 4.0
 License: GPLv2 or later
 
 
@@ -52,10 +52,13 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 1.9.9.2 =
-Bug fixes for widget, exclude posts and thumbnail detection. 
+New metabox to set thumbnails;
 Refer to the Changelog for more details
 
 == Changelog ==
+
+= 1.9.3 =
+* New: Metabox on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
 
 = 1.9.9.2 =
 * Fixed: Show count in widget was always checked
