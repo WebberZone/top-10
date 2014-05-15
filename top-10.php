@@ -196,14 +196,14 @@ function echo_tptn_post_count($echo=1) {
  * @return int Post count
  */
 function get_tptn_post_count($id = FALSE) {
-	global $wpdb;
+	global $wpdb, $tptn_settings;
 	
 	$table_name = $wpdb->prefix . "top_ten";
 	$table_name_daily = $wpdb->prefix . "top_ten_daily";
-	global $tptn_settings;
-	$count_disp_form = stripslashes($tptn_settings['count_disp_form']);
-	$count_disp_form_zero = stripslashes($tptn_settings['count_disp_form_zero']);
-	$totalcntaccess = get_tptn_post_count_only($id,'total');
+
+	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
+	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );
+	$totalcntaccess = get_tptn_post_count_only( $id, 'total' );
 	
 	if($id > 0) {
 
