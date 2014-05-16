@@ -1180,6 +1180,8 @@ function tptn_call_meta_box() {
 		$post->ID 
 	) );
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
+	
+	if ( current_user_can( 'manage_options' ) ) {
 ?>
 	<p>
 		<label for="total_count"><?php _e( "Visit count:", TPTN_LOCAL_NAME ); ?></label>
@@ -1188,6 +1190,7 @@ function tptn_call_meta_box() {
 	</p>
 
 <?php
+	}
 
 	$results = get_post_meta( $post->ID, $tptn_settings['thumb_meta'], true );
 	$value = ( $results ) ? $results : '';
@@ -1229,7 +1232,7 @@ function tptn_save_meta_box( $post_id ) {
     if ( ! current_user_can( 'edit_post' ) ) return;
     
 	// Update the posts view count
-	if ( isset( $_POST['total_count'] ) ) {
+	if ( ( isset( $_POST['total_count'] ) ) && ( current_user_can( 'manage_options' ) ) ) {
     	$total_count = intval( $_POST['total_count'] );
     	if ( 0 <> $total_count ) {
 			$tt = $wpdb->query( $wpdb->prepare(
