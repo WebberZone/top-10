@@ -8,16 +8,20 @@ Author:      Ajay D'Souza
 Author URI:  http://ajaydsouza.com/
 */
 
-if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
-define('ALD_TPTN_DIR', dirname(__FILE__));
-define('TPTN_LOCAL_NAME', 'tptn');
+if ( ! defined( 'ABSPATH' ) ) die( "Aren't you supposed to come here via WP-Admin?" );
+define( 'ALD_TPTN_DIR', dirname( __FILE__ ) );
+define( 'TPTN_LOCAL_NAME', 'tptn' );
 
 // Guess the location
-$tptn_path = plugin_dir_path(__FILE__);
-$tptn_url = plugins_url().'/'.plugin_basename(dirname(__FILE__));
+$tptn_path = plugin_dir_path( __FILE__ );
+$tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
 
 global $tptn_db_version;
 $tptn_db_version = "3.0";
+
+global $tptn_settings;
+$tptn_settings = tptn_read_options();
+
 
 /**
  * Function to load translation files.
@@ -25,21 +29,10 @@ $tptn_db_version = "3.0";
  * @access public
  * @return void
  */
-function ald_tptn_init() {
-	//* Begin Localization Code */
-	$tc_localizationName = TPTN_LOCAL_NAME;
-	$tc_comments_locale = get_locale();
-	$tc_comments_mofile = ALD_TPTN_DIR . "/languages/" . $tc_localizationName . "-". $tc_comments_locale.".mo";
-	load_textdomain($tc_localizationName, $tc_comments_mofile);
-	//* End Localization Code */
+function tptn_lang_init() {
+	load_plugin_textdomain( TPTN_LOCAL_NAME, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
-add_action('init', 'ald_tptn_init');
-
-/*********************************************************************
-*				Main Functions 										*
-********************************************************************/
-global $tptn_settings;
-$tptn_settings = tptn_read_options();
+add_action( 'init', 'tptn_lang_init' );
 
 
 /**
