@@ -53,10 +53,12 @@ function tptn_add_viewed_count( $content ) {
 		$current_user = wp_get_current_user(); 
 		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;	// Is the current user the post author?
 		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;	// Is the current user an admin?
+		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;	// Is the current user pure editor?
 		
 		$include_code = true;
 		if ( ( $post_author ) && ( ! $tptn_settings['track_authors'] ) ) $include_code = false;
 		if ( ( $current_user_admin ) && ( ! $tptn_settings['track_admins'] ) ) $include_code = false;
+		if ( ( $current_user_editor ) && ( ! $tptn_settings['track_editors'] ) ) $include_code = false;
 
 		if ( $include_code ) {
 			$output = '';
@@ -783,6 +785,7 @@ function tptn_default_options() {
 
 		'track_authors' => false,			// Track Authors visits
 		'track_admins' => true,			// Track Admin visits
+		'track_editors' => true,			// Track Admin visits
 		'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
 		'show_count_non_admins' => true,	// Show counts to non-admins
 		
