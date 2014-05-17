@@ -44,6 +44,7 @@ function tptn_options() {
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily']) ? true : false;
 		$tptn_settings['track_authors'] = isset( $_POST['track_authors']) ? true : false;
 		$tptn_settings['track_admins'] = isset( $_POST['track_admins']) ? true : false;
+		$tptn_settings['track_editors'] = isset( $_POST['track_editors']) ? true : false;
 		$tptn_settings['pv_in_admin'] = isset( $_POST['pv_in_admin']) ? true : false;
 		$tptn_settings['show_count_non_admins'] = isset( $_POST['show_count_non_admins'] ) ? true : false;
 
@@ -264,6 +265,11 @@ function tptn_options() {
 				<tr><th scope="row"><label for="track_admins"><?php _e( 'Track visits of admins?', TPTN_LOCAL_NAME ); ?></label></th>
 				  <td><input type="checkbox" name="track_admins" id="track_admins" <?php if ( $tptn_settings['track_admins'] ) echo 'checked="checked"' ?> />
 				    <p class="description"><?php _e( 'Disabling this option will stop admin visits being tracked.', TPTN_LOCAL_NAME ); ?></p>
+				  </td>
+				</tr>
+				<tr><th scope="row"><label for="track_editors"><?php _e( 'Track visits of Editors?', TPTN_LOCAL_NAME ); ?></label></th>
+				  <td><input type="checkbox" name="track_editors" id="track_editors" <?php if ( $tptn_settings['track_editors'] ) echo 'checked="checked"' ?> />
+				    <p class="description"><?php _e( 'Disabling this option will stop editor visits being tracked.', TPTN_LOCAL_NAME ); ?></p>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="pv_in_admin"><?php _e( 'Display page views on Posts and Pages in Admin', TPTN_LOCAL_NAME ); ?></label></th>

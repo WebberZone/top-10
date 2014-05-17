@@ -52,7 +52,7 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 1.9.9.2 =
-New meta box to set thumbnails; Edit total view count;
+New meta box to set thumbnails; Edit total view count; Stop tracking Editors;
 Refer to the Changelog for more details
 
 == Changelog ==
@@ -60,6 +60,8 @@ Refer to the Changelog for more details
 = 1.9.3 =
 * New: Meta box on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
 * New: Admins can edit the number of total views (find it in the same meta box as above)
+* New: Turn of tracking for Editors
+* New: Added w.org and github.com to list of allowed sites for timthumb
 * Fixed: Localisation initialisation
 * Modified: Reformatted code
 
