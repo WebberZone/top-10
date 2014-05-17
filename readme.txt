@@ -60,6 +60,7 @@ Refer to the Changelog for more details
 = 1.9.3 =
 * New: Meta box on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
 * New: Admins can edit the number of total views (find it in the same meta box as above)
+* Fixed: Localisation initialisation
 
 = 1.9.9.2 =
 * Fixed: Show count in widget was always checked
