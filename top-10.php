@@ -430,6 +430,7 @@ function tptn_pop_posts( $args ) {
 						'thumb_default' => $thumb_default,
 						'thumb_default_show' => $thumb_default_show,
 						'thumb_timthumb' => $thumb_timthumb,
+						'thumb_timthumb_q' => $thumb_timthumb_q,
 						'scan_images' => $scan_images,
 						'class' => "tptn_thumb",
 						'filter' => "tptn_postimage", 
@@ -812,10 +813,11 @@ function tptn_default_options() {
 		'thumb_width' => '50',			// Max width of thumbnails
 		'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?
 		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
+		'scan_images' => true,			// Scan post for images
 		'thumb_default' => $thumb_default,	// Default thumbnail image
 		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
 		'thumb_timthumb' => true,	// Use timthumb
-		'scan_images' => true,			// Scan post for images
+		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb
 
 		'show_excerpt' => false,			// Show description in list item
 		'excerpt_length' => '10',			// Length of characters
@@ -989,18 +991,20 @@ function tptn_trunc_count( $daily = false ) {
  * @param string|int $thumb_width
  * @param string|int $thumb_height
  * @param string|int $thumb_timthumb
- * @return string
+ * @param strint|int $thumb_timthumb_q
+ * @return string Post image output
  */
-function tptn_scale_thumbs( $postimage, $thumb_width, $thumb_height, $thumb_timthumb ) {
+function tptn_scale_thumbs( $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $post ) {
 	global $tptn_url;
 	
 	if ( $thumb_timthumb ) {
-		$new_pi = $tptn_url . '/timthumb/timthumb.php?src=' . urlencode( $postimage ) . '&amp;w=' . $thumb_width . '&amp;h=' . $thumb_height . '&amp;zc=1&amp;q=75';	} else {
+		$new_pi = $tptn_url . '/timthumb/timthumb.php?src=' . urlencode( $postimage ) . '&amp;w=' . $thumb_width . '&amp;h=' . $thumb_height . '&amp;zc=1&amp;q=' . $thumb_timthumb_q;		
+	} else {
 		$new_pi = $postimage;
 	}
 	return $new_pi;
 }
-add_filter( 'tptn_postimage', 'tptn_scale_thumbs', 10, 4 );
+add_filter( 'tptn_postimage', 'tptn_scale_thumbs', 10, 6 );
 
 
 /**
@@ -1023,6 +1027,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		'thumb_default' => '',	// Default thumbnail image
 		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
 		'thumb_timthumb' => true,	// Use timthumb
+		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb
 		'scan_images' => false,			// Scan post for images
 		'class' => 'tptn_thumb',			// Class of the thumbnail
 		'filter' => 'tptn_postimage',			// Class of the thumbnail
@@ -1035,36 +1040,39 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	extract( $args, EXTR_SKIP );
 
 	$result = get_post( $postid );
+	$title = get_the_title( $postid );
 
 	$output = '';
-	$title = get_the_title( $postid );
-	$thumb_html = ( 'css' == $thumb_html ) ? 'style="max-width:' . $thumb_width . 'px;max-height:' . $thumb_height . 'px;"' : 'width="' . $thumb_width . '" height="' . $thumb_height . '"';
+	$thumb_html = ( 'css' == $thumb_html ) ? 'style="max-width:' . $thumb_width . 'px;max-height:' . $thumb_height . 'px;"' : 'width="' . $thumb_width . '" height="' .$thumb_height . '"';
 	
-	if ( function_exists( 'has_post_thumbnail' ) && ( ( wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) != '' ) || ( wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) != false ) ) ) {
+	if ( function_exists( 'has_post_thumbnail' ) && ( ( '' != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) || ( false != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) ) ) {
 		$postimage = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) );
 		
-		if ( ( $postimage[1] < $thumb_width ) || ( $postimage[2] < $thumb_height ) ) $postimage = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) , 'full' ); 
-		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height, $thumb_timthumb );
+		if ( ( $postimage[1] < $thumb_width ) || ( $postimage[2] < $thumb_height ) ) {
+			$postimage = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) , 'full' ); 
+		}
+		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
 		$output .= '<img src="' . $postimage . '" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' border="0" class="' . $class . '" />';
-
 	} else {
-		$postimage = get_post_meta( $result->ID, $thumb_meta, true );	// Check
-		if ( ! $postimage ) $postimage = tptn_get_first_image( $result->ID );	// Get the first image
+		$postimage = get_post_meta( $result->ID, $thumb_meta, true );	// Check the post meta first
 		if ( ! $postimage && $scan_images ) {
-			preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $result->post_content, $matches );
-			// any image there?
-			if ( isset( $matches[1][0] ) && $matches[1][0] ) {
-				$postimage = preg_replace( '/\?.*/', '', $matches[1][0] ); // we need the first one only!
+			preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $result->post_content, $matches );
+			if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
+				$postimage = $matches[1][0]; // we need the first one only!
 			}
 		}
-		if ( ! $postimage ) $postimage = get_post_meta( $result->ID, '_video_thumbnail', true ); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
-		if ( $thumb_default_show && ! $postimage ) $postimage = $thumb_default; // If no thumb found and settings permit, use default thumb
+		if ( ! $postimage ) {
+			$postimage = tptn_get_first_image( $result->ID );	// Get the first image
+		}
+		if ( ! $postimage ) {
+			$postimage = get_post_meta( $result->ID, '_video_thumbnail', true ); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
+		}
+		if ( $thumb_default_show && ! $postimage ) {
+			$postimage = $thumb_default; // If no thumb found and settings permit, use default thumb
+		}
 		if ( $postimage ) {
-			if ( $thumb_timthumb ) {
-				$output .= '<img src="' . $tptn_url . '/timthumb/timthumb.php?src=' . urlencode( $postimage ) . '&amp;w=' . $thumb_width . '&amp;h='.$thumb_height  .'&amp;zc=1&amp;q=75" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' border="0" class="' . $class . '" />';
-			} else {
-				$output .= '<img src="' . $postimage . '" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' border="0" class="' . $class . '" />';
-			}
+			$postimage = apply_filters( $filter, $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
+			$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" '.$thumb_html.' border="0" class="'.$class.'" />';
 		}
 	}
 	
