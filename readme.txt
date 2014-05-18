@@ -52,8 +52,8 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 1.9.9.2 =
-New meta box to set thumbnails; Edit total view count; Stop tracking Editors;
-Refer to the Changelog for more details
+New meta box to set thumbnails; Edit total view count; Stop tracking Editors; Shortcode accepts all parameters as options page;
+Refer to the Changelog for full list of changes.
 
 == Changelog ==
 
@@ -63,6 +63,8 @@ Refer to the Changelog for more details
 * New: Turn of tracking for Editors
 * New: Added w.org and github.com to list of allowed sites for timthumb
 * New: Option to add quality settings for thumbnails created by timthumb
+* Modified: Shortcode now accepts all the parameters that `tptn_pop_posts()` can take. For a full list of parameters, please check out the FAQ.
+* Modified: Widget initialisation to latest standards
 * Fixed: Localisation initialisation
 * Fixed: Validation for hour and minute settings for the cron job
 * Modified: Reformatted code
