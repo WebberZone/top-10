@@ -62,7 +62,9 @@ Refer to the Changelog for more details
 * New: Admins can edit the number of total views (find it in the same meta box as above)
 * New: Turn of tracking for Editors
 * New: Added w.org and github.com to list of allowed sites for timthumb
+* New: Option to add quality settings for thumbnails created by timthumb
 * Fixed: Localisation initialisation
+* Fixed: Validation for hour and minute settings for the cron job
 * Modified: Reformatted code
 
 = 1.9.9.2 =
