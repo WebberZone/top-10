@@ -646,10 +646,10 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['limit'] = $new_instance['limit'];
 		$instance['daily'] = $new_instance['daily'];
 		$instance['daily_range'] = strip_tags( $new_instance['daily_range'] );
-		$instance['disp_list_count'] = $new_instance['disp_list_count'];
-		$instance['show_excerpt'] = $new_instance['show_excerpt'];
-		$instance['show_author'] = $new_instance['show_author'];
-		$instance['show_date'] = $new_instance['show_date'];
+		$instance['disp_list_count'] = isset($new_instance['disp_list_count']) ? true : false;
+		$instance['show_excerpt'] = isset($new_instance['show_excerpt']) ? true : false;
+		$instance['show_author'] = isset($new_instance['show_author']) ? true : false;
+		$instance['show_date'] = isset($new_instance['show_date']) ? true : false;
 		$instance['post_thumb_op'] = $new_instance['post_thumb_op'];
 		$instance['thumb_height'] = $new_instance['thumb_height'];
 		$instance['thumb_width'] = $new_instance['thumb_width'];
