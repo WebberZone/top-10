@@ -250,7 +250,7 @@ function tptn_options() {
 					<label><input type="checkbox" name="add_to_category_archives" id="add_to_category_archives" <?php if ( $tptn_settings['add_to_category_archives'] ) echo 'checked="checked"' ?> /> <?php _e( 'Category archives', TPTN_LOCAL_NAME ); ?></label><br />
 					<label><input type="checkbox" name="add_to_tag_archives" id="add_to_tag_archives" <?php if ( $tptn_settings['add_to_tag_archives'] ) echo 'checked="checked"' ?> /> <?php _e( 'Tag archives', TPTN_LOCAL_NAME ); ?></label></label><br />
 					<label><input type="checkbox" name="add_to_archives" id="add_to_archives" <?php if ( $tptn_settings['add_to_archives'] ) echo 'checked="checked"' ?> /> <?php _e( 'Other archives', TPTN_LOCAL_NAME ); ?></label></label>
-					<p class="description"><?php _e( "If you choose to disable this, please add <code>&lt;?php if ( function_exists ( 'echo_ald_tptn' ) ) echo_ald_tptn(); ?&gt;</code> to your template file where you want it displayed", TPTN_LOCAL_NAME ); ?></p>
+					<p class="description"><?php _e( "If you choose to disable this, please add <code>&lt;?php if ( function_exists ( 'echo_tptn_post_count' ) ) echo_tptn_post_count(); ?&gt;</code> to your template file where you want it displayed", TPTN_LOCAL_NAME ); ?></p>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="dynamic_post_count"><?php _e( 'Always display latest post count', TPTN_LOCAL_NAME ); ?></label></th>
