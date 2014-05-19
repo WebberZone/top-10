@@ -401,7 +401,7 @@ function tptn_pop_posts( $args ) {
 	}
 	
 	if ( $results ) {
-		$output .= $before_list;
+		$output .= apply_filters( 'tptn_before_list', $before_list );
 		foreach ( $results as $result ) {
 			$sumcount = $result->sumCount;
 			$result = get_post( apply_filters( 'tptn_post_id', $result->ID ) );	// Let's get the Post using the ID
@@ -417,7 +417,7 @@ function tptn_pop_posts( $args ) {
 			$title = tptn_max_formatted_content( get_the_title( $result->ID ), $title_length );
 
 			if ( ! $p_in_c ) {
-				$output .= $before_list_item;
+				$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result->ID );
 
 				if ( 'after' == $post_thumb_op ) {
 					$output .= '<a href="' . get_permalink( $result->ID ) . '" rel="bookmark' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
@@ -467,17 +467,17 @@ function tptn_pop_posts( $args ) {
 					$output .= '</span>';
 				}
 				
-				$output .= $after_list_item;
+				$output .= apply_filters( 'tptn_after_list_item', $after_list_item, $result->ID );
 				$counter++; 
 			}
 			if ( $counter == $limit/5 ) break;	// End loop when related posts limit is reached
 		}
 		if ( $show_credit ) {
-			$output .= $before_list_item;
+			$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result->ID );
 			$output .= sprintf( 'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/" rel="nofollow">Top 10 plugin</a>', TPTN_LOCAL_NAME );
-			$output .= $after_list_item;
+			$output .= apply_filters( 'tptn_after_list_item', $after_list_item, $result->ID );
 		}
-		$output .= $after_list;
+		$output .= apply_filters( 'tptn_after_list', $after_list );
 	} else {
 		$output .= ( $blank_output ) ? '' : $blank_output_text;
 	}

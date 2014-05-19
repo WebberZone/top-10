@@ -67,6 +67,7 @@ Refer to the Changelog for full list of changes.
 * Modified: Widget initialisation to latest standards
 * Fixed: Localisation initialisation
 * Fixed: Validation for hour and minute settings for the cron job
+* New: Several new filters allowing you to hook in an modify the output without editting plugin files
 * Modified: Reformatted code
 
 = 1.9.9.2 =
