@@ -93,7 +93,7 @@ add_filter( 'the_content', 'tptn_add_viewed_count' );
 function tptn_enqueue_scripts() {
 		global $tptn_settings;
 	
-		if ($tptn_settings['cache_fix']) wp_enqueue_script( 'jquery' );
+		if ( $tptn_settings['cache_fix'] ) wp_enqueue_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_scripts action hook to link only on the front-end
 
