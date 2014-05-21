@@ -1,5 +1,5 @@
 ﻿=== Top 10  - Popular posts plugin for WordPress ===
-Tags: top 10, counter, popular posts, top posts, daily popular, page views, statistics
+Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics
 Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
@@ -42,22 +42,24 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Screenshots ==
 
-1. Top-10 options - General options
-2. Top-10 options - Output options
-3. Top-10 options - Custom styles
-4. Top-10 options - Maintenance
-5. Top-10 widget options
+1. Top 10 options - General options
+2. Top 10 options - Output options
+3. Top 10 options - Custom styles
+4. Top 10 options - Maintenance
+5. Top 10 options - Reset count
+6. Top 10 widget options
+7. Top 10 Meta box on the Edit Post screen
 
 
 == Upgrade Notice ==
 
-= 1.9.9.2 =
+= 1.9.10 =
 New meta box to set thumbnails; Edit total view count; Stop tracking Editors; Shortcode accepts all parameters as options page;
 Refer to the Changelog for full list of changes.
 
 == Changelog ==
 
-= 1.9.3 =
+= 1.9.10 =
 * New: Meta box on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
 * New: Admins can edit the number of total views (find it in the same meta box as above)
 * New: Turn of tracking for Editors
