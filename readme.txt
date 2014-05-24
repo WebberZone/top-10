@@ -21,7 +21,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Display the count**: Customize the text that can be displayed
 * **Show off popular posts**: Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed plus loads of other customisation options
 * **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
-* **Customisable output**: 
+* **Customisable output**:
 	* Top 10 includes a default CSS style to make your popular posts list look pretty. Choose **Thumbnails inline, before title** under 'Thumbnail options' when using this option
 	* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area under "Custom Styles"
 	* Pick your own HTML tags to use for displaying the output in case you don't prefer the default `list` format
@@ -53,11 +53,17 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
+= 1.9.10.1 =
+Fixed: Initialisation error for new installs
+
 = 1.9.10 =
 New meta box to set thumbnails; Edit total view count; Stop tracking Editors; Shortcode accepts all parameters as options page;
 Refer to the Changelog for full list of changes.
 
 == Changelog ==
+
+= 1.9.10.1 =
+* Fixed: Initialisation error for new installs
 
 = 1.9.10 =
 * New: Meta box on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
@@ -85,7 +91,7 @@ Refer to the Changelog for full list of changes.
 * New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
 * New: Option to display different text when there are no hits on the post on non single posts e.g. home page, archives, etc.
 * New: Class `tptn_posts_widget` for the widgets
-* Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts 
+* Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts
 * Modified: New admin interface keeping mobile first in mind
 * Modified: Optimised widgets loading
 * Modified: Cron job will now delete entries from the daily table older than 90 days
@@ -112,11 +118,11 @@ Refer to the Changelog for full list of changes.
 
 = 1.9.8.2 =
 * New: Option to add author
-* New: More options for the Widgets to configure the post lists 
+* New: More options for the Widgets to configure the post lists
 * Modified: Shortcodes are now stripped from excerpts
 * New: Added *s3.amazonaws.com* to list of allowed sites that timthumb can fetch images from
 * Fixed: Counter was not always displayed on posts
-* New: All Posts / All Pages have separate *sortable* columns for total and daily counts 
+* New: All Posts / All Pages have separate *sortable* columns for total and daily counts
 * Fixed: Warning messages with WP_DEBUG mode ON
 
 = 1.9.8.1 =
@@ -129,7 +135,7 @@ Refer to the Changelog for full list of changes.
 * New: Option to add nofollow attribute to links
 * New: Option to exclude posts by ID in the list of top posts being displayed
 * New: Option to prevent display of the Visit Count on posts by ID
-* New: Option to choose between using CSS styles or HTML attributes for thumbnail width and height. *HTML width and height attributes are default* 
+* New: Option to choose between using CSS styles or HTML attributes for thumbnail width and height. *HTML width and height attributes are default*
 * New: Option to restrict the title to fixed number of characters
 * New: Option to add the date to the list
 * Modified: Numbers are now formatted based on the locale
@@ -171,7 +177,7 @@ Refer to the Changelog for full list of changes.
 = 1.9 =
 * New: Option to use timthumb to resize thumbnails
 * New: New variable **%overallcount%** that will display the total pageviews on the blog across all posts
-* New: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page 
+* New: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page
 * New: Customise what to display when there are no top posts detected
 * New: New scheduled maintenance to clear up daily tables and optimise performance
 * New: Custom CSS code to style the output. Check out the available styles in the <a href="http://wordpress.org/extend/plugins/top-10/faq/">FAQ</a>.
@@ -217,7 +223,7 @@ Refer to the Changelog for full list of changes.
 * Turned the credit option to false by default. This setting won't effect current users.
 * Turned off borders on post thumbnails. You can customise the CSS class "tptn_thumb" to style the post thumbnail.
 * The plugin will now display a list of changes in the WordPress Admin > Plugins area whenever an update is available
-* Fixed: Display of caching plugin compliant daily top posts lists 
+* Fixed: Display of caching plugin compliant daily top posts lists
 
 = 1.6 =
 * New: Added support for excerpts and detection of first image in the post
@@ -238,7 +244,7 @@ Refer to the Changelog for full list of changes.
 * Added support for post thumbnails feature of WordPress 2.9
 
 = 1.4.1 =
-* Fixed compatibility with WordPress 2.9 
+* Fixed compatibility with WordPress 2.9
 * Fixed XHTML validation errors in output code
 * Added buttons to reset post count of overall and daily posts
 
@@ -281,7 +287,7 @@ Refer to the Changelog for full list of changes.
 
 2. Extract the contents of top-10.zip to wp-content/plugins/ folder. You should get a folder called top-10.
 
-3. Activate the Plugin in WP-Admin. 
+3. Activate the Plugin in WP-Admin.
 
 4. Go to **Top 10** to configure
 
@@ -330,7 +336,7 @@ You can insert the popular posts anywhere in your post using the `[tptn_list]` s
 
 `
 <h3>Top posts</h3>
-[tptn_list limit="2" heading="0"] 
+[tptn_list limit="2" heading="0"]
 `
 *daily* : If set to 1, then the shortcode will return the daily popular posts list
 
@@ -384,7 +390,7 @@ Never. This plugin is designed to only track the number of pageviews on your blo
 
 = How does the scheduled maintenance work maintenance work? =
 
-When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and truncate the `wp_top_ten_daily` table. 
+When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and truncate the `wp_top_ten_daily` table.
 *Note: If you enable this option, WordPress will execute this job when it is scheduled the first time*
 
 = How to make the columns on the Custom Posts pages sortable? =
