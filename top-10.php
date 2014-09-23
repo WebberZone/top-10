@@ -1238,7 +1238,7 @@ if  ( ! function_exists( 'ald_more_reccurences' ) ) :
  * @access public
  * @return void
  */
-function ald_more_reccurences() {
+function ald_more_reccurences( $schedules ) {
 	// add a 'weekly' interval
 	$schedules['weekly'] = array(
 		'interval' => 604800,
