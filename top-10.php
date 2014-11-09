@@ -1232,6 +1232,8 @@ function tptn_disable_run() {
 }
 
 if  ( ! function_exists( 'ald_more_reccurences' ) ) :
+
+
 /**
  * Function to add weekly and fortnightly recurrences - Sample Code courtesy http://blog.slaven.net.au/archives/2007/02/01/timing-is-everything-scheduling-in-wordpress/.
  *
