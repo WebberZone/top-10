@@ -53,14 +53,14 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 1.9.10.1 =
-Fixed: Initialisation error for new installs
+= 2.0.0 =
+Fixed: Fix schedule overwrite for the cron job
 
-= 1.9.10 =
-New meta box to set thumbnails; Edit total view count; Stop tracking Editors; Shortcode accepts all parameters as options page;
-Refer to the Changelog for full list of changes.
 
 == Changelog ==
+
+= 2.0.0 =
+* Fixed: Fix schedule overwrite for the cron job
 
 = 1.9.10.1 =
 * Fixed: Initialisation error for new installs
