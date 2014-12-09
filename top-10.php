@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.10.1
+Version:     1.9.10.2
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -17,7 +17,7 @@ $tptn_path = plugin_dir_path( __FILE__ );
 $tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
 
 global $tptn_db_version;
-$tptn_db_version = "3.0";
+$tptn_db_version = "4.0";
 
 global $tptn_settings;
 $tptn_settings = tptn_read_options();
@@ -44,7 +44,7 @@ add_action( 'init', 'tptn_lang_init' );
  */
 function tptn_add_viewed_count( $content ) {
 	global $post, $wpdb, $single, $tptn_url, $tptn_path;
-	$table_name = $wpdb->prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . "top_ten";
 
 	if ( is_singular() ) {
 
@@ -63,13 +63,14 @@ function tptn_add_viewed_count( $content ) {
 		if ( $include_code ) {
 			$output = '';
 			$id = intval( $post->ID );
+			$blog_id = get_current_blog_id();
 			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;
 			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );
 			if ( $activate_counter > 0 ) {
 				if ( $tptn_settings['cache_fix'] ) {
-					$output = '<script type="text/javascript">jQuery.ajax({url: "' .$tptn_url. '/top-10-addcount.js.php", data: {top_ten_id: ' .$id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
+					$output = '<script type="text/javascript">jQuery.ajax({url: "' .$tptn_url. '/top-10-addcount.js.php", data: {top_ten_id: ' .$id. ', top_ten_blog_id: ' .$blog_id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
 				} else {
-					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'&amp;activate_counter='.$activate_counter.'"></script>';
+					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'&amp;top_ten_blog_id='.$blog_id.'&amp;activate_counter='.$activate_counter.'"></script>';
 				}
 			}
 			$output = apply_filters( 'tptn_viewed_count', $output );
@@ -189,17 +190,18 @@ function echo_tptn_post_count( $echo = 1 ) {
  *
  * @access public
  * @param int|string $id Post ID
+ * @param int|string $blog_id Blog ID
  * @return int|string Formatted post count
  */
-function get_tptn_post_count( $id = FALSE ) {
+function get_tptn_post_count( $id = FALSE, $blog_id = FALSE ) {
 	global $wpdb, $tptn_settings;
 
-	$table_name = $wpdb->prefix . "top_ten";
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
 	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
 	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );
-	$totalcntaccess = get_tptn_post_count_only( $id, 'total' );
+	$totalcntaccess = get_tptn_post_count_only( $id, 'total', $blog_id );
 
 	if ( $id > 0 ) {
 
@@ -251,17 +253,20 @@ function get_tptn_post_count( $id = FALSE ) {
  * @param string $count (default: 'total') Which count to return? total, daily or overall
  * @return int Post count
  */
-function get_tptn_post_count_only( $id = FALSE, $count = 'total' ) {
-	global $wpdb;
+function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FALSE ) {
+	global $wpdb, $tptn_settings;
 
-	$table_name = $wpdb->prefix . "top_ten";
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
-	global $tptn_settings;
+	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
-	if($id > 0) {
+	if ( empty( $blog_id ) ) {
+		$blog_id = get_current_blog_id();
+	}
+
+	if ( $id > 0 ) {
 		switch ($count) {
 			case 'total':
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" , $id ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " , $id, $blog_id ) );
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
 				break;
 			case 'daily':
@@ -270,7 +275,7 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total' ) {
 				$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
 				$current_date = date ( 'Y-m-j' , $current_date );
 
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", array($id, $current_date) ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $current_date ) ) );
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
 				break;
 			case 'overall':
@@ -312,9 +317,9 @@ function tptn_pop_posts( $args ) {
 	extract( $args, EXTR_SKIP );
 
 	if ($daily) {
-		$table_name = $wpdb->prefix . "top_ten_daily";
+		$table_name = $wpdb->base_prefix . "top_ten_daily";
 	} else {
-		$table_name = $wpdb->prefix . "top_ten";
+		$table_name = $wpdb->base_prefix . "top_ten";
 	}
 
 	$limit = ( $strict_limit ) ? $limit : ( $limit * 5 );
@@ -326,10 +331,21 @@ function tptn_pop_posts( $args ) {
 
 	parse_str( $post_types, $post_types );	// Save post types in $post_types variable
 
+	if ( empty( $post_types ) ) {
+		$post_types = get_post_types( array(
+			'public'	=> true,
+		) );
+	}
+
+	$blog_id = get_current_blog_id();
+
 	if ( ! $daily ) {
-		$args = array();
+		$args = array(
+			$blog_id,
+		);
 		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+		$sql .= "AND blog_id = '%d' ";
 		$sql .= "AND post_status = 'publish' ";
 		if ( '' != $exclude_post_ids ) {
 			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
@@ -351,10 +367,12 @@ function tptn_pop_posts( $args ) {
 		$current_date = date( 'Y-m-j', $current_time );
 
 		$args = array(
+			$blog_id,
 			$current_date,
 		);
 		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
 		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
+		$sql .= "AND blog_id = '%d' ";
 		$sql .= "AND post_status = 'publish' AND dp_date >= '%s' ";
 		if ( '' != $exclude_post_ids ) {
 			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
@@ -865,11 +883,12 @@ function tptn_default_options() {
 function tptn_read_options() {
 
 	// Upgrade table code
-	global $tptn_db_version;
+	global $tptn_db_version, $network_wide;
+
 	$installed_ver = get_option( "tptn_db_version" );
 
 	if ( $installed_ver != $tptn_db_version ) {
-		tptn_activation_hook();
+		tptn_activation_hook( $network_wide );
 	}
 
 	$tptn_settings_changed = false;
@@ -894,23 +913,59 @@ function tptn_read_options() {
 
 
 /**
- * Create tables to store pageviews.
+ * Fired when the plugin is Network Activated.
  *
- * @access public
- * @return void
+ * @since 1.0.1
+ *
+ * @param    boolean    $network_wide    True if WPMU superadmin uses
+ *                                       "Network Activate" action, false if
+ *                                       WPMU is disabled or plugin is
+ *                                       activated on an individual blog.
  */
-function tptn_activation_hook() {
+function tptn_activation_hook( $network_wide ) {
+    global $wpdb;
+
+    if ( is_multisite() && $network_wide ) {
+
+        // Get all blogs in the network and activate plugin on each one
+        $blog_ids = $wpdb->get_col( "
+        	SELECT blog_id FROM $wpdb->blogs
+			WHERE archived = '0' AND spam = '0' AND deleted = '0'
+		" );
+        foreach ( $blog_ids as $blog_id ) {
+        	switch_to_blog( $blog_id );
+			tptn_single_activate();
+        }
+
+        // Switch back to the current blog
+        restore_current_blog();
+
+    } else {
+        tptn_single_activate();
+    }
+}
+register_activation_hook( __FILE__, 'tptn_activation_hook' );
+
+
+/**
+ * Fired for each blog when the plugin is activated.
+ *
+ * @since 2.0.0
+ *
+ */
+function tptn_single_activate() {
 	global $wpdb, $tptn_db_version;
 
-	$table_name = $wpdb->prefix . "top_ten";
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
 	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
 
 		$sql = "CREATE TABLE " . $table_name . " (
-			postnumber int NOT NULL,
-			cntaccess int NOT NULL,
-			PRIMARY KEY  (postnumber)
+			postnumber bigint(20) NOT NULL,
+			cntaccess bigint(20) NOT NULL,
+			blog_id bigint(20) NOT NULL,
+			PRIMARY KEY  (postnumber, blog_id)
 			);";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -919,13 +974,14 @@ function tptn_activation_hook() {
 		add_option( "tptn_db_version", $tptn_db_version );
 	}
 
-	if($wpdb->get_var("show tables like '$table_name_daily'") != $table_name_daily) {
+	if ( $wpdb->get_var("show tables like '$table_name_daily'") != $table_name_daily ) {
 
 		$sql = "CREATE TABLE " . $table_name_daily . " (
-			postnumber int NOT NULL,
-			cntaccess int NOT NULL,
+			postnumber bigint(20) NOT NULL,
+			cntaccess bigint(20) NOT NULL,
 			dp_date date NOT NULL,
-			PRIMARY KEY  (postnumber, dp_date)
+			blog_id bigint(20) NOT NULL,
+			PRIMARY KEY  (postnumber, dp_date, blog_id)
 		);";
 
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -937,23 +993,81 @@ function tptn_activation_hook() {
 	// Upgrade table code
 	$installed_ver = get_option( "tptn_db_version" );
 
-	if( $installed_ver != $tptn_db_version ) {
+	if ( $installed_ver != $tptn_db_version ) {
 
-		$sql = "ALTER TABLE " . $table_name . " DROP COLUMN accessedid ";
-		$wpdb->query($sql);
-		$sql = "ALTER IGNORE TABLE " . $table_name . " ADD PRIMARY KEY (postnumber) ";
-		$wpdb->query($sql);
+		$sql = "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) ";
+		$wpdb->query( $sql );
 
-		$sql = "ALTER TABLE " . $table_name_daily . " DROP COLUMN accessedid ";
-		$wpdb->query($sql);
-		$sql = "ALTER IGNORE TABLE " . $table_name_daily . " ADD PRIMARY KEY (postnumber, dp_date) ";
-		$wpdb->query($sql);
+		$sql = "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL ";
+		$wpdb->query( $sql );
+
+		$sql = "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL ";
+		$wpdb->query( $sql );
+
+		$sql = "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 ";
+		$wpdb->query( $sql );
+
+		$sql = "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 ";
+		$wpdb->query( $sql );
 
 		update_option( "tptn_db_version", $tptn_db_version );
 	}
 
 }
-register_activation_hook( __FILE__, 'tptn_activation_hook' );
+
+
+/**
+ * Fired when a new site is activated with a WPMU environment.
+ *
+ * @since 2.0.0
+ *
+ * @param    int    $blog_id    ID of the new blog.
+ */
+function tptn_activate_new_site( $blog_id ) {
+
+	if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+		return;
+	}
+
+	switch_to_blog( $blog_id );
+	tptn_single_activate();
+	restore_current_blog();
+
+}
+add_action( 'wpmu_new_blog', 'tptn_activate_new_site' );
+
+
+/**
+ * Fired when a site is deleted in a WPMU environment.
+ *
+ * @since 2.0.0
+ *
+ * @param    array    $tables    Tables in the blog.
+ */
+function tptn_on_delete_blog( $tables ) {
+    global $wpdb;
+
+	$tables[] = $wpdb->base_prefix . "top_ten";
+	$tables[] = $wpdb->base_prefix . "top_ten_daily";
+
+    return $tables;
+}
+add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
 
 
 /**
@@ -963,10 +1077,10 @@ register_activation_hook( __FILE__, 'tptn_activation_hook' );
  * @return void
  */
 function tptn_update_db_check() {
-    global $tptn_db_version;
+    global $tptn_db_version, $network_wide;
 
     if (get_site_option('tptn_db_version') != $tptn_db_version) {
-        tptn_activation_hook();
+        tptn_activation_hook( $network_wide );
     }
 }
 add_action( 'plugins_loaded', 'tptn_update_db_check' );
@@ -982,7 +1096,7 @@ add_action( 'plugins_loaded', 'tptn_update_db_check' );
 function tptn_trunc_count( $daily = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . "top_ten";
 	if ( $daily ) $table_name .= "_daily";
 
 	$sql = "TRUNCATE TABLE $table_name";
@@ -1180,7 +1294,7 @@ function tptn_max_formatted_content( $content, $MaxLength = -1 ) {
 function ald_tptn_cron() {
 	global $tptn_settings, $wpdb;
 
-	$table_name_daily = $wpdb->prefix . "top_ten_daily";
+	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
 	$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
 	$current_date = strtotime ( '-90 DAY' , strtotime ( $current_time ) );
