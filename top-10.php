@@ -971,7 +971,7 @@ function tptn_single_activate() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 
-		add_option( "tptn_db_version", $tptn_db_version );
+		add_site_option( "tptn_db_version", $tptn_db_version );
 	}
 
 	if ( $wpdb->get_var("show tables like '$table_name_daily'") != $table_name_daily ) {
@@ -987,45 +987,30 @@ function tptn_single_activate() {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 
-		add_option("tptn_db_version", $tptn_db_version);
+		add_site_option("tptn_db_version", $tptn_db_version);
 	}
 
 	// Upgrade table code
-	$installed_ver = get_option( "tptn_db_version" );
+	$installed_ver = get_site_option( "tptn_db_version" );
 
 	if ( $installed_ver != $tptn_db_version ) {
 
-		$sql = "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) ";
-		$wpdb->query( $sql );
+		$wpdb->hide_errors();
 
-		$sql = "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) ";
-		$wpdb->query( $sql );
+		$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) " );
+		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) " );
+		$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) " );
+		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) " );
+		$wpdb->query( "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) " );
+		$wpdb->query( "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) " );
+		$wpdb->query( "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL " );
+		$wpdb->query( "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL " );
+		$wpdb->query( "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 " );
+		$wpdb->query( "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 " );
 
-		$sql = "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) ";
-		$wpdb->query( $sql );
+		$wpdb->show_errors();
 
-		$sql = "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) ";
-		$wpdb->query( $sql );
-
-		$sql = "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) ";
-		$wpdb->query( $sql );
-
-		$sql = "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) ";
-		$wpdb->query( $sql );
-
-		$sql = "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL ";
-		$wpdb->query( $sql );
-
-		$sql = "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL ";
-		$wpdb->query( $sql );
-
-		$sql = "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 ";
-		$wpdb->query( $sql );
-
-		$sql = "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 ";
-		$wpdb->query( $sql );
-
-		update_option( "tptn_db_version", $tptn_db_version );
+		update_site_option( "tptn_db_version", $tptn_db_version );
 	}
 
 }
@@ -1062,8 +1047,8 @@ add_action( 'wpmu_new_blog', 'tptn_activate_new_site' );
 function tptn_on_delete_blog( $tables ) {
     global $wpdb;
 
-	$tables[] = $wpdb->base_prefix . "top_ten";
-	$tables[] = $wpdb->base_prefix . "top_ten_daily";
+	$tables[] = $wpdb->prefix . "top_ten";
+	$tables[] = $wpdb->prefix . "top_ten_daily";
 
     return $tables;
 }

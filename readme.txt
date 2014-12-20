@@ -4,7 +4,7 @@ Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.3
-Tested up to: 4.0
+Tested up to: 4.2
 License: GPLv2 or later
 
 
@@ -54,12 +54,14 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.0.0 =
-Fixed: Fix schedule overwrite for the cron job
+New: Multisite support; Fixed: Fix schedule overwrite for the cron job;
+View the Changelog for details;
 
 
 == Changelog ==
 
 = 2.0.0 =
+* New: Multisite support. If you're using multisite and have previously activated Top 10 on individual blogs in the network, then head over to **Top 10 Settings** and import the counts from the old Top 10 1.x tables to the new Top 10 v2.0 tables
 * Fixed: Fix schedule overwrite for the cron job
 
 = 1.9.10.1 =
