@@ -64,6 +64,9 @@ View the Changelog for details;
 * New: Multisite support. If you're using multisite and have previously activated Top 10 on individual blogs in the network, then head over to **Top 10 Settings** and import the counts from the old Top 10 1.x tables to the new Top 10 v2.0 tables
 * Fixed: Fix schedule overwrite for the cron job
 
+= 1.9.10.2 =
+* Fixed: Schedules were overwritten when activating the maintenance cron job
+
 = 1.9.10.1 =
 * Fixed: Initialisation error for new installs
 
