@@ -1352,15 +1352,22 @@ add_action( 'admin_head', 'tptn_css' );
  */
 function tptn_add_meta_box( $post_type, $post ) {
 
-    	add_meta_box(
-    		'tptn_metabox',
-    		__( 'Top 10', TPTN_LOCAL_NAME ),
-    		'tptn_call_meta_box',
-    		$post_type,
-    		'advanced',
-    		'default'
-    	);
+	$args = array(
+	   'public'   => true,
+	);
+	$post_types = get_post_types( $args );
 
+	if ( in_array( $post_type, $post_types ) ) {
+
+		add_meta_box(
+			'tptn_metabox',
+			__( 'Top 10', TPTN_LOCAL_NAME ),
+			'tptn_call_meta_box',
+			$post_type,
+			'advanced',
+			'default'
+		);
+	}
 }
 add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
 
@@ -1433,7 +1440,7 @@ function tptn_save_meta_box( $post_id ) {
     if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tptn_meta_box_nonce'], 'tptn_meta_box' ) ) return;
 
     // if our current user can't edit this post, bail
-    if ( ! current_user_can( 'edit_post' ) ) return;
+    if ( ! current_user_can( 'edit_posts' ) ) return;
 
 	// Update the posts view count
 	if ( ( isset( $_POST['total_count'] ) ) && ( current_user_can( 'manage_options' ) ) ) {
