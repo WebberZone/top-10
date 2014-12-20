@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
  */
 function tptn_options() {
 
-	global $wpdb;
+	global $wpdb, $network_wide;
     $poststable = $wpdb->posts;
 
 	$tptn_settings = tptn_read_options();
@@ -164,6 +164,68 @@ function tptn_options() {
 
 		echo $str;
 	}
+
+	if ( ( isset( $_POST['tptn_import'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+
+		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
+		$top_ten_mu_tables_blog_ids = explode( ",", $_POST['top_ten_mu_tables_blog_ids'] );
+		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
+
+		foreach ( $top_ten_mu_tables_sel_blog_ids as $top_ten_mu_tables_sel_blog_id ) {
+			$sql = "
+					INSERT INTO " . $wpdb->base_prefix . "top_ten (postnumber, cntaccess, blog_id)
+					  SELECT postnumber, cntaccess, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten
+					  ON DUPLICATE KEY UPDATE " . $wpdb->base_prefix . "top_ten.cntaccess = " . $wpdb->base_prefix . "top_ten.cntaccess + (
+					    SELECT " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten.cntaccess FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten WHERE " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten.postnumber = " . $wpdb->base_prefix . "top_ten.postnumber
+					  )
+				";
+
+			$wpdb->query( $wpdb->prepare( $sql, $top_ten_mu_tables_sel_blog_id ) );
+
+			$sql = "
+					INSERT INTO " . $wpdb->base_prefix . "top_ten_daily (postnumber, cntaccess, dp_date, blog_id)
+					  SELECT postnumber, cntaccess, dp_date, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten_daily
+					  ON DUPLICATE KEY UPDATE " . $wpdb->base_prefix . "top_ten_daily.cntaccess = " . $wpdb->base_prefix . "top_ten_daily.cntaccess + (
+					    SELECT " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten_daily.cntaccess FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten_daily WHERE " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten_daily.postnumber = " . $wpdb->base_prefix . "top_ten_daily.postnumber
+					  )
+				";
+
+			$wpdb->query( $wpdb->prepare( $sql, $top_ten_mu_tables_sel_blog_id ) );
+		}
+
+		update_site_option( 'top_ten_mu_tables_sel_blog_ids', array_unique( array_merge( $top_ten_mu_tables_sel_blog_ids, get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() ) ) ) );
+
+
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Counts from selected sites have been imported.', TPTN_LOCAL_NAME ) .'</p></div>';
+		echo $str;
+	}
+
+	if ( ( ( isset( $_POST['tptn_delete_selected_tables'] ) ) || ( isset( $_POST['tptn_delete_imported_tables'] ) ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
+		$top_ten_mu_tables_blog_ids = explode( ",", $_POST['top_ten_mu_tables_blog_ids'] );
+		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
+
+		if ( isset( $_POST['tptn_delete_selected_tables'] ) ) {
+			$top_ten_mu_tables_sel_blog_ids = array_intersect( $top_ten_mu_tables_sel_blog_ids, get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() ) );
+		} else {
+			$top_ten_mu_tables_sel_blog_ids = get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() );
+		}
+
+		if ( ! empty( $top_ten_mu_tables_sel_blog_ids ) ) {
+
+			$sql = "DROP TABLE ";
+			foreach( $top_ten_mu_tables_sel_blog_ids as $top_ten_mu_tables_sel_blog_id ) {
+				$sql .= $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten, ";
+				$sql .= $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . "_top_ten_daily, ";
+			}
+			$sql = substr( $sql, 0, -2 );
+
+			$wpdb->query( $sql );
+			$str = '<div id="message" class="updated fade"><p>'. __( 'Selected tables have been deleted. Note that only imported tables have been deleted.', TPTN_LOCAL_NAME ) .'</p></div>';
+			echo $str;
+		}
+	}
+
 ?>
 
 <div class="wrap">
@@ -563,6 +625,118 @@ function tptn_options() {
 	    </div>
 		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
 	  </form>
+
+	  	<?php
+			if ( is_multisite() ) {
+		?>
+
+	  <form method="post" id="tptn_import_mu" name="tptn_import_mu" onsubmit="return checkForm()">
+	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	      <h3 class='hndle'><span><?php _e( 'WordPress Multisite: Migrate Top 10 v1.x counts to 2.x', TPTN_LOCAL_NAME ); ?></span></h3>
+	      <div class="inside">
+		    <p class="description">
+		    	<?php _e( "If you've been using Top 10 v1.x on multisite, you would have needed to activate the plugin independently for each site. This would have resulted in two tables being created for each site in the network. Top 10 v2.x onwards uses only a single table to record the count, keeping your database clean. You can use this tool to import the recorded counts from v1.x tables to the new v2.x table format.", TPTN_LOCAL_NAME ); ?>
+		    </p>
+		    <p class="description">
+		    	<?php _e( "If you do not see any tables below, then it means that either all data has already been imported or no relevant information has been found.", TPTN_LOCAL_NAME ); ?>
+		    </p>
+
+		    	<?php
+			    	$top_ten_mu_tables_sel_blog_ids = get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() );
+			    	$top_ten_mu_tables_blog_ids = array();
+			    	$top_ten_all_mu_tables = array();
+
+			        // Get all blogs in the network and activate plugin on each one
+			        $blog_ids = $wpdb->get_col( "
+			        	SELECT blog_id FROM $wpdb->blogs
+						WHERE archived = '0' AND spam = '0' AND deleted = '0'
+					" );
+			        foreach ( $blog_ids as $blog_id ) {
+			        	switch_to_blog( $blog_id );
+						$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " );
+
+						if ( ! empty( $top_ten_mu_table ) && ! is_main_site( $blog_id ) ) {
+							$top_ten_mu_tables_blog_ids[] = $blog_id;
+							$top_ten_all_mu_tables[ $top_ten_mu_table ][0] = $top_ten_mu_table;
+							$top_ten_all_mu_tables[ $top_ten_mu_table ][1] = in_array( $blog_id, $top_ten_mu_tables_sel_blog_ids ) ? 1 : 0;
+							$top_ten_all_mu_tables[ $top_ten_mu_table ][2] = $blog_id;
+						}
+			        }
+
+			        // Switch back to the current blog
+			        restore_current_blog();
+
+					if ( ! empty( $top_ten_all_mu_tables ) ) {
+				?>
+
+			<table class="form-table">
+				<tr>
+					<th>
+						<?php _e( "Blog ID", TPTN_LOCAL_NAME ); ?>
+					</th>
+					<th>
+						<?php _e( "Status", TPTN_LOCAL_NAME ); ?>
+					</th>
+					<th>
+						<?php _e( "Select to import", TPTN_LOCAL_NAME ); ?>
+					</th>
+				</tr>
+
+				<?php
+					foreach ( $top_ten_all_mu_tables as $top_ten_all_mu_table ) {
+				?>
+					<tr>
+						<td>
+							<?php
+								_e( "Blog #", TPTN_LOCAL_NAME );
+								echo $top_ten_all_mu_table[2];
+								echo ": ";
+								echo get_blog_details( $top_ten_all_mu_table[2] )->blogname;
+							?>
+						</td>
+						<td>
+							<?php
+								if ( 0 == $top_ten_all_mu_table[1] ) {
+									echo '<span style="color:#F00">';
+									_e( "Not imported", TPTN_LOCAL_NAME );
+									echo '</span>';
+								} else {
+									echo '<span style="color:#0F0">';
+									_e( "Imported", TPTN_LOCAL_NAME );
+									echo '</span>';
+								}
+							?>
+						</td>
+						<td>
+							<?php
+								if ( 0 == $top_ten_all_mu_table[1] ) {
+									echo '<input type="checkbox" name="top_ten_all_mu_tables[' . $top_ten_all_mu_table[0] . ']" value="' . $top_ten_all_mu_table[2] . '" checked="checked" />';
+								} else {
+									echo '<input type="checkbox" name="top_ten_all_mu_tables[' . $top_ten_all_mu_table[0] . ']" value="' . $top_ten_all_mu_table[2] . '" />';
+								}
+							?>
+						</td>
+					</tr>
+				<?php
+					}
+			    ?>
+			</table>
+		    <p>
+		      <input type="hidden" name="top_ten_mu_tables_blog_ids" value="<?php echo implode( ',', $top_ten_mu_tables_blog_ids ); ?>" />
+		      <input name="tptn_import" type="submit" id="tptn_import" value="<?php _e( 'Begin import', TPTN_LOCAL_NAME ); ?>" class="button button-primary" />
+		      <input name="tptn_delete_selected_tables" type="submit" id="tptn_delete_selected_tables" value="<?php _e( 'Delete selected tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" />
+		      <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php _e( 'Delete all imported tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" />
+		    </p>
+			<?php
+				} // End if ( ! empty( $top_ten_all_mu_tables ) )
+			?>
+	      </div>
+	    </div>
+		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
+	  </form>
+			<?php
+				}
+		    ?>
 
 	</div><!-- /post-body-content -->
 	<div id="postbox-container-1" class="postbox-container">
