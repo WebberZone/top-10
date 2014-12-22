@@ -83,7 +83,7 @@ function tptn_add_viewed_count( $content ) {
 				if ( $tptn_settings['cache_fix'] ) {
 					$output = '<script type="text/javascript">jQuery.ajax({url: "' . $home_url . '", data: {top_ten_id: ' .$id. ', top_ten_blog_id: ' .$blog_id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
 				} else {
-					$output = '<script type="text/javascript" src="'.$home_url.'?top_ten_id='.$id.'&amp;top_ten_blog_id='.$blog_id.'&amp;activate_counter='.$activate_counter.'"></script>';
+					$output = '<script type="text/javascript" async src="'.$home_url.'?top_ten_id='.$id.'&amp;top_ten_blog_id='.$blog_id.'&amp;activate_counter='.$activate_counter.'"></script>';
 				}
 			}
 			$output = apply_filters( 'tptn_viewed_count', $output );
@@ -170,6 +170,7 @@ function tptn_parse_request( $wp ) {
 				$str .= ( FALSE === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
+		Header("content-type: application/x-javascript");
 		echo '<!-- ' . $str . ' -->';
 		//stop anything else from loading as it is not needed.
 		exit;
@@ -182,6 +183,7 @@ function tptn_parse_request( $wp ) {
 
 			$output = get_tptn_post_count( $id );
 
+			Header("content-type: application/x-javascript");
 			echo 'document.write("' . $output . '")';
 			//stop anything else from loading as it is not needed.
 			exit;
