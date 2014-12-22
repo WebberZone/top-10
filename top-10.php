@@ -46,6 +46,19 @@ function tptn_add_viewed_count( $content ) {
 	global $post, $wpdb, $single, $tptn_url, $tptn_path;
 	$table_name = $wpdb->base_prefix . "top_ten";
 
+	$home_url = home_url( '/' );
+
+	/**
+	 * Filter the script URL of the counter.
+	 *
+	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
+	 * You can use $tptn_url . '/top-10-addcount.js.php' as a source
+	 * $tptn_url is a global variable
+	 *
+	 * @since	2.0
+	 */
+	$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
+
 	if ( is_singular() ) {
 
 		global $tptn_settings;
@@ -68,9 +81,9 @@ function tptn_add_viewed_count( $content ) {
 			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );
 			if ( $activate_counter > 0 ) {
 				if ( $tptn_settings['cache_fix'] ) {
-					$output = '<script type="text/javascript">jQuery.ajax({url: "' .$tptn_url. '/top-10-addcount.js.php", data: {top_ten_id: ' .$id. ', top_ten_blog_id: ' .$blog_id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
+					$output = '<script type="text/javascript">jQuery.ajax({url: "' . $home_url . '", data: {top_ten_id: ' .$id. ', top_ten_blog_id: ' .$blog_id. ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
 				} else {
-					$output = '<script type="text/javascript" src="'.$tptn_url.'/top-10-addcount.js.php?top_ten_id='.$id.'&amp;top_ten_blog_id='.$blog_id.'&amp;activate_counter='.$activate_counter.'"></script>';
+					$output = '<script type="text/javascript" src="'.$home_url.'?top_ten_id='.$id.'&amp;top_ten_blog_id='.$blog_id.'&amp;activate_counter='.$activate_counter.'"></script>';
 				}
 			}
 			$output = apply_filters( 'tptn_viewed_count', $output );
@@ -97,6 +110,88 @@ function tptn_enqueue_scripts() {
 		if ( $tptn_settings['cache_fix'] ) wp_enqueue_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_scripts action hook to link only on the front-end
+
+
+/**
+ * Function to add additional queries to query_vars.
+ *
+ * @since 2.0.0
+ *
+ * @param array $vars Query variable
+ * @return array
+ */
+function tptn_query_vars( $vars ) {
+	//add these to the list of queryvars that WP gathers
+	$vars[] = 'top_ten_id';
+	$vars[] = 'top_ten_blog_id';
+	$vars[] = 'activate_counter';
+	$vars[] = 'view_counter';
+	return $vars;
+}
+add_filter( 'query_vars', 'tptn_query_vars' );
+
+
+/**
+ * Function to update the .
+ *
+ * @since 2.0.0
+ *
+ * @param array $vars Query variable
+ * @return array
+ */
+function tptn_parse_request( $wp ) {
+   	global $wpdb, $tptn_settings;
+
+	$table_name = $wpdb->base_prefix . "top_ten";
+	$top_ten_daily = $wpdb->base_prefix . "top_ten_daily";
+	$str = '';
+
+	if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) && $wp->query_vars['top_ten_id'] != '' ) {
+
+		$id = intval( $wp->query_vars['top_ten_id'] );
+		$blog_id = intval( $wp->query_vars['top_ten_blog_id'] );
+		$activate_counter = intval( $wp->query_vars['activate_counter'] );
+
+		if ( $id > 0 ) {
+
+			if ( ( 1 == $activate_counter ) || ( 11 == $activate_counter ) ) {
+
+				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '1', '%d') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) );
+
+				$str .= ( FALSE === $tt ) ? 'tte' : 'tt' . $tt;
+			}
+
+			if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
+
+				$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+
+				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
+
+				$str .= ( FALSE === $ttd ) ? ' ttde' : ' ttd' . $ttd;
+			}
+		}
+		echo '<!-- ' . $str . ' -->';
+		//stop anything else from loading as it is not needed.
+		exit;
+
+	} elseif ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'view_counter', $wp->query_vars ) && $wp->query_vars['top_ten_id'] != '' ) {
+
+		$id = intval( $wp->query_vars['top_ten_id'] );
+
+		if ( $id > 0 ) {
+
+			$output = get_tptn_post_count( $id );
+
+			echo 'document.write("' . $output . '")';
+			//stop anything else from loading as it is not needed.
+			exit;
+		}
+
+	} else {
+		return;
+	}
+}
+add_action( 'wp', 'tptn_parse_request' );
 
 
 /**
@@ -166,13 +261,26 @@ add_filter( 'the_content_feed', 'ald_tptn_rss' );
 function echo_tptn_post_count( $echo = 1 ) {
 	global $post, $tptn_url, $tptn_path, $tptn_settings;
 
+	$home_url = home_url( '/' );
+
+	/**
+	 * Filter the script URL of the counter.
+	 *
+	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
+	 * You can use $tptn_url . '/top-10-counter.js.php' as a source
+	 * $tptn_url is a global variable
+	 *
+	 * @since	2.0
+	 */
+	$home_url = apply_filters( 'tptn_view_counter_script_url', $home_url );
+
 	$id = intval( $post->ID );
 
 	$nonce_action = 'tptn-nonce-' . $id ;
     $nonce = wp_create_nonce( $nonce_action );
 
 	if ( $tptn_settings['dynamic_post_count'] ) {
-		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $tptn_url . '/top-10-counter.js.php?top_ten_id='.$id.'&amp;_wpnonce=' . $nonce . '"></script></div>';
+		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
 	} else {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	}
