@@ -26,6 +26,7 @@ function tptn_options() {
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
+		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
 		$tptn_settings['limit'] = intval( $_POST['limit'] );
 		$tptn_settings['count_disp_form'] = $_POST['count_disp_form'];
 		$tptn_settings['count_disp_form_zero'] = $_POST['count_disp_form_zero'];
@@ -261,9 +262,11 @@ function tptn_options() {
 				  </td>
 				</tr>
 				<tr>
-				  <th scope="row"><label for="daily_range"><?php _e( 'Daily Popular should contain views of how many days? ', TPTN_LOCAL_NAME ); ?></label></th>
-				  <td><input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes( $tptn_settings['daily_range'] ); ?>">
-				    <p class="description"><?php _e( "Instead of displaying popular posts fromt he past day, this setting lets you display posts for as many days as you want. This can be overridden in the widget.", TPTN_LOCAL_NAME ); ?></p>
+				  <th scope="row"><label for="daily_range"><?php _e( 'Daily popular contains top posts over:', TPTN_LOCAL_NAME ); ?></label></th>
+				  <td>
+				  	<input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes( $tptn_settings['daily_range'] ); ?>"> <?php _e( 'day(s)', TPTN_LOCAL_NAME ); ?>
+				  	<input type="textbox" name="hour_range" id="hour_range" size="3" value="<?php echo stripslashes( $tptn_settings['hour_range'] ); ?>"> <?php _e( 'hour(s)', TPTN_LOCAL_NAME ); ?>
+				    <p class="description"><?php _e( "Think of Daily Popular has a custom date range applied as a global setting. Instead of displaying popular posts from the past day, this setting lets you display posts for as many days or as few hours as you want. This can be overridden in the widget.", TPTN_LOCAL_NAME ); ?></p>
 				  </td>
 				</tr>
 				<tr><th scope="row"><?php _e( 'Post types to include in results (including custom post types)', TPTN_LOCAL_NAME ); ?></th>
@@ -1234,10 +1237,12 @@ function tptn_value( $column_name, $id ) {
 	if ( ( $column_name == 'tptn_daily' ) && ( $tptn_settings['pv_in_admin'] ) ) {
 		$table_name = $wpdb->base_prefix . "top_ten_daily";
 
-		$daily_range = $tptn_settings['daily_range'] - 1;
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-		$current_date = date( 'Y-m-j' , $current_date );
+		$daily_range = $tptn_settings['daily_range'];
+		$hour_range = $tptn_settings['hour_range'];
+
+		$current_time = current_time( 'timestamp', 1 );
+		$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
@@ -1253,10 +1258,12 @@ function tptn_value( $column_name, $id ) {
 
 		$table_name = $wpdb->base_prefix . "top_ten_daily";
 
-		$daily_range = $tptn_settings['daily_range']-1;
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime( '-' . $daily_range . ' DAY' , strtotime ( $current_time ) );
-		$current_date = date( 'Y-m-j' , $current_date );
+		$daily_range = $tptn_settings['daily_range'];
+		$hour_range = $tptn_settings['hour_range'];
+
+		$current_time = current_time( 'timestamp', 1 );
+		$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date ) );
 		$cntaccess .= ' / '.number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
@@ -1309,10 +1316,12 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 
 		$table_name = $wpdb->base_prefix . "top_ten_daily";
 
-		$daily_range = $tptn_settings['daily_range'] - 1;
-		$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-		$current_date = strtotime( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-		$current_date = date( 'Y-m-j' , $current_date );
+		$daily_range = $tptn_settings['daily_range'];
+		$hour_range = $tptn_settings['hour_range'];
+
+		$current_time = current_time( 'timestamp', 1 );
+		$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 		$clauses['join'] .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
 		$clauses['where'] .= " AND {$table_name}.dp_date >= '$current_date' ";
