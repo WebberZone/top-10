@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Top 10
-Version:     1.9.11
+Version:     1.9.12
 Plugin URI:  http://ajaydsouza.com/wordpress/plugins/top-10/
 Description: Count daily and total visits per post and display the most popular posts based on the number of views. Based on the plugin by <a href="http://weblogtoolscollection.com">Mark Ghosh</a>
 Author:      Ajay D'Souza
@@ -163,7 +163,7 @@ function tptn_parse_request( $wp ) {
 
 			if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
 
-				$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 1 ) );
 
 				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
 
@@ -380,10 +380,12 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
 				break;
 			case 'daily':
-				$daily_range = $tptn_settings['daily_range']-1;
-				$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-				$current_date = strtotime ( '-'.$daily_range. ' DAY' , strtotime ( $current_time ) );
-				$current_date = date ( 'Y-m-j' , $current_date );
+				$daily_range = $tptn_settings['daily_range'];
+				$hour_range = $tptn_settings['hour_range'];
+
+				$current_time = current_time( 'timestamp', 1 );
+				$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+				$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $current_date ) ) );
 				$cntaccess = number_format_i18n((($resultscount) ? $resultscount->sumCount : 0));
@@ -472,9 +474,10 @@ function tptn_pop_posts( $args ) {
 		$sql .= "ORDER BY sumCount DESC LIMIT %d";
 		$args[] = $limit;
 	} else {
-		$current_time = current_time( 'timestamp', 0 );
-		$current_time = $current_time - ( $daily_range - 1 ) * 3600 * 24;
-		$current_date = date( 'Y-m-j', $current_time );
+
+		$current_time = current_time( 'timestamp', 1 );
+		$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 		$args = array(
 			$blog_id,
@@ -699,6 +702,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$thumb_width = isset( $instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : '';
 		$daily = isset( $instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
 		$daily_range = isset( $instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
+		$hour_range = isset( $instance['hour_range'] ) ? esc_attr( $instance['hour_range'] ) : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>">
@@ -717,8 +721,12 @@ class Top_Ten_Widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
+			<?php _e( 'In days and hours (applies only to custom option above)', TPTN_LOCAL_NAME ); ?>:
 			<label for="<?php echo $this->get_field_id( 'daily_range' ); ?>">
-			<?php _e( 'Range in number of days (applies only to custom option above)', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'daily_range' ); ?>" name="<?php echo $this->get_field_name( 'daily_range' ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" />
+				<input class="widefat" id="<?php echo $this->get_field_id( 'daily_range' ); ?>" name="<?php echo $this->get_field_name( 'daily_range' ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" /> <?php _e( 'days', TPTN_LOCAL_NAME ); ?>
+			</label>
+			<label for="<?php echo $this->get_field_id( 'hour_range' ); ?>">
+				<input class="widefat" id="<?php echo $this->get_field_id( 'hour_range' ); ?>" name="<?php echo $this->get_field_name( 'hour_range' ); ?>" type="text" value="<?php echo esc_attr( $hour_range ); ?>" /> <?php _e( 'hours', TPTN_LOCAL_NAME ); ?>
 			</label>
 		</p>
 		<p>
@@ -779,6 +787,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['limit'] = $new_instance['limit'];
 		$instance['daily'] = $new_instance['daily'];
 		$instance['daily_range'] = strip_tags( $new_instance['daily_range'] );
+		$instance['hour_range'] = strip_tags( $new_instance['hour_range'] );
 		$instance['disp_list_count'] = isset($new_instance['disp_list_count']) ? true : false;
 		$instance['show_excerpt'] = isset($new_instance['show_excerpt']) ? true : false;
 		$instance['show_author'] = isset($new_instance['show_author']) ? true : false;
@@ -809,6 +818,7 @@ class Top_Ten_Widget extends WP_Widget {
 		}
 
 		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
+		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
 
 		$daily = ( "daily" == $instance['daily'] ) ? true : false;
 
@@ -825,6 +835,7 @@ class Top_Ten_Widget extends WP_Widget {
 					'limit' => $limit,
 					'daily' => 1,
 					'daily_range' => $daily_range,
+					'hour_range' => $hour_range,
 					'show_excerpt' => $instance['show_excerpt'],
 					'show_author' => $instance['show_author'],
 					'show_date' => $instance['show_date'],
@@ -841,6 +852,7 @@ class Top_Ten_Widget extends WP_Widget {
 				'limit' => $limit,
 				'daily' => 0,
 				'daily_range' => $daily_range,
+				'hour_range' => $hour_range,
 				'show_excerpt' => $instance['show_excerpt'],
 				'show_author' => $instance['show_author'],
 				'show_date' => $instance['show_date'],
@@ -937,6 +949,7 @@ function tptn_default_options() {
 		'title_daily' => $title_daily,	// Title of Daily Popular
 		'limit' => '10',					// How many posts to display?
 		'daily_range' => '1',				// Daily Popular will contain posts of how many days?
+		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
 
 		'before_list' => '<ul>',			// Before the entire list
 		'after_list' => '</ul>',			// After the entire list
@@ -1111,6 +1124,7 @@ function tptn_single_activate() {
 		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) " );
 		$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) " );
 		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) " );
+		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY dp_date DATETIME " );
 		$wpdb->query( "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) " );
 		$wpdb->query( "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) " );
 		$wpdb->query( "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL " );
@@ -1391,9 +1405,9 @@ function ald_tptn_cron() {
 
 	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
-	$current_time = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
-	$current_date = strtotime ( '-90 DAY' , strtotime ( $current_time ) );
-	$current_date = date ( 'Y-m-j' , $current_date );
+	$current_time = current_time( 'timestamp', 1 );
+	$current_date = strtotime( '-90 DAY' , $current_time );
+	$current_date = gmdate( 'Y-m-d H' , $current_date );
 
 	$resultscount = $wpdb->query( $wpdb->prepare(
 		"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",

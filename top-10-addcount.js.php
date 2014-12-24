@@ -38,7 +38,7 @@ function tptn_inc_count() {
 			$str .= ($tt === FALSE) ? 'tte' : 'tt'.$tt;
 		}
 		if ( (10==$activate_counter) || (11==$activate_counter) ) {
-			$current_date = gmdate( 'Y-m-d', ( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) );
+			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 1 ) );
 			$ttd = $wpdb->query( $wpdb->prepare("INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
 			$str .= ($ttd === FALSE) ? ' ttde' : ' ttd'.$ttd;
 		}
