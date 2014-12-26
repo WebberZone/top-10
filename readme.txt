@@ -54,7 +54,7 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.0.0 =
-New: Multisite support; No more external JavaScript files; Hourly tracking; bug fixes;
+Multisite support; Better extensions support; Hourly tracking; bug fixes;
 View the Changelog for details;
 
 
@@ -62,6 +62,7 @@ View the Changelog for details;
 
 = 2.0.0 =
 * New: Multisite support. If you're using multisite and have previously activated Top 10 on individual blogs in the network, then head over to **Top 10 Settings** and import the counts from the old Top 10 1.x tables to the new Top 10 v2.0 tables
+* New: Fully extendable lookup query for the top lists. Now you can create your own functions in functions.php or in addon plugins to modify the mySQL query
 * Modified: Post tracking is now done on an hourly basis. Date limiting is also on an hourly basis. So, 1 day is actually the last 24 hours and not from midnight anymore!
 * Modified: Update and View counts now use query variables instead of external JavaScript files. Check http://goo.gl/yemvyM for sample functions to restore the old method
 * Fixed: Fix schedule overwrite for the cron job

@@ -479,10 +479,10 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 				$hour_range = $tptn_settings['hour_range'];
 
 				$current_time = current_time( 'timestamp', 1 );
-				$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-				$current_date = gmdate( 'Y-m-d H' , $current_date );
+				$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+				$from_date = gmdate( 'Y-m-d H' , $from_date );
 
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $current_date ) ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) );
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
 				break;
 			case 'overall':
@@ -507,6 +507,15 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
  */
 function tptn_pop_posts( $args ) {
 	global $wpdb, $id, $tptn_settings;
+
+	// Initialise some variables
+	$fields = '';
+	$where = '';
+	$join = '';
+	$groupby = '';
+	$orderby = '';
+	$limits = '';
+	$match_fields = '';
 
 	$defaults = array(
 		'is_widget' => FALSE,
@@ -550,65 +559,105 @@ function tptn_pop_posts( $args ) {
 
 	$blog_id = get_current_blog_id();
 
-	if ( ! $daily ) {
-		$args = array(
-			$blog_id,
-		);
+	$current_time = current_time( 'timestamp', 1 );
+	$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+	$from_date = gmdate( 'Y-m-d H' , $from_date );
 
-		$sql = "SELECT postnumber, cntaccess as sumCount, ID, post_type, post_status ";
-		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND blog_id = '%d' ";
-		$sql .= "AND post_status = 'publish' ";
-		if ( '' != $exclude_post_ids ) {
-			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
-		}
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ( $post_types as $post_type ) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '%s' ";
-			$multiple = true;
-			$args[] = $post_type;	// Add the post types to the $args array
-		}
-		$sql .= " ) ";
-		$sql .= "ORDER BY sumCount DESC LIMIT %d";
-		$args[] = $limit;
+	/**
+	 *
+	 * We're going to create a mySQL query that is fully extendable which would look something like this:
+	 * "SELECT $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits"
+	 *
+	 */
 
-	} else {
+	// Fields to return
+	$fields = " postnumber, ";
+	$fields .= ( $daily ) ? "SUM(cntaccess) as sumCount, dp_date, " : "cntaccess as sumCount, ";
+//	$fields .= "ID, post_type, post_status ";
+	$fields .= "ID ";
 
-		$current_time = current_time( 'timestamp', 1 );
-		$current_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$current_date = gmdate( 'Y-m-d H' , $current_date );
+	// Create the JOIN clause
+	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
 
-		$args = array(
-			$blog_id,
-			$current_date,
-		);
+	// Create the base WHERE clause
+	$where .= $wpdb->prepare( " AND blog_id = %d ", $blog_id );				// Posts need to be from the current blog only
+	$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
 
-		$sql = "SELECT postnumber, SUM(cntaccess) as sumCount, dp_date, ID, post_type, post_status ";
-		$sql .= "FROM {$table_name} INNER JOIN ". $wpdb->posts ." ON postnumber=ID " ;
-		$sql .= "AND blog_id = '%d' ";
-		$sql .= "AND post_status = 'publish' AND dp_date >= '%s' ";
-		if ( '' != $exclude_post_ids ) {
-			$sql .= "AND ID NOT IN ({$exclude_post_ids}) ";
-		}
-		$sql .= "AND ( ";
-		$multiple = false;
-		foreach ( $post_types as $post_type ) {
-			if ( $multiple ) $sql .= ' OR ';
-			$sql .= " post_type = '%s' ";
-			$multiple = true;
-			$args[] = $post_type;	// Add the post types to the $args array
-		}
-		$sql .= " ) ";
-		$sql .= "GROUP BY postnumber ";
-		$sql .= "ORDER BY sumCount DESC LIMIT %d";
-		$args[] = $limit;
+	if ( $daily ) {
+		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );	// Only fetch posts that are tracked after this date
 	}
+
+	if ( '' != $exclude_post_ids ) {
+		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
+	}
+	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";	// Array of post types
+
+	// Create the base GROUP BY clause
+	if ( $daily ) {
+		$groupby = " postnumber ";
+	}
+
+	// Create the base ORDER BY clause
+	$orderby = " sumCount DESC ";
+
+	// Create the base LIMITS clause
+	$limits .= $wpdb->prepare( " LIMIT %d ", $limit );
+
+	/**
+	 * Filter the SELECT clause of the query.
+	 *
+	 * @param string   $fields  The SELECT clause of the query.
+	 */
+	$fields = apply_filters( 'tptn_posts_fields', $fields );
+
+	/**
+	 * Filter the JOIN clause of the query.
+	 *
+	 * @param string   $join  The JOIN clause of the query.
+	 */
+		$join = apply_filters( 'tptn_posts_join', $join );
+
+	/**
+	 * Filter the WHERE clause of the query.
+	 *
+	 * @param string   $where  The WHERE clause of the query.
+	 */
+	$where = apply_filters( 'tptn_posts_where', $where );
+
+	/**
+	 * Filter the GROUP BY clause of the query.
+	 *
+	 * @param string   $groupby  The GROUP BY clause of the query.
+	 */
+	$groupby = apply_filters( 'tptn_posts_groupby', $groupby );
+
+
+	/**
+	 * Filter the ORDER BY clause of the query.
+	 *
+	 * @param string   $orderby  The ORDER BY clause of the query.
+	 */
+	$orderby = apply_filters( 'tptn_posts_orderby', $orderby );
+
+	/**
+	 * Filter the LIMIT clause of the query.
+	 *
+	 * @param string   $limits  The LIMIT clause of the query.
+	 */
+	$limits = apply_filters( 'tptn_posts_limits', $limits );
+
+	if ( ! empty( $groupby ) ) {
+		$groupby = " GROUP BY {$groupby} ";
+	}
+	if ( ! empty( $orderby ) ) {
+		$orderby = " ORDER BY {$orderby} ";
+	}
+
+	$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
 	if ( $posts_only ) {	// Return the array of posts only if the variable is set
 
-		$tptn_pop_posts_array = $wpdb->get_results( $wpdb->prepare( $sql , $args ) , ARRAY_A );
+		$tptn_pop_posts_array = $wpdb->get_results( $sql , ARRAY_A );
 
 		/**
 		 * Filter the array of top post IDs.
@@ -620,7 +669,7 @@ function tptn_pop_posts( $args ) {
 		return apply_filters( 'tptn_pop_posts_array', $tptn_pop_posts_array );
 	}
 
-	$results = $wpdb->get_results( $wpdb->prepare( $sql , $args ) );
+	$results = $wpdb->get_results( $sql );
 
 	$counter = 0;
 
@@ -989,10 +1038,10 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['daily'] = $new_instance['daily'];
 		$instance['daily_range'] = strip_tags( $new_instance['daily_range'] );
 		$instance['hour_range'] = strip_tags( $new_instance['hour_range'] );
-		$instance['disp_list_count'] = isset($new_instance['disp_list_count']) ? true : false;
-		$instance['show_excerpt'] = isset($new_instance['show_excerpt']) ? true : false;
-		$instance['show_author'] = isset($new_instance['show_author']) ? true : false;
-		$instance['show_date'] = isset($new_instance['show_date']) ? true : false;
+		$instance['disp_list_count'] = isset( $new_instance['disp_list_count'] ) ? true : false;
+		$instance['show_excerpt'] = isset( $new_instance['show_excerpt'] ) ? true : false;
+		$instance['show_author'] = isset( $new_instance['show_author'] ) ? true : false;
+		$instance['show_date'] = isset( $new_instance['show_date'] ) ? true : false;
 		$instance['post_thumb_op'] = $new_instance['post_thumb_op'];
 		$instance['thumb_height'] = $new_instance['thumb_height'];
 		$instance['thumb_width'] = $new_instance['thumb_width'];
@@ -1013,7 +1062,7 @@ class Top_Ten_Widget extends WP_Widget {
 		extract( $args, EXTR_SKIP );
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
-		$limit = $instance['limit'];
+		$limit = isset( $instance['limit'] ) ? $instance['limit'] : $tptn_settings['limit'];
 		if ( empty( $limit ) ) {
 			$limit = $tptn_settings['limit'];
 		}
@@ -1021,10 +1070,18 @@ class Top_Ten_Widget extends WP_Widget {
 		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
 		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
 
-		$daily = ( "daily" == $instance['daily'] ) ? true : false;
+		$daily = ( isset( $instance['daily'] ) && ( "daily" == $instance['daily'] ) ) ? true : false;
 
 		$output = $before_widget;
 		$output .= $before_title . $title . $after_title;
+
+		$post_thumb_op = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
+		$thumb_height = isset( $instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
+		$thumb_width = isset( $instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
+		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
+		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
+		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
+		$show_date = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
 
 		if ( $daily ) {
 			if ( $tptn_settings['d_use_js'] ) {
@@ -1037,13 +1094,13 @@ class Top_Ten_Widget extends WP_Widget {
 					'daily' => 1,
 					'daily_range' => $daily_range,
 					'hour_range' => $hour_range,
-					'show_excerpt' => $instance['show_excerpt'],
-					'show_author' => $instance['show_author'],
-					'show_date' => $instance['show_date'],
-					'post_thumb_op' => $instance['post_thumb_op'],
-					'thumb_height' => $instance['thumb_height'],
-					'thumb_width' => $instance['thumb_width'],
-					'disp_list_count' => $instance['disp_list_count'],
+					'show_excerpt' => $show_excerpt,
+					'show_author' => $show_author,
+					'show_date' => $show_date,
+					'post_thumb_op' => $post_thumb_op,
+					'thumb_height' => $thumb_height,
+					'thumb_width' => $thumb_width,
+					'disp_list_count' => $disp_list_count,
 				) );
 			}
 		} else {
@@ -1054,13 +1111,13 @@ class Top_Ten_Widget extends WP_Widget {
 				'daily' => 0,
 				'daily_range' => $daily_range,
 				'hour_range' => $hour_range,
-				'show_excerpt' => $instance['show_excerpt'],
-				'show_author' => $instance['show_author'],
-				'show_date' => $instance['show_date'],
-				'post_thumb_op' => $instance['post_thumb_op'],
-				'thumb_height' => $instance['thumb_height'],
-				'thumb_width' => $instance['thumb_width'],
-				'disp_list_count' => $instance['disp_list_count'],
+				'show_excerpt' => $show_excerpt,
+				'show_author' => $show_author,
+				'show_date' => $show_date,
+				'post_thumb_op' => $post_thumb_op,
+				'thumb_height' => $thumb_height,
+				'thumb_width' => $thumb_width,
+				'disp_list_count' => $disp_list_count,
 			) );
 		}
 
@@ -1668,12 +1725,12 @@ function ald_tptn_cron() {
 	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
 	$current_time = current_time( 'timestamp', 1 );
-	$current_date = strtotime( '-90 DAY' , $current_time );
-	$current_date = gmdate( 'Y-m-d H' , $current_date );
+	$from_date = strtotime( '-90 DAY' , $current_time );
+	$from_date = gmdate( 'Y-m-d H' , $from_date );
 
 	$resultscount = $wpdb->query( $wpdb->prepare(
 		"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
-		$current_date
+		$from_date
 	) );
 
 }
