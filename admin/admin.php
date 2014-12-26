@@ -1,14 +1,27 @@
 <?php
-/**********************************************************************
-*					Admin Page										*
-*********************************************************************/
-if (!defined('ABSPATH')) die("Aren't you supposed to come here via WP-Admin?");
+/**
+ * Top 10 Admin interface.
+ *
+ * This page is accessible via Top 10 Settings menu item
+ *
+ * @package   Top_Ten
+ * @author    Ajay D'Souza <me@ajaydsouza.com>
+ * @license   GPL-2.0+
+ * @link      http://ajaydsouza.com
+ * @copyright 2008-2014 Ajay D'Souza
+ */
+
+/**** If this file is called directly, abort. ****/
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 
 /**
- * Plugin settings.
+ * Function generates the plugin settings page.
  *
- * @access public
- * @return void
+ * @since	1.0
+ *
  */
 function tptn_options() {
 
@@ -22,7 +35,7 @@ function tptn_options() {
 	) );
 	$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
-	if ( ( isset( $_POST['tptn_save'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
@@ -117,7 +130,7 @@ function tptn_options() {
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_default'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_default'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		delete_option( 'ald_tptn_settings' );
 		$tptn_settings = tptn_default_options();
 		update_option( 'ald_tptn_settings', $tptn_settings );
@@ -127,26 +140,26 @@ function tptn_options() {
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( false );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 popular posts reset', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( true );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 daily popular posts reset', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Duplicate rows cleaned from tables', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$tptn_settings['cron_hour'] = min( 23, intval( $_POST['cron_hour'] ) );
 		$tptn_settings['cron_min'] = min( 59, intval( $_POST['cron_min'] ) );
 		$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
@@ -166,7 +179,7 @@ function tptn_options() {
 		echo $str;
 	}
 
-	if ( ( isset( $_POST['tptn_import'] ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( isset( $_POST['tptn_import'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 
 		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
 		$top_ten_mu_tables_blog_ids = explode( ",", $_POST['top_ten_mu_tables_blog_ids'] );
@@ -201,7 +214,7 @@ function tptn_options() {
 		echo $str;
 	}
 
-	if ( ( ( isset( $_POST['tptn_delete_selected_tables'] ) ) || ( isset( $_POST['tptn_delete_imported_tables'] ) ) ) && ( check_admin_referer( 'tptn-plugin-options' ) ) ) {
+	if ( ( ( isset( $_POST['tptn_delete_selected_tables'] ) ) || ( isset( $_POST['tptn_delete_imported_tables'] ) ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
 		$top_ten_mu_tables_blog_ids = explode( ",", $_POST['top_ten_mu_tables_blog_ids'] );
 		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
@@ -543,7 +556,7 @@ function tptn_options() {
 		  <input type="submit" name="tptn_save" id="tptn_save" value="<?php _e( 'Save Options', TPTN_LOCAL_NAME ); ?>" class="button button-primary" />
 		  <input type="submit" name="tptn_default" id="tptn_default" value="<?php _e( 'Default Options', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "Do you want to set options to Default?", TPTN_LOCAL_NAME ); ?>')) return false;" />
 		</p>
-		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
+		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 
 	  <hr class="clear" />
@@ -609,7 +622,7 @@ function tptn_options() {
 			  <input type="submit" name="tptn_mnts_save" id="tptn_mnts_save" value="<?php _e( 'Save Options', TPTN_LOCAL_NAME ); ?>" class="button button-primary" />
 	      </div>
 	    </div>
-		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
+		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 
 	  <form method="post" id="tptn_reset_options" name="tptn_reset_options" onsubmit="return checkForm()">
@@ -626,7 +639,7 @@ function tptn_options() {
 		    </p>
 	      </div>
 	    </div>
-		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
+		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 
 	  	<?php
@@ -735,7 +748,7 @@ function tptn_options() {
 			?>
 	      </div>
 	    </div>
-		<?php wp_nonce_field( 'tptn-plugin-options' ); ?>
+		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 			<?php
 				}
@@ -760,8 +773,7 @@ function tptn_options() {
 /**
  * Function to generate the top 10 daily popular posts page.
  *
- * @access public
- * @return void
+ * @since	1.9.2
  */
 function tptn_manage_daily() {
 	tptn_manage(1);
@@ -769,11 +781,10 @@ function tptn_manage_daily() {
 
 
 /**
- * Function to generate the top 10 daily popular posts page.
+ * Function to generate the top 10 popular posts page.
  *
- * @access public
- * @param int $daily (default: 0) Overall popular
- * @return void
+ * @since	1.3
+ * @param	int	$daily	Overall popular
  */
 function tptn_manage( $daily = 0 ) {
 
@@ -813,8 +824,7 @@ function tptn_manage( $daily = 0 ) {
 /**
  * Function to generate the right sidebar of the Settings and Admin popular posts pages.
  *
- * @access public
- * @return void
+ * @since	1.8.1
  */
 function tptn_admin_side() {
 ?>
@@ -871,26 +881,22 @@ function tptn_admin_side() {
 /**
  * Add Top 10 menu in WP-Admin.
  *
- * @access public
- * @return void
+ * @since	1.0
  */
 function tptn_adminmenu() {
 
-	if ( function_exists( 'add_menu_page' ) ) {
+	$plugin_page = add_menu_page( __( "Top 10 Settings", TPTN_LOCAL_NAME ), __( "Top 10", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
+	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
-		$plugin_page = add_menu_page( __( "Top 10 Settings", TPTN_LOCAL_NAME ), __( "Top 10", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
-		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "Top 10 Settings", TPTN_LOCAL_NAME ), __( "Top 10 Settings", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_options', 'tptn_options' );
+	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
-		$plugin_page = add_submenu_page( 'tptn_options', __( "Top 10 Settings", TPTN_LOCAL_NAME ), __( "Top 10 Settings", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_options', 'tptn_options' );
-		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "Overall Popular Posts", TPTN_LOCAL_NAME ), __( "Overall Popular Posts", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_manage', 'tptn_manage' );
+	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
-		$plugin_page = add_submenu_page( 'tptn_options', __( "Overall Popular Posts", TPTN_LOCAL_NAME ), __( "Overall Popular Posts", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_manage', 'tptn_manage' );
-		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "Daily Popular Posts", TPTN_LOCAL_NAME ), __( "Daily Popular Posts", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_manage_daily', 'tptn_manage_daily' );
+	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
-		$plugin_page = add_submenu_page( 'tptn_options', __( "Daily Popular Posts", TPTN_LOCAL_NAME ), __( "Daily Popular Posts", TPTN_LOCAL_NAME ), 'manage_options', 'tptn_manage_daily', 'tptn_manage_daily' );
-		add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
-
-	}
 }
 add_action( 'admin_menu', 'tptn_adminmenu' );
 
@@ -898,8 +904,7 @@ add_action( 'admin_menu', 'tptn_adminmenu' );
 /**
  * Add JS and CSS to admin header.
  *
- * @access public
- * @return void
+ * @since	1.6
  */
 function tptn_adminhead() {
 	global $tptn_url;
@@ -957,7 +962,7 @@ function tptn_adminhead() {
 		//]]>
 	</script>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/wick/wick.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin/wick/wick.css" />
 	<script type="text/javascript" language="JavaScript">
 		//<![CDATA[
 		<?php
@@ -979,41 +984,87 @@ function tptn_adminhead() {
 		//]]>
 	</script>
 
-	<script type="text/javascript" src="<?php echo $tptn_url ?>/wick/wick.js"></script>
+	<script type="text/javascript" src="<?php echo $tptn_url ?>/admin/wick/wick.js"></script>
 
 <?php
 }
 
 
 /**
- * Function to delete all rows in the posts table.
+ * Adding WordPress plugin action links.
  *
- * @access public
- * @param bool $daily (default: false)
- * @return void
+ * @version	1.9.2
+ *
+ * @param	array	$links
+ * @return	array	Links array with our settings link added
+ */
+function tptn_plugin_actions_links( $links ) {
+
+	return array_merge(
+		array(
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __( 'Settings', TPTN_LOCAL_NAME ) . '</a>'
+		),
+		$links
+	);
+
+}
+add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ ) . 'top-10.php' ), 'tptn_plugin_actions_links' );
+
+
+/**
+ * Add links to the plugin action row.
+ *
+ * @since	1.5
+ *
+ * @param	array	$links
+ * @param	array	$file
+ * @return	array	Links array with our links added
+ */
+function tptn_plugin_actions( $links, $file ) {
+	$plugin = plugin_basename( __FILE__ );
+
+	// create link
+	if ( $file == $plugin ) {
+		$links[] = '<a href="http://ajaydsouza.com/support/">' . __( 'Support', TPTN_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __( 'Donate', TPTN_LOCAL_NAME ) . '</a>';
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
+
+
+/**
+ * Function to delete all duplicate rows in the posts table.
+ *
+ * @since	1.6.2
+ *
+ * @param	bool 	$daily	Daily flag
  */
 function tptn_clean_duplicates( $daily = false ) {
 	global $wpdb;
 
 	$table_name = $wpdb->base_prefix . "top_ten";
-	if ($daily) $table_name .= "_daily";
+	if ( $daily ) {
+		$table_name .= "_daily";
+	}
 	$count = 0;
 
-	$wpdb->query( "CREATE TEMPORARY TABLE ".$table_name."_temp AS SELECT * FROM ".$table_name." GROUP BY postnumber" );
+	$wpdb->query( "CREATE TEMPORARY TABLE " . $table_name . "_temp AS SELECT * FROM " . $table_name . " GROUP BY postnumber" );
 	$wpdb->query( "TRUNCATE TABLE $table_name" );
-	$wpdb->query( "INSERT INTO ".$table_name." SELECT * FROM ".$table_name."_temp" );
+	$wpdb->query( "INSERT INTO " . $table_name . " SELECT * FROM " . $table_name . "_temp" );
 }
 
 
 /**
  *  Create the Dashboard Widget and content of the Popular pages
  *
- * @access public
- * @param bool $daily (default: false) Switch for Daily or Overall popular posts
- * @param int $page (default: 0) Which page of the lists are we on?
- * @param int $limit (default: 10) Maximum number of posts per page
- * @param bool $widget (default: false) Is this a WordPress widget?
- * @return void
+ * @since	1.3
+ *
+ * @param	bool	$daily	Switch for Daily or Overall popular posts
+ * @param	int		$page	Which page of the lists are we on?
+ * @param	int		$limit 	Maximum number of posts per page
+ * @param	bool	$widget	Is this a WordPress widget?
+ * @return	Formatted list of popular posts
  */
 function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = FALSE ) {
 	global $wpdb, $siteurl, $tableposts, $id, $tptn_settings;
@@ -1156,37 +1207,42 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 /**
  * Widget for Popular Posts.
  *
- * @access public
- * @return void
+ * @since	1.1
  */
 function tptn_pop_dashboard() {
 	echo tptn_pop_display( false, 0, 10, true );
 }
 
+
 /**
  * Widget for Daily Popular Posts.
  *
- * @access public
- * @return void
+ * @since	1.2
  */
 function tptn_pop_daily_dashboard() {
 	echo tptn_pop_display( true, 0, 10, true );
 }
 
+
 /**
  * Function to add the widgets to the Dashboard.
  *
- * @access public
- * @return void
+ * @since	1.1
  */
 function tptn_pop_dashboard_setup() {
 	global $tptn_settings;
 
 	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
-		if ( function_exists( 'wp_add_dashboard_widget' ) ) {
-			wp_add_dashboard_widget( 'tptn_pop_dashboard', __( 'Popular Posts',TPTN_LOCAL_NAME ), 'tptn_pop_dashboard' );
-			wp_add_dashboard_widget( 'tptn_pop_daily_dashboard', __( 'Daily Popular',TPTN_LOCAL_NAME ), 'tptn_pop_daily_dashboard' );
-		}
+		wp_add_dashboard_widget(
+			'tptn_pop_dashboard',
+			__( 'Popular Posts', TPTN_LOCAL_NAME ),
+			'tptn_pop_dashboard'
+		);
+		wp_add_dashboard_widget(
+			'tptn_pop_daily_dashboard',
+			__( 'Daily Popular', TPTN_LOCAL_NAME ),
+			'tptn_pop_daily_dashboard'
+		);
 	}
 }
 add_action( 'wp_dashboard_setup', 'tptn_pop_dashboard_setup' );
@@ -1195,9 +1251,10 @@ add_action( 'wp_dashboard_setup', 'tptn_pop_dashboard_setup' );
 /**
  * Add an extra column to the All Posts page to display the page views.
  *
- * @access public
- * @param mixed $cols
- * @return void
+ * @since	1.2
+ *
+ * @param	array	$cols	Array of all columns on posts page
+ * @return	array	Modified array of columns
  */
 function tptn_column( $cols ) {
 	global $tptn_settings;
@@ -1216,10 +1273,10 @@ add_filter( 'manage_pages_columns', 'tptn_column' );
 /**
  * Display page views for each column.
  *
- * @access public
- * @param string $column_name Name of the column
- * @param int|string $id Post ID
- * @return void
+ * @since	1.2
+ *
+ * @param	string		$column_name	Name of the column
+ * @param	int|string	$id				Post ID
  */
 function tptn_value( $column_name, $id ) {
 	global $wpdb, $tptn_settings;
@@ -1246,6 +1303,7 @@ function tptn_value( $column_name, $id ) {
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
+
 		echo $cntaccess;
 	}
 
@@ -1267,6 +1325,7 @@ function tptn_value( $column_name, $id ) {
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $current_date ) );
 		$cntaccess .= ' / '.number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
+
 		echo $cntaccess;
 	}
 }
@@ -1275,17 +1334,21 @@ add_action( 'manage_pages_custom_column', 'tptn_value', 10, 2 );
 
 
 /**
- * Regiter the columns as sortable.
+ * Register the columns as sortable.
  *
- * @access public
- * @param mixed $cols
- * @return void
+ * @since	1.9.8.2
+ *
+ * @param	array	$cols	Array with column names
+ * @return	array	Filtered columns array
  */
 function tptn_column_register_sortable( $cols ) {
 	$tptn_settings = tptn_read_options();
 
-	if ( $tptn_settings['pv_in_admin'] ) $cols['tptn_total'] = array( 'tptn_total', true );
-	if ( $tptn_settings['pv_in_admin'] ) $cols['tptn_daily'] = array( 'tptn_daily', true );
+	if ( $tptn_settings['pv_in_admin'] ) {
+		$cols['tptn_total'] = array( 'tptn_total', true );
+		$cols['tptn_daily'] = array( 'tptn_daily', true );
+	}
+
 	return $cols;
 }
 add_filter( 'manage_edit-post_sortable_columns', 'tptn_column_register_sortable' );
@@ -1295,10 +1358,11 @@ add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable'
 /**
  * Add custom post clauses to sort the columns.
  *
- * @access public
- * @param mixed $clauses
- * @param mixed $wp_query
- * @return void
+ * @since	1.9.8.2
+ *
+ * @param	array	$clauses	Lookup clauses
+ * @param	object	$wp_query	WP Query object
+ * @return	array	Filtered clauses
  */
 function tptn_column_clauses( $clauses, $wp_query ) {
 	global $wpdb;
@@ -1338,8 +1402,8 @@ add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
 /**
  * Output CSS for width of new column.
  *
- * @access public
- * @return void
+ * @since	1.2
+ *
  */
 function tptn_css() {
 ?>
@@ -1354,10 +1418,10 @@ add_action( 'admin_head', 'tptn_css' );
 /**
  * Function to add meta box in Write screens.
  *
- * @access public
- * @param text $post_type
- * @param object $post
- * @return void
+ * @since	1.9.10
+ *
+ * @param	text	$post_type	Post type
+ * @param	object	$post		Post object
  */
 function tptn_add_meta_box( $post_type, $post ) {
 
@@ -1384,8 +1448,7 @@ add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
 /**
  * Function to call the meta box.
  *
- * @access public
- * @return void
+ * @since	1.9.10
  */
 function tptn_call_meta_box() {
 	global $wpdb, $post, $tptn_settings;
@@ -1433,9 +1496,9 @@ function tptn_call_meta_box() {
 /**
  * Function to save the meta box.
  *
- * @access public
- * @param mixed $post_id
- * @return void
+ * @since	1.9.10
+ *
+ * @param	int	$post_id
  */
 function tptn_save_meta_box( $post_id ) {
 	global $tptn_settings, $wpdb;
