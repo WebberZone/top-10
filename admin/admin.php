@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function tptn_options() {
 
-	global $wpdb, $network_wide;
+	global $wpdb, $network_wide, $tptn_url;
     $poststable = $wpdb->posts;
 
 	$tptn_settings = tptn_read_options();
@@ -75,13 +75,16 @@ function tptn_options() {
 		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
 		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
 		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
-		$tptn_settings['thumb_default'] = $_POST['thumb_default'];
+		$tptn_settings['thumb_default'] = ( '' != $_POST['thumb_default'] ) ? $_POST['thumb_default'] : $tptn_url . '/default.png';
 		$tptn_settings['thumb_html'] = $_POST['thumb_html'];
 		$tptn_settings['thumb_height'] = intval( $_POST['thumb_height'] );
 		$tptn_settings['thumb_width'] = intval( $_POST['thumb_width'] );
+		$tptn_settings['thumb_crop'] = ( isset( $_POST['thumb_crop'] ) ? true : false );
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
 		$tptn_settings['thumb_timthumb'] = isset( $_POST['thumb_timthumb'] ) ? true : false;
 		$tptn_settings['thumb_timthumb_q'] = intval( $_POST['thumb_timthumb_q'] );
+		$tptn_settings['thumb_size'] = $_POST['thumb_size'];
+
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 
 		$tptn_settings['show_excerpt'] = isset( $_POST['show_excerpt'] ) ? true : false;
@@ -243,12 +246,37 @@ function tptn_options() {
 ?>
 
 <div class="wrap">
-	<h2>Top 10</h2>
+	<h2><?php _e( 'Top 10 Settings', TPTN_LOCAL_NAME ); ?></h2>
+
+	<ul class="subsubsub">
+		<?php
+			/**
+			 * Fires before the navigation bar in the Settings page
+			 *
+			 * @since 2.0.0
+			 */
+			do_action( 'tptn_admin_nav_bar_before' )
+		?>
+
+	  	<li><a href="#genopdiv"><?php _e( 'General options', TPTN_LOCAL_NAME ); ?></a> | </li>
+	  	<li><a href="#outputopdiv"><?php _e( 'Output options', TPTN_LOCAL_NAME ); ?></a> | </li>
+	  	<li><a href="#customcssdiv"><?php _e( 'Custom styles', TPTN_LOCAL_NAME ); ?></a> | </li>
+	  	<li><a href="#tptn_maintenance_op"><?php _e( 'Other options and tools', TPTN_LOCAL_NAME ); ?></a></li>
+		<?php
+			/**
+			 * Fires after the navigation bar in the Settings page
+			 *
+			 * @since 2.0.0
+			 */
+			do_action( 'tptn_admin_nav_bar_after' )
+		?>
+	</ul>
+
 	<div id="poststuff">
 	<div id="post-body" class="metabox-holder columns-2">
 	<div id="post-body-content">
 	  <form method="post" id="tptn_options" name="tptn_options" onsubmit="return checkForm()">
-	    <div id="genopdiv" class="postbox closed"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	    <div id="genopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
 	      <h3 class='hndle'><span><?php _e( 'General options', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
@@ -372,7 +400,7 @@ function tptn_options() {
 			  </table>
 	      </div>
 	    </div>
-	    <div id="outputopdiv" class="postbox closed"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	    <div id="outputopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
 	      <h3 class='hndle'><span><?php _e( 'Output options', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
@@ -475,11 +503,57 @@ function tptn_options() {
 					<br />
 				  </td>
 				</tr>
-				<tr><th scope="row"><label for="thumb_width"><?php _e( 'Width of the thumbnail: ', TPTN_LOCAL_NAME ); ?></label></th>
-				  <td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_width'] ) ); ?>" style="width:40px" />px</td>
+				<tr><th scope="row"><?php _e( 'Thumbnail size:', TPTN_LOCAL_NAME ); ?></th>
+				  <td>
+					<?php
+						$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
+						if ( isset( $tptn_get_all_image_sizes['tptn_thumbnail'] ) ) {
+							unset( $tptn_get_all_image_sizes['tptn_thumbnail'] );
+						}
+
+						foreach( $tptn_get_all_image_sizes as $size ) :
+					?>
+						<label>
+							<input type="radio" name="thumb_size" value="<?php echo $size['name'] ?>" id="<?php echo $size['name'] ?>" <?php if ( $tptn_settings['thumb_size'] == $size['name'] ) echo 'checked="checked"' ?> />
+							<?php echo $size['name']; ?> ( <?php echo $size['width']; ?>x<?php echo $size['height']; ?>
+							<?php
+								if ( $size['crop'] ) {
+									echo "cropped";
+								}
+							?>
+							)
+						</label>
+						<br />
+					<?php endforeach; ?>
+
+						<label>
+							<input type="radio" name="thumb_size" value="tptn_thumbnail" id="tptn_thumbnail" <?php if ( $tptn_settings['thumb_size'] == 'tptn_thumbnail' ) echo 'checked="checked"' ?> /> <?php _e( 'Custom size', TPTN_LOCAL_NAME ); ?>
+						</label>
+						<p class="description">
+							<?php _e( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image.', TPTN_LOCAL_NAME ); ?><br />
+							<?php _e( "If you change the width and/or height below, existing images will not be automatically resized.", TPTN_LOCAL_NAME ); ?>
+							<?php printf( __( "I recommend using <a href='%s' target='_blank'>Force Regenerate Thumbnails</a> or <a href='%s' target='_blank'>Force Regenerate Thumbnails</a> to regenerate all image sizes.", TPTN_LOCAL_NAME ), 'https://wordpress.org/plugins/force-regenerate-thumbnails/', 'https://wordpress.org/plugins/regenerate-thumbnails/' ); ?>
+						</p>
+				  </td>
+				<tr><th scope="row"><label for="thumb_width"><?php _e( 'Width of custom thumbnail:', TPTN_LOCAL_NAME ); ?></label></th>
+				  <td><input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_width'] ) ); ?>" style="width:50px" />px</td>
 				</tr>
-				<tr><th scope="row"><label for="thumb_height"><?php _e( 'Height of the thumbnail: ', TPTN_LOCAL_NAME ); ?></label></th>
-				  <td><input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_height'] ) ); ?>" style="width:40px" />px</td>
+				<tr><th scope="row"><label for="thumb_height"><?php _e( 'Height of custom thumbnail', TPTN_LOCAL_NAME ); ?></label></th>
+				  <td>
+				  	<input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_height'] ) ); ?>" style="width:50px" />px
+					<?php if ( $tptn_settings['include_default_style'] ) { ?>
+						<p class="description"><?php _e( "Since you're using the default styles set under the Custom Styles section, the width and height is fixed at 150px", TPTN_LOCAL_NAME ); ?></p>
+					<?php } ?>
+				  </td>
+				</tr>
+				<tr><th scope="row"><label for="thumb_crop"><?php _e( 'Crop mode:', TPTN_LOCAL_NAME ); ?></label></th>
+					<td>
+						<input type="checkbox" name="thumb_crop" id="thumb_crop" <?php if ( $tptn_settings['thumb_crop'] ) echo 'checked="checked"' ?> />
+						<p class="description">
+							<?php _e( "By default, thumbnails will be proportionately cropped. Check this box to hard crop the thumbnails.", TPTN_LOCAL_NAME ); ?>
+							<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", TPTN_LOCAL_NAME ), 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ); ?>
+						</p>
+					</td>
 				</tr>
 				<tr><th scope="row"><label for="thumb_html"><?php _e( 'Style attributes / Width and Height HTML attributes:', TPTN_LOCAL_NAME ); ?></label></th>
 				  <td>
@@ -533,7 +607,7 @@ function tptn_options() {
 				</table>
 	      </div>
 	    </div>
-	    <div id="customcssdiv" class="postbox closed"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	    <div id="customcssdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
 	      <h3 class='hndle'><span><?php _e( 'Custom CSS', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
@@ -562,7 +636,7 @@ function tptn_options() {
 	  <hr class="clear" />
 
 	  <form method="post" id="tptn_maintenance_op" name="tptn_reset_options" onsubmit="return checkForm()">
-	    <div id="resetopdiv" class="postbox closed"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
 	      <h3 class='hndle'><span><?php _e( 'Maintenance', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 			  <table class="form-table">
@@ -626,7 +700,7 @@ function tptn_options() {
 	  </form>
 
 	  <form method="post" id="tptn_reset_options" name="tptn_reset_options" onsubmit="return checkForm()">
-	    <div id="resetopdiv" class="postbox closed"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
+	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
 	      <h3 class='hndle'><span><?php _e( 'Reset count', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 		    <p class="description">
@@ -752,8 +826,7 @@ function tptn_options() {
 	  </form>
 			<?php
 				}
-		    ?>
-
+			?>
 	</div><!-- /post-body-content -->
 	<div id="postbox-container-1" class="postbox-container">
 	  <div id="side-sortables" class="meta-box-sortables ui-sortable">
