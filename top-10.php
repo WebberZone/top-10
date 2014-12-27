@@ -873,7 +873,6 @@ function tptn_pop_posts( $args ) {
 		$output .= ( $blank_output ) ? '' : $blank_output_text;
 	}
 	$output .= '</div>';
-	$output .= $thumb_width.'x'.$thumb_height;
 
 	/**
 	 * Filter the output
@@ -1191,7 +1190,14 @@ function tptn_default_options() {
 	$post_types	= http_build_query( get_post_types( $args ), '', '&' );
 
 	$tptn_settings = array (
+
+		/* General options */
+		'activate_daily' => true,	// Activate the daily count
+		'activate_overall' => true,	// activate overall count
+		'cache_fix' => false,		// Temporary fix for W3 Total Cache
 		'show_credit' => false,			// Add link to plugin page of my blog in top posts list
+
+		/* Counter and tracker options */
 		'add_to_content' => true,			// Add post count to content (only on single posts)
 		'count_on_pages' => true,			// Add post count to pages
 		'add_to_feed' => false,		// Add post count to feed (full)
@@ -1200,66 +1206,70 @@ function tptn_default_options() {
 		'add_to_tag_archives' => false,		// Add post count to tag archives
 		'add_to_archives' => false,		// Add post count to other archives
 
+		'count_disp_form' => '(Visited %totalcount% times, %dailycount% visits today)',	// Format to display the count
+		'count_disp_form_zero' => 'No visits yet',	// What to display where there are no hits?
+		'dynamic_post_count' => false,		// Use JavaScript for displaying the post count
+
 		'track_authors' => false,			// Track Authors visits
 		'track_admins' => true,			// Track Admin visits
 		'track_editors' => true,			// Track Admin visits
 		'pv_in_admin' => true,			// Add an extra column on edit posts/pages to display page views?
 		'show_count_non_admins' => true,	// Show counts to non-admins
 
-		'blank_output' => false,		// Blank output? Default is "blank Output test"
-		'blank_output_text' => $blank_output_text,		// Blank output text
-		'disp_list_count' => true,		// Display count in popular lists?
-		'd_use_js' => false,				// Use JavaScript for displaying daily posts
-		'dynamic_post_count' => true,		// Use JavaScript for displaying the post count
-		'count_disp_form' => '(Visited %totalcount% time, %dailycount% visit today)',	// Format to display the count
-		'count_disp_form_zero' => 'No visits yet',	// What to display where there are no hits?
-
-		'title' => $title,				// Title of Popular Posts
-		'title_daily' => $title_daily,	// Title of Daily Popular
+		/* Popular post list options */
 		'limit' => '10',					// How many posts to display?
 		'daily_range' => '1',				// Daily Popular will contain posts of how many days?
 		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
+		'post_types' => $post_types,		// WordPress custom post types
+		'exclude_categories' => '',		// Exclude these categories
+		'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
+		'exclude_post_ids' => '',	// Comma separated list of page / post IDs that are to be excluded in the results
 
-		'before_list' => '<ul>',			// Before the entire list
-		'after_list' => '</ul>',			// After the entire list
-		'before_list_item' => '<li>',		// Before each list item
-		'after_list_item' => '</li>',		// After each list item
-
-		'post_thumb_op' => 'text_only',	// Display only text in posts
-
-		'thumb_size' => 'tptn_thumbnail',	// Default thumbnail size
-		'thumb_height' => '150',			// Max height of thumbnails
-		'thumb_width' => '150',			// Max width of thumbnails
-		'thumb_crop' => true,		// Crop mode. default is hard crop
-		'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?
-		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
-		'scan_images' => true,			// Scan post for images
-		'thumb_default' => $thumb_default,	// Default thumbnail image
-		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
-		'thumb_timthumb' => false,	// Use timthumb
-		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb
+		'title' => $title,				// Title of Popular Posts
+		'title_daily' => $title_daily,	// Title of Daily Popular
+		'blank_output' => false,		// Blank output? Default is "blank Output test"
+		'blank_output_text' => $blank_output_text,		// Blank output text
 
 		'show_excerpt' => false,			// Show description in list item
 		'excerpt_length' => '10',			// Length of characters
 		'show_date' => false,			// Show date in list item
 		'show_author' => false,			// Show author in list item
 		'title_length' => '60',		// Limit length of post title
+		'disp_list_count' => true,		// Display count in popular lists?
 
-		'exclude_categories' => '',		// Exclude these categories
-		'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
-		'exclude_post_ids' => '',	// Comma separated list of page / post IDs that are to be excluded in the results
+		'd_use_js' => false,				// Use JavaScript for displaying daily posts	- TO BE DEPRECATED
+
+		'link_new_window' => false,			// Open link in new window - Includes target="_blank" to links
+		'link_nofollow' => false,			// Includes rel="nofollow" to links
 		'exclude_on_post_ids' => '', 	// Comma separate list of page/post IDs to not display related posts on
 
+		// List HTML options
+		'before_list' => '<ul>',			// Before the entire list
+		'after_list' => '</ul>',			// After the entire list
+		'before_list_item' => '<li>',		// Before each list item
+		'after_list_item' => '</li>',		// After each list item
+
+		/* Thumbnail options */
+		'post_thumb_op' => 'text_only',	// Display only text in posts
+		'thumb_size' => 'tptn_thumbnail',	// Default thumbnail size
+		'thumb_width' => '150',			// Max width of thumbnails
+		'thumb_height' => '150',			// Max height of thumbnails
+		'thumb_crop' => true,		// Crop mode. default is hard crop
+		'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?
+
+		'thumb_timthumb' => false,	// Use timthumb	- TO BE DEPRECATED
+		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb	- TO BE DEPRECATED
+
+		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
+		'scan_images' => true,			// Scan post for images
+		'thumb_default' => $thumb_default,	// Default thumbnail image
+		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
+
+		/* Custom styles */
 		'custom_CSS' => '',			// Custom CSS to style the output
 		'include_default_style' => false,	// Include default Top 10 style
 
-		'activate_daily' => true,	// Activate the daily count
-		'activate_overall' => true,	// activate overall count
-		'cache_fix' => false,		// Temporary fix for W3 Total Cache
-		'post_types' => $post_types,		// WordPress custom post types
-		'link_new_window' => false,			// Open link in new window - Includes target="_blank" to links
-		'link_nofollow' => false,			// Includes rel="nofollow" to links
-
+		/* Maintenance cron */
 		'cron_on' => false,		// Run cron daily?
 		'cron_hour' => '0',		// Cron Hour
 		'cron_min' => '0',		// Cron Minute
@@ -1345,7 +1355,7 @@ function tptn_activation_hook( $network_wide ) {
         foreach ( $blog_ids as $blog_id ) {
         	switch_to_blog( $blog_id );
 			tptn_single_activate();
-        }
+		}
 
         // Switch back to the current blog
         restore_current_blog();
