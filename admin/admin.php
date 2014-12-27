@@ -300,6 +300,17 @@ function tptn_options() {
 			<div class="inside">
 				<table class="form-table">
 
+					<?php
+						/**
+						 * Fires before General options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_general_options_before', $tptn_settings );
+					?>
+
 					<tr>
 						<th scope="row"><label for="activate_overall"><?php _e( 'Enable Overall stats', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
@@ -332,6 +343,17 @@ function tptn_options() {
 						</td>
 					</tr>
 
+					<?php
+						/**
+						 * Fires after General options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_general_options_after', $tptn_settings );
+					?>
+
 				</table>
 			</div>
 	    </div>
@@ -339,6 +361,17 @@ function tptn_options() {
 	    	<h3 class='hndle'><span><?php _e( 'Counter and tracker options', TPTN_LOCAL_NAME ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
+
+					<?php
+						/**
+						 * Fires before Counter options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_counter_options_before', $tptn_settings );
+					?>
 
 					<tr>
 						<th scope="row"><?php _e( 'Display number of views on:', TPTN_LOCAL_NAME ); ?></th>
@@ -415,6 +448,17 @@ function tptn_options() {
 						</td>
 					</tr>
 
+					<?php
+						/**
+						 * Fires after Counter options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_counter_options_after', $tptn_settings );
+					?>
+
 				</table>
 			</div>
 	    </div>
@@ -422,6 +466,17 @@ function tptn_options() {
 	    	<h3 class='hndle'><span><?php _e( 'Popular post list options', TPTN_LOCAL_NAME ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
+
+					<?php
+						/**
+						 * Fires before Popular post list options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_list_options_before', $tptn_settings );
+					?>
 
 					<tr>
 						<th scope="row"><label for="limit"><?php _e( 'Number of popular posts to display: ', TPTN_LOCAL_NAME ); ?></label></th>
@@ -596,6 +651,17 @@ function tptn_options() {
 						</td>
 					</tr>
 
+					<?php
+						/**
+						 * Fires after Popular post list options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_list_options_after', $tptn_settings );
+					?>
+
 				</table>
 			</div>
 	    </div>
@@ -603,6 +669,17 @@ function tptn_options() {
 	    	<h3 class='hndle'><span><?php _e( 'Thumbnail options', TPTN_LOCAL_NAME ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
+
+					<?php
+						/**
+						 * Fires before thumbnail options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_thumbnail_options_before', $tptn_settings );
+					?>
 
 					<tr><th scope="row"><label for="post_thumb_op"><?php _e( 'Location of post thumbnail:', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
@@ -737,6 +814,17 @@ function tptn_options() {
 						</td>
 					</tr>
 
+					<?php
+						/**
+						 * Fires after thumbnail options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_thumbnail_options_after', $tptn_settings );
+					?>
+
 				</table>
 			</div>
 	    </div>
@@ -745,10 +833,22 @@ function tptn_options() {
 			<div class="inside">
 				<table class="form-table">
 
+					<?php
+						/**
+						 * Fires before custom styles options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_custom_styles_before', $tptn_settings );
+					?>
+
 					<tr><th scope="row"><label for="include_default_style"><?php _e( 'Use default style included in the plugin?', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="checkbox" name="include_default_style" id="include_default_style" <?php if ( $tptn_settings['include_default_style'] ) echo 'checked="checked"' ?> />
-							<p class="description"><?php _e( 'Top 10 includes a default style that makes your popular posts list to look pretty. Check the box above if you want to use this. You will need to select <strong>Thumbnails inline, before title</strong> in Output Options or in the Widget.', TPTN_LOCAL_NAME ); ?></p>
+						  	<p class="description"><?php _e( 'Top 10 includes a default style that makes your popular posts list to look beautiful. Check the box above if you want to use this.', TPTN_LOCAL_NAME ); ?></p>
+						  	<p class="description"><?php _e( 'Enabling this option will turn on the thumbnails and set their width and height to 150px. It will also turn off the display of the author, excerpt and date if already enabled. Disabling this option will not revert any settings.', TPTN_LOCAL_NAME ); ?></p>
 						</td>
 					</tr>
 					<tr><th scope="row" colspan="2"><?php _e( 'Custom CSS to add to header:', TPTN_LOCAL_NAME ); ?></th>
@@ -760,6 +860,17 @@ function tptn_options() {
 						</td>
 					</tr>
 
+					<?php
+						/**
+						 * Fires after custom styles options block.
+						 *
+						 * @since 2.0.0
+						 *
+						 * @param	array	$tptn_settings	Top 10 settings array
+						 */
+						do_action( 'tptn_admin_custom_styles_after', $tptn_settings );
+					?>
+
 				</table>
 			</div>
 	    </div>
@@ -769,6 +880,17 @@ function tptn_options() {
 		</p>
 		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
+
+		<?php
+			/**
+			 * Fires after all option blocks.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param	array	$tptn_settings	Top 10 settings array
+			 */
+			do_action( 'tptn_admin_options_after', $tptn_settings );
+		?>
 
 	  <hr class="clear" />
 

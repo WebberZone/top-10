@@ -1032,6 +1032,18 @@ class Top_Ten_Widget extends WP_Widget {
 			<?php _e( 'Thumbnail width', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
 		</p>
+
+		<?php
+			/**
+			 * Fires after Top 10 widget options.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param	array	$tptn_settings	Top 10 settings array
+			 */
+			do_action( 'tptn_widget_options_after', $tptn_settings );
+		?>
+
 		<?php
 	} //ending form creation
 
@@ -1059,7 +1071,15 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['post_thumb_op'] = $new_instance['post_thumb_op'];
 		$instance['thumb_height'] = $new_instance['thumb_height'];
 		$instance['thumb_width'] = $new_instance['thumb_width'];
-		return $instance;
+
+		/**
+		 * Filters Update widget options array.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param	array	$instance	Widget options array
+		 */
+		return apply_filters( 'tptn_widget_options_update' , $instance );
 	} //ending update
 
 	/**
@@ -1097,42 +1117,39 @@ class Top_Ten_Widget extends WP_Widget {
 		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
 		$show_date = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
 
+		$arguments = array(
+			'is_widget' => 1,
+			'heading' => 0,
+			'limit' => $limit,
+			'daily' => $daily,
+			'daily_range' => $daily_range,
+			'hour_range' => $hour_range,
+			'show_excerpt' => $show_excerpt,
+			'show_author' => $show_author,
+			'show_date' => $show_date,
+			'post_thumb_op' => $post_thumb_op,
+			'thumb_height' => $thumb_height,
+			'thumb_width' => $thumb_width,
+			'disp_list_count' => $disp_list_count,
+		);
+
+		/**
+		 * Filters arguments passed to tptn_pop_posts for the widget.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param	array	$arguments	Widget options array
+		 */
+		$arguments = apply_filters( 'tptn_widget_options' , $arguments );
+
 		if ( $daily ) {
 			if ( $tptn_settings['d_use_js'] ) {
 				$output .= '<script type="text/javascript" src="' . $tptn_url . '/top-10-daily.js.php?widget=1"></script>';
 			} else {
-				$output .= tptn_pop_posts( array(
-					'is_widget' => 1,
-					'heading' => 0,
-					'limit' => $limit,
-					'daily' => 1,
-					'daily_range' => $daily_range,
-					'hour_range' => $hour_range,
-					'show_excerpt' => $show_excerpt,
-					'show_author' => $show_author,
-					'show_date' => $show_date,
-					'post_thumb_op' => $post_thumb_op,
-					'thumb_height' => $thumb_height,
-					'thumb_width' => $thumb_width,
-					'disp_list_count' => $disp_list_count,
-				) );
+				$output .= tptn_pop_posts( $arguments );
 			}
 		} else {
-			$output .= tptn_pop_posts( array(
-				'is_widget' => 1,
-				'heading' => 0,
-				'limit' => $limit,
-				'daily' => 0,
-				'daily_range' => $daily_range,
-				'hour_range' => $hour_range,
-				'show_excerpt' => $show_excerpt,
-				'show_author' => $show_author,
-				'show_date' => $show_date,
-				'post_thumb_op' => $post_thumb_op,
-				'thumb_height' => $thumb_height,
-				'thumb_width' => $thumb_width,
-				'disp_list_count' => $disp_list_count,
-			) );
+			$output .= tptn_pop_posts( $arguments );
 		}
 
 		$output .= $after_widget;
