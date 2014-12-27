@@ -1957,6 +1957,9 @@ function tptn_get_all_image_sizes( $size = '' ) {
 if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-metabox.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-columns.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-dashboard.php' );
 
 } // End admin.inc
 
