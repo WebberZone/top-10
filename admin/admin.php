@@ -134,7 +134,19 @@ function tptn_options() {
 
 		/* Custom styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
-		$tptn_settings['include_default_style'] = isset( $_POST['include_default_style'] ) ? true : false;
+
+		if ( isset( $_POST['include_default_style'] ) ) {
+			$tptn_settings['include_default_style'] = true;
+			$tptn_settings['post_thumb_op'] = 'inline';
+			$tptn_settings['thumb_height'] = 65;
+			$tptn_settings['thumb_width'] = 65;
+			$tptn_settings['thumb_crop'] = true;
+			$tptn_settings['show_excerpt'] = false;
+			$tptn_settings['show_author'] = false;
+			$tptn_settings['show_date'] = false;
+		} else {
+			$tptn_settings['include_default_style'] = false;
+		}
 
 		/* Update the options */
 		update_option( 'ald_tptn_settings', $tptn_settings );
@@ -390,7 +402,7 @@ function tptn_options() {
 						<th scope="row"><label for="title"><?php _e( 'Format to display the post views:', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<textarea name="count_disp_form" id="count_disp_form" cols="50" rows="3" style="width:100%"><?php echo htmlspecialchars( stripslashes( $tptn_settings['count_disp_form'] ) ); ?></textarea>
-							<p class="description"><?php _e( 'Use <code>%totalcount%</code> to display the total count, <code>%dailycount%</code> to display the daily count and <code>%overallcount%</code> to display the overall count across all posts on the blog. e.g. the default options displays <code>(Visited 123 times, 23 visits today)</code>', TPTN_LOCAL_NAME ); ?>
+							<p class="description"><?php _e( 'Use <code>%totalcount%</code> to display the total count, <code>%dailycount%</code> to display the daily count and <code>%overallcount%</code> to display the overall count across all posts on the blog. e.g. the default options displays <code>[Visited 123 times, 23 visits today]</code>', TPTN_LOCAL_NAME ); ?>
 						</td>
 					</tr>
 					<tr>
@@ -744,9 +756,6 @@ function tptn_options() {
 					<tr><th scope="row"><label for="thumb_height"><?php _e( 'Height of custom thumbnail', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="textbox" name="thumb_height" id="thumb_height" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_height'] ) ); ?>" style="width:50px" />px
-							<?php if ( $tptn_settings['include_default_style'] ) { ?>
-								<p class="description"><?php _e( "Since you're using the default styles set under the Custom Styles section, the width and height is fixed at 150px", TPTN_LOCAL_NAME ); ?></p>
-							<?php } ?>
 						</td>
 					</tr>
 					<tr><th scope="row"><label for="thumb_crop"><?php _e( 'Crop mode:', TPTN_LOCAL_NAME ); ?></label></th>
@@ -754,7 +763,10 @@ function tptn_options() {
 							<input type="checkbox" name="thumb_crop" id="thumb_crop" <?php if ( $tptn_settings['thumb_crop'] ) echo 'checked="checked"' ?> />
 							<p class="description">
 								<?php _e( "By default, thumbnails will be proportionately cropped. Check this box to hard crop the thumbnails.", TPTN_LOCAL_NAME ); ?>
-								<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", TPTN_LOCAL_NAME ), 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ); ?>
+								<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", TPTN_LOCAL_NAME ), esc_url( 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ) ); ?>
+								<?php if ( $tptn_settings['include_default_style'] ) { ?>
+									<p class="description"><?php _e( "Since you're using the default styles set under the Custom Styles section, the width and height is fixed at 65px and crop mode is enabled.", TPTN_LOCAL_NAME ); ?></p>
+								<?php } ?>
 							</p>
 						</td>
 					</tr>
@@ -848,7 +860,8 @@ function tptn_options() {
 						<td>
 							<input type="checkbox" name="include_default_style" id="include_default_style" <?php if ( $tptn_settings['include_default_style'] ) echo 'checked="checked"' ?> />
 						  	<p class="description"><?php _e( 'Top 10 includes a default style that makes your popular posts list to look beautiful. Check the box above if you want to use this.', TPTN_LOCAL_NAME ); ?></p>
-						  	<p class="description"><?php _e( 'Enabling this option will turn on the thumbnails and set their width and height to 150px. It will also turn off the display of the author, excerpt and date if already enabled. Disabling this option will not revert any settings.', TPTN_LOCAL_NAME ); ?></p>
+						  	<p class="description"><?php _e( 'Enabling this option will turn on the thumbnails and set their width and height to 65px. It will also turn off the display of the author, excerpt and date if already enabled. Disabling this option will not revert any settings.', TPTN_LOCAL_NAME ); ?></p>
+						  	<p class="description"><?php printf( __( 'You can view the default style at <a href="%1$s" target="_blank">%1$s</a>', TPTN_LOCAL_NAME ), esc_url( 'https://github.com/ajaydsouza/top-10/blob/master/css/default-style.css' ) ); ?></p>
 						</td>
 					</tr>
 					<tr><th scope="row" colspan="2"><?php _e( 'Custom CSS to add to header:', TPTN_LOCAL_NAME ); ?></th>
@@ -1195,12 +1208,13 @@ function tptn_admin_side() {
       <div class="inside">
         <div id="quick-links">
 			<ul>
-				<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/"><?php _e( 'Top 10 plugin page', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="http://ajaydsouza.com/wordpress/plugins/"><?php _e( 'Other plugins', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="http://ajaydsouza.com/"><?php _e( "Ajay's blog", TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="https://wordpress.org/plugins/top-10/faq/"><?php _e( 'FAQ', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="http://wordpress.org/support/plugin/top-10"><?php _e( 'Support', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10"><?php _e( 'Reviews', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="https://github.com/ajaydsouza/top-10" target="_blank"><?php _e( 'Top 10 Github page', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="http://ajaydsouza.com/wordpress/plugins/" target="_blank"><?php _e( 'Other plugins', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="http://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="https://wordpress.org/plugins/top-10/faq/" target="_blank"><?php _e( 'FAQ', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="http://wordpress.org/support/plugin/top-10" target="_blank"><?php _e( 'Support', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank"><?php _e( 'Reviews', TPTN_LOCAL_NAME ); ?></a></li>
 			</ul>
         </div>
       </div>
