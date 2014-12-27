@@ -116,7 +116,6 @@ function tptn_options() {
 		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
 		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
 
-
 		/* Thumbnail options */
 		$tptn_settings['post_thumb_op'] = $_POST['post_thumb_op'];
 		$tptn_settings['thumb_size'] = $_POST['thumb_size'];
