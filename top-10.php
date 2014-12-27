@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	1.9.14
+ * Version: 	1.9.15
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -536,6 +536,21 @@ function tptn_pop_posts( $args ) {
 	// Declare each item in $args as its own variable i.e. $type, $before.
 	extract( $args, EXTR_SKIP );
 
+	$tptn_thumb_size = tptn_get_all_image_sizes( $thumb_size );
+
+	if ( isset( $tptn_thumb_size['width'] ) ) {
+		$thumb_width = $tptn_thumb_size['width'];
+		$thumb_height = $tptn_thumb_size['height'];
+	}
+
+	if ( empty( $thumb_width ) ) {
+		$thumb_width = $tptn_settings['thumb_width'];
+	}
+
+	if ( empty( $thumb_height ) ) {
+		$thumb_height = $tptn_settings['thumb_height'];
+	}
+
 	if ( $daily ) {
 		$table_name = $wpdb->base_prefix . "top_ten_daily";
 	} else {
@@ -573,7 +588,6 @@ function tptn_pop_posts( $args ) {
 	// Fields to return
 	$fields = " postnumber, ";
 	$fields .= ( $daily ) ? "SUM(cntaccess) as sumCount, dp_date, " : "cntaccess as sumCount, ";
-//	$fields .= "ID, post_type, post_status ";
 	$fields .= "ID ";
 
 	// Create the JOIN clause
@@ -859,6 +873,7 @@ function tptn_pop_posts( $args ) {
 		$output .= ( $blank_output ) ? '' : $blank_output_text;
 	}
 	$output .= '</div>';
+	$output .= $thumb_width.'x'.$thumb_height;
 
 	/**
 	 * Filter the output
@@ -1166,6 +1181,8 @@ function tptn_default_options() {
 	$blank_output_text = __( 'No top posts yet', TPTN_LOCAL_NAME );
 	$thumb_default = $tptn_url . '/default.png';
 
+	$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
+
 	// get relevant post types
 	$args = array (
 		'public' => true,
@@ -1209,14 +1226,17 @@ function tptn_default_options() {
 		'after_list_item' => '</li>',		// After each list item
 
 		'post_thumb_op' => 'text_only',	// Display only text in posts
-		'thumb_height' => '50',			// Max height of thumbnails
-		'thumb_width' => '50',			// Max width of thumbnails
+
+		'thumb_size' => 'tptn_thumbnail',	// Default thumbnail size
+		'thumb_height' => '150',			// Max height of thumbnails
+		'thumb_width' => '150',			// Max width of thumbnails
+		'thumb_crop' => true,		// Crop mode. default is hard crop
 		'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?
 		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
 		'scan_images' => true,			// Scan post for images
 		'thumb_default' => $thumb_default,	// Default thumbnail image
 		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
-		'thumb_timthumb' => true,	// Use timthumb
+		'thumb_timthumb' => false,	// Use timthumb
 		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb
 
 		'show_excerpt' => false,			// Show description in list item
@@ -1480,6 +1500,32 @@ function tptn_trunc_count( $daily = false ) {
 
 
 /**
+ * Add custom image size of thumbnail. Filters `init`.
+ *
+ * @since 2.0.0
+ *
+ */
+function tptn_add_image_sizes() {
+	global $tptn_settings;
+
+	if ( ! in_array( $tptn_settings['thumb_size'], get_intermediate_image_sizes() ) ) {
+		$tptn_settings['thumb_size'] = 'tptn_thumbnail';
+		update_option( 'ald_tptn_settings', $tptn_settings );
+	}
+
+	// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid
+	if ( 'tptn_thumbnail' == $tptn_settings['thumb_size'] ) {
+		$width = empty( $tptn_settings['thumb_width'] ) ? 150 : $tptn_settings['thumb_width'];
+		$height = empty( $tptn_settings['thumb_height'] ) ? 150 : $tptn_settings['thumb_height'];
+		$crop = isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : false;
+
+		add_image_size( 'tptn_thumbnail', $width, $height, $crop );
+	}
+}
+add_action( 'init', 'tptn_add_image_sizes' );
+
+
+/**
  * Filter function to resize post thumbnail. Filters tptn_postimage.
  *
  * @since	1.9.2
@@ -1512,12 +1558,12 @@ add_filter( 'tptn_postimage', 'tptn_scale_thumbs', 10, 6 );
  */
 function tptn_get_the_post_thumbnail( $args = array() ) {
 
-	global $tptn_url;
+	global $tptn_url, $tptn_settings;
 
 	$defaults = array(
 		'postid' => '',
-		'thumb_height' => '50',			// Max height of thumbnails
-		'thumb_width' => '50',			// Max width of thumbnails
+		'thumb_height' => '150',			// Max height of thumbnails
+		'thumb_width' => '150',			// Max width of thumbnails
 		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
 		'thumb_html' => 'html',		// HTML / CSS for width and height attributes
 		'thumb_default' => '',	// Default thumbnail image
@@ -1539,56 +1585,67 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	$title = get_the_title( $postid );
 
 	$output = '';
-	$thumb_html = ( 'css' == $thumb_html ) ? 'style="max-width:' . $thumb_width . 'px;max-height:' . $thumb_height . 'px;"' : 'width="' . $thumb_width . '" height="' .$thumb_height . '"';
+	$postimage = '';
 
-	if ( function_exists( 'has_post_thumbnail' ) && ( ( '' != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) || ( false != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) ) ) {
-		$postimage = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) );
+	// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page
+	if ( ! $postimage ) {
+		$postimage = get_post_meta( $result->ID, $thumb_meta, true );	// Check the post meta first
+		$pick = 'meta';
+	}
 
-		if ( ( $postimage[1] < $thumb_width ) || ( $postimage[2] < $thumb_height ) ) {
-			$postimage = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) , 'full' );
+	// If there is no thumbnail found, check the post thumbnail
+	if ( ! $postimage ) {
+		if ( ( false != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) ) {
+			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), $tptn_settings['thumb_size'] );
+			$postimage = $postthumb[0];
 		}
+		$pick = 'featured';
+	}
+
+	// If there is no thumbnail found, fetch the first image in the post, if enabled
+	if ( ! $postimage && $scan_images ) {
+		preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $result->post_content, $matches );
+		if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
+			$postimage = $matches[1][0]; // we need the first one only!
+		}
+		$pick = 'first';
+	}
+
+	// If there is no thumbnail found, fetch the first child image
+	if ( ! $postimage ) {
+		$postimage = tptn_get_first_image( $result->ID );	// Get the first image
+		$pick = 'firstchild';
+	}
+
+	// If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
+	if ( ! $postimage ) {
+		$postimage = get_post_meta( $result->ID, '_video_thumbnail', true );
+	}
+
+	// If no thumb found and settings permit, use default thumb
+	if ( $thumb_default_show && ! $postimage ) {
+		$postimage = $thumb_default;
+	}
+
+	// Hopefully, we've found a thumbnail by now. If so, run it through the custom filter, check for SSL and create the image tag
+	if ( $postimage ) {
 
 		/**
 		 * Get the first image in the post.
 		 *
-		 * @since 1.9
+		 * @since 1.8.10
 		 *
-		 * @param	string		$postimage[0]		Post Image URL
-		 * @param	string|int	$thumb_width		Thumbnail width
-		 * @param	string|int	$thumb_height		Thumbnail height
-		 * @param	string|int	$thumb_timthumb		Timthumb flag
-		 * @param	strint|int	$thumb_timthumb_q	Quality of the thumbnail
-		 * @param	object		$result				Post object
+		 * @param mixed $postID	Post ID
 		 */
-		$postimage = apply_filters( $filter, $postimage[0], $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
-
-		$output .= '<img src="' . $postimage . '" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' border="0" class="' . $class . '" />';
-	} else {
-		$postimage = get_post_meta( $result->ID, $thumb_meta, true );	// Check the post meta first
-
-		if ( ! $postimage && $scan_images ) {
-			preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $result->post_content, $matches );
-			if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
-				$postimage = $matches[1][0]; // we need the first one only!
-			}
+		$postimage = apply_filters( $filter, $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
+		if ( is_ssl() ) {
+		    $postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
 
-		if ( ! $postimage ) {
-			$postimage = tptn_get_first_image( $result->ID );	// Get the first image
-		}
+		$thumb_html = ( 'css' == $thumb_html ) ? 'style="max-width:' . $thumb_width . 'px;max-height:' . $thumb_height . 'px;"' : 'width="' . $thumb_width . '" height="' .$thumb_height . '"';
 
-		if ( ! $postimage ) {
-			$postimage = get_post_meta( $result->ID, '_video_thumbnail', true ); // If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
-		}
-
-		if ( $thumb_default_show && ! $postimage ) {
-			$postimage = $thumb_default; // If no thumb found and settings permit, use default thumb
-		}
-
-		if ( $postimage ) {
-			$postimage = apply_filters( $filter, $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
-			$output .= '<img src="'.$postimage.'" alt="'.$title.'" title="'.$title.'" '.$thumb_html.' border="0" class="'.$class.'" />';
-		}
+		$class .= ' tptn_' . $pick;
+		$output .= '<img src="' . $postimage . '" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' class="' . $class . '" />';
 	}
 
 	/**
@@ -1843,6 +1900,54 @@ function tptn_shortcode_views( $atts , $content=null ) {
 }
 add_shortcode( 'tptn_views', 'tptn_shortcode_views' );
 
+
+
+/**
+ * Get all image sizes.
+ *
+ * @since	2.0.0
+ * @param	string	$size	Get specific image size
+ * @return	array	Image size names along with width, height and crop setting
+ */
+function tptn_get_all_image_sizes( $size = '' ) {
+	global $_wp_additional_image_sizes;
+
+	/* Get the intermediate image sizes and add the full size to the array. */
+	$intermediate_image_sizes = get_intermediate_image_sizes();
+
+	foreach( $intermediate_image_sizes as $_size ) {
+        if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
+
+            $sizes[ $_size ]['name'] = $_size;
+            $sizes[ $_size ]['width'] = get_option( $_size . '_size_w' );
+            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+            $sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
+
+	        if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
+	            unset( $sizes[ $_size ] );
+	        }
+
+        } elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
+
+            $sizes[ $_size ] = array(
+	            'name' => $_size,
+                'width' => $_wp_additional_image_sizes[ $_size ]['width'],
+                'height' => $_wp_additional_image_sizes[ $_size ]['height'],
+                'crop' => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
+            );
+		}
+	}
+
+	/* Get only 1 size if found */
+    if ( $size ) {
+        if ( isset( $sizes[ $size ] ) ) {
+			return $sizes[ $size ];
+        } else {
+			return false;
+        }
+    }
+	return apply_filters( 'tptn_get_all_image_sizes', $sizes );
+}
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
