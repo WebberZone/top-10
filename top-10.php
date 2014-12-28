@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	1.9.15
+ * Version: 	1.9.16
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -562,7 +562,7 @@ function tptn_pop_posts( $args ) {
 	$exclude_categories = explode( ',', $exclude_categories );
 
 	$target_attribute = ( $link_new_window ) ? ' target="_blank" ' : ' ';	// Set Target attribute
-	$rel_attribute = ( $link_nofollow ) ? ' nofollow' : '';	// Set nofollow attribute
+	$rel_attribute = ( $link_nofollow ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
 
 	parse_str( $post_types, $post_types );	// Save post types in $post_types variable
 
@@ -738,6 +738,8 @@ function tptn_pop_posts( $args ) {
 		foreach ( $results as $result ) {
 			$sumcount = $result->sumCount;
 
+			$result = get_post( $result->ID );	// Let's get the Post using the ID
+
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
 			 *
@@ -745,7 +747,7 @@ function tptn_pop_posts( $args ) {
 			 *
 			 * @param	int	$result->ID	ID of the post
 			 */
-			$result = get_post( apply_filters( 'tptn_post_id', $result->ID ) );	// Let's get the Post using the ID
+			$postid = apply_filters( 'tptn_post_id', $result->ID );
 
 			/**
 			 * Filter the post ID for each result. This filtered ID is passed as a parameter to fetch categories.
@@ -766,17 +768,17 @@ function tptn_pop_posts( $args ) {
 				if ( $p_in_c ) break;	// End loop if post found in category
 			}
 
-			$title = tptn_max_formatted_content( get_the_title( $result->ID ), $title_length );
+			$post_title = tptn_max_formatted_content( get_the_title( $postid ), $title_length );
 
 			/**
 			 * Filter the post title of each list item.
 			 *
 			 * @since	2.0.0
 			 *
-			 * @param	string	$title	Post title in the list.
+			 * @param	string	$post_title	Post title in the list.
 			 * @param	object	$result	Object of the current post result
 			 */
-			$title = apply_filters( 'tptn_post_title', $title, $result );
+			$post_title = apply_filters( 'tptn_post_title', $post_title, $result );
 
 
 			if ( ! $p_in_c ) {
@@ -791,16 +793,38 @@ function tptn_pop_posts( $args ) {
 				 */
 				$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result );
 
+				/**
+				 * Filter the `rel` attribute each list item.
+				 *
+				 * @since	1.9.10.1
+				 *
+				 * @param	string	$rel_attribute	rel attribute
+				 * @param	object	$result			Object of the current post result
+				 */
+				$rel_attribute = apply_filters( 'tptn_rel_attribute', $rel_attribute, $result );
+
+				/**
+				 * Filter the target attribute each list item.
+				 *
+				 * @since	1.9.10.1
+				 *
+				 * @param	string	$target_attribute	target attribute
+				 * @param	object	$result				Object of the current post result
+				 */
+				$target_attribute = apply_filters( 'tptn_rel_attribute', $target_attribute, $result );
+
+
 				if ( 'after' == $post_thumb_op ) {
-					$output .= '<a href="' . get_permalink( $result->ID ) . '" rel="bookmark' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
-					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title if post thumbnail is to be displayed after
 					$output .= '</a>'; // Close the link
 				}
 
 				if ( 'inline' == $post_thumb_op || 'after' == $post_thumb_op || 'thumbs_only' == $post_thumb_op ) {
-					$output .= '<a href="' . get_permalink( $result->ID ) . '" rel="bookmark' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+
 					$output .= tptn_get_the_post_thumbnail( array(
-						'postid' => $result->ID,
+						'postid' => $postid,
 						'thumb_height' => $thumb_height,
 						'thumb_width' => $thumb_width,
 						'thumb_meta' => $thumb_meta,
@@ -813,13 +837,14 @@ function tptn_pop_posts( $args ) {
 						'class' => "tptn_thumb",
 						'filter' => "tptn_postimage",
 					) );
+
 					$output .= '</a>'; // Close the link
 				}
 
 				if ( 'inline' == $post_thumb_op || 'text_only' == $post_thumb_op ) {
 					$output .= '<span class="tptn_after_thumb">';
-					$output .= '<a href="' . get_permalink( $result->ID ) . '" rel="bookmark' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
-					$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title when required by settings
 					$output .= '</a>'; // Close the link
 				}
 
@@ -828,7 +853,29 @@ function tptn_pop_posts( $args ) {
 					$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
 					$author_link = get_author_posts_url( $author_info->ID );
 
-					$output .= '<span class="tptn_author"> ' . __( ' by ', TPTN_LOCAL_NAME ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+					/**
+					 * Filter the author name.
+					 *
+					 * @since	1.9.1
+					 *
+					 * @param	string	$author_name	Proper name of the post author.
+					 * @param	object	$author_info	WP_User object of the post author
+					 */
+					$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
+
+					$tptn_author = '<span class="tptn_author"> ' . __( ' by ', TPTN_LOCAL_NAME ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+
+					/**
+					 * Filter the text with the author details.
+					 *
+					 * @since	2.0.0
+					 *
+					 * @param	string	$tptn_author	Formatted string with author details and link
+					 * @param	object	$author_info	WP_User object of the post author
+					 */
+					$tptn_author = apply_filters( 'tptn_author', $tptn_author, $author_info );
+
+					$output .= $tptn_author;
 				}
 
 				if ( $show_date ) {
@@ -836,7 +883,7 @@ function tptn_pop_posts( $args ) {
 				}
 
 				if ( $show_excerpt ) {
-					$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $result->ID, $excerpt_length ).'</span>';
+					$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $postid, $excerpt_length ).'</span>';
 				}
 
 				if ( $disp_list_count ) {
@@ -864,12 +911,16 @@ function tptn_pop_posts( $args ) {
 		if ( $show_credit ) {
 
 			/** This filter is documented in contextual-related-posts.php */
-			$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result->ID );
+			$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result );
 
-			$output .= sprintf( 'Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/" rel="nofollow">Top 10 plugin</a>', TPTN_LOCAL_NAME );
+			$output .= sprintf(
+				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', TPTN_LOCAL_NAME ),
+				esc_url( 'http://ajaydsouza.com/wordpress/plugins/top-10/' ),
+				$target_attribute
+			);
 
 			/** This filter is documented in contextual-related-posts.php */
-			$output .= apply_filters( 'tptn_after_list_item', $after_list_item, $result->ID );
+			$output .= apply_filters( 'tptn_after_list_item', $after_list_item, $result );
 		}
 
 		/**
@@ -1162,6 +1213,8 @@ register_activation_hook( __FILE__, 'tptn_activation_hook' );
 function tptn_single_activate() {
 	global $wpdb, $tptn_db_version;
 
+	$tptn_settings = tptn_read_options();
+
 	$table_name = $wpdb->base_prefix . "top_ten";
 	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
@@ -1323,30 +1376,6 @@ add_action( 'init', 'tptn_add_image_sizes' );
 
 
 /**
- * Filter function to resize post thumbnail. Filters tptn_postimage.
- *
- * @since	1.9.2
- * @param	string		$postimage			Post Image URL
- * @param	string|int	$thumb_width		Thumbnail width
- * @param	string|int	$thumb_height		Thumbnail height
- * @param	string|int	$thumb_timthumb		Timthumb flag
- * @param	strint|int	$thumb_timthumb_q	Quality of the thumbnail
- * @return	string 		Post image output	Post image
- */
-function tptn_scale_thumbs( $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $post ) {
-	global $tptn_url;
-
-	if ( $thumb_timthumb ) {
-		$new_pi = $tptn_url . '/timthumb/timthumb.php?src=' . urlencode( $postimage ) . '&amp;w=' . $thumb_width . '&amp;h=' . $thumb_height . '&amp;zc=1&amp;q=' . $thumb_timthumb_q;
-	} else {
-		$new_pi = $postimage;
-	}
-	return $new_pi;
-}
-add_filter( 'tptn_postimage', 'tptn_scale_thumbs', 10, 6 );
-
-
-/**
  * Function to get the post thumbnail.
  *
  * @since	1.8
@@ -1379,7 +1408,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	extract( $args, EXTR_SKIP );
 
 	$result = get_post( $postid );
-	$title = get_the_title( $postid );
+	$post_title = get_the_title( $postid );
 
 	$output = '';
 	$postimage = '';
@@ -1435,6 +1464,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		 * @param mixed $postID	Post ID
 		 */
 		$postimage = apply_filters( $filter, $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
+
 		if ( is_ssl() ) {
 		    $postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
@@ -1442,7 +1472,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		$thumb_html = ( 'css' == $thumb_html ) ? 'style="max-width:' . $thumb_width . 'px;max-height:' . $thumb_height . 'px;"' : 'width="' . $thumb_width . '" height="' .$thumb_height . '"';
 
 		$class .= ' tptn_' . $pick;
-		$output .= '<img src="' . $postimage . '" alt="' . $title . '" title="' . $title . '" ' . $thumb_html . ' class="' . $class . '" />';
+		$output .= '<img src="' . $postimage . '" alt="' . $post_title . '" title="' . $post_title . '" ' . $thumb_html . ' class="' . $class . '" />';
 	}
 
 	/**
@@ -1451,8 +1481,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	 * @since	1.9.10.1
 	 *
 	 * @param	array	$output	Formatted output
+	 * @param	array	$args	Argument list
 	 */
-	return apply_filters( 'tptn_get_the_post_thumbnail', $output );
+	return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args );
 }
 
 
@@ -1779,5 +1810,11 @@ if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-dashboard.php' );
 
 } // End admin.inc
+
+/*----------------------------------------------------------------------------*
+ * Deprecated functions
+ *----------------------------------------------------------------------------*/
+
+	require_once( plugin_dir_path( __FILE__ ) . 'includes/deprecated.php' );
 
 ?>
