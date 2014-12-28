@@ -43,12 +43,14 @@ If you're looking for a plugin to display related, look no further than my other
 == Screenshots ==
 
 1. Top 10 options - General options
-2. Top 10 options - Output options
-3. Top 10 options - Custom styles
-4. Top 10 options - Maintenance
-5. Top 10 options - Reset count
-6. Top 10 widget options
-7. Top 10 Meta box on the Edit Post screen
+2. Top 10 options - Counter and Tracker options
+3. Top 10 options - Popular post list options
+4. Top 10 options - Thumbnail options
+5. Top 10 options - Custom styles
+6. Top 10 options - Maintenance
+7. Top 10 widget options
+8. Top 10 Meta box on the Edit Post screen
+9. WordPress Multisite: Import Top 10 v1.x counts
 
 
 == Upgrade Notice ==
