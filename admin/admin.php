@@ -979,8 +979,8 @@ function tptn_options() {
 		      <?php _e( 'This cannot be reversed. Make sure that your database has been backed up before proceeding', TPTN_LOCAL_NAME ); ?>
 		    </p>
 		    <p>
-		      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php _e( 'Reset Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
-		      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php _e( 'Reset Daily Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the daily popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
+		      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php _e( 'Reset Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
+		      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php _e( 'Reset Daily Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the daily popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
 		      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php _e( 'Clear duplicates', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "This will delete the duplicate entries in the tables. Proceed?", TPTN_LOCAL_NAME ); ?>')) return false;" />
 		    </p>
 	      </div>
@@ -997,10 +997,14 @@ function tptn_options() {
 	      <h3 class='hndle'><span><?php _e( 'WordPress Multisite: Migrate Top 10 v1.x counts to 2.x', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 		    <p class="description">
-		    	<?php _e( "If you've been using Top 10 v1.x on multisite, you would have needed to activate the plugin independently for each site. This would have resulted in two tables being created for each site in the network. Top 10 v2.x onwards uses only a single table to record the count, keeping your database clean. You can use this tool to import the recorded counts from v1.x tables to the new v2.x table format.", TPTN_LOCAL_NAME ); ?>
+		    	<?php _e( "If you've been using Top 10 v1.x on multisite, you would have needed to activate the plugin independently for each site. This would have resulted in two tables being created for each site in the network.", TPTN_LOCAL_NAME ); ?>
+		    	<?php _e( "Top 10 v2.x onwards uses only a single table to record the count, keeping your database clean. You can use this tool to import the recorded counts from v1.x tables to the new v2.x table format.", TPTN_LOCAL_NAME ); ?>
 		    </p>
 		    <p class="description">
 		    	<?php _e( "If you do not see any tables below, then it means that either all data has already been imported or no relevant information has been found.", TPTN_LOCAL_NAME ); ?>
+		    </p>
+		    <p class="description">
+		    	<strong style="color:#C00"><?php _e( "After running the importer, please verify that all the counts have been successfully imported. Only then should you delete any old tables!", TPTN_LOCAL_NAME ); ?></strong>
 		    </p>
 
 		    	<?php
@@ -1086,8 +1090,8 @@ function tptn_options() {
 		    <p>
 		      <input type="hidden" name="top_ten_mu_tables_blog_ids" value="<?php echo implode( ',', $top_ten_mu_tables_blog_ids ); ?>" />
 		      <input name="tptn_import" type="submit" id="tptn_import" value="<?php _e( 'Begin import', TPTN_LOCAL_NAME ); ?>" class="button button-primary" />
-		      <input name="tptn_delete_selected_tables" type="submit" id="tptn_delete_selected_tables" value="<?php _e( 'Delete selected tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" />
-		      <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php _e( 'Delete all imported tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" />
+		      <input name="tptn_delete_selected_tables" type="submit" id="tptn_delete_selected_tables" value="<?php _e( 'Delete selected tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" />
+		      <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php _e( 'Delete all imported tables', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" />
 		    </p>
 			<?php
 				} // End if ( ! empty( $top_ten_all_mu_tables ) )
