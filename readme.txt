@@ -55,12 +55,18 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
+= 2.0.1 =
+* Bug fix release: Fixes 500/503 errors caused by 2.0.0
+
 = 2.0.0 =
 Major update: Multisite support; Better extensions support; Hourly tracking; bug fixes;
 View the Changelog for details;
 
 
 == Changelog ==
+
+= 2.0.1 =
+* Bug fix release: Fixes 500/503 errors caused by 2.0.0
 
 = 2.0.0 =
 * New: Multisite support. If you're using multisite and have previously activated Top 10 on individual blogs in the network, then head over to **Top 10 Settings** and import the counts from the old Top 10 1.x tables to the new Top 10 v2.0 tables
