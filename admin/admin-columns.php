@@ -69,9 +69,15 @@ function tptn_value( $column_name, $id ) {
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
 
-		$current_time = current_time( 'timestamp', 1 );
-		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H' , $from_date );
+		if ( $tptn_settings['daily_midnight'] ) {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d 0' , $from_date );
+		} else {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d H' , $from_date );
+		}
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $from_date ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
@@ -91,9 +97,15 @@ function tptn_value( $column_name, $id ) {
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
 
-		$current_time = current_time( 'timestamp', 1 );
-		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H' , $from_date );
+		if ( $tptn_settings['daily_midnight'] ) {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d 0' , $from_date );
+		} else {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d H' , $from_date );
+		}
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $from_date ) );
 		$cntaccess .= ' / '.number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
@@ -155,9 +167,15 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
 
-		$current_time = current_time( 'timestamp', 1 );
-		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H' , $from_date );
+		if ( $tptn_settings['daily_midnight'] ) {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d 0' , $from_date );
+		} else {
+			$current_time = current_time( 'timestamp', 0 );
+			$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+			$from_date = gmdate( 'Y-m-d H' , $from_date );
+		}
 
 		$clauses['join'] .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
 		$clauses['where'] .= " AND {$table_name}.dp_date >= '$from_date' ";
