@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.1
+ * Version: 	2.0.2
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -478,7 +478,7 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 				$daily_range = $tptn_settings['daily_range'];
 				$hour_range = $tptn_settings['hour_range'];
 
-				if ( $daily_midnight ) {
+				if ( $tptn_settings['daily_midnight'] ) {
 					$current_time = current_time( 'timestamp', 0 );
 					$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 					$from_date = gmdate( 'Y-m-d 0' , $from_date );
