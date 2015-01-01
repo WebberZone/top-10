@@ -55,15 +55,15 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 2.0.1 =
-* Bug fix release: Fixes 500/503 errors caused by 2.0.0
-
-= 2.0.0 =
-Major update: Multisite support; Better extensions support; Hourly tracking; bug fixes;
-View the Changelog for details;
+= 2.0.2 =
+* New: Option to display the daily posts count from midnight. This is enabled by default and mimics the original behaviour of the counter
 
 
 == Changelog ==
+
+= 2.0.2 =
+* New: Option to display the daily posts count from midnight. This is enabled by default and mimics the original behaviour of the counter in Top 10 v1.x
+* Modified: Posts are tracked hourly based on the time of the blog and not GMT. This was also the default behaviour of the counter in Top 10 v1.x
 
 = 2.0.1 =
 * Bug fix release: Fixes 500/503 errors caused by 2.0.0

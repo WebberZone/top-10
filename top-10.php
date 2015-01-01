@@ -245,7 +245,7 @@ function tptn_parse_request( $wp ) {
 
 			if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
 
-				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 1 ) );
+				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
 				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
 
@@ -478,9 +478,15 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 				$daily_range = $tptn_settings['daily_range'];
 				$hour_range = $tptn_settings['hour_range'];
 
-				$current_time = current_time( 'timestamp', 1 );
-				$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-				$from_date = gmdate( 'Y-m-d H' , $from_date );
+				if ( $daily_midnight ) {
+					$current_time = current_time( 'timestamp', 0 );
+					$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+					$from_date = gmdate( 'Y-m-d 0' , $from_date );
+				} else {
+					$current_time = current_time( 'timestamp', 0 );
+					$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+					$from_date = gmdate( 'Y-m-d H' , $from_date );
+				}
 
 				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) );
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
@@ -574,9 +580,16 @@ function tptn_pop_posts( $args ) {
 
 	$blog_id = get_current_blog_id();
 
-	$current_time = current_time( 'timestamp', 1 );
-	$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-	$from_date = gmdate( 'Y-m-d H' , $from_date );
+
+	if ( $daily_midnight ) {
+		$current_time = current_time( 'timestamp', 0 );
+		$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+		$from_date = gmdate( 'Y-m-d 0' , $from_date );
+	} else {
+		$current_time = current_time( 'timestamp', 0 );
+		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$from_date = gmdate( 'Y-m-d H' , $from_date );
+	}
 
 	/**
 	 *
@@ -1032,7 +1045,10 @@ function tptn_default_options() {
 		/* General options */
 		'activate_daily' => true,	// Activate the daily count
 		'activate_overall' => true,	// activate overall count
-		'cache_fix' => false,		// Temporary fix for W3 Total Cache
+		'cache_fix' => true,		// Temporary fix for W3 Total Cache - Uses Ajax
+		'daily_midnight' => true,		// Start daily counts from midnight (default as old behaviour)
+		'daily_range' => '1',				// Daily Popular will contain posts of how many days?
+		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
 		'show_credit' => false,			// Add link to plugin page of my blog in top posts list
 
 		/* Counter and tracker options */
@@ -1056,8 +1072,6 @@ function tptn_default_options() {
 
 		/* Popular post list options */
 		'limit' => '10',					// How many posts to display?
-		'daily_range' => '1',				// Daily Popular will contain posts of how many days?
-		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
 		'post_types' => $post_types,		// WordPress custom post types
 		'exclude_categories' => '',		// Exclude these categories
 		'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
@@ -1603,7 +1617,7 @@ function ald_tptn_cron() {
 
 	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
 
-	$current_time = current_time( 'timestamp', 1 );
+	$current_time = current_time( 'timestamp', 0 );
 	$from_date = strtotime( '-90 DAY' , $current_time );
 	$from_date = gmdate( 'Y-m-d H' , $from_date );
 

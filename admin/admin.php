@@ -41,6 +41,9 @@ function tptn_options() {
 		$tptn_settings['activate_overall'] = isset( $_POST['activate_overall']) ? true : false;
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily']) ? true : false;
 		$tptn_settings['cache_fix'] = isset( $_POST['cache_fix'] ) ? true : false;
+		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
+		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
+		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
 		$tptn_settings['show_credit'] = isset( $_POST['show_credit'] ) ? true : false;
 
 		/* Counter and tracker options */
@@ -65,8 +68,6 @@ function tptn_options() {
 
 		/* Popular post list options */
 		$tptn_settings['limit'] = intval( $_POST['limit'] );
-		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
-		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
 
 		// Process post types to be selected
 		$wp_post_types	= get_post_types( array(
@@ -343,6 +344,21 @@ function tptn_options() {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="daily_midnight"><?php _e( 'Start daily counts from midnight:', TPTN_LOCAL_NAME ); ?></label></th>
+						<td>
+							<input type="checkbox" name="daily_midnight" id="daily_midnight" <?php if ( $tptn_settings['daily_midnight'] ) echo 'checked="checked"' ?> />
+							<p class="description"><?php _e( 'Daily counter will display number of visits from midnight. This option is checked by default and mimics the way most normal counters work. Turning this off will allow you to use the hourly setting in the next option.', TPTN_LOCAL_NAME ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="daily_range"><?php _e( 'Daily popular contains top posts over:', TPTN_LOCAL_NAME ); ?></label></th>
+						<td>
+							<input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes( $tptn_settings['daily_range'] ); ?>"> <?php _e( 'day(s)', TPTN_LOCAL_NAME ); ?>
+							<input type="textbox" name="hour_range" id="hour_range" size="3" value="<?php echo stripslashes( $tptn_settings['hour_range'] ); ?>"> <?php _e( 'hour(s)', TPTN_LOCAL_NAME ); ?>
+							<p class="description"><?php _e( "Think of Daily Popular has a custom date range applied as a global setting. Instead of displaying popular posts from the past day, this setting lets you display posts for as many days or as few hours as you want. This can be overridden in the widget.", TPTN_LOCAL_NAME ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="show_credit"><?php _e( 'Link to Top 10 plugin page', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 					    	<input type="checkbox" name="show_credit" id="show_credit" <?php if ( $tptn_settings['show_credit'] ) echo 'checked="checked"' ?> />
@@ -495,14 +511,6 @@ function tptn_options() {
 						<td>
 							<input type="textbox" name="limit" id="limit" value="<?php echo esc_attr( stripslashes( $tptn_settings['limit'] ) ); ?>">
 							<p class="description"><?php _e( "Maximum number of posts that will be displayed in the list. This option is used if you don't specify the number of posts in the widget or shortcodes", TPTN_LOCAL_NAME ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="daily_range"><?php _e( 'Daily popular contains top posts over:', TPTN_LOCAL_NAME ); ?></label></th>
-						<td>
-							<input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes( $tptn_settings['daily_range'] ); ?>"> <?php _e( 'day(s)', TPTN_LOCAL_NAME ); ?>
-							<input type="textbox" name="hour_range" id="hour_range" size="3" value="<?php echo stripslashes( $tptn_settings['hour_range'] ); ?>"> <?php _e( 'hour(s)', TPTN_LOCAL_NAME ); ?>
-							<p class="description"><?php _e( "Think of Daily Popular has a custom date range applied as a global setting. Instead of displaying popular posts from the past day, this setting lets you display posts for as many days or as few hours as you want. This can be overridden in the widget.", TPTN_LOCAL_NAME ); ?></p>
 						</td>
 					</tr>
 					<tr>

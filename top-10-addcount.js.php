@@ -45,7 +45,7 @@ function tptn_inc_count() {
 			$str .= ( $tt === FALSE ) ? 'tte' : 'tt' . $tt;
 		}
 		if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
-			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 1 ) );
+			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
 			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date) VALUES('%d', '1', '%s' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date ) );
 			$str .= ($ttd === FALSE) ? ' ttde' : ' ttd' . $ttd;
