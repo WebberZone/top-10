@@ -14,7 +14,7 @@ Header( "content-type: application/x-javascript" );
 define( 'SHORTINIT', true );
 
 // Build the wp-config.php path from a plugin/theme
-$wp_config_path = dirname( dirname( dirname( __FILE__ ) ) );
+$wp_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
 $wp_config_filename = '/wp-load.php';
 
 // Check if the file exists in the root or one level up
