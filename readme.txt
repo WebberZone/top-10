@@ -64,6 +64,7 @@ If you're looking for a plugin to display related, look no further than my other
 = 2.0.2 =
 * New: Option to display the daily posts count from midnight. This is enabled by default and mimics the original behaviour of the counter in Top 10 v1.x
 * Modified: Posts are tracked hourly based on the time of the blog and not GMT. This was also the default behaviour of the counter in Top 10 v1.x
+* Fixed: Default thumbnail location saved correctly on the Settings page.
 
 = 2.0.1 =
 * Bug fix release: Fixes 500/503 errors caused by 2.0.0

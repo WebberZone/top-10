@@ -131,7 +131,7 @@ function tptn_options() {
 		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( '' != $_POST['thumb_default'] ) ? $_POST['thumb_default'] : $tptn_url . '/default.png';
+		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '\/default.png' == $_POST['thumb_default'] ) ) ? $_POST['thumb_default'] : $tptn_url . '/default.png';
 
 		/* Custom styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
@@ -158,7 +158,7 @@ function tptn_options() {
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
 		/* Echo a success message */
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', TPTN_LOCAL_NAME ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', TPTN_LOCAL_NAME ) . '</p></div>';
 		echo $str;
 	}
 
