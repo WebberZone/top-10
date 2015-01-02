@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.2
+ * Version: 	2.0.2.5
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -74,7 +74,7 @@ $tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = "4.0";
+$tptn_db_version = "5.0";
 
 
 /**
@@ -1264,17 +1264,29 @@ function tptn_single_activate() {
 
 		$wpdb->hide_errors();
 
-		$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) " );
-		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) " );
-		$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) " );
-		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) " );
-		$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY dp_date DATETIME " );
-		$wpdb->query( "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) " );
-		$wpdb->query( "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) " );
-		$wpdb->query( "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL " );
-		$wpdb->query( "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL " );
-		$wpdb->query( "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 " );
-		$wpdb->query( "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 " );
+		switch ( $installed_ver ) {
+
+			case '4.0':
+			case 4.0:
+				$wpdb->query( "ALTER TABLE " . $table_name . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				break;
+
+			default:
+
+				$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) " );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) " );
+				$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) " );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) " );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY dp_date DATETIME " );
+				$wpdb->query( "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) " );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) " );
+				$wpdb->query( "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 " );
+				$wpdb->query( "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 " );
+
+		}
 
 		$wpdb->show_errors();
 
