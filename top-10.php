@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      http://ajaydsouza.com
- * @copyright 2008-2014 Ajay D'Souza
+ * @copyright 2008-2015 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name:	Top 10
