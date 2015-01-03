@@ -60,8 +60,9 @@ function tptn_call_meta_box() {
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
 
 	$resultscount = $wpdb->get_row( $wpdb->prepare(
-		"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d" ,
-		$post->ID
+		"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
+		$post->ID,
+		get_current_blog_id()
 	) );
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
 
@@ -82,7 +83,7 @@ function tptn_call_meta_box() {
 	<p>
 		<label for="thumb_meta"><?php _e( "Location of thumbnail:", TPTN_LOCAL_NAME ); ?></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
-		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Settings &raquo; Related Posts &raquo; Output Options", TPTN_LOCAL_NAME ); ?></em>
+		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", TPTN_LOCAL_NAME ); ?></em>
 		<em><?php _e( "The URL above is saved in the meta field: ", TPTN_LOCAL_NAME ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
 	</p>
 
@@ -118,17 +119,22 @@ function tptn_save_meta_box( $post_id ) {
 	// Update the posts view count
 	if ( ( isset( $_POST['total_count'] ) ) && ( current_user_can( 'manage_options' ) ) ) {
     	$total_count = intval( $_POST['total_count'] );
+		$blog_id = get_current_blog_id();
+
     	if ( 0 <> $total_count ) {
+
 			$tt = $wpdb->query( $wpdb->prepare(
-					"INSERT INTO {$table_name} (postnumber, cntaccess) VALUES('%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
+					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
 					$post_id,
 					$total_count,
+					$blog_id,
 					$total_count
 				) );
 		} else {
 			$resultscount = $wpdb->query( $wpdb->prepare(
-				"DELETE FROM {$table_name} WHERE postnumber = %d ",
-				$post_id
+				"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
+				$post_id,
+				$blog_id
 			) );
 		}
 	}
@@ -139,6 +145,7 @@ function tptn_save_meta_box( $post_id ) {
     }
 
 	$tptn_post_meta = get_post_meta( $post_id, $tptn_settings['thumb_meta'], true );
+
 	if ( $tptn_post_meta && '' != $tptn_post_meta ) {
 		$gotmeta = true;
 	} else {
