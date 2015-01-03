@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Топ 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-01 21:54-0000\n"
+"POT-Creation-Date: 2015-01-03 00:29-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: Bohdan Zograf <bozograf@gmail.com>\n"
@@ -73,29 +73,29 @@ msgstr "Gündəlik Populyar"
 msgid "Top 10"
 msgstr "Top 10 yazılar"
 
-#: admin/admin-metabox.php:71
+#: admin/admin-metabox.php:72
 #, fuzzy
 msgid "Visit count:"
 msgstr "Statistikanı sbros etmək"
 
-#: admin/admin-metabox.php:73
+#: admin/admin-metabox.php:74
 msgid ""
 "Enter a number above to update the visit count. Leaving the above box blank "
 "will set the count to zero"
 msgstr ""
 
-#: admin/admin-metabox.php:83
+#: admin/admin-metabox.php:84
 msgid "Location of thumbnail:"
 msgstr ""
 
-#: admin/admin-metabox.php:85
+#: admin/admin-metabox.php:86
 msgid ""
 "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This "
 "image will be used for the post. It will be resized to the thumbnail size "
-"set under Settings &raquo; Related Posts &raquo; Output Options"
+"set under Top 10 Settings &raquo; Thumbnail options."
 msgstr ""
 
-#: admin/admin-metabox.php:86
+#: admin/admin-metabox.php:87
 msgid "The URL above is saved in the meta field: "
 msgstr ""
 
@@ -1059,19 +1059,19 @@ msgstr "<h3>Gündəlik Populyar</h3>"
 msgid "No top posts yet"
 msgstr "10 populyar yazı statisticasını pozmaq"
 
-#: top-10.php:1676
+#: top-10.php:1688
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1680
+#: top-10.php:1692
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1684
+#: top-10.php:1696
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1688
+#: top-10.php:1700
 msgid "Once quarterly"
 msgstr ""
 
