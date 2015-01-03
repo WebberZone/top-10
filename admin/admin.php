@@ -44,6 +44,8 @@ function tptn_options() {
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
 		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
+		$tptn_settings['uninstall_clean_options'] = isset( $_POST['uninstall_clean_options'] ) ? true : false;
+		$tptn_settings['uninstall_clean_tables'] = isset( $_POST['uninstall_clean_tables'] ) ? true : false;
 		$tptn_settings['show_credit'] = isset( $_POST['show_credit'] ) ? true : false;
 
 		/* Counter and tracker options */
@@ -356,6 +358,21 @@ function tptn_options() {
 							<input type="textbox" name="daily_range" id="daily_range" size="3" value="<?php echo stripslashes( $tptn_settings['daily_range'] ); ?>"> <?php _e( 'day(s)', TPTN_LOCAL_NAME ); ?>
 							<input type="textbox" name="hour_range" id="hour_range" size="3" value="<?php echo stripslashes( $tptn_settings['hour_range'] ); ?>"> <?php _e( 'hour(s)', TPTN_LOCAL_NAME ); ?>
 							<p class="description"><?php _e( "Think of Daily Popular has a custom date range applied as a global setting. Instead of displaying popular posts from the past day, this setting lets you display posts for as many days or as few hours as you want. This can be overridden in the widget.", TPTN_LOCAL_NAME ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="uninstall_clean_options"><?php _e( 'Delete options on uninstall', TPTN_LOCAL_NAME ); ?></label></th>
+						<td>
+					    	<input type="checkbox" name="uninstall_clean_options" id="uninstall_clean_options" <?php if ( $tptn_settings['uninstall_clean_options'] ) echo 'checked="checked"' ?> />
+							<p class="description"><?php _e( 'If this is checked, all settings related to Top 10 are removed from the database if you choose to uninstall/delete the plugin.', TPTN_LOCAL_NAME ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="uninstall_clean_tables"><?php _e( 'Delete counter data on uninstall', TPTN_LOCAL_NAME ); ?></label></th>
+						<td>
+					    	<input type="checkbox" name="uninstall_clean_tables" id="uninstall_clean_tables" <?php if ( $tptn_settings['uninstall_clean_tables'] ) echo 'checked="checked"' ?> />
+							<p class="description"><?php _e( 'If this is checked, the tables containing the counter statistics are removed from the database if you choose to uninstall/delete the plugin.', TPTN_LOCAL_NAME ); ?></p>
+							<p class="description"><?php _e( "Keep this unchecked if you choose to reinstall the plugin and don't want to lose your counter data.", TPTN_LOCAL_NAME ); ?></p>
 						</td>
 					</tr>
 					<tr>
