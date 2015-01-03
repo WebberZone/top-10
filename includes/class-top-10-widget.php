@@ -125,9 +125,9 @@ class Top_Ten_Widget extends WP_Widget {
 			 *
 			 * @since 2.0.0
 			 *
-			 * @param	array	$tptn_settings	Top 10 settings array
+			 * @param	array	$instance	Widget options array
 			 */
-			do_action( 'tptn_widget_options_after', $tptn_settings );
+			do_action( 'tptn_widget_options_after', $instance );
 		?>
 
 		<?php
