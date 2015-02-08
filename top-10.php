@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.3
+ * Version: 	2.0.3.1
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -155,7 +155,7 @@ function tptn_add_viewed_count( $content ) {
 				if ( $tptn_settings['cache_fix'] ) {
 					$output = '<script type="text/javascript">jQuery.ajax({url: "' . $home_url . '", data: {top_ten_id: ' . $id . ', top_ten_blog_id: ' . $blog_id . ', activate_counter: ' . $activate_counter . ', top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random()*100000)}});</script>';
 				} else {
-					$output = '<script type="text/javascript" async src="' . $home_url . '?top_ten_id=' . $id . '&amp;top_ten_blog_id=' . $blog_id . '&amp;activate_counter=' . $activate_counter . '"></script>';
+					$output = '<script type="text/javascript" async src="' . $home_url . '?top_ten_id=' . $id . '&top_ten_blog_id=' . $blog_id . '&activate_counter=' . $activate_counter . '"></script>';
 				}
 			}
 
@@ -367,7 +367,7 @@ function echo_tptn_post_count( $echo = 1 ) {
     $nonce = wp_create_nonce( $nonce_action );
 
 	if ( $tptn_settings['dynamic_post_count'] ) {
-		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
+		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&view_counter=1&_wpnonce=' . $nonce . '"></script></div>';
 	} else {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	}
