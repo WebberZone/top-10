@@ -55,11 +55,15 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 2.0.3 =
-* Fixed: Metabox update did not work properly in v2.0; New option to keep data on uninstall.
+= 2.0.4 =
+* Fixed: Bug in tracking code when not using Ajax
 
 
 == Changelog ==
+
+= 2.0.4 =
+* Fixed: Bug in tracking code when not using Ajax
+
 
 = 2.0.3 =
 * New: Options to choose if you want to delete the Top 10 options and/or data when deleting the plugin
