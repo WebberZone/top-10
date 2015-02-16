@@ -53,11 +53,13 @@ add_filter( 'manage_pages_columns', 'tptn_column' );
 function tptn_value( $column_name, $id ) {
 	global $wpdb, $tptn_settings;
 
+	$blog_id = get_current_blog_id();
+
 	// Add Total count
 	if ( ( $column_name == 'tptn_total' ) && ( $tptn_settings['pv_in_admin'] ) ) {
 		$table_name = $wpdb->base_prefix . "top_ten";
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess from {$table_name} WHERE postnumber = %d", $id ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 		echo $cntaccess;
 	}
@@ -79,7 +81,7 @@ function tptn_value( $column_name, $id ) {
 			$from_date = gmdate( 'Y-m-d H' , $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $from_date ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
 
 		echo $cntaccess;
@@ -89,7 +91,7 @@ function tptn_value( $column_name, $id ) {
 	if ( ( $column_name == 'tptn_both' ) && ( $tptn_settings['pv_in_admin'] ) ) {
 		$table_name = $wpdb->base_prefix . "top_ten";
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare("SELECT postnumber, cntaccess from {$table_name} WHERE postnumber = %d", $id ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
 		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
 
 		$table_name = $wpdb->base_prefix . "top_ten_daily";
@@ -107,8 +109,8 @@ function tptn_value( $column_name, $id ) {
 			$from_date = gmdate( 'Y-m-d H' , $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' GROUP BY postnumber ", $id, $from_date ) );
-		$cntaccess .= ' / '.number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) );
+		$cntaccess .= ' / ' . number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
 
 		echo $cntaccess;
 	}
