@@ -56,13 +56,15 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.0.4 =
-* Fixed: Bug in tracking code when not using Ajax
+* Fixed: Bug fixes;
+Check the Changelog for more details
 
 
 == Changelog ==
 
 = 2.0.4 =
 * Fixed: Bug in tracking code when not using Ajax
+* Fixed: Bug in admin column did not check for the blog_id
 
 
 = 2.0.3 =
