@@ -151,6 +151,16 @@ function tptn_options() {
 			$tptn_settings['include_default_style'] = false;
 		}
 
+		/**
+		 * Filter the settings array just before saving them to the database
+		 *
+		 * @since	2.0.4
+		 *
+		 * @param	array	$tptn_settings	Settings array
+		 */
+		$tptn_settings = apply_filters( 'tptn_save_options', $tptn_settings );
+
+
 		/* Update the options */
 		update_option( 'ald_tptn_settings', $tptn_settings );
 
@@ -190,6 +200,13 @@ function tptn_options() {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Duplicate rows cleaned from tables', TPTN_LOCAL_NAME ) .'</p></div>';
+		echo $str;
+	}
+
+	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
+		tptn_merge_blogids( true );
+		tptn_merge_blogids( false );
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Post counts across blog IDs 0 and 1 have been merged', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
@@ -998,7 +1015,7 @@ function tptn_options() {
 
 	  <form method="post" id="tptn_reset_options" name="tptn_reset_options" onsubmit="return checkForm()">
 	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', TPTN_LOCAL_NAME ); ?>"><br /></div>
-	      <h3 class='hndle'><span><?php _e( 'Reset count', TPTN_LOCAL_NAME ); ?></span></h3>
+	      <h3 class='hndle'><span><?php _e( 'Reset count and other tools', TPTN_LOCAL_NAME ); ?></span></h3>
 	      <div class="inside">
 		    <p class="description">
 		      <?php _e( 'This cannot be reversed. Make sure that your database has been backed up before proceeding', TPTN_LOCAL_NAME ); ?>
@@ -1006,7 +1023,18 @@ function tptn_options() {
 		    <p>
 		      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php _e( 'Reset Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
 		      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php _e( 'Reset Daily Popular Posts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php _e( "Are you sure you want to reset the daily popular posts?", TPTN_LOCAL_NAME ); ?>')) return false;" />
-		      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php _e( 'Clear duplicates', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "This will delete the duplicate entries in the tables. Proceed?", TPTN_LOCAL_NAME ); ?>')) return false;" />
+		    </p>
+		    <p class="description">
+		      <?php _e( 'This will merge post counts for posts with table entries of 0 and 1', TPTN_LOCAL_NAME ); ?>
+		    </p>
+		    <p>
+		      <input name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" value="<?php _e( 'Merge blog ID 0 and 1 post counts', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "This will merge post counts for blog IDs 0 and 1. Proceed?", TPTN_LOCAL_NAME ); ?>')) return false;" />
+		    </p>
+		    <p class="description">
+		      <?php _e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', TPTN_LOCAL_NAME ); ?>
+		    </p>
+		    <p>
+		      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php _e( 'Merge duplicates across blog IDs', TPTN_LOCAL_NAME ); ?>" class="button button-secondary" onclick="if (!confirm('<?php _e( "This will delete the duplicate entries in the tables. Proceed?", TPTN_LOCAL_NAME ); ?>')) return false;" />
 		    </p>
 	      </div>
 	    </div>
@@ -1014,6 +1042,10 @@ function tptn_options() {
 	  </form>
 
 	  	<?php
+			/**
+			 * Only show the below options if it is multisite
+			 *
+			 */
 			if ( is_multisite() ) {
 		?>
 
@@ -1429,5 +1461,50 @@ function tptn_clean_duplicates( $daily = false ) {
 	$wpdb->query( "INSERT INTO " . $table_name . " SELECT * FROM " . $table_name . "_temp" );
 }
 
+
+/**
+ * Function to merge counts with post numbers of blog ID 0 and 1 respectively.
+ *
+ * @since	2.0.4
+ *
+ * @param	bool 	$daily	Daily flag
+ */
+function tptn_merge_blogids( $daily = false ) {
+	global $wpdb;
+
+	$table_name = $wpdb->base_prefix . "top_ten";
+	if ( $daily ) {
+		$table_name .= "_daily";
+	}
+
+	if ( $daily ) {
+		$wpdb->query( "
+			INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
+				SELECT
+					postnumber,
+					SUM(cntaccess) as sumCount,
+					dp_date,
+					1
+				FROM `$table_name`
+				WHERE blog_ID IN (0,1)
+				GROUP BY postnumber, dp_date
+			) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
+		" );
+	} else {
+		$wpdb->query( "
+			INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
+				SELECT
+					postnumber,
+					SUM(cntaccess) as sumCount,
+					1
+				FROM `$table_name`
+				WHERE blog_ID IN (0,1)
+				GROUP BY postnumber
+			) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
+		" );
+	}
+
+	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" );
+}
 
 ?>

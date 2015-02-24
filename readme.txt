@@ -56,13 +56,14 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.0.4 =
-* Fixed: Bug fixes;
+* Fixed: Bug fixes; New button to merge posts
 Check the Changelog for more details
 
 
 == Changelog ==
 
 = 2.0.4 =
+* New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
 * Fixed: Bug in tracking code when not using Ajax
 * Fixed: Bug in admin column did not check for the blog_id
 
