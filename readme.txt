@@ -56,7 +56,7 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.0.4 =
-* Fixed: Bug fixes; New button to merge posts
+* Fixed: Bug fixes; New button to merge post counts;
 Check the Changelog for more details
 
 
@@ -66,7 +66,7 @@ Check the Changelog for more details
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
 * Fixed: Bug in tracking code when not using Ajax
 * Fixed: Bug in admin column did not check for the blog_id
-
+* Fixed: Bug where default thumbnail location was not correctly saved
 
 = 2.0.3 =
 * New: Options to choose if you want to delete the Top 10 options and/or data when deleting the plugin
