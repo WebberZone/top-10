@@ -748,10 +748,20 @@ function tptn_pop_posts( $args ) {
 		 */
 		$output .= apply_filters( 'tptn_before_list', $before_list );
 
-		foreach ( $results as $result ) {
-			$sumcount = $result->sumCount;
+		$processed_results = array();
 
-			$result = get_post( $result->ID );	// Let's get the Post using the ID
+		foreach ( $results as $result ) {
+		    $resultid = tptn_object_id_cur_lang( $result->ID );
+
+		    if ( in_array( $resultid, $processed_results ) ) {
+		        continue;
+		    }
+
+		    array_push ( $processed_results, $resultid );
+
+		    $sumcount = $result->sumCount;
+
+			$result = get_post( $resultid );	// Let's get the Post using the ID
 
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
@@ -1845,8 +1855,40 @@ function tptn_get_all_image_sizes( $size = '' ) {
 			return false;
         }
     }
+
+	/**
+	 * Filters array of image sizes.
+	 *
+	 * @since	2.0.0
+	 *
+	 * @param	array	$sizes	Image sizes
+	 */
 	return apply_filters( 'tptn_get_all_image_sizes', $sizes );
 }
+
+
+/**
+ * Returns the object identifier for the current language (WPML).
+ *
+ * @since	2.1.0
+ *
+ * @param	$post_id	Post ID
+ */
+function tptn_object_id_cur_lang( $post_id ) {
+    if ( function_exists( 'icl_object_id' ) ) {
+        $post_id = icl_object_id( $post_id, 'any', true, ICL_LANGUAGE_CODE );
+	}
+
+	/**
+	 * Filters object ID for current language (WPML).
+	 *
+	 * @since	2.1.0
+	 *
+	 * @param	int	$post_id	Post ID
+	 */
+	return apply_filters( 'tptn_object_id_cur_lang', $post_id );
+}
+
 
 /*----------------------------------------------------------------------------*
  * WordPress widget
