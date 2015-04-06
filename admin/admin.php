@@ -787,7 +787,7 @@ function tptn_options() {
 								<p class="description">
 									<?php _e( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image.', TPTN_LOCAL_NAME ); ?><br />
 									<?php _e( "If you change the width and/or height below, existing images will not be automatically resized.", TPTN_LOCAL_NAME ); ?>
-									<?php printf( __( "I recommend using <a href='%s' target='_blank'>Force Regenerate Thumbnails</a> or <a href='%s' target='_blank'>Force Regenerate Thumbnails</a> to regenerate all image sizes.", TPTN_LOCAL_NAME ), 'https://wordpress.org/plugins/force-regenerate-thumbnails/', 'https://wordpress.org/plugins/regenerate-thumbnails/' ); ?>
+									<?php printf( __( "I recommend using <a href='%s' class='thickbox'>OTF Regenerate Thumbnails</a> or <a href='%s' class='thickbox'>Regenerate Thumbnails</a> to regenerate all image sizes.", TPTN_LOCAL_NAME ), self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ), self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ); ?>
 								</p>
 						</td>
 					<tr><th scope="row"><label for="thumb_width"><?php _e( 'Width of custom thumbnail:', TPTN_LOCAL_NAME ); ?></label></th>
@@ -1319,6 +1319,10 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'common' );
 	wp_enqueue_script( 'wp-lists' );
 	wp_enqueue_script( 'postbox' );
+	wp_enqueue_script( 'plugin-install' );
+
+	add_thickbox();
+
 ?>
 	<style type="text/css">
 		.postbox .handlediv:before {
