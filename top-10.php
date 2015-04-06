@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.3.2
+ * Version: 	2.0.4
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -1233,7 +1233,7 @@ function tptn_single_activate() {
 		$sql = "CREATE TABLE " . $table_name . " (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
-			blog_id bigint(20) NOT NULL,
+			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, blog_id)
 			);";
 
@@ -1249,7 +1249,7 @@ function tptn_single_activate() {
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			dp_date DATETIME NOT NULL,
-			blog_id bigint(20) NOT NULL,
+			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, dp_date, blog_id)
 		);";
 
@@ -1434,6 +1434,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	$output = '';
 	$postimage = '';
+	$pick = '';
 
 	// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page
 	if ( ! $postimage ) {
@@ -1443,7 +1444,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// If there is no thumbnail found, check the post thumbnail
 	if ( ! $postimage ) {
-		if ( ( false != wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ) ) ) ) {
+		if ( false != get_post_thumbnail_id( $result->ID ) )  {
 			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), $tptn_settings['thumb_size'] );
 			$postimage = $postthumb[0];
 		}
@@ -1456,7 +1457,16 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
 			$postimage = $matches[1][0]; // we need the first one only!
 		}
-		$pick = 'first';
+		if ( $postimage ) {
+			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
+
+			if ( false != wp_get_attachment_image_src( $postimage_id, $tptn_settings['thumb_size'] ) ) {
+				$postthumb = wp_get_attachment_image_src( $postimage_id, $tptn_settings['thumb_size'] );
+				$postimage = $postthumb[0];
+			}
+			$pick = 'correct';
+		}
+		$pick .= 'first';
 	}
 
 	// If there is no thumbnail found, fetch the first child image
@@ -1545,6 +1555,45 @@ function tptn_get_first_image( $postID ) {
 	} else {
 		return false;
 	}
+}
+
+
+/**
+ * Function to get the attachment ID from the attachment URL.
+ *
+ * @since 2.1
+ *
+ * @param	string	$attachment_url	Attachment URL
+ * @return	int		Attachment ID
+ */
+function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
+
+	global $wpdb;
+	$attachment_id = false;
+
+	// If there is no url, return.
+	if ( '' == $attachment_url ) {
+		return;
+	}
+
+	// Get the upload directory paths
+	$upload_dir_paths = wp_upload_dir();
+
+	// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
+	if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
+
+		// If this is the URL of an auto-generated thumbnail, get the URL of the original image
+		$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+
+		// Remove the upload path base directory from the attachment URL
+		$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+
+		// Finally, run a custom database query to get the attachment ID from the modified attachment URL
+		$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
+
+	}
+
+	return apply_filters( 'tptn_get_attachment_id_from_url', $attachment_id, $attachment_url );
 }
 
 

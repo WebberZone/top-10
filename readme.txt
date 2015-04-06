@@ -3,7 +3,7 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 3.3
+Requires at least: 3.5
 Tested up to: 4.2
 License: GPLv2 or later
 
@@ -55,18 +55,20 @@ If you're looking for a plugin to display related, look no further than my other
 
 == Upgrade Notice ==
 
-= 2.0.4 =
+= 2.1 =
 * Fixed: Bug fixes; New button to merge post counts;
 Check the Changelog for more details
 
-
 == Changelog ==
 
-= 2.0.4 =
+= 2.1 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
+* Modified: Plugin will attempt to pull the correct size image when fetching the first image in a post
 * Fixed: Bug in tracking code when not using Ajax
 * Fixed: Bug in admin column did not check for the blog_id
 * Fixed: Bug where default thumbnail location was not correctly saved
+* Fixed: Incorrect thumbnail was pulled on attachment pages
+* Fixed: blog_id column of the database is correctly initialised as `DEFAULT '1'`
 
 = 2.0.3 =
 * New: Options to choose if you want to delete the Top 10 options and/or data when deleting the plugin
