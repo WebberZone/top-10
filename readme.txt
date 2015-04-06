@@ -56,13 +56,14 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.1 =
-* Fixed: Bug fixes; New button to merge post counts; deprecated timthumb
+* Fixed: Bug fixes; New button to merge post counts; deprecated timthumb;
 Check the Changelog for more details
 
 == Changelog ==
 
 = 2.1 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
+* New: Function & filter `get_tptn_pop_posts` that can be used to fetch the popular posts as an object or array. Perfect if you want to write custom code in your theme
 * New: Support for WPML to return the correct language ID. Thanks to Tony Flags' <a href="https://wordpress.org/support/topic/top-10-and-languages-in-wpml?replies=11#post-6622085">code snippet</a>.
 * New: Filter `tptn_list_count` to modify the formatted list count. See a <a href="https://gist.github.com/ajaydsouza/9f04c26814414a57fab4">working example</a>
 * Modified: Plugin will attempt to pull the correct size image when fetching the first image in a post
