@@ -128,7 +128,7 @@ function tptn_options() {
 		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '\/default.png' == $_POST['thumb_default'] ) ) ? $tptn_url . '/default.png' : $_POST['thumb_default'];
+		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( "/default.png" == $_POST['thumb_default'] ) ) ? $tptn_url . '/default.png' : $_POST['thumb_default'];
 
 		/* Custom styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
