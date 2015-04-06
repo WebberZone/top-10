@@ -907,7 +907,21 @@ function tptn_pop_posts( $args ) {
 				}
 
 				if ( $disp_list_count ) {
-					$output .= ' <span class="tptn_list_count">(' . number_format_i18n( $sumcount ) . ')</span>';
+
+					$tptn_list_count = '(' . number_format_i18n( $sumcount ) . ')';
+
+					/**
+					 * Filter the formatted list count text.
+					 *
+					 * @since	2.1.0
+					 *
+					 * @param	string	$tptn_list_count	Formatted list count
+					 * @param	int		$sumcount			Post count
+					 * @param	object	$result				Post object
+					 */
+					$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sumcount, $result );
+
+					$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
 				}
 
 				if ( 'inline' == $post_thumb_op || 'text_only' == $post_thumb_op ) {
@@ -972,7 +986,7 @@ function tptn_pop_posts( $args ) {
  *
  * @since	1.0
  *
- * @param	$args	Arguments
+ * @param	mixed	$args	Arguments list
  */
 function tptn_show_pop_posts( $args = NULL ) {
 	echo tptn_pop_posts( $args );
@@ -984,7 +998,7 @@ function tptn_show_pop_posts( $args = NULL ) {
  *
  * @since	1.2
  *
- * @param	$args	Arguments
+ * @param	mixed	$args	Arguments list
  */
 function tptn_show_daily_pop_posts( $args = NULL ) {
 	if ( is_array( $args ) ) {
