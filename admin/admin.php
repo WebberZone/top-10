@@ -107,8 +107,6 @@ function tptn_options() {
 		$tptn_settings['title_length'] = intval( $_POST['title_length'] );
 		$tptn_settings['disp_list_count'] = isset( $_POST['disp_list_count'] ) ? true : false;
 
-		$tptn_settings['d_use_js'] = isset( $_POST['d_use_js'] ) ? true : false;	// This needs to be deprecated
-
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
 		$tptn_settings['exclude_on_post_ids'] = $_POST['exclude_on_post_ids'] == '' ? '' : implode( ',', array_map( 'intval', explode( ",", $_POST['exclude_on_post_ids'] ) ) );
@@ -644,13 +642,6 @@ function tptn_options() {
 						<th scope="row"><label for="disp_list_count"><?php _e( 'Show view count in list?', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="checkbox" name="disp_list_count" id="disp_list_count" <?php if ( $tptn_settings['disp_list_count'] ) echo 'checked="checked"' ?> />
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="d_use_js"><?php _e( 'Always display latest post count in the daily lists?', TPTN_LOCAL_NAME ); ?></label></th>
-						<td>
-							<input type="checkbox" name="d_use_js" id="d_use_js" <?php if ( $tptn_settings['d_use_js'] ) echo 'checked="checked"' ?> />
-							<p class="description"><?php _e( 'This option uses JavaScript and will increase your page load time. When you enable this option, the daily widget will not use the options set there, but options will need to be set on this screen.', TPTN_LOCAL_NAME ); ?></p>
 						</td>
 					</tr>
 					<tr>

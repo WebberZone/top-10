@@ -228,15 +228,7 @@ class Top_Ten_Widget extends WP_Widget {
 		 */
 		$arguments = apply_filters( 'tptn_widget_options' , $arguments );
 
-		if ( $daily ) {
-			if ( $tptn_settings['d_use_js'] ) {
-				$output .= '<script type="text/javascript" src="' . $tptn_url . '/top-10-daily.js.php?widget=1"></script>';
-			} else {
-				$output .= tptn_pop_posts( $arguments );
-			}
-		} else {
-			$output .= tptn_pop_posts( $arguments );
-		}
+		$output .= tptn_pop_posts( $arguments );
 
 		$output .= $after_widget;
 

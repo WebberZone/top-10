@@ -974,6 +974,8 @@ function tptn_pop_posts( $args ) {
  * Function to echo popular posts.
  *
  * @since	1.0
+ *
+ * @param	$args	Arguments
  */
 function tptn_show_pop_posts( $args = NULL ) {
 	echo tptn_pop_posts( $args );
@@ -984,15 +986,17 @@ function tptn_show_pop_posts( $args = NULL ) {
  * Function to show daily popular posts.
  *
  * @since	1.2
+ *
+ * @param	$args	Arguments
  */
-function tptn_show_daily_pop_posts() {
-	global $tptn_url, $tptn_settings;
-
-	if ( $tptn_settings['d_use_js'] ) {
-		echo '<script type="text/javascript" src="' . $tptn_url . '/top-10-daily.js.php?widget=1"></script>';
+function tptn_show_daily_pop_posts( $args = NULL ) {
+	if ( is_array( $args ) ) {
+		$args['daily'] = 1;
 	} else {
-		echo tptn_pop_posts( 'daily=1&is_widget=0' );
+		$args .= '&daily=1';
 	}
+
+	tptn_show_pop_posts( $args );
 }
 
 
@@ -1100,8 +1104,6 @@ function tptn_default_options() {
 		'show_author' => false,			// Show author in list item
 		'title_length' => '60',		// Limit length of post title
 		'disp_list_count' => true,		// Display count in popular lists?
-
-		'd_use_js' => false,				// Use JavaScript for displaying daily posts	- TO BE DEPRECATED
 
 		'link_new_window' => false,			// Open link in new window - Includes target="_blank" to links
 		'link_nofollow' => false,			// Includes rel="nofollow" to links

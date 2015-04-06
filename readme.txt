@@ -65,6 +65,7 @@ Check the Changelog for more details
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
 * New: Support for WPML to return the correct language ID. Thanks to Tony Flags' <a href="https://wordpress.org/support/topic/top-10-and-languages-in-wpml?replies=11#post-6622085">code snippet</a>.
 * Modified: Plugin will attempt to pull the correct size image when fetching the first image in a post
+* Modified: Deprecated "Always display latest post count in the daily lists"
 * Fixed: Bug in tracking code when not using Ajax
 * Fixed: Bug in admin column did not check for the blog_id
 * Fixed: Bug where default thumbnail location was not correctly saved
