@@ -56,7 +56,7 @@ If you're looking for a plugin to display related, look no further than my other
 == Upgrade Notice ==
 
 = 2.1 =
-* Fixed: Bug fixes; New button to merge post counts;
+* Fixed: Bug fixes; New button to merge post counts; deprecated timthumb
 Check the Changelog for more details
 
 == Changelog ==
@@ -66,6 +66,7 @@ Check the Changelog for more details
 * New: Support for WPML to return the correct language ID. Thanks to Tony Flags' <a href="https://wordpress.org/support/topic/top-10-and-languages-in-wpml?replies=11#post-6622085">code snippet</a>.
 * Modified: Plugin will attempt to pull the correct size image when fetching the first image in a post
 * Modified: Deprecated "Always display latest post count in the daily lists"
+* Modified: timthumb has been deprecated. The script is no longer packaged within Top 10
 * Fixed: Bug in tracking code when not using Ajax
 * Fixed: Bug in admin column did not check for the blog_id
 * Fixed: Bug where default thumbnail location was not correctly saved

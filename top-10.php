@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.4
+ * Version: 	2.0.5
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -854,11 +854,8 @@ function tptn_pop_posts( $args ) {
 						'thumb_html' => $thumb_html,
 						'thumb_default' => $thumb_default,
 						'thumb_default_show' => $thumb_default_show,
-						'thumb_timthumb' => $thumb_timthumb,
-						'thumb_timthumb_q' => $thumb_timthumb_q,
 						'scan_images' => $scan_images,
 						'class' => "tptn_thumb",
-						'filter' => "tptn_postimage",
 					) );
 
 					$output .= '</a>'; // Close the link
@@ -1122,9 +1119,6 @@ function tptn_default_options() {
 		'thumb_height' => '150',			// Max height of thumbnails
 		'thumb_crop' => true,		// Crop mode. default is hard crop
 		'thumb_html' => 'html',		// Use HTML or CSS for width and height of the thumbnail?
-
-		'thumb_timthumb' => false,	// Use timthumb	- TO BE DEPRECATED
-		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb	- TO BE DEPRECATED
 
 		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
 		'scan_images' => true,			// Scan post for images
@@ -1428,15 +1422,25 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		'thumb_html' => 'html',		// HTML / CSS for width and height attributes
 		'thumb_default' => '',	// Default thumbnail image
 		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
-		'thumb_timthumb' => true,	// Use timthumb
-		'thumb_timthumb_q' => '75',	// Quality attribute for timthumb
 		'scan_images' => false,			// Scan post for images
 		'class' => 'tptn_thumb',			// Class of the thumbnail
-		'filter' => 'tptn_postimage',			// Class of the thumbnail
 	);
 
 	// Parse incomming $args into an array and merge it with $defaults
 	$args = wp_parse_args( $args, $defaults );
+
+	// Issue notice for deprecated arguments
+	if ( isset( $args['thumb_timthumb'] ) ) {
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb argument has been deprecated', TPTN_LOCAL_NAME ) );
+	}
+
+	if ( isset( $args['thumb_timthumb_q'] ) ) {
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb_q argument has been deprecated', TPTN_LOCAL_NAME ) );
+	}
+
+	if ( isset( $args['filter'] ) ) {
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', TPTN_LOCAL_NAME ) );
+	}
 
 	// Declare each item in $args as its own variable i.e. $type, $before.
 	extract( $args, EXTR_SKIP );
@@ -1501,13 +1505,38 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	if ( $postimage ) {
 
 		/**
-		 * Get the first image in the post.
+		 * Filters the thumbnail image URL.
+		 *
+		 * Use this filter to modify the thumbnail URL that is automatically created
+		 * Before v2.1 this was used for cropping the post image using timthumb
+		 *
+		 * @since	2.1.0
+		 *
+		 * @param	string	$postimage		URL of the thumbnail image
+		 * @param	int		$thumb_width	Thumbnail width
+		 * @param	int		$thumb_height	Thumbnail height
+		 * @param	object	$result			Post Object
+		 */
+			$postimage = apply_filters( 'tptn_thumb_url', $postimage, $thumb_width, $thumb_height, $result );
+
+		/* Backward compatibility */
+		$thumb_timthumb = false;
+		$thumb_timthumb_q = 75;
+
+		/**
+		 * Filters the thumbnail image URL.
 		 *
 		 * @since 1.8.10
+		 * @deprecated	2.1.0	Use tptn_thumb_url instead.
 		 *
-		 * @param mixed $postID	Post ID
+		 * @param	string	$postimage		URL of the thumbnail image
+		 * @param	int		$thumb_width	Thumbnail width
+		 * @param	int		$thumb_height	Thumbnail height
+		 * @param	boolean	$thumb_timthumb	Enable timthumb?
+		 * @param	int		$thumb_timthumb_q	Quality of timthumb thumbnail.
+		 * @param	object	$result			Post Object
 		 */
-		$postimage = apply_filters( $filter, $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
+		$postimage = apply_filters( 'tptn_postimage', $postimage, $thumb_width, $thumb_height, $thumb_timthumb, $thumb_timthumb_q, $result );
 
 		if ( is_ssl() ) {
 		    $postimage = preg_replace( '~http://~', 'https://', $postimage );
