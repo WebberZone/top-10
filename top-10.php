@@ -514,15 +514,6 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 function tptn_pop_posts( $args ) {
 	global $wpdb, $id, $tptn_settings;
 
-	// Initialise some variables
-	$fields = '';
-	$where = '';
-	$join = '';
-	$groupby = '';
-	$orderby = '';
-	$limits = '';
-	$match_fields = '';
-
 	$defaults = array(
 		'is_widget' => FALSE,
 		'daily' => FALSE,
@@ -557,146 +548,17 @@ function tptn_pop_posts( $args ) {
 		$thumb_height = $tptn_settings['thumb_height'];
 	}
 
-	if ( $daily ) {
-		$table_name = $wpdb->base_prefix . "top_ten_daily";
-	} else {
-		$table_name = $wpdb->base_prefix . "top_ten";
-	}
-
-	$limit = ( $strict_limit ) ? $limit : ( $limit * 5 );
-
 	$exclude_categories = explode( ',', $exclude_categories );
 
 	$target_attribute = ( $link_new_window ) ? ' target="_blank" ' : ' ';	// Set Target attribute
 	$rel_attribute = ( $link_nofollow ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
 
-	parse_str( $post_types, $post_types );	// Save post types in $post_types variable
-
-	if ( empty( $post_types ) ) {
-		$post_types = get_post_types( array(
-			'public'	=> true,
-		) );
-	}
-
-	$blog_id = get_current_blog_id();
-
-
-	if ( $daily_midnight ) {
-		$current_time = current_time( 'timestamp', 0 );
-		$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d 0' , $from_date );
-	} else {
-		$current_time = current_time( 'timestamp', 0 );
-		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H' , $from_date );
-	}
-
-	/**
-	 *
-	 * We're going to create a mySQL query that is fully extendable which would look something like this:
-	 * "SELECT $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits"
-	 *
-	 */
-
-	// Fields to return
-	$fields = " postnumber, ";
-	$fields .= ( $daily ) ? "SUM(cntaccess) as sumCount, dp_date, " : "cntaccess as sumCount, ";
-	$fields .= "ID ";
-
-	// Create the JOIN clause
-	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
-
-	// Create the base WHERE clause
-	$where .= $wpdb->prepare( " AND blog_id = %d ", $blog_id );				// Posts need to be from the current blog only
-	$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
-
-	if ( $daily ) {
-		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );	// Only fetch posts that are tracked after this date
-	}
-
-	if ( '' != $exclude_post_ids ) {
-		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
-	}
-	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";	// Array of post types
-
-	// Create the base GROUP BY clause
-	if ( $daily ) {
-		$groupby = " postnumber ";
-	}
-
-	// Create the base ORDER BY clause
-	$orderby = " sumCount DESC ";
-
-	// Create the base LIMITS clause
-	$limits .= $wpdb->prepare( " LIMIT %d ", $limit );
-
-	/**
-	 * Filter the SELECT clause of the query.
-	 *
-	 * @param string   $fields  The SELECT clause of the query.
-	 */
-	$fields = apply_filters( 'tptn_posts_fields', $fields );
-
-	/**
-	 * Filter the JOIN clause of the query.
-	 *
-	 * @param string   $join  The JOIN clause of the query.
-	 */
-		$join = apply_filters( 'tptn_posts_join', $join );
-
-	/**
-	 * Filter the WHERE clause of the query.
-	 *
-	 * @param string   $where  The WHERE clause of the query.
-	 */
-	$where = apply_filters( 'tptn_posts_where', $where );
-
-	/**
-	 * Filter the GROUP BY clause of the query.
-	 *
-	 * @param string   $groupby  The GROUP BY clause of the query.
-	 */
-	$groupby = apply_filters( 'tptn_posts_groupby', $groupby );
-
-
-	/**
-	 * Filter the ORDER BY clause of the query.
-	 *
-	 * @param string   $orderby  The ORDER BY clause of the query.
-	 */
-	$orderby = apply_filters( 'tptn_posts_orderby', $orderby );
-
-	/**
-	 * Filter the LIMIT clause of the query.
-	 *
-	 * @param string   $limits  The LIMIT clause of the query.
-	 */
-	$limits = apply_filters( 'tptn_posts_limits', $limits );
-
-	if ( ! empty( $groupby ) ) {
-		$groupby = " GROUP BY {$groupby} ";
-	}
-	if ( ! empty( $orderby ) ) {
-		$orderby = " ORDER BY {$orderby} ";
-	}
-
-	$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
+	// Retrieve the popular posts
+	$results = get_tptn_pop_posts( $args );
 
 	if ( $posts_only ) {	// Return the array of posts only if the variable is set
-
-		$tptn_pop_posts_array = $wpdb->get_results( $sql , ARRAY_A );
-
-		/**
-		 * Filter the array of top post IDs.
-		 *
-		 * @since	1.9.8.5
-		 *
-		 * @param	array   $tptn_pop_posts_array	Posts array.
-		 */
-		return apply_filters( 'tptn_pop_posts_array', $tptn_pop_posts_array );
+		return $results;
 	}
-
-	$results = $wpdb->get_results( $sql );
 
 	$counter = 0;
 
@@ -940,7 +802,9 @@ function tptn_pop_posts( $args ) {
 
 				$counter++;
 			}
-			if ( $counter == $limit/5 ) break;	// End loop when related posts limit is reached
+			if ( $counter == $limit ) {
+				break;	// End loop when related posts limit is reached
+			}
 		}
 		if ( $show_credit ) {
 
@@ -978,6 +842,193 @@ function tptn_pop_posts( $args ) {
 	 * @param	string	$output	Formatted list of top posts
 	 */
 	return apply_filters( 'tptn_pop_posts', $output, $args );
+}
+
+
+/**
+ * Function to retrieve the popular posts.
+ *
+ * @since	2.1.0
+ *
+ * @param	mixed	$args	Arguments list
+ */
+function get_tptn_pop_posts( $args = array() ) {
+	global $wpdb, $id, $tptn_settings;
+
+	// Initialise some variables
+	$fields = '';
+	$where = '';
+	$join = '';
+	$groupby = '';
+	$orderby = '';
+	$limits = '';
+	$match_fields = '';
+
+	$defaults = array(
+		'daily' => FALSE,
+		'strict_limit' => FALSE,
+		'posts_only' =>	FALSE,
+	);
+
+	// Merge the $defaults array with the $tptn_settings array
+	$defaults = array_merge( $defaults, $tptn_settings );
+
+	// Parse incomming $args into an array and merge it with $defaults
+	$args = wp_parse_args( $args, $defaults );
+
+	// Declare each item in $args as its own variable i.e. $type, $before.
+	extract( $args, EXTR_SKIP );
+
+	if ( $daily ) {
+		$table_name = $wpdb->base_prefix . "top_ten_daily";
+	} else {
+		$table_name = $wpdb->base_prefix . "top_ten";
+	}
+
+	$limit = ( $strict_limit ) ? $limit : ( $limit * 5 );
+
+	$exclude_categories = explode( ',', $exclude_categories );
+
+	$target_attribute = ( $link_new_window ) ? ' target="_blank" ' : ' ';	// Set Target attribute
+	$rel_attribute = ( $link_nofollow ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
+
+	parse_str( $post_types, $post_types );	// Save post types in $post_types variable
+
+	if ( empty( $post_types ) ) {
+		$post_types = get_post_types( array(
+			'public'	=> true,
+		) );
+	}
+
+	$blog_id = get_current_blog_id();
+
+
+	if ( $daily_midnight ) {
+		$current_time = current_time( 'timestamp', 0 );
+		$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+		$from_date = gmdate( 'Y-m-d 0' , $from_date );
+	} else {
+		$current_time = current_time( 'timestamp', 0 );
+		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+		$from_date = gmdate( 'Y-m-d H' , $from_date );
+	}
+
+	/**
+	 *
+	 * We're going to create a mySQL query that is fully extendable which would look something like this:
+	 * "SELECT $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits"
+	 *
+	 */
+
+	// Fields to return
+	$fields = " postnumber, ";
+	$fields .= ( $daily ) ? "SUM(cntaccess) as sumCount, dp_date, " : "cntaccess as sumCount, ";
+	$fields .= "ID ";
+
+	// Create the JOIN clause
+	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
+
+	// Create the base WHERE clause
+	$where .= $wpdb->prepare( " AND blog_id = %d ", $blog_id );				// Posts need to be from the current blog only
+	$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
+
+	if ( $daily ) {
+		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );	// Only fetch posts that are tracked after this date
+	}
+
+	if ( '' != $exclude_post_ids ) {
+		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
+	}
+	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";	// Array of post types
+
+	// Create the base GROUP BY clause
+	if ( $daily ) {
+		$groupby = " postnumber ";
+	}
+
+	// Create the base ORDER BY clause
+	$orderby = " sumCount DESC ";
+
+	// Create the base LIMITS clause
+	$limits .= $wpdb->prepare( " LIMIT %d ", $limit );
+
+	/**
+	 * Filter the SELECT clause of the query.
+	 *
+	 * @param string   $fields  The SELECT clause of the query.
+	 */
+	$fields = apply_filters( 'tptn_posts_fields', $fields );
+
+	/**
+	 * Filter the JOIN clause of the query.
+	 *
+	 * @param string   $join  The JOIN clause of the query.
+	 */
+		$join = apply_filters( 'tptn_posts_join', $join );
+
+	/**
+	 * Filter the WHERE clause of the query.
+	 *
+	 * @param string   $where  The WHERE clause of the query.
+	 */
+	$where = apply_filters( 'tptn_posts_where', $where );
+
+	/**
+	 * Filter the GROUP BY clause of the query.
+	 *
+	 * @param string   $groupby  The GROUP BY clause of the query.
+	 */
+	$groupby = apply_filters( 'tptn_posts_groupby', $groupby );
+
+
+	/**
+	 * Filter the ORDER BY clause of the query.
+	 *
+	 * @param string   $orderby  The ORDER BY clause of the query.
+	 */
+	$orderby = apply_filters( 'tptn_posts_orderby', $orderby );
+
+	/**
+	 * Filter the LIMIT clause of the query.
+	 *
+	 * @param string   $limits  The LIMIT clause of the query.
+	 */
+	$limits = apply_filters( 'tptn_posts_limits', $limits );
+
+	if ( ! empty( $groupby ) ) {
+		$groupby = " GROUP BY {$groupby} ";
+	}
+	if ( ! empty( $orderby ) ) {
+		$orderby = " ORDER BY {$orderby} ";
+	}
+
+	$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
+
+	if ( $posts_only ) {	// Return the array of posts only if the variable is set
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		/**
+		 * Filter the array of top post IDs.
+		 *
+		 * @since	1.9.8.5
+		 *
+		 * @param	array   $tptn_pop_posts_array	Posts array.
+		 * @param	mixed	$args		Arguments list
+		 */
+		return apply_filters( 'tptn_pop_posts_array', $results, $args );
+	}
+
+	$results = $wpdb->get_results( $sql );
+
+	/**
+	 * Filter object containing post IDs of popular posts
+	 *
+	 * @since	2.1.0
+	 *
+	 * @param	object	$results	Top 10 popular posts object
+	 * @param	mixed	$args		Arguments list
+	 */
+	return apply_filters( 'get_tptn_pop_posts', $results, $args );
 }
 
 
