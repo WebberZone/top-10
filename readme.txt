@@ -64,13 +64,13 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 
 == Upgrade Notice ==
 
-= 2.1 =
+= 2.1.0 =
 * Fixed: Bug fixes; New button to merge post counts; deprecated timthumb;
 Check the Changelog for more details
 
 == Changelog ==
 
-= 2.1 =
+= 2.1.0 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
 * New: Function & filter `get_tptn_pop_posts` that can be used to fetch the popular posts as an object or array. Perfect if you want to write custom code in your theme
 * New: Support for WPML to return the correct language ID. Thanks to Tony Flags' <a href="https://wordpress.org/support/topic/top-10-and-languages-in-wpml?replies=11#post-6622085">code snippet</a>.
