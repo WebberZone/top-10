@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.0.6
+ * Version: 	2.0.7
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -567,9 +567,20 @@ function tptn_pop_posts( $args ) {
 	$shortcode_class = $is_shortcode ? ' tptn_posts_shortcode' : '';
 	$widget_class = $is_widget ? ' tptn_posts_widget' : '';
 
+	$post_classes = $widget_class . $shortcode_class;
+
+	/**
+	 * Filter the classes added to the div wrapper of the Top 10.
+	 *
+	 * @since	2.1.0
+	 *
+	 * @param	string   $post_classes	Post classes string.
+	 */
+	$post_classes = apply_filters( 'tptn_post_class', $post_classes );
+
 	if ( $heading ) {
 		if ( ! $daily ) {
-			$output .= '<div id="tptn_related" class="tptn_posts ' . $widget_class . $shortcode_class . '">';
+			$output .= '<div id="tptn_related" class="tptn_posts ' . $post_classes . '">';
 
 			/**
 			 * Filter the title of the Top posts.
@@ -583,19 +594,15 @@ function tptn_pop_posts( $args ) {
 			$output .= '<div id="tptn_related_daily" class="tptn_posts_daily' . $shortcode_class . '">';
 
 			/**
-			 * Filter the title of the Top posts.
-			 *
-			 * @since	1.9.5
-			 *
-			 * @param	string   $title	Title of the popular posts.
+			 * Already defined in top-10.php
 			 */
 			$output .= apply_filters( 'tptn_heading_title', $title_daily );
 		}
 	} else {
 		if ( ! $daily ) {
-			$output .= '<div class="tptn_posts' . $widget_class . $shortcode_class . '">';
+			$output .= '<div class="tptn_posts' . $post_classes . '">';
 		} else {
-			$output .= '<div class="tptn_posts_daily' . $widget_class . $shortcode_class . '">';
+			$output .= '<div class="tptn_posts_daily' . $post_classes . '">';
 		}
 	}
 
@@ -613,15 +620,16 @@ function tptn_pop_posts( $args ) {
 		$processed_results = array();
 
 		foreach ( $results as $result ) {
+			/* Support WPML */
 		    $resultid = tptn_object_id_cur_lang( $result->ID );
 
 		    if ( in_array( $resultid, $processed_results ) ) {
 		        continue;
 		    }
 
-		    array_push ( $processed_results, $resultid );
+		    array_push( $processed_results, $resultid );
 
-		    $sumcount = $result->sumCount;
+		    $sumcount = $result->sumCount;		// Store the count. We'll need this later
 
 			$result = get_post( $resultid );	// Let's get the Post using the ID
 
@@ -700,13 +708,13 @@ function tptn_pop_posts( $args ) {
 
 
 				if ( 'after' == $post_thumb_op ) {
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
 					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title if post thumbnail is to be displayed after
 					$output .= '</a>'; // Close the link
 				}
 
 				if ( 'inline' == $post_thumb_op || 'after' == $post_thumb_op || 'thumbs_only' == $post_thumb_op ) {
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
 
 					$output .= tptn_get_the_post_thumbnail( array(
 						'postid' => $postid,
@@ -725,7 +733,7 @@ function tptn_pop_posts( $args ) {
 
 				if ( 'inline' == $post_thumb_op || 'text_only' == $post_thumb_op ) {
 					$output .= '<span class="tptn_after_thumb">';
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . 'class="tptn_link">'; // Add beginning of link
+					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
 					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title when required by settings
 					$output .= '</a>'; // Close the link
 				}
