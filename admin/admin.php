@@ -26,15 +26,17 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_options() {
 
 	global $wpdb, $network_wide, $tptn_url;
-    $poststable = $wpdb->posts;
 
 	$tptn_settings = tptn_read_options();
+
+	/* Parse post types */
 	parse_str( $tptn_settings['post_types'], $post_types );
 	$wp_post_types	= get_post_types( array(
 		'public'	=> true,
 	) );
 	$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
+	/* Save options has been triggered */
 	if ( ( isset( $_POST['tptn_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 
 		/* General options */
@@ -133,6 +135,7 @@ function tptn_options() {
 		/* Custom styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
 
+		/* If default style is selected, enforce fixed width, height of thumbnail. Disable author, excerpt and date display */
 		if ( isset( $_POST['include_default_style'] ) ) {
 			$tptn_settings['include_default_style'] = true;
 			$tptn_settings['post_thumb_op'] = 'inline';
@@ -165,10 +168,19 @@ function tptn_options() {
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
 		/* Echo a success message */
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', TPTN_LOCAL_NAME ) . '</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', TPTN_LOCAL_NAME ) . '</p>';
+
+		if ( isset( $_POST['include_default_style'] ) ) {
+			$str .= '<p>'. __( 'Default styles selected. Thumbnail width, height and crop settings have been fixed. Author, Excerpt and Date will not be displayed.', TPTN_LOCAL_NAME ) . '</p>';
+
+		}
+
+		$str .= '</div>';
+
 		echo $str;
 	}
 
+	/* Default options has been triggered */
 	if ( ( isset( $_POST['tptn_default'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		delete_option( 'ald_tptn_settings' );
 		$tptn_settings = tptn_default_options();
@@ -179,18 +191,21 @@ function tptn_options() {
 		echo $str;
 	}
 
+	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( false );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 popular posts reset', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
+	/* Truncate daily posts table */
 	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( true );
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 daily popular posts reset', TPTN_LOCAL_NAME ) .'</p></div>';
 		echo $str;
 	}
 
+	/* Clean duplicates */
 	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
@@ -198,6 +213,7 @@ function tptn_options() {
 		echo $str;
 	}
 
+	/* Merge blog IDs */
 	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_merge_blogids( true );
 		tptn_merge_blogids( false );
@@ -205,6 +221,7 @@ function tptn_options() {
 		echo $str;
 	}
 
+	/* Save maintenance options */
 	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$tptn_settings['cron_hour'] = min( 23, intval( $_POST['cron_hour'] ) );
 		$tptn_settings['cron_min'] = min( 59, intval( $_POST['cron_min'] ) );
@@ -611,6 +628,10 @@ function tptn_options() {
 						<th scope="row"><label for="show_excerpt"><?php _e( 'Show post excerpt in list?', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_excerpt" id="show_excerpt" <?php if ( $tptn_settings['show_excerpt'] ) echo 'checked="checked"' ?> />
+
+							<?php if ( $tptn_settings['include_default_style'] ) { ?>
+								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Excerpt display is disabled.", TPTN_LOCAL_NAME ); ?></p>
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -623,12 +644,20 @@ function tptn_options() {
 						<th scope="row"><label for="show_author"><?php _e( 'Show post author in list?', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_author" id="show_author" <?php if ( $tptn_settings['show_author'] ) echo 'checked="checked"' ?> />
+
+							<?php if ( $tptn_settings['include_default_style'] ) { ?>
+								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Author display is disabled.", TPTN_LOCAL_NAME ); ?></p>
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="show_date"><?php _e( 'Show post date in list?', TPTN_LOCAL_NAME ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_date" id="show_date" <?php if ( $tptn_settings['show_date'] ) echo 'checked="checked"' ?> />
+
+							<?php if ( $tptn_settings['include_default_style'] ) { ?>
+								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Date display is disabled.", TPTN_LOCAL_NAME ); ?></p>
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -746,6 +775,10 @@ function tptn_options() {
 								<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_3" <?php if ( 'text_only' == $tptn_settings['post_thumb_op'] ) echo 'checked="checked"' ?> />
 								<?php _e( 'Do not display thumbnails, only text.', TPTN_LOCAL_NAME ); ?>
 							</label>
+
+							<?php if ( $tptn_settings['include_default_style'] ) { ?>
+								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Location of thumbnail forced to be inline before title", TPTN_LOCAL_NAME ); ?></p>
+							<?php } ?>
 						</td>
 					</tr>
 					<tr><th scope="row"><?php _e( 'Thumbnail size:', TPTN_LOCAL_NAME ); ?></th>
@@ -796,8 +829,9 @@ function tptn_options() {
 							<p class="description">
 								<?php _e( "By default, thumbnails will be proportionately cropped. Check this box to hard crop the thumbnails.", TPTN_LOCAL_NAME ); ?>
 								<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", TPTN_LOCAL_NAME ), esc_url( 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ) ); ?>
+
 								<?php if ( $tptn_settings['include_default_style'] ) { ?>
-									<p class="description"><?php _e( "Since you're using the default styles set under the Custom Styles section, the width and height is fixed at 65px and crop mode is enabled.", TPTN_LOCAL_NAME ); ?></p>
+									<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Thumbnail width and height is fixed at 65px and crop mode is enabled.", TPTN_LOCAL_NAME ); ?></p>
 								<?php } ?>
 							</p>
 						</td>
