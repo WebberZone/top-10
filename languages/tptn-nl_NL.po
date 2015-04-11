@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10 v1.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-03 01:53-0000\n"
+"POT-Creation-Date: 2015-04-11 22:48-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WPPG.me <info@wppg.me>\n"
@@ -62,7 +62,7 @@ msgstr "Vorige"
 msgid "Next"
 msgstr "Volgende"
 
-#: admin/admin-dashboard.php:200 admin/admin.php:1174
+#: admin/admin-dashboard.php:200 admin/admin.php:1218
 msgid "Popular Posts"
 msgstr "Populaire Berichten"
 
@@ -70,7 +70,7 @@ msgstr "Populaire Berichten"
 msgid "Daily Popular"
 msgstr "Dagelijks Populair"
 
-#: admin/admin-metabox.php:38 admin/admin.php:1263
+#: admin/admin-metabox.php:38 admin/admin.php:1307
 msgid "Top 10"
 msgstr "Top 10"
 
@@ -100,125 +100,135 @@ msgstr ""
 msgid "The URL above is saved in the meta field: "
 msgstr ""
 
-#: admin/admin.php:163
+#: admin/admin.php:171
 msgid "Options saved successfully."
 msgstr "Opties succesvol opgeslagen."
 
-#: admin/admin.php:173
+#: admin/admin.php:174
+msgid ""
+"Default styles selected. Thumbnail width, height and crop settings have been "
+"fixed. Author, Excerpt and Date will not be displayed."
+msgstr ""
+
+#: admin/admin.php:190
 msgid "Options set to Default."
 msgstr "Opties ingesteld op Standaard."
 
-#: admin/admin.php:179
+#: admin/admin.php:197
 msgid "Top 10 popular posts reset"
 msgstr "Reset Top 10 populaire berichten"
 
-#: admin/admin.php:185
+#: admin/admin.php:204
 msgid "Top 10 daily popular posts reset"
 msgstr "Reset Top 10 dagelijkse populaire berichten"
 
-#: admin/admin.php:192
+#: admin/admin.php:212
 msgid "Duplicate rows cleaned from tables"
 msgstr ""
 
-#: admin/admin.php:204
+#: admin/admin.php:220
+msgid "Post counts across blog IDs 0 and 1 have been merged"
+msgstr ""
+
+#: admin/admin.php:233
 msgid "Scheduled maintenance enabled / modified"
 msgstr ""
 
-#: admin/admin.php:208
+#: admin/admin.php:237
 msgid "Scheduled maintenance disabled"
 msgstr ""
 
-#: admin/admin.php:247
+#: admin/admin.php:276
 msgid "Counts from selected sites have been imported."
 msgstr ""
 
-#: admin/admin.php:272
+#: admin/admin.php:301
 msgid ""
 "Selected tables have been deleted. Note that only imported tables have been "
 "deleted."
 msgstr ""
 
-#: admin/admin.php:280 admin/admin.php:1263 admin/admin.php:1266
+#: admin/admin.php:309 admin/admin.php:1307 admin/admin.php:1310
 #, fuzzy
 msgid "Top 10 Settings"
 msgstr "Instellingen"
 
-#: admin/admin.php:292 admin/admin.php:314
+#: admin/admin.php:321 admin/admin.php:343
 msgid "General options"
 msgstr ""
 
-#: admin/admin.php:293 admin/admin.php:406
+#: admin/admin.php:322 admin/admin.php:435
 msgid "Counter and tracker options"
 msgstr ""
 
-#: admin/admin.php:294 admin/admin.php:511
+#: admin/admin.php:323 admin/admin.php:540
 msgid "Popular post list options"
 msgstr ""
 
-#: admin/admin.php:295 admin/admin.php:706
-#: includes/class-top-10-widget.php:103
+#: admin/admin.php:324 admin/admin.php:742
+#: includes/class-top-10-widget.php:115
 #, fuzzy
 msgid "Thumbnail options"
 msgstr "Bericht miniatuurafbeelding opties:"
 
-#: admin/admin.php:296
+#: admin/admin.php:325
 msgid "Custom styles"
 msgstr ""
 
-#: admin/admin.php:297 admin/admin.php:937
+#: admin/admin.php:326 admin/admin.php:966
 msgid "Maintenance"
 msgstr ""
 
-#: admin/admin.php:313 admin/admin.php:405 admin/admin.php:510
-#: admin/admin.php:705 admin/admin.php:868 admin/admin.php:936
-#: admin/admin.php:1000 admin/admin.php:1021 admin/admin.php:1205
-#: admin/admin.php:1225 admin/admin.php:1235
+#: admin/admin.php:342 admin/admin.php:434 admin/admin.php:539
+#: admin/admin.php:741 admin/admin.php:897 admin/admin.php:965
+#: admin/admin.php:1029 admin/admin.php:1065 admin/admin.php:1249
+#: admin/admin.php:1269 admin/admin.php:1279
 msgid "Click to toggle"
 msgstr ""
 
-#: admin/admin.php:330
+#: admin/admin.php:359
 msgid "Enable Overall stats"
 msgstr ""
 
-#: admin/admin.php:336
+#: admin/admin.php:365
 msgid "Enable Daily stats"
 msgstr ""
 
-#: admin/admin.php:342
+#: admin/admin.php:371
 msgid "Cache fix:"
 msgstr ""
 
-#: admin/admin.php:345
+#: admin/admin.php:374
 msgid ""
 "This will try to prevent W3 Total Cache and other caching plugins from "
 "caching the tracker script of the plugin. Try toggling this option in case "
 "you find that your posts are not tracked."
 msgstr ""
 
-#: admin/admin.php:349
+#: admin/admin.php:378
 msgid "Start daily counts from midnight:"
 msgstr ""
 
-#: admin/admin.php:352
+#: admin/admin.php:381
 msgid ""
 "Daily counter will display number of visits from midnight. This option is "
 "checked by default and mimics the way most normal counters work. Turning "
 "this off will allow you to use the hourly setting in the next option."
 msgstr ""
 
-#: admin/admin.php:356
+#: admin/admin.php:385
 msgid "Daily popular contains top posts over:"
 msgstr ""
 
-#: admin/admin.php:358
+#: admin/admin.php:387
 msgid "day(s)"
 msgstr ""
 
-#: admin/admin.php:359
+#: admin/admin.php:388
 msgid "hour(s)"
 msgstr ""
 
-#: admin/admin.php:360
+#: admin/admin.php:389
 msgid ""
 "Think of Daily Popular has a custom date range applied as a global setting. "
 "Instead of displaying popular posts from the past day, this setting lets you "
@@ -226,37 +236,37 @@ msgid ""
 "overridden in the widget."
 msgstr ""
 
-#: admin/admin.php:364
+#: admin/admin.php:393
 msgid "Delete options on uninstall"
 msgstr ""
 
-#: admin/admin.php:367
+#: admin/admin.php:396
 msgid ""
 "If this is checked, all settings related to Top 10 are removed from the "
 "database if you choose to uninstall/delete the plugin."
 msgstr ""
 
-#: admin/admin.php:371
+#: admin/admin.php:400
 msgid "Delete counter data on uninstall"
 msgstr ""
 
-#: admin/admin.php:374
+#: admin/admin.php:403
 msgid ""
 "If this is checked, the tables containing the counter statistics are removed "
 "from the database if you choose to uninstall/delete the plugin."
 msgstr ""
 
-#: admin/admin.php:375
+#: admin/admin.php:404
 msgid ""
 "Keep this unchecked if you choose to reinstall the plugin and don't want to "
 "lose your counter data."
 msgstr ""
 
-#: admin/admin.php:379
+#: admin/admin.php:408
 msgid "Link to Top 10 plugin page"
 msgstr ""
 
-#: admin/admin.php:382
+#: admin/admin.php:411
 #, fuzzy
 msgid ""
 "A link to the plugin is added as an extra list item to the list of popular "
@@ -266,59 +276,59 @@ msgstr ""
 "populaire berichten. Het is niet verplicht, maar wordt ten zeerste "
 "gewaardeerd!"
 
-#: admin/admin.php:387 admin/admin.php:492 admin/admin.php:687
-#: admin/admin.php:850 admin/admin.php:916 admin/admin.php:993
+#: admin/admin.php:416 admin/admin.php:521 admin/admin.php:723
+#: admin/admin.php:879 admin/admin.php:945 admin/admin.php:1022
 #, fuzzy
 msgid "Save Options"
 msgstr "Opties:"
 
-#: admin/admin.php:422
+#: admin/admin.php:451
 #, fuzzy
 msgid "Display number of views on:"
 msgstr "Geef het aantal berichtweergaves weer?"
 
-#: admin/admin.php:424
+#: admin/admin.php:453
 msgid "Posts"
 msgstr ""
 
-#: admin/admin.php:425
+#: admin/admin.php:454
 #, fuzzy
 msgid "Pages"
 msgstr "Pagina"
 
-#: admin/admin.php:426
+#: admin/admin.php:455
 msgid "Home page"
 msgstr ""
 
-#: admin/admin.php:427
+#: admin/admin.php:456
 msgid "Feeds"
 msgstr ""
 
-#: admin/admin.php:428
+#: admin/admin.php:457
 msgid "Category archives"
 msgstr ""
 
-#: admin/admin.php:429
+#: admin/admin.php:458
 msgid "Tag archives"
 msgstr ""
 
-#: admin/admin.php:430
+#: admin/admin.php:459
 msgid "Other archives"
 msgstr ""
 
-#: admin/admin.php:431
+#: admin/admin.php:460
 msgid ""
 "If you choose to disable this, please add <code>&lt;?php if "
 "( function_exists ( 'echo_tptn_post_count' ) ) echo_tptn_post_count(); ?&gt;"
 "</code> to your template file where you want it displayed"
 msgstr ""
 
-#: admin/admin.php:435
+#: admin/admin.php:464
 #, fuzzy
 msgid "Format to display the post views:"
 msgstr "Formaat om de optelling te laten zien:"
 
-#: admin/admin.php:438
+#: admin/admin.php:467
 msgid ""
 "Use <code>%totalcount%</code> to display the total count, <code>%dailycount"
 "%</code> to display the daily count and <code>%overallcount%</code> to "
@@ -326,11 +336,11 @@ msgid ""
 "options displays <code>[Visited 123 times, 23 visits today]</code>"
 msgstr ""
 
-#: admin/admin.php:442
+#: admin/admin.php:471
 msgid "What do display when there are no visits?"
 msgstr ""
 
-#: admin/admin.php:445
+#: admin/admin.php:474
 msgid ""
 "This text applies only when there are 0 hits for the post and it isn't a "
 "single page. e.g. if you display post views on the homepage or archives then "
@@ -338,313 +348,303 @@ msgid ""
 "option."
 msgstr ""
 
-#: admin/admin.php:449
+#: admin/admin.php:478
 msgid "Always display latest post count"
 msgstr ""
 
-#: admin/admin.php:452
+#: admin/admin.php:481
 msgid ""
 "This option uses JavaScript and will increase your page load time. Turn this "
 "off if you are not using caching plugins or are OK with displaying older "
 "cached counts."
 msgstr ""
 
-#: admin/admin.php:456
+#: admin/admin.php:485
 msgid "Track visits of authors on their own posts?"
 msgstr "Registreer bezoeken van auteurs aan hun eigen berichten?"
 
-#: admin/admin.php:459
+#: admin/admin.php:488
 msgid ""
 "Disabling this option will stop authors visits tracked on their own posts"
 msgstr ""
 
-#: admin/admin.php:463
+#: admin/admin.php:492
 #, fuzzy
 msgid "Track visits of admins?"
 msgstr "Registreer bezoeken van auteurs aan hun eigen berichten?"
 
-#: admin/admin.php:466
+#: admin/admin.php:495
 msgid "Disabling this option will stop admin visits being tracked."
 msgstr ""
 
-#: admin/admin.php:470
+#: admin/admin.php:499
 #, fuzzy
 msgid "Track visits of Editors?"
 msgstr "Registreer bezoeken van auteurs aan hun eigen berichten?"
 
-#: admin/admin.php:473
+#: admin/admin.php:502
 msgid "Disabling this option will stop editor visits being tracked."
 msgstr ""
 
-#: admin/admin.php:477
+#: admin/admin.php:506
 msgid "Display page views on Posts and Pages in Admin"
 msgstr ""
 
-#: admin/admin.php:480
+#: admin/admin.php:509
 msgid ""
 "Adds three columns called Total Views, Today's Views and Views to All Posts "
 "and All Pages"
 msgstr ""
 
-#: admin/admin.php:484
+#: admin/admin.php:513
 #, fuzzy
 msgid "Show number of views to non-admins"
 msgstr "Geef het aantal paginaweergaves weer?"
 
-#: admin/admin.php:487
+#: admin/admin.php:516
 msgid ""
 "If you disable this then non-admins won't see the above columns or view the "
 "independent pages with the top posts"
 msgstr ""
 
-#: admin/admin.php:527
+#: admin/admin.php:556
 msgid "Number of popular posts to display: "
 msgstr "Aantal populaire berichten om weer te geven:"
 
-#: admin/admin.php:530
+#: admin/admin.php:559
 msgid ""
 "Maximum number of posts that will be displayed in the list. This option is "
 "used if you don't specify the number of posts in the widget or shortcodes"
 msgstr ""
 
-#: admin/admin.php:534
+#: admin/admin.php:563
 msgid "Post types to include in results (including custom post types)"
 msgstr ""
 
-#: admin/admin.php:546
+#: admin/admin.php:577
 msgid "List of post or page IDs to exclude from the results: "
 msgstr ""
 
-#: admin/admin.php:548 admin/admin.php:655
+#: admin/admin.php:579 admin/admin.php:691
 msgid "Enter comma separated list of IDs. e.g. 188,320,500"
 msgstr ""
 
-#: admin/admin.php:552
+#: admin/admin.php:583
 msgid "Exclude Categories: "
 msgstr ""
 
-#: admin/admin.php:567
+#: admin/admin.php:598
 msgid ""
 "Comma separated list of category slugs. The field above has an autocomplete "
 "so simply start typing in the starting letters and it will prompt you with "
 "options"
 msgstr ""
 
-#: admin/admin.php:572
+#: admin/admin.php:603
 msgid "Title of popular posts: "
 msgstr "Titel van populaire berichten:"
 
-#: admin/admin.php:578
+#: admin/admin.php:609
 msgid "Title of daily popular posts: "
 msgstr "Titel van dagelijkse populaire berichten:"
 
-#: admin/admin.php:584
+#: admin/admin.php:615
 msgid "When there are no posts, what should be shown?"
 msgstr ""
 
-#: admin/admin.php:588
+#: admin/admin.php:619
 msgid "Blank Output"
 msgstr ""
 
-#: admin/admin.php:592
+#: admin/admin.php:623
 msgid "Display:"
 msgstr ""
 
-#: admin/admin.php:597
+#: admin/admin.php:628
 msgid "Show post excerpt in list?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: admin/admin.php:603
+#: admin/admin.php:633
+msgid ""
+"Default style selected under the Custom Styles. Excerpt display is disabled."
+msgstr ""
+
+#: admin/admin.php:638
 msgid "Length of excerpt (in words): "
 msgstr "Lengte van de samenvatting (in woorden):"
 
-#: admin/admin.php:609
+#: admin/admin.php:644
 #, fuzzy
 msgid "Show post author in list?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: admin/admin.php:615
+#: admin/admin.php:649
+msgid ""
+"Default style selected under the Custom Styles. Author display is disabled."
+msgstr ""
+
+#: admin/admin.php:654
 #, fuzzy
 msgid "Show post date in list?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: admin/admin.php:621
+#: admin/admin.php:659
+msgid ""
+"Default style selected under the Custom Styles. Date display is disabled."
+msgstr ""
+
+#: admin/admin.php:664
 msgid "Limit post title length (in characters)"
 msgstr ""
 
-#: admin/admin.php:627
+#: admin/admin.php:670
 #, fuzzy
 msgid "Show view count in list?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: admin/admin.php:633
-msgid "Always display latest post count in the daily lists?"
-msgstr ""
-
-#: admin/admin.php:636
-msgid ""
-"This option uses JavaScript and will increase your page load time. When you "
-"enable this option, the daily widget will not use the options set there, but "
-"options will need to be set on this screen."
-msgstr ""
-
-#: admin/admin.php:640
+#: admin/admin.php:676
 msgid "Open links in new window"
 msgstr ""
 
-#: admin/admin.php:646
+#: admin/admin.php:682
 msgid "Add nofollow attribute to links in the list"
 msgstr ""
 
-#: admin/admin.php:652
+#: admin/admin.php:688
 msgid "Exclude display of related posts on these posts / pages"
 msgstr ""
 
-#: admin/admin.php:659
+#: admin/admin.php:695
 #, fuzzy
 msgid "Customise the list HTML"
 msgstr "Aanpassen van de output:"
 
-#: admin/admin.php:662
+#: admin/admin.php:698
 msgid "HTML to display before the list of posts: "
 msgstr "Te weergeven HTML voor de lijst met berichten:"
 
-#: admin/admin.php:668
+#: admin/admin.php:704
 msgid "HTML to display before each list item: "
 msgstr "Te weergeven HTML voor elk lijst item:"
 
-#: admin/admin.php:674
+#: admin/admin.php:710
 msgid "HTML to display after each list item: "
 msgstr "Te weergeven HTML na elk lijst item:"
 
-#: admin/admin.php:680
+#: admin/admin.php:716
 msgid "HTML to display after the list of posts: "
 msgstr "Te weergeven HTML na de lijst met berichten:"
 
-#: admin/admin.php:721
+#: admin/admin.php:757
 msgid "Location of post thumbnail:"
 msgstr ""
 
-#: admin/admin.php:725
+#: admin/admin.php:761
 #, fuzzy
 msgid "Display thumbnails inline with posts, before title"
 msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
 
-#: admin/admin.php:730
+#: admin/admin.php:766
 #, fuzzy
 msgid "Display thumbnails inline with posts, after title"
 msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
 
-#: admin/admin.php:735
+#: admin/admin.php:771
 msgid "Display only thumbnails, no text"
 msgstr "Geef alleen miniatuurafbeeldingen weer, geen text"
 
-#: admin/admin.php:740
+#: admin/admin.php:776
 msgid "Do not display thumbnails, only text."
 msgstr "Geef geen miniatuurafbeeldingen weer, alleen text"
 
-#: admin/admin.php:744
+#: admin/admin.php:780
+msgid ""
+"Default style selected under the Custom Styles. Location of thumbnail forced "
+"to be inline before title"
+msgstr ""
+
+#: admin/admin.php:784
 msgid "Thumbnail size:"
 msgstr ""
 
-#: admin/admin.php:768
+#: admin/admin.php:808
 msgid "Custom size"
 msgstr ""
 
-#: admin/admin.php:771
+#: admin/admin.php:811
 msgid ""
 "You can choose from existing image sizes above or create a custom size. If "
 "you have chosen Custom size above, then enter the width, height and crop "
 "settings below. For best results, use a cropped image."
 msgstr ""
 
-#: admin/admin.php:772
+#: admin/admin.php:812
 msgid ""
 "If you change the width and/or height below, existing images will not be "
 "automatically resized."
 msgstr ""
 
-#: admin/admin.php:773
+#: admin/admin.php:813
 #, php-format
 msgid ""
-"I recommend using <a href='%s' target='_blank'>Force Regenerate Thumbnails</"
-"a> or <a href='%s' target='_blank'>Force Regenerate Thumbnails</a> to "
-"regenerate all image sizes."
+"I recommend using <a href='%s' class='thickbox'>OTF Regenerate Thumbnails</"
+"a> or <a href='%s' class='thickbox'>Regenerate Thumbnails</a> to regenerate "
+"all image sizes."
 msgstr ""
 
-#: admin/admin.php:776
+#: admin/admin.php:816
 msgid "Width of custom thumbnail:"
 msgstr ""
 
-#: admin/admin.php:781
+#: admin/admin.php:821
 msgid "Height of custom thumbnail"
 msgstr ""
 
-#: admin/admin.php:786
+#: admin/admin.php:826
 msgid "Crop mode:"
 msgstr ""
 
-#: admin/admin.php:790
+#: admin/admin.php:830
 msgid ""
 "By default, thumbnails will be proportionately cropped. Check this box to "
 "hard crop the thumbnails."
 msgstr ""
 
-#: admin/admin.php:791
+#: admin/admin.php:831
 #, php-format
 msgid "<a href='%s' target='_blank'>Difference between soft and hard crop</a>"
 msgstr ""
 
-#: admin/admin.php:793
+#: admin/admin.php:834
 msgid ""
-"Since you're using the default styles set under the Custom Styles section, "
-"the width and height is fixed at 65px and crop mode is enabled."
+"Default style selected under the Custom Styles. Thumbnail width and height "
+"is fixed at 65px and crop mode is enabled."
 msgstr ""
 
-#: admin/admin.php:798
+#: admin/admin.php:839
 msgid "Style attributes / Width and Height HTML attributes:"
 msgstr ""
 
-#: admin/admin.php:802
+#: admin/admin.php:843
 msgid "Style attributes are used for width and height."
 msgstr ""
 
-#: admin/admin.php:807
+#: admin/admin.php:848
 msgid "HTML width and height attributes are used for width and height."
 msgstr ""
 
-#: admin/admin.php:811
-msgid "Use timthumb to generate thumbnails? "
-msgstr ""
-
-#: admin/admin.php:814
-msgid ""
-"If checked, <a href=\"http://www.binarymoon.co.uk/projects/timthumb/\" "
-"target=\"_blank\">timthumb</a> will be used to generate thumbnails"
-msgstr ""
-
-#: admin/admin.php:817
-msgid "Quality of thumbnails generated by timthumb:"
-msgstr ""
-
-#: admin/admin.php:820
-msgid ""
-"Enter values between 0 and 100 only. 100 is highest quality and the highest "
-"file size. Suggested maximum value is 95. Default is 75."
-msgstr ""
-
-#: admin/admin.php:823
+#: admin/admin.php:852
 #, fuzzy
 msgid "Post thumbnail meta field name: "
 msgstr "Bericht miniatuurafbeelding opties:"
 
-#: admin/admin.php:826
+#: admin/admin.php:855
 msgid ""
 "The value of this field should contain the image source and is set in the "
 "<em>Add New Post</em> screen"
 msgstr ""
 
-#: admin/admin.php:829
+#: admin/admin.php:858
 #, fuzzy
 msgid ""
 "If the postmeta is not set, then should the plugin extract the first image "
@@ -655,7 +655,7 @@ msgstr ""
 "vertragen wanneer de eerste afbeelding in de gerelateerde berichten groot is "
 "qua bestandsgrootte"
 
-#: admin/admin.php:832
+#: admin/admin.php:861
 #, fuzzy
 msgid ""
 "This could slow down the loading of your page if the first image in the "
@@ -666,21 +666,21 @@ msgstr ""
 "vertragen wanneer de eerste afbeelding in de gerelateerde berichten groot is "
 "qua bestandsgrootte"
 
-#: admin/admin.php:835
+#: admin/admin.php:864
 msgid "Use default thumbnail? "
 msgstr ""
 
-#: admin/admin.php:838
+#: admin/admin.php:867
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: admin/admin.php:841
+#: admin/admin.php:870
 msgid "Default thumbnail: "
 msgstr ""
 
-#: admin/admin.php:845
+#: admin/admin.php:874
 #, fuzzy
 msgid ""
 "The plugin will first check if the post contains a thumbnail. If it doesn't "
@@ -692,54 +692,54 @@ msgstr ""
 "veld controleren. Als dit veld niet beschikbaar is toont de plugin de "
 "standaard afbeelding zoals hieronder  aangegeven:"
 
-#: admin/admin.php:869
+#: admin/admin.php:898
 msgid "Custom CSS"
 msgstr ""
 
-#: admin/admin.php:884
+#: admin/admin.php:913
 msgid "Use default style included in the plugin?"
 msgstr ""
 
-#: admin/admin.php:887
+#: admin/admin.php:916
 msgid ""
 "Top 10 includes a default style that makes your popular posts list to look "
 "beautiful. Check the box above if you want to use this."
 msgstr ""
 
-#: admin/admin.php:888
+#: admin/admin.php:917
 msgid ""
 "Enabling this option will turn on the thumbnails and set their width and "
 "height to 65px. It will also turn off the display of the author, excerpt and "
 "date if already enabled. Disabling this option will not revert any settings."
 msgstr ""
 
-#: admin/admin.php:889
+#: admin/admin.php:918
 #, php-format
 msgid ""
 "You can view the default style at <a href=\"%1$s\" target=\"_blank\">%1$s</a>"
 msgstr ""
 
-#: admin/admin.php:892
+#: admin/admin.php:921
 msgid "Custom CSS to add to header:"
 msgstr ""
 
-#: admin/admin.php:897
+#: admin/admin.php:926
 msgid ""
 "Do not include <code>style</code> tags. Check out the <a href=\"http://"
 "wordpress.org/extend/plugins/top-10/faq/\" target=\"_blank\">FAQ</a> for "
 "available CSS classes to style."
 msgstr ""
 
-#: admin/admin.php:917
+#: admin/admin.php:946
 #, fuzzy
 msgid "Default Options"
 msgstr "Output Opties:"
 
-#: admin/admin.php:917
+#: admin/admin.php:946
 msgid "Do you want to set options to Default?"
 msgstr "Wil je de opties terugzetten naar standaard?"
 
-#: admin/admin.php:941
+#: admin/admin.php:970
 msgid ""
 "Over time the Daily Top 10 database grows in size, which reduces the "
 "performance of the plugin. Cleaning the database at regular intervals could "
@@ -747,65 +747,65 @@ msgid ""
 "will automatically delete entries older than 90 days."
 msgstr ""
 
-#: admin/admin.php:942
+#: admin/admin.php:971
 msgid ""
 "Note: When scheduled maintenance is enabled, WordPress will run the cron job "
 "everytime the job is rescheduled (i.e. you change the settings below)."
 msgstr ""
 
-#: admin/admin.php:945
+#: admin/admin.php:974
 msgid "Enable scheduled maintenance of daily tables:"
 msgstr ""
 
-#: admin/admin.php:949
+#: admin/admin.php:978
 msgid "Time to run maintenance"
 msgstr ""
 
-#: admin/admin.php:950
+#: admin/admin.php:979
 msgid "hrs"
 msgstr ""
 
-#: admin/admin.php:950
+#: admin/admin.php:979
 msgid "min"
 msgstr ""
 
-#: admin/admin.php:952
+#: admin/admin.php:981
 msgid "How often should the maintenance be run:"
 msgstr ""
 
-#: admin/admin.php:956
+#: admin/admin.php:985
 msgid "Daily"
 msgstr ""
 
-#: admin/admin.php:960
+#: admin/admin.php:989
 msgid "Weekly"
 msgstr ""
 
-#: admin/admin.php:964
+#: admin/admin.php:993
 msgid "Fortnightly"
 msgstr ""
 
-#: admin/admin.php:968
+#: admin/admin.php:997
 msgid "Monthly"
 msgstr ""
 
-#: admin/admin.php:977
+#: admin/admin.php:1006
 msgid "The cron job has been scheduled. Maintenance will run "
 msgstr ""
 
-#: admin/admin.php:982
+#: admin/admin.php:1011
 msgid "The cron job is missing. Please resave this page to add the job"
 msgstr ""
 
-#: admin/admin.php:987
+#: admin/admin.php:1016
 msgid "Maintenance is turned off"
 msgstr ""
 
-#: admin/admin.php:1001
-msgid "Reset count"
-msgstr "Reset telling"
+#: admin/admin.php:1030
+msgid "Reset count and other tools"
+msgstr ""
 
-#: admin/admin.php:1004
+#: admin/admin.php:1033
 msgid ""
 "This cannot be reversed. Make sure that your database has been backed up "
 "before proceeding"
@@ -813,168 +813,186 @@ msgstr ""
 "Dit kan niet ongedaan worden gemaakt. Zorg ervoor dat je een backup van je "
 "database gemaakt hebt voordat je verder gaat"
 
-#: admin/admin.php:1007
+#: admin/admin.php:1036
 #, fuzzy
 msgid "Reset Popular Posts"
 msgstr "Populaire Berichten"
 
-#: admin/admin.php:1007
+#: admin/admin.php:1036
 msgid "Are you sure you want to reset the popular posts?"
 msgstr "Ben je er zeker van dat je de populaire berichten wilt resetten?"
 
-#: admin/admin.php:1008
+#: admin/admin.php:1037
 #, fuzzy
 msgid "Reset Daily Popular Posts"
 msgstr "Dagelijkse Populaire Berichten"
 
-#: admin/admin.php:1008
+#: admin/admin.php:1037
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 "Ben je er zeker van dat je de dagelijkse populaire berichten wilt resetten?"
 
-#: admin/admin.php:1009
-msgid "Clear duplicates"
+#: admin/admin.php:1040
+msgid "This will merge post counts for posts with table entries of 0 and 1"
 msgstr ""
 
-#: admin/admin.php:1009
+#: admin/admin.php:1043
+msgid "Merge blog ID 0 and 1 post counts"
+msgstr ""
+
+#: admin/admin.php:1043
+msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
+msgstr ""
+
+#: admin/admin.php:1046
+msgid ""
+"In older versions, the plugin created entries with duplicate post IDs. "
+"Clicking the button below will merge these duplicate IDs"
+msgstr ""
+
+#: admin/admin.php:1049
+msgid "Merge duplicates across blog IDs"
+msgstr ""
+
+#: admin/admin.php:1049
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr "Hiermee verwijdert u de dubbele vermeldingen in de tabellen. Doorgaan?"
 
-#: admin/admin.php:1022
+#: admin/admin.php:1066
 msgid "WordPress Multisite: Migrate Top 10 v1.x counts to 2.x"
 msgstr ""
 
-#: admin/admin.php:1025
+#: admin/admin.php:1069
 msgid ""
 "If you've been using Top 10 v1.x on multisite, you would have needed to "
 "activate the plugin independently for each site. This would have resulted in "
 "two tables being created for each site in the network."
 msgstr ""
 
-#: admin/admin.php:1026
+#: admin/admin.php:1070
 msgid ""
 "Top 10 v2.x onwards uses only a single table to record the count, keeping "
 "your database clean. You can use this tool to import the recorded counts "
 "from v1.x tables to the new v2.x table format."
 msgstr ""
 
-#: admin/admin.php:1029
+#: admin/admin.php:1073
 msgid ""
 "If you do not see any tables below, then it means that either all data has "
 "already been imported or no relevant information has been found."
 msgstr ""
 
-#: admin/admin.php:1032
+#: admin/admin.php:1076
 msgid ""
 "After running the importer, please verify that all the counts have been "
 "successfully imported. Only then should you delete any old tables!"
 msgstr ""
 
-#: admin/admin.php:1066
+#: admin/admin.php:1110
 msgid "Blog ID"
 msgstr ""
 
-#: admin/admin.php:1069
+#: admin/admin.php:1113
 msgid "Status"
 msgstr ""
 
-#: admin/admin.php:1072
+#: admin/admin.php:1116
 msgid "Select to import"
 msgstr ""
 
-#: admin/admin.php:1082
+#: admin/admin.php:1126
 msgid "Blog #"
 msgstr ""
 
-#: admin/admin.php:1092
+#: admin/admin.php:1136
 msgid "Not imported"
 msgstr ""
 
-#: admin/admin.php:1096
+#: admin/admin.php:1140
 msgid "Imported"
 msgstr ""
 
-#: admin/admin.php:1117
+#: admin/admin.php:1161
 msgid "Begin import"
 msgstr ""
 
-#: admin/admin.php:1118
+#: admin/admin.php:1162
 msgid "Delete selected tables"
 msgstr ""
 
-#: admin/admin.php:1119
+#: admin/admin.php:1163
 msgid "Delete all imported tables"
 msgstr ""
 
-#: admin/admin.php:1176 admin/admin.php:1272
+#: admin/admin.php:1220 admin/admin.php:1316
 msgid "Daily Popular Posts"
 msgstr "Dagelijkse Populaire Berichten"
 
-#: admin/admin.php:1206
+#: admin/admin.php:1250
 msgid "Support the development"
 msgstr "Ondersteun de ontwikkeling"
 
-#: admin/admin.php:1213
+#: admin/admin.php:1257
 msgid "Donation for Top 10"
 msgstr ""
 
-#: admin/admin.php:1215
+#: admin/admin.php:1259
 msgid "Enter amount in USD: "
 msgstr "Voer het bedrag in in USD:"
 
-#: admin/admin.php:1219
+#: admin/admin.php:1263
 #, fuzzy
 msgid "Send your donation to the author of Top 10"
 msgstr "Zend je donatie naar de auteur van "
 
-#: admin/admin.php:1226
+#: admin/admin.php:1270
 msgid "Follow me"
 msgstr ""
 
-#: admin/admin.php:1236
+#: admin/admin.php:1280
 #, fuzzy
 msgid "Quick links"
 msgstr "Quick links"
 
-#: admin/admin.php:1240
+#: admin/admin.php:1284
 #, fuzzy
 msgid "Top 10 plugin page"
 msgstr "plugin pagina"
 
-#: admin/admin.php:1241
+#: admin/admin.php:1285
 msgid "Top 10 Github page"
 msgstr ""
 
-#: admin/admin.php:1242
+#: admin/admin.php:1286
 msgid "Other plugins"
 msgstr "Andere plugins"
 
-#: admin/admin.php:1243
+#: admin/admin.php:1287
 msgid "Ajay's blog"
 msgstr "De blog van Ajay"
 
-#: admin/admin.php:1244
+#: admin/admin.php:1288
 msgid "FAQ"
 msgstr ""
 
-#: admin/admin.php:1245 admin/admin.php:1403
+#: admin/admin.php:1289 admin/admin.php:1451
 msgid "Support"
 msgstr "Ondersteuning"
 
-#: admin/admin.php:1246
+#: admin/admin.php:1290
 msgid "Reviews"
 msgstr ""
 
-#: admin/admin.php:1269
+#: admin/admin.php:1313
 #, fuzzy
 msgid "Overall Popular Posts"
 msgstr "Bekijk het Totaal Populaire Berichten"
 
-#: admin/admin.php:1380
+#: admin/admin.php:1428
 msgid "Settings"
 msgstr "Instellingen"
 
-#: admin/admin.php:1404
+#: admin/admin.php:1452
 msgid "Donate"
 msgstr "Doneer"
 
@@ -988,121 +1006,140 @@ msgstr "Populaire Berichten"
 msgid "Display popular posts"
 msgstr "Dagelijkse Populaire Berichten"
 
-#: includes/class-top-10-widget.php:59
+#: includes/class-top-10-widget.php:71
 msgid "Title"
 msgstr ""
 
-#: includes/class-top-10-widget.php:64
+#: includes/class-top-10-widget.php:76
 msgid "No. of posts"
 msgstr ""
 
-#: includes/class-top-10-widget.php:69
+#: includes/class-top-10-widget.php:81
 msgid "Overall"
 msgstr ""
 
-#: includes/class-top-10-widget.php:70
+#: includes/class-top-10-widget.php:82
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: includes/class-top-10-widget.php:74
+#: includes/class-top-10-widget.php:86
 msgid "In days and hours (applies only to custom option above)"
 msgstr ""
 
-#: includes/class-top-10-widget.php:76
+#: includes/class-top-10-widget.php:88
 msgid "days"
 msgstr ""
 
-#: includes/class-top-10-widget.php:79
+#: includes/class-top-10-widget.php:91
 msgid "hours"
 msgstr ""
 
-#: includes/class-top-10-widget.php:84
+#: includes/class-top-10-widget.php:96
 #, fuzzy
 msgid "Show count?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: includes/class-top-10-widget.php:89
+#: includes/class-top-10-widget.php:101
 #, fuzzy
 msgid "Show excerpt?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: includes/class-top-10-widget.php:94
+#: includes/class-top-10-widget.php:106
 #, fuzzy
 msgid "Show author?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: includes/class-top-10-widget.php:99
+#: includes/class-top-10-widget.php:111
 #, fuzzy
 msgid "Show date?"
 msgstr "Laat bericht samenvatting zien in lijst?"
 
-#: includes/class-top-10-widget.php:105
+#: includes/class-top-10-widget.php:117
 #, fuzzy
 msgid "Thumbnails inline, before title"
 msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
 
-#: includes/class-top-10-widget.php:106
+#: includes/class-top-10-widget.php:118
 #, fuzzy
 msgid "Thumbnails inline, after title"
 msgstr "Laat miniatuurafbeeldingen in lijn zien met berichten"
 
-#: includes/class-top-10-widget.php:107
+#: includes/class-top-10-widget.php:119
 #, fuzzy
 msgid "Only thumbnails, no text"
 msgstr "Geef alleen miniatuurafbeeldingen weer, geen text"
 
-#: includes/class-top-10-widget.php:108
+#: includes/class-top-10-widget.php:120
 #, fuzzy
 msgid "No thumbnails, only text."
 msgstr "Geef geen miniatuurafbeeldingen weer, alleen text"
 
-#: includes/class-top-10-widget.php:113
+#: includes/class-top-10-widget.php:125
 #, fuzzy
 msgid "Thumbnail height"
 msgstr "Bericht miniatuurafbeelding opties:"
 
-#: includes/class-top-10-widget.php:118
+#: includes/class-top-10-widget.php:131
 #, fuzzy
 msgid "Thumbnail width"
 msgstr "Bericht miniatuurafbeelding opties:"
 
-#: top-10.php:879
+#: includes/class-top-10-widget.php:136
+msgid "Post types to include:"
+msgstr ""
+
+#: top-10.php:756
 msgid " by "
 msgstr ""
 
-#: top-10.php:930
+#: top-10.php:823
 #, php-format
 msgid "Popular posts by <a href=\"%s\" rel=\"nofollow\" %s>Top 10 plugin</a>"
 msgstr ""
 
-#: top-10.php:1029
+#: top-10.php:1113
 msgid "<h3>Popular Posts</h3>"
 msgstr "<h3>Populaire Berichten</h3>"
 
-#: top-10.php:1030
+#: top-10.php:1114
 msgid "<h3>Daily Popular</h3>"
 msgstr "<h3>Dagelijks Populair</h3>"
 
-#: top-10.php:1031
+#: top-10.php:1115
 #, fuzzy
 msgid "No top posts yet"
 msgstr "Reset Top 10 populaire berichten"
 
-#: top-10.php:1690
+#: top-10.php:1507
+msgid "thumb_timthumb argument has been deprecated"
+msgstr ""
+
+#: top-10.php:1511
+msgid "thumb_timthumb_q argument has been deprecated"
+msgstr ""
+
+#: top-10.php:1515
+msgid "filter argument has been deprecated"
+msgstr ""
+
+#: top-10.php:1853
 msgid "Once Weekly"
 msgstr ""
 
-#: top-10.php:1694
+#: top-10.php:1857
 msgid "Once Fortnightly"
 msgstr ""
 
-#: top-10.php:1698
+#: top-10.php:1861
 msgid "Once Monthly"
 msgstr ""
 
-#: top-10.php:1702
+#: top-10.php:1865
 msgid "Once quarterly"
 msgstr ""
+
+#~ msgid "Reset count"
+#~ msgstr "Reset telling"
 
 #~ msgid "Daily Popular should contain views of how many days? "
 #~ msgstr "Van hoeveel dagen moet Dagelijks Populair weergaves bevatten ?"
