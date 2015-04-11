@@ -29,7 +29,7 @@ function tptn_options() {
     $poststable = $wpdb->posts;
 
 	$tptn_settings = tptn_read_options();
-	parse_str( $tptn_settings['post_types'],$post_types );
+	parse_str( $tptn_settings['post_types'], $post_types );
 	$wp_post_types	= get_post_types( array(
 		'public'	=> true,
 	) );
@@ -545,13 +545,15 @@ function tptn_options() {
 					<tr>
 						<th scope="row"><?php _e( 'Post types to include in results (including custom post types)', TPTN_LOCAL_NAME ); ?></th>
 						<td>
-							<?php foreach ( $wp_post_types as $wp_post_type ) {
-								$post_type_op = '<input type="checkbox" name="post_types[]" value="'.$wp_post_type.'" ';
-								if ( in_array( $wp_post_type, $posts_types_inc ) ) $post_type_op .= ' checked="checked" ';
-								$post_type_op .= ' />'.$wp_post_type.'&nbsp;&nbsp;';
-								echo $post_type_op;
-							}
-							?>
+							<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
+
+								<label>
+									<input type="checkbox" name="post_types[]" value="<?php echo $wp_post_type; ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) echo 'checked="checked"' ?> />
+									<?php echo $wp_post_type; ?>
+								</label>
+								<br />
+
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>
