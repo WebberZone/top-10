@@ -35,10 +35,10 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
 * **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 will also add two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
-* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data. But why would you?
+* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data if you want. But why would you?
 
 
-If you're looking for a plugin to display related, look no further than my other plugin <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>.
+If you're looking for a plugin to display related posts, look no further than <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>.
 
 
 ## Screenshots
