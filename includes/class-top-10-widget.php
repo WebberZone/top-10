@@ -53,6 +53,18 @@ class Top_Ten_Widget extends WP_Widget {
 		$daily = isset( $instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
 		$daily_range = isset( $instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
 		$hour_range = isset( $instance['hour_range'] ) ? esc_attr( $instance['hour_range'] ) : '';
+
+		// Parse the Post types
+		$post_types = array();
+		if ( isset( $instance['post_types'] ) ) {
+			$post_types = $instance['post_types'];
+			parse_str( $post_types, $post_types );	// Save post types in $post_types variable
+		}
+		$wp_post_types	= get_post_types( array(
+			'public'	=> true,
+		) );
+		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
+
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>">
@@ -96,7 +108,7 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_date' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) echo 'checked="checked"' ?> /> <?php _e( 'Show date?', TPTN_LOCAL_NAME ); ?>
+				<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) echo 'checked="checked"' ?> /> <?php _e( 'Show date?', TPTN_LOCAL_NAME ); ?>
 			</label>
 		</p>
 		<p>
@@ -110,13 +122,28 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_height' ); ?>">
-			<?php _e( 'Thumbnail height', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="text" value="<?php echo esc_attr($thumb_height); ?>" />
+				<?php _e( 'Thumbnail height', TPTN_LOCAL_NAME ); ?>:
+				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="text" value="<?php echo esc_attr($thumb_height); ?>" />
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_width' ); ?>">
-			<?php _e( 'Thumbnail width', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
+				<?php _e( 'Thumbnail width', TPTN_LOCAL_NAME ); ?>:
+				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
+		</p>
+
+		<p><?php _e( 'Post types to include:', TPTN_LOCAL_NAME ); ?><br />
+
+			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
+
+				<label>
+					<input id="<?php echo $this->get_field_id( 'post_types' ); ?>" name="<?php echo $this->get_field_name( 'post_types' ); ?>[]" type="checkbox" value="<?php echo $wp_post_type; ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) echo 'checked="checked"' ?> />
+					<?php echo $wp_post_type; ?>
+				</label>
+				<br />
+
+			<?php }	?>
 		</p>
 
 		<?php
@@ -158,6 +185,14 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['thumb_height'] = $new_instance['thumb_height'];
 		$instance['thumb_width'] = $new_instance['thumb_width'];
 
+		// Process post types to be selected
+		$wp_post_types	= get_post_types( array(
+			'public'	=> true,
+		) );
+		$post_types = ( isset( $new_instance['post_types'] ) ) ? $new_instance['post_types'] : array();
+		$post_types = array_intersect( $wp_post_types, $post_types );
+		$instance['post_types'] = http_build_query( $post_types, '', '&' );
+
 		/**
 		 * Filters Update widget options array.
 		 *
@@ -182,6 +217,7 @@ class Top_Ten_Widget extends WP_Widget {
 		extract( $args, EXTR_SKIP );
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
+
 		$limit = isset( $instance['limit'] ) ? $instance['limit'] : $tptn_settings['limit'];
 		if ( empty( $limit ) ) {
 			$limit = $tptn_settings['limit'];
@@ -202,6 +238,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
 		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
 		$show_date = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
+		$post_types = isset( $instance['post_types'] ) ? $instance['post_types'] : $tptn_settings['post_types'];
 
 		$arguments = array(
 			'is_widget' => 1,
@@ -217,6 +254,7 @@ class Top_Ten_Widget extends WP_Widget {
 			'thumb_height' => $thumb_height,
 			'thumb_width' => $thumb_width,
 			'disp_list_count' => $disp_list_count,
+			'post_types' => $post_types,
 		);
 
 		/**

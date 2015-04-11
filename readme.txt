@@ -66,6 +66,7 @@ Check the Changelog for more details
 * New: Function & filter `get_tptn_pop_posts` that can be used to fetch the popular posts as an object or array. Perfect if you want to write custom code in your theme
 * New: Support for WPML to return the correct language ID. Thanks to Tony Flags' <a href="https://wordpress.org/support/topic/top-10-and-languages-in-wpml?replies=11#post-6622085">code snippet</a>.
 * New: Filter `tptn_list_count` to modify the formatted list count. See a <a href="https://gist.github.com/ajaydsouza/9f04c26814414a57fab4">working example</a>
+* New: Post types can now be selected in the widget. This allows you to select top posts by post type
 * Modified: Plugin will attempt to pull the correct size image when fetching the first image in a post
 * Modified: Deprecated "Always display latest post count in the daily lists"
 * Modified: timthumb has been deprecated. The script is no longer packaged within Top 10
