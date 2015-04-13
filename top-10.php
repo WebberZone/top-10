@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.0
+ * Version: 	2.1.1-beta20150513
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -223,6 +223,10 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  */
 function tptn_parse_request( $wp ) {
    	global $wpdb, $tptn_settings;
+
+   	if ( empty( $wp ) ) {
+   		global $wp;
+	}
 
 	$table_name = $wpdb->base_prefix . "top_ten";
 	$top_ten_daily = $wpdb->base_prefix . "top_ten_daily";
