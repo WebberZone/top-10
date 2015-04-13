@@ -64,11 +64,15 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 
 == Upgrade Notice ==
 
-= 2.1.0 =
-* Fixed: Bug fixes; New button to merge post counts; deprecated timthumb;
+= 2.1.1 =
+* Fixed: Potential bug when the $wp variable was not detected in rare situations;
 Check the Changelog for more details
 
+
 == Changelog ==
+
+= 2.1.1 =
+* Fixed: Potential bug when the $wp variable was not detected in rare situations
 
 = 2.1.0 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
