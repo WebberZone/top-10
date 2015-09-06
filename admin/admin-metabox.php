@@ -25,17 +25,33 @@ if ( ! defined( 'WPINC' ) ) {
  * @param	object	$post		Post object
  */
 function tptn_add_meta_box( $post_type, $post ) {
+	global $tptn_settings;
+
+	// If metaboxes are disabled, then exit
+    if ( ! $tptn_settings['show_metabox'] ) return;
+
+	// If current user isn't an admin and we're restricting metaboxes to admins only, then exit
+	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) return;
 
 	$args = array(
 	   'public'   => true,
 	);
 	$post_types = get_post_types( $args );
 
+	/**
+	 * Filter post types on which the meta box is displayed
+	 *
+	 * @since	2.2.0
+	 *
+	 * @param	array	$post_types	Array of post types
+	 */
+	$post_types = apply_filters( 'tptn_meta_box_post_types', $post_types );
+
 	if ( in_array( $post_type, $post_types ) ) {
 
 		add_meta_box(
 			'tptn_metabox',
-			__( 'Top 10', TPTN_LOCAL_NAME ),
+			'Top 10',
 			'tptn_call_meta_box',
 			$post_type,
 			'advanced',
@@ -66,7 +82,6 @@ function tptn_call_meta_box() {
 	) );
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
 
-	if ( current_user_can( 'manage_options' ) ) {
 ?>
 	<p>
 		<label for="total_count"><?php _e( "Visit count:", TPTN_LOCAL_NAME ); ?></label>
@@ -75,7 +90,6 @@ function tptn_call_meta_box() {
 	</p>
 
 <?php
-	}
 
 	$results = get_post_meta( $post->ID, $tptn_settings['thumb_meta'], true );
 	$value = ( $results ) ? $results : '';
@@ -85,6 +99,12 @@ function tptn_call_meta_box() {
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
 		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", TPTN_LOCAL_NAME ); ?></em>
 		<em><?php _e( "The URL above is saved in the meta field: ", TPTN_LOCAL_NAME ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+	</p>
+
+	<p>
+		<?php if ( function_exists( 'tptn_add_viewed_count' ) ) { ?>
+			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', TPTN_LOCAL_NAME ), "Contextual Related Posts" ); ?></em>
+		<?php } ?>
 	</p>
 
 	<?php
@@ -117,7 +137,7 @@ function tptn_save_meta_box( $post_id ) {
     if ( ! current_user_can( 'edit_posts' ) ) return;
 
 	// Update the posts view count
-	if ( ( isset( $_POST['total_count'] ) ) && ( current_user_can( 'manage_options' ) ) ) {
+	if ( isset( $_POST['total_count'] ) ) {
     	$total_count = intval( $_POST['total_count'] );
 		$blog_id = get_current_blog_id();
 

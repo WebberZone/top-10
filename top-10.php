@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.1-beta20150510
+ * Version: 	2.1.1-beta20150906
  * Author: 		Ajay D'Souza
  * Author URI: 	http://ajaydsouza.com
  * Text Domain:	tptn
@@ -1139,6 +1139,8 @@ function tptn_default_options() {
 		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
 		'uninstall_clean_options' => true,	// Cleanup options
 		'uninstall_clean_tables' => false,	// Cleanup tables
+		'show_metabox'	=> true,	// Show metabox to admins
+		'show_metabox_admins'	=>	false,	// Limit to admins as well
 		'show_credit' => false,			// Add link to plugin page of my blog in top posts list
 
 		/* Counter and tracker options */
