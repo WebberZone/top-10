@@ -6,13 +6,13 @@ __Tested up to:__ 4.2
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
-__Plugin page:__ <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10</a>
+__Plugin page:__ <a href="https://webberzone.com/plugins/top-10/">Top 10</a>
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
 ## Description
 
-WordPress doesn't count page views by default. <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10</a> will count the number of page views on your single posts on a daily as well as overall basis. You can then display the page view count on individual posts and pages as well as display a list of most popular posts based on page views.
+WordPress doesn't count page views by default. <a href="https://webberzone.com/plugins/top-10/">Top 10</a> will count the number of page views on your single posts on a daily as well as overall basis. You can then display the page view count on individual posts and pages as well as display a list of most popular posts based on page views.
 
 Includes a sidebar widget to display the popular posts. And, all settings can be configured from within your WordPress Admin area itself! You can choose to disable tracking of author visits on their own posts.
 
@@ -38,7 +38,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data if you want. But why would you?
 
 
-If you're looking for a plugin to display related posts, look no further than <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>.
+If you're looking for a plugin to display related posts, look no further than <a href="https://webberzone.com/plugins/contextual-related-posts">Contextual Related Posts</a>.
 
 
 ## Screenshots
@@ -68,4 +68,4 @@ Alternatively, search for **Top 10** from Plugins &raquo; Add New within your Wo
 
 Check out the <a href="http://wordpress.org/plugins/top-10/faq/">FAQ on the plugin page</a> for a detailed list of questions and answers
 
-If your question isn't listed there, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced _paid_ support, please see <a href="http://ajaydsouza.com/support/">details here</a>.
+If your question isn't listed there, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced _paid_ support, please see <a href="https://webberzone.com/support/">details here</a>.

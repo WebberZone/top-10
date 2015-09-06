@@ -159,7 +159,7 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 		$output .=  " &raquo;</a>";
 	}
 	$output .= '</p>';
-	$output .= '<p style="text-align:center;border-top: #000 1px solid">Popular posts by <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10 plugin</a></p>';
+	$output .= '<p style="text-align:center;border-top: #000 1px solid">Popular posts by <a href="https://webberzone.com/plugins/top-10/">Top 10 plugin</a></p>';
 	$output .= '</div>';
 
 	return apply_filters( 'tptn_pop_display', $output );

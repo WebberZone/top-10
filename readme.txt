@@ -4,7 +4,7 @@ Contributors: Ajay
 Donate link: http://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.5
-Tested up to: 4.2
+Tested up to: 4.4
 License: GPLv2 or later
 
 
@@ -12,7 +12,7 @@ Track daily and total visits on your blog posts. Display the count as well as po
 
 == Description ==
 
-WordPress doesn't count page views by default. <a href="http://ajaydsouza.com/wordpress/plugins/top-10/">Top 10</a> will count the number of page views on your single posts on a daily as well as overall basis. You can then display the page view count on individual posts and pages as well as display a list of most popular posts based on page views.
+WordPress doesn't count page views by default. <a href="https://webberzone.com/plugins/top-10/">Top 10</a> will count the number of page views on your single posts on a daily as well as overall basis. You can then display the page view count on individual posts and pages as well as display a list of most popular posts based on page views.
 
 Includes a sidebar widget to display the popular posts. And, all settings can be configured from within your WordPress Admin area itself! You can choose to disable tracking of author visits on their own posts.
 
@@ -36,7 +36,7 @@ Includes a sidebar widget to display the popular posts. And, all settings can be
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 * **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data if you want. But why would you?
 
-If you're looking for a plugin to display related posts, look no further than <a href="http://ajaydsouza.com/wordpress/plugins/contextual-related-posts">Contextual Related Posts</a>.
+If you're looking for a plugin to display related posts, look no further than <a href="https://webberzone.com/plugins/contextual-related-posts">Contextual Related Posts</a>.
 
 = Donations =
 
@@ -353,7 +353,7 @@ Check the Changelog for more details
 
 == Frequently Asked Questions ==
 
-If your question isn't listed here, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced *paid* support, please see <a href="http://ajaydsouza.com/support/">details here</a>.
+If your question isn't listed here, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced *paid* support, please see <a href="https://webberzone.com/support/">details here</a>.
 
 = How can I customise the output? =
 
@@ -377,7 +377,7 @@ The following CSS classes / IDs are available:
 
 * **tptn_counter**: Class of the `div` tag that wraps the post count that is driven by the field "Format to display the count in: " under 'Output Options'
 
-For more information, please visit http://ajaydsouza.com/wordpress/plugins/top-10/
+For more information, please visit https://webberzone.com/plugins/top-10/
 
 = Shortcodes =
 

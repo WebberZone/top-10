@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:	Top 10
- * Plugin URI:	http://ajaydsouza.com/wordpress/plugins/top-10/
+ * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
  * Version: 	2.1.1-beta20150510
  * Author: 		Ajay D'Souza
@@ -825,7 +825,7 @@ function tptn_pop_posts( $args ) {
 
 			$output .= sprintf(
 				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', TPTN_LOCAL_NAME ),
-				esc_url( 'http://ajaydsouza.com/wordpress/plugins/top-10/' ),
+				esc_url( 'https://webberzone.com/plugins/top-10/' ),
 				$target_attribute
 			);
 
