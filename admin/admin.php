@@ -1281,13 +1281,13 @@ function tptn_admin_side() {
       <div class="inside">
         <div id="quick-links">
 			<ul>
-				<li><a href="http://ajaydsouza.com/wordpress/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="https://webberzone.com/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', TPTN_LOCAL_NAME ); ?></a></li>
 				<li><a href="https://github.com/ajaydsouza/top-10" target="_blank"><?php _e( 'Top 10 Github page', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="http://ajaydsouza.com/wordpress/plugins/" target="_blank"><?php _e( 'Other plugins', TPTN_LOCAL_NAME ); ?></a></li>
-				<li><a href="http://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="https://webberzone.com/plugins/" target="_blank"><?php _e( 'Other plugins', TPTN_LOCAL_NAME ); ?></a></li>
 				<li><a href="https://wordpress.org/plugins/top-10/faq/" target="_blank"><?php _e( 'FAQ', TPTN_LOCAL_NAME ); ?></a></li>
 				<li><a href="http://wordpress.org/support/plugin/top-10" target="_blank"><?php _e( 'Support', TPTN_LOCAL_NAME ); ?></a></li>
 				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank"><?php _e( 'Reviews', TPTN_LOCAL_NAME ); ?></a></li>
+				<li><a href="http://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", TPTN_LOCAL_NAME ); ?></a></li>
 			</ul>
         </div>
       </div>
@@ -1448,7 +1448,7 @@ function tptn_plugin_actions( $links, $file ) {
 
 	// create link
 	if ( $file == $plugin ) {
-		$links[] = '<a href="http://ajaydsouza.com/support/">' . __( 'Support', TPTN_LOCAL_NAME ) . '</a>';
+		$links[] = '<a href="https://webberzone.com/support/">' . __( 'Support', TPTN_LOCAL_NAME ) . '</a>';
 		$links[] = '<a href="http://ajaydsouza.com/donate/">' . __( 'Donate', TPTN_LOCAL_NAME ) . '</a>';
 	}
 	return $links;
