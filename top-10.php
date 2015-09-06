@@ -878,7 +878,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	$defaults = array(
 		'daily' => FALSE,
-		'strict_limit' => FALSE,
+		'strict_limit' => TRUE,
 		'posts_only' =>	FALSE,
 	);
 

@@ -72,7 +72,12 @@ Check the Changelog for more details
 == Changelog ==
 
 = 2.1.1 =
-* Fixed: Potential bug when the $wp variable was not detected in rare situations
+
+* Enhancements:
+	* `strict_limit` is true by default for `get_tptn_pop_posts()`
+
+* Bugfixes:
+	* Potential bug when the $wp variable was not detected in rare situations
 
 = 2.1.0 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
