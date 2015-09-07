@@ -7,7 +7,7 @@
  * @package   Top_Ten
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
- * @link      http://ajaydsouza.com
+ * @link      https://webberzone.com
  * @copyright 2008-2015 Ajay D'Souza
  *
  * @wordpress-plugin
@@ -16,7 +16,7 @@
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
  * Version: 	2.1.1-beta20150906
  * Author: 		Ajay D'Souza
- * Author URI: 	http://ajaydsouza.com
+ * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
  * License: 	GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
