@@ -31,14 +31,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 /**
- * Holds the text domain.
- *
- * @since	1.4
- */
-define( 'TPTN_LOCAL_NAME', 'tptn' );
-
-
-/**
  * Holds the filesystem directory path (with trailing slash) for Top 10
  *
  * @since	1.5
@@ -86,7 +78,7 @@ $tptn_settings = tptn_read_options();
  * @since	1.9.10.1
  */
 function tptn_lang_init() {
-	load_plugin_textdomain( TPTN_LOCAL_NAME, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'tptn', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'init', 'tptn_lang_init' );
 
@@ -749,7 +741,7 @@ function tptn_pop_posts( $args ) {
 					 */
 					$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
 
-					$tptn_author = '<span class="tptn_author"> ' . __( ' by ', TPTN_LOCAL_NAME ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+					$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'tptn' ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
 
 					/**
 					 * Filter the text with the author details.
@@ -816,7 +808,7 @@ function tptn_pop_posts( $args ) {
 			$output .= apply_filters( 'tptn_before_list_item', $before_list_item, $result );
 
 			$output .= sprintf(
-				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', TPTN_LOCAL_NAME ),
+				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', 'tptn' ),
 				esc_url( 'https://webberzone.com/plugins/top-10/' ),
 				$target_attribute
 			);
@@ -1106,9 +1098,9 @@ add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
 function tptn_default_options() {
 	global $tptn_url;
 
-	$title = __( '<h3>Popular Posts</h3>', TPTN_LOCAL_NAME );
-	$title_daily = __( '<h3>Daily Popular</h3>', TPTN_LOCAL_NAME );
-	$blank_output_text = __( 'No top posts yet', TPTN_LOCAL_NAME );
+	$title = __( '<h3>Popular Posts</h3>', 'tptn' );
+	$title_daily = __( '<h3>Daily Popular</h3>', 'tptn' );
+	$blank_output_text = __( 'No top posts yet', 'tptn' );
 	$thumb_default = $tptn_url . '/default.png';
 
 	$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
@@ -1502,15 +1494,15 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// Issue notice for deprecated arguments
 	if ( isset( $args['thumb_timthumb'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb argument has been deprecated', TPTN_LOCAL_NAME ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb argument has been deprecated', 'tptn' ) );
 	}
 
 	if ( isset( $args['thumb_timthumb_q'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb_q argument has been deprecated', TPTN_LOCAL_NAME ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb_q argument has been deprecated', 'tptn' ) );
 	}
 
 	if ( isset( $args['filter'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', TPTN_LOCAL_NAME ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', 'tptn' ) );
 	}
 
 	// Declare each item in $args as its own variable i.e. $type, $before.
@@ -1848,19 +1840,19 @@ function ald_more_reccurences( $schedules ) {
 	// add a 'weekly' interval
 	$schedules['weekly'] = array(
 		'interval' => WEEK_IN_SECONDS,
-		'display' => __( 'Once Weekly', TPTN_LOCAL_NAME )
+		'display' => __( 'Once Weekly', 'tptn' )
 	);
 	$schedules['fortnightly'] = array(
 		'interval' => 2 * WEEK_IN_SECONDS,
-		'display' => __( 'Once Fortnightly', TPTN_LOCAL_NAME )
+		'display' => __( 'Once Fortnightly', 'tptn' )
 	);
 	$schedules['monthly'] = array(
 		'interval' => 30 * DAY_IN_SECONDS,
-		'display' => __( 'Once Monthly', TPTN_LOCAL_NAME )
+		'display' => __( 'Once Monthly', 'tptn' )
 	);
 	$schedules['quarterly'] = array(
 		'interval' => 90 * DAY_IN_SECONDS,
-		'display' => __( 'Once quarterly', TPTN_LOCAL_NAME )
+		'display' => __( 'Once quarterly', 'tptn' )
 	);
 	return $schedules;
 }

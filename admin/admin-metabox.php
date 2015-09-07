@@ -84,9 +84,9 @@ function tptn_call_meta_box() {
 
 ?>
 	<p>
-		<label for="total_count"><?php _e( "Visit count:", TPTN_LOCAL_NAME ); ?></label>
+		<label for="total_count"><?php _e( "Visit count:", 'tptn' ); ?></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo $total_count ?>" style="width:100%" />
-		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", TPTN_LOCAL_NAME ); ?></em>
+		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", 'tptn' ); ?></em>
 	</p>
 
 <?php
@@ -95,15 +95,15 @@ function tptn_call_meta_box() {
 	$value = ( $results ) ? $results : '';
 ?>
 	<p>
-		<label for="thumb_meta"><?php _e( "Location of thumbnail:", TPTN_LOCAL_NAME ); ?></label>
+		<label for="thumb_meta"><?php _e( "Location of thumbnail:", 'tptn' ); ?></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
-		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", TPTN_LOCAL_NAME ); ?></em>
-		<em><?php _e( "The URL above is saved in the meta field: ", TPTN_LOCAL_NAME ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'tptn' ); ?></em>
+		<em><?php _e( "The URL above is saved in the meta field: ", 'tptn' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
 	</p>
 
 	<p>
 		<?php if ( function_exists( 'tptn_add_viewed_count' ) ) { ?>
-			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', TPTN_LOCAL_NAME ), "Contextual Related Posts" ); ?></em>
+			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'tptn' ), "Contextual Related Posts" ); ?></em>
 		<?php } ?>
 	</p>
 
