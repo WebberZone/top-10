@@ -2040,4 +2040,3 @@ if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'includes/deprecated.php' );
 
-?>

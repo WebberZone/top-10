@@ -275,4 +275,3 @@ class Top_Ten_Widget extends WP_Widget {
 	} //ending function widget
 }
 
-?>

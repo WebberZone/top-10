@@ -209,5 +209,3 @@ function tptn_pop_dashboard_setup() {
 }
 add_action( 'wp_dashboard_setup', 'tptn_pop_dashboard_setup' );
 
-
-?>
