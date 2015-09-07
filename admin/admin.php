@@ -29,6 +29,13 @@ function tptn_options() {
 
 	$tptn_settings = tptn_read_options();
 
+	/* Temporary check to remove the deprecated hook */
+	if ( wp_next_scheduled( 'ald_tptn_hook' ) ) {
+		wp_clear_scheduled_hook( 'ald_tptn_hook' );
+
+		tptn_enable_run( $tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence'] );
+	}
+
 	/* Parse post types */
 	parse_str( $tptn_settings['post_types'], $post_types );
 	$wp_post_types	= get_post_types( array(

@@ -81,6 +81,10 @@ Check the Changelog for more details
 * Bugfixes:
 	* Potential bug when the $wp variable was not detected in rare situations
 
+* Deprecated:
+	* `ald_tptn_rss`: Use `tptn_rss_filter` instead
+	* `ald_tptn_hook` deprecated and renamed to `tptn_cron_hook`
+
 = 2.1.0 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
 * New: Function & filter `get_tptn_pop_posts` that can be used to fetch the popular posts as an object or array. Perfect if you want to write custom code in your theme
