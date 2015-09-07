@@ -69,11 +69,11 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 	$output .= '<table width="100%" border="0">
 	 <tr>
 	  <td width="50%" align="left">';
-	$output .= sprintf( __( 'Results %1$s to %2$s of %3$s', TPTN_LOCAL_NAME ), '<strong>'.$first.'</strong>', '<strong>'.$last.'</strong>', '<strong>'.$numrows.'</strong>');
+	$output .= sprintf( __( 'Results %1$s to %2$s of %3$s', 'tptn' ), '<strong>'.$first.'</strong>', '<strong>'.$last.'</strong>', '<strong>'.$numrows.'</strong>');
 	$output .= '
 	  </td>
 	  <td width="50%" align="right">';
-	$output .= sprintf( __( 'Page %s of %s', TPTN_LOCAL_NAME ), '<strong>'.$current.'</strong>', '<strong>'.$total.'</strong>' );
+	$output .= sprintf( __( 'Page %s of %s', 'tptn' ), '<strong>'.$current.'</strong>', '<strong>'.$total.'</strong>' );
 	$output .= '
 	  </td>
 	 </tr>
@@ -85,10 +85,10 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 
 	if ( ( $daily && $widget ) || ( ! $daily && ! $widget ) ) {
 		$output .= '<a href="./admin.php?page=tptn_manage_daily">';
-		$output .= __( 'View Daily Popular Posts', TPTN_LOCAL_NAME );
+		$output .= __( 'View Daily Popular Posts', 'tptn' );
 		$output .= '</a></td>';
 		$output .= '<td align="right">';
-		if ( ! $widget ) $output .= __( 'Results per-page:', TPTN_LOCAL_NAME );
+		if ( ! $widget ) $output .= __( 'Results per-page:', 'tptn' );
 		if ( ! $widget ) $output .= ' <a href="./admin.php?page=tptn_manage&limit=10">10</a> | <a href="./admin.php?page=tptn_manage&limit=20">20</a> | <a href="./admin.php?page=tptn_manage&limit=50">50</a> | <a href="./admin.php?page=tptn_manage&limit=100">100</a> ';
 		$output .= ' 	  </td>
 		 </tr>
@@ -98,10 +98,10 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 		</table>';
 	} else {
 		$output .= '<a href="./admin.php?page=tptn_manage">';
-		$output .= __( 'View Overall Popular Posts', TPTN_LOCAL_NAME );
+		$output .= __( 'View Overall Popular Posts', 'tptn' );
 		$output .= '</a></td>';
 		$output .= '<td align="right">';
-		if ( ! $widget ) $output .= __( 'Results per-page:', TPTN_LOCAL_NAME );
+		if ( ! $widget ) $output .= __( 'Results per-page:', 'tptn' );
 		if ( ! $widget ) $output .= ' <a href="./admin.php?page=tptn_manage_daily&limit=10">10</a> | <a href="./admin.php?page=tptn_manage_daily&limit=20">20</a> | <a href="./admin.php?page=tptn_manage_daily&limit=50">50</a> | <a href="./admin.php?page=tptn_manage_daily&limit=100">100</a> ';
 		$output .= ' 	  </td>
 		 </tr>
@@ -127,7 +127,7 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 	if ( 0 != $page ) { // Don't show back link if current page is first page.
 		$back_page = $page - $limit;
 		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$back_page&daily=$daily&limit=$limit\">&laquo; ";
-		$output .=  __( 'Previous', TPTN_LOCAL_NAME );
+		$output .=  __( 'Previous', 'tptn' );
 		$output .=  "</a>\n";
 	}
 
@@ -155,7 +155,7 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 	if ( ! ( ( ( $page + $limit ) / $limit ) >= $pages ) && $pages != 1 ) { // If last page don't give next link.
 		$next_page = $page + $limit;
 		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$next_page&daily=$daily&limit=$limit\">";
-		$output .=  __( 'Next', TPTN_LOCAL_NAME );
+		$output .=  __( 'Next', 'tptn' );
 		$output .=  " &raquo;</a>";
 	}
 	$output .= '</p>';
@@ -197,12 +197,12 @@ function tptn_pop_dashboard_setup() {
 	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
 		wp_add_dashboard_widget(
 			'tptn_pop_dashboard',
-			__( 'Popular Posts', TPTN_LOCAL_NAME ),
+			__( 'Popular Posts', 'tptn' ),
 			'tptn_pop_dashboard'
 		);
 		wp_add_dashboard_widget(
 			'tptn_pop_daily_dashboard',
-			__( 'Daily Popular', TPTN_LOCAL_NAME ),
+			__( 'Daily Popular', 'tptn' ),
 			'tptn_pop_daily_dashboard'
 		);
 	}

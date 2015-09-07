@@ -28,8 +28,8 @@ class Top_Ten_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'widget_tptn_pop', // Base ID
-			__( 'Popular Posts [Top 10]', TPTN_LOCAL_NAME ), // Name
-			array( 'description' => __( 'Display popular posts', TPTN_LOCAL_NAME ), ) // Args
+			__( 'Popular Posts [Top 10]', 'tptn' ), // Name
+			array( 'description' => __( 'Display popular posts', 'tptn' ), ) // Args
 		);
 	}
 
@@ -68,72 +68,72 @@ class Top_Ten_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+			<?php _e( 'Title', 'tptn' ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-			<?php _e( 'No. of posts', TPTN_LOCAL_NAME ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>" />
+			<?php _e( 'No. of posts', 'tptn' ); ?>: <input class="widefat" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>" />
 			</label>
 		</p>
 		<p>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'daily' ); ?>" name="<?php echo $this->get_field_name( 'daily' ); ?>">
-			  <option value="overall" <?php if ( 'overall' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Overall', TPTN_LOCAL_NAME ); ?></option>
-			  <option value="daily" <?php if ( 'daily' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Custom time period (Enter below)', TPTN_LOCAL_NAME ); ?></option>
+			  <option value="overall" <?php if ( 'overall' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Overall', 'tptn' ); ?></option>
+			  <option value="daily" <?php if ( 'daily' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Custom time period (Enter below)', 'tptn' ); ?></option>
 			</select>
 		</p>
 		<p>
-			<?php _e( 'In days and hours (applies only to custom option above)', TPTN_LOCAL_NAME ); ?>:
+			<?php _e( 'In days and hours (applies only to custom option above)', 'tptn' ); ?>:
 			<label for="<?php echo $this->get_field_id( 'daily_range' ); ?>">
-				<input class="widefat" id="<?php echo $this->get_field_id( 'daily_range' ); ?>" name="<?php echo $this->get_field_name( 'daily_range' ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" /> <?php _e( 'days', TPTN_LOCAL_NAME ); ?>
+				<input class="widefat" id="<?php echo $this->get_field_id( 'daily_range' ); ?>" name="<?php echo $this->get_field_name( 'daily_range' ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" /> <?php _e( 'days', 'tptn' ); ?>
 			</label>
 			<label for="<?php echo $this->get_field_id( 'hour_range' ); ?>">
-				<input class="widefat" id="<?php echo $this->get_field_id( 'hour_range' ); ?>" name="<?php echo $this->get_field_name( 'hour_range' ); ?>" type="text" value="<?php echo esc_attr( $hour_range ); ?>" /> <?php _e( 'hours', TPTN_LOCAL_NAME ); ?>
+				<input class="widefat" id="<?php echo $this->get_field_id( 'hour_range' ); ?>" name="<?php echo $this->get_field_name( 'hour_range' ); ?>" type="text" value="<?php echo esc_attr( $hour_range ); ?>" /> <?php _e( 'hours', 'tptn' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'disp_list_count' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'disp_list_count' ); ?>" name="<?php echo $this->get_field_name( 'disp_list_count' ); ?>" type="checkbox" <?php if ( $disp_list_count ) echo 'checked="checked"' ?> /> <?php _e( 'Show count?', TPTN_LOCAL_NAME ); ?>
+			<input id="<?php echo $this->get_field_id( 'disp_list_count' ); ?>" name="<?php echo $this->get_field_name( 'disp_list_count' ); ?>" type="checkbox" <?php if ( $disp_list_count ) echo 'checked="checked"' ?> /> <?php _e( 'Show count?', 'tptn' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_excerpt' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" type="checkbox" <?php if ( $show_excerpt ) echo 'checked="checked"' ?> /> <?php _e( 'Show excerpt?', TPTN_LOCAL_NAME ); ?>
+			<input id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" type="checkbox" <?php if ( $show_excerpt ) echo 'checked="checked"' ?> /> <?php _e( 'Show excerpt?', 'tptn' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_author' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'show_author' ); ?>" name="<?php echo $this->get_field_name( 'show_author' ); ?>" type="checkbox" <?php if ( $show_author ) echo 'checked="checked"' ?> /> <?php _e( 'Show author?', TPTN_LOCAL_NAME ); ?>
+			<input id="<?php echo $this->get_field_id( 'show_author' ); ?>" name="<?php echo $this->get_field_name( 'show_author' ); ?>" type="checkbox" <?php if ( $show_author ) echo 'checked="checked"' ?> /> <?php _e( 'Show author?', 'tptn' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_date' ); ?>">
-				<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) echo 'checked="checked"' ?> /> <?php _e( 'Show date?', TPTN_LOCAL_NAME ); ?>
+				<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) echo 'checked="checked"' ?> /> <?php _e( 'Show date?', 'tptn' ); ?>
 			</label>
 		</p>
 		<p>
-			<?php _e( 'Thumbnail options', TPTN_LOCAL_NAME ); ?>: <br />
+			<?php _e( 'Thumbnail options', 'tptn' ); ?>: <br />
 			<select class="widefat" id="<?php echo $this->get_field_id( 'post_thumb_op' ); ?>" name="<?php echo $this->get_field_name( 'post_thumb_op' ); ?>">
-			  <option value="inline" <?php if ( 'inline' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, before title',TPTN_LOCAL_NAME ); ?></option>
-			  <option value="after" <?php if ( 'after' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, after title',TPTN_LOCAL_NAME ); ?></option>
-			  <option value="thumbs_only" <?php if ( 'thumbs_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Only thumbnails, no text',TPTN_LOCAL_NAME ); ?></option>
-			  <option value="text_only" <?php if ( 'text_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'No thumbnails, only text.',TPTN_LOCAL_NAME ); ?></option>
+			  <option value="inline" <?php if ( 'inline' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, before title','tptn' ); ?></option>
+			  <option value="after" <?php if ( 'after' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, after title','tptn' ); ?></option>
+			  <option value="thumbs_only" <?php if ( 'thumbs_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Only thumbnails, no text','tptn' ); ?></option>
+			  <option value="text_only" <?php if ( 'text_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'No thumbnails, only text.','tptn' ); ?></option>
 			</select>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_height' ); ?>">
-				<?php _e( 'Thumbnail height', TPTN_LOCAL_NAME ); ?>:
+				<?php _e( 'Thumbnail height', 'tptn' ); ?>:
 				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="text" value="<?php echo esc_attr($thumb_height); ?>" />
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_width' ); ?>">
-				<?php _e( 'Thumbnail width', TPTN_LOCAL_NAME ); ?>:
+				<?php _e( 'Thumbnail width', 'tptn' ); ?>:
 				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
 		</p>
 
-		<p><?php _e( 'Post types to include:', TPTN_LOCAL_NAME ); ?><br />
+		<p><?php _e( 'Post types to include:', 'tptn' ); ?><br />
 
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
 
