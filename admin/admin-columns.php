@@ -206,4 +206,3 @@ function tptn_admin_css() {
 }
 add_action( 'admin_head', 'tptn_admin_css' );
 
-?>

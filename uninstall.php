@@ -35,4 +35,4 @@ if ( ! defined( 'WPINC' ) ) {
 		}
 		delete_option( 'ald_tptn_settings' );
 	}
-?>
+

@@ -40,4 +40,4 @@ function tptn_disp_count() {
 	}
 }
 tptn_disp_count();
-?>
+

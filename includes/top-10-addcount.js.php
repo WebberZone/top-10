@@ -55,4 +55,3 @@ function tptn_inc_count() {
 	echo '<!-- ' . $str . ' -->';
 }
 
-?>

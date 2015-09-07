@@ -645,4 +645,3 @@ function tptn_merge_blogids( $daily = false ) {
 	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" );
 }
 
-?>
