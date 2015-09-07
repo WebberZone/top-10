@@ -39,14 +39,6 @@ define( 'TPTN_LOCAL_NAME', 'tptn' );
 
 
 /**
- * Holds the filesystem directory path.
- *
- * @since	1.0
- */
-define( 'ALD_TPTN_DIR', dirname( __FILE__ ) );
-
-
-/**
  * Holds the filesystem directory path (with trailing slash) for Top 10
  *
  * @since	1.5
@@ -327,7 +319,7 @@ add_filter( 'the_content', 'tptn_pc_content' );
  * @param	string	$content	Post content
  * @return	string	Filtered post content
  */
-function ald_tptn_rss( $content ) {
+function tptn_rss_filter( $content ) {
 	global $post, $tptn_settings;
 
 	$id = intval( $post->ID );
@@ -338,8 +330,8 @@ function ald_tptn_rss( $content ) {
         return $content;
     }
 }
-add_filter( 'the_excerpt_rss', 'ald_tptn_rss' );
-add_filter( 'the_content_feed', 'ald_tptn_rss' );
+add_filter( 'the_excerpt_rss', 'tptn_rss_filter' );
+add_filter( 'the_content_feed', 'tptn_rss_filter' );
 
 
 /**
@@ -1795,7 +1787,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
  *
  * @since	1.9.9.1
  */
-function ald_tptn_cron() {
+function tptn_cron() {
 	global $tptn_settings, $wpdb;
 
 	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
@@ -1810,7 +1802,7 @@ function ald_tptn_cron() {
 	) );
 
 }
-add_action( 'ald_tptn_hook', 'ald_tptn_cron' );
+add_action( 'tptn_cron_hook', 'tptn_cron' );
 
 
 /**
@@ -1823,11 +1815,11 @@ add_action( 'ald_tptn_hook', 'ald_tptn_cron' );
  */
 function tptn_enable_run( $hour, $min, $recurrence ) {
 	// Invoke WordPress internal cron
-	if ( ! wp_next_scheduled( 'ald_tptn_hook' ) ) {
-		wp_schedule_event( mktime( $hour, $min, 0 ), $recurrence, 'ald_tptn_hook' );
+	if ( ! wp_next_scheduled( 'tptn_cron_hook' ) ) {
+		wp_schedule_event( mktime( $hour, $min, 0 ), $recurrence, 'tptn_cron_hook' );
 	} else {
-		wp_clear_scheduled_hook( 'ald_tptn_hook' );
-		wp_schedule_event( mktime( $hour, $min, 0 ), $recurrence, 'ald_tptn_hook' );
+		wp_clear_scheduled_hook( 'tptn_cron_hook' );
+		wp_schedule_event( mktime( $hour, $min, 0 ), $recurrence, 'tptn_cron_hook' );
 	}
 }
 
@@ -1838,8 +1830,8 @@ function tptn_enable_run( $hour, $min, $recurrence ) {
  * @since	1.9
  */
 function tptn_disable_run() {
-	if ( wp_next_scheduled( 'ald_tptn_hook' ) ) {
-		wp_clear_scheduled_hook( 'ald_tptn_hook' );
+	if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
+		wp_clear_scheduled_hook( 'tptn_cron_hook' );
 	}
 }
 

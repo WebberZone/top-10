@@ -727,11 +727,11 @@ if ( ! defined( 'WPINC' ) ) {
 				</tr>
 				<tr><td scope="row" colspan="2">
 					<?php
-					if ( ( $tptn_settings['cron_on'] ) || wp_next_scheduled( 'ald_tptn_hook' ) ) {
-						if ( wp_next_scheduled( 'ald_tptn_hook' ) ) {
+					if ( ( $tptn_settings['cron_on'] ) || wp_next_scheduled( 'tptn_cron_hook' ) ) {
+						if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
 							echo '<span style="color:#0c0">';
 							_e( 'The cron job has been scheduled. Maintenance will run ', TPTN_LOCAL_NAME );
-							echo wp_get_schedule( 'ald_tptn_hook' );
+							echo wp_get_schedule( 'tptn_cron_hook' );
 							echo '</span>';
 						} else {
 							echo '<span style="color:#e00">';

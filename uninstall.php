@@ -30,8 +30,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 	if ( true == $tptn_settings['uninstall_clean_options'] ) {
 
-		if ( wp_next_scheduled('ald_tptn_hook') ) {
-			wp_clear_scheduled_hook('ald_tptn_hook');
+		if ( wp_next_scheduled('tptn_cron_hook') ) {
+			wp_clear_scheduled_hook('tptn_cron_hook');
 		}
 		delete_option( 'ald_tptn_settings' );
 	}
