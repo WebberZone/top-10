@@ -29,137 +29,46 @@ if ( ! defined( 'WPINC' ) ) {
  * @return	Formatted list of popular posts
  */
 function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = FALSE ) {
-	global $wpdb, $siteurl, $tableposts, $id, $tptn_settings;
+	global $wpdb, $tptn_settings;
 
 	$table_name = $wpdb->base_prefix . "top_ten";
 	if ( $daily ) $table_name .= "_daily";	// If we're viewing daily posts, set this to true
 
-	if ( ! ( $limit ) ) $limit = $tptn_settings['limit'];
-	if ( ! ( $page ) ) $page = 0; // Default page value.
-	parse_str( $tptn_settings['post_types'], $post_types );	// Save post types in $post_types variable
+	if ( ! $limit ) $limit = $tptn_settings['limit'];
 
-	$results = tptn_pop_posts('posts_only=1&limit=99999&strict_limit=1&is_widget=1&exclude_post_ids=0&daily='.$daily);
-	$numrows = count( $results );
+	$results = get_tptn_pop_posts( array(
+		'posts_only'   => 1,
+		'strict_limit' => 1,
+		'is_widget'    => 1,
+		'daily'        => $daily,
+		'limit'        => $limit,
+	) );
 
-	$pages = intval( $numrows/$limit ); // Number of results pages.
+	$output = '<div id="tptn_popular_posts' . ( $daily ? "_daily" : "" ) . '">';
 
-	// $pages now contains int of pages, unless there is a remainder from division.
-
-	if ($numrows % $limit) { $pages++; } // has remainder so add one page
-
-	$current = ( $page/$limit ) + 1; // Current page number.
-
-	if ( ( $pages < 1 ) || ( 0 == $pages ) ) {
-		$total = 1;	// If $pages is less than one or equal to 0, total pages is 1.
-	} else {
-		$total = $pages;	// Else total pages is $pages value.
-	}
-
-	$first = $page + 1; // The first result.
-
-	if ( ! ( ( ( $page + $limit ) / $limit ) >= $pages ) && $pages != 1 ) {
-		$last = $page + $limit;	//If not last results page, last result equals $page plus $limit.
-	} else {
-		$last = $numrows;	// If last results page, last result equals total number of results.
-	}
-
-	$results = array_slice( $results, $page, $limit );
-
-	$output = '<div id="tptn_popular_posts">';
-	$output .= '<table width="100%" border="0">
-	 <tr>
-	  <td width="50%" align="left">';
-	$output .= sprintf( __( 'Results %1$s to %2$s of %3$s', 'tptn' ), '<strong>'.$first.'</strong>', '<strong>'.$last.'</strong>', '<strong>'.$numrows.'</strong>');
-	$output .= '
-	  </td>
-	  <td width="50%" align="right">';
-	$output .= sprintf( __( 'Page %s of %s', 'tptn' ), '<strong>'.$current.'</strong>', '<strong>'.$total.'</strong>' );
-	$output .= '
-	  </td>
-	 </tr>
-	 <tr>
-	  <td colspan="2" align="right">&nbsp;</td>
-	 </tr>
-	 <tr>
-	  <td align="left">';
-
-	if ( ( $daily && $widget ) || ( ! $daily && ! $widget ) ) {
-		$output .= '<a href="./admin.php?page=tptn_manage_daily">';
-		$output .= __( 'View Daily Popular Posts', 'tptn' );
-		$output .= '</a></td>';
-		$output .= '<td align="right">';
-		if ( ! $widget ) $output .= __( 'Results per-page:', 'tptn' );
-		if ( ! $widget ) $output .= ' <a href="./admin.php?page=tptn_manage&limit=10">10</a> | <a href="./admin.php?page=tptn_manage&limit=20">20</a> | <a href="./admin.php?page=tptn_manage&limit=50">50</a> | <a href="./admin.php?page=tptn_manage&limit=100">100</a> ';
-		$output .= ' 	  </td>
-		 </tr>
-		 <tr>
-		  <td colspan="2" align="right"><hr /></td>
-		 </tr>
-		</table>';
-	} else {
-		$output .= '<a href="./admin.php?page=tptn_manage">';
-		$output .= __( 'View Overall Popular Posts', 'tptn' );
-		$output .= '</a></td>';
-		$output .= '<td align="right">';
-		if ( ! $widget ) $output .= __( 'Results per-page:', 'tptn' );
-		if ( ! $widget ) $output .= ' <a href="./admin.php?page=tptn_manage_daily&limit=10">10</a> | <a href="./admin.php?page=tptn_manage_daily&limit=20">20</a> | <a href="./admin.php?page=tptn_manage_daily&limit=50">50</a> | <a href="./admin.php?page=tptn_manage_daily&limit=100">100</a> ';
-		$output .= ' 	  </td>
-		 </tr>
-		 <tr>
-		  <td colspan="2" align="right"><hr /></td>
-		 </tr>
-		</table>';
-	}
-
-	$dailytag = ( $daily ) ? '_daily' : '';
-
-	$output .=   '<ul>';
 	if ( $results ) {
+		$output .=   '<ul>';
 		foreach ( $results as $result ) {
 			$output .= '<li><a href="' . get_permalink( $result['postnumber'] ) . '">' . get_the_title( $result['postnumber'] ) . '</a>';
 			$output .= ' (' . number_format_i18n( $result['sumCount'] ) . ')';
 			$output .= '</li>';
 		}
-	}
-	$output .=   '</ul>';
-
-	$output .=   '<p align="center">';
-	if ( 0 != $page ) { // Don't show back link if current page is first page.
-		$back_page = $page - $limit;
-		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$back_page&daily=$daily&limit=$limit\">&laquo; ";
-		$output .=  __( 'Previous', 'tptn' );
-		$output .=  "</a>\n";
+		$output .=   '</ul>';
 	}
 
-	$pagination_range = 4;
-	for ( $i=1; $i <= $pages; $i++ ) { // loop through each page and give link to it.
-		if ( $i >= $current + $pagination_range && $i < $pages ) {
-			if ( $i == $current + $pagination_range ) {
-				$output .= '&hellip;&nbsp;';
-			}
-			continue;
-		}
-		if ( $i < $current - $pagination_range + 1 && $i < $pages ) {
-			continue;
-		}
+	$output .= '<p style="text-align:center">';
 
-		$ppage = $limit * ( $i - 1 );
-
-		if ( $ppage == $page ) {
-			$output .=  ("<span class='current'>$i</span>\n"); // If current page don't give link, just text.
-		} else {
-			$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$ppage&daily=$daily&limit=$limit\">$i</a> \n";
-		}
+	if ( $daily ) {
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( "View all daily popular posts", 'tptn' ) . '</a>';
+	} else {
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=total_count&order=desc' ) . '">' . __( "View all popular posts", 'tptn' ) . '</a>';
 	}
 
-	if ( ! ( ( ( $page + $limit ) / $limit ) >= $pages ) && $pages != 1 ) { // If last page don't give next link.
-		$next_page = $page + $limit;
-		$output .=  "<a href=\"./admin.php?page=tptn_manage$dailytag&paged=$next_page&daily=$daily&limit=$limit\">";
-		$output .=  __( 'Next', 'tptn' );
-		$output .=  " &raquo;</a>";
-	}
 	$output .= '</p>';
-	$output .= '<p style="text-align:center;border-top: #000 1px solid">Popular posts by <a href="https://webberzone.com/plugins/top-10/">Top 10 plugin</a></p>';
+
+	$output .= '<p style="text-align:center;border-top: #000 1px solid">';
+	$output .= sprintf( __( 'Popular posts by <a href="%s" target="_blank">Top 10 plugin</a>', 'tptn' ), esc_url( 'https://webberzone.com/plugins/top-10/' ) );
+	$output .= '</p>';
 	$output .= '</div>';
 
 	return apply_filters( 'tptn_pop_display', $output );
@@ -202,7 +111,7 @@ function tptn_pop_dashboard_setup() {
 		);
 		wp_add_dashboard_widget(
 			'tptn_pop_daily_dashboard',
-			__( 'Daily Popular', 'tptn' ),
+			__( 'Daily Popular Posts', 'tptn' ),
 			'tptn_pop_daily_dashboard'
 		);
 	}
