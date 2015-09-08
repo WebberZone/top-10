@@ -71,7 +71,10 @@ Check the Changelog for more details
 
 == Changelog ==
 
-= 2.1.1 =
+= 2.2.0 =
+
+* Features:
+	* Cleaner interface to view popular posts in the admin area
 
 * Enhancements:
 	* `strict_limit` is true by default for `get_tptn_pop_posts()`
@@ -84,6 +87,7 @@ Check the Changelog for more details
 * Deprecated:
 	* `ald_tptn_rss`: Use `tptn_rss_filter` instead
 	* `ald_tptn_hook` deprecated and renamed to `tptn_cron_hook`
+	* `tptn_manage` and `tptn_manage_daily` which were used to render the admin popular posts screens
 
 = 2.1.0 =
 * New: Button in Top 10 settings page to merge posts across blog ID 0 and 1
