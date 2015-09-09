@@ -75,6 +75,7 @@ function tptn_call_meta_box() {
 	// Add an nonce field so we can check for it later.
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
 
+	// Get the number of visits for the post being editted
 	$resultscount = $wpdb->get_row( $wpdb->prepare(
 		"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
 		$post->ID,
@@ -82,9 +83,25 @@ function tptn_call_meta_box() {
 	) );
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
 
+	// Get the post meta
+	$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
+
+	// Disable display option
+	if ( isset( $tptn_post_meta['disable_here'] ) ) {
+		$disable_here = $tptn_post_meta['disable_here'];
+	} else {
+		$disable_here = 0;
+	}
+
+	if ( isset( $tptn_post_meta['exclude_this_post'] ) ) {
+		$exclude_this_post = $tptn_post_meta['exclude_this_post'];
+	} else {
+		$exclude_this_post = 0;
+	}
+
 ?>
 	<p>
-		<label for="total_count"><?php _e( "Visit count:", 'tptn' ); ?></label>
+		<label for="total_count"><strong><?php _e( "Visit count:", 'tptn' ); ?></strong></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo $total_count ?>" style="width:100%" />
 		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", 'tptn' ); ?></em>
 	</p>
@@ -95,7 +112,21 @@ function tptn_call_meta_box() {
 	$value = ( $results ) ? $results : '';
 ?>
 	<p>
-		<label for="thumb_meta"><?php _e( "Location of thumbnail:", 'tptn' ); ?></label>
+		<label for="disable_here"><strong><?php _e( "Disable Popular Posts display:", 'tptn' ); ?></strong></label>
+		<input type="checkbox" id="disable_here" name="disable_here" <?php if ( 1 == $disable_here ) { echo ' checked="checked" '; } ?> />
+		<br />
+		<em><?php _e( "If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.", 'tptn' ); ?></em>
+	</p>
+
+	<p>
+		<label for="exclude_this_post"><strong><?php _e( "Exclude this post from the popular posts list:", 'tptn' ); ?></strong></label>
+		<input type="checkbox" id="exclude_this_post" name="exclude_this_post" <?php if ( 1 == $exclude_this_post ) { echo ' checked="checked" '; } ?> />
+		<br />
+		<em><?php _e( "If this is checked, then this post will be excluded from the popular posts list.", 'tptn' ); ?></em>
+	</p>
+
+	<p>
+		<label for="thumb_meta"><strong><?php _e( "Location of thumbnail:", 'tptn' ); ?></strong></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
 		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'tptn' ); ?></em>
 		<em><?php _e( "The URL above is saved in the meta field: ", 'tptn' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
@@ -124,6 +155,8 @@ function tptn_call_meta_box() {
  */
 function tptn_save_meta_box( $post_id ) {
 	global $tptn_settings, $wpdb;
+
+	$tptn_post_meta = array();
 
 	$table_name = $wpdb->base_prefix . "top_ten";
 
@@ -179,6 +212,47 @@ function tptn_save_meta_box( $post_id ) {
 	} else {
 		delete_post_meta( $post_id, $tptn_settings['thumb_meta'] );
 	}
+
+	// Disable posts
+	if ( isset( $_POST['disable_here'] ) ) {
+		$tptn_post_meta['disable_here'] = 1;
+	} else {
+		$tptn_post_meta['disable_here'] = 0;
+	}
+
+	if ( isset( $_POST['exclude_this_post'] ) ) {
+		$tptn_post_meta['exclude_this_post'] = 1;
+	} else {
+		$tptn_post_meta['exclude_this_post'] = 0;
+	}
+
+	/**
+	 * Filter the Top 10 Post meta variable which contains post-specific settings
+	 *
+	 * @since	2.2.0
+	 *
+	 * @param	array	$tptn_post_meta	Top 10 post-specific settings
+	 * @param	int		$post_id	Post ID
+	 */
+	$tptn_post_meta = apply_filters( 'tptn_post_meta', $tptn_post_meta, $post_id );
+
+	$tptn_post_meta_filtered = array_filter( $tptn_post_meta );
+
+    /**** Now we can start saving ****/
+	if ( empty( $tptn_post_meta_filtered ) ) {	// Checks if all the array items are 0 or empty
+		delete_post_meta( $post_id, 'tptn_post_meta' );	// Delete the post meta if no options are set
+	} else {
+		update_post_meta( $post_id, 'tptn_post_meta', $tptn_post_meta );
+	}
+
+	/**
+	 * Action triggered when saving Contextual Related Posts meta box settings
+	 *
+	 * @since	2.2
+	 *
+	 * @param	int	$post_id	Post ID
+	 */
+	do_action( 'tptn_save_meta_box', $post_id );
 
 }
 add_action( 'save_post', 'tptn_save_meta_box' );
