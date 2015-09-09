@@ -212,9 +212,14 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	function widget( $args, $instance ) {
-		global $wpdb, $tptn_url, $tptn_settings;
+		global $wpdb, $tptn_url, $tptn_settings, $post;
 
 		extract( $args, EXTR_SKIP );
+
+		// Get the post meta
+		$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
+
+		if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) return;
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
 

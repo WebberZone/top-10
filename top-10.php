@@ -932,6 +932,19 @@ function get_tptn_pop_posts( $args = array() ) {
 		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );	// Only fetch posts that are tracked after this date
 	}
 
+	// Convert exclude post IDs string to array so it can be filtered
+	$exclude_post_ids = explode( ",", $exclude_post_ids );
+
+	/**
+	 * Filter exclude post IDs array.
+	 *
+	 * @param array   $exclude_post_ids  Array of post IDs.
+	 */
+	$exclude_post_ids = apply_filters( "tptn_exclude_post_ids", $exclude_post_ids );
+
+	// Convert it back to string
+	$exclude_post_ids = implode( ",", $exclude_post_ids );
+
 	if ( '' != $exclude_post_ids ) {
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 	}
@@ -1961,10 +1974,11 @@ add_action( 'widgets_init', 'tptn_register_widget', 1 );
 
 
 /*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
+ * Top 10 modules
  *----------------------------------------------------------------------------*/
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/shortcode.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/exclusions.php' );
 
 
 /*----------------------------------------------------------------------------*
