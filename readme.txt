@@ -75,6 +75,7 @@ Check the Changelog for more details
 
 * Features:
 	* Cleaner interface to view popular posts in the admin area
+	* New option to limit posts only with a specified date range
 	* New option in Top 10 meta box to exclude display of popular posts in widget if needed
 	* New option in Top 10 meta box to exclude post from popular posts list
 

@@ -81,6 +81,7 @@ function tptn_options() {
 
 		/* Popular post list options */
 		$tptn_settings['limit'] = intval( $_POST['limit'] );
+		$tptn_settings['how_old'] = intval( $_POST['how_old'] );
 
 		// Process post types to be selected
 		$wp_post_types	= get_post_types( array(

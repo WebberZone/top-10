@@ -287,6 +287,14 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="how_old"><?php _e( 'Published age of posts:', 'tptn' ); ?></label></th>
+						<td>
+							<input type="textbox" name="how_old" id="how_old" value="<?php echo esc_attr( stripslashes( $tptn_settings['how_old'] ) ); ?>"> <?php _e( 'days', 'tptn' ); ?>
+							<p class="description"><?php _e( "This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists.", 'tptn' ); ?></p>
+							<p class="description"><?php _e( "e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction.", 'tptn' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><?php _e( 'Post types to include in results (including custom post types)', 'tptn' ); ?></th>
 						<td>
 							<?php foreach ( $wp_post_types as $wp_post_type ) { ?>

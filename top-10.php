@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.1-beta20150908
+ * Version: 	2.1.1-beta20150909
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
@@ -950,6 +950,11 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";	// Array of post types
 
+	// How old should the posts be?
+	if ( $args['how_old'] ) {
+		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > '%s' ", gmdate( 'Y-m-d H:m:s', $current_time - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
+	}
+
 	// Create the base GROUP BY clause
 	if ( $daily ) {
 		$groupby = " postnumber ";
@@ -1116,8 +1121,6 @@ function tptn_default_options() {
 	$blank_output_text = __( 'No top posts yet', 'tptn' );
 	$thumb_default = $tptn_url . '/default.png';
 
-	$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
-
 	// get relevant post types
 	$args = array (
 		'public' => true,
@@ -1161,6 +1164,7 @@ function tptn_default_options() {
 
 		/* Popular post list options */
 		'limit' => '10',					// How many posts to display?
+		'how_old' => '0',					// How old posts? Default is no limit
 		'post_types' => $post_types,		// WordPress custom post types
 		'exclude_categories' => '',		// Exclude these categories
 		'exclude_cat_slugs' => '',		// Exclude these categories (slugs)
