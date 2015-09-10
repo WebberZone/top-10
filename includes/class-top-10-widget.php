@@ -214,8 +214,6 @@ class Top_Ten_Widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $wpdb, $tptn_url, $tptn_settings, $post;
 
-		extract( $args, EXTR_SKIP );
-
 		// Get the post meta
 		$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
 
@@ -233,8 +231,8 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$daily = ( isset( $instance['daily'] ) && ( "daily" == $instance['daily'] ) ) ? true : false;
 
-		$output = $before_widget;
-		$output .= $before_title . $title . $after_title;
+		$output = $args['before_widget'];
+		$output .= $args['before_title'] . $title . $args['after_title'];
 
 		$post_thumb_op = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
 		$thumb_height = isset( $instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
@@ -273,7 +271,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$output .= tptn_pop_posts( $arguments );
 
-		$output .= $after_widget;
+		$output .= $args['after_widget'];
 
 		echo $output;
 

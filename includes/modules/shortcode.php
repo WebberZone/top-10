@@ -39,11 +39,11 @@ add_shortcode( 'tptn_list', 'tptn_shortcode' );
  * @return	string	Views of the post
  */
 function tptn_shortcode_views( $atts , $content=null ) {
-	extract( shortcode_atts( array(
+	$a = shortcode_atts( array(
 	  'daily' => '0',
-	  ), $atts ) );
+	  ), $atts );
 
-	return get_tptn_post_count_only( get_the_ID(), ( $daily ? 'daily' : 'total' ) );
+	return get_tptn_post_count_only( get_the_ID(), ( $a['daily'] ? 'daily' : 'total' ) );
 }
 add_shortcode( 'tptn_views', 'tptn_shortcode_views' );
 
