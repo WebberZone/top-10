@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.1-beta20150909
+ * Version: 	2.1.1-beta20150910
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
@@ -110,6 +110,41 @@ function tptn_pop_posts( $args ) {
 	// Parse incomming $args into an array and merge it with $defaults
 	$args = wp_parse_args( $args, $defaults );
 
+	$output = '';
+
+	/**
+	 * Fires before the output processing begins.
+	 *
+	 * @since	2.2.0
+	 *
+	 * @param	string	$output	Formatted list of top posts
+	 * @param	array	$args	Array of arguments
+	 */
+	do_action( 'pre_tptn_pop_posts', $output, $args );
+
+	// Check if the cache is enabled and if the output exists. If so, return the output
+	if ( $args['cache'] && ! $args['posts_only'] ) {
+		$cache_name = 'tptn';
+		$cache_name .= $args['daily'] ? '_daily' : '_total';
+		$cache_name .= $args['is_widget'] ? '_widget' : '';
+		$cache_name .= $args['is_shortcode'] ? '_shortcode' : '';
+
+		$output = get_transient( $cache_name );
+
+		if ( false !== $output ) {
+
+			/**
+			 * Filter the output
+			 *
+			 * @since	1.9.8.5
+			 *
+			 * @param	string	$output	Formatted list of top posts
+			 * @param	array	$args	Array of arguments
+			 */
+			return apply_filters( 'tptn_pop_posts', $output, $args );
+		}
+	}
+
 	// Get thumbnail size
 	$tptn_thumb_size = tptn_get_all_image_sizes( $args['thumb_size'] );
 
@@ -139,8 +174,6 @@ function tptn_pop_posts( $args ) {
 	}
 
 	$counter = 0;
-
-	$output = '';
 
 	$daily_class = $args['daily'] ? 'tptn_related_daily ' : 'tptn_related ';
 	$widget_class = $args['is_widget'] ? ' tptn_posts_widget' : '';
@@ -387,12 +420,26 @@ function tptn_pop_posts( $args ) {
 	}
 	$output .= '</div>';
 
+	// Check if the cache is enabled and if the output exists. If so, return the output
+	if ( $args['cache'] ) {
+		/**
+		 * Filter the cache time which allows a function to override this
+		 *
+		 * @since	2.2.0
+		 *
+		 * @param	int		$args['cache_time']	Cache time in seconds
+		 * @param	array	$args				Array of all the arguments
+		 */
+		$cache_time = apply_filters( 'tptn_cache_time', $args['cache_time'], $args );
+
+		$output .= "<br /><!-- Cached output. Cached time is {$cache_time} seconds -->";
+
+		set_transient( $cache_name, $output, $cache_time );
+
+	}
+
 	/**
-	 * Filter the output
-	 *
-	 * @since	1.9.8.5
-	 *
-	 * @param	string	$output	Formatted list of top posts
+	 * Filter already documented in top-10.php
 	 */
 	return apply_filters( 'tptn_pop_posts', $output, $args );
 }
@@ -693,7 +740,9 @@ function tptn_default_options() {
 		/* General options */
 		'activate_daily' => true,	// Activate the daily count
 		'activate_overall' => true,	// activate overall count
-		'cache_fix' => true,		// Temporary fix for W3 Total Cache - Uses Ajax
+		'cache' => false,			// Enable Caching using Transienst API
+		'cache_time' => HOUR_IN_SECONDS,			// Cache for 1 Hour
+		'cache_fix' => true,		// Fix for W3 Total Cache - Uses Ajax
 		'daily_midnight' => true,		// Start daily counts from midnight (default as old behaviour)
 		'daily_range' => '1',				// Daily Popular will contain posts of how many days?
 		'hour_range' => '0',				// Daily Popular will contain posts of how many days?
