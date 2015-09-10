@@ -199,8 +199,6 @@ function tptn_pop_posts( $args ) {
 
 			$sumcount = $result->sumCount;		// Store the count. We'll need this later
 
-			$result = get_post( $resultid );	// Let's get the Post using the ID
-
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
 			 *
@@ -208,7 +206,9 @@ function tptn_pop_posts( $args ) {
 			 *
 			 * @param	int	$result->ID	ID of the post
 			 */
-			$postid = apply_filters( 'tptn_post_id', $result->ID );
+			$postid = apply_filters( 'tptn_post_id', $resultid );
+
+			$result = get_post( $postid );	// Let's get the Post using the ID
 
 			$post_title = tptn_max_formatted_content( get_the_title( $postid ), $args['title_length'] );
 
@@ -262,7 +262,7 @@ function tptn_pop_posts( $args ) {
 				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
 
 				$output .= tptn_get_the_post_thumbnail( array(
-					'postid' => $postid,
+					'postid' => $result,
 					'thumb_height' => $thumb_height,
 					'thumb_width' => $thumb_width,
 					'thumb_meta' => $args['thumb_meta'],
@@ -470,9 +470,16 @@ function get_tptn_pop_posts( $args = array() ) {
 	 */
 
 	// Fields to return
-	$fields = " postnumber, ";
-	$fields .= ( $args['daily'] ) ? "SUM(cntaccess) as sumCount, " : "cntaccess as sumCount, ";
-	$fields .= "ID ";
+	$fields[] = "ID";
+	$fields[] = "postnumber";
+	$fields[] = "post_title";
+	$fields[] = "post_type";
+	$fields[] = "post_content";
+	$fields[] = "post_date";
+	$fields[] = "post_author";
+	$fields[] = ( $args['daily'] ) ? "SUM(cntaccess) as sumCount" : "cntaccess as sumCount";
+
+	$fields = implode( ", ", $fields );
 
 	// Create the JOIN clause
 	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
@@ -1234,8 +1241,11 @@ function tptn_get_all_image_sizes( $size = '' ) {
  * @param	$post_id	Post ID
  */
 function tptn_object_id_cur_lang( $post_id ) {
-    if ( function_exists( 'icl_object_id' ) ) {
-        $post_id = icl_object_id( $post_id, 'any', true, ICL_LANGUAGE_CODE );
+
+	if ( function_exists( 'wpml_object_id' ) ) {
+		$post_id = wpml_object_id( $post_id, 'post', TRUE );
+	} elseif ( function_exists( 'icl_object_id' ) ) {
+		$post_id = icl_object_id( $post_id, 'post', TRUE );
 	}
 
 	/**

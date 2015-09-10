@@ -71,9 +71,14 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', 'tptn' ) );
 	}
 
-	$postid = intval( $args['postid'] );
-	$result = get_post( $postid );
-	$post_title = get_the_title( $postid );
+	if ( is_int( $args['postid'] ) ) {
+		$result = get_post( $args['postid'] );
+	} else {
+		$result = $args['postid'];
+	}
+
+	$postid = $result->ID;
+	$post_title = $result->post_title;
 
 	$output = '';
 	$postimage = '';
