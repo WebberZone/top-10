@@ -69,19 +69,31 @@ if ( ! defined( 'WPINC' ) ) {
 					?>
 
 					<tr>
-						<th scope="row"><label for="activate_overall"><?php _e( 'Enable Overall stats', 'tptn' ); ?></label></th>
+						<th scope="row"><?php _e( 'Enable trackers:', 'tptn' ); ?></th>
 						<td>
-							<input type="checkbox" name="activate_overall" id="activate_overall" <?php if ( $tptn_settings['activate_overall'] ) echo 'checked="checked"' ?> />
+							<p>
+								<label>
+									<input type="checkbox" name="activate_overall" id="activate_overall" <?php if ( $tptn_settings['activate_overall'] ) echo 'checked="checked"' ?> />
+									<?php _e( 'Overall', 'tptn' ); ?>
+								</label>
+							</p>
+							<p>
+								<label>
+									<input type="checkbox" name="activate_daily" id="activate_daily" <?php if ( $tptn_settings['activate_daily'] ) echo 'checked="checked"' ?> />
+									<?php _e( 'Daily', 'tptn' ); ?>
+								</label>
+							</p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="activate_daily"><?php _e( 'Enable Daily stats', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="cache"><?php _e( 'Enable cache:', 'tptn' ); ?></label></th>
 						<td>
-							<input type="checkbox" name="activate_daily" id="activate_daily" <?php if ( $tptn_settings['activate_daily'] ) echo 'checked="checked"' ?> />
+							<input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) echo 'checked="checked"' ?> />
+							<p class="description"><?php _e( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'tptn' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="cache_fix"><?php _e( 'Cache fix:', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="cache_fix"><?php _e( 'Use Ajax for tracking:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="cache_fix" id="cache_fix" <?php if ( $tptn_settings['cache_fix'] ) echo 'checked="checked"' ?> />
 							<p class="description"><?php _e( 'This will try to prevent W3 Total Cache and other caching plugins from caching the tracker script of the plugin. Try toggling this option in case you find that your posts are not tracked.', 'tptn' ); ?></p>

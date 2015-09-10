@@ -74,10 +74,11 @@ Check the Changelog for more details
 = 2.2.0 =
 
 * Features:
+	* Caching system using the Transients API
+	* Option to limit posts only with a specified date range
+	* Option in Top 10 meta box to exclude display of popular posts in widget if needed
+	* Option in Top 10 meta box to exclude post from popular posts list
 	* Cleaner interface to view popular posts in the admin area
-	* New option to limit posts only with a specified date range
-	* New option in Top 10 meta box to exclude display of popular posts in widget if needed
-	* New option in Top 10 meta box to exclude post from popular posts list
 
 * Enhancements:
 	* `strict_limit` is true by default for `get_tptn_pop_posts()`
