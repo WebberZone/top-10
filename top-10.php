@@ -210,25 +210,6 @@ function tptn_pop_posts( $args ) {
 			 */
 			$postid = apply_filters( 'tptn_post_id', $result->ID );
 
-			/**
-			 * Filter the post ID for each result. This filtered ID is passed as a parameter to fetch categories.
-			 *
-			 * This is useful since you might want to fetch a different set of categories for a linked post ID,
-			 * typically in the case of plugins that let you set mutiple languages
-			 *
-			 * @since	1.9.8.5
-			 *
-			 * @param	int	$result->ID	ID of the post
-			 */
-			$categorys = get_the_category( apply_filters( 'tptn_post_cat_id', $result->ID ) );	//Fetch categories of the plugin
-
-			$p_in_c = false;	// Variable to check if post exists in a particular category
-
-			foreach ( $categorys as $cat ) {	// Loop to check if post exists in excluded category
-				$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false;
-				if ( $p_in_c ) break;	// End loop if post found in category
-			}
-
 			$post_title = tptn_max_formatted_content( get_the_title( $postid ), $args['title_length'] );
 
 			/**
@@ -241,141 +222,139 @@ function tptn_pop_posts( $args ) {
 			 */
 			$post_title = apply_filters( 'tptn_post_title', $post_title, $result );
 
-			if ( ! $p_in_c ) {
+			/**
+			 * Filter the opening tag of each list item.
+			 *
+			 * @since	1.9.10.1
+			 *
+			 * @param	string	$before_list_item	Tag before each list item. Can be defined in the Settings page.
+			 * @param	object	$result				Object of the current post result
+			 */
+			$output .= apply_filters( 'tptn_before_list_item', $args['before_list_item'], $result );
 
-				/**
-				 * Filter the opening tag of each list item.
-				 *
-				 * @since	1.9.10.1
-				 *
-				 * @param	string	$before_list_item	Tag before each list item. Can be defined in the Settings page.
-				 * @param	object	$result				Object of the current post result
-				 */
-				$output .= apply_filters( 'tptn_before_list_item', $args['before_list_item'], $result );
+			/**
+			 * Filter the `rel` attribute each list item.
+			 *
+			 * @since	1.9.10.1
+			 *
+			 * @param	string	$rel_attribute	rel attribute
+			 * @param	object	$result			Object of the current post result
+			 */
+			$rel_attribute = apply_filters( 'tptn_rel_attribute', $rel_attribute, $result );
 
-				/**
-				 * Filter the `rel` attribute each list item.
-				 *
-				 * @since	1.9.10.1
-				 *
-				 * @param	string	$rel_attribute	rel attribute
-				 * @param	object	$result			Object of the current post result
-				 */
-				$rel_attribute = apply_filters( 'tptn_rel_attribute', $rel_attribute, $result );
+			/**
+			 * Filter the target attribute each list item.
+			 *
+			 * @since	1.9.10.1
+			 *
+			 * @param	string	$target_attribute	target attribute
+			 * @param	object	$result				Object of the current post result
+			 */
+			$target_attribute = apply_filters( 'tptn_rel_attribute', $target_attribute, $result );
 
-				/**
-				 * Filter the target attribute each list item.
-				 *
-				 * @since	1.9.10.1
-				 *
-				 * @param	string	$target_attribute	target attribute
-				 * @param	object	$result				Object of the current post result
-				 */
-				$target_attribute = apply_filters( 'tptn_rel_attribute', $target_attribute, $result );
-
-				if ( 'after' == $args['post_thumb_op'] ) {
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title if post thumbnail is to be displayed after
-					$output .= '</a>'; // Close the link
-				}
-
-				if ( 'inline' == $args['post_thumb_op'] || 'after' == $args['post_thumb_op'] || 'thumbs_only' == $args['post_thumb_op'] ) {
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-
-					$output .= tptn_get_the_post_thumbnail( array(
-						'postid' => $postid,
-						'thumb_height' => $thumb_height,
-						'thumb_width' => $thumb_width,
-						'thumb_meta' => $args['thumb_meta'],
-						'thumb_html' => $args['thumb_html'],
-						'thumb_default' => $args['thumb_default'],
-						'thumb_default_show' => $args['thumb_default_show'],
-						'scan_images' => $args['scan_images'],
-						'class' => "tptn_thumb",
-					) );
-
-					$output .= '</a>'; // Close the link
-				}
-
-				if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
-					$output .= '<span class="tptn_after_thumb">';
-					$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-					$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title when required by settings
-					$output .= '</a>'; // Close the link
-				}
-
-				if ( $args['show_author'] ) {
-					$author_info = get_userdata( $result->post_author );
-					$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
-					$author_link = get_author_posts_url( $author_info->ID );
-
-					/**
-					 * Filter the author name.
-					 *
-					 * @since	1.9.1
-					 *
-					 * @param	string	$author_name	Proper name of the post author.
-					 * @param	object	$author_info	WP_User object of the post author
-					 */
-					$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
-
-					$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'tptn' ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
-
-					/**
-					 * Filter the text with the author details.
-					 *
-					 * @since	2.0.0
-					 *
-					 * @param	string	$tptn_author	Formatted string with author details and link
-					 * @param	object	$author_info	WP_User object of the post author
-					 */
-					$tptn_author = apply_filters( 'tptn_author', $tptn_author, $author_info );
-
-					$output .= $tptn_author;
-				}
-
-				if ( $args['show_date'] ) {
-					$output .= '<span class="tptn_date"> ' . mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date ).'</span> ';
-				}
-
-				if ( $args['show_excerpt'] ) {
-					$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $postid, $args['excerpt_length'] ).'</span>';
-				}
-
-				if ( $args['disp_list_count'] ) {
-
-					$tptn_list_count = '(' . number_format_i18n( $sumcount ) . ')';
-
-					/**
-					 * Filter the formatted list count text.
-					 *
-					 * @since	2.1.0
-					 *
-					 * @param	string	$tptn_list_count	Formatted list count
-					 * @param	int		$sumcount			Post count
-					 * @param	object	$result				Post object
-					 */
-					$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sumcount, $result );
-
-					$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
-				}
-
-				if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
-					$output .= '</span>';
-				}
-
-				/**
-				 * Filter the closing tag of each list item.
-				 *
-				 * @since	1.9.10.1
-				 *
-				 * @param	string	$after_list_item	Tag after each list item. Can be defined in the Settings page.
-				 * @param	object	$result	Object of the current post result
-				 */
-				$output .= apply_filters( 'tptn_after_list_item', $args['after_list_item'], $result );
-
-				$counter++;
+			if ( 'after' == $args['post_thumb_op'] ) {
+				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
+				$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title if post thumbnail is to be displayed after
+				$output .= '</a>'; // Close the link
 			}
+
+			if ( 'inline' == $args['post_thumb_op'] || 'after' == $args['post_thumb_op'] || 'thumbs_only' == $args['post_thumb_op'] ) {
+				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
+
+				$output .= tptn_get_the_post_thumbnail( array(
+					'postid' => $postid,
+					'thumb_height' => $thumb_height,
+					'thumb_width' => $thumb_width,
+					'thumb_meta' => $args['thumb_meta'],
+					'thumb_html' => $args['thumb_html'],
+					'thumb_default' => $args['thumb_default'],
+					'thumb_default_show' => $args['thumb_default_show'],
+					'scan_images' => $args['scan_images'],
+					'class' => "tptn_thumb",
+				) );
+
+				$output .= '</a>'; // Close the link
+			}
+
+			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
+				$output .= '<span class="tptn_after_thumb">';
+				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
+				$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title when required by settings
+				$output .= '</a>'; // Close the link
+			}
+
+			if ( $args['show_author'] ) {
+				$author_info = get_userdata( $result->post_author );
+				$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
+				$author_link = get_author_posts_url( $author_info->ID );
+
+				/**
+				 * Filter the author name.
+				 *
+				 * @since	1.9.1
+				 *
+				 * @param	string	$author_name	Proper name of the post author.
+				 * @param	object	$author_info	WP_User object of the post author
+				 */
+				$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
+
+				$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'tptn' ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+
+				/**
+				 * Filter the text with the author details.
+				 *
+				 * @since	2.0.0
+				 *
+				 * @param	string	$tptn_author	Formatted string with author details and link
+				 * @param	object	$author_info	WP_User object of the post author
+				 */
+				$tptn_author = apply_filters( 'tptn_author', $tptn_author, $author_info );
+
+				$output .= $tptn_author;
+			}
+
+			if ( $args['show_date'] ) {
+				$output .= '<span class="tptn_date"> ' . mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date ).'</span> ';
+			}
+
+			if ( $args['show_excerpt'] ) {
+				$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $postid, $args['excerpt_length'] ).'</span>';
+			}
+
+			if ( $args['disp_list_count'] ) {
+
+				$tptn_list_count = '(' . number_format_i18n( $sumcount ) . ')';
+
+				/**
+				 * Filter the formatted list count text.
+				 *
+				 * @since	2.1.0
+				 *
+				 * @param	string	$tptn_list_count	Formatted list count
+				 * @param	int		$sumcount			Post count
+				 * @param	object	$result				Post object
+				 */
+				$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sumcount, $result );
+
+				$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
+			}
+
+			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
+				$output .= '</span>';
+			}
+
+			/**
+			 * Filter the closing tag of each list item.
+			 *
+			 * @since	1.9.10.1
+			 *
+			 * @param	string	$after_list_item	Tag after each list item. Can be defined in the Settings page.
+			 * @param	object	$result	Object of the current post result
+			 */
+			$output .= apply_filters( 'tptn_after_list_item', $args['after_list_item'], $result );
+
+			$counter++;
+
 			if ( $counter == $args['limit'] ) {
 				break;	// End loop when related posts limit is reached
 			}
@@ -1289,6 +1268,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/counter.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/media.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/shortcode.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/exclusions.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/taxonomies.php' );
 
 
 /*----------------------------------------------------------------------------*
