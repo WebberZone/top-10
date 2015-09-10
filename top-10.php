@@ -170,6 +170,7 @@ function tptn_pop_posts( $args ) {
 	$results = get_tptn_pop_posts( $args );
 
 	if ( $args['posts_only'] ) {	// Return the array of posts only if the variable is set
+		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated', 'tptn' ) );
 		return $results;
 	}
 
