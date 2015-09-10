@@ -83,6 +83,7 @@ Check the Changelog for more details
 	* `strict_limit` is true by default for `get_tptn_pop_posts()`
 	* Option to turn off the meta box for everyone or just non-admins
 	* Contributors & above can also update the visit count in the meta box if this is enabled for them
+	* Category exclusion now works via a filter function vs. multiple lookups, thereby reducing the number of database queries
 
 * Bugfixes:
 	* Potential bug when the $wp variable was not detected in rare situations
