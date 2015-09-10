@@ -278,3 +278,13 @@ class Top_Ten_Widget extends WP_Widget {
 	} //ending function widget
 }
 
+
+/**
+ * Initialise the widget.
+ *
+ */
+function tptn_register_widget() {
+	register_widget( 'Top_Ten_Widget' );
+}
+add_action( 'widgets_init', 'tptn_register_widget', 1 );
+
