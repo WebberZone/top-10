@@ -88,8 +88,9 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<th scope="row"><label for="cache"><?php _e( 'Enable cache:', 'tptn' ); ?></label></th>
 						<td>
-							<input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) echo 'checked="checked"' ?> />
+							<p><input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) echo 'checked="checked"' ?> /></p>
 							<p class="description"><?php _e( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'tptn' ); ?></p>
+							<p><input type="button" name="cache_clear" id="cache_clear"  value="<?php _e( 'Clear cache', 'tptn' ); ?>" class="button-secondary" onclick="return clearCache();" /></p>
 						</td>
 					</tr>
 					<tr>
