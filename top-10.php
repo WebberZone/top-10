@@ -95,12 +95,13 @@ function tptn_pop_posts( $args ) {
 	global $wpdb, $id, $tptn_settings;
 
 	$defaults = array(
-		'is_widget' => FALSE,
 		'daily' => FALSE,
+		'is_widget' => FALSE,
+		'is_shortcode' => FALSE,
+		'is_manual' => FALSE,
 		'echo' => FALSE,
 		'strict_limit' => FALSE,
 		'posts_only' => FALSE,
-		'is_shortcode' => FALSE,
 		'heading' => 1,
 	);
 
@@ -128,6 +129,7 @@ function tptn_pop_posts( $args ) {
 		$cache_name .= $args['daily'] ? '_daily' : '_total';
 		$cache_name .= $args['is_widget'] ? '_widget' : '';
 		$cache_name .= $args['is_shortcode'] ? '_shortcode' : '';
+		$cache_name .= $args['is_manual'] ? '_manual' : '';
 
 		$output = get_transient( $cache_name );
 
@@ -662,6 +664,12 @@ function get_tptn_pop_posts( $args = array() ) {
  * @param	mixed	$args	Arguments list
  */
 function tptn_show_pop_posts( $args = NULL ) {
+	if ( is_array( $args ) ) {
+		$args['manual'] = 1;
+	} else {
+		$args .= '&is_manual=1';
+	}
+
 	echo tptn_pop_posts( $args );
 }
 
@@ -676,8 +684,9 @@ function tptn_show_pop_posts( $args = NULL ) {
 function tptn_show_daily_pop_posts( $args = NULL ) {
 	if ( is_array( $args ) ) {
 		$args['daily'] = 1;
+		$args['manual'] = 1;
 	} else {
-		$args .= '&daily=1';
+		$args .= '&daily=1&is_manual=1';
 	}
 
 	tptn_show_pop_posts( $args );
@@ -1343,6 +1352,7 @@ if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-columns.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-dashboard.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-stats.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/cache.php' );
 
 } // End admin.inc
 

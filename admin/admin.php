@@ -169,7 +169,6 @@ function tptn_options() {
 		 */
 		$tptn_settings = apply_filters( 'tptn_save_options', $tptn_settings );
 
-
 		/* Update the options */
 		update_option( 'ald_tptn_settings', $tptn_settings );
 
@@ -177,6 +176,9 @@ function tptn_options() {
 		$tptn_settings = tptn_read_options();
 		parse_str( $tptn_settings['post_types'], $post_types );
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
+
+		// Delete the cache
+		tptn_cache_delete();
 
 		/* Echo a success message */
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', 'tptn' ) . '</p>';
@@ -468,6 +470,13 @@ function tptn_adminhead() {
 	<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin/wick/wick.css" />
 	<script type="text/javascript" language="JavaScript">
 		//<![CDATA[
+		function clearCache() {
+			/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
+			jQuery.post(ajaxurl, {action: 'tptn_clear_cache'}, function(response, textStatus, jqXHR) {
+				alert( response.message );
+			}, 'json');
+		}
+
 		<?php
 		function wick_data() {
 			global $wpdb;
