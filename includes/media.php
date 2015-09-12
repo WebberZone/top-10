@@ -174,7 +174,13 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		    $postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
 
-		$thumb_html = ( 'css' == $args['thumb_html'] ) ? 'style="max-width:' . $args['thumb_width'] . 'px;max-height:' . $args['thumb_height'] . 'px;"' : 'width="' . $args['thumb_width'] . '" height="' .$args['thumb_height'] . '"';
+		if ( 'css' == $args['thumb_html'] ) {
+			$thumb_html = 'style="max-width:' . $args['thumb_width'] . 'px;max-height:' . $args['thumb_height'] . 'px;"';
+		} else if ( 'html' == $args['thumb_html'] ) {
+			$thumb_html = 'width="' . $args['thumb_width'] . '" height="' . $args['thumb_height'] . '"';
+		} else {
+			$thumb_html = '';
+		}
 
 		/**
 		 * Filters the thumbnail HTML and allows a filter function to add any more HTML if needed.

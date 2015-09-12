@@ -64,8 +64,8 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 
 == Upgrade Notice ==
 
-= 2.1.1 =
-* Fixed: Potential bug when the $wp variable was not detected in rare situations;
+= 2.2.0 =
+* New features. Deprecated functions. Upgrade highly recommended. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 
 
@@ -74,7 +74,8 @@ Check the Changelog for more details
 = 2.2.0 =
 
 * Features:
-	* Caching system using the Transients API
+	* Caching system using the Transients API. By default the cache is refreshed every hour
+	* Styles interface lets you select between No styles, Left Thumbs (previously the default style) and Text Only
 	* Option to limit posts only with a specified date range
 	* Option in Top 10 meta box to exclude display of popular posts in widget if needed
 	* Option in Top 10 meta box to exclude post from popular posts list
@@ -88,6 +89,7 @@ Check the Changelog for more details
 
 * Bugfixes:
 	* Potential bug when the $wp variable was not detected in rare situations
+	* In rare cases category exclusion failed when `term_id` didn't match `term_taxonomy_id`
 
 * Deprecated:
 	* `ald_tptn_rss`: Use `tptn_rss_filter` instead

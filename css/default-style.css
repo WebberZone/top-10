@@ -1,12 +1,6 @@
-img.tptn_thumb {
-	width:65px !important;
-	height:65px !important;
-	display:block;
-	float:left;
-	clear:left;
-	margin-right:10px !important;
-	padding:3px !important;
-	border:1px #CCCCCC solid;
+.tptn_posts_daily ul, .tptn_posts ul {
+	margin:0 !important;
+	padding:0 !important;
 }
 
 .tptn_posts_daily ul li, .tptn_posts ul li {
@@ -18,9 +12,10 @@ img.tptn_thumb {
 	padding:0 !important;
 }
 
-.tptn_posts_daily ul, .tptn_posts ul {
-	margin:0 !important;
-	padding:0 !important;
+.tptn_posts_daily ul:after, .tptn_posts ul:after, .tptn_posts_daily ul li:after, .tptn_posts ul li:after {
+	content:'';
+	display:table;
+	clear: both;
 }
 
 .tptn_posts_daily .tptn_title, .tptn_posts .tptn_title {
@@ -29,6 +24,22 @@ img.tptn_thumb {
 	padding-bottom:5px;
 	text-decoration:none;
 	line-height: 1.1em;
+}
+
+img.tptn_thumb {
+	display:block;
+	float:left;
+	clear:left;
+	margin-right:10px !important;
+	padding:3px !important;
+	border:1px #CCCCCC solid;
+	vertical-align: bottom;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.4);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.4);
+	box-shadow: 0 1px 2px rgba(0,0,0,.4);
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 img.tptn_thumb:after {
@@ -46,12 +57,7 @@ img.tptn_thumb:after {
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }
-img.tptn_thumb {
-	vertical-align: bottom;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.4);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.4);
-	box-shadow: 0 1px 2px rgba(0,0,0,.4);
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
+
+.tptn_excerpt {
+	display: block;
 }
