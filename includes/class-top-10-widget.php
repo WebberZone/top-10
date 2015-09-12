@@ -132,7 +132,6 @@ class Top_Ten_Widget extends WP_Widget {
 				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
 		</p>
-
 		<p><?php _e( 'Post types to include:', 'tptn' ); ?><br />
 
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
@@ -235,8 +234,10 @@ class Top_Ten_Widget extends WP_Widget {
 		$output .= $args['before_title'] . $title . $args['after_title'];
 
 		$post_thumb_op = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
-		$thumb_height = isset( $instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
-		$thumb_width = isset( $instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
+
+		$thumb_height = ( isset( $instance['thumb_height'] ) && '' != $instance['thumb_height'] ) ? intval( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
+		$thumb_width = ( isset( $instance['thumb_width'] ) && '' != $instance['thumb_width'] ) ? intval( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
+
 		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
 		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';

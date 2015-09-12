@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.1-beta20150910
+ * Version: 	2.1.1-beta20150911
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
@@ -155,12 +155,14 @@ function tptn_pop_posts( $args ) {
 		$thumb_height = $tptn_thumb_size['height'];
 	}
 
-	if ( empty( $thumb_width ) ) {
+	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) {
 		$thumb_width = $args['thumb_width'];
+		$args['thumb_html'] = 'css';
 	}
 
-	if ( empty( $thumb_height ) ) {
+	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) {
 		$thumb_height = $args['thumb_height'];
+		$args['thumb_html'] = 'css';
 	}
 
 	$exclude_categories = explode( ',', $args['exclude_categories'] );
@@ -178,7 +180,7 @@ function tptn_pop_posts( $args ) {
 
 	$counter = 0;
 
-	$daily_class = $args['daily'] ? 'tptn_related_daily ' : 'tptn_related ';
+	$daily_class = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
 	$widget_class = $args['is_widget'] ? ' tptn_posts_widget' : '';
 	$shortcode_class = $args['is_shortcode'] ? ' tptn_posts_shortcode' : '';
 
@@ -718,10 +720,22 @@ add_action( 'wp_head', 'tptn_header' );
 function tptn_heading_styles() {
 	global $tptn_settings;
 
-	if ( $tptn_settings['include_default_style'] ) {
-		wp_register_style( 'tptn_list_style', plugins_url( 'css/default-style.css', __FILE__ ) );
-		wp_enqueue_style( 'tptn_list_style' );
+	if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', __FILE__ ) );
+		wp_enqueue_style( 'tptn-style-left-thumbs' );
+
+
+        $custom_css = "
+img.tptn_thumb {
+  width: {$tptn_settings['thumb_width']}px !important;
+  height: {$tptn_settings['thumb_height']}px !important;
+}
+                ";
+
+		wp_add_inline_style( 'tptn-style-left-thumbs', $custom_css );
+
 	}
+
 }
 add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
 
@@ -827,6 +841,7 @@ function tptn_default_options() {
 		/* Custom styles */
 		'custom_CSS' => '',			// Custom CSS to style the output
 		'include_default_style' => false,	// Include default Top 10 style
+		'tptn_styles'	=> 'no_style',	// Defaault style is left thubnails
 
 		/* Maintenance cron */
 		'cron_on' => false,		// Run cron daily?

@@ -36,6 +36,13 @@ function tptn_options() {
 		tptn_enable_run( $tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence'] );
 	}
 
+	/* Temporary check if default styles are off and left thumbnails are selected - will be eventually deprecated
+	// This is a mismatch, so we force it to no style */
+	if ( ( false == $tptn_settings['include_default_style'] ) && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) {
+		$tptn_settings['tptn_styles'] = 'no_style';
+		update_option( 'ald_tptn_settings', $tptn_settings );
+	}
+
 	/* Parse post types */
 	parse_str( $tptn_settings['post_types'], $post_types );
 	$wp_post_types	= get_post_types( array(
@@ -140,19 +147,17 @@ function tptn_options() {
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
 		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( "/default.png" == $_POST['thumb_default'] ) ) ? $tptn_url . '/default.png' : $_POST['thumb_default'];
 
-		/* Custom styles */
+		/* Styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
 
-		/* If default style is selected, enforce fixed width, height of thumbnail. Disable author, excerpt and date display */
-		if ( isset( $_POST['include_default_style'] ) ) {
+		$tptn_settings['tptn_styles'] = $_POST['tptn_styles'];
+
+		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
 			$tptn_settings['include_default_style'] = true;
 			$tptn_settings['post_thumb_op'] = 'inline';
-			$tptn_settings['thumb_height'] = 65;
-			$tptn_settings['thumb_width'] = 65;
-			$tptn_settings['thumb_crop'] = true;
-			$tptn_settings['show_excerpt'] = false;
-			$tptn_settings['show_author'] = false;
-			$tptn_settings['show_date'] = false;
+		} elseif ( 'text_only' == $tptn_settings['tptn_styles'] ) {
+			$tptn_settings['include_default_style'] = false;
+			$tptn_settings['post_thumb_op'] = 'text_only';
 		} else {
 			$tptn_settings['include_default_style'] = false;
 		}
@@ -178,11 +183,16 @@ function tptn_options() {
 		tptn_cache_delete();
 
 		/* Echo a success message */
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully.', 'tptn' ) . '</p>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully. If enabled, the cache has been cleared.', 'tptn' ) . '</p>';
 
-		if ( isset( $_POST['include_default_style'] ) ) {
-			$str .= '<p>'. __( 'Default styles selected. Thumbnail width, height and crop settings have been fixed. Author, Excerpt and Date will not be displayed.', 'tptn' ) . '</p>';
-
+		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+			$str .= '<p>'. __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'tptn' ) . '</p>';
+		}
+		if ( 'text_only' == $tptn_settings['tptn_styles'] ) {
+			$str .= '<p>'. __( 'Text Only style selected. Thumbnails will not be displayed.', 'tptn' ) . '</p>';
+		}
+		if ( 'tptn_thumbnail' != $tptn_settings['thumb_size'] ) {
+			$str .= '<p>'. sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %d x %d.', 'tptn' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
 		}
 
 		$str .= '</div>';

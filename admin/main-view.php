@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
 	  	<li><a href="#counteropdiv"><?php _e( 'Counter and tracker options', 'tptn' ); ?></a> | </li>
 	  	<li><a href="#pplopdiv"><?php _e( 'Popular post list options', 'tptn' ); ?></a> | </li>
 	  	<li><a href="#thumbopdiv"><?php _e( 'Thumbnail options', 'tptn' ); ?></a> | </li>
-	  	<li><a href="#customcssdiv"><?php _e( 'Custom styles', 'tptn' ); ?></a> | </li>
+	  	<li><a href="#customcssdiv"><?php _e( 'Styles', 'tptn' ); ?></a> | </li>
 	  	<li><a href="#tptn_maintenance_op"><?php _e( 'Maintenance', 'tptn' ); ?></a></li>
 
 		<?php
@@ -133,7 +133,7 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr><th scope="row"><label for="show_metabox"><?php _e( "Show metabox:", 'tptn' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_metabox" id="show_metabox" <?php if ( $tptn_settings['show_metabox'] ) echo 'checked="checked"' ?> />
-							<p class="description"><?php _e( 'This will add the Contextual Related Posts metabox on Edit Posts or Add New Posts screens. Also applies to Pages and Custom Post Types.', 'tptn' ); ?></p>
+							<p class="description"><?php _e( 'This will add the Top 10 metabox on Edit Posts or Add New Posts screens. Also applies to Pages and Custom Post Types.', 'tptn' ); ?></p>
 						</td>
 					</tr>
 
@@ -376,10 +376,6 @@ if ( ! defined( 'WPINC' ) ) {
 						<th scope="row"><label for="show_excerpt"><?php _e( 'Show post excerpt in list?', 'tptn' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_excerpt" id="show_excerpt" <?php if ( $tptn_settings['show_excerpt'] ) echo 'checked="checked"' ?> />
-
-							<?php if ( $tptn_settings['include_default_style'] ) { ?>
-								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Excerpt display is disabled.", 'tptn' ); ?></p>
-							<?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -392,20 +388,12 @@ if ( ! defined( 'WPINC' ) ) {
 						<th scope="row"><label for="show_author"><?php _e( 'Show post author in list?', 'tptn' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_author" id="show_author" <?php if ( $tptn_settings['show_author'] ) echo 'checked="checked"' ?> />
-
-							<?php if ( $tptn_settings['include_default_style'] ) { ?>
-								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Author display is disabled.", 'tptn' ); ?></p>
-							<?php } ?>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="show_date"><?php _e( 'Show post date in list?', 'tptn' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="show_date" id="show_date" <?php if ( $tptn_settings['show_date'] ) echo 'checked="checked"' ?> />
-
-							<?php if ( $tptn_settings['include_default_style'] ) { ?>
-								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Date display is disabled.", 'tptn' ); ?></p>
-							<?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -524,8 +512,8 @@ if ( ! defined( 'WPINC' ) ) {
 								<?php _e( 'Do not display thumbnails, only text.', 'tptn' ); ?>
 							</label>
 
-							<?php if ( $tptn_settings['include_default_style'] ) { ?>
-								<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Location of thumbnail forced to be inline before title", 'tptn' ); ?></p>
+							<?php if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) { ?>
+								<p style="color: #F00"><?php _e( "This setting cannot be changed because an inbuilt style has been selected under the Styles section. If you would like to change this option, please select No styles under the Styles section.", 'tptn' ); ?></p>
 							<?php } ?>
 						</td>
 					</tr>
@@ -560,6 +548,9 @@ if ( ! defined( 'WPINC' ) ) {
 									<?php _e( "If you change the width and/or height below, existing images will not be automatically resized.", 'tptn' ); ?>
 									<?php printf( __( "I recommend using <a href='%s' class='thickbox'>OTF Regenerate Thumbnails</a> or <a href='%s' class='thickbox'>Regenerate Thumbnails</a> to regenerate all image sizes.", 'tptn' ), self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ), self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ); ?>
 								</p>
+								<p class="description">
+									<?php _e( "If you're using the Left Thumbs style below then the thumbnail width and height that you set here will supersede the widget. Alternatively, choose <strong>Style attributes</strong> under <strong>Image size attributes</strong> option below", 'tptn' ); ?>
+								</p>
 						</td>
 					<tr><th scope="row"><label for="thumb_width"><?php _e( 'Width of custom thumbnail:', 'tptn' ); ?></label></th>
 						<td>
@@ -577,27 +568,29 @@ if ( ! defined( 'WPINC' ) ) {
 							<p class="description">
 								<?php _e( "By default, thumbnails will be proportionately cropped. Check this box to hard crop the thumbnails.", 'tptn' ); ?>
 								<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", 'tptn' ), esc_url( 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ) ); ?>
-
-								<?php if ( $tptn_settings['include_default_style'] ) { ?>
-									<p style="color: #F00"><?php _e( "Default style selected under the Custom Styles. Thumbnail width and height is fixed at 65px and crop mode is enabled.", 'tptn' ); ?></p>
-								<?php } ?>
 							</p>
 						</td>
 					</tr>
-					<tr><th scope="row"><label for="thumb_html"><?php _e( 'Style attributes / Width and Height HTML attributes:', 'tptn' ); ?></label></th>
-					  	<td>
+					<tr><th scope="row"><label for="thumb_html"><?php _e( 'Image size attributes:', 'tptn' ); ?></label></th>
+						<td>
 							<label>
 								<input type="radio" name="thumb_html" value="css" id="thumb_html_0" <?php if ( 'css' == $tptn_settings['thumb_html'] ) echo 'checked="checked"' ?> />
-								<?php _e( 'Style attributes are used for width and height.', 'tptn' ); ?> <br /><code>style="max-width:<?php echo $tptn_settings['thumb_width'] ?>px;max-height:<?php echo $tptn_settings['thumb_height'] ?>px;"</code>
+								<?php _e( 'Style attributes are used for width and height.', 'tptn' ); echo ' <code>style="max-width:' . $tptn_settings['thumb_width'] . 'px;max-height:' . $tptn_settings['thumb_height'] . 'px;"</code>'; ?>
 							</label>
 							<br />
 							<label>
 								<input type="radio" name="thumb_html" value="html" id="thumb_html_1" <?php if ( 'html' == $tptn_settings['thumb_html'] ) echo 'checked="checked"' ?> />
-								<?php _e( 'HTML width and height attributes are used for width and height.', 'tptn' ); ?> <br /><code>width="<?php echo $tptn_settings['thumb_width'] ?>" height="<?php echo $tptn_settings['thumb_height'] ?>"</code>
+								<?php _e( 'HTML width and height attributes are used for width and height.', 'tptn' ); echo ' <code>width="' . $tptn_settings['thumb_width'] . '" height="' . $tptn_settings['thumb_height'] . '"</code>'; ?>
 							</label>
+							<br />
+							<label>
+								<input type="radio" name="thumb_html" value="none" id="thumb_html_1" <?php if ( 'none' == $tptn_settings['thumb_html'] ) echo 'checked="checked"' ?> />
+								<?php _e( 'No HTML or Style attributes set for width and height', 'tptn' ); ?>
+							</label>
+							<br />
 						</td>
 					</tr>
-					<tr><th scope="row"><label for="thumb_meta"><?php _e( 'Post thumbnail meta field name: ', 'tptn' ); ?></label></th>
+					<tr><th scope="row"><label for="thumb_meta"><?php _e( 'Post thumbnail meta field name:', 'tptn' ); ?></label></th>
 						<td>
 					  		<input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_meta'] ) ); ?>">
 					  		<p class="description"><?php _e( 'The value of this field should contain the image source and is set in the <em>Add New Post</em> screen', 'tptn' ); ?></p>
@@ -643,7 +636,7 @@ if ( ! defined( 'WPINC' ) ) {
 			</div>
 	    </div>
 	    <div id="customcssdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'tptn' ); ?>"><br /></div>
-			<h3 class='hndle'><span><?php _e( 'Custom CSS', 'tptn' ); ?></span></h3>
+			<h3 class='hndle'><span><?php _e( 'Styles', 'tptn' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
 
@@ -658,14 +651,42 @@ if ( ! defined( 'WPINC' ) ) {
 						do_action( 'tptn_admin_custom_styles_before', $tptn_settings );
 					?>
 
-					<tr><th scope="row"><label for="include_default_style"><?php _e( 'Use default style included in the plugin?', 'tptn' ); ?></label></th>
-						<td>
-							<input type="checkbox" name="include_default_style" id="include_default_style" <?php if ( $tptn_settings['include_default_style'] ) echo 'checked="checked"' ?> />
-						  	<p class="description"><?php _e( 'Top 10 includes a default style that makes your popular posts list to look beautiful. Check the box above if you want to use this.', 'tptn' ); ?></p>
-						  	<p class="description"><?php _e( 'Enabling this option will turn on the thumbnails and set their width and height to 65px. It will also turn off the display of the author, excerpt and date if already enabled. Disabling this option will not revert any settings.', 'tptn' ); ?></p>
-						  	<p class="description"><?php printf( __( 'You can view the default style at <a href="%1$s" target="_blank">%1$s</a>', 'tptn' ), esc_url( 'https://github.com/ajaydsouza/top-10/blob/master/css/default-style.css' ) ); ?></p>
-						</td>
+					<tr><th scope="row"><?php _e( 'Style of the related posts:', 'tptn' ); ?></th>
+					  <td>
+						<label>
+							<input type="radio" name="tptn_styles" value="no_style" id="tptn_styles_1" <?php if ( 'no_style' == $tptn_settings['tptn_styles'] ) echo 'checked="checked"' ?> /> <?php _e( 'No styles', 'tptn' ); ?>
+						</label>
+						<p class="description"><?php _e( 'Select this option if you plan to add your own styles', 'tptn' ); ?></p>
+						<br />
+
+						<label>
+							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" <?php if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) echo 'checked="checked"' ?> />
+							<?php _e( 'Left Thumbnails', 'tptn' ); ?>
+						</label>
+						<p class="description"><img src="<?php echo plugins_url( 'admin/images/tptn-left-thumbs.png', dirname( __FILE__ ) ); ?>" /></p>
+						<p class="description"><?php _e( 'Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings.', 'tptn' ); ?></p>
+					  	<p class="description"><?php printf( __( 'You can view the default style at <a href="%1$s" target="_blank">%1$s</a>', 'tptn' ), esc_url( 'https://github.com/WebberZone/top-10/blob/master/css/default-style.css' ) ); ?></p>
+						<br />
+
+						<label>
+							<input type="radio" name="tptn_styles" value="text_only" id="tptn_styles_1" <?php if ( 'text_only' == $tptn_settings['tptn_styles'] ) echo 'checked="checked"' ?> /> <?php _e( 'Text only', 'tptn' ); ?>
+						</label>
+						<p class="description"><?php _e( 'Enabling this option will disable thumbnails and no longer include the default style sheet included in the plugin.', 'tptn' ); ?></p>
+
+						<?php
+							/**
+							 * Fires after style checkboxes which allows an addon to add more styles.
+							 *
+							 * @since 2.2.0
+							 *
+							 * @param	array	$tptn_settings	Top 10 settings array
+							 */
+							do_action( 'tptn_admin_tptn_styles', $tptn_settings );
+						?>
+
+					  </td>
 					</tr>
+
 					<tr><th scope="row" colspan="2"><?php _e( 'Custom CSS to add to header:', 'tptn' ); ?></th>
 					</tr>
 					<tr>
