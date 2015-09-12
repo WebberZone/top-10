@@ -129,7 +129,7 @@ function tptn_call_meta_box() {
 		<label for="thumb_meta"><strong><?php _e( "Location of thumbnail:", 'tptn' ); ?></strong></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
 		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'tptn' ); ?></em>
-		<em><?php _e( "The URL above is saved in the meta field: ", 'tptn' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+		<em><?php _e( "The URL above is saved in the meta field:", 'tptn' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
 	</p>
 
 	<p>

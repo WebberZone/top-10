@@ -293,7 +293,7 @@ if ( ! defined( 'WPINC' ) ) {
 					?>
 
 					<tr>
-						<th scope="row"><label for="limit"><?php _e( 'Number of popular posts to display: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="limit"><?php _e( 'Number of popular posts to display:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="limit" id="limit" value="<?php echo esc_attr( stripslashes( $tptn_settings['limit'] ) ); ?>">
 							<p class="description"><?php _e( "Maximum number of posts that will be displayed in the list. This option is used if you don't specify the number of posts in the widget or shortcodes", 'tptn' ); ?></p>
@@ -322,13 +322,13 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="exclude_post_ids"><?php _e( 'List of post or page IDs to exclude from the results: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="exclude_post_ids"><?php _e( 'List of post or page IDs to exclude from the results:', 'tptn' ); ?></label></th>
 						<td><input type="textbox" name="exclude_post_ids" id="exclude_post_ids" value="<?php echo esc_attr( stripslashes( $tptn_settings['exclude_post_ids'] ) ); ?>"  style="width:250px">
 							<p class="description"><?php _e( 'Enter comma separated list of IDs. e.g. 188,320,500', 'tptn' ); ?></p>
 							</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="exclude_cat_slugs"><?php _e( 'Exclude Categories: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="exclude_cat_slugs"><?php _e( 'Exclude Categories:', 'tptn' ); ?></label></th>
 						<td>
 							<div style="position:relative;text-align:left">
 								<table id="MYCUSTOMFLOATER" class="myCustomFloater" style="position:absolute;top:50px;left:0;background-color:#cecece;display:none;visibility:hidden">
@@ -348,13 +348,13 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="title"><?php _e( 'Title of popular posts: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="title"><?php _e( 'Title of popular posts:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="title" id="title" value="<?php echo esc_attr( stripslashes( $tptn_settings['title'] ) ); ?>"  style="width:250px" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="title_daily"><?php _e( 'Title of daily popular posts: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="title_daily"><?php _e( 'Title of daily popular posts:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="title_daily" id="title_daily" value="<?php echo esc_attr( stripslashes( $tptn_settings['title_daily'] ) ); ?>"  style="width:250px" />
 						</td>
@@ -379,7 +379,7 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="excerpt_length"><?php _e( 'Length of excerpt (in words): ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="excerpt_length"><?php _e( 'Length of excerpt (in words):', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="excerpt_length" id="excerpt_length" value="<?php echo stripslashes( $tptn_settings['excerpt_length'] ); ?>" />
 						</td>
@@ -431,25 +431,25 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr style="background: #eee"><th scope="row" colspan="2"><?php _e( 'Customise the list HTML', 'tptn' ); ?></th>
 					</tr>
 					<tr>
-						<th scope="row"><label for="before_list"><?php _e( 'HTML to display before the list of posts: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="before_list"><?php _e( 'HTML to display before the list of posts:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="before_list" id="before_list" value="<?php echo esc_attr( stripslashes( $tptn_settings['before_list'] ) ); ?>" style="width:250px" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="before_list_item"><?php _e( 'HTML to display before each list item: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="before_list_item"><?php _e( 'HTML to display before each list item:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="before_list_item" id="before_list_item" value="<?php echo esc_attr( stripslashes( $tptn_settings['before_list_item'] ) ); ?>" style="width:250px" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="after_list_item"><?php _e( 'HTML to display after each list item: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="after_list_item"><?php _e( 'HTML to display after each list item:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="after_list_item" id="after_list_item" value="<?php echo esc_attr( stripslashes( $tptn_settings['after_list_item'] ) ); ?>" style="width:250px" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="after_list"><?php _e( 'HTML to display after the list of posts: ', 'tptn' ); ?></label></th>
+						<th scope="row"><label for="after_list"><?php _e( 'HTML to display after the list of posts:', 'tptn' ); ?></label></th>
 						<td>
 							<input type="textbox" name="after_list" id="after_list" value="<?php echo esc_attr( stripslashes( $tptn_settings['after_list'] ) ); ?>" style="width:250px" />
 						</td>
@@ -602,13 +602,13 @@ if ( ! defined( 'WPINC' ) ) {
 						  	<p class="description"><?php _e( 'This could slow down the loading of your page if the first image in the related posts is large in file-size', 'tptn' ); ?></p>
 					  	</td>
 					</tr>
-					<tr><th scope="row"><label for="thumb_default_show"><?php _e( 'Use default thumbnail? ', 'tptn' ); ?></label></th>
+					<tr><th scope="row"><label for="thumb_default_show"><?php _e( 'Use default thumbnail?', 'tptn' ); ?></label></th>
 						<td>
 					  		<input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php if ( $tptn_settings['thumb_default_show'] ) echo 'checked="checked"' ?> />
 					  		<p class="description"><?php _e( 'If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.', 'tptn' ); ?></p>
 					  	</td>
 					</tr>
-					<tr><th scope="row"><label for="thumb_default"><?php _e( 'Default thumbnail: ', 'tptn' ); ?></label></th>
+					<tr><th scope="row"><label for="thumb_default"><?php _e( 'Default thumbnail:', 'tptn' ); ?></label></th>
 					  	<td>
 					  		<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_default'] ) ); ?>" style="width:100%"> <br />
 					  		<?php if ( '' != $tptn_settings['thumb_default'] ) echo "<img src='{$tptn_settings['thumb_default']}' style='max-width:200px' />"; ?>
@@ -772,9 +772,9 @@ if ( ! defined( 'WPINC' ) ) {
 					if ( ( $tptn_settings['cron_on'] ) || wp_next_scheduled( 'tptn_cron_hook' ) ) {
 						if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
 							echo '<span style="color:#0c0">';
-							_e( 'The cron job has been scheduled. Maintenance will run ', 'tptn' );
-							echo wp_get_schedule( 'tptn_cron_hook' );
-							echo '</span>';
+							_e( 'The cron job has been scheduled. Maintenance will run', 'tptn' );
+							echo ' ' . wp_get_schedule( 'tptn_cron_hook' );
+							echo '.</span>';
 						} else {
 							echo '<span style="color:#e00">';
 							_e( 'The cron job is missing. Please resave this page to add the job', 'tptn' );
@@ -788,7 +788,7 @@ if ( ! defined( 'WPINC' ) ) {
 					?>
 				</td></tr>
 				</table>
-			  <input type="submit" name="tptn_mnts_save" id="tptn_mnts_save" value="<?php _e( 'Save Options', 'tptn' ); ?>" class="button button-primary" />
+			  <input type="submit" name="tptn_mnts_save" id="tptn_mnts_save" value="<?php _e( 'Save Maintenance Options', 'tptn' ); ?>" class="button button-primary" />
 	      </div>
 	    </div>
 		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>

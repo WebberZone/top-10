@@ -349,7 +349,7 @@ function tptn_admin_side() {
 			<input type="hidden" name="lc" value="IN">
 			<input type="hidden" name="item_name" value="<?php _e( 'Donation for Top 10', 'tptn' ); ?>">
 			<input type="hidden" name="item_number" value="tptn_admin">
-			<strong><?php _e( 'Enter amount in USD: ', 'tptn' ); ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
+			<strong><?php _e( 'Enter amount in USD:', 'tptn' ); ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
 			<input type="hidden" name="currency_code" value="USD">
 			<input type="hidden" name="button_subtype" value="services">
 			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
