@@ -750,7 +750,7 @@ function tptn_default_options() {
 	$title = __( '<h3>Popular Posts</h3>', 'tptn' );
 	$title_daily = __( '<h3>Daily Popular</h3>', 'tptn' );
 	$blank_output_text = __( 'No top posts yet', 'tptn' );
-	$thumb_default = $tptn_url . '/default.png';
+	$thumb_default = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) . '/default.png';
 
 	// get relevant post types
 	$args = array (
