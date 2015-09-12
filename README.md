@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/WebberZone/top-10.svg?branch=master)](https://travis-ci.org/WebberZone/top-10)
+
 # Top 10  - Popular posts plugin for WordPress
 
 __Requires:__ 3.5
@@ -6,66 +8,79 @@ __Tested up to:__ 4.2
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
-__Plugin page:__ <a href="https://webberzone.com/plugins/top-10/">Top 10</a>
+__Plugin page:__ [Top 10](https://webberzone.com/plugins/top-10/) | [WordPress.org plugin page](https://wordpress.org/plugins/top-10/)
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
 ## Description
 
-WordPress doesn't count page views by default. <a href="https://webberzone.com/plugins/top-10/">Top 10</a> will count the number of page views on your single posts on a daily as well as overall basis. You can then display the page view count on individual posts and pages as well as display a list of most popular posts based on page views.
+WordPress doesn't have an in-built support tracking page views or displaying popular posts. [Top 10](https://webberzone.com/plugins/top-10/) is an easy to use, yet, powerful WordPress plugin that will count the number of page views of your posts, pages and any custom post types. You can then display the page view counts as well as display your most popular posts.
 
-Includes a sidebar widget to display the popular posts. And, all settings can be configured from within your WordPress Admin area itself! You can choose to disable tracking of author visits on their own posts.
+Top 10 will add a widget that you can use to display the popular posts list.
+
+Although several similar plugins exist today, Top 10 is one of the most feature rich popular post plugins with support for thumbnails, shortcodes, widgets, custom post types and CSS styles. The inbuilt caching system also helps reduce server load by caching your popular posts output. The tracking uses ajax and is thus compatible with most popular caching plugins.
+
+Top 10 also has powerful API and is fully extendable with WordPress actions and filters to allow you easily extend the code base to add new features or tweak existing ones.
 
 ### Features
 
-* **Page counter**:Counts daily and total page views on single posts, pages and *custom post types*
-* **Display the count**: Customize the text that can be displayed
-* **Show off popular posts**: Display a list of daily and/or overall popular posts by page count. You can choose how many posts are to be displayed plus loads of other customisation options
+* **Page counter**: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions.
+* **Popular posts**: Display a list of popular posts either for total counts or for a custom period. You can choose how many posts are to be displayed along with loads of other customisation options
 * **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
-* **Customisable output**: 
-	* Top 10 includes a default CSS style to make your popular posts list look pretty. Choose **Thumbnails inline, before title** under 'Thumbnail options' when using this option
-	* Output wrapped in CSS classes that allows you to style the list. You can enter your custom CSS styles from within WordPress Admin area under "Custom Styles"
-	* Pick your own HTML tags to use for displaying the output in case you don't prefer the default `list` format
-* **Thumbnail support**
-	* Support for WordPress post thumbnails
-	* Auto-extract the first image in your post to be displayed as a thumbnail
-	* Manually enter the URL of the thumbnail via <a href="http://codex.wordpress.org/Custom_Fields">WordPress meta fields</a>
-	* Use timthumb to crop and resize images
 * **Shortcodes**: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
+* **Thumbnail support**
+	* Support for WordPress post thumbnails. Top 10 will create a custom image size (`tptn_thumbnail`) with the dimensions specified in the Settings page
+	* Auto-extract the first image in your post to be displayed as a thumbnail
+	* Manually enter the URL of the thumbnail via [WordPress meta fields](http://codex.wordpress.org/Custom_Fields). Specify this using the meta box in your Edit screens.
 * **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
-* **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 will also add two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
+* **Styles**: The output is wrapped in CSS classes which allows you to easily style the list. You can enter your custom CSS styles from within WordPress Admin area or use the style included.
+* **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 also adds two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
-* **Clean uninstall**: If you choose to delete the plugin from within WP-Admin, the plugin will remove all its data if you want. But why would you?
+* **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 
+### Donations
 
-If you're looking for a plugin to display related posts, look no further than <a href="https://webberzone.com/plugins/contextual-related-posts">Contextual Related Posts</a>.
+I spend a significant amount of my free time maintaining, updating and more importantly supporting this plugin. Those who have sought support in the support forums know that I have done my best to answer your question and solve your problem.
+If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
+
+### Translations
+Top 10 is now on Transifex with several translations made available by the [WP Translations](http://wp-translations.org). If you're a translator, do consider joining the WP Translations team and contribute towards this and a huge number of WordPress plugins.
+
+Visit [Top 10 on Transifex](https://www.transifex.com/wp-translations/top-10/).
 
 
 ## Screenshots
-![General Options](https://raw.github.com/ajaydsouza/top-10/master/assets/screenshot-1.png)
+![General Options](https://raw.github.com/WebberZone/top-10/master/assets/screenshot-1.png)
 _Top 10 settings page - General Options._
 
-For more screenshots visit the <a href="http://wordpress.org/plugins/top-10/screenshots/">WordPress plugin page</a>
+For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/)
 
 ## Installation
 
+### WordPress install (the easy way)
+1. Navigate to Plugins within your WordPress Admin Area
+
+2. Click "Add new" and in the search box enter "Top 10"
+
+3. Find the plugin in the list (usually the first result) and click "Install Now"
+
+### Manual install
 1. Download the plugin
 
 2. Extract the contents of top-10.zip to wp-content/plugins/ folder. You should get a folder called top-10.
 
-3. Activate the Plugin in WP-Admin. 
+3. Activate the Plugin in WP-Admin.
 
 4. Go to **Top 10** to configure
 
 5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
 
-6. Go to **Top 10 &raquo; Overall Popular Posts** and **Top 10 &raquo; Daily Popular Posts** to view the list of popular posts
-
-Alternatively, search for **Top 10** from Plugins &raquo; Add New within your WordPress admin.
+6. Go to **Top 10 &raquo; View Popular Posts** to view the list of popular posts
 
 
 ## Frequently Asked Questions
 
-Check out the <a href="http://wordpress.org/plugins/top-10/faq/">FAQ on the plugin page</a> for a detailed list of questions and answers
+Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/).
 
-If your question isn't listed there, please create a new post in the <a href="http://wordpress.org/support/plugin/top-10">WordPress.org support forum</a>. I monitor the forums on an ongoing basis. If you're looking for more advanced _paid_ support, please see <a href="https://webberzone.com/support/">details here</a>.
+If your question isn't listed there, please create a new post at the [WordPress.org support forum](http://wordpress.org/support/plugin/top-10). It is the fastest way to get support as I monitor the forums regularly. I also provide [premium *paid* support via email](https://webberzone.com/support/).
+
