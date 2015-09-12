@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.1.1-beta20150911
+ * Version: 	2.1.1-beta20150912
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
@@ -148,33 +148,13 @@ function tptn_pop_posts( $args ) {
 	}
 
 	// Get thumbnail size
-	$tptn_thumb_size = tptn_get_all_image_sizes( $args['thumb_size'] );
-
-	if ( isset( $tptn_thumb_size['width'] ) ) {
-		$thumb_width = $tptn_thumb_size['width'];
-		$thumb_height = $tptn_thumb_size['height'];
-	}
-
-	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) {
-		$thumb_width = $args['thumb_width'];
-		$args['thumb_html'] = 'css';
-	}
-
-	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) {
-		$thumb_height = $args['thumb_height'];
-		$args['thumb_html'] = 'css';
-	}
-
-	$exclude_categories = explode( ',', $args['exclude_categories'] );
-
-	$target_attribute = ( $args['link_new_window'] ) ? ' target="_blank" ' : ' ';	// Set Target attribute
-	$rel_attribute = ( $args['link_nofollow'] ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
+	list( $args['thumb_width'], $args['thumb_height'] ) = tptn_get_thumb_size( $args );
 
 	// Retrieve the popular posts
 	$results = get_tptn_pop_posts( $args );
 
 	if ( $args['posts_only'] ) {	// Return the array of posts only if the variable is set
-		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated', 'tptn' ) );
+		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'tptn' ) );
 		return $results;
 	}
 
@@ -195,34 +175,15 @@ function tptn_pop_posts( $args ) {
 	 */
 	$post_classes = apply_filters( 'tptn_post_class', $post_classes );
 
-	$title = $args['daily'] ? $args['title_daily'] : $args['title'];
-
-	/**
-	 * Filter the title of the Top posts.
-	 *
-	 * @since	1.9.5
-	 *
-	 * @param	string   $title	Title of the popular posts.
-	 */
-	$title = apply_filters( 'tptn_heading_title', $title );
-
 	$output .= '<div class="' . $post_classes . '">';
-
-	if ( $args['heading'] ) {
-		$output .= $title;
-	}
 
 	if ( $results ) {
 
-		/**
-		 * Filter the opening tag of the popular posts list
-		 *
-		 * @since	1.9.10.1
-		 *
-		 * @param	string	$before_list	Opening tag set in the Settings Page
-		 */
-		$output .= apply_filters( 'tptn_before_list', $args['before_list'] );
+		$output .= tptn_heading_title( $args );
 
+		$output .= tptn_before_list( $args );
+
+		// We need this for WPML support
 		$processed_results = array();
 
 		foreach ( $results as $result ) {
@@ -242,121 +203,26 @@ function tptn_pop_posts( $args ) {
 			 *
 			 * @since	1.9.8.5
 			 *
-			 * @param	int	$result->ID	ID of the post
+			 * @param	int	$resultid	ID of the post
 			 */
 			$postid = apply_filters( 'tptn_post_id', $resultid );
 
 			$result = get_post( $postid );	// Let's get the Post using the ID
 
-			$post_title = tptn_max_formatted_content( get_the_title( $postid ), $args['title_length'] );
+			$output .= tptn_before_list_item( $args, $result );
 
-			/**
-			 * Filter the post title of each list item.
-			 *
-			 * @since	2.0.0
-			 *
-			 * @param	string	$post_title	Post title in the list.
-			 * @param	object	$result	Object of the current post result
-			 */
-			$post_title = apply_filters( 'tptn_post_title', $post_title, $result );
-
-			/**
-			 * Filter the opening tag of each list item.
-			 *
-			 * @since	1.9.10.1
-			 *
-			 * @param	string	$before_list_item	Tag before each list item. Can be defined in the Settings page.
-			 * @param	object	$result				Object of the current post result
-			 */
-			$output .= apply_filters( 'tptn_before_list_item', $args['before_list_item'], $result );
-
-			/**
-			 * Filter the `rel` attribute each list item.
-			 *
-			 * @since	1.9.10.1
-			 *
-			 * @param	string	$rel_attribute	rel attribute
-			 * @param	object	$result			Object of the current post result
-			 */
-			$rel_attribute = apply_filters( 'tptn_rel_attribute', $rel_attribute, $result );
-
-			/**
-			 * Filter the target attribute each list item.
-			 *
-			 * @since	1.9.10.1
-			 *
-			 * @param	string	$target_attribute	target attribute
-			 * @param	object	$result				Object of the current post result
-			 */
-			$target_attribute = apply_filters( 'tptn_rel_attribute', $target_attribute, $result );
-
-			if ( 'after' == $args['post_thumb_op'] ) {
-				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-				$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title if post thumbnail is to be displayed after
-				$output .= '</a>'; // Close the link
-			}
-
-			if ( 'inline' == $args['post_thumb_op'] || 'after' == $args['post_thumb_op'] || 'thumbs_only' == $args['post_thumb_op'] ) {
-				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-
-				$output .= tptn_get_the_post_thumbnail( array(
-					'postid' => $result,
-					'thumb_height' => $thumb_height,
-					'thumb_width' => $thumb_width,
-					'thumb_meta' => $args['thumb_meta'],
-					'thumb_html' => $args['thumb_html'],
-					'thumb_default' => $args['thumb_default'],
-					'thumb_default_show' => $args['thumb_default_show'],
-					'scan_images' => $args['scan_images'],
-					'class' => "tptn_thumb",
-				) );
-
-				$output .= '</a>'; // Close the link
-			}
-
-			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
-				$output .= '<span class="tptn_after_thumb">';
-				$output .= '<a href="' . get_permalink( $postid ) . '" rel="' . $rel_attribute . '" ' . $target_attribute . ' class="tptn_link">'; // Add beginning of link
-				$output .= '<span class="tptn_title">' . $post_title . '</span>'; // Add title when required by settings
-				$output .= '</a>'; // Close the link
-			}
+			$output .= tptn_list_link( $args, $result );
 
 			if ( $args['show_author'] ) {
-				$author_info = get_userdata( $result->post_author );
-				$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
-				$author_link = get_author_posts_url( $author_info->ID );
-
-				/**
-				 * Filter the author name.
-				 *
-				 * @since	1.9.1
-				 *
-				 * @param	string	$author_name	Proper name of the post author.
-				 * @param	object	$author_info	WP_User object of the post author
-				 */
-				$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
-
-				$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'tptn' ).'<a href="' . $author_link . '">' . $author_name . '</a></span> ';
-
-				/**
-				 * Filter the text with the author details.
-				 *
-				 * @since	2.0.0
-				 *
-				 * @param	string	$tptn_author	Formatted string with author details and link
-				 * @param	object	$author_info	WP_User object of the post author
-				 */
-				$tptn_author = apply_filters( 'tptn_author', $tptn_author, $author_info );
-
-				$output .= $tptn_author;
+				$output .= tptn_author( $args, $result );
 			}
 
 			if ( $args['show_date'] ) {
-				$output .= '<span class="tptn_date"> ' . mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date ).'</span> ';
+				$output .= '<span class="tptn_date"> ' . mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date ) . '</span> ';
 			}
 
 			if ( $args['show_excerpt'] ) {
-				$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $postid, $args['excerpt_length'] ).'</span>';
+				$output .= '<span class="tptn_excerpt"> ' . tptn_excerpt( $result->ID, $args['excerpt_length'] ) . '</span>';
 			}
 
 			if ( $args['disp_list_count'] ) {
@@ -377,19 +243,12 @@ function tptn_pop_posts( $args ) {
 				$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
 			}
 
+			// Opening span created in tptn_list_link()
 			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
 				$output .= '</span>';
 			}
 
-			/**
-			 * Filter the closing tag of each list item.
-			 *
-			 * @since	1.9.10.1
-			 *
-			 * @param	string	$after_list_item	Tag after each list item. Can be defined in the Settings page.
-			 * @param	object	$result	Object of the current post result
-			 */
-			$output .= apply_filters( 'tptn_after_list_item', $args['after_list_item'], $result );
+			$output .= tptn_after_list_item( $args, $result );
 
 			$counter++;
 
@@ -399,8 +258,7 @@ function tptn_pop_posts( $args ) {
 		}
 		if ( $args['show_credit'] ) {
 
-			/** This filter is documented in contextual-related-posts.php */
-			$output .= apply_filters( 'tptn_before_list_item', $args['before_list_item'], $result );
+			$output .= tptn_before_list_item( $args, $result );
 
 			$output .= sprintf(
 				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', 'tptn' ),
@@ -408,18 +266,22 @@ function tptn_pop_posts( $args ) {
 				$target_attribute
 			);
 
-			/** This filter is documented in contextual-related-posts.php */
-			$output .= apply_filters( 'tptn_after_list_item', $args['after_list_item'], $result );
+			$output .= tptn_after_list_item( $args, $result );
 		}
 
+		$output .= tptn_after_list( $args );
+
+		$clearfix = '<div class="tptn_clear"></div>';
+
 		/**
-		 * Filter the closing tag of the related posts list
+		 * Filter the clearfix div tag. This is included after the closing tag to clear any miscellaneous floating elements;
 		 *
-		 * @since	1.9.10.1
+		 * @since	2.2.0
 		 *
-		 * @param	string	$after_list	Closing tag set in the Settings Page
+		 * @param	string	$clearfix	Contains: <div style="clear:both"></div>
 		 */
-		$output .= apply_filters( 'tptn_after_list', $args['after_list'] );
+		$output .= apply_filters( 'tptn_clearfix', $clearfix );
+
 	} else {
 		$output .= ( $args['blank_output'] ) ? '' : $args['blank_output_text'];
 	}
@@ -488,8 +350,6 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	$limit = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
-
-	$exclude_categories = explode( ',', $args['exclude_categories'] );
 
 	$target_attribute = ( $args['link_new_window'] ) ? ' target="_blank" ' : ' ';	// Set Target attribute
 	$rel_attribute = ( $args['link_nofollow'] ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
@@ -1350,6 +1210,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/class-top-10-widget.php' )
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/counter.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/media.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/output-generator.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/shortcode.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/exclusions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/taxonomies.php' );
