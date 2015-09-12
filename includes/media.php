@@ -291,7 +291,57 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 
 	}
 
+	/**
+	 * Filter the attachment ID from the attachment URL.
+	 *
+	 * @since 2.1
+	 *
+	 * @param	int		Attachment ID
+	 * @param	string	$attachment_url	Attachment URL
+	 */
 	return apply_filters( 'tptn_get_attachment_id_from_url', $attachment_id, $attachment_url );
 }
 
+
+/**
+ * Function to get the correct height and width of the thumbnail.
+ *
+ * @since	2.2.0
+ *
+ * @param	array	Array of arguments
+ * @return	array	Width and height
+ */
+function tptn_get_thumb_size( $args ) {
+
+	// Get thumbnail size
+	$tptn_thumb_size = tptn_get_all_image_sizes( $args['thumb_size'] );
+
+	if ( isset( $tptn_thumb_size['width'] ) ) {
+		$thumb_width = $tptn_thumb_size['width'];
+		$thumb_height = $tptn_thumb_size['height'];
+	}
+
+	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) {
+		$thumb_width = $args['thumb_width'];
+		$args['thumb_html'] = 'css';
+	}
+
+	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) {
+		$thumb_height = $args['thumb_height'];
+		$args['thumb_html'] = 'css';
+	}
+
+	$thumb_size = array( $thumb_width, $thumb_height );
+
+	/**
+	 * Filter array of thumbnail size.
+	 *
+	 * @since	2.2.0
+	 *
+	 * @param	array	$thumb_size	Array with width and height of thumbnail
+	 * @param	array	$args	Array of arguments
+	 */
+	return apply_filters( 'tptn_get_thumb_size', $thumb_size, $args );
+
+}
 
