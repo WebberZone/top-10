@@ -1,0 +1,216 @@
+This file holds the archive of changelog entries
+
+= 1.9.10.2 =
+* Fixed: Schedules were overwritten when activating the maintenance cron job
+
+= 1.9.10.1 =
+* Fixed: Initialisation error for new installs
+
+= 1.9.10 =
+* New: Meta box on Edit post / page and similar screens that allow you to set the Top 10 (and my other plugins) specific thumbnail for the current post (different from the Featured thumb)
+* New: Admins can edit the number of total views (find it in the same meta box as above)
+* New: Turn of tracking for Editors
+* New: Added w.org and github.com to list of allowed sites for timthumb
+* New: Option to add quality settings for thumbnails created by timthumb
+* Modified: Shortcode now accepts all the parameters that `tptn_pop_posts()` can take. For a full list of parameters, please check out the FAQ.
+* Modified: Widget initialisation to latest standards
+* Fixed: Localisation initialisation
+* Fixed: Validation for hour and minute settings for the cron job
+* New: Several new filters allowing you to hook in an modify the output without editting plugin files
+* Modified: Reformatted code
+
+= 1.9.9.2 =
+* Fixed: Show count in widget was always checked
+* Fixed: "List of post or page IDs to exclude from the results" did not work for more than one post
+* Fixed: First image in the post was not detected in some cases. First image attached is now prioritised over image detection to speed things up
+
+= 1.9.9.1 =
+* Fixed: Maintenance cron wasn't running properly
+
+= 1.9.9 =
+* New: Default style to make those popular posts a little pretty. Choose **Thumbnails inline, before title** under 'Thumbnail options'
+* New: Option to disable display of counts to non-admins. Check out the option 'Show number of views to non-admins'
+* New: Option to display different text when there are no hits on the post on non single posts e.g. home page, archives, etc.
+* New: Class `tptn_posts_widget` for the widgets
+* Modified: Brought back the old columns "Views" in the Admin Posts and Pages which contains both the Overall and Daily counts
+* Modified: New admin interface keeping mobile first in mind
+* Modified: Optimised widgets loading
+* Modified: Cron job will now delete entries from the daily table older than 90 days
+* Fixed: mySQL error messages due to improper escaping
+* Fixed: Plugin no longer overwrites cron schedules
+* Modified: Lot's of code optimisation and cleanup
+
+= 1.9.8.5 =
+* Modified: Including the author in the list will now use the Display Name which is set under “Display name publicly as” in the User Profile page
+* Fixed: If the Thumbnail meta field is omitted under Output Options, the plugin will automatically revert to its default value i.e. "post-image"
+* Modified: Cleaner pagination when viewing the Top posts in the Admin section
+* New: Function `get_tptn_post_count_only` to get just the post count. Use it by passing the Post ID and the type of count (total, daily or overall): `get_tptn_post_count_only($id = FALSE, $count = 'total')`
+* New: Class `tptn_after_thumb` that wraps around all items of the list after the post thumbnail. This allows you to cleanly style all items to float to the right of the thumbnail
+* Modified: Updated timthumb
+
+= 1.9.8.4 =
+* Fixed PHP notices on Admin pages
+
+= 1.9.8.3 =
+* Fixed: Daily count was selecting an extra date when using the widget
+* Fixed: Default settings for the widget weren't initiated correctly in some cases
+* Modified: Admin columns of Total and Daily views will be sorted by descending order by default. Click again to sort in ascending order
+* Modified: Admin columns are fixed to 100px width by default instead of `auto`.
+
+= 1.9.8.2 =
+* New: Option to add author
+* New: More options for the Widgets to configure the post lists
+* Modified: Shortcodes are now stripped from excerpts
+* New: Added *s3.amazonaws.com* to list of allowed sites that timthumb can fetch images from
+* Fixed: Counter was not always displayed on posts
+* New: All Posts / All Pages have separate *sortable* columns for total and daily counts
+* Fixed: Warning messages with WP_DEBUG mode ON
+
+= 1.9.8.1 =
+* Fixed: Correct numbers of posts were not being fetched
+
+= 1.9.8 =
+* New: Custom post support. Choose which custom post types to display in the top posts
+* New: More display options. Select which archives you want to display the post count
+* New: Option to open links in new window
+* New: Option to add nofollow attribute to links
+* New: Option to exclude posts by ID in the list of top posts being displayed
+* New: Option to prevent display of the Visit Count on posts by ID
+* New: Option to choose between using CSS styles or HTML attributes for thumbnail width and height. *HTML width and height attributes are default*
+* New: Option to restrict the title to fixed number of characters
+* New: Option to add the date to the list
+* Modified: Numbers are now formatted based on the locale
+* Fixed: Plugin will now create thumbnails from the first image in gallery custom posts
+
+= 1.9.7 =
+* New: Option to toggle using jQuery ON to track counts. Potential fix for counters not working.
+
+= 1.9.6 =
+* Fixed: Daily count was not updated
+
+= 1.9.5 =
+* New: CSS class `tptn_title` that can be used to style the title of the posts
+* New: Option to disable Daily or Overall counters
+* Fixed: Counter to work with different directory structures. *Thanks Nathan for the fix*
+* Fixed: To make it work with W3 Total Cache. *Thanks Angelo for the fix*
+* Modified: timthumb will now work if you have JetPack Proton activated
+
+= 1.9.4 =
+* Fixes a bug in the widget introduces in 1.9.3
+
+= 1.9.3 =
+* Important security update: Fixed possible XSS vulnerability
+* Fixed: Exclude categories was not excluding posts correctly
+* New: Classes `tptn_posts` and `tptn_posts_daily` for the widgets that let you easily style the lists
+
+= 1.9.2 =
+* New: Top 10 now has its own menu in the administration area. Access settings and view your top posts directly under the new menu: "Top 10"
+* New: New classes **tptn_counter** and **tptn_list_count** to style the displayed count
+* New: New option "Always display latest count for the post" to not use JavaScript to display the counts for a post. This speeds up since no external JS file is used to display the count. Ideal for those not using caching plugins or are not particularly worried if the counts are slightly older.
+* Fixed: PHP notices when WP_DEBUG is turned on
+* Modified: Updated timthumb.php
+
+= 1.9.1 =
+* Fixed: Plugin will now only reschedule the cron job if there any settings are changed related to it
+* Modified: If timthumb is disabled, WordPress post thumbnails are no longer resized using timthumb
+* Modified: Extra check for post featured thumbnails to ensure that the src is not missed
+
+= 1.9 =
+* New: Option to use timthumb to resize thumbnails
+* New: New variable **%overallcount%** that will display the total pageviews on the blog across all posts
+* New: Post thumbnails are now properly resized based on width and height settings in the Top 10 settings page
+* New: Customise what to display when there are no top posts detected
+* New: New scheduled maintenance to clear up daily tables and optimise performance
+* New: Custom CSS code to style the output. Check out the available styles in the <a href="http://wordpress.org/extend/plugins/top-10/faq/">FAQ</a>.
+* Modified: New "default.png" file based on from KDE’s <a href="http://www.oxygen-icons.org/">Oxygen icon set</a>
+* Modified: Dashboard list of posts now displays all the top posts and pages instead of the filtered list based on Settings.
+* Modified: Dashboard widget now has options to customise the widget. Old widgets have been deleted
+* Modified: When fetching the first image, plugin ignores external images
+* Modified: Minor performance tweaks
+
+= 1.8.1 =
+* Fixed: Dashboard widgets linking
+
+= 1.8 =
+* New: Support for <a href="https://wordpress.org/extend/plugins/video-thumbnails/">Video Thumbnails</a> plugin
+* New: Thumbnail settings now reflect max width and max height instead of fixed width and height
+* New: Option to display thumbnails before or after the title
+* New: Option to not display thumbnails instead of the default thumbnail
+* New: Counts are now neatly formatted with commas
+* Modified: Minor tweaks to improve performance
+
+= 1.7.6 =
+* Fixed: Bug with Daily posts widget created an extra header tag in certain themes
+
+= 1.7.5 =
+* New: Now supports multiple WordPress widgets
+
+= 1.7 =
+* New: Exclude posts in the top lists from select categories
+* Modified: Performance improvements
+* Modified: Better compatibility with the latest versions of WordPress. If you are using the sidebar widgets, please readd them to your theme under Appearance > Widgets
+
+= 1.6.3 =
+* Fixed: PHP errors on certain installs
+* New: Dutch language
+
+= 1.6.2 =
+* Fixed: Multiple rows being created for same ID
+* Fixed: Counter display
+* New: New button to clear the duplicate rows in the tables
+* Fixed: Top 10 should be lighter on the server now
+
+= 1.6.1 =
+* Turned the credit option to false by default. This setting won't effect current users.
+* Turned off borders on post thumbnails. You can customise the CSS class "tptn_thumb" to style the post thumbnail.
+* The plugin will now display a list of changes in the WordPress Admin > Plugins area whenever an update is available
+* Fixed: Display of caching plugin compliant daily top posts lists
+
+= 1.6 =
+* New: Added support for excerpts and detection of first image in the post
+* New: Daily posts are tracked using the blog time instead of server time
+* Fixed: On the first visit, display 1 instead of 0
+* Fixed: Fixed uninstall script
+
+= 1.5.3 =
+* New: You can now use HTML in the counter display
+
+= 1.5.2 =
+* Fixed: Fixed display of post thumbnails using postmeta field
+
+= 1.5.1 =
+* Fixed some compatibility issues with WordPress 2.9 and YARPP
+
+= 1.5 =
+* Added support for post thumbnails feature of WordPress 2.9
+
+= 1.4.1 =
+* Fixed compatibility with WordPress 2.9
+* Fixed XHTML validation errors in output code
+* Added buttons to reset post count of overall and daily posts
+
+= 1.4 =
+* Added localisation support
+* Separate options to display number of views on posts and pages
+
+= 1.3 =
+* "Daily Popular" can now be selected over user selectable number of days.
+* Option to turn off display of number of pageviews in popular posts list
+* Option to make "Daily Popular" list compatible with caching plugins
+* Posts > Top 10 page to view detailed list of popular posts
+
+= 1.2 =
+* Do not display Drafts in Related Posts anymore
+* Option to disable tracking author visits on their own posts
+* Display top posts for the current day
+
+= 1.1 =
+* Added the Popular Posts sidebar widget in your theme. Find it under <strong>Appearance > Widgets</strong>
+* Uses JavaScript by default to count. Hence, better support for different caching plugins
+* Change format to display count. Now, a single textarea instead of two text boxes.
+* Added WordPress 2.7 Dashboard widget to display popular posts on your Dashboard
+
+= 1.0.1 =
+* Release
+
+
