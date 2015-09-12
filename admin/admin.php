@@ -42,6 +42,10 @@ function tptn_options() {
 		$tptn_settings['tptn_styles'] = 'no_style';
 		update_option( 'ald_tptn_settings', $tptn_settings );
 	}
+	if ( ( true == $tptn_settings['include_default_style'] ) && ( 'left_thumbs' != $tptn_settings['tptn_styles'] ) ) {
+		$tptn_settings['tptn_styles'] = 'left_thumbs';
+		update_option( 'ald_tptn_settings', $tptn_settings );
+	}
 
 	/* Parse post types */
 	parse_str( $tptn_settings['post_types'], $post_types );
