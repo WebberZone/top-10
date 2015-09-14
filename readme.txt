@@ -58,7 +58,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 2. Top 10 options - Counter and Tracker options
 3. Top 10 options - Popular post list options
 4. Top 10 options - Thumbnail options
-5. Top 10 options - Custom styles
+5. Top 10 options - Styles
 6. Top 10 options - Maintenance
 7. Top 10 widget options
 8. Top 10 Meta box on the Edit Post screen
