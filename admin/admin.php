@@ -405,8 +405,8 @@ function tptn_adminmenu() {
 
 	$tptn_stats_screen = new Top_Ten_Statistics;
 
-	$plugin_page = add_submenu_page( 'tptn_options', __( "View Popular Posts", 'tptn' ), __( "View Popular Posts", 'tptn' ), 'manage_options', 'tptn_popular_posts', [ $tptn_stats_screen, 'plugin_settings_page' ] );
-	add_action( "load-$plugin_page", [ $tptn_stats_screen, 'screen_option' ] );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "View Popular Posts", 'tptn' ), __( "View Popular Posts", 'tptn' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
 }

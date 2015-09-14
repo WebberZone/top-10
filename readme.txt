@@ -171,6 +171,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.2.1 =
+
+* Bug fixes:
+	* Fixed array declaration to support PHP < 5.4
+
 = 2.2.0 =
 
 * Features:
@@ -187,7 +192,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Contributors & above can also update the visit count in the meta box if this is enabled for them
 	* Category exclusion now works via a filter function vs. multiple lookups, thereby reducing the number of database queries
 
-* Bugfixes:
+* Bug fixes:
 	* Potential bug when the $wp variable was not detected in rare situations
 	* In rare cases category exclusion failed when `term_id` didn't match `term_taxonomy_id`
 
@@ -210,7 +215,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Modified: Deprecated "Always display latest post count in the daily lists"
 	* Modified: timthumb has been deprecated. The script is no longer packaged within Top 10
 
-* Bugfixes:
+* Bug fixes:
 	* Fixed: Bug in tracking code when not using Ajax
 	* Fixed: Bug in admin column did not check for the blog_id
 	* Fixed: Bug where default thumbnail location was not correctly saved
@@ -222,7 +227,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Features:
 	* New: Options to choose if you want to delete the Top 10 options and/or data when deleting the plugin
 
-* Bugfixes:
+* Bug fixes:
 	* Fixed: Metabox update did not work properly in v2.0
 	* Fixed: Duplicate include files
 	* Modified: In the mySQL tables, the blog_id default value is set to 1
@@ -235,12 +240,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Enhancements:
 	* Modified: Posts are tracked hourly based on the time of the blog and not GMT. This was also the default behaviour of the counter in Top 10 v1.x
 
-* Bugfixes:
+* Bug fixes:
 	* Fixed: Default thumbnail location saved correctly on the Settings page.
 
 = 2.0.1 =
 
-* Bugfixes
+* Bug fixes
 	* 500/503 errors caused by 2.0.0
 
 = 2.0.0 =
@@ -256,7 +261,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Modified: Update and View counts now use query variables instead of external JavaScript files. Check http://goo.gl/yemvyM for sample functions to restore the old method
 	* Modified: Activating the default styles option will automatically set the thumbnail width and height to 65px, disable author and excerpt and enable crop mode for the thumbnails
 
-* Bugfixes:
+* Bug fixes:
 	* Fixed: Fix schedule overwrite for the cron job
 	* Fixed: Incorrect permission lookup in the metabox
 
@@ -265,7 +270,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.2.0 =
+= 2.2.1 =
 * New features. Deprecated functions. Upgrade highly recommended. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 

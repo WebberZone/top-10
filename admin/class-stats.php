@@ -134,13 +134,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$wpdb->delete(
 			"{$wpdb->base_prefix}top_ten",
-			[ 'postnumber' => $id ],
-			[ '%d' ]
+			array( 'postnumber' => $id ),
+			array( '%d' )
 		);
 		$wpdb->delete(
 			"{$wpdb->base_prefix}top_ten_daily",
-			[ 'postnumber' => $id ],
-			[ '%d' ]
+			array( 'postnumber' => $id ),
+			array( '%d' )
 		);
 	}
 
@@ -392,7 +392,7 @@ class Top_Ten_Statistics {
 	 * @return void
 	 */
 	public function __construct() {
-		add_filter( 'set-screen-option', [ __CLASS__, 'set_screen' ], 10, 3 );
+		add_filter( 'set-screen-option', array( __CLASS__, 'set_screen' ), 10, 3 );
 	}
 
 	public static function set_screen( $status, $option, $value ) {
