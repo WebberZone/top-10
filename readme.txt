@@ -171,7 +171,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 2.2.1 =
+= 2.2.2 =
 
 * Bug fixes:
 	* Fixed array declaration to support PHP < 5.4
