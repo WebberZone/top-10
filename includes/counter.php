@@ -129,10 +129,14 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  * @param	object	$wp	WordPress object
  */
 function tptn_parse_request( $wp ) {
-   	global $wpdb, $tptn_settings;
+	global $wpdb, $tptn_settings;
 
-   	if ( empty( $wp ) ) {
-   		global $wp;
+	if ( empty( $wp ) ) {
+		global $wp;
+	}
+
+	if ( ! isset( $wp->query_vars ) || ! is_array( $wp->query_vars ) ) {
+		return;
 	}
 
 	$table_name = $wpdb->base_prefix . "top_ten";
