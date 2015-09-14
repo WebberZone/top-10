@@ -4,7 +4,7 @@
 
 __Requires:__ 3.5
 
-__Tested up to:__ 4.2
+__Tested up to:__ 4.4
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -53,7 +53,7 @@ Visit [Top 10 on Transifex](https://www.transifex.com/wp-translations/top-10/).
 ![General Options](https://raw.github.com/WebberZone/top-10/master/assets/screenshot-1.png)
 _Top 10 settings page - General Options._
 
-For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/)
+For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
 
 ## Installation
 
@@ -83,4 +83,9 @@ For more screenshots visit the [WordPress plugin page](http://wordpress.org/plug
 Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/).
 
 If your question isn't listed there, please create a new post at the [WordPress.org support forum](http://wordpress.org/support/plugin/top-10). It is the fastest way to get support as I monitor the forums regularly. I also provide [premium *paid* support via email](https://webberzone.com/support/).
+
+
+## About this repository
+
+This GitHub repository always holds the latest development version of the plugin. If you're looking for an official WordPress release, you can find this on the [WordPress.org repository](http://wordpress.org/plugins/top-10). In addition to stable releases, latest beta versions are made available under [releases](https://github.com/WebberZone/top-10/releases).
 
