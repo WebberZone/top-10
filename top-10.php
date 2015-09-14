@@ -427,7 +427,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	$exclude_post_ids = apply_filters( "tptn_exclude_post_ids", $exclude_post_ids );
 
 	// Convert it back to string
-	$exclude_post_ids = implode( ",", $exclude_post_ids );
+	$exclude_post_ids = implode( ",", array_filter( $exclude_post_ids ) );
 
 	if ( '' != $exclude_post_ids ) {
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
