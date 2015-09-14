@@ -243,6 +243,18 @@ function tptn_pop_posts( $args ) {
 				$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
 			}
 
+			$tptn_list = '';
+			/**
+			 * Filter Formatted list item with link and and thumbnail.
+			 *
+			 * @since	2.2.0
+			 *
+			 * @param	string	$tptn_list
+			 * @param	object	$result	Object of the current post result
+			 * @param	array	$args	Array of arguments
+			 */
+			$output .= apply_filters( 'tptn_list', $tptn_list, $result, $args );
+
 			// Opening span created in tptn_list_link()
 			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
 				$output .= '</span>';
