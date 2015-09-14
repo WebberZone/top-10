@@ -33,11 +33,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 */
 	public function __construct() {
-		parent::__construct( [
+		parent::__construct( array(
 			'singular' => __( 'popular_post', 'tptn' ), //singular name of the listed records
 			'plural'   => __( 'popular_posts', 'tptn' ), //plural name of the listed records
 //			'ajax'     => false //does this table support ajax?
-		] );
+		) );
 	}
 
 	/**
@@ -273,7 +273,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	* @return array
 	*/
 	function get_columns() {
-		$columns = [
+		$columns = array(
 			'cb'			=> '<input type="checkbox" />',
 			'title'			=> __( 'Title', 'tptn' ),
 			'total_count'	=> __( 'Total visits', 'tptn' ),
@@ -281,7 +281,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'post_type'		=> __( 'Post type', 'tptn' ),
 			'author'		=> __( 'Author', 'tptn' ),
 			'date'			=> __( 'Date', 'tptn' ),
-		];
+		);
 
 		/**
 		 * Filter the columns displayed in the Posts list table.
@@ -313,9 +313,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions() {
-		$actions = [
+		$actions = array(
 			'bulk-delete' => __( 'Delete Count', 'tptn' )
-		];
+		);
 		return $actions;
 	}
 
@@ -335,11 +335,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$total_items  = self::record_count();
 
-		$this->set_pagination_args( [
+		$this->set_pagination_args( array(
 			'total_items' => $total_items, //WE have to calculate the total number of items
 			'per_page'    => $per_page, //WE have to determine how many items to show on a page
 			'total_pages' => ceil( $total_items / $per_page )   //WE have to calculate the total number of pages
-		] );
+		) );
 
 		$this->items = self::get_popular_posts( $per_page, $current_page );
 	}
@@ -436,11 +436,11 @@ class Top_Ten_Statistics {
 	 */
 	public function screen_option() {
 		$option = 'per_page';
-		$args   = [
+		$args   = array(
 			'label'   => __( 'Popular Posts', 'tptn' ),
 			'default' => 20,
 			'option'  => 'pop_posts_per_page'
-		];
+		);
 		add_screen_option( $option, $args );
 		$this->pop_posts_obj = new Top_Ten_Statistics_Table();
 	}
