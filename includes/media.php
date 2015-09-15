@@ -80,6 +80,16 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	$postid = $result->ID;
 	$post_title = $result->post_title;
 
+	/**
+	 * Filters the title and alt message for thumbnails.
+	 *
+	 * @since	2.3.0
+	 *
+	 * @param	string	$post_title		Post tile used as thumbnail alt and title
+	 * @param	object	$result			Post Object
+	 */
+	$post_title = apply_filters( 'tptn_thumb_title', $post_title, $result );
+
 	$output = '';
 	$postimage = '';
 	$pick = '';
