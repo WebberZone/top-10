@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.3.0-beta20150915
+ * Version: 	2.2.3
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * Text Domain:	tptn
@@ -93,6 +93,12 @@ add_action( 'init', 'tptn_lang_init' );
  */
 function tptn_pop_posts( $args ) {
 	global $wpdb, $id, $tptn_settings;
+
+	// if set, save $exclude_categories
+	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
+		$exclude_categories = explode( ",", $args['exclude_categories'] );
+		$args['strict_limit'] = FALSE;
+	}
 
 	$defaults = array(
 		'daily' => FALSE,
@@ -208,6 +214,19 @@ function tptn_pop_posts( $args ) {
 			$postid = apply_filters( 'tptn_post_id', $resultid );
 
 			$result = get_post( $postid );	// Let's get the Post using the ID
+
+			// Process the category exclusion if passed in the shortcode
+			if ( isset( $exclude_categories ) ) {
+
+				$categorys = get_the_category( $result->ID );	//Fetch categories of the plugin
+
+				$p_in_c = false;	// Variable to check if post exists in a particular category
+				foreach ( $categorys as $cat ) {	// Loop to check if post exists in excluded category
+					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false;
+					if ( $p_in_c ) break;	// Skip loop execution and go to the next step
+				}
+				if ( $p_in_c ) continue;	// Skip loop execution and go to the next step
+			}
 
 			$output .= tptn_before_list_item( $args, $result );
 

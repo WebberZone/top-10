@@ -171,6 +171,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.2.3 =
+
+* Bug fixes:
+	* Shortcode with "exclude_categories" argument works again
+
 = 2.2.2 =
 
 * Bug fixes:
@@ -270,7 +275,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.2.1 =
+= 2.2.3 =
 * New features. Deprecated functions. Upgrade highly recommended. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 
