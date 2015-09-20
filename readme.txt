@@ -1,4 +1,4 @@
-﻿=== Top 10  - Popular posts plugin for WordPress ===
+=== Top 10  - Popular posts plugin for WordPress ===
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics
 Contributors: Ajay
 Donate link: https://ajaydsouza.com/donate/
@@ -64,6 +64,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 8. Top 10 Meta box on the Edit Post screen
 9. WordPress Multisite: Import Top 10 v1.x counts
 10. Reset count and tools
+11. Top 10 - Popular posts view in Admin
 
 == Installation ==
 
