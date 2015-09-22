@@ -282,7 +282,7 @@ function echo_tptn_post_count( $echo = 1 ) {
     $nonce = wp_create_nonce( $nonce_action );
 
 	if ( $tptn_settings['dynamic_post_count'] ) {
-		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&amp;view_counter=1&_wpnonce=' . $nonce . '"></script></div>';
+		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
 	} else {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	}
