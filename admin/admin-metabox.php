@@ -101,9 +101,9 @@ function tptn_call_meta_box() {
 
 ?>
 	<p>
-		<label for="total_count"><strong><?php _e( "Visit count:", 'tptn' ); ?></strong></label>
+		<label for="total_count"><strong><?php _e( "Visit count:", 'top-10' ); ?></strong></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo $total_count ?>" style="width:100%" />
-		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", 'tptn' ); ?></em>
+		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", 'top-10' ); ?></em>
 	</p>
 
 <?php
@@ -112,29 +112,29 @@ function tptn_call_meta_box() {
 	$value = ( $results ) ? $results : '';
 ?>
 	<p>
-		<label for="disable_here"><strong><?php _e( "Disable Popular Posts display:", 'tptn' ); ?></strong></label>
+		<label for="disable_here"><strong><?php _e( "Disable Popular Posts display:", 'top-10' ); ?></strong></label>
 		<input type="checkbox" id="disable_here" name="disable_here" <?php if ( 1 == $disable_here ) { echo ' checked="checked" '; } ?> />
 		<br />
-		<em><?php _e( "If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.", 'tptn' ); ?></em>
+		<em><?php _e( "If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.", 'top-10' ); ?></em>
 	</p>
 
 	<p>
-		<label for="exclude_this_post"><strong><?php _e( "Exclude this post from the popular posts list:", 'tptn' ); ?></strong></label>
+		<label for="exclude_this_post"><strong><?php _e( "Exclude this post from the popular posts list:", 'top-10' ); ?></strong></label>
 		<input type="checkbox" id="exclude_this_post" name="exclude_this_post" <?php if ( 1 == $exclude_this_post ) { echo ' checked="checked" '; } ?> />
 		<br />
-		<em><?php _e( "If this is checked, then this post will be excluded from the popular posts list.", 'tptn' ); ?></em>
+		<em><?php _e( "If this is checked, then this post will be excluded from the popular posts list.", 'top-10' ); ?></em>
 	</p>
 
 	<p>
-		<label for="thumb_meta"><strong><?php _e( "Location of thumbnail:", 'tptn' ); ?></strong></label>
+		<label for="thumb_meta"><strong><?php _e( "Location of thumbnail:", 'top-10' ); ?></strong></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
-		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'tptn' ); ?></em>
-		<em><?php _e( "The URL above is saved in the meta field:", 'tptn' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'top-10' ); ?></em>
+		<em><?php _e( "The URL above is saved in the meta field:", 'top-10' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
 	</p>
 
 	<p>
 		<?php if ( function_exists( 'tptn_add_viewed_count' ) ) { ?>
-			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'tptn' ), "Contextual Related Posts" ); ?></em>
+			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), "Contextual Related Posts" ); ?></em>
 		<?php } ?>
 	</p>
 

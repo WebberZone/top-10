@@ -38,9 +38,9 @@ function tptn_manage( $daily = 0 ) {
 <div class="wrap">
 	<h2>
 		<?php if ( ! $daily ) {
-			_e( 'Popular Posts', 'tptn' );
+			_e( 'Popular Posts', 'top-10' );
 		} else {
-			_e( 'Daily Popular Posts', 'tptn' );
+			_e( 'Daily Popular Posts', 'top-10' );
 		} ?>
 	</h2>
 	<div id="poststuff">

@@ -236,7 +236,7 @@ function tptn_author( $args, $result ) {
 	 */
 	$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
 
-	$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'tptn' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+	$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'top-10' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
 
 	/**
 	 * Filter the text with the author details.

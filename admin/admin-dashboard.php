@@ -59,15 +59,15 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 	$output .= '<p style="text-align:center">';
 
 	if ( $daily ) {
-		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( "View all daily popular posts", 'tptn' ) . '</a>';
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( "View all daily popular posts", 'top-10' ) . '</a>';
 	} else {
-		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=total_count&order=desc' ) . '">' . __( "View all popular posts", 'tptn' ) . '</a>';
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=total_count&order=desc' ) . '">' . __( "View all popular posts", 'top-10' ) . '</a>';
 	}
 
 	$output .= '</p>';
 
 	$output .= '<p style="text-align:center;border-top: #000 1px solid">';
-	$output .= sprintf( __( 'Popular posts by <a href="%s" target="_blank">Top 10 plugin</a>', 'tptn' ), esc_url( 'https://webberzone.com/plugins/top-10/' ) );
+	$output .= sprintf( __( 'Popular posts by <a href="%s" target="_blank">Top 10 plugin</a>', 'top-10' ), esc_url( 'https://webberzone.com/plugins/top-10/' ) );
 	$output .= '</p>';
 	$output .= '</div>';
 
@@ -106,12 +106,12 @@ function tptn_pop_dashboard_setup() {
 	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
 		wp_add_dashboard_widget(
 			'tptn_pop_dashboard',
-			__( 'Popular Posts', 'tptn' ),
+			__( 'Popular Posts', 'top-10' ),
 			'tptn_pop_dashboard'
 		);
 		wp_add_dashboard_widget(
 			'tptn_pop_daily_dashboard',
-			__( 'Daily Popular Posts', 'tptn' ),
+			__( 'Daily Popular Posts', 'top-10' ),
 			'tptn_pop_daily_dashboard'
 		);
 	}
