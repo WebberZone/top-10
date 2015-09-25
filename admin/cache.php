@@ -17,7 +17,7 @@ function tptn_ajax_clearcache() {
 
 	exit( json_encode( array(
 		'success' => 1,
-		'message' => __( 'Top 10 cache has been cleared', 'tptn' ),
+		'message' => __( 'Top 10 cache has been cleared', 'top-10' ),
 	) ) );
 }
 add_action( 'wp_ajax_tptn_clear_cache', 'tptn_ajax_clearcache' );

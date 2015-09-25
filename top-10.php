@@ -14,12 +14,12 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.2.3
+ * Version: 	2.2.4-beta1
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
- * Text Domain:	tptn
  * License: 	GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:	top-10
  * Domain Path:	/languages
  * GitHub Plugin URI: https://github.com/ajaydsouza/top-10/
  */
@@ -160,7 +160,7 @@ function tptn_pop_posts( $args ) {
 	$results = get_tptn_pop_posts( $args );
 
 	if ( $args['posts_only'] ) {	// Return the array of posts only if the variable is set
-		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'tptn' ) );
+		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'top-10' ) );
 		return $results;
 	}
 
@@ -292,7 +292,7 @@ function tptn_pop_posts( $args ) {
 			$output .= tptn_before_list_item( $args, $result );
 
 			$output .= sprintf(
-				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', 'tptn' ),
+				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', 'top-10' ),
 				esc_url( 'https://webberzone.com/plugins/top-10/' ),
 				$target_attribute
 			);
@@ -638,9 +638,9 @@ add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
 function tptn_default_options() {
 	global $tptn_url;
 
-	$title = __( '<h3>Popular Posts</h3>', 'tptn' );
-	$title_daily = __( '<h3>Daily Popular</h3>', 'tptn' );
-	$blank_output_text = __( 'No top posts yet', 'tptn' );
+	$title = __( '<h3>Popular Posts</h3>', 'top-10' );
+	$title_daily = __( '<h3>Daily Popular</h3>', 'top-10' );
+	$blank_output_text = __( 'No top posts yet', 'top-10' );
 	$thumb_default = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) . '/default.png';
 
 	// get relevant post types
@@ -1121,19 +1121,19 @@ function ald_more_reccurences( $schedules ) {
 	// add a 'weekly' interval
 	$schedules['weekly'] = array(
 		'interval' => WEEK_IN_SECONDS,
-		'display' => __( 'Once Weekly', 'tptn' )
+		'display' => __( 'Once Weekly', 'top-10' )
 	);
 	$schedules['fortnightly'] = array(
 		'interval' => 2 * WEEK_IN_SECONDS,
-		'display' => __( 'Once Fortnightly', 'tptn' )
+		'display' => __( 'Once Fortnightly', 'top-10' )
 	);
 	$schedules['monthly'] = array(
 		'interval' => 30 * DAY_IN_SECONDS,
-		'display' => __( 'Once Monthly', 'tptn' )
+		'display' => __( 'Once Monthly', 'top-10' )
 	);
 	$schedules['quarterly'] = array(
 		'interval' => 90 * DAY_IN_SECONDS,
-		'display' => __( 'Once quarterly', 'tptn' )
+		'display' => __( 'Once quarterly', 'top-10' )
 	);
 	return $schedules;
 }

@@ -23,7 +23,7 @@ function tptn_shortcode( $atts, $content = null ) {
 			'daily' => 0,
 			'is_shortcode' => 1,
 		)
-	), $atts, 'tptn' );
+	), $atts, 'top-10' );
 
 	return tptn_pop_posts( $atts );
 }

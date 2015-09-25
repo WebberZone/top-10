@@ -27,13 +27,13 @@ function tptn_column( $cols ) {
 
 	if ( ( current_user_can('manage_options') ) || ( $tptn_settings['show_count_non_admins'] ) ) {
 		if ( $tptn_settings['pv_in_admin'] ) {
-			$cols['tptn_total'] = __( 'Total Views', 'tptn' );
+			$cols['tptn_total'] = __( 'Total Views', 'top-10' );
 		}
 		if ( $tptn_settings['pv_in_admin'] ) {
-			$cols['tptn_daily'] = __( "Today's Views", 'tptn' );
+			$cols['tptn_daily'] = __( "Today's Views", 'top-10' );
 		}
 		if ( $tptn_settings['pv_in_admin'] ) {
-			$cols['tptn_both'] = __( 'Views', 'tptn' );
+			$cols['tptn_both'] = __( 'Views', 'top-10' );
 		}
 	}
 	return $cols;

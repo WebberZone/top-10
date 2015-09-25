@@ -187,16 +187,16 @@ function tptn_options() {
 		tptn_cache_delete();
 
 		/* Echo a success message */
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully. If enabled, the cache has been cleared.', 'tptn' ) . '</p>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully. If enabled, the cache has been cleared.', 'top-10' ) . '</p>';
 
 		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
-			$str .= '<p>'. __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'tptn' ) . '</p>';
+			$str .= '<p>'. __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'top-10' ) . '</p>';
 		}
 		if ( 'text_only' == $tptn_settings['tptn_styles'] ) {
-			$str .= '<p>'. __( 'Text Only style selected. Thumbnails will not be displayed.', 'tptn' ) . '</p>';
+			$str .= '<p>'. __( 'Text Only style selected. Thumbnails will not be displayed.', 'top-10' ) . '</p>';
 		}
 		if ( 'tptn_thumbnail' != $tptn_settings['thumb_size'] ) {
-			$str .= '<p>'. sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %d x %d.', 'tptn' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
+			$str .= '<p>'. sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %d x %d.', 'top-10' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
 		}
 
 		$str .= '</div>';
@@ -211,21 +211,21 @@ function tptn_options() {
 		update_option( 'ald_tptn_settings', $tptn_settings );
 		tptn_disable_run();
 
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options set to Default.', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Options set to Default.', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
 	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 popular posts reset', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 popular posts reset', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
 	/* Truncate daily posts table */
 	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( true );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 daily popular posts reset', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 daily popular posts reset', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
@@ -233,7 +233,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Duplicate rows cleaned from tables', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Duplicate rows cleaned from tables', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
@@ -241,7 +241,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_merge_blogids( true );
 		tptn_merge_blogids( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Post counts across blog IDs 0 and 1 have been merged', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
@@ -254,11 +254,11 @@ function tptn_options() {
 		if ( isset( $_POST['cron_on'] ) ) {
 			$tptn_settings['cron_on'] = true;
 			tptn_enable_run( $tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence'] );
-			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance enabled / modified', 'tptn' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance enabled / modified', 'top-10' ) .'</p></div>';
 		} else {
 			$tptn_settings['cron_on'] = false;
 			tptn_disable_run();
-			$str = '<div id="message" class="updated fade"><p>'. __( 'Scheduled maintenance disabled', 'tptn' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>'. __( 'Scheduled maintenance disabled', 'top-10' ) .'</p></div>';
 		}
 		update_option( 'ald_tptn_settings', $tptn_settings );
 		$tptn_settings = tptn_read_options();
@@ -297,7 +297,7 @@ function tptn_options() {
 		update_site_option( 'top_ten_mu_tables_sel_blog_ids', array_unique( array_merge( $top_ten_mu_tables_sel_blog_ids, get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() ) ) ) );
 
 
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Counts from selected sites have been imported.', 'tptn' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>'. __( 'Counts from selected sites have been imported.', 'top-10' ) .'</p></div>';
 		echo $str;
 	}
 
@@ -322,7 +322,7 @@ function tptn_options() {
 			$sql = substr( $sql, 0, -2 );
 
 			$wpdb->query( $sql );
-			$str = '<div id="message" class="updated fade"><p>'. __( 'Selected tables have been deleted. Note that only imported tables have been deleted.', 'tptn' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>'. __( 'Selected tables have been deleted. Note that only imported tables have been deleted.', 'top-10' ) .'</p></div>';
 			echo $str;
 		}
 	}
@@ -339,28 +339,28 @@ function tptn_options() {
  */
 function tptn_admin_side() {
 ?>
-    <div id="donatediv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'tptn' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Support the development', 'tptn' ); ?></span></h3>
+    <div id="donatediv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+      <h3 class='hndle'><span><?php _e( 'Support the development', 'top-10' ); ?></span></h3>
       <div class="inside">
 		<div id="donate-form">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_xclick">
 			<input type="hidden" name="business" value="donate@ajaydsouza.com">
 			<input type="hidden" name="lc" value="IN">
-			<input type="hidden" name="item_name" value="<?php _e( 'Donation for Top 10', 'tptn' ); ?>">
+			<input type="hidden" name="item_name" value="<?php _e( 'Donation for Top 10', 'top-10' ); ?>">
 			<input type="hidden" name="item_number" value="tptn_admin">
-			<strong><?php _e( 'Enter amount in USD:', 'tptn' ); ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
+			<strong><?php _e( 'Enter amount in USD:', 'top-10' ); ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
 			<input type="hidden" name="currency_code" value="USD">
 			<input type="hidden" name="button_subtype" value="services">
 			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
-			<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php _e( 'Send your donation to the author of Top 10', 'tptn' ); ?>">
+			<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php _e( 'Send your donation to the author of Top 10', 'top-10' ); ?>">
 			<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 			</form>
 		</div>
       </div>
     </div>
-    <div id="followdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'tptn' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Follow me', 'tptn' ); ?></span></h3>
+    <div id="followdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+      <h3 class='hndle'><span><?php _e( 'Follow me', 'top-10' ); ?></span></h3>
       <div class="inside">
 		<div id="follow-us">
 			<iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fajaydsouzacom&amp;width=292&amp;height=62&amp;colorscheme=light&amp;show_faces=false&amp;border_color&amp;stream=false&amp;header=true&amp;appId=113175385243" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
@@ -369,18 +369,18 @@ function tptn_admin_side() {
 		</div>
       </div>
     </div>
-    <div id="qlinksdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'tptn' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Quick links', 'tptn' ); ?></span></h3>
+    <div id="qlinksdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+      <h3 class='hndle'><span><?php _e( 'Quick links', 'top-10' ); ?></span></h3>
       <div class="inside">
         <div id="quick-links">
 			<ul>
-				<li><a href="https://webberzone.com/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', 'tptn' ); ?></a></li>
-				<li><a href="https://github.com/ajaydsouza/top-10" target="_blank"><?php _e( 'Top 10 Github page', 'tptn' ); ?></a></li>
-				<li><a href="https://webberzone.com/plugins/" target="_blank"><?php _e( 'Other plugins', 'tptn' ); ?></a></li>
-				<li><a href="https://wordpress.org/plugins/top-10/faq/" target="_blank"><?php _e( 'FAQ', 'tptn' ); ?></a></li>
-				<li><a href="https://wordpress.org/support/plugin/top-10" target="_blank"><?php _e( 'Support', 'tptn' ); ?></a></li>
-				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank"><?php _e( 'Reviews', 'tptn' ); ?></a></li>
-				<li><a href="https://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", 'tptn' ); ?></a></li>
+				<li><a href="https://webberzone.com/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', 'top-10' ); ?></a></li>
+				<li><a href="https://github.com/ajaydsouza/top-10" target="_blank"><?php _e( 'Top 10 Github page', 'top-10' ); ?></a></li>
+				<li><a href="https://webberzone.com/plugins/" target="_blank"><?php _e( 'Other plugins', 'top-10' ); ?></a></li>
+				<li><a href="https://wordpress.org/plugins/top-10/faq/" target="_blank"><?php _e( 'FAQ', 'top-10' ); ?></a></li>
+				<li><a href="https://wordpress.org/support/plugin/top-10" target="_blank"><?php _e( 'Support', 'top-10' ); ?></a></li>
+				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank"><?php _e( 'Reviews', 'top-10' ); ?></a></li>
+				<li><a href="https://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", 'top-10' ); ?></a></li>
 			</ul>
         </div>
       </div>
@@ -397,15 +397,15 @@ function tptn_admin_side() {
  */
 function tptn_adminmenu() {
 
-	$plugin_page = add_menu_page( __( "Top 10 Settings", 'tptn' ), __( "Top 10", 'tptn' ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
+	$plugin_page = add_menu_page( __( "Top 10 Settings", 'top-10' ), __( "Top 10", 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
 	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
-	$plugin_page = add_submenu_page( 'tptn_options', __( "Top 10 Settings", 'tptn' ), __( "Top 10 Settings", 'tptn' ), 'manage_options', 'tptn_options', 'tptn_options' );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "Top 10 Settings", 'top-10' ), __( "Top 10 Settings", 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options' );
 	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
 	$tptn_stats_screen = new Top_Ten_Statistics;
 
-	$plugin_page = add_submenu_page( 'tptn_options', __( "View Popular Posts", 'tptn' ), __( "View Popular Posts", 'tptn' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	$plugin_page = add_submenu_page( 'tptn_options', __( "View Popular Posts", 'top-10' ), __( "View Popular Posts", 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
@@ -525,7 +525,7 @@ function tptn_plugin_actions_links( $links ) {
 
 	return array_merge(
 		array(
-			'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __( 'Settings', 'tptn' ) . '</a>'
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __( 'Settings', 'top-10' ) . '</a>'
 		),
 		$links
 	);
@@ -548,8 +548,8 @@ function tptn_plugin_actions( $links, $file ) {
 
 	// create link
 	if ( $file == $plugin ) {
-		$links[] = '<a href="https://webberzone.com/support/">' . __( 'Support', 'tptn' ) . '</a>';
-		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'tptn' ) . '</a>';
+		$links[] = '<a href="https://webberzone.com/support/">' . __( 'Support', 'top-10' ) . '</a>';
+		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'top-10' ) . '</a>';
 	}
 	return $links;
 }

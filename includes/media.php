@@ -60,15 +60,15 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// Issue notice for deprecated arguments
 	if ( isset( $args['thumb_timthumb'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb argument has been deprecated', 'tptn' ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb argument has been deprecated', 'top-10' ) );
 	}
 
 	if ( isset( $args['thumb_timthumb_q'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb_q argument has been deprecated', 'tptn' ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'thumb_timthumb_q argument has been deprecated', 'top-10' ) );
 	}
 
 	if ( isset( $args['filter'] ) ) {
-		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', 'tptn' ) );
+		_deprecated_argument( __FUNCTION__, '2.1', __( 'filter argument has been deprecated', 'top-10' ) );
 	}
 
 	if ( is_int( $args['postid'] ) ) {

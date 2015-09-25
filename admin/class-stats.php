@@ -34,8 +34,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => __( 'popular_post', 'tptn' ), //singular name of the listed records
-			'plural'   => __( 'popular_posts', 'tptn' ), //plural name of the listed records
+			'singular' => __( 'popular_post', 'top-10' ), //singular name of the listed records
+			'plural'   => __( 'popular_posts', 'top-10' ), //plural name of the listed records
 //			'ajax'     => false //does this table support ajax?
 		) );
 	}
@@ -159,7 +159,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * Text displayed when no post data is available
 	 */
 	public function no_items() {
-		_e( 'No popular posts available.', 'tptn' );
+		_e( 'No popular posts available.', 'top-10' );
 	}
 
 
@@ -208,9 +208,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$delete_nonce = wp_create_nonce( 'tptn_delete_entry' );
 
 		$actions = array(
-			'view' => sprintf( '<a href="%s" target="_blank">' . __( 'View', 'tptn' ) . '</a>', get_permalink( $item['ID'] ) ),
-			'edit' => sprintf( '<a href="%s">' . __( 'Edit', 'tptn' ) . '</a>', get_edit_post_link( $item['ID'] ) ),
-			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'tptn' ) . '</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['ID'] ), $delete_nonce ),
+			'view' => sprintf( '<a href="%s" target="_blank">' . __( 'View', 'top-10' ) . '</a>', get_permalink( $item['ID'] ) ),
+			'edit' => sprintf( '<a href="%s">' . __( 'Edit', 'top-10' ) . '</a>', get_edit_post_link( $item['ID'] ) ),
+			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'top-10' ) . '</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['ID'] ), $delete_nonce ),
 		);
 
 		//Return the title contents
@@ -232,7 +232,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_date( $item ) {
 
-		$t_time = get_the_time( __( 'Y/m/d g:i:s a', 'tptn' ) );
+		$t_time = get_the_time( __( 'Y/m/d g:i:s a', 'top-10' ) );
 		$m_time = $item['post_date'];
 		$time = get_post_time( 'G', true, $item['ID'] );
 
@@ -275,12 +275,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'			=> '<input type="checkbox" />',
-			'title'			=> __( 'Title', 'tptn' ),
-			'total_count'	=> __( 'Total visits', 'tptn' ),
-			'daily_count'	=> __( 'Daily visits', 'tptn' ),
-			'post_type'		=> __( 'Post type', 'tptn' ),
-			'author'		=> __( 'Author', 'tptn' ),
-			'date'			=> __( 'Date', 'tptn' ),
+			'title'			=> __( 'Title', 'top-10' ),
+			'total_count'	=> __( 'Total visits', 'top-10' ),
+			'daily_count'	=> __( 'Daily visits', 'top-10' ),
+			'post_type'		=> __( 'Post type', 'top-10' ),
+			'author'		=> __( 'Author', 'top-10' ),
+			'date'			=> __( 'Date', 'top-10' ),
 		);
 
 		/**
@@ -314,7 +314,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'bulk-delete' => __( 'Delete Count', 'tptn' )
+			'bulk-delete' => __( 'Delete Count', 'top-10' )
 		);
 		return $actions;
 	}
@@ -354,7 +354,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr( $_REQUEST['_wpnonce'] );
 			if ( ! wp_verify_nonce( $nonce, 'tptn_delete_entry' ) ) {
-				die( __( 'Are you sure you want to do this', 'tptn' ) );
+				die( __( 'Are you sure you want to do this', 'top-10' ) );
 			} else {
 				self::delete_post_count( absint( $_GET['post'] ) );
 			}
@@ -405,7 +405,7 @@ class Top_Ten_Statistics {
 	public function plugin_settings_page() {
 		?>
 		<div class="wrap">
-			<h1><?php printf( _x( "%s Popular Posts", 'Plugin name', 'tptn' ), "Top 10" ); ?></h1>
+			<h1><?php printf( _x( "%s Popular Posts", 'Plugin name', 'top-10' ), "Top 10" ); ?></h1>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
@@ -437,7 +437,7 @@ class Top_Ten_Statistics {
 	public function screen_option() {
 		$option = 'per_page';
 		$args   = array(
-			'label'   => __( 'Popular Posts', 'tptn' ),
+			'label'   => __( 'Popular Posts', 'top-10' ),
 			'default' => 20,
 			'option'  => 'pop_posts_per_page'
 		);
