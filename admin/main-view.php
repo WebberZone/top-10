@@ -345,6 +345,17 @@ if ( ! defined( 'WPINC' ) ) {
 								<textarea class="wickEnabled:MYCUSTOMFLOATER" cols="50" rows="3" wrap="virtual" name="exclude_cat_slugs" style="width:100%"><?php echo ( stripslashes( $tptn_settings['exclude_cat_slugs'] ) ); ?></textarea>
 								<p class="description"><?php _e( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options', 'top-10' ); ?></p>
 							</div>
+							<p class="description highlight">
+								<?php
+									_e( 'Excluded category IDs are:', 'top-10' );
+									echo ' ' . $tptn_settings['exclude_categories'];
+								?>
+							</p>
+							<p class="description">
+								<?php
+									_e( 'These might differ from the IDs visible in the Categories page which use the <code>term_id</code>. Top 10 uses the <code>term_taxonomy_id</code> which is unique to this taxonomy.', 'top-10' );
+								?>
+							</p>
 						</td>
 					</tr>
 					<tr>
