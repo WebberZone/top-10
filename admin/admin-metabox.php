@@ -21,17 +21,17 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since	1.9.10
  *
- * @param	text	$post_type	Post type
- * @param	object	$post		Post object
+ * @param	text   $post_type  Post type
+ * @param	object $post       Post object
  */
 function tptn_add_meta_box( $post_type, $post ) {
 	global $tptn_settings;
 
 	// If metaboxes are disabled, then exit
-    if ( ! $tptn_settings['show_metabox'] ) return;
+	if ( ! $tptn_settings['show_metabox'] ) { return; }
 
 	// If current user isn't an admin and we're restricting metaboxes to admins only, then exit
-	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) return;
+	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) { return; }
 
 	$args = array(
 	   'public'   => true,
@@ -70,7 +70,7 @@ add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
 function tptn_call_meta_box() {
 	global $wpdb, $post, $tptn_settings;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . 'top_ten';
 
 	// Add an nonce field so we can check for it later.
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
@@ -101,9 +101,9 @@ function tptn_call_meta_box() {
 
 ?>
 	<p>
-		<label for="total_count"><strong><?php _e( "Visit count:", 'top-10' ); ?></strong></label>
+		<label for="total_count"><strong><?php _e( 'Visit count:', 'top-10' ); ?></strong></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo $total_count ?>" style="width:100%" />
-		<em><?php _e( "Enter a number above to update the visit count. Leaving the above box blank will set the count to zero", 'top-10' ); ?></em>
+		<em><?php _e( 'Enter a number above to update the visit count. Leaving the above box blank will set the count to zero', 'top-10' ); ?></em>
 	</p>
 
 <?php
@@ -112,29 +112,29 @@ function tptn_call_meta_box() {
 	$value = ( $results ) ? $results : '';
 ?>
 	<p>
-		<label for="disable_here"><strong><?php _e( "Disable Popular Posts display:", 'top-10' ); ?></strong></label>
+		<label for="disable_here"><strong><?php _e( 'Disable Popular Posts display:', 'top-10' ); ?></strong></label>
 		<input type="checkbox" id="disable_here" name="disable_here" <?php if ( 1 == $disable_here ) { echo ' checked="checked" '; } ?> />
 		<br />
-		<em><?php _e( "If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.", 'top-10' ); ?></em>
+		<em><?php _e( 'If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.', 'top-10' ); ?></em>
 	</p>
 
 	<p>
-		<label for="exclude_this_post"><strong><?php _e( "Exclude this post from the popular posts list:", 'top-10' ); ?></strong></label>
+		<label for="exclude_this_post"><strong><?php _e( 'Exclude this post from the popular posts list:', 'top-10' ); ?></strong></label>
 		<input type="checkbox" id="exclude_this_post" name="exclude_this_post" <?php if ( 1 == $exclude_this_post ) { echo ' checked="checked" '; } ?> />
 		<br />
-		<em><?php _e( "If this is checked, then this post will be excluded from the popular posts list.", 'top-10' ); ?></em>
+		<em><?php _e( 'If this is checked, then this post will be excluded from the popular posts list.', 'top-10' ); ?></em>
 	</p>
 
 	<p>
-		<label for="thumb_meta"><strong><?php _e( "Location of thumbnail:", 'top-10' ); ?></strong></label>
+		<label for="thumb_meta"><strong><?php _e( 'Location of thumbnail:', 'top-10' ); ?></strong></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
 		<em><?php _e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'top-10' ); ?></em>
-		<em><?php _e( "The URL above is saved in the meta field:", 'top-10' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
+		<em><?php _e( 'The URL above is saved in the meta field:', 'top-10' ); ?></em><strong><?php echo $tptn_settings['thumb_meta']; ?></strong>
 	</p>
 
 	<p>
 		<?php if ( function_exists( 'tptn_add_viewed_count' ) ) { ?>
-			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), "Contextual Related Posts" ); ?></em>
+			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); ?></em>
 		<?php } ?>
 	</p>
 
@@ -158,31 +158,31 @@ function tptn_save_meta_box( $post_id ) {
 
 	$tptn_post_meta = array();
 
-	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . 'top_ten';
 
-    // Bail if we're doing an auto save
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	// Bail if we're doing an auto save
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
 
-    // if our nonce isn't there, or we can't verify it, bail
-    if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tptn_meta_box_nonce'], 'tptn_meta_box' ) ) return;
+	// if our nonce isn't there, or we can't verify it, bail
+	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tptn_meta_box_nonce'], 'tptn_meta_box' ) ) { return; }
 
-    // if our current user can't edit this post, bail
-    if ( ! current_user_can( 'edit_posts' ) ) return;
+	// if our current user can't edit this post, bail
+	if ( ! current_user_can( 'edit_posts' ) ) { return; }
 
 	// Update the posts view count
 	if ( isset( $_POST['total_count'] ) ) {
-    	$total_count = intval( $_POST['total_count'] );
+		$total_count = intval( $_POST['total_count'] );
 		$blog_id = get_current_blog_id();
 
-    	if ( 0 <> $total_count ) {
+		if ( 0 <> $total_count ) {
 
 			$tt = $wpdb->query( $wpdb->prepare(
-					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
-					$post_id,
-					$total_count,
-					$blog_id,
-					$total_count
-				) );
+				"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
+				$post_id,
+				$total_count,
+				$blog_id,
+				$total_count
+			) );
 		} else {
 			$resultscount = $wpdb->query( $wpdb->prepare(
 				"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
@@ -192,10 +192,10 @@ function tptn_save_meta_box( $post_id ) {
 		}
 	}
 
-    // Update the thumbnail URL
-    if ( isset( $_POST['thumb_meta'] ) ) {
-    	$thumb_meta = $_POST['thumb_meta'] == '' ? '' : sanitize_text_field( $_POST['thumb_meta'] );
-    }
+	// Update the thumbnail URL
+	if ( isset( $_POST['thumb_meta'] ) ) {
+		$thumb_meta = $_POST['thumb_meta'] == '' ? '' : sanitize_text_field( $_POST['thumb_meta'] );
+	}
 
 	$tptn_post_meta = get_post_meta( $post_id, $tptn_settings['thumb_meta'], true );
 
@@ -238,7 +238,7 @@ function tptn_save_meta_box( $post_id ) {
 
 	$tptn_post_meta_filtered = array_filter( $tptn_post_meta );
 
-    /**** Now we can start saving ****/
+	/**** Now we can start saving ****/
 	if ( empty( $tptn_post_meta_filtered ) ) {	// Checks if all the array items are 0 or empty
 		delete_post_meta( $post_id, 'tptn_post_meta' );	// Delete the post meta if no options are set
 	} else {

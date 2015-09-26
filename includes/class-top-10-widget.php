@@ -29,7 +29,7 @@ class Top_Ten_Widget extends WP_Widget {
 		parent::__construct(
 			'widget_tptn_pop', // Base ID
 			__( 'Popular Posts [Top 10]', 'top-10' ), // Name
-			array( 'description' => __( 'Display popular posts', 'top-10' ), ) // Args
+			array( 'description' => __( 'Display popular posts', 'top-10' ) ) // Args
 		);
 	}
 
@@ -78,8 +78,8 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'daily' ); ?>" name="<?php echo $this->get_field_name( 'daily' ); ?>">
-			  <option value="overall" <?php if ( 'overall' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Overall', 'top-10' ); ?></option>
-			  <option value="daily" <?php if ( 'daily' == $daily ) echo 'selected="selected"' ?>><?php _e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
+			  <option value="overall" <?php if ( 'overall' == $daily ) { echo 'selected="selected"'; } ?>><?php _e( 'Overall', 'top-10' ); ?></option>
+			  <option value="daily" <?php if ( 'daily' == $daily ) { echo 'selected="selected"'; } ?>><?php _e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -93,37 +93,37 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'disp_list_count' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'disp_list_count' ); ?>" name="<?php echo $this->get_field_name( 'disp_list_count' ); ?>" type="checkbox" <?php if ( $disp_list_count ) echo 'checked="checked"' ?> /> <?php _e( 'Show count?', 'top-10' ); ?>
+			<input id="<?php echo $this->get_field_id( 'disp_list_count' ); ?>" name="<?php echo $this->get_field_name( 'disp_list_count' ); ?>" type="checkbox" <?php if ( $disp_list_count ) { echo 'checked="checked"'; } ?> /> <?php _e( 'Show count?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_excerpt' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" type="checkbox" <?php if ( $show_excerpt ) echo 'checked="checked"' ?> /> <?php _e( 'Show excerpt?', 'top-10' ); ?>
+			<input id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" type="checkbox" <?php if ( $show_excerpt ) { echo 'checked="checked"'; } ?> /> <?php _e( 'Show excerpt?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_author' ); ?>">
-			<input id="<?php echo $this->get_field_id( 'show_author' ); ?>" name="<?php echo $this->get_field_name( 'show_author' ); ?>" type="checkbox" <?php if ( $show_author ) echo 'checked="checked"' ?> /> <?php _e( 'Show author?', 'top-10' ); ?>
+			<input id="<?php echo $this->get_field_id( 'show_author' ); ?>" name="<?php echo $this->get_field_name( 'show_author' ); ?>" type="checkbox" <?php if ( $show_author ) { echo 'checked="checked"'; } ?> /> <?php _e( 'Show author?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_date' ); ?>">
-				<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) echo 'checked="checked"' ?> /> <?php _e( 'Show date?', 'top-10' ); ?>
+				<input id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>" type="checkbox" <?php if ( $show_date ) { echo 'checked="checked"'; } ?> /> <?php _e( 'Show date?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<?php _e( 'Thumbnail options', 'top-10' ); ?>: <br />
 			<select class="widefat" id="<?php echo $this->get_field_id( 'post_thumb_op' ); ?>" name="<?php echo $this->get_field_name( 'post_thumb_op' ); ?>">
-			  <option value="inline" <?php if ( 'inline' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, before title','top-10' ); ?></option>
-			  <option value="after" <?php if ( 'after' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Thumbnails inline, after title','top-10' ); ?></option>
-			  <option value="thumbs_only" <?php if ( 'thumbs_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'Only thumbnails, no text','top-10' ); ?></option>
-			  <option value="text_only" <?php if ( 'text_only' == $post_thumb_op ) echo 'selected="selected"' ?>><?php _e( 'No thumbnails, only text.','top-10' ); ?></option>
+			  <option value="inline" <?php if ( 'inline' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php _e( 'Thumbnails inline, before title','top-10' ); ?></option>
+			  <option value="after" <?php if ( 'after' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php _e( 'Thumbnails inline, after title','top-10' ); ?></option>
+			  <option value="thumbs_only" <?php if ( 'thumbs_only' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php _e( 'Only thumbnails, no text','top-10' ); ?></option>
+			  <option value="text_only" <?php if ( 'text_only' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php _e( 'No thumbnails, only text.','top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_height' ); ?>">
 				<?php _e( 'Thumbnail height', 'top-10' ); ?>:
-				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="text" value="<?php echo esc_attr($thumb_height); ?>" />
+				<input class="widefat" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="text" value="<?php echo esc_attr( $thumb_height ); ?>" />
 			</label>
 		</p>
 		<p>
@@ -137,7 +137,7 @@ class Top_Ten_Widget extends WP_Widget {
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
 
 				<label>
-					<input id="<?php echo $this->get_field_id( 'post_types' ); ?>" name="<?php echo $this->get_field_name( 'post_types' ); ?>[]" type="checkbox" value="<?php echo $wp_post_type; ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) echo 'checked="checked"' ?> />
+					<input id="<?php echo $this->get_field_id( 'post_types' ); ?>" name="<?php echo $this->get_field_name( 'post_types' ); ?>[]" type="checkbox" value="<?php echo $wp_post_type; ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) { echo 'checked="checked"'; } ?> />
 					<?php echo $wp_post_type; ?>
 				</label>
 				<br />
@@ -216,7 +216,7 @@ class Top_Ten_Widget extends WP_Widget {
 		// Get the post meta
 		$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
 
-		if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) return;
+		if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) { return; }
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
 
@@ -228,7 +228,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
 		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
 
-		$daily = ( isset( $instance['daily'] ) && ( "daily" == $instance['daily'] ) ) ? true : false;
+		$daily = ( isset( $instance['daily'] ) && ( 'daily' == $instance['daily'] ) ) ? true : false;
 
 		$output = $args['before_widget'];
 		$output .= $args['before_title'] . $title . $args['after_title'];
@@ -282,7 +282,6 @@ class Top_Ten_Widget extends WP_Widget {
 
 /**
  * Initialise the widget.
- *
  */
 function tptn_register_widget() {
 	register_widget( 'Top_Ten_Widget' );

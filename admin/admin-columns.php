@@ -19,13 +19,13 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since	1.2
  *
- * @param	array	$cols	Array of all columns on posts page
+ * @param	array $cols   Array of all columns on posts page
  * @return	array	Modified array of columns
  */
 function tptn_column( $cols ) {
 	global $tptn_settings;
 
-	if ( ( current_user_can('manage_options') ) || ( $tptn_settings['show_count_non_admins'] ) ) {
+	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
 		if ( $tptn_settings['pv_in_admin'] ) {
 			$cols['tptn_total'] = __( 'Total Views', 'top-10' );
 		}
@@ -47,8 +47,8 @@ add_filter( 'manage_pages_columns', 'tptn_column' );
  *
  * @since	1.2
  *
- * @param	string		$column_name	Name of the column
- * @param	int|string	$id				Post ID
+ * @param	string     $column_name    Name of the column
+ * @param	int|string $id             Post ID
  */
 function tptn_value( $column_name, $id ) {
 	global $wpdb, $tptn_settings;
@@ -57,7 +57,7 @@ function tptn_value( $column_name, $id ) {
 
 	// Add Total count
 	if ( ( $column_name == 'tptn_total' ) && ( $tptn_settings['pv_in_admin'] ) ) {
-		$table_name = $wpdb->base_prefix . "top_ten";
+		$table_name = $wpdb->base_prefix . 'top_ten';
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
@@ -66,7 +66,7 @@ function tptn_value( $column_name, $id ) {
 
 	// Now process daily count
 	if ( ( $column_name == 'tptn_daily' ) && ( $tptn_settings['pv_in_admin'] ) ) {
-		$table_name = $wpdb->base_prefix . "top_ten_daily";
+		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
@@ -89,12 +89,12 @@ function tptn_value( $column_name, $id ) {
 
 	// Now process both
 	if ( ( $column_name == 'tptn_both' ) && ( $tptn_settings['pv_in_admin'] ) ) {
-		$table_name = $wpdb->base_prefix . "top_ten";
+		$table_name = $wpdb->base_prefix . 'top_ten';
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
-		$cntaccess = number_format_i18n((($resultscount) ? $resultscount->cntaccess : 0));
+		$cntaccess = number_format_i18n( (($resultscount) ? $resultscount->cntaccess : 0) );
 
-		$table_name = $wpdb->base_prefix . "top_ten_daily";
+		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
@@ -124,7 +124,7 @@ add_action( 'manage_pages_custom_column', 'tptn_value', 10, 2 );
  *
  * @since	1.9.8.2
  *
- * @param	array	$cols	Array with column names
+ * @param	array $cols   Array with column names
  * @return	array	Filtered columns array
  */
 function tptn_column_register_sortable( $cols ) {
@@ -146,8 +146,8 @@ add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable'
  *
  * @since	1.9.8.2
  *
- * @param	array	$clauses	Lookup clauses
- * @param	object	$wp_query	WP Query object
+ * @param	array  $clauses    Lookup clauses
+ * @param	object $wp_query   WP Query object
  * @return	array	Filtered clauses
  */
 function tptn_column_clauses( $clauses, $wp_query ) {
@@ -156,15 +156,15 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' == $wp_query->query['orderby'] ) {
 
-		$table_name = $wpdb->base_prefix . "top_ten";
+		$table_name = $wpdb->base_prefix . 'top_ten';
 		$clauses['join'] .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
-		$clauses['orderby']  = "cntaccess ";
-		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get('order') ) ) ? 'ASC' : 'DESC';
+		$clauses['orderby']  = 'cntaccess ';
+		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 	}
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_daily' == $wp_query->query['orderby'] ) {
 
-		$table_name = $wpdb->base_prefix . "top_ten_daily";
+		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
 		$daily_range = $tptn_settings['daily_range'];
 		$hour_range = $tptn_settings['hour_range'];
@@ -183,7 +183,7 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 		$clauses['where'] .= " AND {$table_name}.dp_date >= '$from_date' ";
 		$clauses['groupby'] = "{$table_name}.postnumber";
 		$clauses['orderby']  = "SUM({$table_name}.cntaccess) ";
-		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get('order') ) ) ? 'ASC' : 'DESC';
+		$clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 	}
 
 	return $clauses;
@@ -195,7 +195,6 @@ add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
  * Output CSS for width of new column.
  *
  * @since	1.2
- *
  */
 function tptn_admin_css() {
 ?>

@@ -30,26 +30,25 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 	/**
 	 * Class constructor.
-	 *
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => __( 'popular_post', 'top-10' ), //singular name of the listed records
-			'plural'   => __( 'popular_posts', 'top-10' ), //plural name of the listed records
-//			'ajax'     => false //does this table support ajax?
+			'singular' => __( 'popular_post', 'top-10' ), // singular name of the listed records
+			'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records
+			// 'ajax'     => false //does this table support ajax?
 		) );
 	}
 
 	/**
 	 * Retrieve the Top 10 posts
 	 *
-	 * @param	int		$per_page
-	 * @param	int		$page_number
-	 * @param	bool	$daily
+	 * @param	int  $per_page
+	 * @param	int  $page_number
+	 * @param	bool $daily
 	 *
 	 * @return	array	Array of popular posts
 	 */
-	public static function get_popular_posts( $per_page = 5, $page_number = 1, $daily = FALSE ) {
+	public static function get_popular_posts( $per_page = 5, $page_number = 1, $daily = false ) {
 
 		global $wpdb, $tptn_settings;
 
@@ -66,20 +65,19 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		/* Start creating the SQL */
-		$table_name_daily = $wpdb->base_prefix . "top_ten_daily AS ttd";
-		$table_name = $wpdb->base_prefix . "top_ten AS ttt";
+		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
+		$table_name = $wpdb->base_prefix . 'top_ten AS ttt';
 
 		// Fields to return
-		$fields[] = "ID";
-		$fields[] = "post_title as title";
-		$fields[] = "post_type";
-		$fields[] = "post_date";
-		$fields[] = "post_author";
-		$fields[] = "ttt.cntaccess as total_count";
-		$fields[] = "SUM(ttd.cntaccess) as daily_count";
+		$fields[] = 'ID';
+		$fields[] = 'post_title as title';
+		$fields[] = 'post_type';
+		$fields[] = 'post_date';
+		$fields[] = 'post_author';
+		$fields[] = 'ttt.cntaccess as total_count';
+		$fields[] = 'SUM(ttd.cntaccess) as daily_count';
 
-		$fields = implode( ", ", $fields );
-
+		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause
 		$join = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
@@ -91,14 +89,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		", $from_date );
 
 		// Create the base WHERE clause
-		$where = $wpdb->prepare( " AND ttt.blog_id = %d ", $blog_id );				// Posts need to be from the current blog only
+		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
 		$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
 
 		// Create the base GROUP BY clause
-		$groupby = " ID ";
+		$groupby = ' ID ';
 
 		// Create the base ORDER BY clause
-		$orderby = " total_count DESC ";
+		$orderby = ' total_count DESC ';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$orderby = esc_sql( $_REQUEST['orderby'] );
@@ -106,7 +104,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		// Create the base LIMITS clause
-		$limits = $wpdb->prepare( " LIMIT %d, %d ", ( $page_number - 1 ) * $per_page, $per_page );
+		$limits = $wpdb->prepare( ' LIMIT %d, %d ', ( $page_number - 1 ) * $per_page, $per_page );
 
 		if ( ! empty( $groupby ) ) {
 			$groupby = " GROUP BY {$groupby} ";
@@ -166,7 +164,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Render a column when no column specific method exist.
 	 *
-	 * @param array $item
+	 * @param array  $item
 	 * @param string $column_name
 	 *
 	 * @return mixed
@@ -179,7 +177,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			case 'daily_count':
 				return intval( $item[ $column_name ] );
 			default:
-				return print_r( $item, true ); //Show the whole array for troubleshooting purposes
+				return print_r( $item, true ); // Show the whole array for troubleshooting purposes
 		}
 	}
 
@@ -192,8 +190,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			/*$1%s*/ "bulk-delete",  //Let's simply repurpose the table's singular label ("movie")
-			/*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
+			/*$1%s*/ 'bulk-delete',  // Let's simply repurpose the table's singular label ("movie")
+			/*$2%s*/ $item['ID']                // The value of the checkbox should be the record's id
 		);
 	}
 
@@ -213,7 +211,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'top-10' ) . '</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['ID'] ), $delete_nonce ),
 		);
 
-		//Return the title contents
+		// Return the title contents
 		return sprintf( '<a href="%4$s">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
 			/*$1%s*/ $item['title'],
 			/*$2%s*/ $item['ID'],
@@ -261,17 +259,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		printf( '<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
 				'post_type' => $item['post_type'],
-				'author' => $author_info->ID
+				'author' => $author_info->ID,
 			), 'edit.php' ) ),
 			$author_name
 		);
 	}
 
 	/**
-	* Associative array of columns
-	*
-	* @return array
-	*/
+	 * Associative array of columns
+	 *
+	 * @return array
+	 */
 	function get_columns() {
 		$columns = array(
 			'cb'			=> '<input type="checkbox" />',
@@ -314,7 +312,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'bulk-delete' => __( 'Delete Count', 'top-10' )
+			'bulk-delete' => __( 'Delete Count', 'top-10' ),
 		);
 		return $actions;
 	}
@@ -336,9 +334,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$total_items  = self::record_count();
 
 		$this->set_pagination_args( array(
-			'total_items' => $total_items, //WE have to calculate the total number of items
-			'per_page'    => $per_page, //WE have to determine how many items to show on a page
-			'total_pages' => ceil( $total_items / $per_page )   //WE have to calculate the total number of pages
+			'total_items' => $total_items, // WE have to calculate the total number of items
+			'per_page'    => $per_page, // WE have to determine how many items to show on a page
+			'total_pages' => ceil( $total_items / $per_page ),// WE have to calculate the total number of pages
 		) );
 
 		$this->items = self::get_popular_posts( $per_page, $current_page );
@@ -349,7 +347,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function process_bulk_action() {
 
-		//Detect when a bulk action is being triggered...
+		// Detect when a bulk action is being triggered...
 		if ( 'delete' === $this->current_action() ) {
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr( $_REQUEST['_wpnonce'] );
@@ -405,7 +403,7 @@ class Top_Ten_Statistics {
 	public function plugin_settings_page() {
 		?>
 		<div class="wrap">
-			<h1><?php printf( _x( "%s Popular Posts", 'Plugin name', 'top-10' ), "Top 10" ); ?></h1>
+			<h1><?php printf( _x( '%s Popular Posts', 'Plugin name', 'top-10' ), 'Top 10' ); ?></h1>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
@@ -439,7 +437,7 @@ class Top_Ten_Statistics {
 		$args   = array(
 			'label'   => __( 'Popular Posts', 'top-10' ),
 			'default' => 20,
-			'option'  => 'pop_posts_per_page'
+			'option'  => 'pop_posts_per_page',
 		);
 		add_screen_option( $option, $args );
 		$this->pop_posts_obj = new Top_Ten_Statistics_Table();

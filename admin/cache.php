@@ -9,7 +9,6 @@
  * Function to clear the Top 10 Cache with Ajax.
  *
  * @since	2.2.0
- *
  */
 function tptn_ajax_clearcache() {
 
@@ -55,7 +54,7 @@ function tptn_cache_get_keys() {
 /**
  * Delete the Top 10 cache.
  *
- * @param	array	$transients
+ * @param	array $transients
  */
 function tptn_cache_delete( $transients = array() ) {
 

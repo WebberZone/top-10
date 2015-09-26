@@ -8,7 +8,7 @@
  * @link      https://webberzone.com
  * @copyright 2008-2015 Ajay D'Souza
  */
-Header( "content-type: application/x-javascript" );
+Header( 'content-type: application/x-javascript' );
 
 // Build the wp-config.php path from a plugin/theme
 $wp_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
@@ -16,8 +16,8 @@ $wp_config_filename = '/wp-load.php';
 
 // Check if the file exists in the root or one level up
 if ( ! file_exists( $wp_config_path . $wp_config_filename ) ) {
-    // Just in case the user may have placed wp-config.php one more level up from the root
-    $wp_config_filename = dirname( $wp_config_path ) . $wp_config_filename;
+	// Just in case the user may have placed wp-config.php one more level up from the root
+	$wp_config_filename = dirname( $wp_config_path ) . $wp_config_filename;
 }
 // Require the wp-config.php file
 require( $wp_config_filename );

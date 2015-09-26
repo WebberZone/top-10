@@ -11,13 +11,13 @@
  *
  * @since	1.0
  *
- * @param	string	$content	Post content
+ * @param	string $content    Post content
  * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content ) {
 	global $post, $wpdb, $single, $tptn_url, $tptn_path, $tptn_settings;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . 'top_ten';
 
 	$home_url = home_url( '/' );
 
@@ -90,7 +90,6 @@ add_filter( 'the_content', 'tptn_add_viewed_count' );
  * Enqueue Scripts.
  *
  * @since	1.9.7
- *
  */
 function tptn_enqueue_scripts() {
 	global $tptn_settings;
@@ -107,11 +106,11 @@ add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_script
  *
  * @since	2.0.0
  *
- * @param	array	$vars	Query variables array
+ * @param	array $vars   Query variables array
  * @return	array	$Query variables array with Top 10 parameters appended
  */
 function tptn_query_vars( $vars ) {
-	//add these to the list of queryvars that WP gathers
+	// add these to the list of queryvars that WP gathers
 	$vars[] = 'top_ten_id';
 	$vars[] = 'top_ten_blog_id';
 	$vars[] = 'activate_counter';
@@ -126,7 +125,7 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  *
  * @since	2.0.0
  *
- * @param	object	$wp	WordPress object
+ * @param	object $wp WordPress object
  */
 function tptn_parse_request( $wp ) {
 	global $wpdb, $tptn_settings;
@@ -139,8 +138,8 @@ function tptn_parse_request( $wp ) {
 		return;
 	}
 
-	$table_name = $wpdb->base_prefix . "top_ten";
-	$top_ten_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
 	$str = '';
 
 	if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) && $wp->query_vars['top_ten_id'] != '' ) {
@@ -155,7 +154,7 @@ function tptn_parse_request( $wp ) {
 
 				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '1', '%d') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) );
 
-				$str .= ( FALSE === $tt ) ? 'tte' : 'tt' . $tt;
+				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 			}
 
 			if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
@@ -164,13 +163,13 @@ function tptn_parse_request( $wp ) {
 
 				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
 
-				$str .= ( FALSE === $ttd ) ? ' ttde' : ' ttd' . $ttd;
+				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
-		Header( "content-type: application/x-javascript" );
+		Header( 'content-type: application/x-javascript' );
 		echo '<!-- ' . $str . ' -->';
 
-		//stop anything else from loading as it is not needed.
+		// stop anything else from loading as it is not needed.
 		exit;
 
 	} elseif ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'view_counter', $wp->query_vars ) && $wp->query_vars['top_ten_id'] != '' ) {
@@ -181,13 +180,12 @@ function tptn_parse_request( $wp ) {
 
 			$output = get_tptn_post_count( $id );
 
-			Header( "content-type: application/x-javascript" );
+			Header( 'content-type: application/x-javascript' );
 			echo 'document.write("' . $output . '")';
 
-			//stop anything else from loading as it is not needed.
+			// stop anything else from loading as it is not needed.
 			exit;
 		}
-
 	} else {
 		return;
 	}
@@ -199,7 +197,7 @@ add_action( 'parse_request', 'tptn_parse_request' );
  * Function to add the viewed count to the post content. Filters `the_content`.
  *
  * @since	1.0
- * @param	string	$content	Post content
+ * @param	string $content    Post content
  * @return	string	Filtered post content
  */
 function tptn_pc_content( $content ) {
@@ -215,13 +213,13 @@ function tptn_pc_content( $content ) {
 		return $content . echo_tptn_post_count( 0 );
 	} elseif ( ( is_page() ) && ( $tptn_settings['count_on_pages'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-    } elseif ( ( is_home() ) && ( $tptn_settings['add_to_home'] ) ) {
+	} elseif ( ( is_home() ) && ( $tptn_settings['add_to_home'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-    } elseif ( ( is_category() ) && ( $tptn_settings['add_to_category_archives'] ) ) {
+	} elseif ( ( is_category() ) && ( $tptn_settings['add_to_category_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-    } elseif ( ( is_tag() ) && ( $tptn_settings['add_to_tag_archives'] ) ) {
+	} elseif ( ( is_tag() ) && ( $tptn_settings['add_to_tag_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-    } elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $tptn_settings['add_to_archives'] ) ) {
+	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $tptn_settings['add_to_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
 	} else {
 		return $content;
@@ -235,7 +233,7 @@ add_filter( 'the_content', 'tptn_pc_content' );
  *
  * @since	1.9.8
  *
- * @param	string	$content	Post content
+ * @param	string $content    Post content
  * @return	string	Filtered post content
  */
 function tptn_rss_filter( $content ) {
@@ -244,10 +242,10 @@ function tptn_rss_filter( $content ) {
 	$id = intval( $post->ID );
 
 	if ( $tptn_settings['add_to_feed'] ) {
-        return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
-    } else {
-        return $content;
-    }
+		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
+	} else {
+		return $content;
+	}
 }
 add_filter( 'the_excerpt_rss', 'tptn_rss_filter' );
 add_filter( 'the_content_feed', 'tptn_rss_filter' );
@@ -279,7 +277,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	$id = intval( $post->ID );
 
 	$nonce_action = 'tptn-nonce-' . $id ;
-    $nonce = wp_create_nonce( $nonce_action );
+	$nonce = wp_create_nonce( $nonce_action );
 
 	if ( $tptn_settings['dynamic_post_count'] ) {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id='.$id.'&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
@@ -308,15 +306,15 @@ function echo_tptn_post_count( $echo = 1 ) {
  * Return the formatted post count for the supplied ID.
  *
  * @since	1.9.2
- * @param	int|string	$id			Post ID
- * @param	int|string	$blog_id	Blog ID
+ * @param	int|string $id         Post ID
+ * @param	int|string $blog_id    Blog ID
  * @return	int|string	Formatted post count
  */
-function get_tptn_post_count( $id = FALSE, $blog_id = FALSE ) {
+function get_tptn_post_count( $id = false, $blog_id = false ) {
 	global $wpdb, $tptn_settings;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
-	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
 	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );
@@ -325,31 +323,31 @@ function get_tptn_post_count( $id = FALSE, $blog_id = FALSE ) {
 	if ( $id > 0 ) {
 
 		// Total count per post
-		if ( ( false !== strpos( $count_disp_form, "%totalcount%" ) ) || ( false !== strpos( $count_disp_form_zero, "%totalcount%" ) ) ) {
+		if ( ( false !== strpos( $count_disp_form, '%totalcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%totalcount%' ) ) ) {
 			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
-				$count_disp_form_zero = str_replace( "%totalcount%", $totalcntaccess, $count_disp_form_zero );
+				$count_disp_form_zero = str_replace( '%totalcount%', $totalcntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( "%totalcount%", ( 0 == $totalcntaccess ? $totalcntaccess + 1 : $totalcntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%totalcount%', ( 0 == $totalcntaccess ? $totalcntaccess + 1 : $totalcntaccess ), $count_disp_form );
 			}
 		}
 
 		// Now process daily count
-		if ( ( false !== strpos( $count_disp_form, "%dailycount%" ) ) || ( false !== strpos( $count_disp_form_zero, "%dailycount%" ) ) ) {
+		if ( ( false !== strpos( $count_disp_form, '%dailycount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%dailycount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'daily' );
 			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
-				$count_disp_form_zero = str_replace( "%dailycount%", $cntaccess, $count_disp_form_zero );
+				$count_disp_form_zero = str_replace( '%dailycount%', $cntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( "%dailycount%", ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%dailycount%', ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
 			}
 		}
 
 		// Now process overall count
-		if ( ( false !== strpos( $count_disp_form, "%overallcount%" ) ) || ( false !== strpos( $count_disp_form_zero, "%overallcount%" ) ) ) {
+		if ( ( false !== strpos( $count_disp_form, '%overallcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%overallcount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'overall' );
 			if ( ( 0 == $cntaccess ) && ( ! is_singular() ) ) {
-				$count_disp_form_zero = str_replace( "%overallcount%", $cntaccess, $count_disp_form_zero );
+				$count_disp_form_zero = str_replace( '%overallcount%', $cntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( "%overallcount%", ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%overallcount%', ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
 			}
 		}
 
@@ -369,15 +367,15 @@ function get_tptn_post_count( $id = FALSE, $blog_id = FALSE ) {
  *
  * @since	1.9.8.5
  *
- * @param	mixed	$id 	Post ID
- * @param	string	$count	Which count to return? total, daily or overall
+ * @param	mixed  $id     Post ID
+ * @param	string $count  Which count to return? total, daily or overall
  * @return	int		Post count
  */
-function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FALSE ) {
+function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
 	global $wpdb, $tptn_settings;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
-	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	if ( empty( $blog_id ) ) {
 		$blog_id = get_current_blog_id();
@@ -407,7 +405,7 @@ function get_tptn_post_count_only( $id = FALSE, $count = 'total', $blog_id = FAL
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
 				break;
 			case 'overall':
-				$resultscount = $wpdb->get_row( "SELECT SUM(cntaccess) as sumCount FROM " . $table_name );
+				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sumCount FROM ' . $table_name );
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
 				break;
 		}

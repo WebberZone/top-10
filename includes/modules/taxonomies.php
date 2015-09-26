@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 1.0.0
  *
- * @param	mixed	$join
+ * @param	mixed $join
  * @return	string	Filtered tptn JOIN clause
  */
 function tptn_exclude_categories_join( $join ) {
@@ -39,7 +39,7 @@ add_filter( 'tptn_posts_join', 'tptn_exclude_categories_join' );
  *
  * @since 1.0.0
  *
- * @param	mixed	$where
+ * @param	mixed $where
  * @return	string	Filtered tptn WHERE clause
  */
 function tptn_exclude_categories_where( $where ) {
@@ -55,7 +55,7 @@ function tptn_exclude_categories_where( $where ) {
 
 		$sql = $where;
 
-        $sql .= " AND $wpdb->posts.ID NOT IN (
+		$sql .= " AND $wpdb->posts.ID NOT IN (
             SELECT object_id
             FROM $wpdb->term_relationships
             WHERE term_taxonomy_id IN ($terms)
