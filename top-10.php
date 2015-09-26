@@ -58,7 +58,7 @@ $tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = "5.0";
+$tptn_db_version = '5.0';
 
 
 /**
@@ -88,7 +88,7 @@ add_action( 'init', 'tptn_lang_init' );
  *
  * @since	1.5
  *
- * @param	mixed	$args	Arguments array
+ * @param	mixed $args   Arguments array
  * @return	array|string	Array of posts if posts_only = 0 or a formatted string if posts_only = 1
  */
 function tptn_pop_posts( $args ) {
@@ -96,18 +96,18 @@ function tptn_pop_posts( $args ) {
 
 	// if set, save $exclude_categories
 	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
-		$exclude_categories = explode( ",", $args['exclude_categories'] );
-		$args['strict_limit'] = FALSE;
+		$exclude_categories = explode( ',', $args['exclude_categories'] );
+		$args['strict_limit'] = false;
 	}
 
 	$defaults = array(
-		'daily' => FALSE,
-		'is_widget' => FALSE,
-		'is_shortcode' => FALSE,
-		'is_manual' => FALSE,
-		'echo' => FALSE,
-		'strict_limit' => FALSE,
-		'posts_only' => FALSE,
+		'daily' => false,
+		'is_widget' => false,
+		'is_shortcode' => false,
+		'is_manual' => false,
+		'echo' => false,
+		'strict_limit' => false,
+		'posts_only' => false,
 		'heading' => 1,
 	);
 
@@ -221,14 +221,16 @@ function tptn_pop_posts( $args ) {
 			// Process the category exclusion if passed in the shortcode
 			if ( isset( $exclude_categories ) ) {
 
-				$categorys = get_the_category( $result->ID );	//Fetch categories of the plugin
+				$categorys = get_the_category( $result->ID );	// Fetch categories of the plugin
 
 				$p_in_c = false;	// Variable to check if post exists in a particular category
 				foreach ( $categorys as $cat ) {	// Loop to check if post exists in excluded category
 					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false;
-					if ( $p_in_c ) break;	// Skip loop execution and go to the next step
+					if ( $p_in_c ) { break;	// Skip loop execution and go to the next step
+					}
 				}
-				if ( $p_in_c ) continue;	// Skip loop execution and go to the next step
+				if ( $p_in_c ) { continue;	// Skip loop execution and go to the next step
+				}
 			}
 
 			$output .= tptn_before_list_item( $args, $result );
@@ -351,7 +353,7 @@ function tptn_pop_posts( $args ) {
  *
  * @since	2.1.0
  *
- * @param	mixed	$args	Arguments list
+ * @param	mixed $args   Arguments list
  */
 function get_tptn_pop_posts( $args = array() ) {
 	global $wpdb, $id, $tptn_settings;
@@ -366,9 +368,9 @@ function get_tptn_pop_posts( $args = array() ) {
 	$match_fields = '';
 
 	$defaults = array(
-		'daily' => FALSE,
-		'strict_limit' => TRUE,
-		'posts_only' =>	FALSE,
+		'daily' => false,
+		'strict_limit' => true,
+		'posts_only' => false,
 	);
 
 	// Merge the $defaults array with the $tptn_settings array
@@ -378,9 +380,9 @@ function get_tptn_pop_posts( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	if ( $args['daily'] ) {
-		$table_name = $wpdb->base_prefix . "top_ten_daily";
+		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 	} else {
-		$table_name = $wpdb->base_prefix . "top_ten";
+		$table_name = $wpdb->base_prefix . 'top_ten';
 	}
 
 	$limit = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
@@ -412,26 +414,25 @@ function get_tptn_pop_posts( $args = array() ) {
 	 *
 	 * We're going to create a mySQL query that is fully extendable which would look something like this:
 	 * "SELECT $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits"
-	 *
 	 */
 
 	// Fields to return
-	$fields[] = "ID";
-	$fields[] = "postnumber";
-	$fields[] = "post_title";
-	$fields[] = "post_type";
-	$fields[] = "post_content";
-	$fields[] = "post_date";
-	$fields[] = "post_author";
-	$fields[] = ( $args['daily'] ) ? "SUM(cntaccess) as sumCount" : "cntaccess as sumCount";
+	$fields[] = 'ID';
+	$fields[] = 'postnumber';
+	$fields[] = 'post_title';
+	$fields[] = 'post_type';
+	$fields[] = 'post_content';
+	$fields[] = 'post_date';
+	$fields[] = 'post_author';
+	$fields[] = ( $args['daily'] ) ? 'SUM(cntaccess) as sumCount' : 'cntaccess as sumCount';
 
-	$fields = implode( ", ", $fields );
+	$fields = implode( ', ', $fields );
 
 	// Create the JOIN clause
 	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
 
 	// Create the base WHERE clause
-	$where .= $wpdb->prepare( " AND blog_id = %d ", $blog_id );				// Posts need to be from the current blog only
+	$where .= $wpdb->prepare( ' AND blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
 	$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
 
 	if ( $args['daily'] ) {
@@ -439,17 +440,17 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	// Convert exclude post IDs string to array so it can be filtered
-	$exclude_post_ids = explode( ",", $args['exclude_post_ids'] );
+	$exclude_post_ids = explode( ',', $args['exclude_post_ids'] );
 
 	/**
 	 * Filter exclude post IDs array.
 	 *
 	 * @param array   $exclude_post_ids  Array of post IDs.
 	 */
-	$exclude_post_ids = apply_filters( "tptn_exclude_post_ids", $exclude_post_ids );
+	$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids );
 
 	// Convert it back to string
-	$exclude_post_ids = implode( ",", array_filter( $exclude_post_ids ) );
+	$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
 
 	if ( '' != $exclude_post_ids ) {
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
@@ -463,14 +464,14 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// Create the base GROUP BY clause
 	if ( $args['daily'] ) {
-		$groupby = " postnumber ";
+		$groupby = ' postnumber ';
 	}
 
 	// Create the base ORDER BY clause
-	$orderby = " sumCount DESC ";
+	$orderby = ' sumCount DESC ';
 
 	// Create the base LIMITS clause
-	$limits .= $wpdb->prepare( " LIMIT %d ", $limit );
+	$limits .= $wpdb->prepare( ' LIMIT %d ', $limit );
 
 	/**
 	 * Filter the SELECT clause of the query.
@@ -499,7 +500,6 @@ function get_tptn_pop_posts( $args = array() ) {
 	 * @param string   $groupby  The GROUP BY clause of the query.
 	 */
 	$groupby = apply_filters( 'tptn_posts_groupby', $groupby );
-
 
 	/**
 	 * Filter the ORDER BY clause of the query.
@@ -557,9 +557,9 @@ function get_tptn_pop_posts( $args = array() ) {
  *
  * @since	1.0
  *
- * @param	mixed	$args	Arguments list
+ * @param	mixed $args   Arguments list
  */
-function tptn_show_pop_posts( $args = NULL ) {
+function tptn_show_pop_posts( $args = null ) {
 	if ( is_array( $args ) ) {
 		$args['manual'] = 1;
 	} else {
@@ -575,9 +575,9 @@ function tptn_show_pop_posts( $args = NULL ) {
  *
  * @since	1.2
  *
- * @param	mixed	$args	Arguments list
+ * @param	mixed $args   Arguments list
  */
-function tptn_show_daily_pop_posts( $args = NULL ) {
+function tptn_show_daily_pop_posts( $args = null ) {
 	if ( is_array( $args ) ) {
 		$args['daily'] = 1;
 		$args['manual'] = 1;
@@ -609,7 +609,6 @@ add_action( 'wp_head', 'tptn_header' );
 
 /**
  * Enqueue styles.
- *
  */
 function tptn_heading_styles() {
 	global $tptn_settings;
@@ -618,8 +617,7 @@ function tptn_heading_styles() {
 		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', __FILE__ ) );
 		wp_enqueue_style( 'tptn-style-left-thumbs' );
 
-
-        $custom_css = "
+		$custom_css = "
 img.tptn_thumb {
   width: {$tptn_settings['thumb_width']}px !important;
   height: {$tptn_settings['thumb_height']}px !important;
@@ -636,7 +634,6 @@ add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
 
 /**
  * Default Options.
- *
  */
 function tptn_default_options() {
 	global $tptn_url;
@@ -647,13 +644,13 @@ function tptn_default_options() {
 	$thumb_default = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) . '/default.png';
 
 	// get relevant post types
-	$args = array (
+	$args = array(
 		'public' => true,
-		'_builtin' => true
+		'_builtin' => true,
 	);
 	$post_types	= http_build_query( get_post_types( $args ), '', '&' );
 
-	$tptn_settings = array (
+	$tptn_settings = array(
 
 		/* General options */
 		'activate_daily' => true,	// Activate the daily count
@@ -667,7 +664,7 @@ function tptn_default_options() {
 		'uninstall_clean_options' => true,	// Cleanup options
 		'uninstall_clean_tables' => false,	// Cleanup tables
 		'show_metabox'	=> true,	// Show metabox to admins
-		'show_metabox_admins'	=>	false,	// Limit to admins as well
+		'show_metabox_admins'	=> false,	// Limit to admins as well
 		'show_credit' => false,			// Add link to plugin page of my blog in top posts list
 
 		/* Counter and tracker options */
@@ -773,14 +770,14 @@ function tptn_read_options() {
 	$tptn_settings = array_map( 'stripslashes', (array) get_option( 'ald_tptn_settings' ) );
 	unset( $tptn_settings[0] ); // produced by the (array) casting when there's nothing in the DB
 
-	foreach ( $defaults as $k=>$v ) {
-		if ( ! isset( $tptn_settings[$k] ) ) {
+	foreach ( $defaults as $k => $v ) {
+		if ( ! isset( $tptn_settings[ $k ] ) ) {
 			$tptn_settings[ $k ] = $v;
 			$tptn_settings_changed = true;
 		}
 	}
 	if ( $tptn_settings_changed == true ) {
-		update_option('ald_tptn_settings', $tptn_settings);
+		update_option( 'ald_tptn_settings', $tptn_settings );
 	}
 
 	/**
@@ -799,32 +796,32 @@ function tptn_read_options() {
  *
  * @since 1.9.10.1
  *
- * @param    boolean    $network_wide    True if WPMU superadmin uses
- *                                       "Network Activate" action, false if
- *                                       WPMU is disabled or plugin is
- *                                       activated on an individual blog.
+ * @param    boolean $network_wide    True if WPMU superadmin uses
+ *                                    "Network Activate" action, false if
+ *                                    WPMU is disabled or plugin is
+ *                                    activated on an individual blog.
  */
 function tptn_activation_hook( $network_wide ) {
-    global $wpdb;
+	global $wpdb;
 
-    if ( is_multisite() && $network_wide ) {
+	if ( is_multisite() && $network_wide ) {
 
-        // Get all blogs in the network and activate plugin on each one
-        $blog_ids = $wpdb->get_col( "
+		// Get all blogs in the network and activate plugin on each one
+		$blog_ids = $wpdb->get_col( "
         	SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0' AND deleted = '0'
 		" );
-        foreach ( $blog_ids as $blog_id ) {
-        	switch_to_blog( $blog_id );
+		foreach ( $blog_ids as $blog_id ) {
+			switch_to_blog( $blog_id );
 			tptn_single_activate();
 		}
 
-        // Switch back to the current blog
-        restore_current_blog();
+		// Switch back to the current blog
+		restore_current_blog();
 
-    } else {
-        tptn_single_activate();
-    }
+	} else {
+		tptn_single_activate();
+	}
 }
 register_activation_hook( __FILE__, 'tptn_activation_hook' );
 
@@ -839,12 +836,12 @@ function tptn_single_activate() {
 
 	$tptn_settings = tptn_read_options();
 
-	$table_name = $wpdb->base_prefix . "top_ten";
-	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
 
-		$sql = "CREATE TABLE " . $table_name . " (
+		$sql = 'CREATE TABLE ' . $table_name . " (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
@@ -854,12 +851,12 @@ function tptn_single_activate() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 
-		add_site_option( "tptn_db_version", $tptn_db_version );
+		add_site_option( 'tptn_db_version', $tptn_db_version );
 	}
 
 	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) {
 
-		$sql = "CREATE TABLE " . $table_name_daily . " (
+		$sql = 'CREATE TABLE ' . $table_name_daily . " (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			dp_date DATETIME NOT NULL,
@@ -870,11 +867,11 @@ function tptn_single_activate() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 
-		add_site_option( "tptn_db_version", $tptn_db_version );
+		add_site_option( 'tptn_db_version', $tptn_db_version );
 	}
 
 	// Upgrade table code
-	$installed_ver = get_site_option( "tptn_db_version" );
+	$installed_ver = get_site_option( 'tptn_db_version' );
 
 	if ( $installed_ver != $tptn_db_version ) {
 
@@ -884,29 +881,29 @@ function tptn_single_activate() {
 
 			case '4.0':
 			case 4.0:
-				$wpdb->query( "ALTER TABLE " . $table_name . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
 				break;
 
 			default:
 
-				$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY postnumber bigint(20) " );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY postnumber bigint(20) " );
-				$wpdb->query( "ALTER TABLE " . $table_name . " MODIFY cntaccess bigint(20) " );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY cntaccess bigint(20) " );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " MODIFY dp_date DATETIME " );
-				$wpdb->query( "ALTER TABLE " . $table_name . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) " );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) " );
-				$wpdb->query( "ALTER TABLE " . $table_name . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( "ALTER TABLE " . $table_name_daily . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( "UPDATE " . $table_name . " SET blog_id = 1 WHERE blog_id = 0 " );
-				$wpdb->query( "UPDATE " . $table_name_daily . " SET blog_id = 1 WHERE blog_id = 0 " );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY postnumber bigint(20) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY postnumber bigint(20) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY cntaccess bigint(20) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY cntaccess bigint(20) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY dp_date DATETIME ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( 'UPDATE ' . $table_name . ' SET blog_id = 1 WHERE blog_id = 0 ' );
+				$wpdb->query( 'UPDATE ' . $table_name_daily . ' SET blog_id = 1 WHERE blog_id = 0 ' );
 
 		}
 
 		$wpdb->show_errors();
 
-		update_site_option( "tptn_db_version", $tptn_db_version );
+		update_site_option( 'tptn_db_version', $tptn_db_version );
 	}
 
 }
@@ -917,7 +914,7 @@ function tptn_single_activate() {
  *
  * @since 2.0.0
  *
- * @param    int    $blog_id    ID of the new blog.
+ * @param    int $blog_id    ID of the new blog.
  */
 function tptn_activate_new_site( $blog_id ) {
 
@@ -938,15 +935,15 @@ add_action( 'wpmu_new_blog', 'tptn_activate_new_site' );
  *
  * @since 2.0.0
  *
- * @param    array    $tables    Tables in the blog.
+ * @param    array $tables    Tables in the blog.
  */
 function tptn_on_delete_blog( $tables ) {
-    global $wpdb;
+	global $wpdb;
 
-	$tables[] = $wpdb->prefix . "top_ten";
-	$tables[] = $wpdb->prefix . "top_ten_daily";
+	$tables[] = $wpdb->prefix . 'top_ten';
+	$tables[] = $wpdb->prefix . 'top_ten_daily';
 
-    return $tables;
+	return $tables;
 }
 add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
 
@@ -957,11 +954,11 @@ add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
  * @since	1.9
  */
 function tptn_update_db_check() {
-    global $tptn_db_version, $network_wide;
+	global $tptn_db_version, $network_wide;
 
-    if ( get_site_option('tptn_db_version') != $tptn_db_version ) {
-        tptn_activation_hook( $network_wide );
-    }
+	if ( get_site_option( 'tptn_db_version' ) != $tptn_db_version ) {
+		tptn_activation_hook( $network_wide );
+	}
 }
 add_action( 'plugins_loaded', 'tptn_update_db_check' );
 
@@ -970,14 +967,14 @@ add_action( 'plugins_loaded', 'tptn_update_db_check' );
  * Function to delete all rows in the posts table.
  *
  * @since	1.3
- * @param	bool	$daily	Daily flag
+ * @param	bool $daily  Daily flag
  */
 function tptn_trunc_count( $daily = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
+	$table_name = $wpdb->base_prefix . 'top_ten';
 	if ( $daily ) {
-		$table_name .= "_daily";
+		$table_name .= '_daily';
 	}
 
 	$sql = "TRUNCATE TABLE $table_name";
@@ -989,8 +986,8 @@ function tptn_trunc_count( $daily = false ) {
  * Function to create an excerpt for the post.
  *
  * @since	1.6
- * @param	int			$id				Post ID
- * @param	int|string	$excerpt_length	Length of the excerpt in words
+ * @param	int        $id             Post ID
+ * @param	int|string $excerpt_length Length of the excerpt in words
  * @return	string 		Excerpt
  */
 function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
@@ -1028,21 +1025,21 @@ function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
  * Function to limit content by characters.
  *
  * @since	1.9.8
- * @param	string 	$content 	Content to be used to make an excerpt
- * @param	int 	$no_of_char	Maximum length of excerpt in characters
+ * @param	string $content    Content to be used to make an excerpt
+ * @param	int    $no_of_char Maximum length of excerpt in characters
  * @return 	string				Formatted content
  */
 function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
 	$content = strip_tags( $content );  // Remove CRLFs, leaving space in their wake
 
 	if ( ( $no_of_char > 0 ) && ( strlen( $content ) > $no_of_char ) ) {
-		$aWords = preg_split( "/[\s]+/", substr( $content, 0, $no_of_char ) );
+		$aWords = preg_split( '/[\s]+/', substr( $content, 0, $no_of_char ) );
 
 		// Break back down into a string of words, but drop the last one if it's chopped off
-		if ( substr( $content, $no_of_char, 1 ) == " " ) {
-		  $content = implode( " ", $aWords );
+		if ( substr( $content, $no_of_char, 1 ) == ' ' ) {
+			$content = implode( ' ', $aWords );
 		} else {
-		  $content = implode( " ", array_slice( $aWords, 0, -1 ) ) .'&hellip;';
+			$content = implode( ' ', array_slice( $aWords, 0, -1 ) ) .'&hellip;';
 		}
 	}
 
@@ -1066,7 +1063,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
 function tptn_cron() {
 	global $tptn_settings, $wpdb;
 
-	$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	$current_time = current_time( 'timestamp', 0 );
 	$from_date = strtotime( '-90 DAY' , $current_time );
@@ -1112,35 +1109,35 @@ function tptn_disable_run() {
 }
 
 // Let's declare this conditional function to add more schedules. It will be a generic function across all plugins that I develop
-if  ( ! function_exists( 'ald_more_reccurences' ) ) :
+if ( ! function_exists( 'ald_more_reccurences' ) ) :
 
-/**
- * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
- *
- * @param	array	Array of existing schedules
- * @return	array	Filtered array with new schedules
- */
-function ald_more_reccurences( $schedules ) {
-	// add a 'weekly' interval
-	$schedules['weekly'] = array(
+	/**
+	 * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
+	 *
+	 * @param	array	Array of existing schedules
+	 * @return	array	Filtered array with new schedules
+	 */
+	function ald_more_reccurences( $schedules ) {
+		// add a 'weekly' interval
+		$schedules['weekly'] = array(
 		'interval' => WEEK_IN_SECONDS,
-		'display' => __( 'Once Weekly', 'top-10' )
-	);
-	$schedules['fortnightly'] = array(
+		'display' => __( 'Once Weekly', 'top-10' ),
+		);
+		$schedules['fortnightly'] = array(
 		'interval' => 2 * WEEK_IN_SECONDS,
-		'display' => __( 'Once Fortnightly', 'top-10' )
-	);
-	$schedules['monthly'] = array(
+		'display' => __( 'Once Fortnightly', 'top-10' ),
+		);
+		$schedules['monthly'] = array(
 		'interval' => 30 * DAY_IN_SECONDS,
-		'display' => __( 'Once Monthly', 'top-10' )
-	);
-	$schedules['quarterly'] = array(
+		'display' => __( 'Once Monthly', 'top-10' ),
+		);
+		$schedules['quarterly'] = array(
 		'interval' => 90 * DAY_IN_SECONDS,
-		'display' => __( 'Once quarterly', 'top-10' )
-	);
-	return $schedules;
-}
-add_filter( 'cron_schedules', 'ald_more_reccurences' );
+		'display' => __( 'Once quarterly', 'top-10' ),
+		);
+		return $schedules;
+	}
+	add_filter( 'cron_schedules', 'ald_more_reccurences' );
 
 endif;
 
@@ -1149,7 +1146,7 @@ endif;
  * Get all image sizes.
  *
  * @since	2.0.0
- * @param	string	$size	Get specific image size
+ * @param	string $size   Get specific image size
  * @return	array	Image size names along with width, height and crop setting
  */
 function tptn_get_all_image_sizes( $size = '' ) {
@@ -1158,37 +1155,36 @@ function tptn_get_all_image_sizes( $size = '' ) {
 	/* Get the intermediate image sizes and add the full size to the array. */
 	$intermediate_image_sizes = get_intermediate_image_sizes();
 
-	foreach( $intermediate_image_sizes as $_size ) {
-        if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
+	foreach ( $intermediate_image_sizes as $_size ) {
+		if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
 
-            $sizes[ $_size ]['name'] = $_size;
-            $sizes[ $_size ]['width'] = get_option( $_size . '_size_w' );
-            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
-            $sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
+			$sizes[ $_size ]['name'] = $_size;
+			$sizes[ $_size ]['width'] = get_option( $_size . '_size_w' );
+			$sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+			$sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
 
 	        if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
 	            unset( $sizes[ $_size ] );
 	        }
+		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
 
-        } elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
-
-            $sizes[ $_size ] = array(
+			$sizes[ $_size ] = array(
 	            'name' => $_size,
-                'width' => $_wp_additional_image_sizes[ $_size ]['width'],
-                'height' => $_wp_additional_image_sizes[ $_size ]['height'],
-                'crop' => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
-            );
+				'width' => $_wp_additional_image_sizes[ $_size ]['width'],
+				'height' => $_wp_additional_image_sizes[ $_size ]['height'],
+				'crop' => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
+			);
 		}
 	}
 
 	/* Get only 1 size if found */
-    if ( $size ) {
-        if ( isset( $sizes[ $size ] ) ) {
+	if ( $size ) {
+		if ( isset( $sizes[ $size ] ) ) {
 			return $sizes[ $size ];
-        } else {
+		} else {
 			return false;
-        }
-    }
+		}
+	}
 
 	/**
 	 * Filters array of image sizes.
@@ -1239,18 +1235,19 @@ function tptn_object_id_cur_lang( $post_id ) {
 }
 
 
-/*----------------------------------------------------------------------------*
+/*
+ ----------------------------------------------------------------------------*
  * WordPress widget
  *----------------------------------------------------------------------------*/
 
 /**
  * Include Widget class.
- *
  */
 require_once( plugin_dir_path( __FILE__ ) . 'includes/class-top-10-widget.php' );
 
 
-/*----------------------------------------------------------------------------*
+/*
+ ----------------------------------------------------------------------------*
  * Top 10 modules
  *----------------------------------------------------------------------------*/
 
@@ -1262,7 +1259,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/exclusions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/taxonomies.php' );
 
 
-/*----------------------------------------------------------------------------*
+/*
+ ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
@@ -1278,7 +1276,8 @@ if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
 } // End admin.inc
 
-/*----------------------------------------------------------------------------*
+/*
+ ----------------------------------------------------------------------------*
  * Deprecated functions
  *----------------------------------------------------------------------------*/
 

@@ -22,19 +22,19 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since	1.3
  *
- * @param	bool	$daily	Switch for Daily or Overall popular posts
- * @param	int		$page	Which page of the lists are we on?
- * @param	int		$limit 	Maximum number of posts per page
- * @param	bool	$widget	Is this a WordPress widget?
+ * @param	bool $daily  Switch for Daily or Overall popular posts
+ * @param	int  $page   Which page of the lists are we on?
+ * @param	int  $limit  Maximum number of posts per page
+ * @param	bool $widget Is this a WordPress widget?
  * @return	Formatted list of popular posts
  */
-function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = FALSE ) {
+function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
 	global $wpdb, $tptn_settings;
 
-	$table_name = $wpdb->base_prefix . "top_ten";
-	if ( $daily ) $table_name .= "_daily";	// If we're viewing daily posts, set this to true
-
-	if ( ! $limit ) $limit = $tptn_settings['limit'];
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	if ( $daily ) { $table_name .= '_daily';	// If we're viewing daily posts, set this to true
+	}
+	if ( ! $limit ) { $limit = $tptn_settings['limit']; }
 
 	$results = get_tptn_pop_posts( array(
 		'posts_only'   => 1,
@@ -44,24 +44,24 @@ function tptn_pop_display( $daily = FALSE, $page = 0, $limit = FALSE, $widget = 
 		'limit'        => $limit,
 	) );
 
-	$output = '<div id="tptn_popular_posts' . ( $daily ? "_daily" : "" ) . '">';
+	$output = '<div id="tptn_popular_posts' . ( $daily ? '_daily' : '' ) . '">';
 
 	if ( $results ) {
-		$output .=   '<ul>';
+		$output .= '<ul>';
 		foreach ( $results as $result ) {
 			$output .= '<li><a href="' . get_permalink( $result['postnumber'] ) . '">' . get_the_title( $result['postnumber'] ) . '</a>';
 			$output .= ' (' . number_format_i18n( $result['sumCount'] ) . ')';
 			$output .= '</li>';
 		}
-		$output .=   '</ul>';
+		$output .= '</ul>';
 	}
 
 	$output .= '<p style="text-align:center">';
 
 	if ( $daily ) {
-		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( "View all daily popular posts", 'top-10' ) . '</a>';
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( 'View all daily popular posts', 'top-10' ) . '</a>';
 	} else {
-		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=total_count&order=desc' ) . '">' . __( "View all popular posts", 'top-10' ) . '</a>';
+		$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=total_count&order=desc' ) . '">' . __( 'View all popular posts', 'top-10' ) . '</a>';
 	}
 
 	$output .= '</p>';

@@ -17,22 +17,22 @@ if ( ! defined( 'WPINC' ) ) {
 
 	$tptn_settings = get_option( 'ald_tptn_settings' );
 
-	if ( true == $tptn_settings['uninstall_clean_tables'] ) {
+if ( true == $tptn_settings['uninstall_clean_tables'] ) {
 
-		$table_name = $wpdb->base_prefix . "top_ten";
-		$table_name_daily = $wpdb->base_prefix . "top_ten_daily";
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-		$wpdb->query( "DROP TABLE $table_name" );
-		$wpdb->query( "DROP TABLE $table_name_daily" );
-		delete_option( 'tptn_db_version' );
+	$wpdb->query( "DROP TABLE $table_name" );
+	$wpdb->query( "DROP TABLE $table_name_daily" );
+	delete_option( 'tptn_db_version' );
 
+}
+
+if ( true == $tptn_settings['uninstall_clean_options'] ) {
+
+	if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
+		wp_clear_scheduled_hook( 'tptn_cron_hook' );
 	}
-
-	if ( true == $tptn_settings['uninstall_clean_options'] ) {
-
-		if ( wp_next_scheduled('tptn_cron_hook') ) {
-			wp_clear_scheduled_hook('tptn_cron_hook');
-		}
-		delete_option( 'ald_tptn_settings' );
-	}
+	delete_option( 'ald_tptn_settings' );
+}
 

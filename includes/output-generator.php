@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
+ * @param	array $args   Array of arguments
  * @return	string	Space separated list of link attributes
  */
 function tptn_link_attributes( $args ) {
@@ -56,7 +56,7 @@ function tptn_link_attributes( $args ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
+ * @param	array $args   Array of arguments
  * @return	string	Space separated list of link attributes
  */
 function tptn_heading_title( $args ) {
@@ -85,7 +85,7 @@ function tptn_heading_title( $args ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
+ * @param	array $args   Array of arguments
  * @return	string	Space separated list of link attributes
  */
 function tptn_before_list( $args ) {
@@ -110,7 +110,7 @@ function tptn_before_list( $args ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
+ * @param	array $args   Array of arguments
  * @return	string	Space separated list of link attributes
  */
 function tptn_after_list( $args ) {
@@ -135,8 +135,8 @@ function tptn_after_list( $args ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
- * @param	object	$result	Object of the current post result
+ * @param	array  $args   Array of arguments
+ * @param	object $result Object of the current post result
  * @return	string	Space separated list of link attributes
  */
 function tptn_before_list_item( $args, $result ) {
@@ -162,8 +162,8 @@ function tptn_before_list_item( $args, $result ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
- * @param	object	$result	Object of the current post result
+ * @param	array  $args   Array of arguments
+ * @param	object $result Object of the current post result
  * @return	string	Space separated list of link attributes
  */
 function tptn_after_list_item( $args, $result ) {
@@ -189,8 +189,8 @@ function tptn_after_list_item( $args, $result ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
- * @param	object	$result	Object of the current post result
+ * @param	array  $args   Array of arguments
+ * @param	object $result Object of the current post result
  * @return	string	Space separated list of link attributes
  */
 function tptn_post_title( $args, $result ) {
@@ -216,8 +216,8 @@ function tptn_post_title( $args, $result ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
- * @param	object	$result	Object of the current post result
+ * @param	array  $args   Array of arguments
+ * @param	object $result Object of the current post result
  * @return	string	Space separated list of link attributes
  */
 function tptn_author( $args, $result ) {
@@ -258,8 +258,8 @@ function tptn_author( $args, $result ) {
  *
  * @since	2.2.0
  *
- * @param	array	$args	Array of arguments
- * @param	object	$result	Object of the current post result
+ * @param	array  $args   Array of arguments
+ * @param	object $result Object of the current post result
  * @return	string	Space separated list of link attributes
  */
 function tptn_list_link( $args, $result ) {
@@ -286,7 +286,7 @@ function tptn_list_link( $args, $result ) {
 			'thumb_default' => $args['thumb_default'],
 			'thumb_default_show' => $args['thumb_default_show'],
 			'scan_images' => $args['scan_images'],
-			'class' => "tptn_thumb",
+			'class' => 'tptn_thumb',
 		) );
 
 		$output .= '</a>'; // Close the link

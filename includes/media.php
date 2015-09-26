@@ -10,7 +10,6 @@
  * Add custom image size of thumbnail. Filters `init`.
  *
  * @since 2.0.0
- *
  */
 function tptn_add_image_sizes() {
 	global $tptn_settings;
@@ -36,7 +35,7 @@ add_action( 'init', 'tptn_add_image_sizes' );
  * Function to get the post thumbnail.
  *
  * @since	1.8
- * @param	array	$args	Query string of options related to thumbnails
+ * @param	array $args   Query string of options related to thumbnails
  * @return	string	Image tag
  */
 function tptn_get_the_post_thumbnail( $args = array() ) {
@@ -102,7 +101,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// If there is no thumbnail found, check the post thumbnail
 	if ( ! $postimage ) {
-		if ( false != get_post_thumbnail_id( $result->ID ) )  {
+		if ( false != get_post_thumbnail_id( $result->ID ) ) {
 			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), $tptn_settings['thumb_size'] );
 			$postimage = $postthumb[0];
 		}
@@ -139,7 +138,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	}
 
 	// If no thumb found and settings permit, use default thumb
-	if (  ! $postimage && $args['thumb_default_show'] ) {
+	if ( ! $postimage && $args['thumb_default_show'] ) {
 		$postimage = $args['thumb_default'];
 	}
 
@@ -231,7 +230,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
  * Get the first child image in the post.
  *
  * @since	1.9.8
- * @param	mixed	$postID	Post ID
+ * @param	mixed $postID Post ID
  * @return	string	Location of thumbnail
  */
 function tptn_get_first_image( $postID ) {
@@ -271,7 +270,7 @@ function tptn_get_first_image( $postID ) {
  *
  * @since 2.1
  *
- * @param	string	$attachment_url	Attachment URL
+ * @param	string $attachment_url Attachment URL
  * @return	int		Attachment ID
  */
 function tptn_get_attachment_id_from_url( $attachment_url = '' ) {

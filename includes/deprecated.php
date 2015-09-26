@@ -14,7 +14,7 @@
  * @since	1.9.8
  * @deprecated	2.2.0
  *
- * @param	string	$content	Post content
+ * @param	string $content    Post content
  * @return	string	Filtered post content
  */
 function ald_tptn_rss( $content ) {
