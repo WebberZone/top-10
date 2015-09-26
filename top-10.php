@@ -193,13 +193,16 @@ function tptn_pop_posts( $args ) {
 		$processed_results = array();
 
 		foreach ( $results as $result ) {
+
 			/* Support WPML */
 		    $resultid = tptn_object_id_cur_lang( $result->ID );
 
-			if ( in_array( $resultid, $processed_results ) ) {
+			// If this is NULL or already processed ID or matches current post then skip processing this loop.
+			if ( ! $resultid || in_array( $resultid, $processed_results ) || intval( $resultid ) === intval( $post->ID ) ) {
 			    continue;
 			}
 
+			// Push the current ID into the array to ensure we're not repeating it
 			array_push( $processed_results, $resultid );
 
 			$sumcount = $result->sumCount;		// Store the count. We'll need this later
@@ -211,9 +214,9 @@ function tptn_pop_posts( $args ) {
 			 *
 			 * @param	int	$resultid	ID of the post
 			 */
-			$postid = apply_filters( 'tptn_post_id', $resultid );
+			$resultid = apply_filters( 'tptn_post_id', $resultid );
 
-			$result = get_post( $postid );	// Let's get the Post using the ID
+			$result = get_post( $resultid );	// Let's get the Post using the ID
 
 			// Process the category exclusion if passed in the shortcode
 			if ( isset( $exclude_categories ) ) {
@@ -1207,10 +1210,22 @@ function tptn_get_all_image_sizes( $size = '' ) {
  */
 function tptn_object_id_cur_lang( $post_id ) {
 
-	if ( function_exists( 'wpml_object_id' ) ) {
-		$post_id = wpml_object_id( $post_id, 'post', TRUE );
+	$return_original_if_missing = true;
+
+	/**
+	 * Filter to modify if the original language ID is returned.
+	 *
+	 * @since	2.2.3
+	 *
+	 * @param	bool	$return_original_if_missing
+	 * @param	int	$post_id	Post ID
+	 */
+	$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', $return_original_if_missing, $post_id );
+
+	if ( function_exists( 'wpml_object_id_filter' ) ) {
+		$post_id = wpml_object_id_filter( $post_id, 'any', $return_original_if_missing );
 	} elseif ( function_exists( 'icl_object_id' ) ) {
-		$post_id = icl_object_id( $post_id, 'post', TRUE );
+		$post_id = icl_object_id( $post_id, 'any', $return_original_if_missing );
 	}
 
 	/**
