@@ -522,7 +522,7 @@ function get_tptn_pop_posts( $args = array() ) {
 		$orderby = " ORDER BY {$orderby} ";
 	}
 
-	$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
+	$sql = "SELECT DISTINCT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
 	if ( $args['posts_only'] ) {	// Return the array of posts only if the variable is set
 		$results = $wpdb->get_results( $sql, ARRAY_A );
