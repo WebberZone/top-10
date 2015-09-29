@@ -1,6 +1,6 @@
 === Top 10  - Popular posts plugin for WordPress ===
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics
-Contributors: Ajay
+Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 3.5
@@ -172,6 +172,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.2.5 =
+
+* Bug fixes:
+	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
+
 = 2.2.4 =
 
 * Enhancements:
@@ -283,7 +288,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.2.4 =
+= 2.2.5 =
 * New features. Deprecated functions. Upgrade highly recommended. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 
