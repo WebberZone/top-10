@@ -214,9 +214,11 @@ class Top_Ten_Widget extends WP_Widget {
 		global $wpdb, $tptn_url, $tptn_settings, $post;
 
 		// Get the post meta
-		$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
+		if ( isset( $post ) ) {
+			$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
 
-		if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) { return; }
+			if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) { return; }
+		}
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
 
