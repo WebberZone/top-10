@@ -174,6 +174,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.2.5 =
 
+* Features:
+	* Preliminary support for PolyLang
+
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
 
