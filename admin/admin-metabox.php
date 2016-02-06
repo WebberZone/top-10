@@ -133,7 +133,7 @@ function tptn_call_meta_box() {
 	</p>
 
 	<p>
-		<?php if ( function_exists( 'tptn_add_viewed_count' ) ) { ?>
+		<?php if ( function_exists( 'crp_read_options' ) ) { ?>
 			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); ?></em>
 		<?php } ?>
 	</p>

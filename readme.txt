@@ -179,6 +179,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
+	* PHP Notice in Widget on empty search and 404 pages
+	* Incorrect notice that Contextual Related Posts is installed on Edit Posts pages
 
 = 2.2.4 =
 
