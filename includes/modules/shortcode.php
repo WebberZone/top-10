@@ -41,7 +41,7 @@ add_shortcode( 'tptn_list', 'tptn_shortcode' );
 function tptn_shortcode_views( $atts, $content = null ) {
 	$a = shortcode_atts( array(
 		'daily' => '0',
-	  ), $atts );
+	), $atts );
 
 	return get_tptn_post_count_only( get_the_ID(), ( $a['daily'] ? 'daily' : 'total' ) );
 }

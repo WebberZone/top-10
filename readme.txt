@@ -140,11 +140,11 @@ You can also display the number of visits using the `[tptn_views]` shortcode. Th
 
 = Manual install =
 
-You may choose to not display the post count automatically. If you do so, then in order to display the post count, you will need to add `<?php if ( function_exists('echo_tptn_post_count') ) echo_tptn_post_count(); ?>`.
+You may choose to not display the post count automatically. If you do so, then in order to display the post count, you will need to add `<?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?>`.
 
-In order to display the most popular posts, you will need to add `<?php if ( function_exists('tptn_show_pop_posts') ) tptn_show_pop_posts(); ?>`.
+In order to display the most popular posts, you will need to add `<?php if ( function_exists( 'tptn_show_pop_posts' ) ) { tptn_show_pop_posts(); } ?>`.
 
-In order to display the most popular posts, you will need to add `<?php if ( function_exists('tptn_show_daily_pop_posts') ) tptn_show_daily_pop_posts(); ?>`.
+In order to display the most popular posts, you will need to add `<?php if ( function_exists( 'tptn_show_daily_pop_posts' ) ) { tptn_show_daily_pop_posts(); } ?>`.
 
 You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme or use the API to fetch the posts. [View an example](https://gist.github.com/ajaydsouza/c8defd4b46e53240e376)
 
