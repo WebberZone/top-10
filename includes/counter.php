@@ -15,7 +15,7 @@
  * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content ) {
-	global $post, $wpdb, $single, $tptn_url, $tptn_path, $tptn_settings;
+	global $post, $wpdb, $single, $tptn_settings;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 
@@ -25,8 +25,8 @@ function tptn_add_viewed_count( $content ) {
 	 * Filter the script URL of the counter.
 	 *
 	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
-	 * You can use $tptn_url . '/top-10-addcount.js.php' as a source
-	 * $tptn_url is a global variable
+	 * You can use TOP_TEN_PLUGIN_URL . '/top-10-addcount.js.php' as a source
+	 * TOP_TEN_PLUGIN_URL is a global constant
 	 *
 	 * @since	2.0
 	 */
@@ -259,7 +259,7 @@ add_filter( 'the_content_feed', 'tptn_rss_filter' );
  * @return	string	Formatted string if $echo is set to 0|false
  */
 function echo_tptn_post_count( $echo = 1 ) {
-	global $post, $tptn_url, $tptn_path, $tptn_settings;
+	global $post, $tptn_settings;
 
 	$home_url = home_url( '/' );
 
@@ -267,8 +267,8 @@ function echo_tptn_post_count( $echo = 1 ) {
 	 * Filter the script URL of the counter.
 	 *
 	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
-	 * You can use $tptn_url . '/top-10-counter.js.php' as a source
-	 * $tptn_url is a global variable
+	 * You can use TOP_TEN_PLUGIN_URL . '/top-10-counter.js.php' as a source
+	 * TOP_TEN_PLUGIN_URL is a global constant
 	 *
 	 * @since	2.0
 	 */

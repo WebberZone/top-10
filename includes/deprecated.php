@@ -1,11 +1,33 @@
 <?php
 /**
- * Deprecated functions from Top 10. You shouldn't
- * use these functions and look for the alternatives instead. The functions will be
- * removed in a later version.
+ * Deprecated functions and variables from Top 10. You shouldn't
+ * use these functions or variables and look for the alternatives instead.
+ * The functions will be removed in a later version.
  *
  * @package Top_Ten
  */
+
+
+/**
+ * Holds the filesystem directory path (with trailing slash) for Top 10
+ *
+ * @since	1.5
+ * @deprecated 2.3
+ *
+ * @var string
+ */
+$tptn_path = plugin_dir_path( __FILE__ );
+
+
+/**
+ * Holds the URL for Top 10
+ *
+ * @since	1.5
+ * @deprecated 2.3
+ *
+ * @var string
+ */
+$tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
 
 
 /**

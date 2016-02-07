@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2015 Ajay D'Souza
+ * @copyright 2008-2016 Ajay D'Souza
  */
 
 /**** If this file is called directly, abort. ****/
@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function tptn_options() {
 
-	global $wpdb, $network_wide, $tptn_url;
+	global $wpdb, $network_wide;
 
 	$tptn_settings = tptn_read_options();
 
@@ -149,7 +149,7 @@ function tptn_options() {
 		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '/default.png' == $_POST['thumb_default'] ) ) ? $tptn_url . '/default.png' : $_POST['thumb_default'];
+		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '/default.png' == $_POST['thumb_default'] ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : $_POST['thumb_default'];
 
 		/* Styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
@@ -432,7 +432,6 @@ add_action( 'admin_menu', 'tptn_adminmenu' );
  * @since	1.6
  */
 function tptn_adminhead() {
-	global $tptn_url;
 
 	wp_enqueue_script( 'common' );
 	wp_enqueue_script( 'wp-lists' );
@@ -491,7 +490,7 @@ function tptn_adminhead() {
 		//]]>
 	</script>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo $tptn_url ?>/admin/wick/wick.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
 	<script type="text/javascript" language="JavaScript">
 		//<![CDATA[
 		function clearCache() {
@@ -520,7 +519,7 @@ function tptn_adminhead() {
 		//]]>
 	</script>
 
-	<script type="text/javascript" src="<?php echo $tptn_url ?>/admin/wick/wick.js"></script>
+	<script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
 
 <?php
 }
