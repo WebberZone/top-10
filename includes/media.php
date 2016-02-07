@@ -40,7 +40,7 @@ add_action( 'init', 'tptn_add_image_sizes' );
  */
 function tptn_get_the_post_thumbnail( $args = array() ) {
 
-	global $tptn_url, $tptn_settings;
+	global $tptn_settings;
 
 	$defaults = array(
 		'postid' => '',

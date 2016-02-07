@@ -6,7 +6,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2015 Ajay D'Souza
+ * @copyright 2008-2016 Ajay D'Souza
  */
 
 // If this file is called directly, abort.
@@ -211,7 +211,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	function widget( $args, $instance ) {
-		global $wpdb, $tptn_url, $tptn_settings, $post;
+		global $wpdb, $tptn_settings, $post;
 
 		// Get the post meta
 		if ( isset( $post ) ) {

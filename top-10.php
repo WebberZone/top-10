@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2015 Ajay D'Souza
+ * @copyright 2008-2016 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name:	Top 10
@@ -33,21 +33,35 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Holds the filesystem directory path (with trailing slash) for Top 10
  *
- * @since	1.5
+ * @since 2.3.0
  *
- * @var string
+ * @var string Plugin folder path
  */
-$tptn_path = plugin_dir_path( __FILE__ );
-
+if ( ! defined( 'TOP_TEN_PLUGIN_DIR' ) ) {
+	define( 'TOP_TEN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
 
 /**
- * Holds the URL for Top 10
+ * Holds the filesystem directory path (with trailing slash) for Top 10
  *
- * @since	1.5
+ * @since 2.3.0
  *
- * @var string
+ * @var string Plugin folder URL
  */
-$tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
+if ( ! defined( 'TOP_TEN_PLUGIN_URL' ) ) {
+	define( 'TOP_TEN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+
+/**
+ * Holds the filesystem directory path (with trailing slash) for Top 10
+ *
+ * @since 2.3.0
+ *
+ * @var string Plugin Root File
+ */
+if ( ! defined( 'TOP_TEN_PLUGIN_FILE' ) ) {
+	define( 'TOP_TEN_PLUGIN_FILE', __FILE__ );
+}
 
 
 /**
@@ -636,7 +650,6 @@ add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
  * Default Options.
  */
 function tptn_default_options() {
-	global $tptn_url;
 
 	$title = __( '<h3>Popular Posts</h3>', 'top-10' );
 	$title_daily = __( '<h3>Daily Popular</h3>', 'top-10' );
@@ -1245,7 +1258,7 @@ function tptn_object_id_cur_lang( $post_id ) {
 /**
  * Include Widget class.
  */
-require_once( plugin_dir_path( __FILE__ ) . 'includes/class-top-10-widget.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/class-top-10-widget.php' );
 
 
 /*
@@ -1253,12 +1266,12 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/class-top-10-widget.php' )
  * Top 10 modules
  *----------------------------------------------------------------------------*/
 
-require_once( plugin_dir_path( __FILE__ ) . 'includes/counter.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/media.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/output-generator.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/shortcode.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/exclusions.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/taxonomies.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/counter.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/media.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/output-generator.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php' );
 
 
 /*
@@ -1269,12 +1282,12 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/modules/taxonomies.php' );
 // This function adds an Options page in WP Admin
 if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin.php' );
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-metabox.php' );
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-columns.php' );
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/admin-dashboard.php' );
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-stats.php' );
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/cache.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-metabox.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-columns.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-dashboard.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/class-stats.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/cache.php' );
 
 } // End admin.inc
 
@@ -1283,9 +1296,9 @@ if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
  * Deprecated functions
  *----------------------------------------------------------------------------*/
 
-require_once( plugin_dir_path( __FILE__ ) . 'includes/deprecated.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php' );
 
 if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/deprecated.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'admin/deprecated.php' );
 }
