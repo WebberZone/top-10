@@ -172,7 +172,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 2.2.5 =
+= 2.3.0 =
 
 * Features:
 	* Preliminary support for PolyLang
@@ -181,6 +181,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
 	* PHP Notice in Widget on empty search and 404 pages
 	* Incorrect notice that Contextual Related Posts is installed on Edit Posts pages
+	* Viewing drafts will no longer increment the counter
 
 = 2.2.4 =
 

@@ -32,7 +32,7 @@ function tptn_add_viewed_count( $content ) {
 	 */
 	$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
 
-	if ( is_singular() ) {
+	if ( is_singular() && $post->post_status != 'draft' ) {
 
 		$current_user = wp_get_current_user();	// Let's get the current user
 		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;	// Is the current user the post author?
