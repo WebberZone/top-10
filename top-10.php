@@ -592,7 +592,7 @@ function tptn_show_pop_posts( $args = null ) {
  * @param	mixed $args   Arguments list
  */
 function tptn_show_daily_pop_posts( $args = null ) {
-	if ( is_array( $args ) ) {
+	if ( is_array( $args ) || ! isset( $args ) ) {
 		$args['daily'] = 1;
 		$args['manual'] = 1;
 	} else {

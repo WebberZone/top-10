@@ -182,6 +182,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* PHP Notice in Widget on empty search and 404 pages
 	* Incorrect notice that Contextual Related Posts is installed on Edit Posts pages
 	* Viewing drafts will no longer increment the counter
+	* `tptn_show_daily_pop_posts()` without arguments did not display daily posts
 
 = 2.2.4 =
 
