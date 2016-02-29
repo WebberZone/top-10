@@ -13,10 +13,10 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Filter JOIN clause of tptn query to add taxonomy tables.
  *
- * @since 1.0.0
+ * @since 2.2.0
  *
  * @param	mixed $join
- * @return	string	Filtered tptn JOIN clause
+ * @return	string	Filtered JOIN clause
  */
 function tptn_exclude_categories_join( $join ) {
 	global $wpdb, $tptn_settings;
@@ -24,8 +24,8 @@ function tptn_exclude_categories_join( $join ) {
 	if ( '' != $tptn_settings['exclude_categories'] ) {
 
 		$sql = $join;
-		$sql .= " INNER JOIN $wpdb->term_relationships AS excat_tr ON ($wpdb->posts.ID = excat_tr.object_id) ";
-		$sql .= " INNER JOIN $wpdb->term_taxonomy AS excat_tt ON (excat_tr.term_taxonomy_id = excat_tt.term_taxonomy_id) ";
+		$sql .= " LEFT JOIN $wpdb->term_relationships AS excat_tr ON ($wpdb->posts.ID = excat_tr.object_id) ";
+		$sql .= " LEFT JOIN $wpdb->term_taxonomy AS excat_tt ON (excat_tr.term_taxonomy_id = excat_tt.term_taxonomy_id) ";
 
 		return $sql;
 	} else {
@@ -34,13 +34,14 @@ function tptn_exclude_categories_join( $join ) {
 }
 add_filter( 'tptn_posts_join', 'tptn_exclude_categories_join' );
 
+
 /**
  * Filter WHERE clause of tptn query to exclude posts belonging to certain categories.
  *
- * @since 1.0.0
+ * @since 2.2.0
  *
  * @param	mixed $where
- * @return	string	Filtered tptn WHERE clause
+ * @return	string	Filtered WHERE clause
  */
 function tptn_exclude_categories_where( $where ) {
 	global $wpdb, $post, $tptn_settings;
@@ -66,5 +67,29 @@ function tptn_exclude_categories_where( $where ) {
 
 }
 add_filter( 'tptn_posts_where', 'tptn_exclude_categories_where' );
+
+
+/**
+ * Filter GROUP BY clause of tptn query to exclude posts belonging to certain categories.
+ *
+ * @since 2.3.0
+ *
+ * @param	mixed $groupby
+ * @return	string	Filtered GROUP BY clause
+ */
+function tptn_exclude_categories_groupby( $groupby ) {
+	global $wpdb, $tptn_settings;
+
+	if ( '' != $tptn_settings['exclude_categories'] && '' != $groupby ) {
+
+		$sql = $groupby;
+		$sql .= ', excat_tt.term_taxonomy_id ';
+
+		return $sql;
+	} else {
+		return $groupby;
+	}
+}
+add_filter( 'tptn_posts_groupby', 'tptn_exclude_categories_groupby' );
 
 
