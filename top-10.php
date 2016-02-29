@@ -433,11 +433,6 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Fields to return
 	$fields[] = 'ID';
 	$fields[] = 'postnumber';
-	$fields[] = 'post_title';
-	$fields[] = 'post_type';
-	$fields[] = 'post_content';
-	$fields[] = 'post_date';
-	$fields[] = 'post_author';
 	$fields[] = ( $args['daily'] ) ? 'SUM(cntaccess) as sumCount' : 'cntaccess as sumCount';
 
 	$fields = implode( ', ', $fields );
