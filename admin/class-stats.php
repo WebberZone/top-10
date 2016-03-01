@@ -42,13 +42,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Retrieve the Top 10 posts
 	 *
-	 * @param	int  $per_page
-	 * @param	int  $page_number
-	 * @param	bool $daily
+	 * @param	int    $per_page
+	 * @param	int    $page_number
+	 * @param	string $search
 	 *
 	 * @return	array	Array of popular posts
 	 */
-	public static function get_popular_posts( $per_page = 5, $page_number = 1, $daily = false ) {
+	public static function get_popular_posts( $per_page = 5, $page_number = 1, $search = null ) {
 
 		global $wpdb, $tptn_settings;
 
@@ -91,6 +91,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Create the base WHERE clause
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
 		$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
+
+		/* If the value is not NULL, do a search for it. */
+		if ( null != $search ) {
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $search );
+		}
 
 		// Create the base GROUP BY clause
 		$groupby = ' ID ';
@@ -147,7 +152,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return null|string
 	 */
-	public static function record_count() {
+	public static function record_count( $search = null ) {
 		global $wpdb;
 
 		$sql = $wpdb->prepare( "
@@ -156,6 +161,10 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			WHERE blog_id=%d
 			AND $wpdb->posts.post_status = 'publish'
 		", get_current_blog_id() );
+
+		if ( null != $search ) {
+			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $search );
+		}
 
 		return $wpdb->get_var( $sql );
 	}
@@ -327,7 +336,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Handles data query and filter, sorting, and pagination.
 	 */
-	public function prepare_items() {
+	public function prepare_items( $search = null ) {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -338,7 +347,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$current_page = $this->get_pagenum();
 
-		$total_items  = self::record_count();
+		$total_items  = self::record_count( $search );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // WE have to calculate the total number of items
@@ -346,7 +355,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'total_pages' => ceil( $total_items / $per_page ),// WE have to calculate the total number of pages
 		) );
 
-		$this->items = self::get_popular_posts( $per_page, $current_page );
+		$this->items = self::get_popular_posts( $per_page, $current_page, $search );
 	}
 
 	/**
@@ -416,10 +425,18 @@ class Top_Ten_Statistics {
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
-							<form method="post">
+							<form method="get">
+								<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 								<?php
-								$this->pop_posts_obj->prepare_items();
-								$this->pop_posts_obj->display();
+								if ( isset( $_REQUEST['s'] ) ) {
+									$this->pop_posts_obj->prepare_items( esc_sql( $_REQUEST['s'] ) );
+								} else {
+									$this->pop_posts_obj->prepare_items();
+								}
+
+									$this->pop_posts_obj->search_box( __( 'Search Table', 'top-10' ), 'top-10' );
+
+									$this->pop_posts_obj->display();
 								?>
 							</form>
 						</div>

@@ -176,6 +176,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Features:
 	* Preliminary support for PolyLang
+	* Search box added in Admin &raquo; View Popular Posts screen
 
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
