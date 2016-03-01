@@ -149,7 +149,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public static function record_count() {
 		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten WHERE blog_id=%d", get_current_blog_id() );
+
+		$sql = $wpdb->prepare( "
+			SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt
+			INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID
+			WHERE blog_id=%d
+			AND $wpdb->posts.post_status = 'publish'
+		", get_current_blog_id() );
+
 		return $wpdb->get_var( $sql );
 	}
 

@@ -184,6 +184,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Viewing drafts will no longer increment the counter
 	* `tptn_show_daily_pop_posts()` without arguments did not display daily posts
 	* Using Exclude categories returned incorrect counts and excluded non-posts
+	* Incorrect count on the Admin &raquo; View Popular Posts screen causing incorrect pagination
 
 = 2.2.4 =
 
