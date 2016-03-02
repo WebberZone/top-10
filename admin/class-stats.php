@@ -48,7 +48,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return	array	Array of popular posts
 	 */
-	public static function get_popular_posts( $per_page = 5, $page_number = 1, $search = null ) {
+	public static function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
 
 		global $wpdb, $tptn_settings;
 
@@ -92,9 +92,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
 		$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
 
-		/* If the value is not NULL, do a search for it. */
-		if ( null != $search ) {
-			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $search );
+		/* If search argument is set, do a search for it. */
+		if ( isset( $args['search'] ) ) {
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
+		}
+
+		/* If post filter argument is set, do a search for it. */
+		if ( isset( $args['post-type-filter'] ) && $args['post-type-filter'] != 'All' ) {
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
 		// Create the base GROUP BY clause
@@ -152,7 +157,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return null|string
 	 */
-	public static function record_count( $search = null ) {
+	public static function record_count( $args = null ) {
 		global $wpdb;
 
 		$sql = $wpdb->prepare( "
@@ -162,8 +167,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			AND $wpdb->posts.post_status = 'publish'
 		", get_current_blog_id() );
 
-		if ( null != $search ) {
-			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $search );
+		if ( isset( $args['search'] ) ) {
+			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
+		}
+
+		if ( isset( $args['post-type-filter'] ) && $args['post-type-filter'] != 'All' ) {
+			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
 		return $wpdb->get_var( $sql );
@@ -336,7 +345,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Handles data query and filter, sorting, and pagination.
 	 */
-	public function prepare_items( $search = null ) {
+	public function prepare_items( $args = null ) {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -347,7 +356,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$current_page = $this->get_pagenum();
 
-		$total_items  = self::record_count( $search );
+		$total_items  = self::record_count( $args );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // WE have to calculate the total number of items
@@ -355,7 +364,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'total_pages' => ceil( $total_items / $per_page ),// WE have to calculate the total number of pages
 		) );
 
-		$this->items = self::get_popular_posts( $per_page, $current_page, $search );
+		$this->items = self::get_popular_posts( $per_page, $current_page, $args );
 	}
 
 	/**
@@ -385,6 +394,46 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				self::delete_post_count( $id );
 			}
 		}
+	}
+
+	/**
+	 * Adds extra navigation elements to the table.
+	 *
+	 * @param string $which
+	 */
+	public function extra_tablenav( $which ) {
+	?>
+		<div class="alignleft actions">
+	<?php
+	if ( 'top' === $which ) {
+		$post_types = get_post_types( array( 'public' => true ) );
+		$all = array(
+			'all' => 'All',
+		);
+		$post_types = $all + $post_types;
+
+		if ( $post_types ) {
+
+			echo '<select name="post-type-filter">';
+
+			foreach ( $post_types as $post_type ) {
+				$selected = '';
+				if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] == $post_type ) {
+					$selected = ' selected = "selected"';
+				}
+				?>
+				<option value="<?php echo $post_type; ?>" <?php echo $selected; ?>><?php echo $post_type; ?></option>
+				<?php
+			}
+
+			echo '</select>';
+
+			submit_button( __( 'Filter', 'top-10' ), 'button', 'filter_action', false, array( 'id' => 'top-10-query-submit' ) );
+		}
+	}
+	?>
+		</div>
+	<?php
 	}
 }
 
@@ -417,6 +466,7 @@ class Top_Ten_Statistics {
 	 * Plugin settings page
 	 */
 	public function plugin_settings_page() {
+		$args = null;
 		?>
 		<div class="wrap">
 			<h1><?php printf( _x( '%s Popular Posts', 'Plugin name', 'top-10' ), 'Top 10' ); ?></h1>
@@ -428,15 +478,20 @@ class Top_Ten_Statistics {
 							<form method="get">
 								<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 								<?php
+								// If this is a search?
 								if ( isset( $_REQUEST['s'] ) ) {
-									$this->pop_posts_obj->prepare_items( esc_sql( $_REQUEST['s'] ) );
-								} else {
-									$this->pop_posts_obj->prepare_items();
+									$args['search'] = esc_sql( $_REQUEST['s'] );
+								}
+								// If this is a post type filter?
+								if ( isset( $_REQUEST['post-type-filter'] ) ) {
+									$args['post-type-filter'] = esc_sql( $_REQUEST['post-type-filter'] );
 								}
 
-									$this->pop_posts_obj->search_box( __( 'Search Table', 'top-10' ), 'top-10' );
+								$this->pop_posts_obj->prepare_items( $args );
 
-									$this->pop_posts_obj->display();
+								$this->pop_posts_obj->search_box( __( 'Search Table', 'top-10' ), 'top-10' );
+
+								$this->pop_posts_obj->display();
 								?>
 							</form>
 						</div>
