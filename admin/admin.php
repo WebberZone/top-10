@@ -422,6 +422,10 @@ function tptn_adminmenu() {
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
 
+	$plugin_page = add_submenu_page( 'tptn_options', __( 'Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
+	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+
 }
 add_action( 'admin_menu', 'tptn_adminmenu' );
 
