@@ -187,6 +187,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* `tptn_show_daily_pop_posts()` without arguments did not display daily posts
 	* Using Exclude categories returned incorrect counts and excluded non-posts
 	* Incorrect count on the Admin &raquo; View Popular Posts screen causing incorrect pagination
+	* Incorrect thumbnail size being pulled out in some instances
 
 = 2.2.4 =
 

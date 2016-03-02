@@ -97,12 +97,21 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	if ( ! $postimage ) {
 		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );	// Check the post meta first
 		$pick = 'meta';
+		if ( $postimage ) {
+			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
+
+			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) {
+				$postthumb = wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) );
+				$postimage = $postthumb[0];
+			}
+			$pick .= 'correct';
+		}
 	}
 
 	// If there is no thumbnail found, check the post thumbnail
 	if ( ! $postimage ) {
 		if ( false != get_post_thumbnail_id( $result->ID ) ) {
-			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), $tptn_settings['thumb_size'] );
+			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), array( $args['thumb_width'], $args['thumb_height'] ) );
 			$postimage = $postthumb[0];
 		}
 		$pick = 'featured';
@@ -114,32 +123,34 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
 			$postimage = $matches[1][0]; // we need the first one only!
 		}
+		$pick = 'first';
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
 
-			if ( false != wp_get_attachment_image_src( $postimage_id, $tptn_settings['thumb_size'] ) ) {
-				$postthumb = wp_get_attachment_image_src( $postimage_id, $tptn_settings['thumb_size'] );
+			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) {
+				$postthumb = wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) );
 				$postimage = $postthumb[0];
 			}
-			$pick = 'correct';
+			$pick .= 'correct';
 		}
-		$pick .= 'first';
 	}
 
 	// If there is no thumbnail found, fetch the first child image
 	if ( ! $postimage ) {
-		$postimage = tptn_get_first_image( $result->ID );	// Get the first image
+		$postimage = tptn_get_first_image( $result->ID, $args['thumb_width'], $args['thumb_height'] );	// Get the first image
 		$pick = 'firstchild';
 	}
 
 	// If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin
 	if ( ! $postimage ) {
 		$postimage = get_post_meta( $result->ID, '_video_thumbnail', true );
+		$pick = 'video_thumb';
 	}
 
 	// If no thumb found and settings permit, use default thumb
 	if ( ! $postimage && $args['thumb_default_show'] ) {
 		$postimage = $args['thumb_default'];
+		$pick = 'default_thumb';
 	}
 
 	// Hopefully, we've found a thumbnail by now. If so, run it through the custom filter, check for SSL and create the image tag
@@ -233,7 +244,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
  * @param	mixed $postID Post ID
  * @return	string	Location of thumbnail
  */
-function tptn_get_first_image( $postID ) {
+function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
 	$args = array(
 		'numberposts' => 1,
 		'order' => 'ASC',
@@ -247,7 +258,7 @@ function tptn_get_first_image( $postID ) {
 
 	if ( $attachments ) {
 		foreach ( $attachments as $attachment ) {
-			$image_attributes = wp_get_attachment_image_src( $attachment->ID, 'thumbnail' )  ? wp_get_attachment_image_src( $attachment->ID, 'thumbnail' ) : wp_get_attachment_image_src( $attachment->ID, 'full' );
+			$image_attributes = wp_get_attachment_image_src( $attachment->ID, array( $thumb_width, $thumb_height ) ) ? wp_get_attachment_image_src( $attachment->ID, array( $thumb_width, $thumb_height ) ) : wp_get_attachment_image_src( $attachment->ID, 'full' );
 
 			/**
 			 * Filters first child attachment from the post.
