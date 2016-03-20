@@ -405,9 +405,15 @@ function get_tptn_pop_posts( $args = array() ) {
 	$target_attribute = ( $args['link_new_window'] ) ? ' target="_blank" ' : ' ';	// Set Target attribute
 	$rel_attribute = ( $args['link_nofollow'] ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
 
-	parse_str( $args['post_types'], $post_types );	// Save post types in $post_types variable
+	// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
+	if ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
+		$post_types = explode( ',', $args['post_types'] );
+	} else {
+		parse_str( $args['post_types'], $post_types );	// Save post types in $post_types variable
+	}
 
-	if ( empty( $post_types ) ) {
+	// If post_types is empty or if we want all the post types
+	if ( empty( $post_types ) || 'all' === $args['post_types'] ) {
 		$post_types = get_post_types( array(
 			'public'	=> true,
 		) );
