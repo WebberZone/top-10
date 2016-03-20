@@ -414,3 +414,25 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 		return 0;
 	}
 }
+
+
+/**
+ * Use external tracker.
+ *
+ * @since 2.3.0
+ *
+ * @param string $home_url
+ * @return string
+ */
+function filter_tptn_add_counter_script_url( $home_url ) {
+	global $tptn_settings;
+
+	if ( false == $tptn_settings['external_tracker'] ) {
+		return $home_url;
+	} else {
+		return TOP_TEN_PLUGIN_URL . 'includes/top-10-addcount.js.php';
+	}
+}
+add_filter( 'tptn_add_counter_script_url', 'filter_tptn_add_counter_script_url' );
+
+

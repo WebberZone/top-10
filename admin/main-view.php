@@ -86,18 +86,25 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="cache_fix"><?php _e( 'Use Ajax for tracking:', 'top-10' ); ?></label></th>
+						<td>
+							<input type="checkbox" name="cache_fix" id="cache_fix" <?php if ( $tptn_settings['cache_fix'] ) { echo 'checked="checked"'; } ?> />
+							<p class="description"><?php _e( 'This will try to prevent W3 Total Cache and other caching plugins from caching the tracker script of the plugin. Try toggling this option in case you find that your posts are not tracked.', 'top-10' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="cache_fix"><?php _e( 'Use external JS file for tracking:', 'top-10' ); ?></label></th>
+						<td>
+							<input type="checkbox" name="external_tracker" id="external_tracker" <?php if ( $tptn_settings['external_tracker'] ) { echo 'checked="checked"'; } ?> />
+							<p class="description"><?php _e( 'This uses the external javascript file for tracking. This is a more efficient and less resource intensive tracker. This settings might have some compatibility issues on some WordPress installs or might be blocked by some security plugins. If you find that your posts are not being tracked then disable this option.', 'top-10' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="cache"><?php _e( 'Enable cache:', 'top-10' ); ?></label></th>
 						<td>
 							<p><input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) { echo 'checked="checked"'; } ?> /></p>
 							<p class="description"><?php _e( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'top-10' ); ?></p>
 							<p><input type="button" name="cache_clear" id="cache_clear"  value="<?php _e( 'Clear cache', 'top-10' ); ?>" class="button-secondary" onclick="return clearCache();" /></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="cache_fix"><?php _e( 'Use Ajax for tracking:', 'top-10' ); ?></label></th>
-						<td>
-							<input type="checkbox" name="cache_fix" id="cache_fix" <?php if ( $tptn_settings['cache_fix'] ) { echo 'checked="checked"'; } ?> />
-							<p class="description"><?php _e( 'This will try to prevent W3 Total Cache and other caching plugins from caching the tracker script of the plugin. Try toggling this option in case you find that your posts are not tracked.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
