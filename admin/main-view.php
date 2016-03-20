@@ -867,28 +867,28 @@ if ( ! defined( 'WPINC' ) ) {
 			        	SELECT blog_id FROM $wpdb->blogs
 						WHERE archived = '0' AND spam = '0' AND deleted = '0'
 					" );
-				foreach ( $blog_ids as $blog_id ) {
-					switch_to_blog( $blog_id );
-					$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " );
+			foreach ( $blog_ids as $blog_id ) {
+				switch_to_blog( $blog_id );
+				$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " );
 
-					if ( ! empty( $top_ten_mu_table ) && ! is_main_site( $blog_id ) ) {
-						$top_ten_mu_tables_blog_ids[] = $blog_id;
-						$top_ten_all_mu_tables[ $top_ten_mu_table ][0] = $top_ten_mu_table;
-						$top_ten_all_mu_tables[ $top_ten_mu_table ][1] = in_array( $blog_id, $top_ten_mu_tables_sel_blog_ids ) ? 1 : 0;
-						$top_ten_all_mu_tables[ $top_ten_mu_table ][2] = $blog_id;
-					}
+				if ( ! empty( $top_ten_mu_table ) && ! is_main_site( $blog_id ) ) {
+					$top_ten_mu_tables_blog_ids[] = $blog_id;
+					$top_ten_all_mu_tables[ $top_ten_mu_table ][0] = $top_ten_mu_table;
+					$top_ten_all_mu_tables[ $top_ten_mu_table ][1] = in_array( $blog_id, $top_ten_mu_tables_sel_blog_ids ) ? 1 : 0;
+					$top_ten_all_mu_tables[ $top_ten_mu_table ][2] = $blog_id;
 				}
+			}
 
 				// Switch back to the current blog
 				restore_current_blog();
 
-				if ( ! empty( $top_ten_all_mu_tables ) ) {
-					?>
+			if ( ! empty( $top_ten_all_mu_tables ) ) {
+				?>
 
 				<table class="form-table">
-					<tr>
-					<th>
-					<?php _e( 'Blog ID', 'top-10' ); ?>
+				<tr>
+				<th>
+				<?php _e( 'Blog ID', 'top-10' ); ?>
 				</th>
 				<th>
 				<?php _e( 'Status', 'top-10' ); ?>
@@ -938,13 +938,13 @@ if ( ! defined( 'WPINC' ) ) {
 			    ?>
 				</table>
 				<p>
-				  <input type="hidden" name="top_ten_mu_tables_blog_ids" value="<?php echo implode( ',', $top_ten_mu_tables_blog_ids ); ?>" />
-				  <input name="tptn_import" type="submit" id="tptn_import" value="<?php _e( 'Begin import', 'top-10' ); ?>" class="button button-primary" />
-				  <input name="tptn_delete_selected_tables" type="submit" id="tptn_delete_selected_tables" value="<?php _e( 'Delete selected tables', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" />
-				  <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php _e( 'Delete all imported tables', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" />
+			  <input type="hidden" name="top_ten_mu_tables_blog_ids" value="<?php echo implode( ',', $top_ten_mu_tables_blog_ids ); ?>" />
+			  <input name="tptn_import" type="submit" id="tptn_import" value="<?php _e( 'Begin import', 'top-10' ); ?>" class="button button-primary" />
+			  <input name="tptn_delete_selected_tables" type="submit" id="tptn_delete_selected_tables" value="<?php _e( 'Delete selected tables', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" />
+			  <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php _e( 'Delete all imported tables', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" />
 				</p>
 				<?php
-				} // End if ( ! empty( $top_ten_all_mu_tables ) )
+			} // End if ( ! empty( $top_ten_all_mu_tables ) )
 			?>
 	      </div>
 	    </div>
