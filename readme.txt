@@ -188,13 +188,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Using Exclude categories returned incorrect counts and excluded non-posts
 	* Incorrect count on the Admin &raquo; View Popular Posts screen causing incorrect pagination
 	* Incorrect thumbnail size being pulled out in some instances
+	* Different widgets incorrectly used the same cache item
 
 = 2.2.4 =
 
 * Enhancements:
 	* Changed text domain to `top-10` in advance of translate.wordpress.org translation system
 	* Improved support for WPML. If available, same language posts will be pulled by default. To restrict to the same language [add this code](https://gist.github.com/ajaydsouza/9b1bc56cec79295e784c) to your theme's functions.php file
-
 
 = 2.2.3 =
 

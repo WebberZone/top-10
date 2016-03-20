@@ -248,6 +248,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$arguments = array(
 			'is_widget' => 1,
+			'instance_id' => $this->number,
 			'heading' => 0,
 			'limit' => $limit,
 			'daily' => $daily,

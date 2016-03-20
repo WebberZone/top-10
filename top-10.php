@@ -117,6 +117,7 @@ function tptn_pop_posts( $args ) {
 	$defaults = array(
 		'daily' => false,
 		'is_widget' => false,
+		'instance_id' => 1,
 		'is_shortcode' => false,
 		'is_manual' => false,
 		'echo' => false,
@@ -147,7 +148,7 @@ function tptn_pop_posts( $args ) {
 	if ( $args['cache'] && ! $args['posts_only'] ) {
 		$cache_name = 'tptn';
 		$cache_name .= $args['daily'] ? '_daily' : '_total';
-		$cache_name .= $args['is_widget'] ? '_widget' : '';
+		$cache_name .= $args['is_widget'] ? '_widget' . $args['instance_id'] : '';
 		$cache_name .= $args['is_shortcode'] ? '_shortcode' : '';
 		$cache_name .= $args['is_manual'] ? '_manual' : '';
 
