@@ -40,6 +40,8 @@ function tptn_cache_get_keys() {
 		'tptn_daily_manual',
 	);
 
+	$meta_keys = array_merge( $meta_keys, tptn_cache_get_widget_keys() );
+
 	/**
 	 * Filters the array containing the various cache keys.
 	 *
@@ -69,5 +71,35 @@ function tptn_cache_delete( $transients = array() ) {
 	foreach ( $transients as $transient ) {
 		delete_transient( $transient );
 	}
+}
+
+
+/**
+ * Get the transient names for the Top 10 widgets.
+ *
+ * @since 2.3.0
+ *
+ * @return array Top 10 Cache widget keys.
+ */
+function tptn_cache_get_widget_keys() {
+	global $wpdb;
+
+	$keys = array();
+
+	$sql = "
+		SELECT option_name
+		FROM {$wpdb->options}
+		WHERE `option_name` LIKE '_transient_tptn_%_widget%'
+	";
+
+	$results = $wpdb->get_results( $sql );
+
+	if ( is_array( $results ) ) {
+		foreach ( $results as $result ) {
+			$keys[] = str_replace( '_transient_', '', $result->option_name );
+		}
+	}
+
+	return apply_filters( 'tptn_cache_get_widget_keys', $keys );
 }
 
