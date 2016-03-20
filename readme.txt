@@ -179,6 +179,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Search box and post type filter added in Admin &raquo; View Popular Posts screen
 	* Link to Daily Popular posts screen under Top 10 menu in admin area
 	* `post_types` parameter now supports comma-separated list of post types. To fetch all built-in post types use 'all'
+	* New option to use the external and more efficient javascript file for tracking
 
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
@@ -190,6 +191,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Incorrect count on the Admin &raquo; View Popular Posts screen causing incorrect pagination
 	* Incorrect thumbnail size being pulled out in some instances
 	* Different widgets incorrectly used the same cache item
+	* Incorrect text domain was initialised
 
 = 2.2.4 =
 
