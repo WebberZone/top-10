@@ -42,6 +42,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 		'is_widget'    => 1,
 		'daily'        => $daily,
 		'limit'        => $limit,
+		'post_types'   => 'all',
 	) );
 
 	$output = '<div id="tptn_popular_posts' . ( $daily ? '_daily' : '' ) . '">';
