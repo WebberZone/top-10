@@ -19,6 +19,8 @@ engines:
         enabled: false
       Design/ExitExpression:
         enabled: false
+      Controversial/Superglobals:
+        enabled: false
 ratings:
   paths:
   - "**.css"
