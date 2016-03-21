@@ -436,3 +436,21 @@ function filter_tptn_add_counter_script_url( $home_url ) {
 add_filter( 'tptn_add_counter_script_url', 'filter_tptn_add_counter_script_url' );
 
 
+/**
+ * Add tracker code.
+ *
+ * @since 2.3.0
+ *
+ * @param bool $echo Echo the code or return it?
+ * @return string|void
+ */
+function tptn_add_tracker( $echo = true ) {
+
+	if ( $echo ) {
+		echo tptn_add_viewed_count( '' );
+	} else {
+		return tptn_add_viewed_count( '' );
+	}
+}
+
+
