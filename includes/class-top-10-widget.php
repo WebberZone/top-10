@@ -211,7 +211,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	function widget( $args, $instance ) {
-		global $wpdb, $tptn_settings, $post;
+		global $tptn_settings, $post;
 
 		// Get the post meta
 		if ( isset( $post ) ) {

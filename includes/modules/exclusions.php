@@ -15,7 +15,7 @@
  * @return	array	Updated excluded post ID
  */
 function tptn_exclude_post_ids( $exclude_post_ids ) {
-	global $post, $tptn_settings, $wpdb;
+	global $wpdb;
 
 	$exclude_post_ids = (array) $exclude_post_ids;
 

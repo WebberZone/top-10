@@ -60,7 +60,6 @@ function tptn_link_attributes( $args ) {
  * @return	string	Space separated list of link attributes
  */
 function tptn_heading_title( $args ) {
-	global $post;
 
 	$title = '';
 

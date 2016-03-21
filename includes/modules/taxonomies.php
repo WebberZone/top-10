@@ -44,9 +44,7 @@ add_filter( 'tptn_posts_join', 'tptn_exclude_categories_join' );
  * @return	string	Filtered WHERE clause
  */
 function tptn_exclude_categories_where( $where ) {
-	global $wpdb, $post, $tptn_settings;
-
-	$term_ids = $category_ids = $tag_ids = $taxonomies = array();
+	global $wpdb, $tptn_settings;
 
 	if ( '' == $tptn_settings['exclude_categories'] ) {
 		return $where;
@@ -78,7 +76,7 @@ add_filter( 'tptn_posts_where', 'tptn_exclude_categories_where' );
  * @return	string	Filtered GROUP BY clause
  */
 function tptn_exclude_categories_groupby( $groupby ) {
-	global $wpdb, $tptn_settings;
+	global $tptn_settings;
 
 	if ( '' != $tptn_settings['exclude_categories'] && '' != $groupby ) {
 

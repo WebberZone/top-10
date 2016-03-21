@@ -15,9 +15,7 @@
  * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content ) {
-	global $post, $wpdb, $single, $tptn_settings;
-
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	global $post, $wpdb, $tptn_settings;
 
 	$home_url = home_url( '/' );
 
@@ -140,7 +138,7 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  * @param	object $wp WordPress object
  */
 function tptn_parse_request( $wp ) {
-	global $wpdb, $tptn_settings;
+	global $wpdb;
 
 	if ( empty( $wp ) ) {
 		global $wp;
@@ -213,7 +211,7 @@ add_action( 'parse_request', 'tptn_parse_request' );
  * @return	string	Filtered post content
  */
 function tptn_pc_content( $content ) {
-	global $single, $post, $tptn_settings;
+	global $post, $tptn_settings;
 
 	$exclude_on_post_ids = explode( ',', $tptn_settings['exclude_on_post_ids'] );
 
@@ -327,9 +325,6 @@ function echo_tptn_post_count( $echo = 1 ) {
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
 	global $wpdb, $tptn_settings;
-
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
 	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );

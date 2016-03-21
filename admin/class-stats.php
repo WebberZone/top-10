@@ -279,7 +279,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	public function column_author( $item ) {
 		$author_info = get_userdata( $item['post_author'] );
 		$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
-		$author_link = get_author_posts_url( $author_info->ID );
 
 		printf( '<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(

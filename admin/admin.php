@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function tptn_options() {
 
-	global $wpdb, $network_wide;
+	global $wpdb;
 
 	$tptn_settings = tptn_read_options();
 
@@ -507,7 +507,6 @@ function tptn_adminhead() {
 
 		<?php
 		function wick_data() {
-			global $wpdb;
 
 			$categories = get_categories( 'hide_empty=0' );
 			$str = 'collection = [';
@@ -587,7 +586,6 @@ function tptn_clean_duplicates( $daily = false ) {
 	if ( $daily ) {
 		$table_name .= '_daily';
 	}
-	$count = 0;
 
 	$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' );
 	$wpdb->query( "TRUNCATE TABLE $table_name" );
