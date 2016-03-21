@@ -40,8 +40,6 @@ add_action( 'init', 'tptn_add_image_sizes' );
  */
 function tptn_get_the_post_thumbnail( $args = array() ) {
 
-	global $tptn_settings;
-
 	$defaults = array(
 		'postid' => '',
 		'thumb_height' => '150',			// Max height of thumbnails
@@ -76,7 +74,6 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		$result = $args['postid'];
 	}
 
-	$postid = $result->ID;
 	$post_title = $result->post_title;
 
 	/**

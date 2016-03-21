@@ -22,14 +22,10 @@ if ( ! file_exists( $wp_config_path . $wp_config_filename ) ) {
 // Require the wp-config.php file
 require( $wp_config_filename );
 
-// Include the now instantiated global $wpdb Class for use
-global $wpdb;
-
 $id = intval( $_GET['top_ten_id'] );
 
 // Display counter using Ajax
 function tptn_disp_count() {
-	global $wpdb;
 
 	$id = intval( $_GET['top_ten_id'] );
 	if ( $id > 0 ) {

@@ -106,7 +106,7 @@ add_action( 'init', 'tptn_lang_init' );
  * @return	array|string	Array of posts if posts_only = 0 or a formatted string if posts_only = 1
  */
 function tptn_pop_posts( $args ) {
-	global $wpdb, $id, $tptn_settings;
+	global $tptn_settings;
 
 	// if set, save $exclude_categories
 	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
@@ -371,7 +371,7 @@ function tptn_pop_posts( $args ) {
  * @param	mixed $args   Arguments list
  */
 function get_tptn_pop_posts( $args = array() ) {
-	global $wpdb, $id, $tptn_settings;
+	global $wpdb, $tptn_settings;
 
 	// Initialise some variables
 	$fields = '';
@@ -380,7 +380,6 @@ function get_tptn_pop_posts( $args = array() ) {
 	$groupby = '';
 	$orderby = '';
 	$limits = '';
-	$match_fields = '';
 
 	$defaults = array(
 		'daily' => false,
@@ -401,9 +400,6 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	$limit = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
-
-	$target_attribute = ( $args['link_new_window'] ) ? ' target="_blank" ' : ' ';	// Set Target attribute
-	$rel_attribute = ( $args['link_nofollow'] ) ? 'bookmark nofollow' : 'bookmark';	// Set nofollow attribute
 
 	// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
 	if ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
@@ -776,9 +772,6 @@ function tptn_default_options() {
  */
 function tptn_read_options() {
 
-	// Upgrade table code
-	global $tptn_db_version, $network_wide;
-
 	$tptn_settings_changed = false;
 
 	$defaults = tptn_default_options();
@@ -1007,7 +1000,7 @@ function tptn_trunc_count( $daily = false ) {
  * @return	string 		Excerpt
  */
 function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
-	$content = $excerpt = '';
+	$content = '';
 
 	if ( $use_excerpt ) {
 		$content = get_post( $id )->post_excerpt;
@@ -1077,7 +1070,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
  * @since	1.9.9.1
  */
 function tptn_cron() {
-	global $tptn_settings, $wpdb;
+	global $wpdb;
 
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
