@@ -45,3 +45,4 @@ ratings:
   - "**.rb"
 exclude_paths:
 - tests/
+- admin/wick/
