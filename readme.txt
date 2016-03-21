@@ -180,6 +180,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Link to Daily Popular posts screen under Top 10 menu in admin area
 	* `post_types` parameter now supports comma-separated list of post types. To fetch all built-in post types use 'all'
 	* New option to use the external and more efficient javascript file for tracking
+	* New function `tptn_add_tracker` to manually include the tracking code. This is useful if your theme doesn't have `the_content` function that Top 10 filters to add the tracker code
 
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
