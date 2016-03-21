@@ -17,6 +17,8 @@ engines:
     checks:
       Controversial/CamelCaseVariableName:
         enabled: false
+      Design/ExitExpression:
+        enabled: false
 ratings:
   paths:
   - "**.css"
