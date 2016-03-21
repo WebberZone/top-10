@@ -15,7 +15,7 @@
  * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content ) {
-	global $post, $wpdb, $tptn_settings;
+	global $post, $tptn_settings;
 
 	$home_url = home_url( '/' );
 
@@ -324,7 +324,7 @@ function echo_tptn_post_count( $echo = 1 ) {
  * @return	int|string	Formatted post count
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
-	global $wpdb, $tptn_settings;
+	global $tptn_settings;
 
 	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
 	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );
