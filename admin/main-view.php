@@ -683,7 +683,7 @@ if ( ! defined( 'WPINC' ) ) {
 							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" <?php if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) { echo 'checked="checked"'; } ?> />
 							<?php _e( 'Left Thumbnails', 'top-10' ); ?>
 						</label>
-						<p class="description"><img src="<?php echo plugins_url( 'admin/images/tptn-left-thumbs.png', dirname( __FILE__ ) ); ?>" /></p>
+						<p class="description"><img src="<?php echo plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ); ?>" /></p>
 						<p class="description"><?php _e( 'Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings.', 'top-10' ); ?></p>
 					  	<p class="description"><?php printf( __( 'You can view the default style at <a href="%1$s" target="_blank">%1$s</a>', 'top-10' ), esc_url( 'https://github.com/WebberZone/top-10/blob/master/css/default-style.css' ) ); ?></p>
 						<br />

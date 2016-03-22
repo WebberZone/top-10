@@ -21,7 +21,7 @@
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:	top-10
  * Domain Path:	/languages
- * GitHub Plugin URI: https://github.com/ajaydsouza/top-10/
+ * GitHub Plugin URI: https://github.com/WebberZone/top-10/
  */
 
 // If this file is called directly, abort.
@@ -92,7 +92,7 @@ $tptn_settings = tptn_read_options();
  * @since	1.9.10.1
  */
 function tptn_lang_init() {
-	load_plugin_textdomain( 'top-10', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'top-10', false, dirname( plugin_basename( TOP_TEN_PLUGIN_FILE ) ) . '/languages/' );
 }
 add_action( 'init', 'tptn_lang_init' );
 
@@ -626,7 +626,7 @@ function tptn_heading_styles() {
 	global $tptn_settings;
 
 	if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
-		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', __FILE__ ) );
+		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', TOP_TEN_PLUGIN_FILE ) );
 		wp_enqueue_style( 'tptn-style-left-thumbs' );
 
 		$custom_css = "
@@ -652,7 +652,7 @@ function tptn_default_options() {
 	$title = __( '<h3>Popular Posts</h3>', 'top-10' );
 	$title_daily = __( '<h3>Daily Popular</h3>', 'top-10' );
 	$blank_output_text = __( 'No top posts yet', 'top-10' );
-	$thumb_default = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) . '/default.png';
+	$thumb_default = plugins_url() . '/' . plugin_basename( dirname( TOP_TEN_PLUGIN_FILE ) ) . '/default.png';
 
 	// get relevant post types
 	$args = array(
@@ -832,7 +832,7 @@ function tptn_activation_hook( $network_wide ) {
 		tptn_single_activate();
 	}
 }
-register_activation_hook( __FILE__, 'tptn_activation_hook' );
+register_activation_hook( TOP_TEN_PLUGIN_FILE, 'tptn_activation_hook' );
 
 
 /**
@@ -1275,7 +1275,6 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php' );
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
-// This function adds an Options page in WP Admin
 if ( is_admin() || strstr( $_SERVER['PHP_SELF'], 'wp-admin/' ) ) {
 
 	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin.php' );
