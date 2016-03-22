@@ -16,7 +16,7 @@
  *
  * @var string
  */
-$tptn_path = plugin_dir_path( __FILE__ );
+$tptn_path = plugin_dir_path( TOP_TEN_PLUGIN_FILE );
 
 
 /**
@@ -27,7 +27,7 @@ $tptn_path = plugin_dir_path( __FILE__ );
  *
  * @var string
  */
-$tptn_url = plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) );
+$tptn_url = plugins_url() . '/' . plugin_basename( dirname( TOP_TEN_PLUGIN_FILE ) );
 
 
 /**

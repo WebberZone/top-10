@@ -560,7 +560,7 @@ add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ )
  * @return	array	Links array with our links added
  */
 function tptn_plugin_actions( $links, $file ) {
-	$plugin = plugin_basename( __FILE__ );
+	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
 
 	// create link
 	if ( $file == $plugin ) {
