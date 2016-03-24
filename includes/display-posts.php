@@ -95,7 +95,7 @@ function tptn_pop_posts( $args ) {
 	$counter = 0;
 
 	$daily_class = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
-	$widget_class = $args['is_widget'] ? ' tptn_posts_widget' : '';
+	$widget_class = $args['is_widget'] ? ' tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '';
 	$shortcode_class = $args['is_shortcode'] ? ' tptn_posts_shortcode' : '';
 
 	$post_classes = $daily_class . $widget_class . $shortcode_class;

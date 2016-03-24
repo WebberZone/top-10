@@ -182,16 +182,19 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* New option to use the external and more efficient javascript file for tracking
 	* New function `tptn_add_tracker` to manually include the tracking code. This is useful if your theme doesn't have `the_content` function that Top 10 filters to add the tracker code
 
+* Enhancements:
+	* Viewing drafts will no longer increment the counter
+	* When using the Left Thumbs style, each widget instance includes the CSS code to display the correct thumbnail size
+
 * Bug fixes:
 	* Missing `DISTINCT` keyword in query resulting in duplicate entries in some cases
 	* PHP Notice in Widget on empty search and 404 pages
 	* Incorrect notice that Contextual Related Posts is installed on Edit Posts pages
-	* Viewing drafts will no longer increment the counter
 	* `tptn_show_daily_pop_posts()` without arguments did not display daily posts
 	* Using Exclude categories returned incorrect counts and excluded non-posts
 	* Incorrect count on the Admin &raquo; View Popular Posts screen causing incorrect pagination
 	* Incorrect thumbnail size being pulled out in some instances
-	* Different widgets incorrectly used the same cache item
+	* Multiple widget instances incorrectly used the same cache
 	* Incorrect text domain was initialised
 
 = 2.2.4 =
