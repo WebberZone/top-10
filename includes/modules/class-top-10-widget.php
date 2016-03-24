@@ -31,6 +31,9 @@ class Top_Ten_Widget extends WP_Widget {
 			__( 'Popular Posts [Top 10]', 'top-10' ), // Name
 			array( 'description' => __( 'Display popular posts', 'top-10' ) ) // Args
 		);
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'front_end_styles' ) );
+
 	}
 
 	/**
@@ -280,6 +283,49 @@ class Top_Ten_Widget extends WP_Widget {
 		echo $output;
 
 	} //ending function widget
+
+
+	/**
+	 * Add styles to the front end if the widget is active.
+	 *
+	 * @since	2.3.0
+	 */
+	function front_end_styles() {
+		global $tptn_settings;
+
+		if ( ! 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+			return;
+		}
+
+		// we need to process all instances because this function gets to run only once
+		$widget_settings = get_option( $this->option_name );
+
+		foreach ( (array) $widget_settings as $instance => $options ) {
+
+			// identify instance
+			$widget_id = "{$this->id_base}-{$instance}";
+
+			// check if it's our instance
+			if ( ! is_active_widget( false, $widget_id, $this->id_base, true ) ) {
+				continue;	// Not active.
+			}
+
+			$thumb_height = ( isset( $options['thumb_height'] ) && '' != $options['thumb_height'] ) ? intval( $options['thumb_height'] ) : $tptn_settings['thumb_height'];
+			$thumb_width = ( isset( $options['thumb_width'] ) && '' != $options['thumb_width'] ) ? intval( $options['thumb_width'] ) : $tptn_settings['thumb_width'];
+
+			// Enqueue the custom css for the thumb width and height for this specific widget.
+			$custom_css = "
+			.tptn_posts_widget{$instance} img.tptn_thumb {
+				width: {$thumb_width}px !important;
+				height: {$thumb_height}px !important;
+			}
+			";
+
+			wp_add_inline_style( 'tptn-style-left-thumbs', $custom_css );
+
+		}
+
+	}
 }
 
 
