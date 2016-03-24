@@ -3,8 +3,8 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 3.5
-Tested up to: 4.4
+Requires at least: 3.9
+Tested up to: 4.5
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -41,9 +41,7 @@ I spend a significant amount of my free time maintaining, updating and more impo
 If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
 
 = Translations =
-Top 10 is now on Transifex with several translations made available by the [WP Translations](http://wp-translations.org). If you're a translator, do consider joining the WP Translations team and contribute towards this and a huge number of WordPress plugins.
-
-Visit [Top 10 on Transifex](https://www.transifex.com/wp-translations/top-10/).
+Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/) to contribute.
 
 
 = Contribute =
@@ -98,7 +96,7 @@ If your question isn't listed here, please create a new post at the [WordPress.o
 
 Several customization options are available via the Settings page in WordPress Admin. You can access this via <strong>Settings &raquo; Top 10</strong>
 
-The main CSS classes / IDs are available:
+The main CSS classes include:
 
 * **tptn_posts** and **tptn_posts_daily**: Class of the main wrapper `div`. If you are displaying the related posts on non-singular pages, then you should style this
 
@@ -114,39 +112,35 @@ The main CSS classes / IDs are available:
 
 = Shortcodes =
 
-You can insert the popular posts anywhere in your post using the `[tptn_list]` shortcode. The plugin takes three optional attributes `limit`, `heading` and `daily` as follows:
-
-`[tptn_list limit="5" heading="1" daily="0"]`
+`[tptn_list]` lets you insert the popular posts anywhere in your post content. It takes three main optional attributes `limit`, `heading` and `daily` as follows:
 
 *limit* : Maximum number of posts to return. The actual number displayed may be lower depending on the category / post exclusion settings.
 
-*heading* : By default, the heading you specify in **Title of popular posts:** under **Output options** will be displayed. You can override this by specifying your own heading e.g.
+*heading* : Set to 0 to disable the heading specified in **Title of popular posts:** under **Output options**
 
-`
-<h3>Top posts</h3>
-[tptn_list limit="2" heading="0"]
-`
 *daily* : If set to 1, then the shortcode will return the daily popular posts list
 
 In addition to these attributes, the shortcode can take all the options as attributes. To see the detailed list take a look at the function `tptn_default_options()` in **top-10.php** file
 
 
-You can also display the number of visits using the `[tptn_views]` shortcode. The plugin takes one optional attribute `daily` as follows:
-
-`[tptn_views daily="0"]`
+`[tptn_views]` lets you display the number of visits. The plugin takes one optional attribute `daily` as follows:
 
 *daily* : If set to 1, then the shortcode will return the number of _daily_ views
 
 
 = Manual install =
 
-You may choose to not display the post count automatically. If you do so, then in order to display the post count, you will need to add `<?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?>`.
+The below functions need to be added by editing your theme files where you wish to display them.
 
-In order to display the most popular posts, you will need to add `<?php if ( function_exists( 'tptn_show_pop_posts' ) ) { tptn_show_pop_posts(); } ?>`.
+Display the post count with `<?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?>`
 
-In order to display the most popular posts, you will need to add `<?php if ( function_exists( 'tptn_show_daily_pop_posts' ) ) { tptn_show_daily_pop_posts(); } ?>`.
+Display the overall most popular posts with `<?php if ( function_exists( 'tptn_show_pop_posts' ) ) { tptn_show_pop_posts(); } ?>`
 
-You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme or use the API to fetch the posts. [View an example](https://gist.github.com/ajaydsouza/c8defd4b46e53240e376)
+Display the daily/custom period popular posts with `<?php if ( function_exists( 'tptn_show_daily_pop_posts' ) ) { tptn_show_daily_pop_posts(); } ?>`
+
+You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme
+
+View [examples of the plugin API](https://gist.github.com/ajaydsouza/c8defd4b46e53240e376) to fetch the popular posts
 
 = Can this plugin replace Google Analytics? =
 
@@ -157,7 +151,7 @@ No. Top 10 has been designed to only track the number of page-views on your blog
 When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and clean up old entries from the `wp_top_ten_daily` table.
 *Note: If you enable this option, WordPress will execute this job when it is scheduled the first time*
 
-= How to make the columns on the Custom Posts pages sortable? =
+= How to make the columns on the Custom Post Type admin pages sortable? =
 Add the following code to your functions.php file of your theme.
 
 `
@@ -307,7 +301,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.2.5 =
-* New features. Deprecated functions. Upgrade highly recommended. Please do verify your settings after the upgrade.
+= 2.3.0 =
+* Major release. New features and several bug fixes. Upgrade highly recommended. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 

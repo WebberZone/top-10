@@ -2,9 +2,9 @@
 
 # Top 10  - Popular posts plugin for WordPress
 
-__Requires:__ 3.5
+__Requires:__ 3.9
 
-__Tested up to:__ 4.4
+__Tested up to:__ 4.5
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -44,14 +44,13 @@ I spend a significant amount of my free time maintaining, updating and more impo
 If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
 
 ### Translations
-Top 10 is now on Transifex with several translations made available by the [WP Translations](http://wp-translations.org). If you're a translator, do consider joining the WP Translations team and contribute towards this and a huge number of WordPress plugins.
 
-Visit [Top 10 on Transifex](https://www.transifex.com/wp-translations/top-10/).
+Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/) to contribute.
 
 
 ## Screenshots
-![General Options](https://raw.github.com/WebberZone/top-10/master/assets/screenshot-1.png)
-_Top 10 settings page - General Options._
+![General Options](https://raw.github.com/WebberZone/top-10/master/assets/screenshot-5.png)
+_Top 10 settings page - Styles Options_
 
 For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
 
