@@ -2,6 +2,9 @@
 engines:
   csslint:
     enabled: true
+    checks:
+      important:
+        enabled: false
   duplication:
     enabled: true
     config:
@@ -10,9 +13,6 @@ engines:
       - php
   eslint:
     enabled: true
-    checks:
-      important:
-        enabled: false
   fixme:
     enabled: true
   phpmd:
