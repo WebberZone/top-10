@@ -10,6 +10,9 @@ engines:
       - php
   eslint:
     enabled: true
+    checks:
+      important:
+        enabled: false
   fixme:
     enabled: true
   phpmd:
@@ -20,6 +23,8 @@ engines:
       Controversial/CamelCaseParameterName:
         enabled: false
       Controversial/CamelCaseMethodName:
+        enabled: false
+      Controversial/CamelCaseClassName:
         enabled: false
       Design/ExitExpression:
         enabled: false
