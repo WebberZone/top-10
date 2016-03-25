@@ -19,6 +19,8 @@ engines:
         enabled: false
       Controversial/CamelCaseParameterName:
         enabled: false
+      Controversial/CamelCaseMethodName:
+        enabled: false
       Design/ExitExpression:
         enabled: false
       Controversial/Superglobals:
