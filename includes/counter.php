@@ -61,7 +61,9 @@ function tptn_add_viewed_count( $content ) {
 
 			if ( $activate_counter > 0 ) {
 				if ( $tptn_settings['cache_fix'] ) {
-					$output = '<script type="text/javascript"> jQuery.ajax({
+					$output = '
+					<script type="text/javascript"> jQuery(document).ready(function() {
+						jQuery.ajax({
 							url: "' . $home_url . '",
 							data: {
 								top_ten_id: ' . $id . ',
@@ -69,7 +71,8 @@ function tptn_add_viewed_count( $content ) {
 								activate_counter: ' . $activate_counter . ',
 								top10_rnd: (new Date()).getTime() + "-" + Math.floor(Math.random() * 100000)
 							}
-						}); </script>';
+						});
+					});</script>';
 
 				} else {
 					$output = '<script type="text/javascript" async src="' . $home_url . '?top_ten_id=' . $id . '&amp;top_ten_blog_id=' . $blog_id . '&amp;activate_counter=' . $activate_counter . '"></script>';
