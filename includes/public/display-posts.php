@@ -227,7 +227,7 @@ function tptn_pop_posts( $args ) {
 			$output .= sprintf(
 				__( 'Popular posts by <a href="%s" rel="nofollow" %s>Top 10 plugin</a>', 'top-10' ),
 				esc_url( 'https://webberzone.com/plugins/top-10/' ),
-				$target_attribute
+				tptn_link_attributes( $args )
 			);
 
 			$output .= tptn_after_list_item( $args, $result );
