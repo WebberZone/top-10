@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @param	array $args   Array of arguments
  * @return	string	Space separated list of link attributes
  */
-function tptn_link_attributes( $args ) {
+function tptn_link_attributes( $args, $result ) {
 
 	$rel_attribute = ( $args['link_nofollow'] ) ? ' rel="nofollow" ' : ' ';
 
@@ -41,7 +41,7 @@ function tptn_link_attributes( $args ) {
 	 * @param	array	$link_attributes	Array of link attributes
 	 * @param	array	$args	Array of arguments
 	 */
-	$link_attributes = apply_filters( 'tptn_link_attributes', $link_attributes, $args );
+	$link_attributes = apply_filters( 'tptn_link_attributes', $link_attributes, $args, $result );
 
 	// Convert it to a string
 	$link_attributes = implode( ' ', $link_attributes );
@@ -265,7 +265,7 @@ function tptn_list_link( $args, $result ) {
 
 	$output = '';
 	$title = tptn_post_title( $args, $result );
-	$link_attributes = tptn_link_attributes( $args );
+	$link_attributes = tptn_link_attributes( $args, $result );
 
 	if ( 'after' == $args['post_thumb_op'] ) {
 		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
