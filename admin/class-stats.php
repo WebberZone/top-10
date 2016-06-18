@@ -20,7 +20,6 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-
 /**
  * Top_Ten_Statistics_Table class.
  *
@@ -33,18 +32,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => __( 'popular_post', 'top-10' ), // singular name of the listed records
-			'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records
-			// 'ajax'     => false //does this table support ajax?
+			'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
+			'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records.
 		) );
 	}
 
 	/**
 	 * Retrieve the Top 10 posts
 	 *
-	 * @param	int    $per_page
-	 * @param	int    $page_number
-	 * @param	string $search
+	 * @param int   $per_page Posts per page.
+	 * @param int   $page_number Page number.
+	 * @param array $args Array of arguments.
 	 *
 	 * @return	array	Array of popular posts
 	 */
@@ -68,7 +66,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
 		$table_name = $wpdb->base_prefix . 'top_ten AS ttt';
 
-		// Fields to return
+		// Fields to return.
 		$fields[] = 'ID';
 		$fields[] = 'post_title as title';
 		$fields[] = 'post_type';
@@ -79,7 +77,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$fields = implode( ', ', $fields );
 
-		// Create the JOIN clause
+		// Create the JOIN clause.
 		$join = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
 		$join .= $wpdb->prepare( " LEFT JOIN (
 			SELECT * FROM {$table_name_daily}
@@ -89,8 +87,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		", $from_date );
 
 		// Create the base WHERE clause
-		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
-		$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
+		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
+		$where .= " AND $wpdb->posts.post_status = 'publish' "; // Only show published posts.
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
@@ -98,22 +96,22 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		/* If post filter argument is set, do a search for it. */
-		if ( isset( $args['post-type-filter'] ) && $args['post-type-filter'] != 'All' ) {
+		if ( isset( $args['post-type-filter'] ) && 'All' != $args['post-type-filter'] ) {
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
-		// Create the base GROUP BY clause
+		// Create the base GROUP BY clause.
 		$groupby = ' ID ';
 
-		// Create the base ORDER BY clause
+		// Create the base ORDER BY clause.
 		$orderby = ' total_count DESC ';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$orderby = esc_sql( $_REQUEST['orderby'] );
-			$orderby .= ! empty( $_REQUEST['order'] ) ? ' ' . ( $_REQUEST['order'] ) : ' DESC';
+			$orderby .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' DESC';
 		}
 
-		// Create the base LIMITS clause
+		// Create the base LIMITS clause.
 		$limits = $wpdb->prepare( ' LIMIT %d, %d ', ( $page_number - 1 ) * $per_page, $per_page );
 
 		if ( ! empty( $groupby ) ) {
@@ -135,7 +133,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Delete the post count for this post.
 	 *
-	 * @param int $id post ID
+	 * @param int $id post ID.
 	 */
 	public static function delete_post_count( $id ) {
 		global $wpdb;
@@ -155,7 +153,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Returns the count of records in the database.
 	 *
-	 * @return null|string
+	 * @param  string $args Array of arguments.
+	 * @return null|string null|string
 	 */
 	public static function record_count( $args = null ) {
 		global $wpdb;
@@ -171,7 +170,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
 		}
 
-		if ( isset( $args['post-type-filter'] ) && $args['post-type-filter'] != 'All' ) {
+		if ( isset( $args['post-type-filter'] ) && 'All' != $args['post-type-filter'] ) {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
@@ -182,15 +181,15 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * Text displayed when no post data is available
 	 */
 	public function no_items() {
-		_e( 'No popular posts available.', 'top-10' );
+		esc_html_e( 'No popular posts available.', 'top-10' );
 	}
 
 
 	/**
 	 * Render a column when no column specific method exist.
 	 *
-	 * @param array  $item
-	 * @param string $column_name
+	 * @param array  $item Current item.
+	 * @param string $column_name Column name.
 	 *
 	 * @return mixed
 	 */
@@ -202,28 +201,28 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			case 'daily_count':
 				return intval( $item[ $column_name ] );
 			default:
-				return print_r( $item, true ); // Show the whole array for troubleshooting purposes
+				return print_r( $item, true ); // Show the whole array for troubleshooting purposes.
 		}
 	}
 
 	/**
 	 * Render the checkbox column.
 	 *
-	 * @param array $item
+	 * @param array $item Current item.
 	 * @return string
 	 */
 	function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			/*$1%s*/ 'bulk-delete',  // Let's simply repurpose the table's singular label ("movie")
-			/*$2%s*/ $item['ID']                // The value of the checkbox should be the record's id
+			'bulk-delete',
+			$item['ID']
 		);
 	}
 
 	/**
 	 * Render the title column.
 	 *
-	 * @param array $item
+	 * @param array $item Current item.
 	 * @return string
 	 */
 	function column_title( $item ) {
@@ -236,12 +235,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'top-10' ) . '</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['ID'] ), $delete_nonce ),
 		);
 
-		// Return the title contents
+		// Return the title contents.
 		return sprintf( '<a href="%4$s">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
-			/*$1%s*/ $item['title'],
-			/*$2%s*/ $item['ID'],
-			/*$3%s*/ $this->row_actions( $actions ),
-			/*$3%s*/ get_edit_post_link( $item['ID'] )
+			$item['title'],
+			$item['ID'],
+			$this->row_actions( $actions ),
+			get_edit_post_link( $item['ID'] )
 		);
 
 	}
@@ -250,8 +249,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Handles the post date column output.
 	 *
-	 * @param array $item
-	 * @return string
+	 * @param array $item Current item.
+	 * @return void
 	 */
 	public function column_date( $item ) {
 
@@ -267,14 +266,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
 		}
 
-		echo '<abbr title="' . $t_time . '">' . $h_time . '</abbr>';
+		echo '<abbr title="' . esc_attr( $t_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
 	}
 
 	/**
 	 * Handles the post author column output.
 	 *
-	 * @param array $item
-	 * @return string
+	 * @param array $item Current item.
+	 * @return void
 	 */
 	public function column_author( $item ) {
 		$author_info = get_userdata( $item['post_author'] );
@@ -285,7 +284,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				'post_type' => $item['post_type'],
 				'author' => $author_info->ID,
 			), 'edit.php' ) ),
-			$author_name
+			esc_html( $author_name )
 		);
 	}
 
@@ -343,6 +342,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 	/**
 	 * Handles data query and filter, sorting, and pagination.
+	 *
+	 * @param array $args Array of arguments.
 	 */
 	public function prepare_items( $args = null ) {
 
@@ -376,19 +377,19 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr( $_REQUEST['_wpnonce'] );
 			if ( ! wp_verify_nonce( $nonce, 'tptn_delete_entry' ) ) {
-				die( __( 'Are you sure you want to do this', 'top-10' ) );
+				die( esc_html__( 'Are you sure you want to do this', 'top-10' ) );
 			} else {
 				self::delete_post_count( absint( $_GET['post'] ) );
 			}
 		}
 
-		// If the delete bulk action is triggered
-		if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'bulk-delete' )
-		     || ( isset( $_POST['action2'] ) && $_POST['action2'] == 'bulk-delete' )
+		// If the delete bulk action is triggered.
+		if ( ( isset( $_POST['action'] ) && 'bulk-delete' == $_POST['action'] )
+		     || ( isset( $_POST['action2'] ) && 'bulk-delete' == $_POST['action2'] )
 		) {
 			$delete_ids = esc_sql( $_POST['bulk-delete'] );
 
-			// loop over the array of record IDs and delete them
+			// Loop over the array of record IDs and delete them,
 			foreach ( $delete_ids as $id ) {
 				self::delete_post_count( $id );
 			}
@@ -398,7 +399,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Adds extra navigation elements to the table.
 	 *
-	 * @param string $which
+	 * @param string $which Which part of the table are we.
 	 */
 	public function extra_tablenav( $which ) {
 	?>
@@ -421,7 +422,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 					$selected = ' selected = "selected"';
 				}
 				?>
-				<option value="<?php echo $post_type; ?>" <?php echo $selected; ?>><?php echo $post_type; ?></option>
+				<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
 				<?php
 			}
 
@@ -441,10 +442,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
  */
 class Top_Ten_Statistics {
 
-	// class instance
+	/**
+	 * Class instance.
+	 */
 	static $instance;
 
-	// WP_List_Table object
+	/**
+	 * WP_List_Table object.
+	 */
 	public $pop_posts_obj;
 
 	/**
@@ -457,6 +462,14 @@ class Top_Ten_Statistics {
 		add_filter( 'set-screen-option', array( __CLASS__, 'set_screen' ), 10, 3 );
 	}
 
+	/**
+	 * Set screen.
+	 *
+	 * @param  string $status Status of screen.
+	 * @param  string $option Option name.
+	 * @param  string $value  Option value
+	 * @return string Value.
+	 */
 	public static function set_screen( $status, $option, $value ) {
 		return $value;
 	}

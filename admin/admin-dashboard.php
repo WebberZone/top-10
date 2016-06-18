@@ -22,17 +22,18 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since	1.3
  *
- * @param	bool $daily  Switch for Daily or Overall popular posts
- * @param	int  $page   Which page of the lists are we on?
- * @param	int  $limit  Maximum number of posts per page
- * @param	bool $widget Is this a WordPress widget?
+ * @param	bool $daily  Switch for Daily or Overall popular posts.
+ * @param	int  $page   Which page of the lists are we on.
+ * @param	int  $limit  Maximum number of posts per page.
+ * @param	bool $widget Is this a WordPress widget.
  * @return	Formatted list of popular posts
  */
 function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
 	global $wpdb, $tptn_settings;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) { $table_name .= '_daily';	// If we're viewing daily posts, set this to true
+	if ( $daily ) {
+		$table_name .= '_daily'; // If we're viewing daily posts, set this to true.
 	}
 	if ( ! $limit ) { $limit = $tptn_settings['limit']; }
 

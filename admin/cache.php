@@ -56,7 +56,7 @@ function tptn_cache_get_keys() {
 /**
  * Delete the Top 10 cache.
  *
- * @param	array $transients
+ * @param	array $transients Array of transients to delete.
  */
 function tptn_cache_delete( $transients = array() ) {
 

@@ -7,7 +7,6 @@
  * @package Top_Ten
  */
 
-
 /**
  * Function to generate the top 10 daily popular posts page.
  *
@@ -25,7 +24,7 @@ function tptn_manage_daily() {
  * @since	1.3
  * @deprecated	2.2.0
  *
- * @param	int	$daily	Overall popular
+ * @param	int	$daily	Overall popular.
  */
 function tptn_manage( $daily = 0 ) {
 
@@ -36,27 +35,33 @@ function tptn_manage( $daily = 0 ) {
 ?>
 
 <div class="wrap">
-	<h2>
-		<?php if ( ! $daily ) {
-			_e( 'Popular Posts', 'top-10' );
+    <h2>
+    <?php if ( ! $daily ) {
+		esc_html_e( 'Popular Posts', 'top-10' );
 } else {
-	_e( 'Daily Popular Posts', 'top-10' );
+	esc_html_e( 'Daily Popular Posts', 'top-10' );
 } ?>
 	</h2>
-	<div id="poststuff">
-	<div id="post-body" class="metabox-holder columns-2">
-	<div id="post-body-content">
-		<?php echo tptn_pop_display( $daily, $paged, $limit, false ); ?>
-	</div><!-- /post-body-content -->
-	<div id="postbox-container-1" class="postbox-container">
-	  <div id="side-sortables" class="meta-box-sortables ui-sortable">
-			<?php tptn_admin_side(); ?>
-	  </div><!-- /side-sortables -->
-	</div><!-- /postbox-container-1 -->
-	</div><!-- /post-body -->
-	<br class="clear" />
-	</div><!-- /poststuff -->
-</div><!-- /wrap -->
+    <div id="poststuff">
+        <div id="post-body" class="metabox-holder columns-2">
+            <div id="post-body-content">
+                <?php echo tptn_pop_display( $daily, $paged, $limit, false ); ?>
+            </div>
+            <!-- /post-body-content -->
+            <div id="postbox-container-1" class="postbox-container">
+                <div id="side-sortables" class="meta-box-sortables ui-sortable">
+                    <?php tptn_admin_side(); ?>
+                </div>
+                <!-- /side-sortables -->
+            </div>
+            <!-- /postbox-container-1 -->
+        </div>
+        <!-- /post-body -->
+        <br class="clear" />
+    </div>
+    <!-- /poststuff -->
+</div>
+<!-- /wrap -->
 
 <?php
 }
