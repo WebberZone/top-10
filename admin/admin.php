@@ -36,8 +36,9 @@ function tptn_options() {
 	}
 
 	/*
-	Temporary check if default styles are off and left thumbnails are selected - will be eventually deprecated
-	// This is a mismatch, so we force it to no style */
+    Temporary check if default styles are off and left thumbnails are selected - will be eventually deprecated
+    This is a mismatch, so we force it to no style
+    */
 	if ( ( false == $tptn_settings['include_default_style'] ) && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) {
 		$tptn_settings['tptn_styles'] = 'no_style';
 		update_option( 'ald_tptn_settings', $tptn_settings );
@@ -96,7 +97,7 @@ function tptn_options() {
 		$tptn_settings['limit'] = intval( $_POST['limit'] );
 		$tptn_settings['how_old'] = intval( $_POST['how_old'] );
 
-		// Process post types to be selected
+		// Process post types to be selected.
 		$wp_post_types	= get_post_types( array(
 			'public'	=> true,
 		) );
@@ -104,7 +105,7 @@ function tptn_options() {
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
-		$tptn_settings['exclude_post_ids'] = $_POST['exclude_post_ids'] == '' ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_post_ids'] ) ) );
+		$tptn_settings['exclude_post_ids'] = '' == $_POST['exclude_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_post_ids'] ) ) );
 
 		/**** Exclude categories ****/
 		$exclude_categories_slugs = array_map( 'trim', explode( ',', wp_kses_post( $_POST['exclude_cat_slugs'] ) ) );
@@ -119,7 +120,7 @@ function tptn_options() {
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
 
-		$tptn_settings['blank_output'] = ( $_POST['blank_output'] == 'blank' ) ? true : false;
+		$tptn_settings['blank_output'] = 'blank' == $_POST['blank_output'] ? true : false;
 		$tptn_settings['blank_output_text'] = wp_kses_post( $_POST['blank_output_text'] );
 
 		$tptn_settings['show_excerpt'] = isset( $_POST['show_excerpt'] ) ? true : false;
@@ -131,7 +132,7 @@ function tptn_options() {
 
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
-		$tptn_settings['exclude_on_post_ids'] = $_POST['exclude_on_post_ids'] == '' ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_on_post_ids'] ) ) );
+		$tptn_settings['exclude_on_post_ids'] = '' == $_POST['exclude_on_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_on_post_ids'] ) ) );
 
 		// List HTML options
 		$tptn_settings['before_list'] = $_POST['before_list'];
@@ -276,7 +277,7 @@ function tptn_options() {
 		foreach ( $top_ten_mu_tables_sel_blog_ids as $top_ten_mu_tables_sel_blog_id ) {
 			$sql = '
                     INSERT INTO ' . $wpdb->base_prefix . "top_ten (postnumber, cntaccess, blog_id)
-					  SELECT postnumber, cntaccess, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten
+                      SELECT postnumber, cntaccess, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten
                       ON DUPLICATE KEY UPDATE ' . $wpdb->base_prefix . 'top_ten.cntaccess = ' . $wpdb->base_prefix . 'top_ten.cntaccess + (
                         SELECT ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten.cntaccess FROM ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten WHERE ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten.postnumber = ' . $wpdb->base_prefix . 'top_ten.postnumber
                       )
@@ -286,7 +287,7 @@ function tptn_options() {
 
 			$sql = '
                     INSERT INTO ' . $wpdb->base_prefix . "top_ten_daily (postnumber, cntaccess, dp_date, blog_id)
-					  SELECT postnumber, cntaccess, dp_date, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten_daily
+                      SELECT postnumber, cntaccess, dp_date, '%d' FROM " . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten_daily
                       ON DUPLICATE KEY UPDATE ' . $wpdb->base_prefix . 'top_ten_daily.cntaccess = ' . $wpdb->base_prefix . 'top_ten_daily.cntaccess + (
                         SELECT ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten_daily.cntaccess FROM ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten_daily WHERE ' . $wpdb->base_prefix . $top_ten_mu_tables_sel_blog_id . '_top_ten_daily.postnumber = ' . $wpdb->base_prefix . 'top_ten_daily.postnumber
                       )
@@ -339,68 +340,123 @@ function tptn_options() {
  */
 function tptn_admin_side() {
 ?>
-    <div id="donatediv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Support the development', 'top-10' ); ?></span></h3>
-      <div class="inside">
-		<div id="donate-form">
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			<input type="hidden" name="cmd" value="_xclick">
-			<input type="hidden" name="business" value="donate@ajaydsouza.com">
-			<input type="hidden" name="lc" value="IN">
-			<input type="hidden" name="item_name" value="<?php _e( 'Donation for Top 10', 'top-10' ); ?>">
-			<input type="hidden" name="item_number" value="tptn_admin">
-			<strong><?php _e( 'Enter amount in USD:', 'top-10' ); ?></strong> <input name="amount" value="10.00" size="6" type="text"><br />
-			<input type="hidden" name="currency_code" value="USD">
-			<input type="hidden" name="button_subtype" value="services">
-			<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
-			<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php _e( 'Send your donation to the author of Top 10', 'top-10' ); ?>">
-			<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-			</form>
-		</div>
-      </div>
-    </div>
-    <div id="followdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Follow me', 'top-10' ); ?></span></h3>
-      <div class="inside">
-		<div id="twitter">
-			<div style="text-align:center"><a href="https://twitter.com/WebberZoneWP" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @WebberZoneWP</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
-		</div>
-		<div id="facebook">
-			<div id="fb-root"></div>
-			<script>
-			//<![CDATA[
-				(function(d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) return;
-				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=458036114376706";
-				fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
-			//]]>
-			</script>
-			<div class="fb-page" data-href="https://www.facebook.com/WebberZone" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/WebberZone"><a href="https://www.facebook.com/WebberZone">WebberZone</a></blockquote></div></div>
-		</div>
-      </div>
-    </div>
-    <div id="qlinksdiv" class="postbox"><div class="handlediv" title="<?php _e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-      <h3 class='hndle'><span><?php _e( 'Quick links', 'top-10' ); ?></span></h3>
-      <div class="inside">
-        <div id="quick-links">
-			<ul>
-				<li><a href="https://webberzone.com/plugins/top-10/" target="_blank"><?php _e( 'Top 10 plugin page', 'top-10' ); ?></a></li>
-				<li><a href="https://github.com/ajaydsouza/top-10" target="_blank"><?php _e( 'Top 10 Github page', 'top-10' ); ?></a></li>
-				<li><a href="https://webberzone.com/plugins/" target="_blank"><?php _e( 'Other plugins', 'top-10' ); ?></a></li>
-				<li><a href="https://wordpress.org/plugins/top-10/faq/" target="_blank"><?php _e( 'FAQ', 'top-10' ); ?></a></li>
-				<li><a href="https://wordpress.org/support/plugin/top-10" target="_blank"><?php _e( 'Support', 'top-10' ); ?></a></li>
-				<li><a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank"><?php _e( 'Reviews', 'top-10' ); ?></a></li>
-				<li><a href="https://ajaydsouza.com/" target="_blank"><?php _e( "Ajay's blog", 'top-10' ); ?></a></li>
-			</ul>
+    <div id="donatediv" class="postbox">
+        <div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
+            <br />
         </div>
-      </div>
+        <h3 class='hndle'><span><?php esc_html_e( 'Support the development', 'top-10' ); ?></span></h3>
+        <div class="inside">
+            <div id="donate-form">
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_xclick">
+                    <input type="hidden" name="business" value="donate@ajaydsouza.com">
+                    <input type="hidden" name="lc" value="IN">
+                    <input type="hidden" name="item_name" value="<?php esc_attr_e( 'Donation for Top 10', 'top-10' ); ?>">
+                    <input type="hidden" name="item_number" value="tptn_admin">
+                    <strong><?php esc_html_e( 'Enter amount in USD:', 'top-10' ); ?></strong>
+                    <input name="amount" value="10.00" size="6" type="text">
+                    <br />
+                    <input type="hidden" name="currency_code" value="USD">
+                    <input type="hidden" name="button_subtype" value="services">
+                    <input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
+                    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php esc_attr_e( 'Send your donation to the author of Top 10', 'top-10' ); ?>">
+                    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="followdiv" class="postbox">
+        <div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
+            <br />
+        </div>
+        <h3 class='hndle'><span><?php esc_html_e( 'Follow me', 'top-10' ); ?></span></h3>
+        <div class="inside">
+            <div id="twitter">
+                <div style="text-align:center"><a href="https://twitter.com/WebberZoneWP" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @WebberZoneWP</a>
+                    <script>
+                        ! function (d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (!d.getElementById(id)) {
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = "//platform.twitter.com/widgets.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }
+                        }(document, "script", "twitter-wjs");
+                    </script>
+                </div>
+            </div>
+            <div id="facebook">
+                <div id="fb-root"></div>
+                <script>
+                    //<![CDATA[
+                    (function (d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=458036114376706";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    //]]>
+                </script>
+                <div class="fb-page" data-href="https://www.facebook.com/WebberZone" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
+                    <div class="fb-xfbml-parse-ignore">
+                        <blockquote cite="https://www.facebook.com/WebberZone"><a href="https://www.facebook.com/WebberZone">WebberZone</a></blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="qlinksdiv" class="postbox">
+        <div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>">
+            <br />
+        </div>
+        <h3 class='hndle'><span><?php esc_html_e( 'Quick links', 'top-10' ); ?></span></h3>
+        <div class="inside">
+            <div id="quick-links">
+                <ul>
+                    <li>
+                        <a href="https://webberzone.com/plugins/top-10/" target="_blank">
+                            <?php esc_html_e( 'Top 10 plugin page', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ajaydsouza/top-10" target="_blank">
+                            <?php esc_html_e( 'Top 10 Github page', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://webberzone.com/plugins/" target="_blank">
+                            <?php esc_html_e( 'Other plugins', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wordpress.org/plugins/top-10/faq/" target="_blank">
+                            <?php esc_html_e( 'FAQ', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wordpress.org/support/plugin/top-10" target="_blank">
+                            <?php esc_html_e( 'Support', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank">
+                            <?php esc_html_e( 'Reviews', 'top-10' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ajaydsouza.com/" target="_blank">
+                            <?php esc_html_e( "Ajay's blog", 'top-10' ); ?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-<?php
+    <?php
 }
 
 
@@ -446,86 +502,90 @@ function tptn_adminhead() {
 	add_thickbox();
 
 ?>
-	<style type="text/css">
-		.postbox .handlediv:before {
-			right:12px;
-			font:400 20px/1 dashicons;
-			speak:none;
-			display:inline-block;
-			top:0;
-			position:relative;
-			-webkit-font-smoothing:antialiased;
-			-moz-osx-font-smoothing:grayscale;
-			text-decoration:none!important;
-			content:'\f142';
-			padding:8px 10px;
-		}
-		.postbox.closed .handlediv:before {
-			content: '\f140';
-		}
-		.wrap h2:before {
-		    content: "\f204";
-		    display: inline-block;
-		    -webkit-font-smoothing: antialiased;
-		    font: normal 29px/1 'dashicons';
-		    vertical-align: middle;
-		    margin-right: 0.3em;
-		}
-	</style>
+        <style type="text/css">
+            .postbox .handlediv:before {
+                right: 12px;
+                font: 400 20px/1 dashicons;
+                speak: none;
+                display: inline-block;
+                top: 0;
+                position: relative;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-decoration: none!important;
+                content: '\f142';
+                padding: 8px 10px;
+            }
 
-	<script type="text/javascript">
-		//<![CDATA[
-		jQuery(document).ready( function($) {
-			// close postboxes that should be closed
-			$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-			// postboxes setup
-			postboxes.add_postbox_toggles('tptn_options');
-		});
-		//]]>
-	</script>
+            .postbox.closed .handlediv:before {
+                content: '\f140';
+            }
 
-	<script type="text/javascript" language="JavaScript">
-		//<![CDATA[
-		function checkForm() {
-			answer = true;
-			if (siw && siw.selectingSomething)
-				answer = false;
-			return answer;
-		}//
-		//]]>
-	</script>
+            .wrap h2:before {
+                content: "\f204";
+                display: inline-block;
+                -webkit-font-smoothing: antialiased;
+                font: normal 29px/1 'dashicons';
+                vertical-align: middle;
+                margin-right: 0.3em;
+            }
+        </style>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
-	<script type="text/javascript" language="JavaScript">
-		//<![CDATA[
-		function clearCache() {
-			/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
-			jQuery.post(ajaxurl, {action: 'tptn_clear_cache'}, function(response, textStatus, jqXHR) {
-				alert( response.message );
-			}, 'json');
-		}
+        <script type="text/javascript">
+            //<![CDATA[
+            jQuery(document).ready(function ($) {
+                // close postboxes that should be closed
+                $('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+                // postboxes setup
+                postboxes.add_postbox_toggles('tptn_options');
+            });
+            //]]>
+        </script>
 
-		<?php
-		function wick_data() {
+        <script type="text/javascript" language="JavaScript">
+            //<![CDATA[
+            function checkForm() {
+                answer = true;
+                if (siw && siw.selectingSomething)
+                    answer = false;
+                return answer;
+            } //
+            //]]>
+        </script>
 
-			$categories = get_categories( 'hide_empty=0' );
-			$str = 'collection = [';
-			foreach ( $categories as $cat ) {
-				$str .= "'" . $cat->slug . "',";
+        <link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
+        <script type="text/javascript" language="JavaScript">
+            //<![CDATA[
+            function clearCache() {
+                /**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
+                jQuery.post(ajaxurl, {
+                    action: 'tptn_clear_cache'
+                }, function (response, textStatus, jqXHR) {
+                    alert(response.message);
+                }, 'json');
+            }
+
+            <?php
+			function wick_data() {
+
+				$categories = get_categories( 'hide_empty=0' );
+				$str = 'collection = [';
+				foreach ( $categories as $cat ) {
+					$str .= "'" . $cat->slug . "',";
+				}
+				$str = substr( $str, 0, -1 );	// Remove trailing comma.
+				$str .= '];';
+
+				echo $str;
 			}
-			$str = substr( $str, 0, -1 );	// Remove trailing comma
-			$str .= '];';
-
-			echo $str;
-		}
-		wick_data();
+			wick_data();
 		?>
-		//]]>
-	</script>
+            //]]>
+        </script>
 
-	<script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
+        <script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
 
-<?php
+        <?php
 }
 
 
@@ -534,8 +594,8 @@ function tptn_adminhead() {
  *
  * @version	1.9.2
  *
- * @param	array $links
- * @return	array	Links array with our settings link added
+ * @param	array $links Action links.
+ * @return	array	Links array with our settings link added.
  */
 function tptn_plugin_actions_links( $links ) {
 
@@ -555,14 +615,13 @@ add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ )
  *
  * @since	1.5
  *
- * @param	array $links
- * @param	array $file
+ * @param	array $links Action links.
+ * @param	array $file Plugin file name.
  * @return	array	Links array with our links added
  */
 function tptn_plugin_actions( $links, $file ) {
 	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
 
-	// create link
 	if ( $file == $plugin ) {
 		$links[] = '<a href="https://webberzone.com/support/">' . __( 'Support', 'top-10' ) . '</a>';
 		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'top-10' ) . '</a>';
@@ -577,7 +636,7 @@ add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
  *
  * @since	1.6.2
  *
- * @param	bool $daily  Daily flag
+ * @param	bool $daily  Daily flag.
  */
 function tptn_clean_duplicates( $daily = false ) {
 	global $wpdb;
@@ -610,31 +669,30 @@ function tptn_merge_blogids( $daily = false ) {
 
 	if ( $daily ) {
 		$wpdb->query( "
-			INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
-				SELECT
-					postnumber,
-					SUM(cntaccess) as sumCount,
-					dp_date,
-					1
-				FROM `$table_name`
-				WHERE blog_ID IN (0,1)
-				GROUP BY postnumber, dp_date
-			) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-		" );
+            INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
+                SELECT
+                    postnumber,
+                    SUM(cntaccess) as sumCount,
+                    dp_date,
+                    1
+                FROM `$table_name`
+                WHERE blog_ID IN (0,1)
+                GROUP BY postnumber, dp_date
+            ) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
+        " );
 	} else {
 		$wpdb->query( "
-			INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
-				SELECT
-					postnumber,
-					SUM(cntaccess) as sumCount,
-					1
-				FROM `$table_name`
-				WHERE blog_ID IN (0,1)
-				GROUP BY postnumber
-			) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-		" );
+            INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
+                SELECT
+                    postnumber,
+                    SUM(cntaccess) as sumCount,
+                    1
+                FROM `$table_name`
+                WHERE blog_ID IN (0,1)
+                GROUP BY postnumber
+            ) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
+        " );
 	}
 
 	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" );
 }
-
