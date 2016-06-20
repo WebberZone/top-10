@@ -8,29 +8,33 @@
  * @link      https://webberzone.com
  * @copyright 2008-2016 Ajay D'Souza
  */
+
 Header( 'content-type: application/x-javascript' );
 
-// Force a short-init since we just need core WP, not the entire framework stack
+// Force a short-init since we just need core WP, not the entire framework stack.
 define( 'SHORTINIT', true );
 
-// Build the wp-config.php path from a plugin/theme
+// Build the wp-config.php path from a plugin/theme.
 $wp_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
 $wp_config_filename = '/wp-load.php';
 
-// Check if the file exists in the root or one level up
+// Check if the file exists in the root or one level up.
 if ( ! file_exists( $wp_config_path . $wp_config_filename ) ) {
-	// Just in case the user may have placed wp-config.php one more level up from the root
+	// Just in case the user may have placed wp-config.php one more level up from the root.
 	$wp_config_filename = dirname( $wp_config_path ) . $wp_config_filename;
 }
-// Require the wp-config.php file
+// Require the wp-config.php file.
 require( $wp_config_filename );
 
-// Include the now instantiated global $wpdb Class for use
+// Include the now instantiated global $wpdb Class for use.
 global $wpdb;
 
 
-// Ajax Increment Counter
 tptn_inc_count();
+
+/**
+ * Increment Counter.
+ */
 function tptn_inc_count() {
 	global $wpdb;
 	$table_name = $wpdb->base_prefix . 'top_ten';
