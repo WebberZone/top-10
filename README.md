@@ -49,7 +49,7 @@ Top 10 is available for [translation directly on WordPress.org](https://translat
 
 
 ## Screenshots
-![General Options](https://raw.github.com/WebberZone/top-10/master/assets/screenshot-5.png)
+![General Options](https://raw.github.com/WebberZone/top-10/master/wporg-assets/screenshot-5.png)
 _Top 10 settings page - Styles Options_
 
 For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
