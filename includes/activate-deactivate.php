@@ -5,7 +5,6 @@
  * @package Top_Ten
  */
 
-
 /**
  * Fired when the plugin is Network Activated.
  *
@@ -21,7 +20,7 @@ function tptn_activation_hook( $network_wide ) {
 
 	if ( is_multisite() && $network_wide ) {
 
-		// Get all blogs in the network and activate plugin on each one
+		// Get all blogs in the network and activate plugin on each one.
 		$blog_ids = $wpdb->get_col( "
         	SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0' AND deleted = '0'
@@ -31,7 +30,7 @@ function tptn_activation_hook( $network_wide ) {
 			tptn_single_activate();
 		}
 
-		// Switch back to the current blog
+		// Switch back to the current blog.
 		restore_current_blog();
 
 	} else {
@@ -85,7 +84,7 @@ function tptn_single_activate() {
 		add_site_option( 'tptn_db_version', $tptn_db_version );
 	}
 
-	// Upgrade table code
+	// Upgrade table code.
 	$installed_ver = get_site_option( 'tptn_db_version' );
 
 	if ( $installed_ver != $tptn_db_version ) {

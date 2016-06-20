@@ -5,7 +5,6 @@
  * @package Top_Ten
  */
 
-
 /**
  * Function to truncate daily run.
  *
@@ -33,12 +32,12 @@ add_action( 'tptn_cron_hook', 'tptn_cron' );
  * Function to enable run or actions.
  *
  * @since	1.9
- * @param	int	$hour		Hour
- * @param	int	$min		Minute
- * @param	int	$recurrence	Frequency
+ * @param	int	$hour		Hour.
+ * @param	int	$min		Minute.
+ * @param	int	$recurrence	Frequency.
  */
 function tptn_enable_run( $hour, $min, $recurrence ) {
-	// Invoke WordPress internal cron
+	// Invoke WordPress internal cron.
 	if ( ! wp_next_scheduled( 'tptn_cron_hook' ) ) {
 		wp_schedule_event( mktime( $hour, $min, 0 ), $recurrence, 'tptn_cron_hook' );
 	} else {
@@ -59,17 +58,17 @@ function tptn_disable_run() {
 	}
 }
 
-// Let's declare this conditional function to add more schedules. It will be a generic function across all plugins that I develop
+// Let's declare this conditional function to add more schedules. It will be a generic function across all plugins that I develop.
 if ( ! function_exists( 'ald_more_reccurences' ) ) :
 
 	/**
 	 * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
 	 *
-	 * @param	array	Array of existing schedules
-	 * @return	array	Filtered array with new schedules
+	 * @param	array $schedules Array of existing schedules.
+	 * @return	array Filtered array with new schedules
 	 */
 	function ald_more_reccurences( $schedules ) {
-		// add a 'weekly' interval
+		// Add a 'weekly' interval
 		$schedules['weekly'] = array(
 		'interval' => WEEK_IN_SECONDS,
 		'display' => __( 'Once Weekly', 'top-10' ),

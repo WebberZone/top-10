@@ -5,7 +5,6 @@
  * @package Top_Ten
  */
 
-
 /**
  * Function to load translation files.
  *
@@ -22,7 +21,7 @@ add_action( 'plugins_loaded', 'tptn_lang_init' );
  *
  * @since	2.1.0
  *
- * @param	$post_id	Post ID
+ * @param	int $post_id	Post ID.
  */
 function tptn_object_id_cur_lang( $post_id ) {
 

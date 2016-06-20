@@ -5,13 +5,12 @@
  * @package Top_Ten
  */
 
-
 /**
  * Function to update the post views for the current post. Filters `the_content`.
  *
  * @since	1.0
  *
- * @param	string $content    Post content
+ * @param	string $content Post content.
  * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content ) {
@@ -30,10 +29,10 @@ function tptn_add_viewed_count( $content ) {
 	 */
 	$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
 
-	// Strip any query strings since we don't need them
+	// Strip any query strings since we don't need them.
 	$home_url = strtok( $home_url, '?' );
 
-	if ( is_singular() && $post->post_status != 'draft' ) {
+	if ( is_singular() && 'draft' !== $post->post_status ) {
 
 		$current_user = wp_get_current_user();	// Let's get the current user
 		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;	// Is the current user the post author?
@@ -56,8 +55,8 @@ function tptn_add_viewed_count( $content ) {
 			$output = '';
 			$id = intval( $post->ID );
 			$blog_id = get_current_blog_id();
-			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;		// It's 1 if we're updating the overall count
-			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );	// It's 10 if we're updating the daily count
+			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;		// It's 1 if we're updating the overall count.
+			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );	// It's 10 if we're updating the daily count.
 
 			if ( $activate_counter > 0 ) {
 				if ( $tptn_settings['cache_fix'] ) {
@@ -111,7 +110,7 @@ function tptn_enqueue_scripts() {
 		wp_enqueue_script( 'jquery' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_scripts action hook to link only on the front-end
+add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
 
 
 /**
@@ -119,11 +118,11 @@ add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' ); // wp_enqueue_script
  *
  * @since	2.0.0
  *
- * @param	array $vars   Query variables array
+ * @param	array $vars   Query variables array.
  * @return	array	$Query variables array with Top 10 parameters appended
  */
 function tptn_query_vars( $vars ) {
-	// add these to the list of queryvars that WP gathers
+	// Add these to the list of queryvars that WP gathers.
 	$vars[] = 'top_ten_id';
 	$vars[] = 'top_ten_blog_id';
 	$vars[] = 'activate_counter';
@@ -138,7 +137,7 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  *
  * @since	2.0.0
  *
- * @param	object $wp WordPress object
+ * @param	object $wp WordPress object.
  */
 function tptn_parse_request( $wp ) {
 	global $wpdb;
@@ -182,7 +181,7 @@ function tptn_parse_request( $wp ) {
 		Header( 'content-type: application/x-javascript' );
 		echo '<!-- ' . $str . ' -->';
 
-		// stop anything else from loading as it is not needed.
+		// Stop anything else from loading as it is not needed.
 		exit;
 
 	} elseif ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'view_counter', $wp->query_vars ) && $wp->query_vars['top_ten_id'] != '' ) {
@@ -210,7 +209,7 @@ add_action( 'parse_request', 'tptn_parse_request' );
  * Function to add the viewed count to the post content. Filters `the_content`.
  *
  * @since	1.0
- * @param	string $content    Post content
+ * @param	string $content Post content.
  * @return	string	Filtered post content
  */
 function tptn_pc_content( $content ) {
@@ -219,7 +218,7 @@ function tptn_pc_content( $content ) {
 	$exclude_on_post_ids = explode( ',', $tptn_settings['exclude_on_post_ids'] );
 
 	if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
-		return $content;	// Exit without adding related posts
+		return $content;	// Exit without adding related posts.
 	}
 
 	if ( ( is_single() ) && ( $tptn_settings['add_to_content'] ) ) {
@@ -246,7 +245,7 @@ add_filter( 'the_content', 'tptn_pc_content' );
  *
  * @since	1.9.8
  *
- * @param	string $content    Post content
+ * @param	string $content    Post content.
  * @return	string	Filtered post content
  */
 function tptn_rss_filter( $content ) {
@@ -268,7 +267,7 @@ add_filter( 'the_content_feed', 'tptn_rss_filter' );
  * Function to manually display count.
  *
  * @since	1.0
- * @param	int|boolean	$echo Flag to echo the output?
+ * @param	int|boolean	$echo Flag to echo the output.
  * @return	string	Formatted string if $echo is set to 0|false
  */
 function echo_tptn_post_count( $echo = 1 ) {
@@ -287,7 +286,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	 */
 	$home_url = apply_filters( 'tptn_view_counter_script_url', $home_url );
 
-	// Strip any query strings since we don't need them
+	// Strip any query strings since we don't need them.
 	$home_url = strtok( $home_url, '?' );
 
 	$id = intval( $post->ID );
@@ -322,8 +321,8 @@ function echo_tptn_post_count( $echo = 1 ) {
  * Return the formatted post count for the supplied ID.
  *
  * @since	1.9.2
- * @param	int|string $id         Post ID
- * @param	int|string $blog_id    Blog ID
+ * @param	int|string $id         Post ID.
+ * @param	int|string $blog_id    Blog ID.
  * @return	int|string	Formatted post count
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
@@ -335,7 +334,7 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 
 	if ( $id > 0 ) {
 
-		// Total count per post
+		// Total count per post.
 		if ( ( false !== strpos( $count_disp_form, '%totalcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%totalcount%' ) ) ) {
 			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
 				$count_disp_form_zero = str_replace( '%totalcount%', $totalcntaccess, $count_disp_form_zero );
@@ -344,7 +343,7 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 			}
 		}
 
-		// Now process daily count
+		// Now process daily count.
 		if ( ( false !== strpos( $count_disp_form, '%dailycount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%dailycount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'daily' );
 			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
@@ -354,7 +353,7 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 			}
 		}
 
-		// Now process overall count
+		// Now process overall count.
 		if ( ( false !== strpos( $count_disp_form, '%overallcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%overallcount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'overall' );
 			if ( ( 0 == $cntaccess ) && ( ! is_singular() ) ) {
@@ -380,8 +379,9 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
  *
  * @since	1.9.8.5
  *
- * @param	mixed  $id     Post ID
- * @param	string $count  Which count to return? total, daily or overall
+ * @param	mixed  $id     Post ID.
+ * @param	string $count  Which count to return? total, daily or overall.
+ * @param   bool   $blog_id Blog ID.
  * @return	int		Post count
  */
 function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
@@ -434,7 +434,7 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
  *
  * @since 2.3.0
  *
- * @param string $home_url
+ * @param string $home_url URL of the home page.
  * @return string
  */
 function filter_tptn_add_counter_script_url( $home_url ) {
@@ -454,7 +454,7 @@ add_filter( 'tptn_add_counter_script_url', 'filter_tptn_add_counter_script_url' 
  *
  * @since 2.3.0
  *
- * @param bool $echo Echo the code or return it?
+ * @param bool $echo Echo the code or return it.
  * @return string|void
  */
 function tptn_add_tracker( $echo = true ) {

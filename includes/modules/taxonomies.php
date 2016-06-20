@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 2.2.0
  *
- * @param	mixed $join
+ * @param	mixed $join Join clause.
  * @return	string	Filtered JOIN clause
  */
 function tptn_exclude_categories_join( $join ) {
@@ -40,7 +40,7 @@ add_filter( 'tptn_posts_join', 'tptn_exclude_categories_join' );
  *
  * @since 2.2.0
  *
- * @param	mixed $where
+ * @param	mixed $where WHERE clause.
  * @return	string	Filtered WHERE clause
  */
 function tptn_exclude_categories_where( $where ) {
@@ -72,7 +72,7 @@ add_filter( 'tptn_posts_where', 'tptn_exclude_categories_where' );
  *
  * @since 2.3.0
  *
- * @param	mixed $groupby
+ * @param	mixed $groupby GROUP BY clause.
  * @return	string	Filtered GROUP BY clause
  */
 function tptn_exclude_categories_groupby( $groupby ) {

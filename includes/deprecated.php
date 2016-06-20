@@ -7,7 +7,6 @@
  * @package Top_Ten
  */
 
-
 /**
  * Holds the filesystem directory path (with trailing slash) for Top 10
  *
@@ -36,7 +35,7 @@ $tptn_url = plugins_url() . '/' . plugin_basename( dirname( TOP_TEN_PLUGIN_FILE 
  * @since	1.9.8
  * @deprecated	2.2.0
  *
- * @param	string $content    Post content
+ * @param	string $content    Post content.
  * @return	string	Filtered post content
  */
 function ald_tptn_rss( $content ) {
