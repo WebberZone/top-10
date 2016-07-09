@@ -13,7 +13,7 @@
  * @param	string $content Post content.
  * @return	string	Filtered content
  */
-function tptn_add_viewed_count( $content ) {
+function tptn_add_viewed_count( $content = '' ) {
 	global $post, $tptn_settings;
 
 	$home_url = home_url( '/' );
@@ -87,15 +87,12 @@ function tptn_add_viewed_count( $content ) {
 			 */
 			$output = apply_filters( 'tptn_viewed_count', $output );
 
-			return $content.$output;
-		} else {
-			return $content;
+			echo $output;
 		}
-	} else {
-		return $content;
+
 	}
 }
-add_filter( 'the_content', 'tptn_add_viewed_count' );
+add_action( 'wp_footer', 'tptn_add_viewed_count', 999999 );
 
 
 /**
@@ -103,14 +100,14 @@ add_filter( 'the_content', 'tptn_add_viewed_count' );
  *
  * @since	1.9.7
  */
-function tptn_enqueue_scripts() {
+function tptn_enqueue_scripts2() {
 	global $tptn_settings;
 
 	if ( $tptn_settings['cache_fix'] ) {
 		wp_enqueue_script( 'jquery' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts2' );
 
 
 /**
