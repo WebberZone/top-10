@@ -358,7 +358,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// Create the base WHERE clause
 	$where .= $wpdb->prepare( ' AND blog_id = %d ', $blog_id );				// Posts need to be from the current blog only
-	$where .= " AND $wpdb->posts.post_status = 'publish' ";					// Only show published posts
+    $where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
 
 	if ( $args['daily'] ) {
 		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );	// Only fetch posts that are tracked after this date
