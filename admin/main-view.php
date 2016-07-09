@@ -671,7 +671,7 @@ if ( ! defined( 'WPINC' ) ) {
 						do_action( 'tptn_admin_custom_styles_before', $tptn_settings );
 					?>
 
-					<tr><th scope="row"><?php esc_html_e( 'Style of the related posts:', 'top-10' ); ?></th>
+					<tr><th scope="row"><?php esc_html_e( 'Style of the popular posts:', 'top-10' ); ?></th>
 					  <td>
 						<label>
 							<input type="radio" name="tptn_styles" value="no_style" id="tptn_styles_1" <?php if ( 'no_style' == $tptn_settings['tptn_styles'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'No styles', 'top-10' ); ?>
