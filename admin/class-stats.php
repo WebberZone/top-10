@@ -88,7 +88,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// Create the base WHERE clause
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-		$where .= " AND $wpdb->posts.post_status = 'publish' "; // Only show published posts.
+        $where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
@@ -163,7 +163,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt
 			INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID
 			WHERE blog_id=%d
-			AND $wpdb->posts.post_status = 'publish'
+			AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit')
 		", get_current_blog_id() );
 
 		if ( isset( $args['search'] ) ) {
