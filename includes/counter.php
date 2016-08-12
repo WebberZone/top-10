@@ -175,8 +175,8 @@ function tptn_parse_request( $wp ) {
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
-		Header( 'content-type: application/x-javascript' );
-		echo '<!-- ' . $str . ' -->';
+		header("HTTP/1.0 204 No Content");
+		header("Cache-Control: max-age=15, s-maxage=0");
 
 		// Stop anything else from loading as it is not needed.
 		exit;
