@@ -85,7 +85,6 @@ function tptn_add_viewed_count( $content = '' ) {
 
 			echo $output;
 		}
-
 	}
 }
 add_action( 'wp_footer', 'tptn_add_viewed_count', 999999 );
@@ -171,8 +170,8 @@ function tptn_parse_request( $wp ) {
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
-		header("HTTP/1.0 204 No Content");
-		header("Cache-Control: max-age=15, s-maxage=0");
+		header( 'HTTP/1.0 204 No Content' );
+		header( 'Cache-Control: max-age=15, s-maxage=0' );
 
 		// Stop anything else from loading as it is not needed.
 		exit;

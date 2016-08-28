@@ -88,7 +88,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// Create the base WHERE clause
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-        $where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
+		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
@@ -109,16 +109,15 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$orderby = esc_sql( $_REQUEST['orderby'] );
 
-            if ( ! empty( $_REQUEST['order'] ) ) {
-                $order = esc_sql( $_REQUEST['order'] );
+			if ( ! empty( $_REQUEST['order'] ) ) {
+				$order = esc_sql( $_REQUEST['order'] );
 
-                if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) {
-                    $orderby .= ' ' . $order;
-                } else {
-                    $orderby .= ' DESC';
-                }
-            }
-
+				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) {
+					$orderby .= ' ' . $order;
+				} else {
+					$orderby .= ' DESC';
+				}
+			}
 		}
 
 		// Create the base LIMITS clause.
