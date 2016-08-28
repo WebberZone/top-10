@@ -372,16 +372,16 @@ if ( ! defined( 'WPINC' ) ) {
 					</tr>
 					<tr>
 						<th scope="row"><label for="blank_output"><?php esc_html_e( 'When there are no posts, what should be shown?', 'top-10' ); ?></label></th>
-                        <td>
-                            <label>
-                                <input type="radio" name="blank_output" value="blank" id="blank_output_0" <?php if ( $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
-                                <?php esc_html_e( 'Blank Output', 'top-10' ); ?></label>
-                            <br />
-                            <label>
-                                <input type="radio" name="blank_output" value="customs" id="blank_output_1" <?php if ( ! $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
-                                <?php esc_html_e( 'Display:', 'top-10' ); ?></label>
-                            <input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo esc_attr( $tptn_settings['blank_output_text'] ); ?>" style="width:250px" />
-                        </td>
+						<td>
+							<label>
+								<input type="radio" name="blank_output" value="blank" id="blank_output_0" <?php if ( $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
+								<?php esc_html_e( 'Blank Output', 'top-10' ); ?></label>
+							<br />
+							<label>
+								<input type="radio" name="blank_output" value="customs" id="blank_output_1" <?php if ( ! $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
+								<?php esc_html_e( 'Display:', 'top-10' ); ?></label>
+							<input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo esc_attr( $tptn_settings['blank_output_text'] ); ?>" style="width:250px" />
+						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="show_excerpt"><?php esc_html_e( 'Show post excerpt in list?', 'top-10' ); ?></label></th>
