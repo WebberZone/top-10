@@ -93,13 +93,6 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="cache_fix"><?php esc_html_e( 'Use external JS file for tracking:', 'top-10' ); ?></label></th>
-						<td>
-							<input type="checkbox" name="external_tracker" id="external_tracker" <?php if ( $tptn_settings['external_tracker'] ) { echo 'checked="checked"'; } ?> />
-							<p class="description"><?php esc_html_e( 'This uses the external javascript file for tracking. This is a more efficient and less resource intensive tracker. This settings might have some compatibility issues on some WordPress installs or might be blocked by some security plugins. If you find that your posts are not being tracked then disable this option.', 'top-10' ); ?></p>
-						</td>
-					</tr>
-					<tr>
 						<th scope="row"><label for="cache"><?php esc_html_e( 'Enable cache:', 'top-10' ); ?></label></th>
 						<td>
 							<p><input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) { echo 'checked="checked"'; } ?> /></p>
@@ -379,16 +372,16 @@ if ( ! defined( 'WPINC' ) ) {
 					</tr>
 					<tr>
 						<th scope="row"><label for="blank_output"><?php esc_html_e( 'When there are no posts, what should be shown?', 'top-10' ); ?></label></th>
-                        <td>
-                            <label>
-                                <input type="radio" name="blank_output" value="blank" id="blank_output_0" <?php if ( $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
-                                <?php esc_html_e( 'Blank Output', 'top-10' ); ?></label>
-                            <br />
-                            <label>
-                                <input type="radio" name="blank_output" value="customs" id="blank_output_1" <?php if ( ! $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
-                                <?php esc_html_e( 'Display:', 'top-10' ); ?></label>
-                            <input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo esc_attr( $tptn_settings['blank_output_text'] ); ?>" style="width:250px" />
-                        </td>
+						<td>
+							<label>
+								<input type="radio" name="blank_output" value="blank" id="blank_output_0" <?php if ( $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
+								<?php esc_html_e( 'Blank Output', 'top-10' ); ?></label>
+							<br />
+							<label>
+								<input type="radio" name="blank_output" value="customs" id="blank_output_1" <?php if ( ! $tptn_settings['blank_output'] ) { echo 'checked="checked"'; } ?> />
+								<?php esc_html_e( 'Display:', 'top-10' ); ?></label>
+							<input type="textbox" name="blank_output_text" id="blank_output_text" value="<?php echo esc_attr( $tptn_settings['blank_output_text'] ); ?>" style="width:250px" />
+						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="show_excerpt"><?php esc_html_e( 'Show post excerpt in list?', 'top-10' ); ?></label></th>
