@@ -88,7 +88,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// Create the base WHERE clause
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-        $where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
+		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
@@ -108,7 +108,16 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$orderby = esc_sql( $_REQUEST['orderby'] );
-			$orderby .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' DESC';
+
+			if ( ! empty( $_REQUEST['order'] ) ) {
+				$order = esc_sql( $_REQUEST['order'] );
+
+				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) {
+					$orderby .= ' ' . $order;
+				} else {
+					$orderby .= ' DESC';
+				}
+			}
 		}
 
 		// Create the base LIMITS clause.
@@ -488,7 +497,7 @@ class Top_Ten_Statistics {
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
 							<form method="get">
-								<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+								<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>" />
 								<?php
 								// If this is a search?
 								if ( isset( $_REQUEST['s'] ) ) {

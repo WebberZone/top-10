@@ -63,7 +63,6 @@ function tptn_options() {
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily'] ) ? true : false;
 		$tptn_settings['cache'] = isset( $_POST['cache'] ) ? true : false;
 		$tptn_settings['cache_fix'] = isset( $_POST['cache_fix'] ) ? true : false;
-		$tptn_settings['external_tracker'] = isset( $_POST['external_tracker'] ) ? true : false;
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
 		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
@@ -82,8 +81,8 @@ function tptn_options() {
 		$tptn_settings['add_to_tag_archives'] = isset( $_POST['add_to_tag_archives'] ) ? true : false;
 		$tptn_settings['add_to_archives'] = isset( $_POST['add_to_archives'] ) ? true : false;
 
-		$tptn_settings['count_disp_form'] = $_POST['count_disp_form'];
-		$tptn_settings['count_disp_form_zero'] = $_POST['count_disp_form_zero'];
+		$tptn_settings['count_disp_form'] = wp_kses_post( $_POST['count_disp_form'] );
+		$tptn_settings['count_disp_form_zero'] = wp_kses_post( $_POST['count_disp_form_zero'] );
 		$tptn_settings['dynamic_post_count'] = isset( $_POST['dynamic_post_count'] ) ? true : false;
 
 		$tptn_settings['track_authors'] = isset( $_POST['track_authors'] ) ? true : false;
@@ -101,14 +100,14 @@ function tptn_options() {
 		$wp_post_types	= get_post_types( array(
 			'public'	=> true,
 		) );
-		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? $_POST['post_types'] : array( 'post' => 'post' );
+		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['post_types'] ) ) : array( 'post' => 'post' );
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
-		$tptn_settings['exclude_post_ids'] = '' == $_POST['exclude_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_post_ids'] ) ) );
+		$tptn_settings['exclude_post_ids'] = '' == sanitize_text_field( $_POST['exclude_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_post_ids'] ) ) ) );
 
 		/**** Exclude categories ****/
-		$exclude_categories_slugs = array_map( 'trim', explode( ',', wp_kses_post( $_POST['exclude_cat_slugs'] ) ) );
+		$exclude_categories_slugs = array_map( 'trim', explode( ',', sanitize_text_field( $_POST['exclude_cat_slugs'] ) ) );
 		$tptn_settings['exclude_cat_slugs'] = implode( ', ', $exclude_categories_slugs );
 
 		foreach ( $exclude_categories_slugs as $exclude_categories_slug ) {
@@ -120,7 +119,7 @@ function tptn_options() {
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
 
-		$tptn_settings['blank_output'] = 'blank' == $_POST['blank_output'] ? true : false;
+		$tptn_settings['blank_output'] = ( 'blank' === sanitize_text_field( $_POST['blank_output'] ) ) ? true : false;
 		$tptn_settings['blank_output_text'] = wp_kses_post( $_POST['blank_output_text'] );
 
 		$tptn_settings['show_excerpt'] = isset( $_POST['show_excerpt'] ) ? true : false;
@@ -132,31 +131,31 @@ function tptn_options() {
 
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
-		$tptn_settings['exclude_on_post_ids'] = '' == $_POST['exclude_on_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_on_post_ids'] ) ) );
+		$tptn_settings['exclude_on_post_ids'] = '' == sanitize_text_field( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
 
 		// List HTML options
-		$tptn_settings['before_list'] = $_POST['before_list'];
-		$tptn_settings['after_list'] = $_POST['after_list'];
-		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
-		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
+		$tptn_settings['before_list'] = wp_kses_post( $_POST['before_list'] );
+		$tptn_settings['after_list'] = wp_kses_post( $_POST['after_list'] );
+		$tptn_settings['before_list_item'] = wp_kses_post( $_POST['before_list_item'] );
+		$tptn_settings['after_list_item'] = wp_kses_post( $_POST['after_list_item'] );
 
 		/* Thumbnail options */
-		$tptn_settings['post_thumb_op'] = $_POST['post_thumb_op'];
-		$tptn_settings['thumb_size'] = $_POST['thumb_size'];
+		$tptn_settings['post_thumb_op'] = sanitize_text_field( $_POST['post_thumb_op'] );
+		$tptn_settings['thumb_size'] = sanitize_text_field( $_POST['thumb_size'] );
 		$tptn_settings['thumb_width'] = intval( $_POST['thumb_width'] );
 		$tptn_settings['thumb_height'] = intval( $_POST['thumb_height'] );
 		$tptn_settings['thumb_crop'] = ( isset( $_POST['thumb_crop'] ) ? true : false );
-		$tptn_settings['thumb_html'] = $_POST['thumb_html'];
+		$tptn_settings['thumb_html'] = sanitize_text_field( $_POST['thumb_html'] );
 
-		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
+		$tptn_settings['thumb_meta'] = '' == sanitize_text_field( $_POST['thumb_meta'] ) ? 'post-image' : sanitize_text_field( $_POST['thumb_meta'] );
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '/default.png' == $_POST['thumb_default'] ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : $_POST['thumb_default'];
+		$tptn_settings['thumb_default'] = ( ( '' == esc_url_raw( $_POST['thumb_default'] ) ) || ( '/default.png' == esc_url_raw( $_POST['thumb_default'] ) ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : esc_url_raw( $_POST['thumb_default'] );
 
 		/* Styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
 
-		$tptn_settings['tptn_styles'] = $_POST['tptn_styles'];
+		$tptn_settings['tptn_styles'] = sanitize_text_field( $_POST['tptn_styles'] );
 
 		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
 			$tptn_settings['include_default_style'] = true;
@@ -251,7 +250,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$tptn_settings['cron_hour'] = min( 23, intval( $_POST['cron_hour'] ) );
 		$tptn_settings['cron_min'] = min( 59, intval( $_POST['cron_min'] ) );
-		$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
+		$tptn_settings['cron_recurrence'] = sanitize_text_field( $_POST['cron_recurrence'] );
 
 		if ( isset( $_POST['cron_on'] ) ) {
 			$tptn_settings['cron_on'] = true;
@@ -270,8 +269,8 @@ function tptn_options() {
 
 	if ( ( isset( $_POST['tptn_import'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 
-		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
-		$top_ten_mu_tables_blog_ids = explode( ',', $_POST['top_ten_mu_tables_blog_ids'] );
+		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['top_ten_all_mu_tables'] ) ) : array();
+		$top_ten_mu_tables_blog_ids = explode( ',', sanitize_text_field( $_POST['top_ten_mu_tables_blog_ids'] ) );
 		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
 
 		foreach ( $top_ten_mu_tables_sel_blog_ids as $top_ten_mu_tables_sel_blog_id ) {
@@ -303,8 +302,8 @@ function tptn_options() {
 	}
 
 	if ( ( ( isset( $_POST['tptn_delete_selected_tables'] ) ) || ( isset( $_POST['tptn_delete_imported_tables'] ) ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
-		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
-		$top_ten_mu_tables_blog_ids = explode( ',', $_POST['top_ten_mu_tables_blog_ids'] );
+		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['top_ten_all_mu_tables'] ) ) : array();
+		$top_ten_mu_tables_blog_ids = explode( ',', sanitize_text_field( $_POST['top_ten_mu_tables_blog_ids'] ) );
 		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
 
 		if ( isset( $_POST['tptn_delete_selected_tables'] ) ) {
@@ -340,123 +339,123 @@ function tptn_options() {
  */
 function tptn_admin_side() {
 ?>
-    <div id="donatediv" class="postbox">
-        <div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
-            <br />
-        </div>
-        <h3 class='hndle'><span><?php esc_html_e( 'Support the development', 'top-10' ); ?></span></h3>
-        <div class="inside">
-            <div id="donate-form">
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                    <input type="hidden" name="cmd" value="_xclick">
-                    <input type="hidden" name="business" value="donate@ajaydsouza.com">
-                    <input type="hidden" name="lc" value="IN">
-                    <input type="hidden" name="item_name" value="<?php esc_attr_e( 'Donation for Top 10', 'top-10' ); ?>">
-                    <input type="hidden" name="item_number" value="tptn_admin">
-                    <strong><?php esc_html_e( 'Enter amount in USD:', 'top-10' ); ?></strong>
-                    <input name="amount" value="10.00" size="6" type="text">
-                    <br />
-                    <input type="hidden" name="currency_code" value="USD">
-                    <input type="hidden" name="button_subtype" value="services">
-                    <input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
-                    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php esc_attr_e( 'Send your donation to the author of Top 10', 'top-10' ); ?>">
-                    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="followdiv" class="postbox">
-        <div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
-            <br />
-        </div>
-        <h3 class='hndle'><span><?php esc_html_e( 'Follow me', 'top-10' ); ?></span></h3>
-        <div class="inside">
-            <div id="twitter">
-                <div style="text-align:center"><a href="https://twitter.com/WebberZoneWP" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @WebberZoneWP</a>
-                    <script>
-                        ! function (d, s, id) {
-                            var js, fjs = d.getElementsByTagName(s)[0];
-                            if (!d.getElementById(id)) {
-                                js = d.createElement(s);
-                                js.id = id;
-                                js.src = "//platform.twitter.com/widgets.js";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            }
-                        }(document, "script", "twitter-wjs");
-                    </script>
-                </div>
-            </div>
-            <div id="facebook">
-                <div id="fb-root"></div>
-                <script>
-                    //<![CDATA[
-                    (function (d, s, id) {
-                        var js, fjs = d.getElementsByTagName(s)[0];
-                        if (d.getElementById(id)) return;
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=458036114376706";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }(document, 'script', 'facebook-jssdk'));
-                    //]]>
-                </script>
-                <div class="fb-page" data-href="https://www.facebook.com/WebberZone" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
-                    <div class="fb-xfbml-parse-ignore">
-                        <blockquote cite="https://www.facebook.com/WebberZone"><a href="https://www.facebook.com/WebberZone">WebberZone</a></blockquote>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="qlinksdiv" class="postbox">
-        <div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>">
-            <br />
-        </div>
-        <h3 class='hndle'><span><?php esc_html_e( 'Quick links', 'top-10' ); ?></span></h3>
-        <div class="inside">
-            <div id="quick-links">
-                <ul>
-                    <li>
-                        <a href="https://webberzone.com/plugins/top-10/" target="_blank">
-                            <?php esc_html_e( 'Top 10 plugin page', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/ajaydsouza/top-10" target="_blank">
-                            <?php esc_html_e( 'Top 10 Github page', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://webberzone.com/plugins/" target="_blank">
-                            <?php esc_html_e( 'Other plugins', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wordpress.org/plugins/top-10/faq/" target="_blank">
-                            <?php esc_html_e( 'FAQ', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wordpress.org/support/plugin/top-10" target="_blank">
-                            <?php esc_html_e( 'Support', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank">
-                            <?php esc_html_e( 'Reviews', 'top-10' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://ajaydsouza.com/" target="_blank">
-                            <?php esc_html_e( "Ajay's blog", 'top-10' ); ?>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+	<div id="donatediv" class="postbox">
+		<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
+			<br />
+		</div>
+		<h3 class='hndle'><span><?php esc_html_e( 'Support the development', 'top-10' ); ?></span></h3>
+		<div class="inside">
+			<div id="donate-form">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+					<input type="hidden" name="cmd" value="_xclick">
+					<input type="hidden" name="business" value="donate@ajaydsouza.com">
+					<input type="hidden" name="lc" value="IN">
+					<input type="hidden" name="item_name" value="<?php esc_attr_e( 'Donation for Top 10', 'top-10' ); ?>">
+					<input type="hidden" name="item_number" value="tptn_admin">
+					<strong><?php esc_html_e( 'Enter amount in USD:', 'top-10' ); ?></strong>
+					<input name="amount" value="10.00" size="6" type="text">
+					<br />
+					<input type="hidden" name="currency_code" value="USD">
+					<input type="hidden" name="button_subtype" value="services">
+					<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">
+					<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="<?php esc_attr_e( 'Send your donation to the author of Top 10', 'top-10' ); ?>">
+					<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="followdiv" class="postbox">
+		<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
+			<br />
+		</div>
+		<h3 class='hndle'><span><?php esc_html_e( 'Follow me', 'top-10' ); ?></span></h3>
+		<div class="inside">
+			<div id="twitter">
+				<div style="text-align:center"><a href="https://twitter.com/WebberZoneWP" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @WebberZoneWP</a>
+					<script>
+						! function (d, s, id) {
+							var js, fjs = d.getElementsByTagName(s)[0];
+							if (!d.getElementById(id)) {
+								js = d.createElement(s);
+								js.id = id;
+								js.src = "//platform.twitter.com/widgets.js";
+								fjs.parentNode.insertBefore(js, fjs);
+							}
+						}(document, "script", "twitter-wjs");
+					</script>
+				</div>
+			</div>
+			<div id="facebook">
+				<div id="fb-root"></div>
+				<script>
+					//<![CDATA[
+					(function (d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) return;
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=458036114376706";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
+					//]]>
+				</script>
+				<div class="fb-page" data-href="https://www.facebook.com/WebberZone" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
+					<div class="fb-xfbml-parse-ignore">
+						<blockquote cite="https://www.facebook.com/WebberZone"><a href="https://www.facebook.com/WebberZone">WebberZone</a></blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="qlinksdiv" class="postbox">
+		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>">
+			<br />
+		</div>
+		<h3 class='hndle'><span><?php esc_html_e( 'Quick links', 'top-10' ); ?></span></h3>
+		<div class="inside">
+			<div id="quick-links">
+				<ul>
+					<li>
+						<a href="https://webberzone.com/plugins/top-10/" target="_blank">
+							<?php esc_html_e( 'Top 10 plugin page', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://github.com/ajaydsouza/top-10" target="_blank">
+							<?php esc_html_e( 'Top 10 Github page', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://webberzone.com/plugins/" target="_blank">
+							<?php esc_html_e( 'Other plugins', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://wordpress.org/plugins/top-10/faq/" target="_blank">
+							<?php esc_html_e( 'FAQ', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://wordpress.org/support/plugin/top-10" target="_blank">
+							<?php esc_html_e( 'Support', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://wordpress.org/support/view/plugin-reviews/top-10" target="_blank">
+							<?php esc_html_e( 'Reviews', 'top-10' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="https://ajaydsouza.com/" target="_blank">
+							<?php esc_html_e( "Ajay's blog", 'top-10' ); ?>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
-    <?php
+	<?php
 }
 
 
@@ -502,70 +501,70 @@ function tptn_adminhead() {
 	add_thickbox();
 
 ?>
-        <style type="text/css">
-            .postbox .handlediv:before {
-                right: 12px;
-                font: 400 20px/1 dashicons;
-                speak: none;
-                display: inline-block;
-                top: 0;
-                position: relative;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                text-decoration: none!important;
-                content: '\f142';
-                padding: 8px 10px;
-            }
+		<style type="text/css">
+			.postbox .handlediv:before {
+				right: 12px;
+				font: 400 20px/1 dashicons;
+				speak: none;
+				display: inline-block;
+				top: 0;
+				position: relative;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				text-decoration: none!important;
+				content: '\f142';
+				padding: 8px 10px;
+			}
 
-            .postbox.closed .handlediv:before {
-                content: '\f140';
-            }
+			.postbox.closed .handlediv:before {
+				content: '\f140';
+			}
 
-            .wrap h2:before {
-                content: "\f204";
-                display: inline-block;
-                -webkit-font-smoothing: antialiased;
-                font: normal 29px/1 'dashicons';
-                vertical-align: middle;
-                margin-right: 0.3em;
-            }
-        </style>
+			.wrap h2:before {
+				content: "\f204";
+				display: inline-block;
+				-webkit-font-smoothing: antialiased;
+				font: normal 29px/1 'dashicons';
+				vertical-align: middle;
+				margin-right: 0.3em;
+			}
+		</style>
 
-        <script type="text/javascript">
-            //<![CDATA[
-            jQuery(document).ready(function ($) {
-                // close postboxes that should be closed
-                $('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-                // postboxes setup
-                postboxes.add_postbox_toggles('tptn_options');
-            });
-            //]]>
-        </script>
+		<script type="text/javascript">
+			//<![CDATA[
+			jQuery(document).ready(function ($) {
+				// close postboxes that should be closed
+				$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+				// postboxes setup
+				postboxes.add_postbox_toggles('tptn_options');
+			});
+			//]]>
+		</script>
 
-        <script type="text/javascript" language="JavaScript">
-            //<![CDATA[
-            function checkForm() {
-                answer = true;
-                if (siw && siw.selectingSomething)
-                    answer = false;
-                return answer;
-            } //
-            //]]>
-        </script>
+		<script type="text/javascript" language="JavaScript">
+			//<![CDATA[
+			function checkForm() {
+				answer = true;
+				if (siw && siw.selectingSomething)
+					answer = false;
+				return answer;
+			} //
+			//]]>
+		</script>
 
-        <link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
-        <script type="text/javascript" language="JavaScript">
-            //<![CDATA[
-            function clearCache() {
-                /**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
-                jQuery.post(ajaxurl, {
-                    action: 'tptn_clear_cache'
-                }, function (response, textStatus, jqXHR) {
-                    alert(response.message);
-                }, 'json');
-            }
+		<link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
+		<script type="text/javascript" language="JavaScript">
+			//<![CDATA[
+			function clearCache() {
+				/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
+				jQuery.post(ajaxurl, {
+					action: 'tptn_clear_cache'
+				}, function (response, textStatus, jqXHR) {
+					alert(response.message);
+				}, 'json');
+			}
 
-            <?php
+			<?php
 			function wick_data() {
 
 				$categories = get_categories( 'hide_empty=0' );
@@ -580,12 +579,12 @@ function tptn_adminhead() {
 			}
 			wick_data();
 		?>
-            //]]>
-        </script>
+			//]]>
+		</script>
 
-        <script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
+		<script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
 
-        <?php
+		<?php
 }
 
 

@@ -21,10 +21,6 @@ function tptn_add_viewed_count( $content = '' ) {
 	/**
 	 * Filter the script URL of the counter.
 	 *
-	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
-	 * You can use TOP_TEN_PLUGIN_URL . '/top-10-addcount.js.php' as a source
-	 * TOP_TEN_PLUGIN_URL is a global constant
-	 *
 	 * @since	2.0
 	 */
 	$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
@@ -89,7 +85,6 @@ function tptn_add_viewed_count( $content = '' ) {
 
 			echo $output;
 		}
-
 	}
 }
 add_action( 'wp_footer', 'tptn_add_viewed_count', 999999 );
@@ -175,8 +170,8 @@ function tptn_parse_request( $wp ) {
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
-		header("HTTP/1.0 204 No Content");
-		header("Cache-Control: max-age=15, s-maxage=0");
+		header( 'HTTP/1.0 204 No Content' );
+		header( 'Cache-Control: max-age=15, s-maxage=0' );
 
 		// Stop anything else from loading as it is not needed.
 		exit;
@@ -274,10 +269,6 @@ function echo_tptn_post_count( $echo = 1 ) {
 
 	/**
 	 * Filter the script URL of the counter.
-	 *
-	 * Create a filter function to overwrite the script URL to use the external top-10-counter.js.php
-	 * You can use TOP_TEN_PLUGIN_URL . '/top-10-counter.js.php' as a source
-	 * TOP_TEN_PLUGIN_URL is a global constant
 	 *
 	 * @since	2.0
 	 */
@@ -424,26 +415,6 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 		return 0;
 	}
 }
-
-
-/**
- * Use external tracker.
- *
- * @since 2.3.0
- *
- * @param string $home_url URL of the home page.
- * @return string
- */
-function filter_tptn_add_counter_script_url( $home_url ) {
-	global $tptn_settings;
-
-	if ( false == $tptn_settings['external_tracker'] ) {
-		return $home_url;
-	} else {
-		return TOP_TEN_PLUGIN_URL . 'includes/top-10-addcount.js.php';
-	}
-}
-add_filter( 'tptn_add_counter_script_url', 'filter_tptn_add_counter_script_url' );
 
 
 /**
