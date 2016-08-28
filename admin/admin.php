@@ -63,7 +63,6 @@ function tptn_options() {
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily'] ) ? true : false;
 		$tptn_settings['cache'] = isset( $_POST['cache'] ) ? true : false;
 		$tptn_settings['cache_fix'] = isset( $_POST['cache_fix'] ) ? true : false;
-		$tptn_settings['external_tracker'] = isset( $_POST['external_tracker'] ) ? true : false;
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
 		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
@@ -82,8 +81,8 @@ function tptn_options() {
 		$tptn_settings['add_to_tag_archives'] = isset( $_POST['add_to_tag_archives'] ) ? true : false;
 		$tptn_settings['add_to_archives'] = isset( $_POST['add_to_archives'] ) ? true : false;
 
-		$tptn_settings['count_disp_form'] = $_POST['count_disp_form'];
-		$tptn_settings['count_disp_form_zero'] = $_POST['count_disp_form_zero'];
+		$tptn_settings['count_disp_form'] = wp_kses_post( $_POST['count_disp_form'] );
+		$tptn_settings['count_disp_form_zero'] = wp_kses_post( $_POST['count_disp_form_zero'] );
 		$tptn_settings['dynamic_post_count'] = isset( $_POST['dynamic_post_count'] ) ? true : false;
 
 		$tptn_settings['track_authors'] = isset( $_POST['track_authors'] ) ? true : false;
@@ -101,14 +100,14 @@ function tptn_options() {
 		$wp_post_types	= get_post_types( array(
 			'public'	=> true,
 		) );
-		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? $_POST['post_types'] : array( 'post' => 'post' );
+		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['post_types'] ) ) : array( 'post' => 'post' );
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
-		$tptn_settings['exclude_post_ids'] = '' == $_POST['exclude_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_post_ids'] ) ) );
+		$tptn_settings['exclude_post_ids'] = '' == sanitize_text_field( $_POST['exclude_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_post_ids'] ) ) ) );
 
 		/**** Exclude categories ****/
-		$exclude_categories_slugs = array_map( 'trim', explode( ',', wp_kses_post( $_POST['exclude_cat_slugs'] ) ) );
+		$exclude_categories_slugs = array_map( 'trim', explode( ',', sanitize_text_field( $_POST['exclude_cat_slugs'] ) ) );
 		$tptn_settings['exclude_cat_slugs'] = implode( ', ', $exclude_categories_slugs );
 
 		foreach ( $exclude_categories_slugs as $exclude_categories_slug ) {
@@ -120,7 +119,7 @@ function tptn_options() {
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
 
-		$tptn_settings['blank_output'] = 'blank' == $_POST['blank_output'] ? true : false;
+		$tptn_settings['blank_output'] = ( 'blank' === sanitize_text_field( $_POST['blank_output'] ) ) ? true : false;
 		$tptn_settings['blank_output_text'] = wp_kses_post( $_POST['blank_output_text'] );
 
 		$tptn_settings['show_excerpt'] = isset( $_POST['show_excerpt'] ) ? true : false;
@@ -132,31 +131,31 @@ function tptn_options() {
 
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
-		$tptn_settings['exclude_on_post_ids'] = '' == $_POST['exclude_on_post_ids'] ? '' : implode( ',', array_map( 'intval', explode( ',', $_POST['exclude_on_post_ids'] ) ) );
+		$tptn_settings['exclude_on_post_ids'] = '' == sanitize_text_field( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
 
 		// List HTML options
-		$tptn_settings['before_list'] = $_POST['before_list'];
-		$tptn_settings['after_list'] = $_POST['after_list'];
-		$tptn_settings['before_list_item'] = $_POST['before_list_item'];
-		$tptn_settings['after_list_item'] = $_POST['after_list_item'];
+        $tptn_settings['before_list'] = wp_kses_post( $_POST['before_list'] );
+        $tptn_settings['after_list'] = wp_kses_post( $_POST['after_list'] );
+        $tptn_settings['before_list_item'] = wp_kses_post( $_POST['before_list_item'] );
+        $tptn_settings['after_list_item'] = wp_kses_post( $_POST['after_list_item'] );
 
 		/* Thumbnail options */
-		$tptn_settings['post_thumb_op'] = $_POST['post_thumb_op'];
-		$tptn_settings['thumb_size'] = $_POST['thumb_size'];
+        $tptn_settings['post_thumb_op'] = sanitize_text_field( $_POST['post_thumb_op'] );
+        $tptn_settings['thumb_size'] = sanitize_text_field( $_POST['thumb_size'] );
 		$tptn_settings['thumb_width'] = intval( $_POST['thumb_width'] );
 		$tptn_settings['thumb_height'] = intval( $_POST['thumb_height'] );
 		$tptn_settings['thumb_crop'] = ( isset( $_POST['thumb_crop'] ) ? true : false );
-		$tptn_settings['thumb_html'] = $_POST['thumb_html'];
+        $tptn_settings['thumb_html'] = sanitize_text_field( $_POST['thumb_html'] );
 
-		$tptn_settings['thumb_meta'] = '' == $_POST['thumb_meta'] ? 'post-image' : $_POST['thumb_meta'];
+        $tptn_settings['thumb_meta'] = '' == sanitize_text_field( $_POST['thumb_meta'] ) ? 'post-image' : sanitize_text_field( $_POST['thumb_meta'] );
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( ( '' == $_POST['thumb_default'] ) || ( '/default.png' == $_POST['thumb_default'] ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : $_POST['thumb_default'];
+        $tptn_settings['thumb_default'] = ( ( '' == esc_url_raw( $_POST['thumb_default'] ) ) || ( '/default.png' == esc_url_raw( $_POST['thumb_default'] ) ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : esc_url_raw( $_POST['thumb_default'] );
 
 		/* Styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
 
-		$tptn_settings['tptn_styles'] = $_POST['tptn_styles'];
+        $tptn_settings['tptn_styles'] = sanitize_text_field( $_POST['tptn_styles'] );
 
 		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
 			$tptn_settings['include_default_style'] = true;
@@ -251,7 +250,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		$tptn_settings['cron_hour'] = min( 23, intval( $_POST['cron_hour'] ) );
 		$tptn_settings['cron_min'] = min( 59, intval( $_POST['cron_min'] ) );
-		$tptn_settings['cron_recurrence'] = $_POST['cron_recurrence'];
+        $tptn_settings['cron_recurrence'] = sanitize_text_field( $_POST['cron_recurrence'] );
 
 		if ( isset( $_POST['cron_on'] ) ) {
 			$tptn_settings['cron_on'] = true;
@@ -270,8 +269,8 @@ function tptn_options() {
 
 	if ( ( isset( $_POST['tptn_import'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 
-		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
-		$top_ten_mu_tables_blog_ids = explode( ',', $_POST['top_ten_mu_tables_blog_ids'] );
+        $top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['top_ten_all_mu_tables'] ) ) : array();
+        $top_ten_mu_tables_blog_ids = explode( ',', sanitize_text_field( $_POST['top_ten_mu_tables_blog_ids'] ) );
 		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
 
 		foreach ( $top_ten_mu_tables_sel_blog_ids as $top_ten_mu_tables_sel_blog_id ) {
@@ -303,8 +302,8 @@ function tptn_options() {
 	}
 
 	if ( ( ( isset( $_POST['tptn_delete_selected_tables'] ) ) || ( isset( $_POST['tptn_delete_imported_tables'] ) ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
-		$top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? $_POST['top_ten_all_mu_tables'] : array();
-		$top_ten_mu_tables_blog_ids = explode( ',', $_POST['top_ten_mu_tables_blog_ids'] );
+        $top_ten_all_mu_tables = isset( $_POST['top_ten_all_mu_tables'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['top_ten_all_mu_tables'] ) ) : array();
+        $top_ten_mu_tables_blog_ids = explode( ',', sanitize_text_field( $_POST['top_ten_mu_tables_blog_ids'] ) );
 		$top_ten_mu_tables_sel_blog_ids = array_values( $top_ten_all_mu_tables );
 
 		if ( isset( $_POST['tptn_delete_selected_tables'] ) ) {
