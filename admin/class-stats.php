@@ -108,7 +108,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$orderby = esc_sql( $_REQUEST['orderby'] );
-			$orderby .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' DESC';
+
+            if ( ! empty( $_REQUEST['order'] ) ) {
+                $order = esc_sql( $_REQUEST['order'] );
+
+                if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) {
+                    $orderby .= ' ' . $order;
+                } else {
+                    $orderby .= ' DESC';
+                }
+            }
+
 		}
 
 		// Create the base LIMITS clause.
@@ -488,7 +498,7 @@ class Top_Ten_Statistics {
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
 							<form method="get">
-								<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+								<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>" />
 								<?php
 								// If this is a search?
 								if ( isset( $_REQUEST['s'] ) ) {

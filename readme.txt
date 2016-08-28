@@ -3,8 +3,8 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 3.9
-Tested up to: 4.5
+Requires at least: 4.0
+Tested up to: 4.6
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -165,6 +165,19 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 
 == Changelog ==
+
+= 2.3.2 =
+
+* Bug fixes:
+	* Santized several unsanitized post and get requests
+
+* Deprecated:
+	* External PHP file tracking option introduced in v2.3.0 in line with wordpress.org plugin repository listing requirements.
+
+= 2.3.1 =
+
+* Bug fixes:
+	* Potential CSRF issue fixed in admin area
 
 = 2.3.0 =
 
