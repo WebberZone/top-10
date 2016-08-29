@@ -91,21 +91,6 @@ add_action( 'wp_footer', 'tptn_add_viewed_count', 999999 );
 
 
 /**
- * Enqueue Scripts.
- *
- * @since	1.9.7
- */
-function tptn_enqueue_scripts2() {
-	global $tptn_settings;
-
-	if ( $tptn_settings['cache_fix'] ) {
-		wp_enqueue_script( 'jquery' );
-	}
-}
-add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts2' );
-
-
-/**
  * Function to add additional queries to query_vars.
  *
  * @since	2.0.0
@@ -433,5 +418,91 @@ function tptn_add_tracker( $echo = true ) {
 		return tptn_add_viewed_count( '' );
 	}
 }
+
+
+/**
+ * Enqueues the scripts needed by Top 10.
+ *
+ * @since 1.9.7
+ * @return void
+ */
+function tptn_enqueue_scripts() {
+	global $post, $tptn_settings;
+
+	if ( $tptn_settings['cache_fix'] ) {
+		wp_enqueue_script( 'jquery' );
+	}
+
+	if ( is_singular() ) {
+
+		$id = intval( $post->ID );
+		$blog_id = get_current_blog_id();
+		$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;		// It's 1 if we're updating the overall count.
+		$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );	// It's 10 if we're updating the daily count.
+
+		wp_enqueue_script( 'tptn_tracker', plugins_url( 'includes/js/top-10-tracker.js', TOP_TEN_PLUGIN_FILE ), array( 'jquery' ) );
+
+		wp_localize_script( 'tptn_tracker', 'ajax_tptn_tracker', array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'top_ten_nonce' => wp_create_nonce( 'tptn-tracker-nonce' ),
+				'top_ten_id' => $id,
+				'top_ten_blog_id' => $blog_id,
+				'activate_counter' => $activate_counter,
+				'tptn_rnd' => wp_rand( 1, time() ),
+			)
+		);
+	}
+
+}
+add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
+
+
+/**
+ * Parse the ajax response.
+ *
+ * @since 2.4.0
+ */
+function tptn_tracker_parser() {
+
+	global $wpdb, $tptn_settings;
+
+	// Check for the nonce and exit if failed.
+	if ( isset( $_POST['top_ten_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['top_ten_nonce'] ), 'tptn-tracker-nonce' ) ) {
+		wp_die( esc_html__( 'Top 10: Security check failed', 'top-10' ) );
+	}
+
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$str = '';
+
+	$id = isset( $_POST['top_ten_id'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0;
+	$blog_id = isset( $_POST['top_ten_blog_id'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0;
+	$activate_counter = isset( $_POST['activate_counter'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0;
+
+	if ( $id > 0 ) {
+
+		if ( ( 1 == $activate_counter ) || ( 11 == $activate_counter ) ) {
+
+			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '1', '%d') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) );
+
+			$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
+		}
+
+		if ( ( 10 == $activate_counter ) || ( 11 == $activate_counter ) ) {
+
+			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
+
+			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) );
+
+			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
+		}
+	}
+
+	echo esc_html( $str );
+
+	wp_die();
+}
+add_action( 'wp_ajax_nopriv_tptn_tracker', 'tptn_tracker_parser' );
+add_action( 'wp_ajax_tptn_tracker', 'tptn_tracker_parser' );
 
 
