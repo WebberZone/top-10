@@ -14,7 +14,7 @@
  * Plugin Name:	Top 10
  * Plugin URI:	https://webberzone.com/plugins/top-10/
  * Description:	Count daily and total visits per post and display the most popular posts based on the number of views
- * Version: 	2.4-beta20160828
+ * Version: 	2.4-beta20160903
  * Author: 		Ajay D'Souza
  * Author URI: 	https://webberzone.com
  * License: 	GPL-2.0+
@@ -274,6 +274,7 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/output-generator.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/media.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/l10n.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/counter.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/tracker.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/cron.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/formatting.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php' );
