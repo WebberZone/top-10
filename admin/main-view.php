@@ -86,13 +86,6 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="cache_fix"><?php esc_html_e( 'Use Ajax for tracking:', 'top-10' ); ?></label></th>
-						<td>
-							<input type="checkbox" name="cache_fix" id="cache_fix" <?php if ( $tptn_settings['cache_fix'] ) { echo 'checked="checked"'; } ?> />
-							<p class="description"><?php esc_html_e( 'This will try to prevent W3 Total Cache and other caching plugins from caching the tracker script of the plugin. Try toggling this option in case you find that your posts are not tracked.', 'top-10' ); ?></p>
-						</td>
-					</tr>
-					<tr>
 						<th scope="row"><label for="cache"><?php esc_html_e( 'Enable cache:', 'top-10' ); ?></label></th>
 						<td>
 							<p><input type="checkbox" name="cache" id="cache" <?php if ( $tptn_settings['cache'] ) { echo 'checked="checked"'; } ?> /></p>

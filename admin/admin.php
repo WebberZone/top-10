@@ -62,7 +62,6 @@ function tptn_options() {
 		$tptn_settings['activate_overall'] = isset( $_POST['activate_overall'] ) ? true : false;
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily'] ) ? true : false;
 		$tptn_settings['cache'] = isset( $_POST['cache'] ) ? true : false;
-		$tptn_settings['cache_fix'] = isset( $_POST['cache_fix'] ) ? true : false;
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
 		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
