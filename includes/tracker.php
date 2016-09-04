@@ -175,6 +175,7 @@ function tptn_query_vars( $vars ) {
 	$vars[] = 'top_ten_blog_id';
 	$vars[] = 'activate_counter';
 	$vars[] = 'view_counter';
+	$vars[] = 'top_ten_debug';
 	return $vars;
 }
 add_filter( 'query_vars', 'tptn_query_vars' );
@@ -226,8 +227,15 @@ function tptn_parse_request( $wp ) {
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
 		}
-		header( 'HTTP/1.0 204 No Content' );
-		header( 'Cache-Control: max-age=15, s-maxage=0' );
+
+		// If the debug parameter is set then we output $str else we send a No Content header.
+		if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === intval( $wp->query_vars['top_ten_debug'] ) ) {
+			header( 'content-type: application/x-javascript' );
+			echo esc_html( $str );
+		} else {
+			header( 'HTTP/1.0 204 No Content' );
+			header( 'Cache-Control: max-age=15, s-maxage=0' );
+		}
 
 		// Stop anything else from loading as it is not needed.
 		exit;
@@ -240,7 +248,7 @@ function tptn_parse_request( $wp ) {
 
 			$output = get_tptn_post_count( $id );
 
-			Header( 'content-type: application/x-javascript' );
+			header( 'content-type: application/x-javascript' );
 			echo 'document.write("' . $output . '")';
 
 			// stop anything else from loading as it is not needed.
