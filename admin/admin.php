@@ -62,7 +62,6 @@ function tptn_options() {
 		$tptn_settings['activate_overall'] = isset( $_POST['activate_overall'] ) ? true : false;
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily'] ) ? true : false;
 		$tptn_settings['cache'] = isset( $_POST['cache'] ) ? true : false;
-		$tptn_settings['cache_fix'] = isset( $_POST['cache_fix'] ) ? true : false;
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
 		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
 		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
@@ -85,6 +84,7 @@ function tptn_options() {
 		$tptn_settings['count_disp_form_zero'] = wp_kses_post( $_POST['count_disp_form_zero'] );
 		$tptn_settings['dynamic_post_count'] = isset( $_POST['dynamic_post_count'] ) ? true : false;
 
+		$tptn_settings['tracker_type'] = sanitize_text_field( $_POST['tracker_type'] );
 		$tptn_settings['track_authors'] = isset( $_POST['track_authors'] ) ? true : false;
 		$tptn_settings['track_admins'] = isset( $_POST['track_admins'] ) ? true : false;
 		$tptn_settings['track_editors'] = isset( $_POST['track_editors'] ) ? true : false;
