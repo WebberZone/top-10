@@ -110,8 +110,6 @@ function tptn_default_options() {
 		'activate_overall'         => true,	// Activate overall count.
 		'cache'                    => false,			// Enable Caching using Transienst API.
 		'cache_time'               => HOUR_IN_SECONDS,			// Cache for 1 Hour.
-		'cache_fix'                => true,		// Fix for W3 Total Cache - Uses Ajax.
-		'external_tracker'         => true,		// Use external JS tracker file.
 		'daily_midnight'           => true,		// Start daily counts from midnight (default as old behaviour).
 		'daily_range'              => '1',				// Daily Popular will contain posts of how many days?
 		'hour_range'               => '0',				// Daily Popular will contain posts of how many hours?
