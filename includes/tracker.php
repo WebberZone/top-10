@@ -10,6 +10,8 @@
  *
  * @since	1.0
  *
+ * @deprecated 2.4.0
+ *
  * @param	string $content Post content.
  * @return	string	Filtered content
  */
@@ -87,7 +89,6 @@ function tptn_add_viewed_count( $content = '' ) {
 		}
 	}
 }
-add_action( 'wp_footer', 'tptn_add_viewed_count', 999999 );
 
 
 /**
@@ -128,10 +129,23 @@ function tptn_enqueue_scripts() {
 			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;		// It's 1 if we're updating the overall count.
 			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );	// It's 10 if we're updating the daily count.
 
+			$home_url = home_url( '/' );
+
+			/**
+			 * Filter the script URL of the counter.
+			 *
+			 * @since	2.0
+			 */
+			$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
+
+			// Strip any query strings since we don't need them.
+			$home_url = strtok( $home_url, '?' );
+
+			// $home_url = admin_url( 'admin-ajax.php' );
 			wp_enqueue_script( 'tptn_tracker', plugins_url( 'includes/js/top-10-tracker.js', TOP_TEN_PLUGIN_FILE ), array( 'jquery' ) );
 
 			wp_localize_script( 'tptn_tracker', 'ajax_tptn_tracker', array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'ajax_url' => $home_url,
 					'top_ten_nonce' => wp_create_nonce( 'tptn-tracker-nonce' ),
 					'top_ten_id' => $id,
 					'top_ten_blog_id' => $blog_id,
@@ -139,6 +153,7 @@ function tptn_enqueue_scripts() {
 					'tptn_rnd' => wp_rand( 1, time() ),
 				)
 			);
+
 		}
 	}
 
@@ -291,6 +306,8 @@ add_action( 'wp_ajax_tptn_tracker', 'tptn_tracker_parser' );
  * Add tracker code.
  *
  * @since 2.3.0
+ *
+ * @deprecated 2.4.0
  *
  * @param bool $echo Echo the code or return it.
  * @return string|void
