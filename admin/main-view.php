@@ -214,6 +214,26 @@ if ( ! defined( 'WPINC' ) ) {
 							<p class="description"><?php esc_html_e( 'This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.', 'top-10' ); ?></p>
 						</td>
 					</tr>
+
+					<tr><th scope="row"><?php esc_html_e( 'Tracker type', 'top-10' ); ?>:</th>
+						<td>
+							<?php
+							$trackers = tptn_get_tracker_types();
+
+							foreach ( $trackers as $tracker ) :
+							?>
+
+							<label>
+								<input type="radio" name="tracker_type" value="<?php echo esc_attr( $tracker['id'] ); ?>" id="<?php echo esc_attr( $tracker['id'] ); ?>" <?php checked( $tracker['id'], $tptn_settings['tracker_type'], true ) ?> />
+								<?php echo esc_html( $tracker['name'] ) ?>
+							</label>
+							- <em><?php echo esc_html( $tracker['description'] ) ?></em>
+							<br />
+
+							<?php endforeach; ?>
+						</td>
+					</tr>
+
 					<tr>
 						<th scope="row"><label for="track_authors"><?php esc_html_e( 'Track visits of authors on their own posts?', 'top-10' ); ?></label></th>
 						<td>
@@ -556,6 +576,7 @@ if ( ! defined( 'WPINC' ) ) {
 									<?php esc_html_e( "If you're using the Left Thumbs style below then the thumbnail width and height that you set here will supersede the widget. Alternatively, choose <strong>Style attributes</strong> under <strong>Image size attributes</strong> option below", 'top-10' ); ?>
 								</p>
 						</td>
+					</tr>
 					<tr><th scope="row"><label for="thumb_width"><?php esc_html_e( 'Width of custom thumbnail:', 'top-10' ); ?></label></th>
 						<td>
 							<input type="textbox" name="thumb_width" id="thumb_width" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_width'] ) ); ?>" style="width:50px" />px
