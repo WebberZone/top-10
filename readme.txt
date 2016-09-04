@@ -166,10 +166,22 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.4.0 =
+
+* Features:
+	* New tracker using a properly enqueued `.js` file. Two inbuilt options to use query variables or ajaxurl to process the counts
+
+* Bug fixes:
+	* Attachments now work with the widget and elsewhere
+	* New tracker now works when jQuery is loaded in the footer
+
+* Deprecated:
+	* `tptn_add_tracker` and `tptn_add_viewed_count` have been deprecated. These should no longer be needed with the new tracker option.
+
 = 2.3.2 =
 
 * Bug fixes:
-	* Santized several unsanitized post and get requests
+	* Sanitized several unsanitized post and get requests
 
 * Deprecated:
 	* External PHP file tracking option introduced in v2.3.0 in line with wordpress.org plugin repository listing requirements.
