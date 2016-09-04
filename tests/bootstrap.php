@@ -23,6 +23,6 @@ echo "Installing Top 10...\n";
 global $tptn_db_version, $tptn_settings, $current_user;
 $tptn_db_version = '5.0';
 
-tptn_activation_hook()
+tptn_activation_hook();
 
 $tptn_settings = tptn_read_options();
