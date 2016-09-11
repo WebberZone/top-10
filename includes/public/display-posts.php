@@ -133,7 +133,7 @@ function tptn_pop_posts( $args ) {
 			// Push the current ID into the array to ensure we're not repeating it
 			array_push( $processed_results, $resultid );
 
-			$sumcount = $result->sumCount;		// Store the count. We'll need this later
+			$sum_count = $result->sum_count;		// Store the count. We'll need this later
 
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
@@ -179,7 +179,7 @@ function tptn_pop_posts( $args ) {
 
 			if ( $args['disp_list_count'] ) {
 
-				$tptn_list_count = '(' . number_format_i18n( $sumcount ) . ')';
+				$tptn_list_count = '(' . number_format_i18n( $sum_count ) . ')';
 
 				/**
 				 * Filter the formatted list count text.
@@ -187,10 +187,10 @@ function tptn_pop_posts( $args ) {
 				 * @since	2.1.0
 				 *
 				 * @param	string	$tptn_list_count	Formatted list count
-				 * @param	int		$sumcount			Post count
+				 * @param	int		$sum_count			Post count
 				 * @param	object	$result				Post object
 				 */
-				$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sumcount, $result );
+				$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sum_count, $result );
 
 				$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
 			}
@@ -349,7 +349,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Fields to return
 	$fields[] = 'ID';
 	$fields[] = 'postnumber';
-	$fields[] = ( $args['daily'] ) ? 'SUM(cntaccess) as sumCount' : 'cntaccess as sumCount';
+	$fields[] = ( $args['daily'] ) ? 'SUM(cntaccess) as sum_count' : 'cntaccess as sum_count';
 
 	$fields = implode( ', ', $fields );
 
@@ -393,7 +393,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	// Create the base ORDER BY clause
-	$orderby = ' sumCount DESC ';
+	$orderby = ' sum_count DESC ';
 
 	// Create the base LIMITS clause
 	$limits .= $wpdb->prepare( ' LIMIT %d ', $limit );
