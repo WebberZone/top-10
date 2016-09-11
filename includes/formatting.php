@@ -21,7 +21,7 @@ function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
 		$content = get_post( $id )->post_excerpt;
 	}
 
-	if ( '' == $content ) {
+	if ( '' === $content ) {
 		$content = get_post( $id )->post_content;
 	}
 
@@ -60,7 +60,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
 		$no_of_words = preg_split( '/[\s]+/', substr( $content, 0, $no_of_char ) );
 
 		// Break back down into a string of words, but drop the last one if it's chopped off.
-		if ( substr( $content, $no_of_char, 1 ) == ' ' ) {
+		if ( substr( $content, $no_of_char, 1 ) === ' ' ) {
 			$content = implode( ' ', $no_of_words );
 		} else {
 			$content = implode( ' ', array_slice( $no_of_words, 0, -1 ) ) .'&hellip;';

@@ -54,7 +54,6 @@ function ald_tptn_rss( $content ) {
  * @deprecated 2.4.0
  *
  * @param	string $content Post content.
- * @return	string	Filtered content
  */
 function tptn_add_viewed_count( $content = '' ) {
 	global $post, $tptn_settings;
