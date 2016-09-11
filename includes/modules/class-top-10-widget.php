@@ -83,8 +83,8 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'daily' ) ); ?>">
-			  <option value="overall" <?php if ( 'overall' == $daily ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
-			  <option value="daily" <?php if ( 'daily' == $daily ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
+			  <option value="overall" <?php checked( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
+			  <option value="daily" <?php checked( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -119,10 +119,10 @@ class Top_Ten_Widget extends WP_Widget {
 		<p>
 			<?php esc_html_e( 'Thumbnail options', 'top-10' ); ?>: <br />
 			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'post_thumb_op' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_thumb_op' ) ); ?>">
-			  <option value="inline" <?php if ( 'inline' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Thumbnails inline, before title','top-10' ); ?></option>
-			  <option value="after" <?php if ( 'after' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Thumbnails inline, after title','top-10' ); ?></option>
-			  <option value="thumbs_only" <?php if ( 'thumbs_only' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Only thumbnails, no text','top-10' ); ?></option>
-			  <option value="text_only" <?php if ( 'text_only' == $post_thumb_op ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'No thumbnails, only text.','top-10' ); ?></option>
+			  <option value="inline" <?php checked( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title','top-10' ); ?></option>
+			  <option value="after" <?php checked( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title','top-10' ); ?></option>
+			  <option value="thumbs_only" <?php checked( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text','top-10' ); ?></option>
+			  <option value="text_only" <?php checked( 'text_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'No thumbnails, only text.','top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -142,7 +142,7 @@ class Top_Ten_Widget extends WP_Widget {
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
 
 				<label>
-					<input id="<?php echo esc_attr_e( $this->get_field_id( 'post_types' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_types' ) ); ?>[]" type="checkbox" value="<?php echo esc_attr_e( $wp_post_type ); ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) { echo 'checked="checked"'; } ?> />
+					<input id="<?php echo esc_attr_e( $this->get_field_id( 'post_types' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_types' ) ); ?>[]" type="checkbox" value="<?php echo esc_attr_e( $wp_post_type ); ?>" <?php checked( true, in_array( $wp_post_type, $posts_types_inc, true ), true ); ?> />
 					<?php echo esc_attr_e( $wp_post_type ); ?>
 				</label>
 				<br />
@@ -235,15 +235,15 @@ class Top_Ten_Widget extends WP_Widget {
 		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
 		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
 
-		$daily = ( isset( $instance['daily'] ) && ( 'daily' == $instance['daily'] ) ) ? true : false;
+		$daily = ( isset( $instance['daily'] ) && ( 'daily' === $instance['daily'] ) ) ? true : false;
 
 		$output = $args['before_widget'];
 		$output .= $args['before_title'] . $title . $args['after_title'];
 
 		$post_thumb_op = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
 
-		$thumb_height = ( isset( $instance['thumb_height'] ) && '' != $instance['thumb_height'] ) ? intval( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
-		$thumb_width = ( isset( $instance['thumb_width'] ) && '' != $instance['thumb_width'] ) ? intval( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
+		$thumb_height = ( isset( $instance['thumb_height'] ) && '' !== $instance['thumb_height'] ) ? absint( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
+		$thumb_width = ( isset( $instance['thumb_width'] ) && '' !== $instance['thumb_width'] ) ? absint( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
 
 		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
@@ -282,7 +282,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$output .= $args['after_widget'];
 
-		echo $output;
+		echo $output; // WPCS: XSS OK.
 
 	} //ending function widget
 
@@ -295,7 +295,7 @@ class Top_Ten_Widget extends WP_Widget {
 	function front_end_styles() {
 		global $tptn_settings;
 
-		if ( ! 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+		if ( ! 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
 			return;
 		}
 
@@ -312,8 +312,8 @@ class Top_Ten_Widget extends WP_Widget {
 				continue;	// Not active.
 			}
 
-			$thumb_height = ( isset( $options['thumb_height'] ) && '' != $options['thumb_height'] ) ? intval( $options['thumb_height'] ) : $tptn_settings['thumb_height'];
-			$thumb_width = ( isset( $options['thumb_width'] ) && '' != $options['thumb_width'] ) ? intval( $options['thumb_width'] ) : $tptn_settings['thumb_width'];
+			$thumb_height = ( isset( $options['thumb_height'] ) && '' !== $options['thumb_height'] ) ? absint( $options['thumb_height'] ) : $tptn_settings['thumb_height'];
+			$thumb_width = ( isset( $options['thumb_width'] ) && '' !== $options['thumb_width'] ) ? absint( $options['thumb_width'] ) : $tptn_settings['thumb_width'];
 
 			// Enqueue the custom css for the thumb width and height for this specific widget.
 			$custom_css = "
