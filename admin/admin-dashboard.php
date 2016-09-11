@@ -52,7 +52,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 		$output .= '<ul>';
 		foreach ( $results as $result ) {
 			$output .= '<li><a href="' . get_permalink( $result['postnumber'] ) . '">' . get_the_title( $result['postnumber'] ) . '</a>';
-			$output .= ' (' . number_format_i18n( $result['sumCount'] ) . ')';
+			$output .= ' (' . number_format_i18n( $result['sum_count'] ) . ')';
 			$output .= '</li>';
 		}
 		$output .= '</ul>';
@@ -73,7 +73,18 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	$output .= '</p>';
 	$output .= '</div>';
 
-	return apply_filters( 'tptn_pop_display', $output );
+	/**
+	 *  Filters the dashboard widget output
+	 *
+	 * @since	1.3
+	 *
+	 * @param string $output Text output
+	 * @param bool $daily  Switch for Daily or Overall popular posts.
+	 * @param int  $page   Which page of the lists are we on.
+	 * @param int  $limit  Maximum number of posts per page.
+	 * @param bool $widget Is this a WordPress widget.
+	 */
+	return apply_filters( 'tptn_pop_display', $output, $daily, $page, $limit, $widget );
 }
 
 
@@ -83,7 +94,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
  * @since	1.1
  */
 function tptn_pop_dashboard() {
-	echo tptn_pop_display( false, 0, 10, true );
+	echo tptn_pop_display( false, 0, 10, true ); // WPCS: XSS OK.
 }
 
 
@@ -93,7 +104,7 @@ function tptn_pop_dashboard() {
  * @since	1.2
  */
 function tptn_pop_daily_dashboard() {
-	echo tptn_pop_display( true, 0, 10, true );
+	echo tptn_pop_display( true, 0, 10, true ); // WPCS: XSS OK.
 }
 
 

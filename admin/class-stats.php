@@ -79,16 +79,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// Create the JOIN clause.
 		$join = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
-		$join .= $wpdb->prepare( " LEFT JOIN (
+		$join .= $wpdb->prepare(  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily}
 			WHERE ttd.dp_date >= '%s'
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber
 		", $from_date );
 
-		// Create the base WHERE clause
+		// Create the base WHERE clause.
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
+		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
@@ -96,7 +97,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		/* If post filter argument is set, do a search for it. */
-		if ( isset( $args['post-type-filter'] ) && 'All' != $args['post-type-filter'] ) {
+		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
@@ -106,11 +107,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Create the base ORDER BY clause.
 		$orderby = ' total_count DESC ';
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			$orderby = esc_sql( $_REQUEST['orderby'] );
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // Input var okay.
+			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) );
 
 			if ( ! empty( $_REQUEST['order'] ) ) {
-				$order = esc_sql( $_REQUEST['order'] );
+				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
 
 				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) {
 					$orderby .= ' ' . $order;
@@ -179,7 +180,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
 		}
 
-		if ( isset( $args['post-type-filter'] ) && 'All' != $args['post-type-filter'] ) {
+		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
@@ -393,10 +394,10 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		// If the delete bulk action is triggered.
-		if ( ( isset( $_POST['action'] ) && 'bulk-delete' == $_POST['action'] )
-		     || ( isset( $_POST['action2'] ) && 'bulk-delete' == $_POST['action2'] )
+		if ( ( isset( $_REQUEST['action'] ) && 'bulk-delete' === $_REQUEST['action'] )
+		     || ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
 		) {
-			$delete_ids = esc_sql( $_POST['bulk-delete'] );
+			$delete_ids = sanitize_text_field( wp_unslash( $_REQUEST['bulk-delete'] ) );
 
 			// Loop over the array of record IDs and delete them,
 			foreach ( $delete_ids as $id ) {
@@ -427,7 +428,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 			foreach ( $post_types as $post_type ) {
 				$selected = '';
-				if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] == $post_type ) {
+				if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] === $post_type ) {
 					$selected = ' selected = "selected"';
 				}
 				?>
@@ -501,11 +502,11 @@ class Top_Ten_Statistics {
 								<?php
 								// If this is a search?
 								if ( isset( $_REQUEST['s'] ) ) {
-									$args['search'] = esc_sql( $_REQUEST['s'] );
+									$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) );
 								}
 								// If this is a post type filter?
 								if ( isset( $_REQUEST['post-type-filter'] ) ) {
-									$args['post-type-filter'] = esc_sql( $_REQUEST['post-type-filter'] );
+									$args['post-type-filter'] = sanitize_text_field( wp_unslash( $_REQUEST['post-type-filter'] ) );
 								}
 
 								$this->pop_posts_obj->prepare_items( $args );
