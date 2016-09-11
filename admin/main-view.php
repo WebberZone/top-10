@@ -190,14 +190,23 @@ if ( ! defined( 'WPINC' ) ) {
 							<label><input type="checkbox" name="add_to_category_archives" id="add_to_category_archives" <?php if ( $tptn_settings['add_to_category_archives'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Category archives', 'top-10' ); ?></label><br />
 							<label><input type="checkbox" name="add_to_tag_archives" id="add_to_tag_archives" <?php if ( $tptn_settings['add_to_tag_archives'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Tag archives', 'top-10' ); ?></label></label><br />
 							<label><input type="checkbox" name="add_to_archives" id="add_to_archives" <?php if ( $tptn_settings['add_to_archives'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Other archives', 'top-10' ); ?></label></label>
-							<p class="description"><?php _e( "If you choose to disable this, please add <code>&lt;?php if ( function_exists ( 'echo_tptn_post_count' ) ) echo_tptn_post_count(); ?&gt;</code> to your template file where you want it displayed", 'top-10' ); ?></p>
+							<p class="description">
+								<?php printf( esc_html__( 'If you choose to disable this, please add %s to your template file where you want it displayed', 'top-10' ), "<code>&lt;?php if ( function_exists ( 'echo_tptn_post_count' ) ) echo_tptn_post_count(); ?&gt;</code>" ); ?>
+		  					</p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="title"><?php esc_html_e( 'Format to display the post views:', 'top-10' ); ?></label></th>
 						<td>
 							<textarea name="count_disp_form" id="count_disp_form" cols="50" rows="3" style="width:100%"><?php echo esc_textarea( $tptn_settings['count_disp_form'] ); ?></textarea>
-							<p class="description"><?php _e( 'Use <code>%totalcount%</code> to display the total count, <code>%dailycount%</code> to display the daily count and <code>%overallcount%</code> to display the overall count across all posts on the blog. e.g. the default options displays <code>[Visited 123 times, 23 visits today]</code>', 'top-10' ); ?>
+							<p class="description">
+								<?php printf( esc_html__( 'Use %1$s to display the total count, %2$s for daily count and %3$s for overall counts across all posts. Default display is %4$s ', 'top-10' ),
+									'<code>%totalcount%</code>',
+									'<code>%dailycount%</code>',
+									'<code>%overallcount%</code>',
+									'<code>(Visited %totalcount% times, %dailycount% visits today)</code>'
+								); ?>
+							</p>
 						</td>
 					</tr>
 					<tr>
@@ -208,7 +217,7 @@ if ( ! defined( 'WPINC' ) ) {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="dynamic_post_count"><?php _e( 'Always display latest post count', 'top-10' ); ?></label></th>
+						<th scope="row"><label for="dynamic_post_count"><?php esc_html_e( 'Always display latest post count', 'top-10' ); ?></label></th>
 						<td>
 							<input type="checkbox" name="dynamic_post_count" id="dynamic_post_count" <?php if ( $tptn_settings['dynamic_post_count'] ) { echo 'checked="checked"'; } ?> />
 							<p class="description"><?php esc_html_e( 'This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.', 'top-10' ); ?></p>
@@ -326,8 +335,8 @@ if ( ! defined( 'WPINC' ) ) {
 							<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
 
 								<label>
-									<input type="checkbox" name="post_types[]" value="<?php echo $wp_post_type; ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc ) ) { echo 'checked="checked"'; } ?> />
-									<?php echo $wp_post_type; ?>
+									<input type="checkbox" name="post_types[]" value="<?php echo esc_attr( $wp_post_type ); ?>" <?php if ( in_array( $wp_post_type, $posts_types_inc, true ) ) { echo 'checked="checked"'; } ?> />
+									<?php echo esc_html( $wp_post_type ); ?>
 								</label>
 								<br />
 
@@ -361,7 +370,7 @@ if ( ! defined( 'WPINC' ) ) {
 							<p class="description highlight">
 								<?php
 									esc_html_e( 'Excluded category IDs are:', 'top-10' );
-									echo ' ' . $tptn_settings['exclude_categories'];
+									echo ' ' . esc_html( $tptn_settings['exclude_categories'] );
 								?>
 							</p>
 							<p class="description">
@@ -517,26 +526,26 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr><th scope="row"><label for="post_thumb_op"><?php esc_html_e( 'Location of post thumbnail:', 'top-10' ); ?></label></th>
 						<td>
 							<label>
-								<input type="radio" name="post_thumb_op" value="inline" id="post_thumb_op_0" <?php if ( 'inline' == $tptn_settings['post_thumb_op'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="post_thumb_op" value="inline" id="post_thumb_op_0" <?php checked( 'inline',  $tptn_settings['post_thumb_op'], true ); ?> />
 								<?php esc_html_e( 'Display thumbnails inline with posts, before title', 'top-10' ); ?>
 							</label>
 							<br />
 							<label>
-								<input type="radio" name="post_thumb_op" value="after" id="post_thumb_op_1" <?php if ( 'after' == $tptn_settings['post_thumb_op'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="post_thumb_op" value="after" id="post_thumb_op_1" <?php checked( 'after',  $tptn_settings['post_thumb_op'], true ); ?> />
 								<?php esc_html_e( 'Display thumbnails inline with posts, after title', 'top-10' ); ?>
 							</label>
 							<br />
 							<label>
-								<input type="radio" name="post_thumb_op" value="thumbs_only" id="post_thumb_op_2" <?php if ( 'thumbs_only' == $tptn_settings['post_thumb_op'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="post_thumb_op" value="thumbs_only" id="post_thumb_op_2" <?php checked( 'thumbs_only',  $tptn_settings['post_thumb_op'], true ); ?> />
 								<?php esc_html_e( 'Display only thumbnails, no text', 'top-10' ); ?>
 							</label>
 							<br />
 							<label>
-								<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_3" <?php if ( 'text_only' == $tptn_settings['post_thumb_op'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="post_thumb_op" value="text_only" id="post_thumb_op_3" <?php checked( 'text_only',  $tptn_settings['post_thumb_op'], true ); ?> />
 								<?php esc_html_e( 'Do not display thumbnails, only text.', 'top-10' ); ?>
 							</label>
 
-							<?php if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) { ?>
+							<?php if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) { ?>
 								<p style="color: #F00"><?php esc_html_e( 'This setting cannot be changed because an inbuilt style has been selected under the Styles section. If you would like to change this option, please select No styles under the Styles section.', 'top-10' ); ?></p>
 							<?php } ?>
 						</td>
@@ -552,8 +561,8 @@ if ( ! defined( 'WPINC' ) ) {
 							foreach ( $tptn_get_all_image_sizes as $size ) :
 							?>
 							<label>
-								<input type="radio" name="thumb_size" value="<?php echo $size['name'] ?>" id="<?php echo $size['name'] ?>" <?php if ( $tptn_settings['thumb_size'] == $size['name'] ) { echo 'checked="checked"'; } ?> />
-								<?php echo $size['name']; ?> ( <?php echo $size['width']; ?>x<?php echo $size['height']; ?>
+								<input type="radio" name="thumb_size" value="<?php echo esc_attr( $size['name'] ); ?>" id="<?php echo esc_attr( $size['name'] ); ?>" <?php checked( $tptn_settings['thumb_size'], $size['name'], true ); ?> />
+								<?php echo esc_attr( $size['name'] ); ?> ( <?php echo esc_attr( $size['width'] ); ?>x<?php echo esc_attr( $size['height'] ); ?>
 								<?php
 								if ( $size['crop'] ) {
 									echo 'cropped';
@@ -565,12 +574,12 @@ if ( ! defined( 'WPINC' ) ) {
 							<?php endforeach; ?>
 
 								<label>
-									<input type="radio" name="thumb_size" value="tptn_thumbnail" id="tptn_thumbnail" <?php if ( $tptn_settings['thumb_size'] == 'tptn_thumbnail' ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Custom size', 'top-10' ); ?>
+									<input type="radio" name="thumb_size" value="tptn_thumbnail" id="tptn_thumbnail" <?php checked( $tptn_settings['thumb_size'], 'tptn_thumbnail', true ); ?> /> <?php esc_html_e( 'Custom size', 'top-10' ); ?>
 								</label>
 								<p class="description">
 									<?php esc_html_e( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image.', 'top-10' ); ?><br />
 									<?php esc_html_e( 'If you change the width and/or height below, existing images will not be automatically resized.', 'top-10' ); ?>
-									<?php printf( __( "I recommend using <a href='%s' class='thickbox'>OTF Regenerate Thumbnails</a> or <a href='%s' class='thickbox'>Regenerate Thumbnails</a> to regenerate all image sizes.", 'top-10' ), esc_url( self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ), esc_url( self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) ); ?>
+									<?php printf( esc_html__( "I recommend using <a href='%s' class='thickbox'>OTF Regenerate Thumbnails</a> or <a href='%s' class='thickbox'>Regenerate Thumbnails</a> to regenerate all image sizes.", 'top-10' ), esc_url( self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ), esc_url( self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) ); ?>
 								</p>
 								<p class="description">
 									<?php esc_html_e( "If you're using the Left Thumbs style below then the thumbnail width and height that you set here will supersede the widget. Alternatively, choose <strong>Style attributes</strong> under <strong>Image size attributes</strong> option below", 'top-10' ); ?>
@@ -592,26 +601,26 @@ if ( ! defined( 'WPINC' ) ) {
 							<input type="checkbox" name="thumb_crop" id="thumb_crop" <?php if ( $tptn_settings['thumb_crop'] ) { echo 'checked="checked"'; } ?> />
 							<p class="description">
 								<?php esc_html_e( 'By default, thumbnails will be proportionately cropped. Check this box to hard crop the thumbnails.', 'top-10' ); ?>
-								<?php printf( __( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", 'top-10' ), esc_url( 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ) ); ?>
+								<?php printf( esc_html__( "<a href='%s' target='_blank'>Difference between soft and hard crop</a>", 'top-10' ), esc_url( 'http://www.davidtan.org/wordpress-hard-crop-vs-soft-crop-difference-comparison-example/' ) ); ?>
 							</p>
 						</td>
 					</tr>
 					<tr><th scope="row"><label for="thumb_html"><?php esc_html_e( 'Image size attributes:', 'top-10' ); ?></label></th>
 						<td>
 							<label>
-								<input type="radio" name="thumb_html" value="css" id="thumb_html_0" <?php if ( 'css' == $tptn_settings['thumb_html'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="thumb_html" value="css" id="thumb_html_0" <?php checked( 'css', $tptn_settings['thumb_html'], true ); ?> />
 								<?php esc_html_e( 'Style attributes are used for width and height.', 'top-10' );
-								echo ' <code>style="max-width:' . $tptn_settings['thumb_width'] . 'px;max-height:' . $tptn_settings['thumb_height'] . 'px;"</code>'; ?>
+								echo ' <code>style="max-width:' . esc_attr( $tptn_settings['thumb_width'] ) . 'px;max-height:' . esc_attr( $tptn_settings['thumb_height'] ) . 'px;"</code>'; ?>
 							</label>
 							<br />
 							<label>
-								<input type="radio" name="thumb_html" value="html" id="thumb_html_1" <?php if ( 'html' == $tptn_settings['thumb_html'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="thumb_html" value="html" id="thumb_html_1" <?php checked( 'html', $tptn_settings['thumb_html'], true ); ?> />
 								<?php esc_html_e( 'HTML width and height attributes are used for width and height.', 'top-10' );
-								echo ' <code>width="' . $tptn_settings['thumb_width'] . '" height="' . $tptn_settings['thumb_height'] . '"</code>'; ?>
+								echo ' <code>width="' . esc_attr( $tptn_settings['thumb_width'] ) . '" height="' . esc_attr( $tptn_settings['thumb_height'] . '"</code>' ); ?>
 							</label>
 							<br />
 							<label>
-								<input type="radio" name="thumb_html" value="none" id="thumb_html_1" <?php if ( 'none' == $tptn_settings['thumb_html'] ) { echo 'checked="checked"'; } ?> />
+								<input type="radio" name="thumb_html" value="none" id="thumb_html_1" <?php checked( 'none', $tptn_settings['thumb_html'], true ); ?> />
 								<?php esc_html_e( 'No HTML or Style attributes set for width and height', 'top-10' ); ?>
 							</label>
 							<br />
@@ -638,7 +647,7 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr><th scope="row"><label for="thumb_default"><?php esc_html_e( 'Default thumbnail:', 'top-10' ); ?></label></th>
 					  	<td>
 					  		<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_default'] ) ); ?>" style="width:100%"> <br />
-					  		<?php if ( '' != $tptn_settings['thumb_default'] ) { echo "<img src='{$tptn_settings['thumb_default']}' style='max-width:200px' />"; } ?>
+					  		<?php if ( '' !== $tptn_settings['thumb_default'] ) { printf( "<img src='%s' style='max-width:200px' />", esc_url( $tptn_settings['thumb_default'] ) ); } ?>
 					  		<p class="description"><?php esc_html_e( "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified above", 'top-10' ); ?></p>
 					  	</td>
 					</tr>
@@ -681,22 +690,22 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr><th scope="row"><?php esc_html_e( 'Style of the popular posts:', 'top-10' ); ?></th>
 					  <td>
 						<label>
-							<input type="radio" name="tptn_styles" value="no_style" id="tptn_styles_1" <?php if ( 'no_style' == $tptn_settings['tptn_styles'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'No styles', 'top-10' ); ?>
+							<input type="radio" name="tptn_styles" value="no_style" id="tptn_styles_1" <?php checked( 'no_style', $tptn_settings['tptn_styles'], true ); ?> /> <?php esc_html_e( 'No styles', 'top-10' ); ?>
 						</label>
 						<p class="description"><?php esc_html_e( 'Select this option if you plan to add your own styles', 'top-10' ); ?></p>
 						<br />
 
 						<label>
-							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" <?php if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) { echo 'checked="checked"'; } ?> />
+							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" <?php if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) ) { echo 'checked="checked"'; } ?> />
 							<?php esc_html_e( 'Left Thumbnails', 'top-10' ); ?>
 						</label>
-						<p class="description"><img src="<?php echo plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ); ?>" /></p>
+						<p class="description"><img src="<?php echo esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ); ?>" /></p>
 						<p class="description"><?php esc_html_e( 'Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings.', 'top-10' ); ?></p>
-					  	<p class="description"><?php printf( __( 'You can view the default style at <a href="%1$s" target="_blank">%1$s</a>', 'top-10' ), esc_url( 'https://github.com/WebberZone/top-10/blob/master/css/default-style.css' ) ); ?></p>
+					  	<p class="description"><?php printf( esc_html__( 'You can view the default style at %s', 'top-10' ), '<a href="https://github.com/WebberZone/top-10/blob/master/css/default-style.css" target="_blank">https://github.com/WebberZone/top-10/blob/master/css/default-style.css</a>' ); ?></p>
 						<br />
 
 						<label>
-							<input type="radio" name="tptn_styles" value="text_only" id="tptn_styles_1" <?php if ( 'text_only' == $tptn_settings['tptn_styles'] ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Text only', 'top-10' ); ?>
+							<input type="radio" name="tptn_styles" value="text_only" id="tptn_styles_1" <?php checked( 'text_only', $tptn_settings['tptn_styles'], true ); ?> /> <?php esc_html_e( 'Text only', 'top-10' ); ?>
 						</label>
 						<p class="description"><?php esc_html_e( 'Enabling this option will disable thumbnails and no longer include the default style sheet included in the plugin.', 'top-10' ); ?></p>
 
@@ -719,7 +728,7 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<td scope="row" colspan="2">
 							<textarea name="custom_CSS" id="custom_CSS" rows="15" cols="80" style="width:100%"><?php echo esc_textarea( $tptn_settings['custom_CSS'] ); ?></textarea>
-							<p class="description"><?php _e( 'Do not include <code>style</code> tags. Check out the <a href="http://wordpress.org/extend/plugins/top-10/faq/" target="_blank">FAQ</a> for available CSS classes to style.', 'top-10' ); ?></p>
+							<p class="description"><?php printf( esc_html__( 'Do not include %1$s tags. Check out the %2$s for available CSS classes to style.', 'top-10' ), '<code>style</code>', '<a href="http://wordpress.org/extend/plugins/top-10/faq/" target="_blank">FAQ</a>' ); ?></p>
 						</td>
 					</tr>
 
@@ -777,19 +786,19 @@ if ( ! defined( 'WPINC' ) ) {
 				<tr><th scope="row"><label for="cron_recurrence"><?php esc_html_e( 'How often should the maintenance be run:', 'top-10' ); ?></label></th>
 				  <td>
 					<label>
-					<input type="radio" name="cron_recurrence" value="daily" id="cron_recurrence0" <?php if ( 'daily' == $tptn_settings['cron_recurrence'] ) { echo 'checked="checked"'; } ?> />
+					<input type="radio" name="cron_recurrence" value="daily" id="cron_recurrence0" <?php checked( 'daily', $tptn_settings['cron_recurrence'], true ); ?> />
 					<?php esc_html_e( 'Daily', 'top-10' ); ?></label>
 					<br />
 					<label>
-					<input type="radio" name="cron_recurrence" value="weekly" id="cron_recurrence1" <?php if ( 'weekly' == $tptn_settings['cron_recurrence'] ) { echo 'checked="checked"'; } ?> />
+					<input type="radio" name="cron_recurrence" value="weekly" id="cron_recurrence1" <?php checked( 'weekly', $tptn_settings['cron_recurrence'], true ); ?> />
 					<?php esc_html_e( 'Weekly', 'top-10' ); ?></label>
 					<br />
 					<label>
-					<input type="radio" name="cron_recurrence" value="fortnightly" id="cron_recurrence2" <?php if ( 'fortnightly' == $tptn_settings['cron_recurrence'] ) { echo 'checked="checked"'; } ?> />
+					<input type="radio" name="cron_recurrence" value="fortnightly" id="cron_recurrence2" <?php checked( 'fortnightly', $tptn_settings['cron_recurrence'], true ); ?> />
 					<?php esc_html_e( 'Fortnightly', 'top-10' ); ?></label>
 					<br />
 					<label>
-					<input type="radio" name="cron_recurrence" value="monthly" id="cron_recurrence3" <?php if ( 'monthly' == $tptn_settings['cron_recurrence'] ) { echo 'checked="checked"'; } ?> />
+					<input type="radio" name="cron_recurrence" value="monthly" id="cron_recurrence3" <?php checked( 'monthly', $tptn_settings['cron_recurrence'], true ); ?> />
 					<?php esc_html_e( 'Monthly', 'top-10' ); ?></label>
 					<br />
 				  </td>
@@ -799,9 +808,8 @@ if ( ! defined( 'WPINC' ) ) {
 					if ( ( $tptn_settings['cron_on'] ) || wp_next_scheduled( 'tptn_cron_hook' ) ) {
 						if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
 							echo '<span style="color:#0c0">';
-							esc_html_e( 'The cron job has been scheduled. Maintenance will run', 'top-10' );
-							echo ' ' . wp_get_schedule( 'tptn_cron_hook' );
-							echo '.</span>';
+							printf( esc_html__( 'The cron job has been scheduled. Maintenance will run %s.', 'top-10' ), wp_get_schedule( 'tptn_cron_hook' ) );
+							echo '</span>';
 						} else {
 							echo '<span style="color:#e00">';
 							esc_html_e( 'The cron job is missing. Please resave this page to add the job', 'top-10' );
@@ -876,14 +884,14 @@ if ( ! defined( 'WPINC' ) ) {
 				$top_ten_mu_tables_blog_ids = array();
 				$top_ten_all_mu_tables = array();
 
-				// Get all blogs in the network and activate plugin on each one
+				// Get all blogs in the network and activate plugin on each one.
 				$blog_ids = $wpdb->get_col( "
 			        	SELECT blog_id FROM $wpdb->blogs
 						WHERE archived = '0' AND spam = '0' AND deleted = '0'
-					" );
+					" ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 			foreach ( $blog_ids as $blog_id ) {
 				switch_to_blog( $blog_id );
-				$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " );
+				$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 				if ( ! empty( $top_ten_mu_table ) && ! is_main_site( $blog_id ) ) {
 					$top_ten_mu_tables_blog_ids[] = $blog_id;
@@ -958,7 +966,7 @@ if ( ! defined( 'WPINC' ) ) {
 			  <input name="tptn_delete_imported_tables" type="submit" id="tptn_delete_imported_tables" value="<?php esc_attr_e( 'Delete all imported tables', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" />
 				</p>
 				<?php
-			} // End if ( ! empty( $top_ten_all_mu_tables ) ).
+			} // End if.
 			?>
 	      </div>
 	    </div>
