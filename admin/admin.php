@@ -39,11 +39,11 @@ function tptn_options() {
     Temporary check if default styles are off and left thumbnails are selected - will be eventually deprecated
     This is a mismatch, so we force it to no style
     */
-	if ( ( false == $tptn_settings['include_default_style'] ) && ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) ) {
+	if ( ( false === $tptn_settings['include_default_style'] ) && ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) ) {
 		$tptn_settings['tptn_styles'] = 'no_style';
 		update_option( 'ald_tptn_settings', $tptn_settings );
 	}
-	if ( ( true == $tptn_settings['include_default_style'] ) && ( 'left_thumbs' != $tptn_settings['tptn_styles'] ) ) {
+	if ( ( true === $tptn_settings['include_default_style'] ) && ( 'left_thumbs' !== $tptn_settings['tptn_styles'] ) ) {
 		$tptn_settings['tptn_styles'] = 'left_thumbs';
 		update_option( 'ald_tptn_settings', $tptn_settings );
 	}
@@ -80,8 +80,8 @@ function tptn_options() {
 		$tptn_settings['add_to_tag_archives'] = isset( $_POST['add_to_tag_archives'] ) ? true : false;
 		$tptn_settings['add_to_archives'] = isset( $_POST['add_to_archives'] ) ? true : false;
 
-		$tptn_settings['count_disp_form'] = wp_kses_post( $_POST['count_disp_form'] );
-		$tptn_settings['count_disp_form_zero'] = wp_kses_post( $_POST['count_disp_form_zero'] );
+		$tptn_settings['count_disp_form'] = wp_kses_post( wp_unslash( $_POST['count_disp_form'] ) );
+		$tptn_settings['count_disp_form_zero'] = wp_kses_post( wp_unslash( $_POST['count_disp_form_zero'] ) );
 		$tptn_settings['dynamic_post_count'] = isset( $_POST['dynamic_post_count'] ) ? true : false;
 
 		$tptn_settings['tracker_type'] = sanitize_text_field( $_POST['tracker_type'] );
@@ -104,15 +104,15 @@ function tptn_options() {
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
-		$tptn_settings['exclude_post_ids'] = '' == sanitize_text_field( $_POST['exclude_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_post_ids'] ) ) ) );
+		$tptn_settings['exclude_post_ids'] = empty( sanitize_text_field( $_POST['exclude_post_ids'] ) ) ? '' : implode( ',', array_map( 'absint', explode( ',', sanitize_text_field( wp_unslash( $_POST['exclude_post_ids'] ) ) ) ) );
 
 		/**** Exclude categories ****/
 		$exclude_categories_slugs = array_map( 'trim', explode( ',', sanitize_text_field( $_POST['exclude_cat_slugs'] ) ) );
 		$tptn_settings['exclude_cat_slugs'] = implode( ', ', $exclude_categories_slugs );
 
 		foreach ( $exclude_categories_slugs as $exclude_categories_slug ) {
-			$catObj = get_category_by_slug( $exclude_categories_slug );
-			if ( isset( $catObj->term_taxonomy_id ) ) { $exclude_categories[] = $catObj->term_taxonomy_id; }
+			$category_obj = get_category_by_slug( $exclude_categories_slug );
+			if ( isset( $category_obj->term_taxonomy_id ) ) { $exclude_categories[] = $category_obj->term_taxonomy_id; }
 		}
 		$tptn_settings['exclude_categories'] = ( isset( $exclude_categories ) ) ? join( ',', $exclude_categories ) : '';
 
@@ -131,7 +131,7 @@ function tptn_options() {
 
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
-		$tptn_settings['exclude_on_post_ids'] = '' == sanitize_text_field( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
+		$tptn_settings['exclude_on_post_ids'] = empty( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
 
 		// List HTML options
 		$tptn_settings['before_list'] = wp_kses_post( $_POST['before_list'] );
@@ -147,20 +147,20 @@ function tptn_options() {
 		$tptn_settings['thumb_crop'] = ( isset( $_POST['thumb_crop'] ) ? true : false );
 		$tptn_settings['thumb_html'] = sanitize_text_field( $_POST['thumb_html'] );
 
-		$tptn_settings['thumb_meta'] = '' == sanitize_text_field( $_POST['thumb_meta'] ) ? 'post-image' : sanitize_text_field( $_POST['thumb_meta'] );
+		$tptn_settings['thumb_meta'] = empty( $_POST['thumb_meta'] ) ? 'post-image' : sanitize_text_field( $_POST['thumb_meta'] );
 		$tptn_settings['scan_images'] = isset( $_POST['scan_images'] ) ? true : false;
 		$tptn_settings['thumb_default_show'] = isset( $_POST['thumb_default_show'] ) ? true : false;
-		$tptn_settings['thumb_default'] = ( ( '' == esc_url_raw( $_POST['thumb_default'] ) ) || ( '/default.png' == esc_url_raw( $_POST['thumb_default'] ) ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : esc_url_raw( $_POST['thumb_default'] );
+		$tptn_settings['thumb_default'] = ( ( '' === esc_url_raw( $_POST['thumb_default'] ) ) || ( '/default.png' === esc_url_raw( $_POST['thumb_default'] ) ) ) ? TOP_TEN_PLUGIN_URL . '/default.png' : esc_url_raw( $_POST['thumb_default'] );
 
 		/* Styles */
 		$tptn_settings['custom_CSS'] = wp_kses_post( $_POST['custom_CSS'] );
 
 		$tptn_settings['tptn_styles'] = sanitize_text_field( $_POST['tptn_styles'] );
 
-		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+		if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
 			$tptn_settings['include_default_style'] = true;
 			$tptn_settings['post_thumb_op'] = 'inline';
-		} elseif ( 'text_only' == $tptn_settings['tptn_styles'] ) {
+		} elseif ( 'text_only' === $tptn_settings['tptn_styles'] ) {
 			$tptn_settings['include_default_style'] = false;
 			$tptn_settings['post_thumb_op'] = 'text_only';
 		} else {
@@ -184,19 +184,19 @@ function tptn_options() {
 		parse_str( $tptn_settings['post_types'], $post_types );
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
-		// Delete the cache
+		// Delete the cache.
 		tptn_cache_delete();
 
 		/* Echo a success message */
 		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully. If enabled, the cache has been cleared.', 'top-10' ) . '</p>';
 
-		if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+		if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
 			$str .= '<p>'. __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'top-10' ) . '</p>';
 		}
-		if ( 'text_only' == $tptn_settings['tptn_styles'] ) {
+		if ( 'text_only' === $tptn_settings['tptn_styles'] ) {
 			$str .= '<p>'. __( 'Text Only style selected. Thumbnails will not be displayed.', 'top-10' ) . '</p>';
 		}
-		if ( 'tptn_thumbnail' != $tptn_settings['thumb_size'] ) {
+		if ( 'tptn_thumbnail' !== $tptn_settings['thumb_size'] ) {
 			$str .= '<p>'. sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %d x %d.', 'top-10' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
 		}
 

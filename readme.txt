@@ -3,8 +3,8 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 4.0
-Tested up to: 4.6
+Requires at least: 4.1
+Tested up to: 4.7
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.

@@ -47,7 +47,7 @@ function tptn_add_meta_box( $post_type, $post ) {
 	 */
 	$post_types = apply_filters( 'tptn_meta_box_post_types', $post_types );
 
-	if ( in_array( $post_type, $post_types ) ) {
+	if ( in_array( $post_type, $post_types, true ) ) {
 
 		add_meta_box(
 			'tptn_metabox',
@@ -76,11 +76,11 @@ function tptn_call_meta_box() {
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
 
 	// Get the number of visits for the post being editted.
-	$resultscount = $wpdb->get_row( $wpdb->prepare(
+	$resultscount = $wpdb->get_row( $wpdb->prepare( // WPCS: unprepared SQL OK.
 		"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
 		$post->ID,
 		get_current_blog_id()
-	) );
+	) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
 
 	// Get the post meta.
@@ -102,7 +102,7 @@ function tptn_call_meta_box() {
 ?>
 	<p>
 		<label for="total_count"><strong><?php esc_html_e( 'Visit count:', 'top-10' ); ?></strong></label>
-		<input type="text" id="total_count" name="total_count" value="<?php echo $total_count ?>" style="width:100%" />
+		<input type="text" id="total_count" name="total_count" value="<?php echo esc_attr( $total_count ); ?>" style="width:100%" />
 		<em><?php esc_html_e( 'Enter a number above to update the visit count. Leaving the above box blank will set the count to zero', 'top-10' ); ?></em>
 	</p>
 
@@ -113,14 +113,14 @@ function tptn_call_meta_box() {
 ?>
 	<p>
 		<label for="disable_here"><strong><?php esc_html_e( 'Disable Popular Posts display:', 'top-10' ); ?></strong></label>
-		<input type="checkbox" id="disable_here" name="disable_here" <?php if ( 1 == $disable_here ) { echo ' checked="checked" '; } ?> />
+		<input type="checkbox" id="disable_here" name="disable_here" <?php checked( 1, $disable_here, true ); ?> />
 		<br />
 		<em><?php esc_html_e( 'If this is checked, then Top 10 will not display the popular posts widgets when viewing this post.', 'top-10' ); ?></em>
 	</p>
 
 	<p>
 		<label for="exclude_this_post"><strong><?php esc_html_e( 'Exclude this post from the popular posts list:', 'top-10' ); ?></strong></label>
-		<input type="checkbox" id="exclude_this_post" name="exclude_this_post" <?php if ( 1 == $exclude_this_post ) { echo ' checked="checked" '; } ?> />
+		<input type="checkbox" id="exclude_this_post" name="exclude_this_post" <?php checked( 1, $exclude_this_post, true ); ?> />
 		<br />
 		<em><?php esc_html_e( 'If this is checked, then this post will be excluded from the popular posts list.', 'top-10' ); ?></em>
 	</p>
@@ -134,7 +134,7 @@ function tptn_call_meta_box() {
 
 	<p>
 		<?php if ( function_exists( 'crp_read_options' ) ) { ?>
-			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); ?></em>
+			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); // WPCS: XSS OK. ?></em>
 		<?php } ?>
 	</p>
 
@@ -164,7 +164,7 @@ function tptn_save_meta_box( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
 
 	// If our nonce isn't there, or we can't verify it, bail.
-	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tptn_meta_box_nonce'], 'tptn_meta_box' ) ) { // Input var okay.
+	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['tptn_meta_box_nonce'] ), 'tptn_meta_box' ) ) { // Input var okay.
 		return;
 	}
 
@@ -174,56 +174,56 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	// Update the posts view count.
-	if ( isset( $_POST['total_count'] ) ) {
-		$total_count = intval( $_POST['total_count'] );
+	if ( isset( $_POST['total_count'] ) ) { // Input var okay.
+		$total_count = intval( $_POST['total_count'] ); // Input var okay.
 		$blog_id = get_current_blog_id();
 
 		if ( 0 === $total_count ) {
-			$resultscount = $wpdb->query( $wpdb->prepare(
+			$wpdb->query( $wpdb->prepare(  // WPCS: unprepared SQL OK.
 				"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
 				$post_id,
 				$blog_id
-			) );
+			) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		} else {
-			$tt = $wpdb->query( $wpdb->prepare(
+			$wpdb->query( $wpdb->prepare(  // WPCS: unprepared SQL OK.
 				"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
 				$post_id,
 				$total_count,
 				$blog_id,
 				$total_count
-			) );
+			) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		}
 	}
 
 	// Update the thumbnail URL.
-	if ( isset( $_POST['thumb_meta'] ) ) {
-		$thumb_meta = '' == $_POST['thumb_meta'] ? '' : sanitize_text_field( $_POST['thumb_meta'] );
+	if ( isset( $_POST['thumb_meta'] ) ) { // Input var okay.
+		$thumb_meta = empty( $_POST['thumb_meta'] ) ? '' : sanitize_text_field( wp_unslash( $_POST['thumb_meta'] ) ); // Input var okay.
 	}
 
 	$tptn_post_meta = get_post_meta( $post_id, $tptn_settings['thumb_meta'], true );
 
-	if ( $tptn_post_meta && '' != $tptn_post_meta ) {
+	if ( $tptn_post_meta && empty( $tptn_post_meta ) ) {
 		$gotmeta = true;
 	} else {
 		$gotmeta = false;
 	}
 
-	if ( $gotmeta && '' != $thumb_meta ) {
+	if ( $gotmeta && empty( $thumb_meta ) ) {
 		update_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
-	} elseif ( ! $gotmeta && '' != $thumb_meta ) {
+	} elseif ( ! $gotmeta && empty( $thumb_meta ) ) {
 		add_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
 	} else {
 		delete_post_meta( $post_id, $tptn_settings['thumb_meta'] );
 	}
 
 	// Disable posts.
-	if ( isset( $_POST['disable_here'] ) ) {
+	if ( isset( $_POST['disable_here'] ) ) { // Input var okay.
 		$tptn_post_meta['disable_here'] = 1;
 	} else {
 		$tptn_post_meta['disable_here'] = 0;
 	}
 
-	if ( isset( $_POST['exclude_this_post'] ) ) {
+	if ( isset( $_POST['exclude_this_post'] ) ) { // Input var okay.
 		$tptn_post_meta['exclude_this_post'] = 1;
 	} else {
 		$tptn_post_meta['exclude_this_post'] = 0;

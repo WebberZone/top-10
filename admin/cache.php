@@ -14,7 +14,7 @@ function tptn_ajax_clearcache() {
 
 	tptn_cache_delete();
 
-	exit( json_encode( array(
+	exit( wp_json_encode( array(
 		'success' => 1,
 		'message' => __( 'Top 10 cache has been cleared', 'top-10' ),
 	) ) );
@@ -92,7 +92,7 @@ function tptn_cache_get_widget_keys() {
 		WHERE `option_name` LIKE '_transient_tptn_%_widget%'
 	";
 
-	$results = $wpdb->get_results( $sql );
+	$results = $wpdb->get_results( $sql ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 	if ( is_array( $results ) ) {
 		foreach ( $results as $result ) {

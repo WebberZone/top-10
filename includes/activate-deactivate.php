@@ -24,7 +24,7 @@ function tptn_activation_hook( $network_wide ) {
 		$blog_ids = $wpdb->get_col( "
         	SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0' AND deleted = '0'
-		" );
+		" ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		foreach ( $blog_ids as $blog_id ) {
 			switch_to_blog( $blog_id );
 			tptn_single_activate();

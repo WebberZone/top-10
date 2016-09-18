@@ -59,9 +59,9 @@ function tptn_value( $column_name, $id ) {
 	if ( ( 'tptn_total' === $column_name ) && ( $tptn_settings['pv_in_admin'] ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten';
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
-		echo $cntaccess;
+		echo esc_html( $cntaccess );
 	}
 
 	// Now process daily count.
@@ -81,17 +81,16 @@ function tptn_value( $column_name, $id ) {
 			$from_date = gmdate( 'Y-m-d H' , $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) );
-		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
-
-		echo $cntaccess;
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
+		echo esc_html( $cntaccess );
 	}
 
 	// Now process both.
 	if ( ( 'tptn_both' === $column_name ) && ( $tptn_settings['pv_in_admin'] ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten';
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		$cntaccess = number_format_i18n( (($resultscount) ? $resultscount->cntaccess : 0) );
 
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
@@ -109,10 +108,10 @@ function tptn_value( $column_name, $id ) {
 			$from_date = gmdate( 'Y-m-d H' , $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sumCount FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) );
-		$cntaccess .= ' / ' . number_format_i18n( ( ( $resultscount ) ? $resultscount->sumCount : 0 ) );
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		$cntaccess .= ' / ' . number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 
-		echo $cntaccess;
+		echo esc_html( $cntaccess );
 	}
 }
 add_action( 'manage_posts_custom_column', 'tptn_value', 10, 2 );
