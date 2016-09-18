@@ -808,7 +808,7 @@ if ( ! defined( 'WPINC' ) ) {
 					if ( ( $tptn_settings['cron_on'] ) || wp_next_scheduled( 'tptn_cron_hook' ) ) {
 						if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
 							echo '<span style="color:#0c0">';
-							printf( esc_html__( 'The cron job has been scheduled. Maintenance will run %s.', 'top-10' ), wp_get_schedule( 'tptn_cron_hook' ) );
+							printf( esc_html__( 'The cron job has been scheduled. Maintenance will run %s.', 'top-10' ), esc_html__( wp_get_schedule( 'tptn_cron_hook' ) ) );
 							echo '</span>';
 						} else {
 							echo '<span style="color:#e00">';
