@@ -19,10 +19,10 @@ function tptn_cron() {
 	$from_date = strtotime( '-90 DAY' , $current_time );
 	$from_date = gmdate( 'Y-m-d H' , $from_date );
 
-	$resultscount = $wpdb->query( $wpdb->prepare(
+	$resultscount = $wpdb->query( $wpdb->prepare( // WPCS: unprepared SQL OK.
 		"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
 		$from_date
-	) );
+	) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 }
 add_action( 'tptn_cron_hook', 'tptn_cron' );
@@ -68,22 +68,22 @@ if ( ! function_exists( 'ald_more_reccurences' ) ) :
 	 * @return	array Filtered array with new schedules
 	 */
 	function ald_more_reccurences( $schedules ) {
-		// Add a 'weekly' interval
+		// Add a 'weekly' interval.
 		$schedules['weekly'] = array(
-		'interval' => WEEK_IN_SECONDS,
-		'display' => __( 'Once Weekly', 'top-10' ),
+			'interval' => WEEK_IN_SECONDS,
+			'display' => __( 'Once Weekly', 'top-10' ),
 		);
 		$schedules['fortnightly'] = array(
-		'interval' => 2 * WEEK_IN_SECONDS,
-		'display' => __( 'Once Fortnightly', 'top-10' ),
+			'interval' => 2 * WEEK_IN_SECONDS,
+			'display' => __( 'Once Fortnightly', 'top-10' ),
 		);
 		$schedules['monthly'] = array(
-		'interval' => 30 * DAY_IN_SECONDS,
-		'display' => __( 'Once Monthly', 'top-10' ),
+			'interval' => 30 * DAY_IN_SECONDS,
+			'display' => __( 'Once Monthly', 'top-10' ),
 		);
 		$schedules['quarterly'] = array(
-		'interval' => 90 * DAY_IN_SECONDS,
-		'display' => __( 'Once quarterly', 'top-10' ),
+			'interval' => 90 * DAY_IN_SECONDS,
+			'display' => __( 'Once quarterly', 'top-10' ),
 		);
 		return $schedules;
 	}
