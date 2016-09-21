@@ -108,13 +108,21 @@ function tptn_options() {
 
 		/**** Exclude categories ****/
 		$exclude_categories_slugs = array_map( 'trim', explode( ',', sanitize_text_field( $_POST['exclude_cat_slugs'] ) ) );
-		$tptn_settings['exclude_cat_slugs'] = implode( ', ', $exclude_categories_slugs );
 
 		foreach ( $exclude_categories_slugs as $exclude_categories_slug ) {
-			$category_obj = get_category_by_slug( $exclude_categories_slug );
-			if ( isset( $category_obj->term_taxonomy_id ) ) { $exclude_categories[] = $category_obj->term_taxonomy_id; }
+			$category_obj = get_term_by( 'name', $exclude_categories_slug, 'category' );
+
+			// Fall back to slugs since that was the default format before v2.4.0.
+			if ( false === $category_obj ) {
+				$category_obj = get_term_by( 'slug', $exclude_categories_slug, 'category' );
+			}
+			if ( isset( $category_obj->term_taxonomy_id ) ) {
+				$exclude_categories[] = $category_obj->term_taxonomy_id;
+				$exclude_cat_slugs[] = $category_obj->name;
+			}
 		}
 		$tptn_settings['exclude_categories'] = ( isset( $exclude_categories ) ) ? join( ',', $exclude_categories ) : '';
+		$tptn_settings['exclude_cat_slugs'] = ( isset( $exclude_cat_slugs ) ) ? join( ',', $exclude_cat_slugs ) : '';
 
 		$tptn_settings['title'] = wp_kses_post( $_POST['title'] );
 		$tptn_settings['title_daily'] = wp_kses_post( $_POST['title_daily'] );
@@ -497,6 +505,7 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'wp-lists' );
 	wp_enqueue_script( 'postbox' );
 	wp_enqueue_script( 'plugin-install' );
+	wp_enqueue_script( 'suggest' );
 
 	add_thickbox();
 
@@ -538,23 +547,21 @@ function tptn_adminhead() {
 				// postboxes setup
 				postboxes.add_postbox_toggles('tptn_options');
 			});
-			//]]>
-		</script>
 
-		<script type="text/javascript" language="JavaScript">
-			//<![CDATA[
+		    // Function to add auto suggest.
+		    function setSuggest( id, taxonomy ) {
+		        jQuery('#' + id).suggest("<?php echo admin_url( 'admin-ajax.php?action=ajax-tag-search&tax=' ); ?>" + taxonomy, {multiple:true, multipleSep: ","});
+		    }
+
+		    // Function check the form submission.
 			function checkForm() {
 				answer = true;
 				if (siw && siw.selectingSomething)
 					answer = false;
 				return answer;
 			} //
-			//]]>
-		</script>
 
-		<link rel="stylesheet" type="text/css" href="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.css" />
-		<script type="text/javascript" language="JavaScript">
-			//<![CDATA[
+		    // Function to clear the cache.
 			function clearCache() {
 				/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
 				jQuery.post(ajaxurl, {
@@ -563,26 +570,8 @@ function tptn_adminhead() {
 					alert(response.message);
 				}, 'json');
 			}
-
-			<?php
-			function wick_data() {
-
-				$categories = get_categories( 'hide_empty=0' );
-				$str = 'collection = [';
-				foreach ( $categories as $cat ) {
-					$str .= "'" . $cat->slug . "',";
-				}
-				$str = substr( $str, 0, -1 );	// Remove trailing comma.
-				$str .= '];';
-
-				echo $str;
-			}
-			wick_data();
-		?>
 			//]]>
 		</script>
-
-		<script type="text/javascript" src="<?php echo TOP_TEN_PLUGIN_URL ?>/admin/wick/wick.js"></script>
 
 		<?php
 }

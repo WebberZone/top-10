@@ -180,6 +180,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Deprecated:
 	* `tptn_add_tracker` and `tptn_add_viewed_count` have been deprecated. These should no longer be needed with the new tracker option.
+	* wick script in Settings page which was used for fetching category slugs. You should now use the category name (prompted automatically). Slugs will be automatically converted into names.
 
 = 2.3.2 =
 
