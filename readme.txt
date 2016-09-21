@@ -175,6 +175,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* Attachments now work with the widget and elsewhere
 	* New tracker now works when jQuery is loaded in the footer
+	* Don't add tracker code when previewing in customizer
+	* Doesn't report an error if no author is assigned to a post
 
 * Deprecated:
 	* `tptn_add_tracker` and `tptn_add_viewed_count` have been deprecated. These should no longer be needed with the new tracker option.
