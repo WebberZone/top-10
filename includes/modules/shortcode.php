@@ -22,6 +22,7 @@ function tptn_shortcode( $atts, $content = null ) {
 			'heading' => 1,
 			'daily' => 0,
 			'is_shortcode' => 1,
+			'offset' => 0,
 		)
 	), $atts, 'top-10' );
 
