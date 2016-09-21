@@ -14,7 +14,7 @@
 function tptn_enqueue_scripts() {
 	global $post, $tptn_settings;
 
-	if ( is_singular() && 'draft' !== $post->post_status ) {
+	if ( is_singular() && 'draft' !== $post->post_status && ! is_customize_preview() ) {
 
 		$current_user = wp_get_current_user();	// Let's get the current user
 		$post_author = ( $current_user->ID === $post->post_author ) ? true : false;	// Is the current user the post author?
