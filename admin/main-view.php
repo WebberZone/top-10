@@ -352,21 +352,8 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<th scope="row"><label for="exclude_cat_slugs"><?php esc_html_e( 'Exclude Categories:', 'top-10' ); ?></label></th>
 						<td>
-							<div style="position:relative;text-align:left">
-								<table id="MYCUSTOMFLOATER" class="myCustomFloater" style="position:absolute;top:50px;left:0;background-color:#cecece;display:none;visibility:hidden">
-								<tr><td><!--
-										please see: http://chrisholland.blogspot.com/2004/09/geekstuff-css-display-inline-block.html
-										to explain why i'm using a table here.
-										You could replace the table/tr/td with a DIV, but you'd have to specify it's width and height
-										-->
-									<div class="myCustomFloaterContent">
-									you should never be seeing this
-									</div>
-								</td></tr>
-								</table>
-								<textarea class="wickEnabled:MYCUSTOMFLOATER" cols="50" rows="3" wrap="virtual" name="exclude_cat_slugs" style="width:100%"><?php echo esc_textarea( $tptn_settings['exclude_cat_slugs'] ); ?></textarea>
-								<p class="description"><?php esc_html_e( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options', 'top-10' ); ?></p>
-							</div>
+							<label><input type="textbox" name="exclude_cat_slugs" id="exclude_cat_slugs" value="<?php echo esc_attr( $tptn_settings['exclude_cat_slugs'] ); ?>" onfocus="setSuggest('exclude_cat_slugs', 'category');" class="widefat"></label>
+							<p class="description"><?php esc_html_e( 'Comma separated list of category names. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support tags or custom taxonomies.', 'top-10' ); ?></p>
 							<p class="description highlight">
 								<?php
 									esc_html_e( 'Excluded category IDs are:', 'top-10' );
@@ -375,7 +362,7 @@ if ( ! defined( 'WPINC' ) ) {
 							</p>
 							<p class="description">
 								<?php
-									esc_html_e( 'These might differ from the IDs visible in the Categories page which use the <code>term_id</code>. Top 10 uses the <code>term_taxonomy_id</code> which is unique to this taxonomy.', 'top-10' );
+									printf( esc_html__( 'These might differ from the IDs visible in the Categories page which use the %s. Top 10 uses the %s which is unique to this taxonomy.', 'top-10' ), '<code>term_id</code>', '<code>term_taxonomy_id</code>' ); ?>
 								?>
 							</p>
 						</td>
