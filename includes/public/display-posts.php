@@ -37,6 +37,7 @@ function tptn_pop_posts( $args ) {
 		'strict_limit' => false,
 		'posts_only' => false,
 		'heading' => 1,
+		'offset' => 0,
 	);
 
 	// Merge the $defaults array with the $tptn_settings array
@@ -298,6 +299,7 @@ function get_tptn_pop_posts( $args = array() ) {
 		'daily' => false,
 		'strict_limit' => true,
 		'posts_only' => false,
+		'offset' => 0,
 	);
 
 	// Merge the $defaults array with the $tptn_settings array
@@ -313,6 +315,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	$limit = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
+	$offset = isset( $args['offset'] ) ? $args['offset'] : 0;
 
 	// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
 	if ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
@@ -396,7 +399,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	$orderby = ' sum_count DESC ';
 
 	// Create the base LIMITS clause
-	$limits .= $wpdb->prepare( ' LIMIT %d ', $limit );
+	$limits .= $wpdb->prepare( ' LIMIT %d, %d ', $offset, $limit );
 
 	/**
 	 * Filter the SELECT clause of the query.

@@ -48,6 +48,7 @@ class Top_Ten_Widget extends WP_Widget {
 	function form( $instance ) {
 		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$limit = isset( $instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
+		$offset = isset( $instance['offset'] ) ? esc_attr( $instance['offset'] ) : '';
 		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
 		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
@@ -79,6 +80,11 @@ class Top_Ten_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>">
 			<?php esc_html_e( 'No. of posts', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'limit' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'limit' ) ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>" />
+			</label>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'offset' ) ); ?>">
+			<?php esc_html_e( 'Offset', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'offset' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'offset' ) ); ?>" type="text" value="<?php echo esc_attr( $offset ); ?>" />
 			</label>
 		</p>
 		<p>
@@ -178,6 +184,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['limit'] = $new_instance['limit'];
+		$instance['offset'] = $new_instance['offset'];
 		$instance['daily'] = $new_instance['daily'];
 		$instance['daily_range'] = strip_tags( $new_instance['daily_range'] );
 		$instance['hour_range'] = strip_tags( $new_instance['hour_range'] );
@@ -232,6 +239,7 @@ class Top_Ten_Widget extends WP_Widget {
 			$limit = $tptn_settings['limit'];
 		}
 
+		$offset = isset( $instance['offset'] ) ? $instance['offset'] : 0;
 		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
 		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
 
@@ -256,6 +264,7 @@ class Top_Ten_Widget extends WP_Widget {
 			'instance_id' => $this->number,
 			'heading' => 0,
 			'limit' => $limit,
+			'offset' => $offset,
 			'daily' => $daily,
 			'daily_range' => $daily_range,
 			'hour_range' => $hour_range,
