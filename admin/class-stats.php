@@ -287,12 +287,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_author( $item ) {
 		$author_info = get_userdata( $item['post_author'] );
-		$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
+		$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ) ) );
 
 		printf( '<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
 				'post_type' => $item['post_type'],
-				'author' => $author_info->ID,
+				'author' => ( false === $author_info ) ? 0 : $author_info->ID,
 			), 'edit.php' ) ),
 			esc_html( $author_name )
 		);
@@ -553,3 +553,6 @@ class Top_Ten_Statistics {
 	}
 }
 
+add_action( 'plugins_loaded', function () {
+	Top_Ten_Statistics::get_instance();
+} );
