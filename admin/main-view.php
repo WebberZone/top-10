@@ -539,7 +539,8 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr><th scope="row"><?php esc_html_e( 'Thumbnail size:', 'top-10' ); ?></th>
 						<td>
 							<?php
-								$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
+							$tptn_get_all_image_sizes = tptn_get_all_image_sizes();
+
 							if ( isset( $tptn_get_all_image_sizes['tptn_thumbnail'] ) ) {
 								unset( $tptn_get_all_image_sizes['tptn_thumbnail'] );
 							}
