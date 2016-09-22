@@ -16,14 +16,13 @@ function tptn_add_image_sizes() {
 
 	if ( ! in_array( $tptn_settings['thumb_size'], get_intermediate_image_sizes() ) ) {
 		$tptn_settings['thumb_size'] = 'tptn_thumbnail';
-		update_option( 'ald_tptn_settings', $tptn_settings );
 	}
 
 	// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid
 	if ( 'tptn_thumbnail' == $tptn_settings['thumb_size'] ) {
 		$width = empty( $tptn_settings['thumb_width'] ) ? 150 : $tptn_settings['thumb_width'];
 		$height = empty( $tptn_settings['thumb_height'] ) ? 150 : $tptn_settings['thumb_height'];
-		$crop = isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : false;
+		$crop = isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : true;
 
 		add_image_size( 'tptn_thumbnail', $width, $height, $crop );
 	}
