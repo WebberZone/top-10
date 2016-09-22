@@ -63,8 +63,8 @@ function tptn_options() {
 		$tptn_settings['activate_daily'] = isset( $_POST['activate_daily'] ) ? true : false;
 		$tptn_settings['cache'] = isset( $_POST['cache'] ) ? true : false;
 		$tptn_settings['daily_midnight'] = isset( $_POST['daily_midnight'] ) ? true : false;
-		$tptn_settings['daily_range'] = intval( $_POST['daily_range'] );
-		$tptn_settings['hour_range'] = intval( $_POST['hour_range'] );
+		$tptn_settings['daily_range'] = absint( $_POST['daily_range'] );
+		$tptn_settings['hour_range'] = absint( $_POST['hour_range'] );
 		$tptn_settings['uninstall_clean_options'] = isset( $_POST['uninstall_clean_options'] ) ? true : false;
 		$tptn_settings['uninstall_clean_tables'] = isset( $_POST['uninstall_clean_tables'] ) ? true : false;
 		$tptn_settings['show_metabox'] = ( isset( $_POST['show_metabox'] ) ? true : false );
@@ -93,8 +93,8 @@ function tptn_options() {
 		$tptn_settings['show_count_non_admins'] = isset( $_POST['show_count_non_admins'] ) ? true : false;
 
 		/* Popular post list options */
-		$tptn_settings['limit'] = intval( $_POST['limit'] );
-		$tptn_settings['how_old'] = intval( $_POST['how_old'] );
+		$tptn_settings['limit'] = absint( $_POST['limit'] );
+		$tptn_settings['how_old'] = absint( $_POST['how_old'] );
 
 		// Process post types to be selected.
 		$wp_post_types	= get_post_types( array(
@@ -131,15 +131,15 @@ function tptn_options() {
 		$tptn_settings['blank_output_text'] = wp_kses_post( $_POST['blank_output_text'] );
 
 		$tptn_settings['show_excerpt'] = isset( $_POST['show_excerpt'] ) ? true : false;
-		$tptn_settings['excerpt_length'] = intval( $_POST['excerpt_length'] );
+		$tptn_settings['excerpt_length'] = absint( $_POST['excerpt_length'] );
 		$tptn_settings['show_date'] = isset( $_POST['show_date'] ) ? true : false;
 		$tptn_settings['show_author'] = isset( $_POST['show_author'] ) ? true : false;
-		$tptn_settings['title_length'] = intval( $_POST['title_length'] );
+		$tptn_settings['title_length'] = absint( $_POST['title_length'] );
 		$tptn_settings['disp_list_count'] = isset( $_POST['disp_list_count'] ) ? true : false;
 
 		$tptn_settings['link_new_window'] = isset( $_POST['link_new_window'] ) ? true : false;
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
-		$tptn_settings['exclude_on_post_ids'] = empty( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'intval', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
+		$tptn_settings['exclude_on_post_ids'] = empty( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'absint', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
 
 		// List HTML options
 		$tptn_settings['before_list'] = wp_kses_post( $_POST['before_list'] );
@@ -150,8 +150,8 @@ function tptn_options() {
 		/* Thumbnail options */
 		$tptn_settings['post_thumb_op'] = sanitize_text_field( $_POST['post_thumb_op'] );
 		$tptn_settings['thumb_size'] = sanitize_text_field( $_POST['thumb_size'] );
-		$tptn_settings['thumb_width'] = intval( $_POST['thumb_width'] );
-		$tptn_settings['thumb_height'] = intval( $_POST['thumb_height'] );
+		$tptn_settings['thumb_width'] = absint( $_POST['thumb_width'] );
+		$tptn_settings['thumb_height'] = absint( $_POST['thumb_height'] );
 		$tptn_settings['thumb_crop'] = ( isset( $_POST['thumb_crop'] ) ? true : false );
 		$tptn_settings['thumb_html'] = sanitize_text_field( $_POST['thumb_html'] );
 
@@ -205,7 +205,8 @@ function tptn_options() {
 			$str .= '<p>' . __( 'Text Only style selected. Thumbnails will not be displayed.', 'top-10' ) . '</p>';
 		}
 		if ( 'tptn_thumbnail' !== $tptn_settings['thumb_size'] ) {
-			$str .= '<p>' . sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %1$d x %1$d.', 'top-10' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
+			$thumb_size = tptn_get_all_image_sizes( $tptn_settings['thumb_size'] );
+			$str .= '<p>' . sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %1$d x %1$d.', 'top-10' ), $thumb_size['width'], $thumb_size['height'] ) . '</p>';
 		}
 
 		$str .= '</div>';
@@ -256,8 +257,8 @@ function tptn_options() {
 
 	/* Save maintenance options */
 	if ( ( isset( $_POST['tptn_mnts_save'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
-		$tptn_settings['cron_hour'] = min( 23, intval( $_POST['cron_hour'] ) );
-		$tptn_settings['cron_min'] = min( 59, intval( $_POST['cron_min'] ) );
+		$tptn_settings['cron_hour'] = min( 23, absint( $_POST['cron_hour'] ) );
+		$tptn_settings['cron_min'] = min( 59, absint( $_POST['cron_min'] ) );
 		$tptn_settings['cron_recurrence'] = sanitize_text_field( $_POST['cron_recurrence'] );
 
 		if ( isset( $_POST['cron_on'] ) ) {
