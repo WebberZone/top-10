@@ -206,7 +206,7 @@ function tptn_options() {
 		}
 		if ( 'tptn_thumbnail' !== $tptn_settings['thumb_size'] ) {
 			$thumb_size = tptn_get_all_image_sizes( $tptn_settings['thumb_size'] );
-			$str .= '<p>' . sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %1$d x %1$d.', 'top-10' ), $thumb_size['width'], $thumb_size['height'] ) . '</p>';
+			$str .= '<p>' . sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %1$d x %2$d.', 'top-10' ), $thumb_size['width'], $thumb_size['height'] ) . '</p>';
 		}
 
 		$str .= '</div>';
