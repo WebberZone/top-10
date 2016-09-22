@@ -196,16 +196,16 @@ function tptn_options() {
 		tptn_cache_delete();
 
 		/* Echo a success message */
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options saved successfully. If enabled, the cache has been cleared.', 'top-10' ) . '</p>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Options saved successfully. If enabled, the cache has been cleared.', 'top-10' ) . '</p>';
 
 		if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
-			$str .= '<p>'. __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'top-10' ) . '</p>';
+			$str .= '<p>' . __( 'Left Thumbnails style selected. Post thumbnail location set to Inline before text.', 'top-10' ) . '</p>';
 		}
 		if ( 'text_only' === $tptn_settings['tptn_styles'] ) {
-			$str .= '<p>'. __( 'Text Only style selected. Thumbnails will not be displayed.', 'top-10' ) . '</p>';
+			$str .= '<p>' . __( 'Text Only style selected. Thumbnails will not be displayed.', 'top-10' ) . '</p>';
 		}
 		if ( 'tptn_thumbnail' !== $tptn_settings['thumb_size'] ) {
-			$str .= '<p>'. sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %d x %d.', 'top-10' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
+			$str .= '<p>' . sprintf( __( 'Pre-built thumbnail size selected. Thumbnail set to %1$d x %1$d.', 'top-10' ), $tptn_settings['thumb_width'], $tptn_settings['thumb_height'] ) . '</p>';
 		}
 
 		$str .= '</div>';
@@ -220,21 +220,21 @@ function tptn_options() {
 		update_option( 'ald_tptn_settings', $tptn_settings );
 		tptn_disable_run();
 
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Options set to Default.', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Options set to Default.', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
 	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 popular posts reset', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Top 10 popular posts reset', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
 	/* Truncate daily posts table */
 	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_trunc_count( true );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Top 10 daily popular posts reset', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Top 10 daily popular posts reset', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
@@ -242,7 +242,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Duplicate rows cleaned from tables', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Duplicate rows cleaned from tables', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
@@ -250,7 +250,7 @@ function tptn_options() {
 	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
 		tptn_merge_blogids( true );
 		tptn_merge_blogids( false );
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
@@ -263,11 +263,11 @@ function tptn_options() {
 		if ( isset( $_POST['cron_on'] ) ) {
 			$tptn_settings['cron_on'] = true;
 			tptn_enable_run( $tptn_settings['cron_hour'], $tptn_settings['cron_min'], $tptn_settings['cron_recurrence'] );
-			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance enabled / modified', 'top-10' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance enabled / modified', 'top-10' ) . '</p></div>';
 		} else {
 			$tptn_settings['cron_on'] = false;
 			tptn_disable_run();
-			$str = '<div id="message" class="updated fade"><p>'. __( 'Scheduled maintenance disabled', 'top-10' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance disabled', 'top-10' ) . '</p></div>';
 		}
 		update_option( 'ald_tptn_settings', $tptn_settings );
 		$tptn_settings = tptn_read_options();
@@ -305,7 +305,7 @@ function tptn_options() {
 
 		update_site_option( 'top_ten_mu_tables_sel_blog_ids', array_unique( array_merge( $top_ten_mu_tables_sel_blog_ids, get_site_option( 'top_ten_mu_tables_sel_blog_ids', array() ) ) ) );
 
-		$str = '<div id="message" class="updated fade"><p>'. __( 'Counts from selected sites have been imported.', 'top-10' ) .'</p></div>';
+		$str = '<div id="message" class="updated fade"><p>' . __( 'Counts from selected sites have been imported.', 'top-10' ) . '</p></div>';
 		echo $str;
 	}
 
@@ -330,7 +330,7 @@ function tptn_options() {
 			$sql = substr( $sql, 0, -2 );
 
 			$wpdb->query( $sql );
-			$str = '<div id="message" class="updated fade"><p>'. __( 'Selected tables have been deleted. Note that only imported tables have been deleted.', 'top-10' ) .'</p></div>';
+			$str = '<div id="message" class="updated fade"><p>' . __( 'Selected tables have been deleted. Note that only imported tables have been deleted.', 'top-10' ) . '</p></div>';
 			echo $str;
 		}
 	}
@@ -475,20 +475,20 @@ function tptn_admin_side() {
 function tptn_adminmenu() {
 
 	$plugin_page = add_menu_page( __( 'Top 10 Settings', 'top-10' ), __( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
-	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'Top 10 Settings', 'top-10' ), __( 'Top 10 Settings', 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options' );
-	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
 	$tptn_stats_screen = new Top_Ten_Statistics;
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'View Popular Posts', 'top-10' ), __( 'View Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-'. $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
 }
 add_action( 'admin_menu', 'tptn_adminmenu' );
