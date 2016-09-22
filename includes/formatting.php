@@ -63,7 +63,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
 		if ( substr( $content, $no_of_char, 1 ) === ' ' ) {
 			$content = implode( ' ', $no_of_words );
 		} else {
-			$content = implode( ' ', array_slice( $no_of_words, 0, -1 ) ) .'&hellip;';
+			$content = implode( ' ', array_slice( $no_of_words, 0, -1 ) ) . '&hellip;';
 		}
 	}
 
