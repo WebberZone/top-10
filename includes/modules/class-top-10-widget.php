@@ -89,8 +89,8 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'daily' ) ); ?>">
-			  <option value="overall" <?php checked( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
-			  <option value="daily" <?php checked( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
+			  <option value="overall" <?php selected( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
+			  <option value="daily" <?php selected( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -125,10 +125,10 @@ class Top_Ten_Widget extends WP_Widget {
 		<p>
 			<?php esc_html_e( 'Thumbnail options', 'top-10' ); ?>: <br />
 			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'post_thumb_op' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_thumb_op' ) ); ?>">
-			  <option value="inline" <?php checked( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title','top-10' ); ?></option>
-			  <option value="after" <?php checked( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title','top-10' ); ?></option>
-			  <option value="thumbs_only" <?php checked( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text','top-10' ); ?></option>
-			  <option value="text_only" <?php checked( 'text_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'No thumbnails, only text.','top-10' ); ?></option>
+			  <option value="inline" <?php selected( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title','top-10' ); ?></option>
+			  <option value="after" <?php selected( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title','top-10' ); ?></option>
+			  <option value="thumbs_only" <?php selected( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text','top-10' ); ?></option>
+			  <option value="text_only" <?php selected( 'text_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'No thumbnails, only text.','top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
