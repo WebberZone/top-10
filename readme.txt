@@ -1,5 +1,5 @@
 === Top 10  - Popular posts plugin for WordPress ===
-Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics
+Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
@@ -11,7 +11,7 @@ Track daily and total visits on your blog posts. Display the count as well as po
 
 == Description ==
 
-WordPress doesn't have an in-built support tracking page views or displaying popular posts. [Top 10](https://webberzone.com/plugins/top-10/) is an easy to use, yet, powerful WordPress plugin that will count the number of page views of your posts, pages and any custom post types. You can then display the page view counts as well as display your most popular posts.
+WordPress doesn't have an in-built system to track page views or displaying popular posts. [Top 10](https://webberzone.com/plugins/top-10/) is an easy to use, yet, powerful WordPress plugin that will count the number of page views of your posts, pages and any custom post types. You can then display the page view counts as well as display your most popular posts.
 
 Top 10 will add a widget that you can use to display the popular posts list.
 
@@ -21,7 +21,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 
 = Features =
 
-* **Page counter**: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions.
+* **Page counter**: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions
 * **Popular posts**: Display a list of popular posts either for total counts or for a custom period. You can choose how many posts are to be displayed along with loads of other customisation options
 * **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
 * **Shortcodes**: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
@@ -37,11 +37,10 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 
 = Donations =
 
-I spend a significant amount of my free time maintaining, updating and more importantly supporting this plugin. Those who have sought support in the support forums know that I have done my best to answer your question and solve your problem.
-If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
+I spend a significant amount of my free time maintaining, updating and more importantly supporting this plugin. If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
 
 = Translations =
-Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/) to contribute.
+Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/) to contribute.
 
 
 = Contribute =
@@ -330,7 +329,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.3.0 =
-* Major release. New features and several bug fixes. Upgrade highly recommended. Please do verify your settings after the upgrade.
+= 2.4.0 =
+* Major release. New features and several bug fixes and a new tracker. Please do verify your settings after the upgrade.
 Check the Changelog for more details
 
