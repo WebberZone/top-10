@@ -372,49 +372,6 @@ function tptn_admin_side() {
 			</div>
 		</div>
 	</div>
-	<div id="followdiv" class="postbox">
-		<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
-			<br />
-		</div>
-		<h3 class='hndle'><span><?php esc_html_e( 'Follow me', 'top-10' ); ?></span></h3>
-		<div class="inside">
-			<div id="twitter">
-				<div style="text-align:center"><a href="https://twitter.com/WebberZoneWP" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @WebberZoneWP</a>
-					<script>
-						! function (d, s, id) {
-							var js, fjs = d.getElementsByTagName(s)[0];
-							if (!d.getElementById(id)) {
-								js = d.createElement(s);
-								js.id = id;
-								js.src = "//platform.twitter.com/widgets.js";
-								fjs.parentNode.insertBefore(js, fjs);
-							}
-						}(document, "script", "twitter-wjs");
-					</script>
-				</div>
-			</div>
-			<div id="facebook">
-				<div id="fb-root"></div>
-				<script>
-					//<![CDATA[
-					(function (d, s, id) {
-						var js, fjs = d.getElementsByTagName(s)[0];
-						if (d.getElementById(id)) return;
-						js = d.createElement(s);
-						js.id = id;
-						js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=458036114376706";
-						fjs.parentNode.insertBefore(js, fjs);
-					}(document, 'script', 'facebook-jssdk'));
-					//]]>
-				</script>
-				<div class="fb-page" data-href="https://www.facebook.com/WebberZone" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
-					<div class="fb-xfbml-parse-ignore">
-						<blockquote cite="https://www.facebook.com/WebberZone"><a href="https://www.facebook.com/WebberZone">WebberZone</a></blockquote>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div id="qlinksdiv" class="postbox">
 		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>">
 			<br />
@@ -424,6 +381,11 @@ function tptn_admin_side() {
 			<div id="quick-links">
 				<ul>
 					<li>
+						<a href="https://webberzone.com/" target="_blank">
+							WebberZone
+						</a>
+					</li>
+					<li>
 						<a href="https://webberzone.com/plugins/top-10/" target="_blank">
 							<?php esc_html_e( 'Top 10 plugin page', 'top-10' ); ?>
 						</a>
@@ -431,11 +393,6 @@ function tptn_admin_side() {
 					<li>
 						<a href="https://github.com/ajaydsouza/top-10" target="_blank">
 							<?php esc_html_e( 'Top 10 Github page', 'top-10' ); ?>
-						</a>
-					</li>
-					<li>
-						<a href="https://webberzone.com/plugins/" target="_blank">
-							<?php esc_html_e( 'Other plugins', 'top-10' ); ?>
 						</a>
 					</li>
 					<li>
@@ -458,8 +415,23 @@ function tptn_admin_side() {
 							<?php esc_html_e( "Ajay's blog", 'top-10' ); ?>
 						</a>
 					</li>
+					<li>
+						<a href="https://webberzone.com/plugins/" target="_blank">
+							<?php esc_html_e( 'Other plugins', 'top-10' ); ?>
+						</a>
+					</li>
 				</ul>
 			</div>
+		</div>
+	</div>
+	<div id="followdiv" class="postbox">
+		<div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>">
+			<br />
+		</div>
+		<h3 class='hndle'><span><?php esc_html_e( 'Follow us', 'top-10' ); ?></span></h3>
+		<div class="inside">
+			<a href="https://facebook.com/webberzone/" target="_blank"><img src="<?php echo esc_url( TOP_TEN_PLUGIN_URL . '/admin/images/fb.png' ); ?>" width="100" height="100" /></a>
+			<a href="https://twitter.com/webberzonewp/" target="_blank"><img src="<?php echo esc_url( TOP_TEN_PLUGIN_URL . '/admin/images/twitter.jpg' ); ?>" width="100" height="100" /></a>
 		</div>
 	</div>
 
@@ -611,12 +583,13 @@ function tptn_plugin_actions( $links, $file ) {
 	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
 
 	if ( $file == $plugin ) {
-		$links[] = '<a href="https://webberzone.com/support/">' . __( 'Support', 'top-10' ) . '</a>';
+		$links[] = '<a href="https://wordpress.org/support/plugin/top-10/">' . __( 'Support', 'top-10' ) . '</a>';
 		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'top-10' ) . '</a>';
+		$links[] = '<a href="https://github.com/WebberZone/top-10">' . __( 'Contribute', 'contextual-related-posts' ) . '</a>';
 	}
 	return $links;
 }
-add_filter( 'plugin_action_links', 'tptn_plugin_actions', 10, 2 );
+add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 );
 
 
 /**
