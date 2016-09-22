@@ -200,18 +200,8 @@ function tptn_save_meta_box( $post_id ) {
 		$thumb_meta = empty( $_POST['thumb_meta'] ) ? '' : sanitize_text_field( wp_unslash( $_POST['thumb_meta'] ) ); // Input var okay.
 	}
 
-	$tptn_post_meta = get_post_meta( $post_id, $tptn_settings['thumb_meta'], true );
-
-	if ( $tptn_post_meta && ! empty( $tptn_post_meta ) ) {
-		$gotmeta = true;
-	} else {
-		$gotmeta = false;
-	}
-
-	if ( $gotmeta && ! empty( $thumb_meta ) ) {
+	if ( ! empty( $thumb_meta ) ) {
 		update_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
-	} elseif ( ! $gotmeta && ! empty( $thumb_meta ) ) {
-		add_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
 	} else {
 		delete_post_meta( $post_id, $tptn_settings['thumb_meta'] );
 	}
