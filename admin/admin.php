@@ -104,7 +104,7 @@ function tptn_options() {
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
-		$tptn_settings['exclude_post_ids'] = empty( sanitize_text_field( $_POST['exclude_post_ids'] ) ) ? '' : implode( ',', array_map( 'absint', explode( ',', sanitize_text_field( wp_unslash( $_POST['exclude_post_ids'] ) ) ) ) );
+		$tptn_settings['exclude_post_ids'] = empty( $_POST['exclude_post_ids'] ) ? '' : implode( ',', array_map( 'absint', explode( ',', sanitize_text_field( wp_unslash( $_POST['exclude_post_ids'] ) ) ) ) );
 
 		/**** Exclude categories ****/
 		$exclude_categories_slugs = array_map( 'trim', explode( ',', sanitize_text_field( $_POST['exclude_cat_slugs'] ) ) );

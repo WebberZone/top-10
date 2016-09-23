@@ -165,6 +165,10 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.4.1 =
+* Bug fixes:
+	* Fixes fatal error caused on installs which have versions below PHP5.6
+
 = 2.4.0 =
 
 * Features:
