@@ -222,8 +222,8 @@ function tptn_post_title( $args, $result ) {
 function tptn_author( $args, $result ) {
 
 	$author_info = get_userdata( $result->post_author );
-	$author_link = get_author_posts_url( $author_info->ID );
-	$author_name = ucwords( trim( stripslashes( $author_info->display_name ) ) );
+	$author_link = ( false === $author_info ) ? '' : get_author_posts_url( $author_info->ID );
+	$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ) ) );
 
 	/**
 	 * Filter the author name.
@@ -235,7 +235,11 @@ function tptn_author( $args, $result ) {
 	 */
 	$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
 
-	$tptn_author = '<span class="tptn_author"> ' . __( ' by ', 'top-10' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+	if ( ! empty( $author_name ) ) {
+		$tptn_author = '<span class="crp_author"> ' . __( ' by ', 'contextual-related-posts' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+	} else {
+		$tptn_author = '';
+	}
 
 	/**
 	 * Filter the text with the author details.
