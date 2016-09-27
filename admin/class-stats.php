@@ -553,6 +553,12 @@ class Top_Ten_Statistics {
 	}
 }
 
-add_action( 'plugins_loaded', function () {
+/**
+ * Function to initialise stats page.
+ *
+ * @since 2.4.2
+ */
+function tptn_stats_page() {
 	Top_Ten_Statistics::get_instance();
-} );
+}
+add_action( 'plugins_loaded', 'tptn_stats_page' );
