@@ -170,6 +170,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* The plugin will no longer generate any notices if post author is missing
 	* Fixed T_FUNCTION error in admin area on blogs running on PHP versions before 5.3
+	* Fixed bug where any special characters in the post title would break the output
 
 = 2.4.1 =
 

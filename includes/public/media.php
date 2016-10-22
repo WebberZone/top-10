@@ -73,7 +73,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		$result = $args['postid'];
 	}
 
-	$post_title = $result->post_title;
+	$post_title = esc_attr( $result->post_title );
 
 	/**
 	 * Filters the title and alt message for thumbnails.
