@@ -1,0 +1,310 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Top 10\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-03 10:39+0330\n"
+"PO-Revision-Date: \n"
+"Language-Team: Ajay DSouza <me@ajaydsouza.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_c;__ngettext\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: fa_IR\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: ../admin/wick\n"
+
+#: admin/admin-columns.php:30
+msgid "Total Views"
+msgstr "مجموع بازدید"
+
+#: admin/admin-columns.php:33
+msgid "Today's Views"
+msgstr "بازدید امروز"
+
+#: admin/admin-columns.php:36
+msgid "Views"
+msgstr "بازدیدها"
+
+#: admin/admin-dashboard.php:64
+msgid "View all daily popular posts"
+msgstr "نمایش همه پست‌های محبوب امروز"
+
+#: admin/admin-dashboard.php:66
+msgid "View all popular posts"
+msgstr "نمایش همه پست‌های محبوب"
+
+#: admin/admin-dashboard.php:72
+#, php-format
+msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
+msgstr "مطالب محبوب توسط <a href=\"%s\" target=\"_blank\"> افزونه Top 10 </a>"
+
+#: admin/admin-dashboard.php:122 admin/class-stats.php:539
+msgid "Popular Posts"
+msgstr "مطالب محبوب"
+
+#: admin/admin-dashboard.php:127 admin/admin.php:461
+msgid "Daily Popular Posts"
+msgstr "مطالب محبوب امروز"
+
+#: admin/admin-metabox.php:137
+#, php-format
+msgid ""
+"You have %1$s installed. If you are trying to modify the thumbnail, then you "
+"will need to make the same change in the %1$s meta box on this page."
+msgstr ""
+"شما %1$s نصب کرده‌اید. اگر سعی دارید تصاویر بندانگشتی را ویرایش کنید, "
+"بنابراین لازم است همان تغییر را در %1$s متاباکس را در آن صفحه انجام دهید."
+
+#: admin/admin.php:199
+msgid "Options saved successfully. If enabled, the cache has been cleared."
+msgstr "تنظیمات با موفقیت ذخیره شد. اگر فعال شود، کَش پاک خواهد شد."
+
+#: admin/admin.php:202
+msgid ""
+"Left Thumbnails style selected. Post thumbnail location set to Inline before "
+"text."
+msgstr ""
+"استایل تصاویر بندانگشتی سمت چپ انتخاب شد. مکان تصویر بندانگشتی مطلب به صورت "
+"خطی پیش از متن تنظیم شد."
+
+#: admin/admin.php:205
+msgid "Text Only style selected. Thumbnails will not be displayed."
+msgstr "استایل فقط متن انتخاب شد. تصاویر بندانگشتی نمایش داده نخواهد شد."
+
+#: admin/admin.php:208
+#, php-format
+msgid "Pre-built thumbnail size selected. Thumbnail set to %1$d x %1$d."
+msgstr ""
+"سایز تصویر بندانگشتی ازپیش‌ساخته‌شده انتخاب شد. اندازه تصویر بندانگشتی %1$d x "
+"%1$d است."
+
+#: admin/admin.php:223
+msgid "Options set to Default."
+msgstr "تنظیمات پیش‌فرض فعال شد."
+
+#: admin/admin.php:230
+msgid "Top 10 popular posts reset"
+msgstr "ریست کردن مطالب محبوب Top 10"
+
+#: admin/admin.php:237
+msgid "Top 10 daily popular posts reset"
+msgstr "ریست کردن مطالب محبوب روزانه Top 10"
+
+#: admin/admin.php:245
+msgid "Duplicate rows cleaned from tables"
+msgstr "ردیف‌های تکراری از جدول‌ها حذف شد."
+
+#: admin/admin.php:253
+msgid "Post counts across blog IDs 0 and 1 have been merged"
+msgstr "شمارش مطلب در تمام آی‌دی‌های ۰ و ۱ ادغام شده‌اند."
+
+#: admin/admin.php:266
+msgid "Scheduled maintenance enabled / modified"
+msgstr "نگهداری برنامه فعال شد/ اصلاح شد."
+
+#: admin/admin.php:270
+msgid "Scheduled maintenance disabled"
+msgstr "نگهداری برنامه غیرفعال شد."
+
+#: admin/admin.php:308
+msgid "Counts from selected sites have been imported."
+msgstr "شمارش از سایت‌های منتخب وارد شد."
+
+#: admin/admin.php:333
+msgid ""
+"Selected tables have been deleted. Note that only imported tables have been "
+"deleted."
+msgstr ""
+"جدول‌های منتخب حذف شده‌اند. توجه داشته باشید که فقط جدول‌های واردشده حذف شده‌اند."
+
+#: admin/admin.php:449 admin/admin.php:452
+msgid "Top 10 Settings"
+msgstr "تنظیمات Top 10"
+
+#: admin/admin.php:449
+msgid "Top 10"
+msgstr "تاپ۱۰"
+
+#: admin/admin.php:457
+msgid "View Popular Posts"
+msgstr "نمایش مطالب محبوب"
+
+#: admin/admin.php:564
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: admin/admin.php:586
+msgid "Support"
+msgstr "پشتیبانی"
+
+#: admin/admin.php:587
+msgid "Donate"
+msgstr "مشارکت مالی"
+
+#: admin/admin.php:588
+msgid "Contribute"
+msgstr "همکاری"
+
+#: admin/cache.php:19
+msgid "Top 10 cache has been cleared"
+msgstr "کش Top 10 پاک شده است."
+
+#: admin/class-stats.php:35
+msgid "popular_post"
+msgstr "پست_محبوب"
+
+#: admin/class-stats.php:36
+msgid "popular_posts"
+msgstr "پست_های_محبوب"
+
+#: admin/class-stats.php:243
+msgid "View"
+msgstr "نمایش"
+
+#: admin/class-stats.php:244
+msgid "Edit"
+msgstr "ویرایش"
+
+#: admin/class-stats.php:245
+msgid "Delete"
+msgstr "حذف"
+
+#: admin/class-stats.php:267
+msgid "Y/m/d g:i:s a"
+msgstr "Y/m/d g:i:s a"
+
+#: admin/class-stats.php:274
+#, php-format
+msgid "%s ago"
+msgstr "%s پیش"
+
+#: admin/class-stats.php:276
+msgid "Y/m/d"
+msgstr "Y/m/d"
+
+#: admin/class-stats.php:309
+msgid "Title"
+msgstr "عنوان"
+
+#: admin/class-stats.php:310
+msgid "Total visits"
+msgstr "مجموع نمایش‌ها"
+
+#: admin/class-stats.php:311
+msgid "Daily visits"
+msgstr "نمایش‌های روزانه"
+
+#: admin/class-stats.php:312
+msgid "Post type"
+msgstr "نوع مطلب"
+
+#: admin/class-stats.php:313
+msgid "Author"
+msgstr "نویسنده"
+
+#: admin/class-stats.php:314
+msgid "Date"
+msgstr "تاریخ"
+
+#: admin/class-stats.php:348
+msgid "Delete Count"
+msgstr "حذف شمارش"
+
+#: admin/class-stats.php:441
+msgid "Filter"
+msgstr "فیلتر"
+
+#: admin/class-stats.php:514
+msgid "Search Table"
+msgstr "فیلتر"
+
+#: includes/cron.php:74
+msgid "Once Weekly"
+msgstr "یک‌بار در هفته"
+
+#: includes/cron.php:78
+msgid "Once Fortnightly"
+msgstr "یک‌بار در دوهفته"
+
+#: includes/cron.php:82
+msgid "Once Monthly"
+msgstr "یک‌بار ماهانه"
+
+#: includes/cron.php:86
+msgid "Once quarterly"
+msgstr "سه‌ماه یک بار"
+
+#: includes/modules/class-top-10-widget.php:30
+msgid "Popular Posts [Top 10]"
+msgstr "مطالب محبوب [Top 10]"
+
+#: includes/modules/class-top-10-widget.php:32
+msgid "Display popular posts"
+msgstr "نمایش مطالب محبوب"
+
+#: includes/public/display-posts.php:92
+msgid ""
+"posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the "
+"posts only."
+msgstr ""
+"شناسه posts_only از رده خارج شده است . فقط از get_tptn_pop_posts() برای "
+"دریافت پست‌ها استفاده کنید."
+
+#: includes/public/display-posts.php:229
+#, php-format
+msgid ""
+"Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
+msgstr ""
+"مطالب محبوب توسط <a href=\"%1$s\" rel=\"nofollow\" %2$s>افزونه تاپ۱۰</a>"
+
+#: includes/public/media.php:60
+msgid "thumb_timthumb argument has been deprecated"
+msgstr "شناسه thumb_timthumb از رده خارج شده است"
+
+#: includes/public/media.php:64
+msgid "thumb_timthumb_q argument has been deprecated"
+msgstr "شناسه thumb_timthumb_q از رده خارج شده است"
+
+#: includes/public/media.php:68
+msgid "filter argument has been deprecated"
+msgstr "شناسه filter از رده خارج شده است"
+
+#: includes/public/output-generator.php:238
+msgid " by "
+msgstr "به‌وسیله"
+
+#: includes/tracker.php:248
+msgid "Query variable based"
+msgstr "براساس مقدار کوئری"
+
+#: includes/tracker.php:249
+msgid "Uses query variables to record visits"
+msgstr "برای ذخیره نمایش‌ها از مقدار کوئری استفاده می‌کند"
+
+#: includes/tracker.php:253
+msgid "Ajaxurl based"
+msgstr "براساس نشانی ای‌جکس"
+
+#: includes/tracker.php:254
+msgid ""
+"Uses admin-ajax.php which is inbuilt within WordPress to process the tracker"
+msgstr ""
+"از admin-ajax.php که توسط وردپرس نوشته شده است برای کنترل پیگیری‌کننده "
+"استفاده می‌کند"
+
+#: top-10.php:94
+msgid "<h3>Popular Posts</h3>"
+msgstr "<h3>مطالب محبوب</h3>"
+
+#: top-10.php:95
+msgid "<h3>Daily Popular</h3>"
+msgstr "<h3>محبوب‌های روزانه</h3>"
+
+#: top-10.php:96
+msgid "No top posts yet"
+msgstr "هنوز مطلب محبوبی وجود ندارد"
