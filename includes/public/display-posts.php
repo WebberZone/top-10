@@ -288,7 +288,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	global $wpdb, $tptn_settings;
 
 	// Initialise some variables
-	$fields = '';
+	$fields = array();
 	$where = '';
 	$join = '';
 	$groupby = '';
