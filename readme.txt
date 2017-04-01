@@ -168,7 +168,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 = 2.4.3 =
 
 * Bug fixes:
-	* Fatal error when running PHP 7.1.0
+	* Fatal error when running PHP 7.1.x
 
 = 2.4.2 =
 
