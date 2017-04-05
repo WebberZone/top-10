@@ -108,7 +108,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$orderby = ' total_count DESC ';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) { // Input var okay.
-			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) );
+			$orderby = $wpdb->prepare( ' %s ', sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) );
 
 			if ( ! empty( $_REQUEST['order'] ) ) {
 				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
