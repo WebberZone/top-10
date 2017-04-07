@@ -2,32 +2,34 @@ language: php
 
 sudo: false
 
-php:
-- 5.3
-- 5.4
-- 5.5
-- 5.6
-- 7.0
-- hhvm
+language: php
 
-env:
-- WP_VERSION=latest WP_MULTISITE=0
-- WP_VERSION=4.6 WP_MULTISITE=0
-- WP_VERSION=4.5 WP_MULTISITE=0
-- WP_VERSION=4.4 WP_MULTISITE=0
-- WP_VERSION=4.3 WP_MULTISITE=0
-- WP_VERSION=4.2 WP_MULTISITE=0
-- WP_VERSION=4.1 WP_MULTISITE=0
-- WP_VERSION=4.0 WP_MULTISITE=0
-
+sudo: false
 
 matrix:
   include:
-    - php: 5.3
+    - php: '7.0'
+      env: WP_VERSION=latest WP_MULTISITE=0
+    - php: '7.1'
       env: WP_VERSION=latest WP_MULTISITE=1
-  exclude:
-    - php: hhvm
-      env: WP_VERSION=4.0 WP_MULTISITE=0
+    - php: '5.6'
+      env: WP_VERSION=latest WP_MULTISITE=0
+    - php: '5.6'
+      env: WP_VERSION=latest WP_MULTISITE=1
+    - php: '5.5'
+      env: WP_VERSION=latest
+    - php: 'hhvm'
+      env: WP_VERSION=latest
+    - php: '5.6'
+      env: WP_VERSION=4.0
+    - php: '5.5'
+      env: WP_VERSION=4.0
+    - php: '5.4'
+      env: WP_VERSION=4.0
+    - php: 'hhvm'
+      env: WP_VERSION=4.0 WP_MULTISITE=1
+    - php: '5.3'
+      env: WP_VERSION=4.0
 
 before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
