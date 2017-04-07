@@ -132,7 +132,7 @@ function tptn_default_options() {
 		'count_disp_form_zero'     => 'No visits yet',	// What to display where there are no hits?
 		'dynamic_post_count'       => false,		// Use JavaScript for displaying the post count.
 
-		'tracker_type'             => 'ajaxurl',	// Tracker type.
+		'tracker_type'             => 'query_based',	// Tracker type.
 		'track_authors'            => false,		// Track Authors visits.
 		'track_admins'             => true,			// Track Admin visits.
 		'track_editors'            => true,			// Track Admin visits.
