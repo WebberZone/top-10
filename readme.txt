@@ -167,8 +167,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.4.4 =
 
+* Enhancements:
+	* Changed tracker type to Query based for better compatibility
+
 * Bug fixes:
 	* Security fix: Potential SQL injection vulnerability. Reported by [DefenseCode ThunderScan](http://www.defensecode.com/)
+	* Revisions no longer displayed in the "View Popular Posts" screen in admin area
 
 = 2.4.3 =
 
