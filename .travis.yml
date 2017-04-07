@@ -2,31 +2,32 @@ language: php
 
 sudo: false
 
+php:
+- 5.3
+- 5.4
+- 5.5
+- 5.6
+- 7.0
+- hhvm
+
+env:
+- WP_VERSION=latest WP_MULTISITE=0
+- WP_VERSION=4.6 WP_MULTISITE=0
+- WP_VERSION=4.5 WP_MULTISITE=0
+- WP_VERSION=4.4 WP_MULTISITE=0
+- WP_VERSION=4.3 WP_MULTISITE=0
+- WP_VERSION=4.2 WP_MULTISITE=0
+- WP_VERSION=4.1 WP_MULTISITE=0
+- WP_VERSION=4.0 WP_MULTISITE=0
+
+
 matrix:
-  fast_finish: true
   include:
-    - php: 7.0
-      env: WP_VERSION=4.7 WP_MULTISITE=1 PHPLINT=1 PHPCS=1 COVERAGE=1
-    - php: 5.2
-      env: WP_VERSION=4.6 WP_MULTISITE=1 PHPLINT=1
     - php: 5.3
-      env: WP_VERSION=4.5
-    - php: 5.6
-      env: WP_VERSION=4.4
-    # WP >= 4.7 is needed for PHP 7.1
-    - php: 7.1
-      env: WP_VERSION=4.7
+      env: WP_VERSION=latest WP_MULTISITE=1
+  exclude:
     - php: hhvm
-      env: WP_VERSION=4.7
-    - php: 5.2
-      env: WP_VERSION=master
-    - php: nightly
-      env: WP_VERSION=master
-  allow_failures:
-    # Allow failures for unstable builds.
-    - php: nightly
-    - php: hhvm
-    - env: WP_VERSION=master
+      env: WP_VERSION=4.0 WP_MULTISITE=0
 
 before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
@@ -38,7 +39,18 @@ before_script:
       composer global require "phpunit/phpunit=4.8.*"
     fi
 
-script: phpunit
+script:
+- if [[ $TRAVIS_PHP_VERSION != 'hhvm' && ( $TRAVIS_PHP_VERSION != '5.5'|| $WP_VERSION != 'latest'
+  || $WP_MULTISITE != '0' ) ]]; then phpenv config-rm xdebug.ini; fi
+- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
+  ]]; then phpunit --coverage-clover=coverage.clover; else phpunit; fi
+
+after_script:
+- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
+  ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
+  ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover;
+  fi
 
 addons:
     code_climate:
