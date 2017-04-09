@@ -12,7 +12,7 @@
  * @return void
  */
 function tptn_enqueue_scripts() {
-	global $post, $tptn_settings;
+	global $post, $tptn_settings, $ajax_tptn_tracker;
 
 	if ( is_singular() && 'draft' !== $post->post_status && ! is_customize_preview() ) {
 
