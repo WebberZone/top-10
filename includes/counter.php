@@ -17,8 +17,10 @@ function tptn_pc_content( $content ) {
 
 	$exclude_on_post_ids = explode( ',', $tptn_settings['exclude_on_post_ids'] );
 
-	if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
-		return $content;	// Exit without adding related posts.
+	if ( isset( $post ) ) {
+		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
+			return $content;	// Exit without adding related posts.
+		}
 	}
 
 	if ( ( is_single() ) && ( $tptn_settings['add_to_content'] ) ) {
