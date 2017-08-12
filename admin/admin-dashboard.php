@@ -20,13 +20,13 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  *  Create the Dashboard Widget and content of the Popular pages
  *
- * @since	1.3
+ * @since   1.3
  *
- * @param	bool $daily  Switch for Daily or Overall popular posts.
- * @param	int  $page   Which page of the lists are we on.
- * @param	int  $limit  Maximum number of posts per page.
- * @param	bool $widget Is this a WordPress widget.
- * @return	Formatted list of popular posts
+ * @param   bool $daily  Switch for Daily or Overall popular posts.
+ * @param   int  $page   Which page of the lists are we on.
+ * @param   int  $limit  Maximum number of posts per page.
+ * @param   bool $widget Is this a WordPress widget.
+ * @return  Formatted list of popular posts
  */
 function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
 	global $wpdb, $tptn_settings;
@@ -35,16 +35,19 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	if ( $daily ) {
 		$table_name .= '_daily'; // If we're viewing daily posts, set this to true.
 	}
-	if ( ! $limit ) { $limit = $tptn_settings['limit']; }
+	if ( ! $limit ) {
+		$limit = $tptn_settings['limit']; }
 
-	$results = get_tptn_pop_posts( array(
-		'posts_only'   => 1,
-		'strict_limit' => 1,
-		'is_widget'    => 1,
-		'daily'        => $daily,
-		'limit'        => $limit,
-		'post_types'   => 'all',
-	) );
+	$results = get_tptn_pop_posts(
+		array(
+			'posts_only'   => 1,
+			'strict_limit' => 1,
+			'is_widget'    => 1,
+			'daily'        => $daily,
+			'limit'        => $limit,
+			'post_types'   => 'all',
+		)
+	);
 
 	$output = '<div id="tptn_popular_posts' . ( $daily ? '_daily' : '' ) . '">';
 
@@ -76,7 +79,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	/**
 	 *  Filters the dashboard widget output
 	 *
-	 * @since	1.3
+	 * @since   1.3
 	 *
 	 * @param string $output Text output
 	 * @param bool $daily  Switch for Daily or Overall popular posts.
@@ -91,7 +94,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 /**
  * Widget for Popular Posts.
  *
- * @since	1.1
+ * @since   1.1
  */
 function tptn_pop_dashboard() {
 	echo tptn_pop_display( false, 0, 10, true ); // WPCS: XSS OK.
@@ -101,7 +104,7 @@ function tptn_pop_dashboard() {
 /**
  * Widget for Daily Popular Posts.
  *
- * @since	1.2
+ * @since   1.2
  */
 function tptn_pop_daily_dashboard() {
 	echo tptn_pop_display( true, 0, 10, true ); // WPCS: XSS OK.
@@ -111,7 +114,7 @@ function tptn_pop_daily_dashboard() {
 /**
  * Function to add the widgets to the Dashboard.
  *
- * @since	1.1
+ * @since   1.1
  */
 function tptn_pop_dashboard_setup() {
 	global $tptn_settings;

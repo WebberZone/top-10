@@ -9,7 +9,7 @@
 /**
  * Function to add CSS to header.
  *
- * @since	1.9
+ * @since   1.9
  */
 function tptn_header() {
 	global $tptn_settings;

@@ -31,12 +31,12 @@ if ( ! defined( 'WPINC' ) ) {
 			do_action( 'tptn_admin_nav_bar_before' )
 		?>
 
-	  	<li><a href="#genopdiv"><?php esc_html_e( 'General options', 'top-10' ); ?></a> | </li>
-	  	<li><a href="#counteropdiv"><?php esc_html_e( 'Counter and tracker options', 'top-10' ); ?></a> | </li>
-	  	<li><a href="#pplopdiv"><?php esc_html_e( 'Popular post list options', 'top-10' ); ?></a> | </li>
-	  	<li><a href="#thumbopdiv"><?php esc_html_e( 'Thumbnail options', 'top-10' ); ?></a> | </li>
-	  	<li><a href="#customcssdiv"><?php esc_html_e( 'Styles', 'top-10' ); ?></a> | </li>
-	  	<li><a href="#tptn_maintenance_op"><?php esc_html_e( 'Maintenance', 'top-10' ); ?></a></li>
+		  <li><a href="#genopdiv"><?php esc_html_e( 'General options', 'top-10' ); ?></a> | </li>
+		  <li><a href="#counteropdiv"><?php esc_html_e( 'Counter and tracker options', 'top-10' ); ?></a> | </li>
+		  <li><a href="#pplopdiv"><?php esc_html_e( 'Popular post list options', 'top-10' ); ?></a> | </li>
+		  <li><a href="#thumbopdiv"><?php esc_html_e( 'Thumbnail options', 'top-10' ); ?></a> | </li>
+		  <li><a href="#customcssdiv"><?php esc_html_e( 'Styles', 'top-10' ); ?></a> | </li>
+		  <li><a href="#tptn_maintenance_op"><?php esc_html_e( 'Maintenance', 'top-10' ); ?></a></li>
 
 		<?php
 			/**
@@ -52,7 +52,7 @@ if ( ! defined( 'WPINC' ) ) {
 	<div id="post-body" class="metabox-holder columns-2">
 	<div id="post-body-content">
 	  <form method="post" id="tptn_options" name="tptn_options" onsubmit="return checkForm()">
-	    <div id="genopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+		<div id="genopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
 			<h3 class='hndle'><span><?php esc_html_e( 'General options', 'top-10' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
@@ -63,7 +63,7 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_general_options_before', $tptn_settings );
 					?>
@@ -111,14 +111,14 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<th scope="row"><label for="uninstall_clean_options"><?php esc_html_e( 'Delete options on uninstall', 'top-10' ); ?></label></th>
 						<td>
-					    	<input type="checkbox" name="uninstall_clean_options" id="uninstall_clean_options" <?php checked( true, $tptn_settings['uninstall_clean_options'] ); ?> />
+							<input type="checkbox" name="uninstall_clean_options" id="uninstall_clean_options" <?php checked( true, $tptn_settings['uninstall_clean_options'] ); ?> />
 							<p class="description"><?php esc_html_e( 'If this is checked, all settings related to Top 10 are removed from the database if you choose to uninstall/delete the plugin.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="uninstall_clean_tables"><?php esc_html_e( 'Delete counter data on uninstall', 'top-10' ); ?></label></th>
 						<td>
-					    	<input type="checkbox" name="uninstall_clean_tables" id="uninstall_clean_tables" <?php checked( true, $tptn_settings['uninstall_clean_tables'] ); ?> />
+							<input type="checkbox" name="uninstall_clean_tables" id="uninstall_clean_tables" <?php checked( true, $tptn_settings['uninstall_clean_tables'] ); ?> />
 							<p class="description"><?php esc_html_e( 'If this is checked, the tables containing the counter statistics are removed from the database if you choose to uninstall/delete the plugin.', 'top-10' ); ?></p>
 							<p class="description"><?php esc_html_e( "Keep this unchecked if you choose to reinstall the plugin and don't want to lose your counter data.", 'top-10' ); ?></p>
 						</td>
@@ -140,7 +140,7 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<th scope="row"><label for="show_credit"><?php esc_html_e( 'Link to Top 10 plugin page', 'top-10' ); ?></label></th>
 						<td>
-					    	<input type="checkbox" name="show_credit" id="show_credit" <?php checked( true, $tptn_settings['show_credit'] ); ?> />
+							<input type="checkbox" name="show_credit" id="show_credit" <?php checked( true, $tptn_settings['show_credit'] ); ?> />
 							<p class="description"><?php esc_html_e( 'A link to the plugin is added as an extra list item to the list of popular posts', 'top-10' ); ?></p>
 						</td>
 					</tr>
@@ -156,16 +156,16 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_general_options_after', $tptn_settings );
 					?>
 
 				</table>
 			</div>
-	    </div>
-	    <div id="counteropdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-	    	<h3 class='hndle'><span><?php esc_html_e( 'Counter and tracker options', 'top-10' ); ?></span></h3>
+		</div>
+		<div id="counteropdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+			<h3 class='hndle'><span><?php esc_html_e( 'Counter and tracker options', 'top-10' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
 
@@ -175,7 +175,7 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_counter_options_before', $tptn_settings );
 					?>
@@ -192,7 +192,7 @@ if ( ! defined( 'WPINC' ) ) {
 							<label><input type="checkbox" name="add_to_archives" id="add_to_archives" <?php checked( true, $tptn_settings['add_to_archives'] ); ?> /> <?php esc_html_e( 'Other archives', 'top-10' ); ?></label></label>
 							<p class="description">
 								<?php printf( esc_html__( 'If you choose to disable this, please add %s to your template file where you want it displayed', 'top-10' ), "<code>&lt;?php if ( function_exists ( 'echo_tptn_post_count' ) ) echo_tptn_post_count(); ?&gt;</code>" ); ?>
-		  					</p>
+							  </p>
 						</td>
 					</tr>
 					<tr>
@@ -200,12 +200,15 @@ if ( ! defined( 'WPINC' ) ) {
 						<td>
 							<textarea name="count_disp_form" id="count_disp_form" cols="50" rows="3" style="width:100%"><?php echo esc_textarea( $tptn_settings['count_disp_form'] ); ?></textarea>
 							<p class="description">
-								<?php printf( esc_html__( 'Use %1$s to display the total count, %2$s for daily count and %3$s for overall counts across all posts. Default display is %4$s ', 'top-10' ),
+								<?php
+								printf(
+									esc_html__( 'Use %1$s to display the total count, %2$s for daily count and %3$s for overall counts across all posts. Default display is %4$s ', 'top-10' ),
 									'<code>%totalcount%</code>',
 									'<code>%dailycount%</code>',
 									'<code>%overallcount%</code>',
 									'<code>(Visited %totalcount% times, %dailycount% visits today)</code>'
-								); ?>
+								);
+								?>
 							</p>
 						</td>
 					</tr>
@@ -213,7 +216,7 @@ if ( ! defined( 'WPINC' ) ) {
 						<th scope="row"><label for="title"><?php esc_html_e( 'What do display when there are no visits?', 'top-10' ); ?></label></th>
 						<td>
 							<textarea name="count_disp_form_zero" id="count_disp_form_zero" cols="50" rows="3" style="width:100%"><?php echo esc_textarea( $tptn_settings['count_disp_form_zero'] ); ?></textarea>
-					    	<p class="description"><?php esc_html_e( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ); ?>
+							<p class="description"><?php esc_html_e( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ); ?>
 						</td>
 					</tr>
 					<tr>
@@ -233,10 +236,10 @@ if ( ! defined( 'WPINC' ) ) {
 							?>
 
 							<label>
-								<input type="radio" name="tracker_type" value="<?php echo esc_attr( $tracker['id'] ); ?>" id="<?php echo esc_attr( $tracker['id'] ); ?>" <?php checked( $tracker['id'], $tptn_settings['tracker_type'], true ) ?> />
-								<?php echo esc_html( $tracker['name'] ) ?>
+								<input type="radio" name="tracker_type" value="<?php echo esc_attr( $tracker['id'] ); ?>" id="<?php echo esc_attr( $tracker['id'] ); ?>" <?php checked( $tracker['id'], $tptn_settings['tracker_type'], true ); ?> />
+								<?php echo esc_html( $tracker['name'] ); ?>
 							</label>
-							- <em><?php echo esc_html( $tracker['description'] ) ?></em>
+							- <em><?php echo esc_html( $tracker['description'] ); ?></em>
 							<br />
 
 							<?php endforeach; ?>
@@ -264,14 +267,14 @@ if ( ! defined( 'WPINC' ) ) {
 					<tr>
 						<th scope="row"><label for="pv_in_admin"><?php esc_html_e( 'Display page views on Posts and Pages in Admin', 'top-10' ); ?></label></th>
 						<td>
-					    	<input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php checked( true, $tptn_settings['pv_in_admin'] ); ?> />
+							<input type="checkbox" name="pv_in_admin" id="pv_in_admin" <?php checked( true, $tptn_settings['pv_in_admin'] ); ?> />
 							<p class="description"><?php esc_html_e( "Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages", 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="show_count_non_admins"><?php esc_html_e( 'Show number of views to non-admins', 'top-10' ); ?></label></th>
 						<td>
-					    	<input type="checkbox" name="show_count_non_admins" id="show_count_non_admins" <?php checked( true, $tptn_settings['show_count_non_admins'] ); ?> />
+							<input type="checkbox" name="show_count_non_admins" id="show_count_non_admins" <?php checked( true, $tptn_settings['show_count_non_admins'] ); ?> />
 							<p class="description"><?php esc_html_e( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts", 'top-10' ); ?></p>
 						</td>
 					</tr>
@@ -287,16 +290,16 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_counter_options_after', $tptn_settings );
 					?>
 
 				</table>
 			</div>
-	    </div>
-	    <div id="pplopdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-	    	<h3 class='hndle'><span><?php esc_html_e( 'Popular post list options', 'top-10' ); ?></span></h3>
+		</div>
+		<div id="pplopdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+			<h3 class='hndle'><span><?php esc_html_e( 'Popular post list options', 'top-10' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
 
@@ -306,7 +309,7 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_list_options_before', $tptn_settings );
 					?>
@@ -359,7 +362,8 @@ if ( ! defined( 'WPINC' ) ) {
 							</p>
 							<p class="description">
 								<?php
-									printf( esc_html__( 'These might differ from the IDs visible in the Categories page which use the %1$s. Top 10 uses the %2$s which is unique to this taxonomy.', 'top-10' ), '<code>term_id</code>', '<code>term_taxonomy_id</code>' ); ?>
+									printf( esc_html__( 'These might differ from the IDs visible in the Categories page which use the %1$s. Top 10 uses the %2$s which is unique to this taxonomy.', 'top-10' ), '<code>term_id</code>', '<code>term_taxonomy_id</code>' );
+									?>
 								?>
 							</p>
 						</td>
@@ -485,16 +489,16 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_list_options_after', $tptn_settings );
 					?>
 
 				</table>
 			</div>
-	    </div>
-	    <div id="thumbopdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-	    	<h3 class='hndle'><span><?php esc_html_e( 'Thumbnail options', 'top-10' ); ?></span></h3>
+		</div>
+		<div id="thumbopdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+			<h3 class='hndle'><span><?php esc_html_e( 'Thumbnail options', 'top-10' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
 
@@ -504,7 +508,7 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_thumbnail_options_before', $tptn_settings );
 					?>
@@ -566,11 +570,13 @@ if ( ! defined( 'WPINC' ) ) {
 								<p class="description">
 									<?php esc_html_e( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image.', 'top-10' ); ?><br />
 									<?php esc_html_e( 'If you change the width and/or height below, existing images will not be automatically resized.', 'top-10' ); ?>
-									<?php printf(
+									<?php
+									printf(
 										esc_html__( 'I recommend using %1$s or %2$s to regenerate all image sizes.', 'top-10' ),
 										'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">OTF Regenerate Thumbnails</a>',
 										'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>'
-									); ?>
+									);
+									?>
 								</p>
 								<p class="description">
 									<?php esc_html_e( "If you're using the Left Thumbs style below then the thumbnail width and height that you set here will supersede the widget. Alternatively, choose <strong>Style attributes</strong> under <strong>Image size attributes</strong> option below", 'top-10' ); ?>
@@ -600,14 +606,18 @@ if ( ! defined( 'WPINC' ) ) {
 						<td>
 							<label>
 								<input type="radio" name="thumb_html" value="css" id="thumb_html_0" <?php checked( 'css', $tptn_settings['thumb_html'], true ); ?> />
-								<?php esc_html_e( 'Style attributes. e.g.', 'top-10' );
-								echo ' <code>style="max-width:' . esc_attr( $tptn_settings['thumb_width'] ) . 'px;max-height:' . esc_attr( $tptn_settings['thumb_height'] ) . 'px;"</code>'; ?>
+								<?php
+								esc_html_e( 'Style attributes. e.g.', 'top-10' );
+								echo ' <code>style="max-width:' . esc_attr( $tptn_settings['thumb_width'] ) . 'px;max-height:' . esc_attr( $tptn_settings['thumb_height'] ) . 'px;"</code>';
+								?>
 							</label>
 							<br />
 							<label>
 								<input type="radio" name="thumb_html" value="html" id="thumb_html_1" <?php checked( 'html', $tptn_settings['thumb_html'], true ); ?> />
-								<?php esc_html_e( 'HTML width and height attributes. e.g.', 'top-10' );
-								echo ' <code>width="' . esc_attr( $tptn_settings['thumb_width'] ) . '" height="' . esc_attr( $tptn_settings['thumb_height'] ) . '"</code>' ?>
+								<?php
+								esc_html_e( 'HTML width and height attributes. e.g.', 'top-10' );
+								echo ' <code>width="' . esc_attr( $tptn_settings['thumb_width'] ) . '" height="' . esc_attr( $tptn_settings['thumb_height'] ) . '"</code>'
+								?>
 							</label>
 							<br />
 							<label>
@@ -619,28 +629,31 @@ if ( ! defined( 'WPINC' ) ) {
 					</tr>
 					<tr><th scope="row"><label for="thumb_meta"><?php esc_html_e( 'Post thumbnail meta field name:', 'top-10' ); ?></label></th>
 						<td>
-					  		<input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_meta'] ) ); ?>">
-					  		<p class="description"><?php esc_html_e( 'The value of this field should contain the image source and is set in the <em>Add New Post</em> screen', 'top-10' ); ?></p>
-					  	</td>
+							  <input type="textbox" name="thumb_meta" id="thumb_meta" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_meta'] ) ); ?>">
+							  <p class="description"><?php esc_html_e( 'The value of this field should contain the image source and is set in the <em>Add New Post</em> screen', 'top-10' ); ?></p>
+						  </td>
 					</tr>
 					<tr><th scope="row"><label for="scan_images"><?php esc_html_e( 'If the postmeta is not set, then should the plugin extract the first image from the post?', 'top-10' ); ?></label></th>
 						<td>
-						  	<input type="checkbox" name="scan_images" id="scan_images" <?php checked( true, $tptn_settings['scan_images'] ); ?> />
-						  	<p class="description"><?php esc_html_e( 'This could slow down the loading of your page if the first image in the related posts is large in file-size', 'top-10' ); ?></p>
-					  	</td>
+							  <input type="checkbox" name="scan_images" id="scan_images" <?php checked( true, $tptn_settings['scan_images'] ); ?> />
+							  <p class="description"><?php esc_html_e( 'This could slow down the loading of your page if the first image in the related posts is large in file-size', 'top-10' ); ?></p>
+						  </td>
 					</tr>
 					<tr><th scope="row"><label for="thumb_default_show"><?php esc_html_e( 'Use default thumbnail?', 'top-10' ); ?></label></th>
 						<td>
-					  		<input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php checked( true, $tptn_settings['thumb_default_show'] ); ?> />
-					  		<p class="description"><?php esc_html_e( 'If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.', 'top-10' ); ?></p>
-					  	</td>
+							  <input type="checkbox" name="thumb_default_show" id="thumb_default_show" <?php checked( true, $tptn_settings['thumb_default_show'] ); ?> />
+							  <p class="description"><?php esc_html_e( 'If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.', 'top-10' ); ?></p>
+						  </td>
 					</tr>
 					<tr><th scope="row"><label for="thumb_default"><?php esc_html_e( 'Default thumbnail:', 'top-10' ); ?></label></th>
-					  	<td>
-					  		<input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_default'] ) ); ?>" style="width:100%"> <br />
-					  		<?php if ( '' !== $tptn_settings['thumb_default'] ) { printf( "<img src='%s' style='max-width:200px' />", esc_url( $tptn_settings['thumb_default'] ) ); } ?>
-					  		<p class="description"><?php esc_html_e( "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified above", 'top-10' ); ?></p>
-					  	</td>
+						  <td>
+							  <input type="textbox" name="thumb_default" id="thumb_default" value="<?php echo esc_attr( stripslashes( $tptn_settings['thumb_default'] ) ); ?>" style="width:100%"> <br />
+								<?php
+								if ( '' !== $tptn_settings['thumb_default'] ) {
+									printf( "<img src='%s' style='max-width:200px' />", esc_url( $tptn_settings['thumb_default'] ) ); }
+?>
+							  <p class="description"><?php esc_html_e( "The plugin will first check if the post contains a thumbnail. If it doesn't then it will check the meta field. If this is not available, then it will show the default image as specified above", 'top-10' ); ?></p>
+						  </td>
 					</tr>
 					<tr>
 						<td scope="row" colspan="2">
@@ -654,15 +667,15 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_thumbnail_options_after', $tptn_settings );
 					?>
 
 				</table>
 			</div>
-	    </div>
-	    <div id="customcssdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+		</div>
+		<div id="customcssdiv" class="postbox"><div class="handlediv" title="<?php esc_html_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
 			<h3 class='hndle'><span><?php esc_html_e( 'Styles', 'top-10' ); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
@@ -673,7 +686,7 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_custom_styles_before', $tptn_settings );
 					?>
@@ -687,12 +700,17 @@ if ( ! defined( 'WPINC' ) ) {
 						<br />
 
 						<label>
-							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" <?php if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) ) { echo 'checked="checked"'; } ?> />
+							<input type="radio" name="tptn_styles" value="left_thumbs" id="tptn_styles_0" 
+							<?php
+							if ( $tptn_settings['include_default_style'] && ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) ) {
+								echo 'checked="checked"'; }
+?>
+ />
 							<?php esc_html_e( 'Left Thumbnails', 'top-10' ); ?>
 						</label>
 						<p class="description"><img src="<?php echo esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ); ?>" /></p>
 						<p class="description"><?php esc_html_e( 'Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings.', 'top-10' ); ?></p>
-					  	<p class="description"><?php printf( esc_html__( 'You can view the default style at %s', 'top-10' ), '<a href="https://github.com/WebberZone/top-10/blob/master/css/default-style.css" target="_blank">https://github.com/WebberZone/top-10/blob/master/css/default-style.css</a>' ); ?></p>
+						  <p class="description"><?php printf( esc_html__( 'You can view the default style at %s', 'top-10' ), '<a href="https://github.com/WebberZone/top-10/blob/master/css/default-style.css" target="_blank">https://github.com/WebberZone/top-10/blob/master/css/default-style.css</a>' ); ?></p>
 						<br />
 
 						<label>
@@ -706,7 +724,7 @@ if ( ! defined( 'WPINC' ) ) {
 							 *
 							 * @since 2.2.0
 							 *
-							 * @param	array	$tptn_settings	Top 10 settings array
+							 * @param   array   $tptn_settings  Top 10 settings array
 							 */
 							do_action( 'tptn_admin_tptn_styles', $tptn_settings );
 						?>
@@ -729,14 +747,14 @@ if ( ! defined( 'WPINC' ) ) {
 						 *
 						 * @since 2.0.0
 						 *
-						 * @param	array	$tptn_settings	Top 10 settings array
+						 * @param   array   $tptn_settings  Top 10 settings array
 						 */
 						do_action( 'tptn_admin_custom_styles_after', $tptn_settings );
 					?>
 
 				</table>
 			</div>
-	    </div>
+		</div>
 		<p>
 			<input type="submit" name="tptn_save" id="tptn_save" value="<?php esc_attr_e( 'Save Options', 'top-10' ); ?>" class="button button-primary" />
 			<input type="submit" name="tptn_default" id="tptn_default" value="<?php esc_attr_e( 'Default Options', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'Do you want to set options to Default?', 'top-10' ); ?>')) return false;" />
@@ -750,7 +768,7 @@ if ( ! defined( 'WPINC' ) ) {
 			 *
 			 * @since 2.0.0
 			 *
-			 * @param	array	$tptn_settings	Top 10 settings array
+			 * @param   array   $tptn_settings  Top 10 settings array
 			 */
 			do_action( 'tptn_admin_options_after', $tptn_settings );
 		?>
@@ -758,13 +776,13 @@ if ( ! defined( 'WPINC' ) ) {
 	  <hr class="clear" />
 
 	  <form method="post" id="tptn_maintenance_op" name="tptn_reset_options" onsubmit="return checkForm()">
-	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-	      <h3 class='hndle'><span><?php esc_html_e( 'Maintenance', 'top-10' ); ?></span></h3>
-	      <div class="inside">
+		<div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+		  <h3 class='hndle'><span><?php esc_html_e( 'Maintenance', 'top-10' ); ?></span></h3>
+		  <div class="inside">
 			  <table class="form-table">
 				<tr><td scope="row" colspan="2">
-				    <p class="description"><?php esc_html_e( 'Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than 90 days.', 'top-10' ); ?><br />
-				    <strong><?php esc_html_e( 'Note: When scheduled maintenance is enabled, WordPress will run the cron job everytime the job is rescheduled (i.e. you change the settings below).', 'top-10' ); ?></strong>
+					<p class="description"><?php esc_html_e( 'Over time the Daily Top 10 database grows in size, which reduces the performance of the plugin. Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than 90 days.', 'top-10' ); ?><br />
+					<strong><?php esc_html_e( 'Note: When scheduled maintenance is enabled, WordPress will run the cron job everytime the job is rescheduled (i.e. you change the settings below).', 'top-10' ); ?></strong>
 				  </td>
 				</tr>
 				<tr><th scope="row"><label for="cron_on"><?php esc_html_e( 'Enable scheduled maintenance of daily tables:', 'top-10' ); ?></label></th>
@@ -815,45 +833,45 @@ if ( ! defined( 'WPINC' ) ) {
 				</td></tr>
 				</table>
 			  <input type="submit" name="tptn_mnts_save" id="tptn_mnts_save" value="<?php esc_html_e( 'Save Maintenance Options', 'top-10' ); ?>" class="button button-primary" />
-	      </div>
-	    </div>
+		  </div>
+		</div>
 		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 
 	  <form method="post" id="tptn_reset_options" name="tptn_reset_options" onsubmit="return checkForm()">
-	    <div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
-	      <h3 class='hndle'><span><?php esc_html_e( 'Reset count and other tools', 'top-10' ); ?></span></h3>
-	      <div class="inside">
-		    <p class="description">
+		<div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
+		  <h3 class='hndle'><span><?php esc_html_e( 'Reset count and other tools', 'top-10' ); ?></span></h3>
+		  <div class="inside">
+			<p class="description">
 				<?php esc_html_e( 'This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
-		    </p>
-		    <p>
-		      <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
-		      <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php esc_attr_e( 'Reset Daily Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the daily popular posts?', 'top-10' ); ?>')) return false;" />
-		    </p>
-		    <p class="description">
+			</p>
+			<p>
+			  <input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
+			  <input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php esc_attr_e( 'Reset Daily Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the daily popular posts?', 'top-10' ); ?>')) return false;" />
+			</p>
+			<p class="description">
 				<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
-		    </p>
-		    <p>
-		      <input name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" value="<?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;" />
-		    </p>
-		    <p class="description">
+			</p>
+			<p>
+			  <input name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" value="<?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;" />
+			</p>
+			<p class="description">
 				<?php esc_html_e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', 'top-10' ); ?>
-		    </p>
-		    <p>
-		      <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;" />
-		    </p>
-	      </div>
-	    </div>
+			</p>
+			<p>
+			  <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;" />
+			</p>
+		  </div>
+		</div>
 		<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
 	  </form>
 
-	  	<?php
+			<?php
 			/**
 			 * Only show the below options if it is multisite
 			 */
-		if ( is_multisite() ) {
-		?>
+			if ( is_multisite() ) {
+			?>
 
 			<form method="post" id="tptn_import_mu" name="tptn_import_mu" onsubmit="return checkForm()">
 				<div id="resetopdiv" class="postbox"><div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'top-10' ); ?>"><br /></div>
@@ -876,10 +894,12 @@ if ( ! defined( 'WPINC' ) ) {
 						$top_ten_all_mu_tables = array();
 
 						// Get all blogs in the network and activate plugin on each one.
-						$blog_ids = $wpdb->get_col( "
+						$blog_ids = $wpdb->get_col(
+							"
 					        	SELECT blog_id FROM $wpdb->blogs
 								WHERE archived = '0' AND spam = '0' AND deleted = '0'
-							" ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+							"
+						); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 					foreach ( $blog_ids as $blog_id ) {
 						switch_to_blog( $blog_id );
 						$top_ten_mu_table = $wpdb->get_var( "SHOW TABLES LIKE '" . $wpdb->prefix . "top_ten' " ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
@@ -948,7 +968,7 @@ if ( ! defined( 'WPINC' ) ) {
 							</tr>
 						<?php
 						}
-					    ?>
+						?>
 						</table>
 						<p>
 					  <input type="hidden" name="top_ten_mu_tables_blog_ids" value="<?php echo implode( ',', $top_ten_mu_tables_blog_ids ); ?>" />
@@ -958,13 +978,13 @@ if ( ! defined( 'WPINC' ) ) {
 						</p>
 						<?php
 					} // End if.
-					?>
-				  </div>
-				</div>
-				<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
-			</form>
-			<?php
-		}
+						?>
+					  </div>
+					</div>
+					<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
+				</form>
+				<?php
+			}
 			?>
 	</div><!-- /post-body-content -->
 	<div id="postbox-container-1" class="postbox-container">

@@ -8,9 +8,9 @@
 /**
  * Function to add the viewed count to the post content. Filters `the_content`.
  *
- * @since	1.0
- * @param	string $content Post content.
- * @return	string	Filtered post content
+ * @since   1.0
+ * @param   string $content Post content.
+ * @return  string  Filtered post content
  */
 function tptn_pc_content( $content ) {
 	global $post, $tptn_settings;
@@ -19,7 +19,7 @@ function tptn_pc_content( $content ) {
 
 	if ( isset( $post ) ) {
 		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
-			return $content;	// Exit without adding related posts.
+			return $content;    // Exit without adding related posts.
 		}
 	}
 
@@ -45,10 +45,10 @@ add_filter( 'the_content', 'tptn_pc_content' );
 /**
  * Filter to display the post count when viewing feeds.
  *
- * @since	1.9.8
+ * @since   1.9.8
  *
- * @param	string $content    Post content.
- * @return	string	Filtered post content
+ * @param   string $content    Post content.
+ * @return  string  Filtered post content
  */
 function tptn_rss_filter( $content ) {
 	global $post, $tptn_settings;
@@ -68,9 +68,9 @@ add_filter( 'the_content_feed', 'tptn_rss_filter' );
 /**
  * Function to manually display count.
  *
- * @since	1.0
- * @param	int|boolean	$echo Flag to echo the output.
- * @return	string	Formatted string if $echo is set to 0|false
+ * @since   1.0
+ * @param   int|boolean $echo Flag to echo the output.
+ * @return  string  Formatted string if $echo is set to 0|false
  */
 function echo_tptn_post_count( $echo = 1 ) {
 	global $post, $tptn_settings;
@@ -80,7 +80,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	/**
 	 * Filter the script URL of the counter.
 	 *
-	 * @since	2.0
+	 * @since   2.0
 	 */
 	$home_url = apply_filters( 'tptn_view_counter_script_url', $home_url );
 
@@ -101,9 +101,9 @@ function echo_tptn_post_count( $echo = 1 ) {
 	/**
 	 * Filter the viewed count script
 	 *
-	 * @since	2.0.0
+	 * @since   2.0.0
 	 *
-	 * @param	string	$output	Counter viewed count code
+	 * @param   string  $output Counter viewed count code
 	 */
 	$output = apply_filters( 'tptn_view_post_count', $output );
 
@@ -118,10 +118,10 @@ function echo_tptn_post_count( $echo = 1 ) {
 /**
  * Return the formatted post count for the supplied ID.
  *
- * @since	1.9.2
- * @param	int|string $id         Post ID.
- * @param	int|string $blog_id    Blog ID.
- * @return	int|string	Formatted post count
+ * @since   1.9.2
+ * @param   int|string $id         Post ID.
+ * @param   int|string $blog_id    Blog ID.
+ * @return  int|string  Formatted post count
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
 	global $tptn_settings;
@@ -175,12 +175,12 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 /**
  * Returns the post count.
  *
- * @since	1.9.8.5
+ * @since   1.9.8.5
  *
- * @param	mixed  $id     Post ID.
- * @param	string $count  Which count to return? total, daily or overall.
+ * @param   mixed  $id     Post ID.
+ * @param   string $count  Which count to return? total, daily or overall.
  * @param   bool   $blog_id Blog ID.
- * @return	int		Post count
+ * @return  int     Post count
  */
 function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
 	global $wpdb, $tptn_settings;

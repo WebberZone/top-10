@@ -17,10 +17,10 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Add an extra column to the All Posts page to display the page views.
  *
- * @since	1.2
+ * @since   1.2
  *
- * @param	array $cols   Array of all columns on posts page.
- * @return	array	Modified array of columns.
+ * @param   array $cols   Array of all columns on posts page.
+ * @return  array   Modified array of columns.
  */
 function tptn_column( $cols ) {
 	global $tptn_settings;
@@ -45,10 +45,10 @@ add_filter( 'manage_pages_columns', 'tptn_column' );
 /**
  * Display page views for each column.
  *
- * @since	1.2
+ * @since   1.2
  *
- * @param	string     $column_name    Name of the column.
- * @param	int|string $id             Post ID.
+ * @param   string     $column_name    Name of the column.
+ * @param   int|string $id             Post ID.
  */
 function tptn_value( $column_name, $id ) {
 	global $wpdb, $tptn_settings;
@@ -121,10 +121,10 @@ add_action( 'manage_pages_custom_column', 'tptn_value', 10, 2 );
 /**
  * Register the columns as sortable.
  *
- * @since	1.9.8.2
+ * @since   1.9.8.2
  *
- * @param	array $cols   Array with column names.
- * @return	array	Filtered columns array
+ * @param   array $cols   Array with column names.
+ * @return  array   Filtered columns array
  */
 function tptn_column_register_sortable( $cols ) {
 	$tptn_settings = tptn_read_options();
@@ -143,11 +143,11 @@ add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable'
 /**
  * Add custom post clauses to sort the columns.
  *
- * @since	1.9.8.2
+ * @since   1.9.8.2
  *
- * @param	array  $clauses    Lookup clauses.
- * @param	object $wp_query   WP Query object.
- * @return	array	Filtered clauses
+ * @param   array  $clauses    Lookup clauses.
+ * @param   object $wp_query   WP Query object.
+ * @return  array   Filtered clauses
  */
 function tptn_column_clauses( $clauses, $wp_query ) {
 	global $wpdb;
@@ -193,7 +193,7 @@ add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
 /**
  * Output CSS for width of new column.
  *
- * @since	1.2
+ * @since   1.2
  */
 function tptn_admin_css() {
 ?>

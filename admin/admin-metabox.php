@@ -19,31 +19,35 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Function to add meta box in Write screens.
  *
- * @since	1.9.10
+ * @since 1.9.10
  *
- * @param	text   $post_type  Post type.
- * @param	object $post       Post object.
+ * @param text   $post_type  Post type.
+ * @param object $post Post object.
  */
 function tptn_add_meta_box( $post_type, $post ) {
 	global $tptn_settings;
 
 	// If metaboxes are disabled, then exit.
-	if ( ! $tptn_settings['show_metabox'] ) { return; }
+	if ( ! $tptn_settings['show_metabox'] ) {
+		return;
+	}
 
 	// If current user isn't an admin and we're restricting metaboxes to admins only, then exit.
-	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) { return; }
+	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) {
+		return;
+	}
 
 	$args = array(
-	   'public'   => true,
+		'public'   => true,
 	);
 	$post_types = get_post_types( $args );
 
 	/**
 	 * Filter post types on which the meta box is displayed
 	 *
-	 * @since	2.2.0
+	 * @since 2.2.0
 	 *
-	 * @param	array	$post_types	Array of post types
+	 * @param array $post_types Array of post types
 	 */
 	$post_types = apply_filters( 'tptn_meta_box_post_types', $post_types );
 
@@ -65,7 +69,7 @@ add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
 /**
  * Function to call the meta box.
  *
- * @since	1.9.10
+ * @since 1.9.10
  */
 function tptn_call_meta_box() {
 	global $wpdb, $post, $tptn_settings;
@@ -76,11 +80,13 @@ function tptn_call_meta_box() {
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
 
 	// Get the number of visits for the post being editted.
-	$resultscount = $wpdb->get_row( $wpdb->prepare( // WPCS: unprepared SQL OK.
-		"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
-		$post->ID,
-		get_current_blog_id()
-	) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+	$resultscount = $wpdb->get_row(
+		$wpdb->prepare( // WPCS: unprepared SQL OK.
+			 "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
+			$post->ID,
+			get_current_blog_id()
+		)
+	);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 	$total_count = $resultscount ? $resultscount->cntaccess : 0;
 
 	// Get the post meta.
@@ -127,14 +133,19 @@ function tptn_call_meta_box() {
 
 	<p>
 		<label for="thumb_meta"><strong><?php esc_html_e( 'Location of thumbnail:', 'top-10' ); ?></strong></label>
-		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ) ?>" style="width:100%" />
+		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ); ?>" style="width:100%" />
 		<em><?php esc_html_e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'top-10' ); ?></em>
 		<em><?php esc_html_e( 'The URL above is saved in the meta field:', 'top-10' ); ?></em><strong><?php echo esc_attr( $tptn_settings['thumb_meta'] ); ?></strong>
 	</p>
 
 	<p>
 		<?php if ( function_exists( 'crp_read_options' ) ) { ?>
-			<em style="color:red"><?php printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); // WPCS: XSS OK. ?></em>
+			<em style="color:red">
+				<?php
+					/* translators: 1: Plugin name */
+					printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); // WPCS: XSS OK.
+				?>
+			</em>
 		<?php } ?>
 	</p>
 
@@ -149,9 +160,9 @@ function tptn_call_meta_box() {
 /**
  * Function to save the meta box.
  *
- * @since	1.9.10
+ * @since 1.9.10
  *
- * @param	int	$post_id Post ID.
+ * @param int $post_id Post ID.
  */
 function tptn_save_meta_box( $post_id ) {
 	global $tptn_settings, $wpdb;
@@ -161,7 +172,9 @@ function tptn_save_meta_box( $post_id ) {
 	$table_name = $wpdb->base_prefix . 'top_ten';
 
 	// Bail if we're doing an auto save.
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
 
 	// If our nonce isn't there, or we can't verify it, bail.
 	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['tptn_meta_box_nonce'] ), 'tptn_meta_box' ) ) { // Input var okay.
@@ -179,19 +192,23 @@ function tptn_save_meta_box( $post_id ) {
 		$blog_id = get_current_blog_id();
 
 		if ( 0 === $total_count ) {
-			$wpdb->query( $wpdb->prepare(  // WPCS: unprepared SQL OK.
-				"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
-				$post_id,
-				$blog_id
-			) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$wpdb->query(
+				$wpdb->prepare(  // WPCS: unprepared SQL OK.
+					 "DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
+					$post_id,
+					$blog_id
+				)
+			);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		} else {
-			$wpdb->query( $wpdb->prepare(  // WPCS: unprepared SQL OK.
-				"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
-				$post_id,
-				$total_count,
-				$blog_id,
-				$total_count
-			) );  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$wpdb->query(
+				$wpdb->prepare(  // WPCS: unprepared SQL OK.
+					 "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
+					$post_id,
+					$total_count,
+					$blog_id,
+					$total_count
+				)
+			);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		}
 	}
 
@@ -222,18 +239,18 @@ function tptn_save_meta_box( $post_id ) {
 	/**
 	 * Filter the Top 10 Post meta variable which contains post-specific settings
 	 *
-	 * @since	2.2.0
+	 * @since 2.2.0
 	 *
-	 * @param	array	$tptn_post_meta	Top 10 post-specific settings
-	 * @param	int		$post_id	Post ID
+	 * @param array $tptn_post_meta Top 10 post-specific settings
+	 * @param int $post_id Post ID
 	 */
 	$tptn_post_meta = apply_filters( 'tptn_post_meta', $tptn_post_meta, $post_id );
 
 	$tptn_post_meta_filtered = array_filter( $tptn_post_meta );
 
 	/**** Now we can start saving ****/
-	if ( empty( $tptn_post_meta_filtered ) ) {	// Checks if all the array items are 0 or empty
-		delete_post_meta( $post_id, 'tptn_post_meta' );	// Delete the post meta if no options are set
+	if ( empty( $tptn_post_meta_filtered ) ) { // Checks if all the array items are 0 or empty
+		delete_post_meta( $post_id, 'tptn_post_meta' ); // Delete the post meta if no options are set
 	} else {
 		update_post_meta( $post_id, 'tptn_post_meta', $tptn_post_meta );
 	}
@@ -241,9 +258,9 @@ function tptn_save_meta_box( $post_id ) {
 	/**
 	 * Action triggered when saving Contextual Related Posts meta box settings
 	 *
-	 * @since	2.2
+	 * @since 2.2
 	 *
-	 * @param	int	$post_id	Post ID
+	 * @param int $post_id Post ID
 	 */
 	do_action( 'tptn_save_meta_box', $post_id );
 

@@ -64,11 +64,13 @@ class Top_Ten_Widget extends WP_Widget {
 		$post_types = array();
 		if ( isset( $instance['post_types'] ) ) {
 			$post_types = $instance['post_types'];
-			parse_str( $post_types, $post_types );	// Save post types in $post_types variable.
+			parse_str( $post_types, $post_types );  // Save post types in $post_types variable.
 		}
-		$wp_post_types	= get_post_types( array(
-			'public'	=> true,
-		) );
+		$wp_post_types  = get_post_types(
+			array(
+				'public'    => true,
+			)
+		);
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
 		?>
@@ -104,22 +106,42 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo esc_attr_e( $this->get_field_id( 'disp_list_count' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox" <?php if ( $disp_list_count ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Show count?', 'top-10' ); ?>
+			<input id="<?php echo esc_attr_e( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox" 
+									<?php
+									if ( $disp_list_count ) {
+										echo 'checked="checked"'; }
+?>
+ /> <?php esc_html_e( 'Show count?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_excerpt' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox" <?php if ( $show_excerpt ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Show excerpt?', 'top-10' ); ?>
+			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox" 
+									<?php
+									if ( $show_excerpt ) {
+										echo 'checked="checked"'; }
+?>
+ /> <?php esc_html_e( 'Show excerpt?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_author' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox" <?php if ( $show_author ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Show author?', 'top-10' ); ?>
+			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox" 
+									<?php
+									if ( $show_author ) {
+										echo 'checked="checked"'; }
+?>
+ /> <?php esc_html_e( 'Show author?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_date' ) ); ?>">
-				<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox" <?php if ( $show_date ) { echo 'checked="checked"'; } ?> /> <?php esc_html_e( 'Show date?', 'top-10' ); ?>
+				<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox" 
+										<?php
+										if ( $show_date ) {
+											echo 'checked="checked"'; }
+?>
+ /> <?php esc_html_e( 'Show date?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
@@ -153,7 +175,7 @@ class Top_Ten_Widget extends WP_Widget {
 				</label>
 				<br />
 
-			<?php }	?>
+			<?php } ?>
 		</p>
 
 		<?php
@@ -162,7 +184,7 @@ class Top_Ten_Widget extends WP_Widget {
 			 *
 			 * @since 2.0.0
 			 *
-			 * @param	array	$instance	Widget options array
+			 * @param   array   $instance   Widget options array
 			 */
 			do_action( 'tptn_widget_options_after', $instance );
 		?>
@@ -197,9 +219,11 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['thumb_width'] = $new_instance['thumb_width'];
 
 		// Process post types to be selected.
-		$wp_post_types	= get_post_types( array(
-			'public'	=> true,
-		) );
+		$wp_post_types  = get_post_types(
+			array(
+				'public'    => true,
+			)
+		);
 		$post_types = ( isset( $new_instance['post_types'] ) ) ? $new_instance['post_types'] : array();
 		$post_types = array_intersect( $wp_post_types, $post_types );
 		$instance['post_types'] = http_build_query( $post_types, '', '&' );
@@ -209,7 +233,7 @@ class Top_Ten_Widget extends WP_Widget {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param	array	$instance	Widget options array
+		 * @param   array   $instance   Widget options array
 		 */
 		return apply_filters( 'tptn_widget_options_update' , $instance );
 	} //ending update
@@ -229,7 +253,8 @@ class Top_Ten_Widget extends WP_Widget {
 		if ( isset( $post ) ) {
 			$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
 
-			if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) { return; }
+			if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) {
+				return; }
 		}
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
@@ -283,7 +308,7 @@ class Top_Ten_Widget extends WP_Widget {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param	array	$arguments	Widget options array
+		 * @param   array   $arguments  Widget options array
 		 */
 		$arguments = apply_filters( 'tptn_widget_options' , $arguments );
 
@@ -299,7 +324,7 @@ class Top_Ten_Widget extends WP_Widget {
 	/**
 	 * Add styles to the front end if the widget is active.
 	 *
-	 * @since	2.3.0
+	 * @since   2.3.0
 	 */
 	function front_end_styles() {
 		global $tptn_settings;
@@ -318,7 +343,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 			// Check if it's our instance.
 			if ( ! is_active_widget( false, $widget_id, $this->id_base, true ) ) {
-				continue;	// Not active.
+				continue;   // Not active.
 			}
 
 			$thumb_height = ( isset( $options['thumb_height'] ) && '' !== $options['thumb_height'] ) ? absint( $options['thumb_height'] ) : $tptn_settings['thumb_height'];
