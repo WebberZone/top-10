@@ -21,10 +21,12 @@ function tptn_activation_hook( $network_wide ) {
 	if ( is_multisite() && $network_wide ) {
 
 		// Get all blogs in the network and activate plugin on each one.
-		$blog_ids = $wpdb->get_col( "
+		$blog_ids = $wpdb->get_col(
+			"
         	SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0' AND deleted = '0'
-		" ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		"
+		); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		foreach ( $blog_ids as $blog_id ) {
 			switch_to_blog( $blog_id );
 			tptn_single_activate();
@@ -100,7 +102,6 @@ function tptn_single_activate() {
 				break;
 
 			default:
-
 				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY postnumber bigint(20) ' );
 				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY postnumber bigint(20) ' );
 				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY cntaccess bigint(20) ' );
@@ -165,7 +166,7 @@ add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
 /**
  * Function to call install function if needed.
  *
- * @since	1.9
+ * @since   1.9
  */
 function tptn_update_db_check() {
 	global $tptn_db_version, $network_wide;

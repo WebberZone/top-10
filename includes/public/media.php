@@ -33,22 +33,22 @@ add_action( 'init', 'tptn_add_image_sizes' );
 /**
  * Function to get the post thumbnail.
  *
- * @since	1.8
- * @param	array $args   Query string of options related to thumbnails
- * @return	string	Image tag
+ * @since   1.8
+ * @param   array $args   Query string of options related to thumbnails
+ * @return  string  Image tag
  */
 function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	$defaults = array(
 		'postid' => '',
-		'thumb_height' => '150',			// Max height of thumbnails
-		'thumb_width' => '150',			// Max width of thumbnails
-		'thumb_meta' => 'post-image',		// Meta field that is used to store the location of default thumbnail image
-		'thumb_html' => 'html',		// HTML / CSS for width and height attributes
-		'thumb_default' => '',	// Default thumbnail image
-		'thumb_default_show' => true,	// Show default thumb if none found (if false, don't show thumb at all)
-		'scan_images' => false,			// Scan post for images
-		'class' => 'tptn_thumb',			// Class of the thumbnail
+		'thumb_height' => '150',            // Max height of thumbnails
+		'thumb_width' => '150',         // Max width of thumbnails
+		'thumb_meta' => 'post-image',       // Meta field that is used to store the location of default thumbnail image
+		'thumb_html' => 'html',     // HTML / CSS for width and height attributes
+		'thumb_default' => '',  // Default thumbnail image
+		'thumb_default_show' => true,   // Show default thumb if none found (if false, don't show thumb at all)
+		'scan_images' => false,         // Scan post for images
+		'class' => 'tptn_thumb',            // Class of the thumbnail
 	);
 
 	// Parse incomming $args into an array and merge it with $defaults
@@ -78,10 +78,10 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	/**
 	 * Filters the title and alt message for thumbnails.
 	 *
-	 * @since	2.3.0
+	 * @since   2.3.0
 	 *
-	 * @param	string	$post_title		Post tile used as thumbnail alt and title
-	 * @param	object	$result			Post Object
+	 * @param   string  $post_title     Post tile used as thumbnail alt and title
+	 * @param   object  $result         Post Object
 	 */
 	$post_title = apply_filters( 'tptn_thumb_title', $post_title, $result );
 
@@ -91,7 +91,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page
 	if ( ! $postimage ) {
-		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );	// Check the post meta first
+		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );   // Check the post meta first
 		$pick = 'meta';
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
@@ -116,7 +116,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	// If there is no thumbnail found, fetch the first image in the post, if enabled
 	if ( ! $postimage && $args['scan_images'] ) {
 		preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $result->post_content, $matches );
-		if ( isset( $matches[1][0] ) && $matches[1][0] ) { 			// any image there?
+		if ( isset( $matches[1][0] ) && $matches[1][0] ) {          // any image there?
 			$postimage = $matches[1][0]; // we need the first one only!
 		}
 		$pick = 'first';
@@ -133,7 +133,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// If there is no thumbnail found, fetch the first child image
 	if ( ! $postimage ) {
-		$postimage = tptn_get_first_image( $result->ID, $args['thumb_width'], $args['thumb_height'] );	// Get the first image
+		$postimage = tptn_get_first_image( $result->ID, $args['thumb_width'], $args['thumb_height'] );  // Get the first image
 		$pick = 'firstchild';
 	}
 
@@ -158,12 +158,12 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		 * Use this filter to modify the thumbnail URL that is automatically created
 		 * Before v2.1 this was used for cropping the post image using timthumb
 		 *
-		 * @since	2.1.0
+		 * @since   2.1.0
 		 *
-		 * @param	string	$postimage		URL of the thumbnail image
-		 * @param	int		$thumb_width	Thumbnail width
-		 * @param	int		$thumb_height	Thumbnail height
-		 * @param	object	$result			Post Object
+		 * @param   string  $postimage      URL of the thumbnail image
+		 * @param   int     $thumb_width    Thumbnail width
+		 * @param   int     $thumb_height   Thumbnail height
+		 * @param   object  $result         Post Object
 		 */
 		$postimage = apply_filters( 'tptn_thumb_url', $postimage, $args['thumb_width'], $args['thumb_height'], $result );
 
@@ -175,19 +175,19 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		 * Filters the thumbnail image URL.
 		 *
 		 * @since 1.8.10
-		 * @deprecated	2.1.0	Use tptn_thumb_url instead.
+		 * @deprecated  2.1.0   Use tptn_thumb_url instead.
 		 *
-		 * @param	string	$postimage		URL of the thumbnail image
-		 * @param	int		$thumb_width	Thumbnail width
-		 * @param	int		$thumb_height	Thumbnail height
-		 * @param	boolean	$thumb_timthumb	Enable timthumb?
-		 * @param	int		$thumb_timthumb_q	Quality of timthumb thumbnail.
-		 * @param	object	$result			Post Object
+		 * @param   string  $postimage      URL of the thumbnail image
+		 * @param   int     $thumb_width    Thumbnail width
+		 * @param   int     $thumb_height   Thumbnail height
+		 * @param   boolean $thumb_timthumb Enable timthumb?
+		 * @param   int     $thumb_timthumb_q   Quality of timthumb thumbnail.
+		 * @param   object  $result         Post Object
 		 */
 		$postimage = apply_filters( 'tptn_postimage', $postimage, $args['thumb_width'], $args['thumb_height'], $thumb_timthumb, $thumb_timthumb_q, $result );
 
 		if ( is_ssl() ) {
-		    $postimage = preg_replace( '~http://~', 'https://', $postimage );
+			$postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
 
 		if ( 'css' == $args['thumb_html'] ) {
@@ -201,9 +201,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		/**
 		 * Filters the thumbnail HTML and allows a filter function to add any more HTML if needed.
 		 *
-		 * @since	2.2.0
+		 * @since   2.2.0
 		 *
-		 * @param	string	$thumb_html	Thumbnail HTML
+		 * @param   string  $thumb_html Thumbnail HTML
 		 */
 		$thumb_html = apply_filters( 'tptn_thumb_html', $thumb_html );
 
@@ -212,9 +212,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		/**
 		 * Filters the thumbnail classes and allows a filter function to add any more classes if needed.
 		 *
-		 * @since	2.2.0
+		 * @since   2.2.0
 		 *
-		 * @param	string	$thumb_html	Thumbnail HTML
+		 * @param   string  $thumb_html Thumbnail HTML
 		 */
 		$class = apply_filters( 'tptn_thumb_class', $class );
 
@@ -224,10 +224,10 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	/**
 	 * Filters post thumbnail created for Top 10.
 	 *
-	 * @since	1.9.10.1
+	 * @since   1.9.10.1
 	 *
-	 * @param	array	$output	Formatted output
-	 * @param	array	$args	Argument list
+	 * @param   array   $output Formatted output
+	 * @param   array   $args   Argument list
 	 */
 	return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args );
 }
@@ -236,9 +236,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 /**
  * Get the first child image in the post.
  *
- * @since	1.9.8
- * @param	mixed $postID Post ID
- * @return	string	Location of thumbnail
+ * @since   1.9.8
+ * @param   mixed $postID Post ID
+ * @return  string  Location of thumbnail
  */
 function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
 	$args = array(
@@ -259,10 +259,10 @@ function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
 			/**
 			 * Filters first child attachment from the post.
 			 *
-			 * @since	1.9.10.1
+			 * @since   1.9.10.1
 			 *
-			 * @param	array	$image_attributes[0]	URL of the image
-			 * @param	int		$postID					Post ID
+			 * @param   array   $image_attributes[0]    URL of the image
+			 * @param   int     $postID                 Post ID
 			 */
 			return apply_filters( 'tptn_get_first_image', $image_attributes[0] );
 		}
@@ -277,8 +277,8 @@ function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
  *
  * @since 2.1
  *
- * @param	string $attachment_url Attachment URL
- * @return	int		Attachment ID
+ * @param   string $attachment_url Attachment URL
+ * @return  int     Attachment ID
  */
 function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 
@@ -312,8 +312,8 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 	 *
 	 * @since 2.1
 	 *
-	 * @param	int		Attachment ID
-	 * @param	string	$attachment_url	Attachment URL
+	 * @param   int     Attachment ID
+	 * @param   string  $attachment_url Attachment URL
 	 */
 	return apply_filters( 'tptn_get_attachment_id_from_url', $attachment_id, $attachment_url );
 }
@@ -322,10 +322,10 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 /**
  * Function to get the correct height and width of the thumbnail.
  *
- * @since	2.2.0
+ * @since   2.2.0
  *
- * @param	array	Array of arguments
- * @return	array	Width and height
+ * @param   array   Array of arguments
+ * @return  array   Width and height
  */
 function tptn_get_thumb_size( $args ) {
 
@@ -352,10 +352,10 @@ function tptn_get_thumb_size( $args ) {
 	/**
 	 * Filter array of thumbnail size.
 	 *
-	 * @since	2.2.0
+	 * @since   2.2.0
 	 *
-	 * @param	array	$thumb_size	Array with width and height of thumbnail
-	 * @param	array	$args	Array of arguments
+	 * @param   array   $thumb_size Array with width and height of thumbnail
+	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_get_thumb_size', $thumb_size, $args );
 
@@ -365,9 +365,9 @@ function tptn_get_thumb_size( $args ) {
 /**
  * Get all image sizes.
  *
- * @since	2.0.0
- * @param	string $size   Get specific image size
- * @return	array	Image size names along with width, height and crop setting
+ * @since   2.0.0
+ * @param   string $size   Get specific image size
+ * @return  array   Image size names along with width, height and crop setting
  */
 function tptn_get_all_image_sizes( $size = '' ) {
 	global $_wp_additional_image_sizes;
@@ -383,13 +383,13 @@ function tptn_get_all_image_sizes( $size = '' ) {
 			$sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
 			$sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
 
-	        if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
-	            unset( $sizes[ $_size ] );
-	        }
+			if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
+				unset( $sizes[ $_size ] );
+			}
 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
 
 			$sizes[ $_size ] = array(
-	            'name' => $_size,
+				'name' => $_size,
 				'width' => $_wp_additional_image_sizes[ $_size ]['width'],
 				'height' => $_wp_additional_image_sizes[ $_size ]['height'],
 				'crop' => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
@@ -409,9 +409,9 @@ function tptn_get_all_image_sizes( $size = '' ) {
 	/**
 	 * Filters array of image sizes.
 	 *
-	 * @since	2.0.0
+	 * @since   2.0.0
 	 *
-	 * @param	array	$sizes	Image sizes
+	 * @param   array   $sizes  Image sizes
 	 */
 	return apply_filters( 'tptn_get_all_image_sizes', $sizes );
 }

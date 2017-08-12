@@ -3,7 +3,7 @@
  * Top 10 Display statistics page.
  *
  * @package   Top_Ten
- * @subpackage	Top_Ten_Statistics
+ * @subpackage  Top_Ten_Statistics
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
@@ -31,10 +31,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * Class constructor.
 	 */
 	public function __construct() {
-		parent::__construct( array(
-			'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
+		parent::__construct(
+			array(
+				'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
 			'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records.
-		) );
+			)
+		);
 	}
 
 	/**
@@ -44,7 +46,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @param int   $page_number Page number.
 	 * @param array $args Array of arguments.
 	 *
-	 * @return	array	Array of popular posts
+	 * @return  array   Array of popular posts
 	 */
 	public static function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
 
@@ -85,7 +87,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			WHERE ttd.dp_date >= '%s'
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber
-		", $from_date );
+		", $from_date
+		);
 
 		// Create the base WHERE clause.
 		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
@@ -155,12 +158,16 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$wpdb->delete(
 			"{$wpdb->base_prefix}top_ten",
-			array( 'postnumber' => $id ),
+			array(
+				'postnumber' => $id,
+			),
 			array( '%d' )
 		);
 		$wpdb->delete(
 			"{$wpdb->base_prefix}top_ten_daily",
-			array( 'postnumber' => $id ),
+			array(
+				'postnumber' => $id,
+			),
 			array( '%d' )
 		);
 	}
@@ -174,12 +181,14 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	public static function record_count( $args = null ) {
 		global $wpdb;
 
-		$sql = $wpdb->prepare( "
+		$sql = $wpdb->prepare(
+			"
 			SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt
 			INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID
 			WHERE blog_id=%d
 			AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit')
-		", get_current_blog_id() );
+		", get_current_blog_id()
+		);
 
 		if ( isset( $args['search'] ) ) {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
@@ -251,7 +260,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		);
 
 		// Return the title contents.
-		return sprintf( '<a href="%4$s">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
+		return sprintf(
+			'<a href="%4$s">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
 			$item['title'],
 			$item['ID'],
 			$this->row_actions( $actions ),
@@ -294,11 +304,16 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$author_info = get_userdata( $item['post_author'] );
 		$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ) ) );
 
-		printf( '<a href="%s">%s</a>',
-			esc_url( add_query_arg( array(
-				'post_type' => $item['post_type'],
-				'author' => ( false === $author_info ) ? 0 : $author_info->ID,
-			), 'edit.php' ) ),
+		printf(
+			'<a href="%s">%s</a>',
+			esc_url(
+				add_query_arg(
+					array(
+						'post_type' => $item['post_type'],
+						'author' => ( false === $author_info ) ? 0 : $author_info->ID,
+					), 'edit.php'
+				)
+			),
 			esc_html( $author_name )
 		);
 	}
@@ -310,13 +325,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'cb'			=> '<input type="checkbox" />',
-			'title'			=> __( 'Title', 'top-10' ),
-			'total_count'	=> __( 'Total visits', 'top-10' ),
-			'daily_count'	=> __( 'Daily visits', 'top-10' ),
-			'post_type'		=> __( 'Post type', 'top-10' ),
-			'author'		=> __( 'Author', 'top-10' ),
-			'date'			=> __( 'Date', 'top-10' ),
+			'cb'            => '<input type="checkbox" />',
+			'title'         => __( 'Title', 'top-10' ),
+			'total_count'   => __( 'Total visits', 'top-10' ),
+			'daily_count'   => __( 'Daily visits', 'top-10' ),
+			'post_type'     => __( 'Post type', 'top-10' ),
+			'author'        => __( 'Author', 'top-10' ),
+			'date'          => __( 'Date', 'top-10' ),
 		);
 
 		/**
@@ -324,7 +339,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		 *
 		 * @since 1.5.0
 		 *
-		 * @param	array	$columns	An array of column names.
+		 * @param   array   $columns    An array of column names.
 		 */
 		return apply_filters( 'manage_pop_posts_columns', $columns );
 	}
@@ -373,11 +388,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$total_items  = self::record_count( $args );
 
-		$this->set_pagination_args( array(
-			'total_items' => $total_items, // WE have to calculate the total number of items
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items, // WE have to calculate the total number of items
 			'per_page'    => $per_page, // WE have to determine how many items to show on a page
-			'total_pages' => ceil( $total_items / $per_page ),// WE have to calculate the total number of pages
-		) );
+			'total_pages' => ceil( $total_items / $per_page ), // WE have to calculate the total number of pages
+			)
+		);
 
 		$this->items = self::get_popular_posts( $per_page, $current_page, $args );
 	}
@@ -400,7 +417,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// If the delete bulk action is triggered.
 		if ( ( isset( $_REQUEST['action'] ) && 'bulk-delete' === $_REQUEST['action'] )
-		     || ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
+			 || ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
 		) {
 			$delete_ids = sanitize_text_field( wp_unslash( $_REQUEST['bulk-delete'] ) );
 
@@ -421,7 +438,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		<div class="alignleft actions">
 	<?php
 	if ( 'top' === $which ) {
-		$post_types = get_post_types( array( 'public' => true ) );
+		$post_types = get_post_types(
+			array(
+				'public' => true,
+			)
+		);
 		$all = array(
 			'all' => 'All',
 		);
@@ -443,7 +464,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 			echo '</select>';
 
-			submit_button( __( 'Filter', 'top-10' ), 'button', 'filter_action', false, array( 'id' => 'top-10-query-submit' ) );
+			submit_button(
+				__( 'Filter', 'top-10' ), 'button', 'filter_action', false, array(
+					'id' => 'top-10-query-submit',
+				)
+			);
 		}
 	}
 	?>
@@ -503,7 +528,7 @@ class Top_Ten_Statistics {
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
 							<form method="get">
-								<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>" />
+								<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
 								<?php
 								// If this is a search?
 								if ( isset( $_REQUEST['s'] ) ) {

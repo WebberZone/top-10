@@ -16,10 +16,10 @@ function tptn_enqueue_scripts() {
 
 	if ( is_singular() && 'draft' !== $post->post_status && ! is_customize_preview() ) {
 
-		$current_user = wp_get_current_user();	// Let's get the current user
-		$post_author = ( $current_user->ID === $post->post_author ) ? true : false;	// Is the current user the post author?
-		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;	// Is the current user an admin?
-		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;	// Is the current user an editor?
+		$current_user = wp_get_current_user();  // Let's get the current user
+		$post_author = ( $current_user->ID === $post->post_author ) ? true : false; // Is the current user the post author?
+		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
+		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
 		$include_code = true;
 		if ( ( $post_author ) && ( ! $tptn_settings['track_authors'] ) ) {
@@ -36,8 +36,8 @@ function tptn_enqueue_scripts() {
 
 			$id = absint( $post->ID );
 			$blog_id = get_current_blog_id();
-			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;		// It's 1 if we're updating the overall count.
-			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );	// It's 10 if we're updating the daily count.
+			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
+			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
 
 			if ( 'query_based' === $tptn_settings['tracker_type'] ) {
 				$home_url = home_url( '/' );
@@ -51,7 +51,7 @@ function tptn_enqueue_scripts() {
 			 * Other tracker types can override the URL processed by the jQuery.post request
 			 * The corresponding tracker can use the below variables or append their own to $ajax_tptn_tracker
 			 *
-			 * @since	2.0
+			 * @since   2.0
 			 */
 			$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
 
@@ -88,10 +88,10 @@ add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
 /**
  * Function to add additional queries to query_vars.
  *
- * @since	2.0.0
+ * @since   2.0.0
  *
- * @param	array $vars   Query variables array.
- * @return	array	$Query variables array with Top 10 parameters appended
+ * @param   array $vars   Query variables array.
+ * @return  array   $Query variables array with Top 10 parameters appended
  */
 function tptn_query_vars( $vars ) {
 	// Add these to the list of queryvars that WP gathers.
@@ -108,9 +108,9 @@ add_filter( 'query_vars', 'tptn_query_vars' );
 /**
  * Parses the WordPress object to update/display the count.
  *
- * @since	2.0.0
+ * @since   2.0.0
  *
- * @param	object $wp WordPress object.
+ * @param   object $wp WordPress object.
  */
 function tptn_parse_request( $wp ) {
 	global $wpdb;

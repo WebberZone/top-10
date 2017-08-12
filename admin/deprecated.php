@@ -10,8 +10,8 @@
 /**
  * Function to generate the top 10 daily popular posts page.
  *
- * @since	1.9.2
- * @deprecated	2.2.0
+ * @since   1.9.2
+ * @deprecated  2.2.0
  */
 function tptn_manage_daily() {
 	tptn_manage( 1 );
@@ -21,10 +21,10 @@ function tptn_manage_daily() {
 /**
  * Function to generate the top 10 popular posts page.
  *
- * @since	1.3
- * @deprecated	2.2.0
+ * @since   1.3
+ * @deprecated  2.2.0
  *
- * @param	int	$daily	Overall popular.
+ * @param   int $daily  Overall popular.
  */
 function tptn_manage( $daily = 0 ) {
 
@@ -36,11 +36,13 @@ function tptn_manage( $daily = 0 ) {
 
 <div class="wrap">
 	<h2>
-	<?php if ( ! $daily ) {
+	<?php
+	if ( ! $daily ) {
 		esc_html_e( 'Popular Posts', 'top-10' );
-} else {
-	esc_html_e( 'Daily Popular Posts', 'top-10' );
-} ?>
+	} else {
+		esc_html_e( 'Daily Popular Posts', 'top-10' );
+	}
+?>
 	</h2>
 	<div id="poststuff">
 		<div id="post-body" class="metabox-holder columns-2">

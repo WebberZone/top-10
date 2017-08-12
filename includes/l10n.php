@@ -8,7 +8,7 @@
 /**
  * Function to load translation files.
  *
- * @since	1.9.10.1
+ * @since   1.9.10.1
  */
 function tptn_lang_init() {
 	load_plugin_textdomain( 'top-10', false, dirname( plugin_basename( TOP_TEN_PLUGIN_FILE ) ) . '/languages/' );
@@ -19,9 +19,9 @@ add_action( 'plugins_loaded', 'tptn_lang_init' );
 /**
  * Fetch the post of the correct language.
  *
- * @since	2.1.0
+ * @since   2.1.0
  *
- * @param	int $post_id	Post ID.
+ * @param   int $post_id    Post ID.
  */
 function tptn_object_id_cur_lang( $post_id ) {
 
@@ -30,10 +30,10 @@ function tptn_object_id_cur_lang( $post_id ) {
 	/**
 	 * Filter to modify if the original language ID is returned.
 	 *
-	 * @since	2.2.3
+	 * @since   2.2.3
 	 *
-	 * @param	bool	$return_original_if_missing
-	 * @param	int	$post_id	Post ID
+	 * @param   bool    $return_original_if_missing
+	 * @param   int $post_id    Post ID
 	 */
 	$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', $return_original_if_missing, $post_id );
 
@@ -48,9 +48,9 @@ function tptn_object_id_cur_lang( $post_id ) {
 	/**
 	 * Filters object ID for current language (WPML).
 	 *
-	 * @since	2.1.0
+	 * @since   2.1.0
 	 *
-	 * @param	int	$post_id	Post ID
+	 * @param   int $post_id    Post ID
 	 */
 	return apply_filters( 'tptn_object_id_cur_lang', $post_id );
 }

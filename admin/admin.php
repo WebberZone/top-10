@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Function generates the plugin settings page.
  *
- * @since	1.0
+ * @since 1.0
  */
 function tptn_options() {
 
@@ -50,9 +50,11 @@ function tptn_options() {
 
 	/* Parse post types */
 	parse_str( $tptn_settings['post_types'], $post_types );
-	$wp_post_types	= get_post_types( array(
-		'public'	=> true,
-	) );
+	$wp_post_types  = get_post_types(
+		array(
+			'public'    => true,
+		)
+	);
 	$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
 	/* Save options has been triggered */
@@ -97,10 +99,14 @@ function tptn_options() {
 		$tptn_settings['how_old'] = absint( $_POST['how_old'] );
 
 		// Process post types to be selected.
-		$wp_post_types	= get_post_types( array(
-			'public'	=> true,
-		) );
-		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['post_types'] ) ) : array( 'post' => 'post' );
+		$wp_post_types  = get_post_types(
+			array(
+				'public'    => true,
+			)
+		);
+		$post_types_arr = ( isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['post_types'] ) ) : array(
+			'post' => 'post',
+		);
 		$post_types = array_intersect( $wp_post_types, $post_types_arr );
 		$tptn_settings['post_types'] = http_build_query( $post_types, '', '&' );
 
@@ -141,7 +147,7 @@ function tptn_options() {
 		$tptn_settings['link_nofollow'] = isset( $_POST['link_nofollow'] ) ? true : false;
 		$tptn_settings['exclude_on_post_ids'] = empty( $_POST['exclude_on_post_ids'] ) ? '' : implode( ',', array_map( 'absint', explode( ',', sanitize_text_field( $_POST['exclude_on_post_ids'] ) ) ) );
 
-		// List HTML options
+		// List HTML options.
 		$tptn_settings['before_list'] = wp_kses_post( $_POST['before_list'] );
 		$tptn_settings['after_list'] = wp_kses_post( $_POST['after_list'] );
 		$tptn_settings['before_list_item'] = wp_kses_post( $_POST['before_list_item'] );
@@ -178,9 +184,9 @@ function tptn_options() {
 		/**
 		 * Filter the settings array just before saving them to the database
 		 *
-		 * @since	2.0.4
+		 * @since   2.0.4
 		 *
-		 * @param	array	$tptn_settings	Settings array
+		 * @param   array   $tptn_settings  Settings array
 		 */
 		$tptn_settings = apply_filters( 'tptn_save_options', $tptn_settings );
 
@@ -344,7 +350,7 @@ function tptn_options() {
 /**
  * Function to generate the right sidebar of the Settings and Admin popular posts pages.
  *
- * @since	1.8.1
+ * @since   1.8.1
  */
 function tptn_admin_side() {
 ?>
@@ -443,7 +449,7 @@ function tptn_admin_side() {
 /**
  * Add Top 10 menu in WP-Admin.
  *
- * @since	1.0
+ * @since   1.0
  */
 function tptn_adminmenu() {
 
@@ -453,7 +459,7 @@ function tptn_adminmenu() {
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'Top 10 Settings', 'top-10' ), __( 'Top 10 Settings', 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options' );
 	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
-	$tptn_stats_screen = new Top_Ten_Statistics;
+	$tptn_stats_screen = new Top_Ten_Statistics();
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'View Popular Posts', 'top-10' ), __( 'View Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
@@ -470,7 +476,7 @@ add_action( 'admin_menu', 'tptn_adminmenu' );
 /**
  * Add JS and CSS to admin header.
  *
- * @since	1.6
+ * @since   1.6
  */
 function tptn_adminhead() {
 
@@ -521,12 +527,12 @@ function tptn_adminhead() {
 				postboxes.add_postbox_toggles('tptn_options');
 			});
 
-		    // Function to add auto suggest.
-		    function setSuggest( id, taxonomy ) {
-		        jQuery('#' + id).suggest("<?php echo admin_url( 'admin-ajax.php?action=ajax-tag-search&tax=' ); ?>" + taxonomy, {multiple:true, multipleSep: ","});
-		    }
+			// Function to add auto suggest.
+			function setSuggest( id, taxonomy ) {
+				jQuery('#' + id).suggest("<?php echo admin_url( 'admin-ajax.php?action=ajax-tag-search&tax=' ); ?>" + taxonomy, {multiple:true, multipleSep: ","});
+			}
 
-		    // Function check the form submission.
+			// Function check the form submission.
 			function checkForm() {
 				answer = true;
 				if (siw && siw.selectingSomething)
@@ -534,7 +540,7 @@ function tptn_adminhead() {
 				return answer;
 			} //
 
-		    // Function to clear the cache.
+			// Function to clear the cache.
 			function clearCache() {
 				/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
 				jQuery.post(ajaxurl, {
@@ -553,10 +559,10 @@ function tptn_adminhead() {
 /**
  * Adding WordPress plugin action links.
  *
- * @version	1.9.2
+ * @version 1.9.2
  *
- * @param	array $links Action links.
- * @return	array	Links array with our settings link added.
+ * @param   array $links Action links.
+ * @return  array   Links array with our settings link added.
  */
 function tptn_plugin_actions_links( $links ) {
 
@@ -574,11 +580,11 @@ add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ )
 /**
  * Add links to the plugin action row.
  *
- * @since	1.5
+ * @since   1.5
  *
- * @param	array $links Action links.
- * @param	array $file Plugin file name.
- * @return	array	Links array with our links added
+ * @param   array $links Action links.
+ * @param   array $file Plugin file name.
+ * @return  array   Links array with our links added
  */
 function tptn_plugin_actions( $links, $file ) {
 	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
@@ -596,9 +602,9 @@ add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 );
 /**
  * Function to delete all duplicate rows in the posts table.
  *
- * @since	1.6.2
+ * @since   1.6.2
  *
- * @param	bool $daily  Daily flag.
+ * @param   bool $daily  Daily flag.
  */
 function tptn_clean_duplicates( $daily = false ) {
 	global $wpdb;
@@ -617,9 +623,9 @@ function tptn_clean_duplicates( $daily = false ) {
 /**
  * Function to merge counts with post numbers of blog ID 0 and 1 respectively.
  *
- * @since	2.0.4
+ * @since   2.0.4
  *
- * @param	bool $daily  Daily flag
+ * @param   bool $daily  Daily flag
  */
 function tptn_merge_blogids( $daily = false ) {
 	global $wpdb;
@@ -630,7 +636,8 @@ function tptn_merge_blogids( $daily = false ) {
 	}
 
 	if ( $daily ) {
-		$wpdb->query( "
+		$wpdb->query(
+			"
             INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
                 SELECT
                     postnumber,
@@ -641,9 +648,11 @@ function tptn_merge_blogids( $daily = false ) {
                 WHERE blog_ID IN (0,1)
                 GROUP BY postnumber, dp_date
             ) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-        " );
+        "
+		);
 	} else {
-		$wpdb->query( "
+		$wpdb->query(
+			"
             INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
                 SELECT
                     postnumber,
@@ -653,7 +662,8 @@ function tptn_merge_blogids( $daily = false ) {
                 WHERE blog_ID IN (0,1)
                 GROUP BY postnumber
             ) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-        " );
+        "
+		);
 	}
 
 	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" );

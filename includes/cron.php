@@ -8,7 +8,7 @@
 /**
  * Function to truncate daily run.
  *
- * @since	1.9.9.1
+ * @since   1.9.9.1
  */
 function tptn_cron() {
 	global $wpdb;
@@ -19,10 +19,12 @@ function tptn_cron() {
 	$from_date = strtotime( '-90 DAY' , $current_time );
 	$from_date = gmdate( 'Y-m-d H' , $from_date );
 
-	$resultscount = $wpdb->query( $wpdb->prepare( // WPCS: unprepared SQL OK.
-		"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
-		$from_date
-	) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+	$resultscount = $wpdb->query(
+		$wpdb->prepare( // WPCS: unprepared SQL OK.
+			 "DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
+			$from_date
+		)
+	); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 }
 add_action( 'tptn_cron_hook', 'tptn_cron' );
@@ -31,10 +33,10 @@ add_action( 'tptn_cron_hook', 'tptn_cron' );
 /**
  * Function to enable run or actions.
  *
- * @since	1.9
- * @param	int	$hour		Hour.
- * @param	int	$min		Minute.
- * @param	int	$recurrence	Frequency.
+ * @since   1.9
+ * @param   int $hour       Hour.
+ * @param   int $min        Minute.
+ * @param   int $recurrence Frequency.
  */
 function tptn_enable_run( $hour, $min, $recurrence ) {
 	// Invoke WordPress internal cron.
@@ -50,7 +52,7 @@ function tptn_enable_run( $hour, $min, $recurrence ) {
 /**
  * Function to disable daily run or actions.
  *
- * @since	1.9
+ * @since   1.9
  */
 function tptn_disable_run() {
 	if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
@@ -64,8 +66,8 @@ if ( ! function_exists( 'ald_more_reccurences' ) ) :
 	/**
 	 * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
 	 *
-	 * @param	array $schedules Array of existing schedules.
-	 * @return	array Filtered array with new schedules
+	 * @param   array $schedules Array of existing schedules.
+	 * @return  array Filtered array with new schedules
 	 */
 	function ald_more_reccurences( $schedules ) {
 		// Add a 'weekly' interval.
