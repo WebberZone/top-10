@@ -353,7 +353,7 @@ function tptn_get_registered_settings() {
 					'id'                     => 'count_disp_form_zero',
 					'name'                   => esc_html__( 'What do display when there are no visits?', 'top-10' ),
 					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
-					'desc'                   => esc_html_e( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ),
+					'desc'                   => esc_html__( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ),
 					'type'                   => 'textarea',
 					'options'                => 'No visits yet',
 				),
@@ -844,7 +844,7 @@ function tptn_upgrade_settings() {
 	// Convert the add_to_{x} to the new settings format.
 	$add_to = array(
 		'single'            => 'add_to_content',
-		'page'              => 'add_to_page',
+		'page'              => 'count_on_pages',
 		'feed'              => 'add_to_feed',
 		'home'              => 'add_to_home',
 		'category_archives' => 'add_to_category_archives',
