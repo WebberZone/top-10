@@ -219,7 +219,7 @@ add_action( 'admin_init', 'tptn_register_settings' );
  */
 function tptn_get_registered_settings() {
 
-	$tptn_settings                = array(
+	$tptn_settings = array(
 		/*** General settings ***/
 		'general'                   => apply_filters(
 			'tptn_settings_general', array(
@@ -394,7 +394,7 @@ function tptn_get_registered_settings() {
 					'type'                   => 'checkbox',
 					'options'                => true,
 				),
-				'show_count_non_admins'      => array(
+				'show_count_non_admins'   => array(
 					'id'                     => 'show_count_non_admins',
 					'name'                   => esc_html__( 'Show views to non-admins', 'top-10' ),
 					'desc'                   => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
@@ -404,7 +404,7 @@ function tptn_get_registered_settings() {
 			)
 		),
 		/*** List settings ***/
-		'list'                    => apply_filters(
+		'list'                      => apply_filters(
 			'tptn_settings_list', array(
 				'limit'                   => array(
 					'id'                     => 'limit',
@@ -414,7 +414,7 @@ function tptn_get_registered_settings() {
 					'options'                => '10',
 					'size'                   => 'small',
 				),
-				'how_old'                   => array(
+				'how_old'                 => array(
 					'id'                     => 'how_old',
 					'name'                   => esc_html__( 'Published age of posts', 'top-10' ),
 					'desc'                   => esc_html__( 'This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists. e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction.', 'top-10' ),
@@ -435,7 +435,7 @@ function tptn_get_registered_settings() {
 					'type'                   => 'numbercsv',
 					'options'                => '',
 				),
-				'exclude_cat_slugs'      => array(
+				'exclude_cat_slugs'       => array(
 					'id'                     => 'exclude_cat_slugs',
 					'name'                   => esc_html__( 'Exclude Categories', 'top-10' ),
 					'desc'                   => esc_html__( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.', 'top-10' ),
@@ -463,7 +463,7 @@ function tptn_get_registered_settings() {
 					'options'                => '<h3>' . esc_html__( 'Popular posts:', 'top-10' ) . '</h3>',
 					'size'                   => 'large',
 				),
-				'title_daily'                   => array(
+				'title_daily'             => array(
 					'id'                     => 'title_daily',
 					'name'                   => esc_html__( 'Heading of posts for daily/custom period lists', 'top-10' ),
 					'desc'                   => esc_html__( 'Displayed before the list of the posts as a the master heading', 'top-10' ),
@@ -490,7 +490,7 @@ function tptn_get_registered_settings() {
 					'type'                   => 'textarea',
 					'options'                => esc_html__( 'No top posts yet', 'top-10' ),
 				),
-				'show_excerpt'      => array(
+				'show_excerpt'            => array(
 					'id'                     => 'show_excerpt',
 					'name'                   => esc_html__( 'Show post excerpt', 'top-10' ),
 					'desc'                   => '',
@@ -505,21 +505,21 @@ function tptn_get_registered_settings() {
 					'options'                => '10',
 					'size'                   => 'small',
 				),
-				'show_date'      => array(
+				'show_date'               => array(
 					'id'                     => 'show_date',
 					'name'                   => esc_html__( 'Show date', 'top-10' ),
 					'desc'                   => '',
 					'type'                   => 'checkbox',
 					'options'                => false,
 				),
-				'show_author'      => array(
+				'show_author'             => array(
 					'id'                     => 'show_author',
 					'name'                   => esc_html__( 'Show author', 'top-10' ),
 					'desc'                   => '',
 					'type'                   => 'checkbox',
 					'options'                => false,
 				),
-				'disp_list_count'      => array(
+				'disp_list_count'         => array(
 					'id'                     => 'disp_list_count',
 					'name'                   => esc_html__( 'Show number of views', 'top-10' ),
 					'desc'                   => '',
@@ -548,7 +548,7 @@ function tptn_get_registered_settings() {
 					'type'                   => 'checkbox',
 					'options'                => false,
 				),
-				'exclude_on_post_ids'        => array(
+				'exclude_on_post_ids'     => array(
 					'id'                     => 'exclude_on_post_ids',
 					'name'                   => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
 					'desc'                   => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
@@ -607,7 +607,7 @@ function tptn_get_registered_settings() {
 						'text_only'             => esc_html__( 'Do not display thumbnails, only text', 'top-10' ),
 					),
 				),
-				'thumb_size'           => array(
+				'thumb_size'              => array(
 					'id'                     => 'thumb_size',
 					'name'                   => esc_html__( 'Thumbnail size', 'top-10' ),
 					'desc'                   => esc_html__( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image. If you change the width and/or height below, existing images will not be automatically resized.' ) . '<br />' . sprintf( esc_html__( 'I recommend using %1$s or %2$s to regenerate all image sizes.', 'top-10' ),'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">OTF Regenerate Thumbnails</a>','<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>' ),
@@ -631,7 +631,7 @@ function tptn_get_registered_settings() {
 					'options'                => '250',
 					'size'                   => 'small',
 				),
-				'thumb_crop'             => array(
+				'thumb_crop'              => array(
 					'id'                     => 'thumb_crop',
 					'name'                   => esc_html__( 'Hard crop thumbnails', 'top-10' ),
 					'desc'                   => esc_html__( 'Check this box to hard crop the thumbnails. i.e. force the width and height above vs. maintaining proportions.', 'top-10' ),
@@ -673,7 +673,7 @@ function tptn_get_registered_settings() {
 					'type'                   => 'checkbox',
 					'options'                => true,
 				),
-				'thumb_default'          => array(
+				'thumb_default'           => array(
 					'id'                     => 'thumb_default',
 					'name'                   => esc_html__( 'Default thumbnail', 'top-10' ),
 					'desc'                   => esc_html__( 'Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below.', 'top-10' ),
@@ -686,7 +686,7 @@ function tptn_get_registered_settings() {
 		/*** Styles settings ***/
 		'styles'                    => apply_filters(
 			'tptn_settings_styles', array(
-				'tptn_styles'           => array(
+				'tptn_styles'             => array(
 					'id'                     => 'tptn_styles',
 					'name'                   => esc_html__( 'Popular posts style', 'top-10' ),
 					'desc'                   => '',
