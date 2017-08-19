@@ -371,6 +371,75 @@ function tptn_radio_callback( $args ) {
 
 
 /**
+ * Radio callback with description.
+ *
+ * Renders radio boxes with each item having it separate description.
+ *
+ * @since 2.5.0
+ *
+ * @param array $args Array of arguments.
+ * @return void
+ */
+function tptn_radiodesc_callback( $args ) {
+	global $tptn_settings;
+	$html = '';
+
+	foreach ( $args['options'] as $option ) {
+		$checked = false;
+
+		if ( isset( $tptn_settings[ $args['id'] ] ) && $tptn_settings[ $args['id'] ] === $option['id'] ) {
+			$checked = true;
+		} elseif ( isset( $args['default'] ) && $args['default'] === $option['id'] && ! isset( $tptn_settings[ $args['id'] ] ) ) {
+			$checked = true;
+		}
+
+		$html .= sprintf( '<input name="tptn_settings[%1$s]" id="tptn_settings[%1$s][%2$s]" type="radio" value="%2$s" %3$s /> ', sanitize_key( $args['id'] ), $option['id'], checked( true, $checked, false ) );
+		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s</label>', sanitize_key( $args['id'] ), $option['id'], $option['name'] );
+		$html .= ' - <em>' . esc_html( $option['description'] ) . '</em> <br />';
+	}
+
+	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
+
+	/** This filter has been defined in settings-page.php */
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+}
+
+
+/**
+ * Callback for thumbnail sizes
+ *
+ * Renders list of radio boxes with various thumbnail sizes.
+ *
+ * @since 2.5.0
+ *
+ * @param array $args Array of arguments.
+ * @return void
+ */
+function tptn_thumbsizes_callback( $args ) {
+	global $tptn_settings;
+	$html = '';
+
+	foreach ( $args['options'] as $option ) {
+		$checked = false;
+
+		if ( isset( $tptn_settings[ $args['id'] ] ) && $tptn_settings[ $args['id'] ] === $option['name'] ) {
+			$checked = true;
+		} elseif ( isset( $args['default'] ) && $args['default'] === $option['name'] && ! isset( $tptn_settings[ $args['id'] ] ) ) {
+			$checked = true;
+		}
+
+		$html .= sprintf( '<input name="tptn_settings[%1$s]" id="tptn_settings[%1$s][%2$s]" type="radio" value="%2$s" %3$s /> ', sanitize_key( $args['id'] ), $option['name'], checked( true, $checked, false ) );
+		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s</label>', sanitize_key( $args['id'] ), $option['name'], $option['name'] . ' (' . $option['width'] . 'x' . $option['height'] . ')' );
+	}
+
+	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
+
+	/** This filter has been defined in settings-page.php */
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+}
+
+
+/**
  * Number Callback
  *
  * Renders number fields.
@@ -453,7 +522,7 @@ function tptn_select_callback( $args ) {
  * @return void
  */
 function tptn_descriptive_text_callback( $args ) {
-	$html = wp_kses_post( $args['desc'] );
+	$html = '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
 	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.

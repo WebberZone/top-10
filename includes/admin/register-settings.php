@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 2.5.0
  *
- * @param string $key Key of the option to fetch.
+ * @param string $key     Key of the option to fetch.
  * @param mixed  $default Default value to fetch if option is missing.
  * @return mixed
  */
@@ -44,9 +44,9 @@ function tptn_get_option( $key = '', $default = null ) {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param mixed $value  Value of the option
-	 * @param mixed $key  Name of the option
-	 * @param mixed $default Default value
+	 * @param mixed   $value   Value of the option
+	 * @param mixed   $key     Name of the option
+	 * @param mixed   $default Default value
 	 */
 	$value = apply_filters( 'tptn_get_option', $value, $key, $default );
 
@@ -55,9 +55,9 @@ function tptn_get_option( $key = '', $default = null ) {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param mixed $value  Value of the option
-	 * @param mixed $key  Name of the option
-	 * @param mixed $default Default value
+	 * @param mixed   $value   Value of the option
+	 * @param mixed   $key     Name of the option
+	 * @param mixed   $default Default value
 	 */
 	return apply_filters( 'tptn_get_option_' . $key, $value, $key, $default );
 }
@@ -72,8 +72,8 @@ function tptn_get_option( $key = '', $default = null ) {
  *
  * @since 2.5.0
  *
- * @param  string          $key   The Key to update.
- * @param  string|bool|int $value The value to set the key to.
+ * @param string          $key   The Key to update.
+ * @param string|bool|int $value The value to set the key to.
  * @return boolean   True if updated, false if not.
  */
 function tptn_update_option( $key = '', $value = false ) {
@@ -97,8 +97,8 @@ function tptn_update_option( $key = '', $value = false ) {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param  string|bool|int $value The value to set the key to
-	 * @param  string          $key   The Key to update
+	 * @param string|bool|int $value The value to set the key to
+	 * @param string  $key   The Key to update
 	 */
 	$value = apply_filters( 'tptn_update_option', $value, $key );
 
@@ -122,7 +122,7 @@ function tptn_update_option( $key = '', $value = false ) {
  *
  * @since 2.5.0
  *
- * @param  string $key The Key to update.
+ * @param string $key The Key to update.
  * @return boolean   True if updated, false if not.
  */
 function tptn_delete_option( $key = '' ) {
@@ -189,6 +189,7 @@ function tptn_register_settings() {
 					'size'             => null,
 					'field_class'      => '',
 					'field_attributes' => '',
+					'placeholder'      => '',
 				)
 			);
 
@@ -218,147 +219,488 @@ add_action( 'admin_init', 'tptn_register_settings' );
  */
 function tptn_get_registered_settings() {
 
-	$tptn_settings = array(
+	$tptn_settings                = array(
 		/*** General settings ***/
-		'general'             => apply_filters(
-			'tptn_settings_general',
-			array(
-				'slug_header'  => array(
-					'id'               => 'slug_header',
-					'name'             => '<h3>' . esc_html__( 'Slug options', 'top-10' ) . '</h3>',
-					'desc'             => '',
-					'type'             => 'header',
+		'general'                   => apply_filters(
+			'tptn_settings_general', array(
+				'trackers'                => array(
+					'id'                     => 'trackers',
+					'name'                   => esc_html__( 'Enable trackers', 'top-10' ),
+					/* translators: 1: Code. */
+					'desc'                   => '',
+					'type'                   => 'multicheck',
+					'default'                => array(
+						'overall'               => 'overall',
+						'daily'                 => 'daily',
+					),
+					'options'                => array(
+						'overall'               => esc_html__( 'Overall', 'top-10' ),
+						'daily'                 => esc_html__( 'Daily', 'top-10' ),
+					),
 				),
-				'kb_slug'           => array(
-					'id'               => 'kb_slug',
-					'name'             => esc_html__( 'Knowledgebase slug', 'top-10' ),
-					'desc'             => esc_html__( 'This will set the opening path of the URL of the knowledgebase and is set when registering the custom post type', 'top-10' ),
-					'type'             => 'text',
-					'options'          => 'top-10',
+				'cache'                   => array(
+					'id'                     => 'cache',
+					'name'                   => esc_html__( 'Enable cache', 'top-10' ),
+					'desc'                   => esc_html__( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
 				),
-				'category_slug'     => array(
-					'id'               => 'category_slug',
-					'name'             => esc_html__( 'Category slug', 'top-10' ),
-					'desc'             => esc_html__( 'Each category is a section of the knowledgebase. This setting is used when registering the custom category and forms a part of the URL when browsing category archives', 'top-10' ),
-					'type'             => 'text',
-					'options'          => 'section',
+				'cache_time'              => array(
+					'id'                     => 'cache_time',
+					'name'                   => esc_html__( 'Time to cache', 'top-10' ),
+					'desc'                   => esc_html__( 'Enter the number of seconds to cache the output.', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => HOUR_IN_SECONDS,
 				),
-				'tag_slug'          => array(
-					'id'               => 'tag_slug',
-					'name'             => esc_html__( 'Tag slug', 'top-10' ),
-					'desc'             => esc_html__( 'Each article can have multiple tags. This setting is used when registering the custom tag and forms a part of the URL when browsing tag archives', 'top-10' ),
-					'type'             => 'text',
-					'options'          => 'kb-tags',
+				'daily_midnight'          => array(
+					'id'                     => 'daily_midnight',
+					'name'                   => esc_html__( 'Start daily counts from midnight', 'top-10' ),
+					'desc'                   => esc_html__( 'Daily counter will display number of visits from midnight. This option is checked by default and mimics the way most normal counters work. Turning this off will allow you to use the hourly setting in the next option.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
 				),
-				'uninstall_header'  => array(
-					'id'               => 'uninstall_header',
-					'name'             => '<h3>' . esc_html__( 'Uninstall options', 'top-10' ) . '</h3>',
-					'desc'             => '',
-					'type'             => 'header',
-					'options'          => '',
+				'range_desc'              => array(
+					'id'                     => 'range_desc',
+					'name'                   => '<strong>' . esc_html__( 'Default custom period range', 'top-10' ) . '</strong>',
+					'desc'                   => esc_html__( 'The next two options allow you to set the default range for the custom period. This was previously called the daily range. This can be overridden in the widget.', 'top-10' ),
+					'type'                   => 'descriptive_text',
 				),
-				'uninstall_options' => array(
-					'id'               => 'uninstall_options',
-					'name'             => esc_html__( 'Delete options on uninstall', 'top-10' ),
-					'desc'             => esc_html__( 'Check this box to delete the settings on this page when the plugin is deleted via the Plugins page in your WordPress Admin', 'top-10' ),
-					'type'             => 'checkbox',
-					'options'          => true,
+				'daily_range'             => array(
+					'id'                     => 'daily_range',
+					'name'                   => esc_html__( 'Day(s)', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '1',
+					'size'                   => 'small',
 				),
-				'uninstall_data'    => array(
-					'id'               => 'uninstall_data',
-					'name'             => esc_html__( 'Delete all knowledgebase posts on uninstall', 'top-10' ),
-					'desc'             => esc_html__( 'Check this box to delete all the posts, categories and tags created by the plugin. There is no way to restore the data if you choose this option', 'top-10' ),
-					'type'             => 'checkbox',
-					'options'          => false,
+				'hour_range'              => array(
+					'id'                     => 'hour_range',
+					'name'                   => esc_html__( 'Hour(s)', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '0',
+					'size'                   => 'small',
 				),
-				'feed_header'       => array(
-					'id'               => 'feed_header',
-					'name'             => '<h3>' . esc_html__( 'Feed options', 'top-10' ) . '</h3>',
-					'desc'             => '',
-					'type'             => 'header',
-					'options'          => '',
+				'uninstall_clean_options' => array(
+					'id'                     => 'uninstall_clean_options',
+					'name'                   => esc_html__( 'Delete options on uninstall', 'top-10' ),
+					'desc'                   => esc_html__( 'If this is checked, all settings related to Top 10 are removed from the database if you choose to uninstall/delete the plugin.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
 				),
-				'include_in_feed'   => array(
-					'id'               => 'include_in_feed',
-					'name'             => esc_html__( 'Include in feed', 'top-10' ),
-					'desc'             => esc_html__( 'Adds the knowledgebase articles to the main RSS feed for your site', 'top-10' ),
-					'type'             => 'checkbox',
-					'options'          => true,
+				'uninstall_clean_tables'  => array(
+					'id'                     => 'uninstall_clean_tables',
+					'name'                   => esc_html__( 'Delete counter data on uninstall', 'top-10' ),
+					'desc'                   => esc_html__( 'If this is checked, the tables containing the counter statistics are removed from the database if you choose to uninstall/delete the plugin. Keep this unchecked if you choose to reinstall the plugin and do not want to lose your counter data.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
 				),
-				'disable_kb_feed'   => array(
-					'id'               => 'disable_kb_feed',
-					'name'             => esc_html__( 'Disable KB feed', 'top-10' ),
-					/* translators: 1: Opening link tag, 2: Closing link tag. */
-					'desc'             => sprintf( esc_html__( 'The knowledgebase articles have a default feed. This option will disable the feed. You might need to %1$srefresh your permalinks%2$s when changing this option.', 'top-10' ), '<a href="' . admin_url( 'options-permalink.php' ) . '" target="_blank">', '</a>' ),
-					'type'             => 'checkbox',
-					'options'          => false,
+				'show_metabox'            => array(
+					'id'                     => 'show_metabox',
+					'name'                   => esc_html__( 'Show metabox', 'top-10' ),
+					'desc'                   => esc_html__( 'This will add the Top 10 metabox on Edit Posts or Add New Posts screens. Also applies to Pages and Custom Post Types.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
+				),
+				'show_metabox_admins'     => array(
+					'id'                     => 'show_metabox_admins',
+					'name'                   => esc_html__( 'Limit meta box to Admins only', 'top-10' ),
+					'desc'                   => esc_html__( 'If selected, the meta box will be hidden from anyone who is not an Admin. By default, Contributors and above will be able to see the meta box. Applies only if the above option is selected.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'show_credit'             => array(
+					'id'                     => 'show_credit',
+					'name'                   => esc_html__( 'Link to Top 10 plugin page', 'top-10' ),
+					'desc'                   => esc_html__( 'A no-follow link to the plugin homepage will be added as the last item of the popular posts.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
 				),
 			)
 		),
 		/*** Output settings ***/
-		'output'             => apply_filters(
-			'tptn_settings_output',
-			array(
-				'category_level'     => array(
-					'id'                => 'category_level',
-					'name'              => esc_html__( 'First section level', 'top-10' ),
-					'desc'              => esc_html__( 'This option allows you to create multi-level knowledgebases. This works in conjunction with the inbuilt styles. Set to 1 to lay out the top level sections in a grid. Set to 2 to lay out the second level categories in the grid. This is great if you have multiple products and want to create separate knowledgebases for each of them. The default option is 2 and was the behaviour of this plugin before v1.5.0.', 'top-10' ),
-					'type'                   => 'number',
-					'options'                => '2',
-					'size'                   => 'small',
-					'min'                    => '1',
-					'max'                    => '5',
+		'counter'                   => apply_filters(
+			'tptn_settings_counter', array(
+				'add_to'                  => array(
+					'id'                     => 'add_to',
+					'name'                   => esc_html__( 'Display number of views on', 'top-10' ) . ':',
+					/* translators: 1: Code. */
+					'desc'                   => sprintf( esc_html__( 'If you choose to disable this, please add %1$s to your template file where you want it displayed', 'top-10' ),  "<code>&lt;?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?&gt;</code>" ),
+					'type'                   => 'multicheck',
+					'default'                => array(
+						'single'                => 'single',
+						'page'                  => 'page',
+					),
+					'options'                => array(
+						'single'                => esc_html__( 'Posts', 'top-10' ),
+						'page'                  => esc_html__( 'Pages', 'top-10' ),
+						'home'                  => esc_html__( 'Home page', 'top-10' ),
+						'feed'                  => esc_html__( 'Feeds', 'top-10' ),
+						'category_archives'     => esc_html__( 'Category archives', 'top-10' ),
+						'tag_archives'          => esc_html__( 'Tag archives', 'top-10' ),
+						'other_archives'        => esc_html__( 'Other archives', 'top-10' ),
+					),
 				),
-				'show_article_count' => array(
-					'id'                => 'show_article_count',
-					'name'              => esc_html__( 'Show article count', 'top-10' ),
-					'desc'              => esc_html__( 'If selected, the number of articles will be displayed in an orange circle next to the header. You can override the color by styling tptn_section_count', 'top-10' ),
-					'type'              => 'checkbox',
-					'options'           => false,
+				'count_disp_form'         => array(
+					'id'                     => 'count_disp_form',
+					'name'                   => esc_html__( 'Format to display the post views', 'top-10' ),
+					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
+					'desc'                   => sprintf( esc_html__( 'Use %1$s to display the total count, %2$s for daily count and %3$s for overall counts across all posts. Default display is %4$s', 'top-10' ), '<code>%totalcount%</code>', '<code>%dailycount%</code>', '<code>%overallcount%</code>', '<code>(Visited %totalcount% times, %dailycount% visits today)</code>' ),
+					'type'                   => 'textarea',
+					'options'                => '(Visited %totalcount% times, %dailycount% visits today)',
 				),
-				'show_excerpt'       => array(
-					'id'                => 'show_excerpt',
-					'name'              => esc_html__( 'Show excerpt', 'top-10' ),
-					'desc'              => esc_html__( 'Select to include the post excerpt after the article link', 'top-10' ),
-					'type'              => 'checkbox',
-					'options'           => false,
+				'count_disp_form_zero'    => array(
+					'id'                     => 'count_disp_form_zero',
+					'name'                   => esc_html__( 'What do display when there are no visits?', 'top-10' ),
+					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
+					'desc'                   => esc_html_e( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ),
+					'type'                   => 'textarea',
+					'options'                => 'No visits yet',
 				),
-				'clickable_section'  => array(
-					'id'                => 'clickable_section',
-					'name'              => esc_html__( 'Link section title', 'top-10' ),
-					'desc'              => esc_html__( 'If selected, the title of each section of the knowledgebase will be linked to its own page', 'top-10' ),
-					'type'              => 'checkbox',
-					'options'           => true,
+				'dynamic_post_count'      => array(
+					'id'                     => 'dynamic_post_count',
+					'name'                   => esc_html__( 'Always display latest post count', 'top-10' ),
+					'desc'                   => esc_html__( 'This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'tracker_types'           => array(
+					'id'                     => 'tracker_types',
+					'name'                   => esc_html__( 'Tracker type', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'radiodesc',
+					'default'                => 'query_based',
+					'options'                => tptn_get_tracker_types(),
+				),
+				'track_users'             => array(
+					'id'                     => 'track_users',
+					'name'                   => esc_html__( 'Track user groups', 'top-10' ) . ':',
+					'desc'                   => esc_html__( 'If the current user falls into any one of the three groups when browsing a post, then the tracker is disabled.', 'top-10' ),
+					'type'                   => 'multicheck',
+					'default'                => array(
+						'editors'               => 'editors',
+						'admins'                => 'admins',
+					),
+					'options'                => array(
+						'authors'               => esc_html__( 'Authors', 'top-10' ),
+						'editors'               => esc_html__( 'Editors', 'top-10' ),
+						'admins'                => esc_html__( 'Admins', 'top-10' ),
+					),
+				),
+				'pv_in_admin'             => array(
+					'id'                     => 'pv_in_admin',
+					'name'                   => esc_html__( 'Page views in admin', 'top-10' ),
+					'desc'                   => esc_html__( "Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.", 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
+				),
+				'show_count_non_admins'      => array(
+					'id'                     => 'show_count_non_admins',
+					'name'                   => esc_html__( 'Show views to non-admins', 'top-10' ),
+					'desc'                   => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
 				),
 			)
 		),
-		/*** Style settings ***/
-		'styles'             => apply_filters(
-			'tptn_settings_styles',
-			array(
-				'include_styles'    => array(
-					'id'               => 'include_styles',
-					'name'             => esc_html__( 'Include inbuilt styles', 'top-10' ),
-					'desc'             => esc_html__( 'Uncheck this to disable this plugin from adding the inbuilt styles. You will need to add your own CSS styles if you disable this option', 'top-10' ),
-					'type'             => 'checkbox',
-					'options'          => true,
-				),
-				'columns'            => array(
-					'id'                => 'columns',
-					'name'              => esc_html__( 'Number of columns', 'top-10' ),
-					'desc'              => esc_html__( 'Set number of columns to display the knowledgebase archives. This is only works if the above option is selected.', 'top-10' ),
+		/*** List settings ***/
+		'list'                    => apply_filters(
+			'tptn_settings_list', array(
+				'limit'                   => array(
+					'id'                     => 'limit',
+					'name'                   => esc_html__( 'Number of posts to display', 'top-10' ),
+					'desc'                   => esc_html__( 'Maximum number of posts that will be displayed in the list. This option is used if you don not specify the number of posts in the widget or shortcodes', 'top-10' ),
 					'type'                   => 'number',
-					'options'                => '2',
+					'options'                => '10',
 					'size'                   => 'small',
-					'min'                    => '1',
-					'max'                    => '5',
 				),
-				'custom_css'        => array(
-					'id'               => 'custom_css',
-					'name'             => esc_html__( 'Custom CSS', 'top-10' ),
-					'desc'             => esc_html__( 'Enter any custom valid CSS without any wrapping &lt;style&gt; tags', 'top-10' ),
-					'type'             => 'textarea',
-					'options'          => '',
+				'how_old'                   => array(
+					'id'                     => 'how_old',
+					'name'                   => esc_html__( 'Published age of posts', 'top-10' ),
+					'desc'                   => esc_html__( 'This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists. e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction.', 'top-10' ),
+					'type'                   => 'number',
+					'options'                => '0',
+				),
+				'post_types'              => array(
+					'id'                     => 'post_types',
+					'name'                   => esc_html__( 'Post types to include', 'top-10' ),
+					'desc'                   => esc_html__( 'Select which post types you want to include in the list of posts. This field can be overridden using a comma separated list of post types when using the manual display.', 'top-10' ),
+					'type'                   => 'posttypes',
+					'options'                => 'post',
+				),
+				'exclude_post_ids'        => array(
+					'id'                     => 'exclude_post_ids',
+					'name'                   => esc_html__( 'Post/page IDs to exclude', 'top-10' ),
+					'desc'                   => esc_html__( 'Comma-separated list of post or page IDs to exclude from the list. e.g. 188,320,500', 'top-10' ),
+					'type'                   => 'numbercsv',
+					'options'                => '',
+				),
+				'exclude_cat_slugs'      => array(
+					'id'                     => 'exclude_cat_slugs',
+					'name'                   => esc_html__( 'Exclude Categories', 'top-10' ),
+					'desc'                   => esc_html__( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.', 'top-10' ),
+					'type'                   => 'csv',
+					'options'                => '',
+					'size'                   => 'large',
+					'field_class'            => 'category_autocomplete',
+					'field_attributes'       => array(
+						'data-wp-taxonomy'      => 'category',
+					),
+				),
+				'exclude_categories'      => array(
+					'id'                     => 'exclude_categories',
+					'name'                   => esc_html__( 'Exclude category IDs', 'top-10' ),
+					'desc'                   => esc_html__( 'This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy.', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => '',
+					'readonly'               => true,
+				),
+				'title'                   => array(
+					'id'                     => 'title',
+					'name'                   => esc_html__( 'Heading of posts', 'top-10' ),
+					'desc'                   => esc_html__( 'Displayed before the list of the posts as a the master heading', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => '<h3>' . esc_html__( 'Popular posts:', 'top-10' ) . '</h3>',
+					'size'                   => 'large',
+				),
+				'title_daily'                   => array(
+					'id'                     => 'title_daily',
+					'name'                   => esc_html__( 'Heading of posts for daily/custom period lists', 'top-10' ),
+					'desc'                   => esc_html__( 'Displayed before the list of the posts as a the master heading', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => '<h3>' . esc_html__( 'Currently trending:', 'top-10' ) . '</h3>',
+					'size'                   => 'large',
+				),
+				'blank_output'            => array(
+					'id'                     => 'blank_output',
+					'name'                   => esc_html__( 'Show when no posts are found', 'top-10' ),
+					/* translators: 1: Code. */
+					'desc'                   => sprintf( esc_html__( 'If you choose to disable this, please add %1$s to your template file where you want it displayed', 'top-10' ),  "<code>&lt;?php if ( function_exists( 'echo_wherego' ) ) { echo_wherego(); } ?&gt;</code>" ),
+					'type'                   => 'radio',
+					'default'                => 'blank',
+					'options'                => array(
+						'blank'                 => esc_html__( 'Blank output', 'top-10' ),
+						'custom_text'           => esc_html__( 'Display custom text', 'top-10' ),
+					),
+				),
+				'blank_output_text'       => array(
+					'id'                     => 'blank_output_text',
+					'name'                   => esc_html__( 'Custom text', 'top-10' ),
+					'desc'                   => esc_html__( 'Enter the custom text that will be displayed if the second option is selected above', 'top-10' ),
+					'type'                   => 'textarea',
+					'options'                => esc_html__( 'No top posts yet', 'top-10' ),
+				),
+				'show_excerpt'      => array(
+					'id'                     => 'show_excerpt',
+					'name'                   => esc_html__( 'Show post excerpt', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'excerpt_length'          => array(
+					'id'                     => 'excerpt_length',
+					'name'                   => esc_html__( 'Length of excerpt (in words)', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '10',
+					'size'                   => 'small',
+				),
+				'show_date'      => array(
+					'id'                     => 'show_date',
+					'name'                   => esc_html__( 'Show date', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'show_author'      => array(
+					'id'                     => 'show_author',
+					'name'                   => esc_html__( 'Show author', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'disp_list_count'      => array(
+					'id'                     => 'disp_list_count',
+					'name'                   => esc_html__( 'Show number of views', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'title_length'            => array(
+					'id'                     => 'title_length',
+					'name'                   => esc_html__( 'Limit post title length (in characters)', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '60',
+					'size'                   => 'small',
+				),
+				'link_new_window'         => array(
+					'id'                     => 'link_new_window',
+					'name'                   => esc_html__( 'Open links in new window', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'link_nofollow'           => array(
+					'id'                     => 'link_nofollow',
+					'name'                   => esc_html__( 'Add nofollow to links', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'exclude_on_post_ids'        => array(
+					'id'                     => 'exclude_on_post_ids',
+					'name'                   => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
+					'desc'                   => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
+					'type'                   => 'numbercsv',
+					'options'                => '',
+				),
+				'customize_output_header' => array(
+					'id'                     => 'customize_output_header',
+					'name'                   => '<h3>' . esc_html__( 'Customize the output', 'top-10' ) . '</h3>',
+					'desc'                   => esc_html__( 'HTML to display...', 'top-10' ),
+					'type'                   => 'header',
+				),
+				'before_list'             => array(
+					'id'                     => 'before_list',
+					'name'                   => esc_html__( 'Before the list of posts', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '<ul>',
+				),
+				'after_list'              => array(
+					'id'                     => 'after_list',
+					'name'                   => esc_html__( 'After the list of posts', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '</ul>',
+				),
+				'before_list_item'        => array(
+					'id'                     => 'before_list_item',
+					'name'                   => esc_html__( 'Before each list item', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '<li>',
+				),
+				'after_list_item'         => array(
+					'id'                     => 'after_list_item',
+					'name'                   => esc_html__( 'After each list item', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'text',
+					'options'                => '</li>',
+				),
+			)
+		),
+		/*** Thumbnail settings ***/
+		'thumbnail'                 => apply_filters(
+			'tptn_settings_thumbnail', array(
+				'post_thumb_op'           => array(
+					'id'                     => 'post_thumb_op',
+					'name'                   => esc_html__( 'Location of the post thumbnail', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'radio',
+					'default'                => 'text_only',
+					'options'                => array(
+						'inline'                => esc_html__( 'Display thumbnails inline with posts, before title', 'top-10' ),
+						'after'                 => esc_html__( 'Display thumbnails inline with posts, after title', 'top-10' ),
+						'thumbs_only'           => esc_html__( 'Display only thumbnails, no text', 'top-10' ),
+						'text_only'             => esc_html__( 'Do not display thumbnails, only text', 'top-10' ),
+					),
+				),
+				'thumb_size'           => array(
+					'id'                     => 'thumb_size',
+					'name'                   => esc_html__( 'Thumbnail size', 'top-10' ),
+					'desc'                   => esc_html__( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image. If you change the width and/or height below, existing images will not be automatically resized.' ) . '<br />' . sprintf( esc_html__( 'I recommend using %1$s or %2$s to regenerate all image sizes.', 'top-10' ),'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">OTF Regenerate Thumbnails</a>','<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>' ),
+					'type'                   => 'thumbsizes',
+					'default'                => 'tptn_thumbnail',
+					'options'                => tptn_get_all_image_sizes(),
+				),
+				'thumb_width'             => array(
+					'id'                     => 'thumb_width',
+					'name'                   => esc_html__( 'Thumbnail width', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '250',
+					'size'                   => 'small',
+				),
+				'thumb_height'            => array(
+					'id'                     => 'thumb_height',
+					'name'                   => esc_html__( 'Thumbnail height', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '250',
+					'size'                   => 'small',
+				),
+				'thumb_crop'             => array(
+					'id'                     => 'thumb_crop',
+					'name'                   => esc_html__( 'Hard crop thumbnails', 'top-10' ),
+					'desc'                   => esc_html__( 'Check this box to hard crop the thumbnails. i.e. force the width and height above vs. maintaining proportions.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
+				),
+				'thumb_html'              => array(
+					'id'                     => 'thumb_html',
+					'name'                   => esc_html__( 'Thumbnail size attributes', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'radio',
+					'default'                => 'html',
+					'options'                => array(
+						/* translators: %s: Code. */
+						'css'                   => sprintf( esc_html__( 'Use CSS to set the width and height: e.g. %s', 'top-10' ), '<code>style="max-width:250px;max-height:250px"</code>' ),
+						/* translators: %s: Code. */
+						'html'                  => sprintf( esc_html__( 'Use HTML attributes to set the width and height: e.g. %s', 'top-10' ), '<code>width="250" height="250"</code>' ),
+						'none'                  => esc_html__( 'No width or height set. You will need to use external styles to force any width or height of your choice.', 'top-10' ),
+					),
+				),
+				'thumb_meta'              => array(
+					'id'                     => 'thumb_meta',
+					'name'                   => esc_html__( 'Thumbnail meta field name', 'top-10' ),
+					'desc'                   => esc_html__( 'The value of this field should contain the URL of the image and can be set in the metabox in the Edit Post screen', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => 'post-image',
+				),
+				'scan_images'             => array(
+					'id'                     => 'scan_images',
+					'name'                   => esc_html__( 'Get first image', 'top-10' ),
+					'desc'                   => esc_html__( 'The plugin will fetch the first image in the post content if this is enabled. This can slow down the loading of your page if the first image in the followed posts is large in file-size.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
+				),
+				'thumb_default_show'      => array(
+					'id'                     => 'thumb_default_show',
+					'name'                   => esc_html__( 'Use default thumbnail?', 'top-10' ),
+					'desc'                   => esc_html__( 'If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => true,
+				),
+				'thumb_default'          => array(
+					'id'                     => 'thumb_default',
+					'name'                   => esc_html__( 'Default thumbnail', 'top-10' ),
+					'desc'                   => esc_html__( 'Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below.', 'top-10' ),
+					'type'                   => 'text',
+					'options'                => TOP_TEN_PLUGIN_URL . 'default.png',
+					'size'                   => 'large',
+				),
+			)
+		),
+		/*** Styles settings ***/
+		'styles'                    => apply_filters(
+			'tptn_settings_styles', array(
+				'tptn_styles'           => array(
+					'id'                     => 'tptn_styles',
+					'name'                   => esc_html__( 'Popular posts style', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'radiodesc',
+					'default'                => 'no_style',
+					'options'                => tptn_get_styles(),
+				),
+				'custom_CSS'              => array(
+					'id'                     => 'custom_CSS',
+					'name'                   => esc_html__( 'Custom CSS', 'top-10' ),
+					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
+					'desc'                   => sprintf( esc_html__( 'Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available CSS classes to style.', 'top-10' ), '<a href="' . esc_url( 'http://wordpress.org/plugins/top-10/faq/' ) . '" target="_blank">', '</a>', '<code>', '</code>' ),
+					'type'                   => 'textarea',
+					'options'                => '',
 				),
 			)
 		),
@@ -369,7 +711,7 @@ function tptn_get_registered_settings() {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param array $tptn_setings Settings array
+	 * @param array   $tptn_setings Settings array
 	 */
 	return apply_filters( 'tptn_registered_settings', $tptn_settings );
 
@@ -400,7 +742,7 @@ function tptn_get_registered_settings_types() {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param array $options Default settings.
+	 * @param array   $options Default settings.
 	 */
 	return apply_filters( 'tptn_get_settings_types', $options );
 }
@@ -428,10 +770,16 @@ function tptn_settings_defaults() {
 			if ( in_array( $option['type'], array( 'textarea', 'text', 'csv', 'numbercsv', 'posttypes', 'number' ), true ) && isset( $option['options'] ) ) {
 				$options[ $option['id'] ] = $option['options'];
 			}
-			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select' ), true ) && isset( $option['default'] ) ) {
+			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select', 'radiodesc' ), true ) && isset( $option['default'] ) ) {
 				$options[ $option['id'] ] = $option['default'];
 			}
 		}
+	}
+
+	$upgraded_settings = tptn_upgrade_settings();
+
+	if ( false !== $upgraded_settings ) {
+		$options = array_merge( $options, $upgraded_settings );
 	}
 
 	/**
@@ -439,7 +787,7 @@ function tptn_settings_defaults() {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param array $options Default settings.
+	 * @param array   $options Default settings.
 	 */
 	return apply_filters( 'tptn_settings_defaults', $options );
 }
@@ -475,4 +823,109 @@ function tptn_get_default_option( $key = '' ) {
  */
 function tptn_settings_reset() {
 	delete_option( 'tptn_settings' );
+}
+
+/**
+ * Upgrade pre v2.5.0 settings.
+ *
+ * @since v2.5.0
+ * @return array Settings array
+ */
+function tptn_upgrade_settings() {
+	$old_settings = get_option( 'ald_tptn_settings' );
+
+	if ( empty( $old_settings ) ) {
+		return false;
+	}
+
+	// Start will assigning all the old settings to the new settings and we will unset later on.
+	$settings = $old_settings;
+
+	// Convert the add_to_{x} to the new settings format.
+	$add_to = array(
+		'single'            => 'add_to_content',
+		'page'              => 'add_to_page',
+		'feed'              => 'add_to_feed',
+		'home'              => 'add_to_home',
+		'category_archives' => 'add_to_category_archives',
+		'tag_archives'      => 'add_to_tag_archives',
+		'other_archives'    => 'add_to_archives',
+	);
+
+	foreach ( $add_to as $newkey => $oldkey ) {
+		if ( $old_settings[ $oldkey ] ) {
+			$settings['add_to'][ $newkey ] = $newkey;
+		}
+		unset( $settings[ $oldkey ] );
+	}
+
+	// Convert the activate_overall and activate_daily to the new settings format.
+	$trackers = array(
+		'overall' => 'activate_overall',
+		'daily'   => 'activate_daily',
+	);
+
+	foreach ( $trackers as $newkey => $oldkey ) {
+		if ( $old_settings[ $oldkey ] ) {
+			$settings['trackers'][ $newkey ] = $newkey;
+		}
+		unset( $settings[ $oldkey ] );
+	}
+
+	// Convert the track_{x} to the new settings format.
+	$track_users = array(
+		'authors' => 'track_authors',
+		'editors' => 'track_editors',
+		'admins'  => 'track_admins',
+	);
+
+	foreach ( $track_users as $newkey => $oldkey ) {
+		if ( $old_settings[ $oldkey ] ) {
+			$settings['track_users'][ $newkey ] = $newkey;
+		}
+		unset( $settings[ $oldkey ] );
+	}
+
+	// Convert 'blank_output' to the new format: true = 'blank' and false = 'custom_text'.
+	$settings['blank_output'] = ! empty( $old_settings['blank_output'] ) ? 'blank' : 'custom_text';
+
+	// delete_option( 'ald_tptn_settings' );
+	return $settings;
+
+}
+
+/**
+ * Get the various styles.
+ *
+ * @since 2.5.0
+ * @return array Style options.
+ */
+function tptn_get_styles() {
+
+	$styles = array(
+		array(
+			'id'          => 'no_style',
+			'name'        => esc_html__( 'No styles', 'top-10' ),
+			'description' => esc_html__( 'Select this option if you plan to add your own styles', 'top-10' ),
+		),
+		array(
+			'id'          => 'text_only',
+			'name'        => esc_html__( 'Text only', 'top-10' ),
+			'description' => '<img src="' . esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ) . '" /> <br />' . esc_html__( 'Disable thumbnails and no longer include the default style sheet included in the plugin', 'top-10' ),
+		),
+		array(
+			'id'          => 'left_thumbs',
+			'name'        => esc_html__( 'Left thumbnails', 'top-10' ),
+			'description' => esc_html__( 'Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings.', 'top-10' ),
+		),
+	);
+
+	/**
+	 * Filter the array containing the types of trackers to add your own.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param string $trackers Different trackers.
+	 */
+	return apply_filters( 'tptn_get_styles', $styles );
 }
