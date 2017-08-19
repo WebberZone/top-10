@@ -50,10 +50,6 @@ function tptn_settings_sanitize( $input = array() ) {
 
 		add_settings_error( 'tptn-notices', '', __( 'Settings have been reset to their default values. Reload this page to view the updated settings', 'top-10' ), 'error' );
 
-		// Re-register post type and flush the rewrite rules.
-		tptn_register_post_type();
-		flush_rewrite_rules();
-
 		return $tptn_settings;
 	}
 
@@ -121,10 +117,6 @@ function tptn_settings_sanitize( $input = array() ) {
 	}
 
 	add_settings_error( 'tptn-notices', '', __( 'Settings updated.', 'top-10' ), 'updated' );
-
-	// Re-register post type and flush the rewrite rules.
-	tptn_register_post_type();
-	flush_rewrite_rules();
 
 	/**
 	 * Filter the settings array before it is returned.

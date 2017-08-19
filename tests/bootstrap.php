@@ -25,4 +25,4 @@ $tptn_db_version = '5.0';
 
 tptn_activation_hook( true );
 
-$tptn_settings = tptn_read_options();
+$tptn_settings = tptn_get_settings();

@@ -26,7 +26,7 @@ function tptn_options() {
 
 	global $wpdb;
 
-	$tptn_settings = tptn_read_options();
+	$tptn_settings = tptn_get_settings();
 
 	/* Temporary check to remove the deprecated hook */
 	if ( wp_next_scheduled( 'ald_tptn_hook' ) ) {
@@ -194,7 +194,7 @@ function tptn_options() {
 		update_option( 'ald_tptn_settings', $tptn_settings );
 
 		/* Let's get the options again after we update them */
-		$tptn_settings = tptn_read_options();
+		$tptn_settings = tptn_get_settings();
 		parse_str( $tptn_settings['post_types'], $post_types );
 		$posts_types_inc = array_intersect( $wp_post_types, $post_types );
 
@@ -277,7 +277,7 @@ function tptn_options() {
 			$str = '<div id="message" class="updated fade"><p>' . __( 'Scheduled maintenance disabled', 'top-10' ) . '</p></div>';
 		}
 		update_option( 'ald_tptn_settings', $tptn_settings );
-		$tptn_settings = tptn_read_options();
+		$tptn_settings = tptn_get_settings();
 
 		echo $str;
 	}
@@ -454,20 +454,20 @@ function tptn_admin_side() {
 function tptn_adminmenu() {
 
 	$plugin_page = add_menu_page( __( 'Top 10 Settings', 'top-10' ), __( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options', 'dashicons-editor-ol' );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead2' );
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'Top 10 Settings', 'top-10' ), __( 'Top 10 Settings', 'top-10' ), 'manage_options', 'tptn_options', 'tptn_options' );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead2' );
 
 	$tptn_stats_screen = new Top_Ten_Statistics();
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'View Popular Posts', 'top-10' ), __( 'View Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead2' );
 
 	$plugin_page = add_submenu_page( 'tptn_options', __( 'Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead2' );
 
 }
 add_action( 'admin_menu', 'tptn_adminmenu' );
@@ -478,7 +478,7 @@ add_action( 'admin_menu', 'tptn_adminmenu' );
  *
  * @since   1.6
  */
-function tptn_adminhead() {
+function tptn_adminhead2() {
 
 	wp_enqueue_script( 'common' );
 	wp_enqueue_script( 'wp-lists' );

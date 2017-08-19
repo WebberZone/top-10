@@ -123,7 +123,8 @@ function tptn_options_page() {
 function tptn_get_settings_sections() {
 	$tptn_settings_sections = array(
 		'general' => __( 'General', 'top-10' ),
-		'output'  => __( 'Output', 'top-10' ),
+		'counter' => __( 'Counter/Tracker', 'top-10' ),
+		'list'    => __( 'Posts list', 'top-10' ),
 		'styles'  => __( 'Styles', 'top-10' ),
 	);
 

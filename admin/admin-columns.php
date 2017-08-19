@@ -127,7 +127,7 @@ add_action( 'manage_pages_custom_column', 'tptn_value', 10, 2 );
  * @return  array   Filtered columns array
  */
 function tptn_column_register_sortable( $cols ) {
-	$tptn_settings = tptn_read_options();
+	$tptn_settings = tptn_get_settings();
 
 	if ( $tptn_settings['pv_in_admin'] ) {
 		$cols['tptn_total'] = array( 'tptn_total', true );
@@ -151,7 +151,7 @@ add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable'
  */
 function tptn_column_clauses( $clauses, $wp_query ) {
 	global $wpdb;
-	$tptn_settings = tptn_read_options();
+	$tptn_settings = tptn_get_settings();
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' === $wp_query->query['orderby'] ) {
 

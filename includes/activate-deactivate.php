@@ -50,7 +50,7 @@ register_activation_hook( TOP_TEN_PLUGIN_FILE, 'tptn_activation_hook' );
 function tptn_single_activate() {
 	global $wpdb, $tptn_db_version;
 
-	$tptn_settings = tptn_read_options();
+	$tptn_settings = tptn_get_settings();
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';

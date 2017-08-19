@@ -83,7 +83,31 @@ $tptn_db_version = '5.0';
  * @var array
  */
 global $tptn_settings;
-$tptn_settings = tptn_read_options();
+$tptn_settings = tptn_get_settings();
+
+
+/**
+ * Get Settings.
+ *
+ * Retrieves all plugin settings
+ *
+ * @since  2.5.0
+ * @return array Top 10 settings
+ */
+function tptn_get_settings() {
+
+	$settings = get_option( 'tptn_settings' );
+
+	/**
+	 * Settings array
+	 *
+	 * Retrieves all plugin settings
+	 *
+	 * @since 1.2.0
+	 * @param array $settings Settings array
+	 */
+	return apply_filters( 'tptn_get_settings', $settings );
+}
 
 
 /**
@@ -266,6 +290,7 @@ function tptn_trunc_count( $daily = false ) {
  *---------------------------------------------------------------------------*
  */
 
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/register-settings.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/activate-deactivate.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/display-posts.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/styles.php' );
@@ -290,6 +315,10 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-10-widget.php' );
 
 if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/settings-page.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-metabox.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-columns.php' );
