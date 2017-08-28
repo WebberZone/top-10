@@ -421,6 +421,15 @@ function tptn_thumbsizes_callback( $args ) {
 	global $tptn_settings;
 	$html = '';
 
+	if ( ! isset( $args['options']['tptn_thumbnail'] ) ) {
+		$args['options']['tptn_thumbnail'] = array(
+			'name'   => 'tptn_thumbnail',
+			'width'  => empty( $tptn_settings['thumb_width'] ) ? 150 : $tptn_settings['thumb_width'],
+			'height' => empty( $tptn_settings['thumb_height'] ) ? 150 : $tptn_settings['thumb_height'],
+			'crop'   => isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : true,
+		);
+	}
+
 	foreach ( $args['options'] as $option ) {
 		$checked = false;
 
@@ -431,7 +440,7 @@ function tptn_thumbsizes_callback( $args ) {
 		}
 
 		$html .= sprintf( '<input name="tptn_settings[%1$s]" id="tptn_settings[%1$s][%2$s]" type="radio" value="%2$s" %3$s /> ', sanitize_key( $args['id'] ), $option['name'], checked( true, $checked, false ) );
-		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s</label>', sanitize_key( $args['id'] ), $option['name'], $option['name'] . ' (' . $option['width'] . 'x' . $option['height'] . ')' );
+		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s</label> <br />', sanitize_key( $args['id'] ), $option['name'], $option['name'] . ' (' . $option['width'] . 'x' . $option['height'] . ')' );
 	}
 
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
