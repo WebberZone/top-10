@@ -255,12 +255,48 @@ add_filter( 'tptn_settings_sanitize_checkbox', 'tptn_sanitize_checkbox_field' );
  * @param  array $value The field value.
  * @return string  $value  Sanitized value
  */
-function tptn_sanitize_post_types_field( $value ) {
+function tptn_sanitize_posttypes_field( $value ) {
 
 	$post_types = is_array( $value ) ? array_map( 'sanitize_text_field', wp_unslash( $value ) ) : array( 'post', 'page' );
 
 	return implode( ',', $post_types );
 }
-add_filter( 'tptn_settings_sanitize_post_types', 'tptn_sanitize_post_types_field' );
+add_filter( 'tptn_settings_sanitize_posttypes', 'tptn_sanitize_posttypes_field' );
+
+
+/**
+ * Sanitize exclude_cat_slugs to save a new entry of exclude_categories
+ *
+ * @since 2.1.0
+ *
+ * @param  array $settings Settings array.
+ * @return string  $settings  Sanitizied settings array.
+ */
+function tptn_sanitize_exclude_cat( $settings ) {
+
+	if ( ! empty( $settings['exclude_cat_slugs'] ) ) {
+
+		$exclude_cat_slugs = explode( ',', $settings['exclude_cat_slugs'] );
+
+		foreach ( $exclude_cat_slugs as $cat_name ) {
+			$cat = get_term_by( 'name', $cat_name, 'category' );
+
+			// Fall back to slugs since that was the default format before v2.4.0.
+			if ( false === $cat ) {
+				$cat = get_term_by( 'slug', $cat_name, 'category' );
+			}
+			if ( isset( $cat->term_taxonomy_id ) ) {
+				$exclude_categories[] = $cat->term_taxonomy_id;
+				$exclude_categories_slugs[] = $cat->name;
+			}
+		}
+		$settings['exclude_categories'] = isset( $exclude_categories ) ? join( ',', $exclude_categories ) : '';
+		$settings['exclude_cat_slugs'] = isset( $exclude_categories_slugs ) ? join( ',', $exclude_categories_slugs ) : '';
+
+	}
+
+	return $settings;
+}
+add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_exclude_cat' );
 
 

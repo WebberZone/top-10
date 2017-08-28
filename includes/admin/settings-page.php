@@ -122,10 +122,11 @@ function tptn_options_page() {
  */
 function tptn_get_settings_sections() {
 	$tptn_settings_sections = array(
-		'general' => __( 'General', 'top-10' ),
-		'counter' => __( 'Counter/Tracker', 'top-10' ),
-		'list'    => __( 'Posts list', 'top-10' ),
-		'styles'  => __( 'Styles', 'top-10' ),
+		'general'   => __( 'General', 'top-10' ),
+		'counter'   => __( 'Counter/Tracker', 'top-10' ),
+		'list'      => __( 'Posts list', 'top-10' ),
+		'thumbnail' => __( 'Thumbnail', 'top-10' ),
+		'styles'    => __( 'Styles', 'top-10' ),
 	);
 
 	/**
@@ -396,7 +397,7 @@ function tptn_radiodesc_callback( $args ) {
 
 		$html .= sprintf( '<input name="tptn_settings[%1$s]" id="tptn_settings[%1$s][%2$s]" type="radio" value="%2$s" %3$s /> ', sanitize_key( $args['id'] ), $option['id'], checked( true, $checked, false ) );
 		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s</label>', sanitize_key( $args['id'] ), $option['id'], $option['name'] );
-		$html .= ' - <em>' . esc_html( $option['description'] ) . '</em> <br />';
+		$html .= ': <em>' . wp_kses_post( $option['description'] ) . '</em> <br />';
 	}
 
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
@@ -550,7 +551,9 @@ function tptn_posttypes_callback( $args ) {
 	}
 
 	// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
-	if ( false === strpos( $options, '=' ) ) {
+	if ( is_array( $options ) ) {
+		$post_types = $options;
+	} elseif ( ! is_array( $options ) && false === strpos( $options, '=' ) ) {
 		$post_types = explode( ',', $options );
 	} else {
 		parse_str( $options, $post_types );

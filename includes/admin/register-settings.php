@@ -906,12 +906,12 @@ function tptn_get_styles() {
 		array(
 			'id'          => 'no_style',
 			'name'        => esc_html__( 'No styles', 'top-10' ),
-			'description' => esc_html__( 'Select this option if you plan to add your own styles', 'top-10' ),
+			'description' => esc_html__( 'Select this option if you plan to add your own styles', 'top-10' ) . '<br />',
 		),
 		array(
 			'id'          => 'text_only',
 			'name'        => esc_html__( 'Text only', 'top-10' ),
-			'description' => '<img src="' . esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ) . '" /> <br />' . esc_html__( 'Disable thumbnails and no longer include the default style sheet included in the plugin', 'top-10' ),
+			'description' => '<br /><img src="' . esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ) . '" width="350" /> <br />' . esc_html__( 'Disable thumbnails and no longer include the default style sheet included in the plugin', 'top-10' ) . '<br />',
 		),
 		array(
 			'id'          => 'left_thumbs',
