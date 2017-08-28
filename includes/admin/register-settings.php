@@ -269,16 +269,19 @@ function tptn_get_registered_settings() {
 					'id'                     => 'daily_range',
 					'name'                   => esc_html__( 'Day(s)', 'top-10' ),
 					'desc'                   => '',
-					'type'                   => 'text',
+					'type'                   => 'number',
 					'options'                => '1',
+					'min'                    => '0',
 					'size'                   => 'small',
 				),
 				'hour_range'              => array(
 					'id'                     => 'hour_range',
 					'name'                   => esc_html__( 'Hour(s)', 'top-10' ),
 					'desc'                   => '',
-					'type'                   => 'text',
+					'type'                   => 'number',
 					'options'                => '0',
+					'min'                    => '0',
+					'max'                    => '23',
 					'size'                   => 'small',
 				),
 				'uninstall_clean_options' => array(
@@ -455,6 +458,12 @@ function tptn_get_registered_settings() {
 					'options'                => '',
 					'readonly'               => true,
 				),
+				'customize_output_header' => array(
+					'id'                     => 'customize_output_header',
+					'name'                   => '<h3>' . esc_html__( 'Customize the output', 'top-10' ) . '</h3>',
+					'desc'                   => '',
+					'type'                   => 'header',
+				),
 				'title'                   => array(
 					'id'                     => 'title',
 					'name'                   => esc_html__( 'Heading of posts', 'top-10' ),
@@ -555,10 +564,10 @@ function tptn_get_registered_settings() {
 					'type'                   => 'numbercsv',
 					'options'                => '',
 				),
-				'customize_output_header' => array(
-					'id'                     => 'customize_output_header',
-					'name'                   => '<h3>' . esc_html__( 'Customize the output', 'top-10' ) . '</h3>',
-					'desc'                   => esc_html__( 'HTML to display...', 'top-10' ),
+				'html_wrapper_header'     => array(
+					'id'                     => 'html_wrapper_header',
+					'name'                   => '<h3>' . esc_html__( 'HTML to display', 'top-10' ) . '</h3>',
+					'desc'                   => '',
 					'type'                   => 'header',
 				),
 				'before_list'             => array(
@@ -704,6 +713,57 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
+		/*** Maintenance settings ***/
+		'maintenance'               => apply_filters(
+			'tptn_settings_maintenance', array(
+				'cron_on'                 => array(
+					'id'                     => 'cron_on',
+					'name'                   => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
+					'desc'                   => esc_html__( 'Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than 90 days in the daily tables.', 'top-10' ),
+					'type'                   => 'checkbox',
+					'options'                => false,
+				),
+				'cron_range_desc'         => array(
+					'id'                     => 'cron_range_desc',
+					'name'                   => '<strong>' . esc_html__( 'Time to run maintenance', 'top-10' ) . '</strong>',
+					'desc'                   => esc_html__( 'The next two options allow you to set the time to run the cron.', 'top-10' ),
+					'type'                   => 'descriptive_text',
+				),
+				'cron_hour'               => array(
+					'id'                     => 'cron_hour',
+					'name'                   => esc_html__( 'Hour', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '0',
+					'min'                    => '0',
+					'max'                    => '23',
+					'size'                   => 'small',
+				),
+				'cron_min'                => array(
+					'id'                     => 'cron_min',
+					'name'                   => esc_html__( 'Minute', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'number',
+					'options'                => '0',
+					'min'                    => '0',
+					'max'                    => '59',
+					'size'                   => 'small',
+				),
+				'cron_recurrence'         => array(
+					'id'                     => 'cron_recurrence',
+					'name'                   => esc_html__( 'Run maintenance', 'top-10' ),
+					'desc'                   => '',
+					'type'                   => 'radio',
+					'default'                => 'weekly',
+					'options'                => array(
+						'daily'                 => esc_html__( 'Daily', 'top-10' ),
+						'weekly'                => esc_html__( 'Weekly', 'top-10' ),
+						'fortnightly'           => esc_html__( 'Fortnightly', 'top-10' ),
+						'monthly'               => esc_html__( 'Monthly', 'top-10' ),
+					),
+				),
+			)
+		),
 	);
 
 	/**
@@ -770,7 +830,7 @@ function tptn_settings_defaults() {
 			if ( in_array( $option['type'], array( 'textarea', 'text', 'csv', 'numbercsv', 'posttypes', 'number' ), true ) && isset( $option['options'] ) ) {
 				$options[ $option['id'] ] = $option['options'];
 			}
-			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select', 'radiodesc' ), true ) && isset( $option['default'] ) ) {
+			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select', 'radiodesc', 'thumbsizes' ), true ) && isset( $option['default'] ) ) {
 				$options[ $option['id'] ] = $option['default'];
 			}
 		}

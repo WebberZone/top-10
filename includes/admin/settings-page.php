@@ -122,11 +122,12 @@ function tptn_options_page() {
  */
 function tptn_get_settings_sections() {
 	$tptn_settings_sections = array(
-		'general'   => __( 'General', 'top-10' ),
-		'counter'   => __( 'Counter/Tracker', 'top-10' ),
-		'list'      => __( 'Posts list', 'top-10' ),
-		'thumbnail' => __( 'Thumbnail', 'top-10' ),
-		'styles'    => __( 'Styles', 'top-10' ),
+		'general'     => __( 'General', 'top-10' ),
+		'counter'     => __( 'Counter/Tracker', 'top-10' ),
+		'list'        => __( 'Posts list', 'top-10' ),
+		'thumbnail'   => __( 'Thumbnail', 'top-10' ),
+		'styles'      => __( 'Styles', 'top-10' ),
+		'maintenance' => __( 'Maintenance', 'top-10' ),
 	);
 
 	/**
@@ -588,4 +589,88 @@ function tptn_posttypes_callback( $args ) {
 	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
 }
 
+
+/**
+ * Function to add an action to search for tags using Ajax.
+ *
+ * @since 2.1.0
+ *
+ * @return void
+ */
+function tptn_tags_search() {
+
+	if ( ! isset( $_REQUEST['tax'] ) ) {
+		wp_die( 0 );
+	}
+
+	$taxonomy = sanitize_key( $_REQUEST['tax'] );
+	$tax = get_taxonomy( $taxonomy );
+	if ( ! $tax ) {
+		wp_die( 0 );
+	}
+
+	if ( ! current_user_can( $tax->cap->assign_terms ) ) {
+		wp_die( -1 );
+	}
+
+	$s = wp_unslash( $_REQUEST['q'] );
+
+	$comma = _x( ',', 'tag delimiter' );
+	if ( ',' !== $comma ) {
+		$s = str_replace( $comma, ',', $s );
+	}
+	if ( false !== strpos( $s, ',' ) ) {
+		$s = explode( ',', $s );
+		$s = $s[ count( $s ) - 1 ];
+	}
+	$s = trim( $s );
+
+	/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
+	$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+
+	/*
+	 * Require $term_search_min_chars chars for matching (default: 2)
+	 * ensure it's a non-negative, non-zero integer.
+	 */
+	if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
+		wp_die();
+	}
+
+	$results = get_terms(
+		$taxonomy, array(
+			'name__like' => $s,
+			'fields' => 'names',
+			'hide_empty' => false,
+		)
+	);
+
+	echo wp_json_encode( $results );
+	wp_die();
+
+}
+add_action( 'wp_ajax_nopriv_tptn_tag_search', 'tptn_tags_search' );
+add_action( 'wp_ajax_tptn_tag_search', 'tptn_tags_search' );
+
+
+/**
+ * Display the default thumbnail below the setting.
+ *
+ * @since 2.1.0
+ *
+ * @param  string $html Current HTML.
+ * @param  array  $args Argument array of the setting.
+ * @return string
+ */
+function tptn_admin_thumbnail( $html, $args ) {
+
+	$thumb_default = tptn_get_option( 'thumb_default' );
+
+	if ( 'thumb_default' === $args['id'] && '' !== $thumb_default ) {
+		$html .= '<br />';
+		$html .= sprintf( '<img src="%1$s" style="max-width:200px" title="%2$s" alt="%2$s" />', esc_attr( $thumb_default ), esc_html__( 'Default thumbnail', 'where-did-they-go-from-here' ) );
+	}
+
+	return $html;
+}
+add_filter( 'tptn_after_setting_output', 'tptn_admin_thumbnail', 10, 2 );
 
