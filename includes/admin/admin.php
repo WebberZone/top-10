@@ -60,6 +60,8 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'plugin-install' );
+	add_thickbox();
 ?>
 	<script type="text/javascript">
 	//<![CDATA[
@@ -285,3 +287,47 @@ function tptn_admin_head() {
 <?php
 }
 add_filter( 'admin_head', 'tptn_admin_head' );
+
+/**
+ * Adding WordPress plugin action links.
+ *
+ * @version 1.9.2
+ *
+ * @param   array $links Action links.
+ * @return  array   Links array with our settings link added.
+ */
+function tptn_plugin_actions_links( $links ) {
+
+	return array_merge(
+		array(
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options' ) . '">' . __( 'Settings', 'top-10' ) . '</a>',
+		),
+		$links
+	);
+
+}
+add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ ) . 'top-10.php' ), 'tptn_plugin_actions_links' );
+
+
+/**
+ * Add links to the plugin action row.
+ *
+ * @since   1.5
+ *
+ * @param   array $links Action links.
+ * @param   array $file Plugin file name.
+ * @return  array   Links array with our links added
+ */
+function tptn_plugin_actions( $links, $file ) {
+	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
+
+	if ( $file == $plugin ) {
+		$links[] = '<a href="https://wordpress.org/support/plugin/top-10/">' . __( 'Support', 'top-10' ) . '</a>';
+		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'top-10' ) . '</a>';
+		$links[] = '<a href="https://github.com/WebberZone/top-10">' . __( 'Contribute', 'contextual-related-posts' ) . '</a>';
+	}
+	return $links;
+}
+add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 );
+
+
