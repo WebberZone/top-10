@@ -267,7 +267,7 @@ add_filter( 'tptn_settings_sanitize_posttypes', 'tptn_sanitize_posttypes_field' 
 /**
  * Sanitize exclude_cat_slugs to save a new entry of exclude_categories
  *
- * @since 2.1.0
+ * @since 2.5.0
  *
  * @param  array $settings Settings array.
  * @return string  $settings  Sanitizied settings array.
@@ -298,5 +298,29 @@ function tptn_sanitize_exclude_cat( $settings ) {
 	return $settings;
 }
 add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_exclude_cat' );
+
+
+/**
+ * Enable/disable Top 10 cron on save.
+ *
+ * @since 2.5.0
+ *
+ * @param  array $settings Settings array.
+ * @return string  $settings  Sanitizied settings array.
+ */
+function tptn_sanitize_cron( $settings ) {
+
+	$settings['cron_hour'] = min( 23, absint( $settings['cron_hour'] ) );
+	$settings['cron_min'] = min( 59, absint( $settings['cron_min'] ) );
+
+	if ( ! empty( $settings['cron_on'] ) ) {
+		tptn_enable_run( $settings['cron_hour'], $settings['cron_min'], $settings['cron_recurrence'] );
+	} else {
+		tptn_disable_run();
+	}
+
+	return $settings;
+}
+add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_cron' );
 
 
