@@ -66,7 +66,7 @@ function tptn_tools_page() {
 				<p class="description">
 					<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
 				</p>
-				<p class="description">
+				<p>
 					<input type="button" name="cache_clear" id="cache_clear"  value="<?php esc_attr_e( 'Clear cache', 'top-10' ); ?>" class="button button-secondary" onclick="return clearCache();" />
 				</p>
 
