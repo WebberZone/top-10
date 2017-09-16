@@ -324,3 +324,19 @@ function tptn_sanitize_cron( $settings ) {
 add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_cron' );
 
 
+/**
+ * Delete cache when saving settings.
+ *
+ * @since 2.5.0
+ *
+ * @param  array $settings Settings array.
+ * @return string  $settings  Sanitizied settings array.
+ */
+function tptn_sanitize_cache( $settings ) {
+
+	// Delete the cache.
+	tptn_cache_delete();
+
+	return $settings;
+}
+add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_cache' );
