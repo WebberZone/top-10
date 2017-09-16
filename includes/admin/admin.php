@@ -25,23 +25,27 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function tptn_add_admin_pages_links() {
-	global $tptn_settings_page;
+	global $tptn_settings_page, $tptn_settings_tools_help;
 
 	$tptn_settings_page = add_menu_page( esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page', 'dashicons-editor-ol' );
 	add_action( "load-$tptn_settings_page", 'tptn_settings_help' ); // Load the settings contextual help.
 	add_action( "admin_head-$tptn_settings_page", 'tptn_adminhead' ); // Load the admin head.
 
-	$plugin_page = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10 Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
+	$plugin_page = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
 	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+
+	$tptn_settings_tools_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
+	add_action( "load-$tptn_settings_tools_help", 'tptn_settings_tools_help' );
+	add_action( 'admin_head-' . $tptn_settings_tools_help, 'tptn_adminhead' );
 
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Statistics();
 
-	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'View Popular Posts', 'top-10' ), __( 'View Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
-	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
@@ -65,9 +69,19 @@ function tptn_adminhead() {
 ?>
 	<script type="text/javascript">
 	//<![CDATA[
+		// Function to clear the cache.
+		function clearCache() {
+			/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
+			jQuery.post(ajaxurl, {
+				action: 'tptn_clear_cache'
+			}, function (response, textStatus, jqXHR) {
+				alert(response.message);
+			}, 'json');
+		}
+
 		// Function to add auto suggest.
 		jQuery(document).ready(function($) {
-			$.fn.wheregoTagsSuggest = function( options ) {
+			$.fn.tptnTagsSuggest = function( options ) {
 
 				var cache;
 				var last;
@@ -112,7 +126,7 @@ function tptn_adminhead() {
 								dataType: 'json',
 								url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
 								data: {
-									action: 'wherego_tag_search',
+									action: 'tptn_tag_search',
 									tax: taxonomy,
 									q: term
 								},
@@ -157,7 +171,7 @@ function tptn_adminhead() {
 			};
 
 			$( '.category_autocomplete' ).each( function ( i, element ) {
-				$( element ).wheregoTagsSuggest();
+				$( element ).tptnTagsSuggest();
 			});
 
 			// Prompt the user when they leave the page without saving the form.
