@@ -25,29 +25,29 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_tools_page() {
 
 	/* Truncate overall posts table */
-	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
+	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_trunc_count( false );
-		add_settings_error( 'tptn-notices', '', __( 'Top 10 popular posts reset', 'top-10' ), 'error' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'error' );
 	}
 
 	/* Truncate daily posts table */
-	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
+	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_trunc_count( true );
-		add_settings_error( 'tptn-notices', '', __( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
 	}
 
 	/* Clean duplicates */
-	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
+	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_clean_duplicates( true );
 		tptn_clean_duplicates( false );
-		add_settings_error( 'tptn-notices', '', __( 'Duplicate rows cleaned from the tables', 'top-10' ), 'error' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Duplicate rows cleaned from the tables', 'top-10' ), 'error' );
 	}
 
 	/* Merge blog IDs */
-	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-plugin-settings' ) ) ) {
+	if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_merge_blogids( true );
 		tptn_merge_blogids( false );
-		add_settings_error( 'tptn-notices', '', __( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'error' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'error' );
 	}
 
 	ob_start();
@@ -89,7 +89,7 @@ function tptn_tools_page() {
 				<p>
 				  <input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;" />
 				</p>
-				<?php wp_nonce_field( 'tptn-plugin-settings' ); ?>
+				<?php wp_nonce_field( 'tptn-tools-settings' ); ?>
 			</form>
 
 		</div><!-- /#post-body-content -->
