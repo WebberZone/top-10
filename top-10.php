@@ -320,12 +320,11 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/tools.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-metabox.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-columns.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/admin-dashboard.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/class-stats.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/cache.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/class-stats.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php' );
 
 } // End admin.inc
 
@@ -339,5 +338,5 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php' );
 
 if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
-	require_once( TOP_TEN_PLUGIN_DIR . 'admin/deprecated.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/deprecated.php' );
 }
