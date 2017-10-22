@@ -220,7 +220,7 @@ add_action( 'admin_init', 'tptn_register_settings' );
 function tptn_get_registered_settings() {
 
 	$tptn_settings = array(
-		/*** General settings ***/
+		/*** General settings */
 		'general'                   => apply_filters(
 			'tptn_settings_general', array(
 				'trackers'                => array(
@@ -321,7 +321,7 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
-		/*** Output settings ***/
+		/*** Output settings */
 		'counter'                   => apply_filters(
 			'tptn_settings_counter', array(
 				'add_to'                  => array(
@@ -367,8 +367,8 @@ function tptn_get_registered_settings() {
 					'type'                   => 'checkbox',
 					'options'                => false,
 				),
-				'tracker_types'           => array(
-					'id'                     => 'tracker_types',
+				'tracker_type'            => array(
+					'id'                     => 'tracker_type',
 					'name'                   => esc_html__( 'Tracker type', 'top-10' ),
 					'desc'                   => '',
 					'type'                   => 'radiodesc',
@@ -406,7 +406,7 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
-		/*** List settings ***/
+		/*** List settings */
 		'list'                      => apply_filters(
 			'tptn_settings_list', array(
 				'limit'                   => array(
@@ -600,7 +600,7 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
-		/*** Thumbnail settings ***/
+		/*** Thumbnail settings */
 		'thumbnail'                 => apply_filters(
 			'tptn_settings_thumbnail', array(
 				'post_thumb_op'           => array(
@@ -692,7 +692,7 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
-		/*** Styles settings ***/
+		/*** Styles settings */
 		'styles'                    => apply_filters(
 			'tptn_settings_styles', array(
 				'tptn_styles'             => array(
@@ -713,7 +713,7 @@ function tptn_get_registered_settings() {
 				),
 			)
 		),
-		/*** Maintenance settings ***/
+		/*** Maintenance settings */
 		'maintenance'               => apply_filters(
 			'tptn_settings_maintenance', array(
 				'cron_on'                 => array(
@@ -971,7 +971,7 @@ function tptn_get_styles() {
 		array(
 			'id'          => 'text_only',
 			'name'        => esc_html__( 'Text only', 'top-10' ),
-			'description' => '<br /><img src="' . esc_url( plugins_url( 'admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ) . '" width="350" /> <br />' . esc_html__( 'Disable thumbnails and no longer include the default style sheet included in the plugin', 'top-10' ) . '<br />',
+			'description' => '<br /><img src="' . esc_url( plugins_url( 'includes/admin/images/tptn-left-thumbs.png', TOP_TEN_PLUGIN_FILE ) ) . '" width="350" /> <br />' . esc_html__( 'Disable thumbnails and no longer include the default style sheet included in the plugin', 'top-10' ) . '<br />',
 		),
 		array(
 			'id'          => 'left_thumbs',

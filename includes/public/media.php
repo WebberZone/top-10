@@ -19,10 +19,10 @@ function tptn_add_image_sizes() {
 	}
 
 	// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid
-	if ( 'tptn_thumbnail' == $tptn_settings['thumb_size'] ) {
-		$width = empty( $tptn_settings['thumb_width'] ) ? 150 : $tptn_settings['thumb_width'];
-		$height = empty( $tptn_settings['thumb_height'] ) ? 150 : $tptn_settings['thumb_height'];
-		$crop = isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : true;
+	if ( 'tptn_thumbnail' === tptn_get_option( 'thumb_size' ) ) {
+		$width = tptn_get_option( 'thumb_width', 150 );
+		$height = tptn_get_option( 'thumb_height', 150 );
+		$crop = tptn_get_option( 'thumb_crop', true );
 
 		add_image_size( 'tptn_thumbnail', $width, $height, $crop );
 	}

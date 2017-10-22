@@ -419,15 +419,14 @@ function tptn_radiodesc_callback( $args ) {
  * @return void
  */
 function tptn_thumbsizes_callback( $args ) {
-	global $tptn_settings;
 	$html = '';
 
 	if ( ! isset( $args['options']['tptn_thumbnail'] ) ) {
 		$args['options']['tptn_thumbnail'] = array(
 			'name'   => 'tptn_thumbnail',
-			'width'  => empty( $tptn_settings['thumb_width'] ) ? 150 : $tptn_settings['thumb_width'],
-			'height' => empty( $tptn_settings['thumb_height'] ) ? 150 : $tptn_settings['thumb_height'],
-			'crop'   => isset( $tptn_settings['thumb_crop'] ) ? $tptn_settings['thumb_crop'] : true,
+			'width'  => tptn_get_option( 'thumb_width', 150 ),
+			'height' => tptn_get_option( 'thumb_height', 150 ),
+			'crop'   => tptn_get_option( 'thumb_crop', true ),
 		);
 	}
 

@@ -106,7 +106,7 @@ function tptn_settings_sanitize( $input = array() ) {
 		$output[ $key ] = apply_filters( 'tptn_settings_sanitize' . $key, $output[ $key ], $key );
 
 		// Delete any key that is not present when we submit the input array.
-		if ( empty( $input[ $key ] ) ) {
+		if ( ! isset( $input[ $key ] ) ) {
 			unset( $output[ $key ] );
 		}
 	}
@@ -142,6 +142,20 @@ function tptn_sanitize_text_field( $value ) {
 	return tptn_sanitize_textarea_field( $value );
 }
 add_filter( 'tptn_settings_sanitize_text', 'tptn_sanitize_text_field' );
+
+
+/**
+ * Sanitize number fields
+ *
+ * @since 2.5.0
+ *
+ * @param  array $value The field value.
+ * @return string  $value  Sanitized value
+ */
+function tptn_sanitize_number_field( $value ) {
+	return filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+}
+add_filter( 'tptn_settings_sanitize_number', 'tptn_sanitize_number_field' );
 
 
 /**
