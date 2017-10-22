@@ -12,9 +12,8 @@
  * @since   1.9
  */
 function tptn_header() {
-	global $tptn_settings;
 
-	$tptn_custom_CSS = stripslashes( $tptn_settings['custom_CSS'] );
+	$tptn_custom_CSS = stripslashes( tptn_get_option( 'custom_CSS' ) );
 
 	// Add CSS to header
 	if ( '' != $tptn_custom_CSS ) {

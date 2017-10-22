@@ -13,11 +13,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-	global $wpdb;
+global $wpdb;
 
-	$tptn_settings = get_option( 'ald_tptn_settings' );
+$tptn_settings = get_option( 'ald_tptn_settings' );
 
-if ( true == $tptn_settings['uninstall_clean_tables'] ) {
+if ( $tptn_settings['uninstall_clean_tables'] ) {
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
@@ -28,7 +28,7 @@ if ( true == $tptn_settings['uninstall_clean_tables'] ) {
 
 }
 
-if ( true == $tptn_settings['uninstall_clean_options'] ) {
+if ( $tptn_settings['uninstall_clean_options'] ) {
 
 	if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
 		wp_clear_scheduled_hook( 'tptn_cron_hook' );

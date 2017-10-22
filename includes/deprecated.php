@@ -61,6 +61,8 @@ function tptn_add_viewed_count( $content = '' ) {
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
 	$home_url = home_url( '/' );
+	$track_users = tptn_get_option( 'track_users' );
+	$trackers = tptn_get_option( 'trackers' );
 
 	/**
 	 * Filter the script URL of the counter.
@@ -80,13 +82,13 @@ function tptn_add_viewed_count( $content = '' ) {
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
 		$include_code = true;
-		if ( ( $post_author ) && ( ! $tptn_settings['track_authors'] ) ) {
+		if ( ( $post_author ) && ( ! $track_users['authors'] ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_admin ) && ( ! $tptn_settings['track_admins'] ) ) {
+		if ( ( $current_user_admin ) && ( ! $track_users['admins'] ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_editor ) && ( ! $tptn_settings['track_editors'] ) ) {
+		if ( ( $current_user_editor ) && ( ! $track_users['editors'] ) ) {
 			$include_code = false;
 		}
 
@@ -95,8 +97,8 @@ function tptn_add_viewed_count( $content = '' ) {
 			$output = '';
 			$id = intval( $post->ID );
 			$blog_id = get_current_blog_id();
-			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
-			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
+			$activate_counter = $trackers['overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
+			$activate_counter = $activate_counter + ( $trackers['daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
 
 			if ( $activate_counter > 0 ) {
 					$output = '

@@ -29,14 +29,15 @@ if ( ! defined( 'WPINC' ) ) {
  * @return  Formatted list of popular posts
  */
 function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
-	global $wpdb, $tptn_settings;
+	global $wpdb;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	if ( $daily ) {
 		$table_name .= '_daily'; // If we're viewing daily posts, set this to true.
 	}
 	if ( ! $limit ) {
-		$limit = $tptn_settings['limit']; }
+		$limit = tptn_get_option( 'limit' );
+	}
 
 	$results = get_tptn_pop_posts(
 		array(
@@ -117,9 +118,8 @@ function tptn_pop_daily_dashboard() {
  * @since   1.1
  */
 function tptn_pop_dashboard_setup() {
-	global $tptn_settings;
 
-	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
+	if ( ( current_user_can( 'manage_options' ) ) || ( tptn_get_option( 'show_count_non_admins' ) ) ) {
 		wp_add_dashboard_widget(
 			'tptn_pop_dashboard',
 			__( 'Popular Posts', 'top-10' ),
