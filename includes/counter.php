@@ -16,6 +16,7 @@ function tptn_pc_content( $content ) {
 	global $post, $tptn_settings;
 
 	$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
+	$add_to = tptn_get_option( 'add_to' );
 
 	if ( isset( $post ) ) {
 		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
@@ -23,17 +24,17 @@ function tptn_pc_content( $content ) {
 		}
 	}
 
-	if ( ( is_single() ) && ( tptn_get_option( 'add_to_content' ) ) ) {
+	if ( ( is_single() ) && ( $add_to['single'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_page() ) && ( tptn_get_option( 'count_on_pages' ) ) ) {
+	} elseif ( ( is_page() ) && ( $add_to['page'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_home() ) && ( tptn_get_option( 'add_to_home' ) ) ) {
+	} elseif ( ( is_home() ) && ( $add_to['home'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_category() ) && ( tptn_get_option( 'add_to_category_archives' ) ) ) {
+	} elseif ( ( is_category() ) && ( $add_to['category_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_tag() ) && ( tptn_get_option( 'add_to_tag_archives' ) ) ) {
+	} elseif ( ( is_tag() ) && ( $add_to['tag_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( tptn_get_option( 'add_to_archives' ) ) ) {
+	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $add_to['other_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
 	} else {
 		return $content;
@@ -55,7 +56,7 @@ function tptn_rss_filter( $content ) {
 
 	$id = intval( $post->ID );
 
-	if ( tptn_get_option( 'add_to_feed' ) ) {
+	if ( $add_to['feed'] ) {
 		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	} else {
 		return $content;
