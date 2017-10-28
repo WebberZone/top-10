@@ -61,6 +61,8 @@ function tptn_add_viewed_count( $content = '' ) {
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
 	$home_url = home_url( '/' );
+	$track_users = tptn_get_option( 'track_users' );
+	$trackers = tptn_get_option( 'trackers' );
 
 	/**
 	 * Filter the script URL of the counter.
@@ -80,13 +82,13 @@ function tptn_add_viewed_count( $content = '' ) {
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
 		$include_code = true;
-		if ( ( $post_author ) && ( ! $tptn_settings['track_authors'] ) ) {
+		if ( ( $post_author ) && ( ! $track_users['authors'] ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_admin ) && ( ! $tptn_settings['track_admins'] ) ) {
+		if ( ( $current_user_admin ) && ( ! $track_users['admins'] ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_editor ) && ( ! $tptn_settings['track_editors'] ) ) {
+		if ( ( $current_user_editor ) && ( ! $track_users['editors'] ) ) {
 			$include_code = false;
 		}
 
@@ -95,8 +97,8 @@ function tptn_add_viewed_count( $content = '' ) {
 			$output = '';
 			$id = intval( $post->ID );
 			$blog_id = get_current_blog_id();
-			$activate_counter = $tptn_settings['activate_overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
-			$activate_counter = $activate_counter + ( $tptn_settings['activate_daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
+			$activate_counter = $trackers['overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
+			$activate_counter = $activate_counter + ( $trackers['daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
 
 			if ( $activate_counter > 0 ) {
 					$output = '
@@ -147,6 +149,174 @@ function tptn_add_tracker( $echo = true ) {
 	} else {
 		return tptn_add_viewed_count( '' );
 	}
+}
+
+
+/**
+ * Default Options.
+ *
+ * @since 1.0
+ *
+ * @deprecated 2.5.0
+ *
+ * @return array
+ */
+function tptn_default_options() {
+
+	_deprecated_function( __FUNCTION__, '2.5.0' );
+
+	$title = __( '<h3>Popular Posts</h3>', 'top-10' );
+	$title_daily = __( '<h3>Daily Popular</h3>', 'top-10' );
+	$blank_output_text = __( 'No top posts yet', 'top-10' );
+	$thumb_default = plugins_url( 'default.png' , __FILE__ );
+
+	// Get relevant post types.
+	$args = array(
+		'public' => true,
+		'_builtin' => true,
+	);
+	$post_types = http_build_query( get_post_types( $args ), '', '&' );
+
+	$tptn_settings = array(
+
+		/* General options */
+		'activate_daily'           => true,         // Activate the daily count
+		'activate_overall'         => true,         // Activate overall count.
+		'cache'                    => false,        // Enable Caching using Transienst API.
+		'cache_time'               => HOUR_IN_SECONDS,  // Cache for 1 Hour.
+		'daily_midnight'           => true,         // Start daily counts from midnight (default as old behaviour).
+		'daily_range'              => '1',          // Daily Popular will contain posts of how many days?
+		'hour_range'               => '0',          // Daily Popular will contain posts of how many hours?
+		'uninstall_clean_options'  => true,         // Cleanup options.
+		'uninstall_clean_tables'   => false,        // Cleanup tables.
+		'show_metabox'             => true,         // Show metabox to admins.
+		'show_metabox_admins'      => false,        // Limit to admins as well.
+		'show_credit'              => false,        // Add link to plugin page of my blog in top posts list.
+
+		/* Counter and tracker options */
+		'add_to_content'           => true,         // Add post count to content (only on single posts).
+		'count_on_pages'           => true,         // Add post count to pages.
+		'add_to_feed'              => false,        // Add post count to feed (full).
+		'add_to_home'              => false,        // Add post count to home page.
+		'add_to_category_archives' => false,        // Add post count to category archives.
+		'add_to_tag_archives'      => false,        // Add post count to tag archives.
+		'add_to_archives'          => false,        // Add post count to other archives.
+
+		'count_disp_form'          => '(Visited %totalcount% times, %dailycount% visits today)',    // Format to display the count.
+		'count_disp_form_zero'     => 'No visits yet',  // What to display where there are no hits?
+		'dynamic_post_count'       => false,        // Use JavaScript for displaying the post count.
+
+		'tracker_type'             => 'query_based',    // Tracker type.
+		'track_authors'            => false,        // Track Authors visits.
+		'track_admins'             => true,         // Track Admin visits.
+		'track_editors'            => true,         // Track Admin visits.
+		'pv_in_admin'              => true,         // Add an extra column on edit posts/pages to display page views?
+		'show_count_non_admins'    => true,         // Show counts to non-admins.
+
+		/* Popular post list options */
+		'limit'                    => '10',         // How many posts to display?
+		'how_old'                  => '0',          // How old posts? Default is no limit.
+		'post_types'               => $post_types,  // WordPress custom post types.
+		'exclude_categories'       => '',           // Exclude these categories.
+		'exclude_cat_slugs'        => '',           // Exclude these categories (slugs).
+		'exclude_post_ids'         => '',           // Comma separated list of page / post IDs that are to be excluded in the results.
+
+		'title'                    => $title,       // Title of Popular Posts.
+		'title_daily'              => $title_daily, // Title of Daily Popular.
+		'blank_output'             => false,        // Blank output? Default is "blank Output test".
+		'blank_output_text'        => $blank_output_text,       // Blank output text.
+
+		'show_excerpt'             => false,        // Show description in list item.
+		'excerpt_length'           => '10',         // Length of characters.
+		'show_date'                => false,        // Show date in list item.
+		'show_author'              => false,        // Show author in list item.
+		'title_length'             => '60',         // Limit length of post title.
+		'disp_list_count'          => true,         // Display count in popular lists?
+
+		'link_new_window'          => false,        // Open links in new window.
+		'link_nofollow'            => false,        // Add no-follow to links.
+		'exclude_on_post_ids'      => '',           // Comma separate list of page/post IDs to not display related posts on.
+
+		// List HTML options.
+		'before_list'              => '<ul>',       // Before the entire list.
+		'after_list'               => '</ul>',      // After the entire list.
+		'before_list_item'         => '<li>',       // Before each list item.
+		'after_list_item'          => '</li>',      // After each list item.
+
+		/* Thumbnail options */
+		'post_thumb_op'            => 'text_only',  // Display only text in posts.
+		'thumb_size'               => 'tptn_thumbnail', // Default thumbnail size.
+		'thumb_width'              => '150',        // Max width of thumbnails.
+		'thumb_height'             => '150',        // Max height of thumbnails.
+		'thumb_crop'               => true,         // Crop mode. default is hard crop.
+		'thumb_html'               => 'html',       // Use HTML or CSS for width and height of the thumbnail?
+
+		'thumb_meta'               => 'post-image', // Meta field that is used to store the location of default thumbnail image.
+		'scan_images'              => true,         // Scan post for images.
+		'thumb_default'            => $thumb_default,   // Default thumbnail image.
+		'thumb_default_show'       => true,         // Show default thumb if none found (if false, don't show thumb at all).
+
+		/* Custom styles */
+		'custom_CSS'               => '',           // Custom CSS to style the output.
+		'include_default_style'    => false,        // Include default Top 10 style.
+		'tptn_styles'              => 'no_style',   // Defaault style is left thubnails.
+
+		/* Maintenance cron */
+		'cron_on'                  => false,        // Run cron daily?
+		'cron_hour'                => '0',          // Cron Hour.
+		'cron_min'                 => '0',          // Cron Minute.
+		'cron_recurrence'          => 'weekly',     // Frequency of cron.
+	);
+
+	/**
+	 * Filters the default options array.
+	 *
+	 * @since   1.9.10.1
+	 *
+	 * @param   array   $tptn_settings  Default options
+	 */
+	return apply_filters( 'tptn_default_options', $tptn_settings );
+}
+
+
+/**
+ * Function to read options from the database.
+ *
+ * @since 1.0
+ *
+ * @deprecated 2.5.0
+ *
+ * @return array
+ */
+function tptn_read_options() {
+
+	_deprecated_function( __FUNCTION__, '2.5.0', 'tptn_get_settings()' );
+
+	$tptn_settings_changed = false;
+
+	$defaults = tptn_default_options();
+
+	$tptn_settings = array_map( 'stripslashes', (array) get_option( 'ald_tptn_settings' ) );
+	unset( $tptn_settings[0] ); // Produced by the (array) casting when there's nothing in the DB.
+
+	foreach ( $defaults as $k => $v ) {
+		if ( ! isset( $tptn_settings[ $k ] ) ) {
+			$tptn_settings[ $k ] = $v;
+			$tptn_settings_changed = true;
+		}
+	}
+	if ( true === $tptn_settings_changed ) {
+		update_option( 'ald_tptn_settings', $tptn_settings );
+	}
+
+	/**
+	 * Filters the options array.
+	 *
+	 * @since   1.9.10.1
+	 *
+	 * @param   array   $tptn_settings  Options read from the database
+	 */
+	return apply_filters( 'tptn_read_options', $tptn_settings );
 }
 
 

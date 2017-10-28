@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_exclude_categories_join( $join ) {
 	global $wpdb, $tptn_settings;
 
-	if ( '' !== $tptn_settings['exclude_categories'] ) {
+	if ( '' !== tptn_get_option( 'exclude_categories' ) ) {
 
 		$sql = $join;
 		$sql .= " LEFT JOIN $wpdb->term_relationships AS excat_tr ON ($wpdb->posts.ID = excat_tr.object_id) ";
@@ -46,11 +46,11 @@ add_filter( 'tptn_posts_join', 'tptn_exclude_categories_join' );
 function tptn_exclude_categories_where( $where ) {
 	global $wpdb, $tptn_settings;
 
-	if ( '' === $tptn_settings['exclude_categories'] ) {
+	if ( '' === tptn_get_option( 'exclude_categories' ) ) {
 		return $where;
 	} else {
 
-		$terms = $tptn_settings['exclude_categories'];
+		$terms = tptn_get_option( 'exclude_categories' );
 
 		$sql = $where;
 
@@ -78,7 +78,7 @@ add_filter( 'tptn_posts_where', 'tptn_exclude_categories_where' );
 function tptn_exclude_categories_groupby( $groupby ) {
 	global $tptn_settings;
 
-	if ( '' !== $tptn_settings['exclude_categories'] && '' !== $groupby ) {
+	if ( '' !== tptn_get_option( 'exclude_categories' ) && '' !== $groupby ) {
 
 		$sql = $groupby;
 		$sql .= ', excat_tt.term_taxonomy_id ';

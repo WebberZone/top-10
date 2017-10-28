@@ -34,7 +34,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		parent::__construct(
 			array(
 				'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
-			'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records.
+				'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records.
 			)
 		);
 	}
@@ -50,17 +50,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public static function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
 
-		global $wpdb, $tptn_settings;
+		global $wpdb;
 
 		$blog_id = get_current_blog_id();
 
-		if ( $tptn_settings['daily_midnight'] ) {
+		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
-			$from_date = $current_time - ( max( 0, ( $tptn_settings['daily_range'] - 1 ) ) * DAY_IN_SECONDS );
+			$from_date = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d 0' , $from_date );
 		} else {
 			$current_time = current_time( 'timestamp', 0 );
-			$from_date = $current_time - ( $tptn_settings['daily_range'] * DAY_IN_SECONDS + $tptn_settings['hour_range'] * HOUR_IN_SECONDS );
+			$from_date = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d H' , $from_date );
 		}
 
@@ -550,7 +550,7 @@ class Top_Ten_Statistics {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">
-							<?php tptn_admin_side(); ?>
+							<?php include_once( 'sidebar.php' ); ?>
 						</div><!-- /side-sortables -->
 					</div><!-- /postbox-container-1 -->
 				</div><!-- /post-body -->
