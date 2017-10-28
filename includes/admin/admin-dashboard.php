@@ -73,6 +73,8 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	$output .= '</p>';
 
 	$output .= '<p style="text-align:center;border-top: #000 1px solid">';
+
+	/* translators: 1: Top 10 page link. */
 	$output .= sprintf( __( 'Popular posts by <a href="%s" target="_blank">Top 10 plugin</a>', 'top-10' ), esc_url( 'https://webberzone.com/plugins/top-10/' ) );
 	$output .= '</p>';
 	$output .= '</div>';

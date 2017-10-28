@@ -130,9 +130,9 @@ function tptn_clean_duplicates( $daily = false ) {
 		$table_name .= '_daily';
 	}
 
-	$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' );
-	$wpdb->query( "TRUNCATE TABLE $table_name" );
-	$wpdb->query( 'INSERT INTO ' . $table_name . ' SELECT * FROM ' . $table_name . '_temp' );
+	$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' ); // WPCS: unprepared SQL OK.
+	$wpdb->query( "TRUNCATE TABLE $table_name" ); // WPCS: unprepared SQL OK.
+	$wpdb->query( 'INSERT INTO ' . $table_name . ' SELECT * FROM ' . $table_name . '_temp' ); // WPCS: unprepared SQL OK.
 }
 
 
@@ -141,7 +141,7 @@ function tptn_clean_duplicates( $daily = false ) {
  *
  * @since   2.0.4
  *
- * @param   bool $daily  Daily flag
+ * @param   bool $daily  Daily flag.
  */
 function tptn_merge_blogids( $daily = false ) {
 	global $wpdb;
@@ -182,5 +182,5 @@ function tptn_merge_blogids( $daily = false ) {
 		);
 	}
 
-	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" );
+	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" ); // WPCS: unprepared SQL OK.
 }

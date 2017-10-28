@@ -55,7 +55,7 @@ function tptn_single_activate() {
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
+	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // WPCS: unprepared SQL OK.
 
 		$sql = 'CREATE TABLE ' . $table_name . " (
 			postnumber bigint(20) NOT NULL,
@@ -70,7 +70,7 @@ function tptn_single_activate() {
 		add_site_option( 'tptn_db_version', $tptn_db_version );
 	}
 
-	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) {
+	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) { // WPCS: unprepared SQL OK.
 
 		$sql = 'CREATE TABLE ' . $table_name_daily . " (
 			postnumber bigint(20) NOT NULL,
@@ -97,22 +97,22 @@ function tptn_single_activate() {
 
 			case '4.0':
 			case 4.0:
-				$wpdb->query( 'ALTER TABLE ' . $table_name . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " CHANGE blog_id blog_id bigint(20) NOT NULL DEFAULT '1'" ); // WPCS: unprepared SQL OK.
 				break;
 
 			default:
-				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY postnumber bigint(20) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY postnumber bigint(20) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY cntaccess bigint(20) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY cntaccess bigint(20) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY dp_date DATETIME ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) ' );
-				$wpdb->query( 'ALTER TABLE ' . $table_name . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" );
-				$wpdb->query( 'UPDATE ' . $table_name . ' SET blog_id = 1 WHERE blog_id = 0 ' );
-				$wpdb->query( 'UPDATE ' . $table_name_daily . ' SET blog_id = 1 WHERE blog_id = 0 ' );
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY postnumber bigint(20) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY postnumber bigint(20) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' MODIFY cntaccess bigint(20) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY cntaccess bigint(20) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' MODIFY dp_date DATETIME ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, blog_id) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY, ADD PRIMARY KEY(postnumber, dp_date, blog_id) ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'ALTER TABLE ' . $table_name_daily . " ADD blog_id bigint(20) NOT NULL DEFAULT '1'" ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'UPDATE ' . $table_name . ' SET blog_id = 1 WHERE blog_id = 0 ' ); // WPCS: unprepared SQL OK.
+				$wpdb->query( 'UPDATE ' . $table_name_daily . ' SET blog_id = 1 WHERE blog_id = 0 ' ); // WPCS: unprepared SQL OK.
 
 		}
 

@@ -5,7 +5,6 @@
  * @package   Top_Ten
  */
 
-
 /**
  * Function to add CSS to header.
  *
@@ -15,7 +14,7 @@ function tptn_header() {
 
 	$tptn_custom_CSS = stripslashes( tptn_get_option( 'custom_CSS' ) );
 
-	// Add CSS to header
+	// Add CSS to header.
 	if ( '' != $tptn_custom_CSS ) {
 		echo '<style type="text/css">' . $tptn_custom_CSS . '</style>';
 	}
@@ -29,7 +28,7 @@ add_action( 'wp_head', 'tptn_header' );
 function tptn_heading_styles() {
 	global $tptn_settings;
 
-	if ( 'left_thumbs' == $tptn_settings['tptn_styles'] ) {
+	if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
 		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', TOP_TEN_PLUGIN_FILE ) );
 		wp_enqueue_style( 'tptn-style-left-thumbs' );
 

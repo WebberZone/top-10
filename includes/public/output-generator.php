@@ -19,7 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since   2.2.0
  *
- * @param   array $args   Array of arguments
+ * @param   array  $args Array of arguments.
+ * @param   object $result Result object.
  * @return  string  Space separated list of link attributes
  */
 function tptn_link_attributes( $args, $result ) {
@@ -43,7 +44,7 @@ function tptn_link_attributes( $args, $result ) {
 	 */
 	$link_attributes = apply_filters( 'tptn_link_attributes', $link_attributes, $args, $result );
 
-	// Convert it to a string
+	// Convert it to a string.
 	$link_attributes = implode( ' ', $link_attributes );
 
 	return $link_attributes;
@@ -56,7 +57,7 @@ function tptn_link_attributes( $args, $result ) {
  *
  * @since   2.2.0
  *
- * @param   array $args   Array of arguments
+ * @param   array $args   Array of arguments.
  * @return  string  Space separated list of link attributes
  */
 function tptn_heading_title( $args ) {
@@ -84,7 +85,7 @@ function tptn_heading_title( $args ) {
  *
  * @since   2.2.0
  *
- * @param   array $args   Array of arguments
+ * @param   array $args   Array of arguments.
  * @return  string  Space separated list of link attributes
  */
 function tptn_before_list( $args ) {
@@ -109,7 +110,7 @@ function tptn_before_list( $args ) {
  *
  * @since   2.2.0
  *
- * @param   array $args   Array of arguments
+ * @param   array $args   Array of arguments.
  * @return  string  Space separated list of link attributes
  */
 function tptn_after_list( $args ) {
@@ -134,8 +135,8 @@ function tptn_after_list( $args ) {
  *
  * @since   2.2.0
  *
- * @param   array  $args   Array of arguments
- * @param   object $result Object of the current post result
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
  * @return  string  Space separated list of link attributes
  */
 function tptn_before_list_item( $args, $result ) {
@@ -161,8 +162,8 @@ function tptn_before_list_item( $args, $result ) {
  *
  * @since   2.2.0
  *
- * @param   array  $args   Array of arguments
- * @param   object $result Object of the current post result
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
  * @return  string  Space separated list of link attributes
  */
 function tptn_after_list_item( $args, $result ) {
@@ -178,7 +179,7 @@ function tptn_after_list_item( $args, $result ) {
 	 * @param   object  $result Object of the current post result
 	 * @param   array   $args   Array of arguments
 	 */
-	return apply_filters( 'tptn_after_list_item', $after_list_item, $result, $args );   // Pass the post object to the filter
+	return apply_filters( 'tptn_after_list_item', $after_list_item, $result, $args );   // Pass the post object to the filter.
 
 }
 
@@ -188,13 +189,13 @@ function tptn_after_list_item( $args, $result ) {
  *
  * @since   2.2.0
  *
- * @param   array  $args   Array of arguments
- * @param   object $result Object of the current post result
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
  * @return  string  Space separated list of link attributes
  */
 function tptn_post_title( $args, $result ) {
 
-	$title = tptn_max_formatted_content( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed
+	$title = tptn_max_formatted_content( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed.
 
 	/**
 	 * Filter the post title of each list item.
@@ -215,8 +216,8 @@ function tptn_post_title( $args, $result ) {
  *
  * @since   2.2.0
  *
- * @param   array  $args   Array of arguments
- * @param   object $result Object of the current post result
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
  * @return  string  Space separated list of link attributes
  */
 function tptn_author( $args, $result ) {
@@ -261,8 +262,8 @@ function tptn_author( $args, $result ) {
  *
  * @since   2.2.0
  *
- * @param   array  $args   Array of arguments
- * @param   object $result Object of the current post result
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
  * @return  string  Space separated list of link attributes
  */
 function tptn_list_link( $args, $result ) {
@@ -271,14 +272,14 @@ function tptn_list_link( $args, $result ) {
 	$title = tptn_post_title( $args, $result );
 	$link_attributes = tptn_link_attributes( $args, $result );
 
-	if ( 'after' == $args['post_thumb_op'] ) {
+	if ( 'after' === $args['post_thumb_op'] ) {
 		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
 		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after
-		$output .= '</a>'; // Close the link
+		$output .= '</a>'; // Close the link.
 	}
 
-	if ( 'inline' == $args['post_thumb_op'] || 'after' == $args['post_thumb_op'] || 'thumbs_only' == $args['post_thumb_op'] ) {
-		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
+	if ( 'inline' === $args['post_thumb_op'] || 'after' === $args['post_thumb_op'] || 'thumbs_only' === $args['post_thumb_op'] ) {
+		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link.
 
 		$output .= tptn_get_the_post_thumbnail(
 			array(
@@ -294,14 +295,14 @@ function tptn_list_link( $args, $result ) {
 			)
 		);
 
-		$output .= '</a>'; // Close the link
+		$output .= '</a>'; // Close the link.
 	}
 
-	if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
+	if ( 'inline' === $args['post_thumb_op'] || 'text_only' === $args['post_thumb_op'] ) {
 		$output .= '<span class="tptn_after_thumb">';
 		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
 		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings
-		$output .= '</a>'; // Close the link
+		$output .= '</a>'; // Close the link.
 	}
 
 	/**

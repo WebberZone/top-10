@@ -116,7 +116,7 @@ function tptn_get_settings() {
  * @since   1.3
  * @param   bool $daily  Daily flag.
  */
-function tptn_trunc_count( $daily = false ) {
+function tptn_trunc_count( $daily = true ) {
 	global $wpdb;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
@@ -125,7 +125,7 @@ function tptn_trunc_count( $daily = false ) {
 	}
 
 	$sql = "TRUNCATE TABLE $table_name";
-	$wpdb->query( $sql );
+	$wpdb->query( $sql ); // WPCS: unprepared SQL OK.
 }
 
 
@@ -149,7 +149,7 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/formatting.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php' );
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-10-widget.php' );
+require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php' );
 
 
 /*
@@ -168,7 +168,7 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/class-stats.php' );
+	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics-table.php' );
 	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php' );
 
 } // End admin.inc
@@ -181,7 +181,3 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 require_once( TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php' );
 
-if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/deprecated.php' );
-}

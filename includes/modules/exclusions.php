@@ -23,7 +23,7 @@ function tptn_exclude_post_ids( $exclude_post_ids ) {
 	foreach ( $tptn_post_metas as $tptn_post_meta ) {
 		$meta_value = unserialize( $tptn_post_meta['meta_value'] );
 
-		if ( 1 == $meta_value['exclude_this_post'] ) {
+		if ( $meta_value['exclude_this_post'] ) {
 			$exclude_post_ids[] = $tptn_post_meta['post_id'];
 		}
 	}
