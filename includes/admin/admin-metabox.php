@@ -25,15 +25,14 @@ if ( ! defined( 'WPINC' ) ) {
  * @param object $post Post object.
  */
 function tptn_add_meta_box( $post_type, $post ) {
-	global $tptn_settings;
 
 	// If metaboxes are disabled, then exit.
-	if ( ! $tptn_settings['show_metabox'] ) {
+	if ( ! tptn_get_option( 'show_metabox' ) ) {
 		return;
 	}
 
 	// If current user isn't an admin and we're restricting metaboxes to admins only, then exit.
-	if ( ! current_user_can( 'manage_options' ) && $tptn_settings['show_metabox_admins'] ) {
+	if ( ! current_user_can( 'manage_options' ) && tptn_get_option( 'show_metabox_admins' ) ) {
 		return;
 	}
 
@@ -114,7 +113,7 @@ function tptn_call_meta_box() {
 
 <?php
 
-	$results = get_post_meta( $post->ID, $tptn_settings['thumb_meta'], true );
+	$results = get_post_meta( $post->ID, tptn_get_option( 'thumb_meta' ), true );
 	$value = ( $results ) ? $results : '';
 ?>
 	<p>
@@ -135,7 +134,7 @@ function tptn_call_meta_box() {
 		<label for="thumb_meta"><strong><?php esc_html_e( 'Location of thumbnail:', 'top-10' ); ?></strong></label>
 		<input type="text" id="thumb_meta" name="thumb_meta" value="<?php echo esc_url( $value ); ?>" style="width:100%" />
 		<em><?php esc_html_e( "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This image will be used for the post. It will be resized to the thumbnail size set under Top 10 Settings &raquo; Thumbnail options.", 'top-10' ); ?></em>
-		<em><?php esc_html_e( 'The URL above is saved in the meta field:', 'top-10' ); ?></em><strong><?php echo esc_attr( $tptn_settings['thumb_meta'] ); ?></strong>
+		<em><?php esc_html_e( 'The URL above is saved in the meta field:', 'top-10' ); ?></em><strong><?php echo esc_attr( tptn_get_option( 'thumb_meta' ) ); ?></strong>
 	</p>
 
 	<p>
@@ -165,7 +164,7 @@ function tptn_call_meta_box() {
  * @param int $post_id Post ID.
  */
 function tptn_save_meta_box( $post_id ) {
-	global $tptn_settings, $wpdb;
+	global $wpdb;
 
 	$tptn_post_meta = array();
 
@@ -218,9 +217,9 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	if ( ! empty( $thumb_meta ) ) {
-		update_post_meta( $post_id, $tptn_settings['thumb_meta'], $thumb_meta );
+		update_post_meta( $post_id, tptn_get_option( 'thumb_meta' ), $thumb_meta );
 	} else {
-		delete_post_meta( $post_id, $tptn_settings['thumb_meta'] );
+		delete_post_meta( $post_id, tptn_get_option( 'thumb_meta' ) );
 	}
 
 	// Disable posts.
@@ -248,7 +247,7 @@ function tptn_save_meta_box( $post_id ) {
 
 	$tptn_post_meta_filtered = array_filter( $tptn_post_meta );
 
-	/**** Now we can start saving ****/
+	/**** Now we can start saving */
 	if ( empty( $tptn_post_meta_filtered ) ) { // Checks if all the array items are 0 or empty
 		delete_post_meta( $post_id, 'tptn_post_meta' ); // Delete the post meta if no options are set
 	} else {

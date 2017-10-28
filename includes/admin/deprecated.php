@@ -52,7 +52,7 @@ function tptn_manage( $daily = 0 ) {
 			<!-- /post-body-content -->
 			<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
-					<?php tptn_admin_side(); ?>
+					<?php include_once( 'sidebar.php' ); ?>
 				</div>
 				<!-- /side-sortables -->
 			</div>

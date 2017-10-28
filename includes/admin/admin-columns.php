@@ -23,16 +23,11 @@ if ( ! defined( 'WPINC' ) ) {
  * @return  array   Modified array of columns.
  */
 function tptn_column( $cols ) {
-	global $tptn_settings;
 
-	if ( ( current_user_can( 'manage_options' ) ) || ( $tptn_settings['show_count_non_admins'] ) ) {
-		if ( $tptn_settings['pv_in_admin'] ) {
+	if ( ( current_user_can( 'manage_options' ) ) || ( tptn_get_option( 'show_count_non_admins' ) ) ) {
+		if ( tptn_get_option( 'pv_in_admin' ) ) {
 			$cols['tptn_total'] = __( 'Total Views', 'top-10' );
-		}
-		if ( $tptn_settings['pv_in_admin'] ) {
 			$cols['tptn_daily'] = __( "Today's Views", 'top-10' );
-		}
-		if ( $tptn_settings['pv_in_admin'] ) {
 			$cols['tptn_both'] = __( 'Views', 'top-10' );
 		}
 	}
@@ -56,7 +51,7 @@ function tptn_value( $column_name, $id ) {
 	$blog_id = get_current_blog_id();
 
 	// Add Total count.
-	if ( ( 'tptn_total' === $column_name ) && ( $tptn_settings['pv_in_admin'] ) ) {
+	if ( ( 'tptn_total' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten';
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
@@ -65,13 +60,13 @@ function tptn_value( $column_name, $id ) {
 	}
 
 	// Now process daily count.
-	if ( ( 'tptn_daily' === $column_name ) && ( $tptn_settings['pv_in_admin'] ) ) {
+	if ( ( 'tptn_daily' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
-		$daily_range = $tptn_settings['daily_range'];
-		$hour_range = $tptn_settings['hour_range'];
+		$daily_range = tptn_get_option( 'daily_range' );
+		$hour_range = tptn_get_option( 'hour_range' );
 
-		if ( $tptn_settings['daily_midnight'] ) {
+		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
 			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d 0' , $from_date );
@@ -87,7 +82,7 @@ function tptn_value( $column_name, $id ) {
 	}
 
 	// Now process both.
-	if ( ( 'tptn_both' === $column_name ) && ( $tptn_settings['pv_in_admin'] ) ) {
+	if ( ( 'tptn_both' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten';
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
@@ -95,10 +90,10 @@ function tptn_value( $column_name, $id ) {
 
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
-		$daily_range = $tptn_settings['daily_range'];
-		$hour_range = $tptn_settings['hour_range'];
+		$daily_range = tptn_get_option( 'daily_range' );
+		$hour_range = tptn_get_option( 'hour_range' );
 
-		if ( $tptn_settings['daily_midnight'] ) {
+		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
 			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d 0' , $from_date );
@@ -127,9 +122,8 @@ add_action( 'manage_pages_custom_column', 'tptn_value', 10, 2 );
  * @return  array   Filtered columns array
  */
 function tptn_column_register_sortable( $cols ) {
-	$tptn_settings = tptn_read_options();
 
-	if ( $tptn_settings['pv_in_admin'] ) {
+	if ( tptn_get_option( 'pv_in_admin' ) ) {
 		$cols['tptn_total'] = array( 'tptn_total', true );
 		$cols['tptn_daily'] = array( 'tptn_daily', true );
 	}
@@ -151,7 +145,6 @@ add_filter( 'manage_edit-page_sortable_columns', 'tptn_column_register_sortable'
  */
 function tptn_column_clauses( $clauses, $wp_query ) {
 	global $wpdb;
-	$tptn_settings = tptn_read_options();
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' === $wp_query->query['orderby'] ) {
 
@@ -165,10 +158,10 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
-		$daily_range = $tptn_settings['daily_range'];
-		$hour_range = $tptn_settings['hour_range'];
+		$daily_range = tptn_get_option( 'daily_range' );
+		$hour_range = tptn_get_option( 'hour_range' );
 
-		if ( $tptn_settings['daily_midnight'] ) {
+		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
 			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d 0' , $from_date );

@@ -15,7 +15,8 @@
 function tptn_pc_content( $content ) {
 	global $post, $tptn_settings;
 
-	$exclude_on_post_ids = explode( ',', $tptn_settings['exclude_on_post_ids'] );
+	$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
+	$add_to = tptn_get_option( 'add_to' );
 
 	if ( isset( $post ) ) {
 		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
@@ -23,17 +24,17 @@ function tptn_pc_content( $content ) {
 		}
 	}
 
-	if ( ( is_single() ) && ( $tptn_settings['add_to_content'] ) ) {
+	if ( ( is_single() ) && ( $add_to['single'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_page() ) && ( $tptn_settings['count_on_pages'] ) ) {
+	} elseif ( ( is_page() ) && ( $add_to['page'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_home() ) && ( $tptn_settings['add_to_home'] ) ) {
+	} elseif ( ( is_home() ) && ( $add_to['home'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_category() ) && ( $tptn_settings['add_to_category_archives'] ) ) {
+	} elseif ( ( is_category() ) && ( $add_to['category_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_tag() ) && ( $tptn_settings['add_to_tag_archives'] ) ) {
+	} elseif ( ( is_tag() ) && ( $add_to['tag_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $tptn_settings['add_to_archives'] ) ) {
+	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $add_to['other_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
 	} else {
 		return $content;
@@ -55,7 +56,7 @@ function tptn_rss_filter( $content ) {
 
 	$id = intval( $post->ID );
 
-	if ( $tptn_settings['add_to_feed'] ) {
+	if ( $add_to['feed'] ) {
 		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	} else {
 		return $content;
@@ -92,7 +93,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	$nonce_action = 'tptn-nonce-' . $id ;
 	$nonce = wp_create_nonce( $nonce_action );
 
-	if ( $tptn_settings['dynamic_post_count'] ) {
+	if ( tptn_get_option( 'dynamic_post_count' ) ) {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id=' . $id . '&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
 	} else {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
@@ -126,8 +127,8 @@ function echo_tptn_post_count( $echo = 1 ) {
 function get_tptn_post_count( $id = false, $blog_id = false ) {
 	global $tptn_settings;
 
-	$count_disp_form = stripslashes( $tptn_settings['count_disp_form'] );
-	$count_disp_form_zero = stripslashes( $tptn_settings['count_disp_form_zero'] );
+	$count_disp_form = stripslashes( tptn_get_option( 'count_disp_form' ) );
+	$count_disp_form_zero = stripslashes( tptn_get_option( 'count_disp_form_zero' ) );
 	$totalcntaccess = get_tptn_post_count_only( $id, 'total', $blog_id );
 
 	if ( $id > 0 ) {
@@ -199,10 +200,10 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 				break;
 			case 'daily':
-				$daily_range = $tptn_settings['daily_range'];
-				$hour_range = $tptn_settings['hour_range'];
+				$daily_range = tptn_get_option( 'daily_range' );
+				$hour_range = tptn_get_option( 'hour_range' );
 
-				if ( $tptn_settings['daily_midnight'] ) {
+				if ( tptn_get_option( 'daily_midnight' ) ) {
 					$current_time = current_time( 'timestamp', 0 );
 					$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 					$from_date = gmdate( 'Y-m-d 0' , $from_date );
