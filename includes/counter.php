@@ -13,7 +13,7 @@
  * @return  string  Filtered post content
  */
 function tptn_pc_content( $content ) {
-	global $post, $tptn_settings;
+	global $post;
 
 	$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
 	$add_to = tptn_get_option( 'add_to' );
@@ -52,9 +52,11 @@ add_filter( 'the_content', 'tptn_pc_content' );
  * @return  string  Filtered post content
  */
 function tptn_rss_filter( $content ) {
-	global $post, $tptn_settings;
+	global $post;
 
 	$id = intval( $post->ID );
+
+	$add_to = tptn_get_option( 'add_to' );
 
 	if ( $add_to['feed'] ) {
 		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
@@ -74,7 +76,7 @@ add_filter( 'the_content_feed', 'tptn_rss_filter' );
  * @return  string  Formatted string if $echo is set to 0|false
  */
 function echo_tptn_post_count( $echo = 1 ) {
-	global $post, $tptn_settings;
+	global $post;
 
 	$home_url = home_url( '/' );
 
@@ -109,7 +111,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	$output = apply_filters( 'tptn_view_post_count', $output );
 
 	if ( $echo ) {
-		echo $output;
+		echo $output; // WPCS: XSS OK.
 	} else {
 		return $output;
 	}
@@ -125,7 +127,6 @@ function echo_tptn_post_count( $echo = 1 ) {
  * @return  int|string  Formatted post count
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
-	global $tptn_settings;
 
 	$count_disp_form = stripslashes( tptn_get_option( 'count_disp_form' ) );
 	$count_disp_form_zero = stripslashes( tptn_get_option( 'count_disp_form_zero' ) );
@@ -184,7 +185,7 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
  * @return  int     Post count
  */
 function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
-	global $wpdb, $tptn_settings;
+	global $wpdb;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
@@ -196,7 +197,7 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 	if ( $id > 0 ) {
 		switch ( $count ) {
 			case 'total':
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " , $id, $blog_id ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " , $id, $blog_id ) ); // WPCS: unprepared SQL OK.
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 				break;
 			case 'daily':
@@ -213,11 +214,11 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 					$from_date = gmdate( 'Y-m-d H' , $from_date );
 				}
 
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // WPCS: unprepared SQL OK.
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 			case 'overall':
-				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name );
+				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // WPCS: unprepared SQL OK.
 				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 		}

@@ -8,6 +8,7 @@
  * @link      https://webberzone.com
  * @copyright 2008-2016 Ajay D'Souza
  */
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -22,8 +23,8 @@ if ( $tptn_settings['uninstall_clean_tables'] ) {
 	$table_name = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	$wpdb->query( "DROP TABLE $table_name" );
-	$wpdb->query( "DROP TABLE $table_name_daily" );
+	$wpdb->query( "DROP TABLE $table_name" ); // WPCS: unprepared SQL OK.
+	$wpdb->query( "DROP TABLE $table_name_daily" ); // WPCS: unprepared SQL OK.
 	delete_option( 'tptn_db_version' );
 
 }

@@ -19,7 +19,7 @@ function tptn_enqueue_scripts() {
 
 	if ( is_singular() && 'draft' !== $post->post_status && ! is_customize_preview() ) {
 
-		$current_user = wp_get_current_user();  // Let's get the current user
+		$current_user = wp_get_current_user();  // Let's get the current user.
 		$post_author = ( $current_user->ID === $post->post_author ) ? true : false; // Is the current user the post author?
 		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
@@ -130,7 +130,7 @@ function tptn_parse_request( $wp ) {
 	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
 	$str = '';
 
-	if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) && '' !== $wp->query_vars['top_ten_id']  ) {
+	if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) && '' !== $wp->query_vars['top_ten_id'] ) {
 
 		$id = absint( $wp->query_vars['top_ten_id'] );
 		$blog_id = absint( $wp->query_vars['top_ten_blog_id'] );

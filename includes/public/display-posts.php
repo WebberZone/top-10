@@ -15,13 +15,13 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since   1.5
  *
- * @param   mixed $args   Arguments array
- * @return  array|string    Array of posts if posts_only = 0 or a formatted string if posts_only = 1
+ * @param   mixed $args   Arguments array.
+ * @return  array|string  Array of posts if posts_only = 0 or a formatted string if posts_only = 1
  */
 function tptn_pop_posts( $args ) {
 	global $tptn_settings;
 
-	// if set, save $exclude_categories
+	// if set, save $exclude_categories.
 	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
 		$exclude_categories = explode( ',', $args['exclude_categories'] );
 		$args['strict_limit'] = false;
@@ -40,10 +40,10 @@ function tptn_pop_posts( $args ) {
 		'offset' => 0,
 	);
 
-	// Merge the $defaults array with the $tptn_settings array
+	// Merge the $defaults array with the $tptn_settings array.
 	$defaults = array_merge( $defaults, $tptn_settings );
 
-	// Parse incomming $args into an array and merge it with $defaults
+	// Parse incomming $args into an array and merge it with $defaults.
 	$args = wp_parse_args( $args, $defaults );
 
 	$output = '';
@@ -58,7 +58,7 @@ function tptn_pop_posts( $args ) {
 	 */
 	do_action( 'pre_tptn_pop_posts', $output, $args );
 
-	// Check if the cache is enabled and if the output exists. If so, return the output
+	// Check if the cache is enabled and if the output exists. If so, return the output.
 	if ( $args['cache'] && ! $args['posts_only'] ) {
 		$cache_name = 'tptn';
 		$cache_name .= $args['daily'] ? '_daily' : '_total';
@@ -82,14 +82,14 @@ function tptn_pop_posts( $args ) {
 		}
 	}
 
-	// Get thumbnail size
+	// Get thumbnail size.
 	list( $args['thumb_width'], $args['thumb_height'] ) = tptn_get_thumb_size( $args );
 
-	// Retrieve the popular posts
+	// Retrieve the popular posts.
 	$results = get_tptn_pop_posts( $args );
 
-	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set
-		_deprecated_argument( __FUNCTION__, '2.2.0', __( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'top-10' ) );
+	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set.
+		_deprecated_argument( __FUNCTION__, '2.2.0', esc_html__( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'top-10' ) );
 		return $results;
 	}
 
@@ -118,7 +118,7 @@ function tptn_pop_posts( $args ) {
 
 		$output .= tptn_before_list( $args );
 
-		// We need this for WPML support
+		// We need this for WPML support.
 		$processed_results = array();
 
 		foreach ( $results as $result ) {
@@ -131,10 +131,10 @@ function tptn_pop_posts( $args ) {
 				continue;
 			}
 
-			// Push the current ID into the array to ensure we're not repeating it
+			// Push the current ID into the array to ensure we're not repeating it.
 			array_push( $processed_results, $resultid );
 
-			$sum_count = $result->sum_count;        // Store the count. We'll need this later
+			$sum_count = $result->sum_count;        // Store the count. We'll need this later.
 
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
@@ -145,22 +145,22 @@ function tptn_pop_posts( $args ) {
 			 */
 			$resultid = apply_filters( 'tptn_post_id', $resultid );
 
-			$result = get_post( $resultid );    // Let's get the Post using the ID
+			$result = get_post( $resultid );    // Let's get the Post using the ID.
 
-			// Process the category exclusion if passed in the shortcode
+			// Process the category exclusion if passed in the shortcode.
 			if ( isset( $exclude_categories ) ) {
 
-				$categorys = get_the_category( $result->ID );   // Fetch categories of the plugin
+				$categorys = get_the_category( $result->ID );   // Fetch categories of the plugin.
 
-				$p_in_c = false;    // Variable to check if post exists in a particular category
-				foreach ( $categorys as $cat ) {    // Loop to check if post exists in excluded category
+				$p_in_c = false;    // Variable to check if post exists in a particular category.
+				foreach ( $categorys as $cat ) {    // Loop to check if post exists in excluded category.
 					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false;
 					if ( $p_in_c ) {
-						break; // Skip loop execution and go to the next step
+						break; // Skip loop execution and go to the next step.
 					}
 				}
 				if ( $p_in_c ) {
-					continue;  // Skip loop execution and go to the next step
+					continue;  // Skip loop execution and go to the next step.
 				}
 			}
 
@@ -210,7 +210,7 @@ function tptn_pop_posts( $args ) {
 			 */
 			$output .= apply_filters( 'tptn_list', $tptn_list, $result, $args );
 
-			// Opening span created in tptn_list_link()
+			// Opening span created in tptn_list_link().
 			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
 				$output .= '</span>';
 			}
@@ -220,7 +220,7 @@ function tptn_pop_posts( $args ) {
 			$counter++;
 
 			if ( $counter == $args['limit'] ) {
-				break;  // End loop when related posts limit is reached
+				break;  // End loop when related posts limit is reached.
 			}
 		}
 		if ( $args['show_credit'] ) {
@@ -228,6 +228,7 @@ function tptn_pop_posts( $args ) {
 			$output .= tptn_before_list_item( $args, $result );
 
 			$output .= sprintf(
+				/* translators: 1. Top 10 plugin page link, 2. Link attributes. */
 				__( 'Popular posts by <a href="%1$s" rel="nofollow" %2$s>Top 10 plugin</a>', 'top-10' ),
 				esc_url( 'https://webberzone.com/plugins/top-10/' ),
 				tptn_link_attributes( $args, $result )
@@ -254,7 +255,7 @@ function tptn_pop_posts( $args ) {
 	}
 	$output .= '</div>';
 
-	// Check if the cache is enabled and if the output exists. If so, return the output
+	// Check if the cache is enabled and if the output exists. If so, return the output.
 	if ( $args['cache'] ) {
 		/**
 		 * Filter the cache time which allows a function to override this
@@ -284,12 +285,12 @@ function tptn_pop_posts( $args ) {
  *
  * @since   2.1.0
  *
- * @param   mixed $args   Arguments list
+ * @param   mixed $args   Arguments list.
  */
 function get_tptn_pop_posts( $args = array() ) {
 	global $wpdb, $tptn_settings;
 
-	// Initialise some variables
+	// Initialise some variables.
 	$fields = array();
 	$where = '';
 	$join = '';
@@ -304,10 +305,10 @@ function get_tptn_pop_posts( $args = array() ) {
 		'offset' => 0,
 	);
 
-	// Merge the $defaults array with the $tptn_settings array
+	// Merge the $defaults array with the $tptn_settings array.
 	$defaults = array_merge( $defaults, $tptn_settings );
 
-	// Parse incomming $args into an array and merge it with $defaults
+	// Parse incomming $args into an array and merge it with $defaults.
 	$args = wp_parse_args( $args, $defaults );
 
 	if ( $args['daily'] ) {
@@ -325,10 +326,10 @@ function get_tptn_pop_posts( $args = array() ) {
 	} elseif ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
 		$post_types = explode( ',', $args['post_types'] );
 	} else {
-		parse_str( $args['post_types'], $post_types );  // Save post types in $post_types variable
+		parse_str( $args['post_types'], $post_types );  // Save post types in $post_types variable.
 	}
 
-	// If post_types is empty or if we want all the post types
+	// If post_types is empty or if we want all the post types.
 	if ( empty( $post_types ) || 'all' === $args['post_types'] ) {
 		$post_types = get_post_types(
 			array(
@@ -355,25 +356,25 @@ function get_tptn_pop_posts( $args = array() ) {
 	 * "SELECT $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits"
 	 */
 
-	// Fields to return
+	// Fields to return.
 	$fields[] = 'ID';
 	$fields[] = 'postnumber';
 	$fields[] = ( $args['daily'] ) ? 'SUM(cntaccess) as sum_count' : 'cntaccess as sum_count';
 
 	$fields = implode( ', ', $fields );
 
-	// Create the JOIN clause
+	// Create the JOIN clause.
 	$join = " INNER JOIN {$wpdb->posts} ON postnumber=ID ";
 
 	// Create the base WHERE clause
 	$where .= $wpdb->prepare( ' AND blog_id = %d ', $blog_id );             // Posts need to be from the current blog only
-	$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments
+	$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
 
 	if ( $args['daily'] ) {
-		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );    // Only fetch posts that are tracked after this date
+		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );    // Only fetch posts that are tracked after this date.
 	}
 
-	// Convert exclude post IDs string to array so it can be filtered
+	// Convert exclude post IDs string to array so it can be filtered.
 	$exclude_post_ids = explode( ',', $args['exclude_post_ids'] );
 
 	/**
@@ -383,28 +384,28 @@ function get_tptn_pop_posts( $args = array() ) {
 	 */
 	$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids );
 
-	// Convert it back to string
+	// Convert it back to string.
 	$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
 
 	if ( '' != $exclude_post_ids ) {
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 	}
-	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types
+	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types.
 
 	// How old should the posts be?
 	if ( $args['how_old'] ) {
 		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > '%s' ", gmdate( 'Y-m-d H:m:s', $current_time - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
 	}
 
-	// Create the base GROUP BY clause
+	// Create the base GROUP BY clause.
 	if ( $args['daily'] ) {
 		$groupby = ' postnumber ';
 	}
 
-	// Create the base ORDER BY clause
+	// Create the base ORDER BY clause.
 	$orderby = ' sum_count DESC ';
 
-	// Create the base LIMITS clause
+	// Create the base LIMITS clause.
 	$limits .= $wpdb->prepare( ' LIMIT %d, %d ', $offset, $limit );
 
 	/**
@@ -458,8 +459,8 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	$sql = "SELECT DISTINCT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
-	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set
-		$results = $wpdb->get_results( $sql, ARRAY_A );
+	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set.
+		$results = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: unprepared SQL OK.
 
 		/**
 		 * Filter the array of top post IDs.
@@ -472,7 +473,7 @@ function get_tptn_pop_posts( $args = array() ) {
 		return apply_filters( 'tptn_pop_posts_array', $results, $args );
 	}
 
-	$results = $wpdb->get_results( $sql );
+	$results = $wpdb->get_results( $sql ); // WPCS: unprepared SQL OK.
 
 	/**
 	 * Filter object containing post IDs of popular posts
@@ -491,7 +492,7 @@ function get_tptn_pop_posts( $args = array() ) {
  *
  * @since   1.0
  *
- * @param   mixed $args   Arguments list
+ * @param   mixed $args   Arguments list.
  */
 function tptn_show_pop_posts( $args = null ) {
 	if ( is_array( $args ) ) {
@@ -500,7 +501,7 @@ function tptn_show_pop_posts( $args = null ) {
 		$args .= '&is_manual=1';
 	}
 
-	echo tptn_pop_posts( $args );
+	echo tptn_pop_posts( $args ); // WPCS: XSS OK.
 }
 
 
@@ -509,7 +510,7 @@ function tptn_show_pop_posts( $args = null ) {
  *
  * @since   1.2
  *
- * @param   mixed $args   Arguments list
+ * @param   mixed $args   Arguments list.
  */
 function tptn_show_daily_pop_posts( $args = null ) {
 	if ( is_array( $args ) || ! isset( $args ) ) {

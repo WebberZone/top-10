@@ -111,7 +111,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Create the base ORDER BY clause.
 		$orderby = ' total_count DESC ';
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) { // Input var okay.
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // WPCS: Input var okay.
 			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) );
 
 			if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ) ) ) {
@@ -141,7 +141,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
-		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+		$result = $wpdb->get_results( $sql, 'ARRAY_A' ); // WPCS: Unprepared SQL OK.
 
 		return $result;
 
@@ -198,7 +198,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
 		}
 
-		return $wpdb->get_var( $sql );
+		return $wpdb->get_var( $sql ); // WPCS: Unprepared SQL OK.
 	}
 
 	/**
@@ -286,6 +286,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$time_diff = time() - $time;
 
 		if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS ) {
+			/* translators: 1. Human time difference. */
 			$h_time = sprintf( __( '%s ago' ), human_time_diff( $time ) );
 		} else {
 			$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
@@ -390,9 +391,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$this->set_pagination_args(
 			array(
-				'total_items' => $total_items, // WE have to calculate the total number of items
-			'per_page'    => $per_page, // WE have to determine how many items to show on a page
-			'total_pages' => ceil( $total_items / $per_page ), // WE have to calculate the total number of pages
+				'total_items' => $total_items, // WE have to calculate the total number of items.
+				'per_page'    => $per_page, // WE have to determine how many items to show on a page.
+				'total_pages' => ceil( $total_items / $per_page ), // WE have to calculate the total number of pages.
 			)
 		);
 
@@ -421,7 +422,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		) {
 			$delete_ids = sanitize_text_field( wp_unslash( $_REQUEST['bulk-delete'] ) );
 
-			// Loop over the array of record IDs and delete them,
+			// Loop over the array of record IDs and delete them.
 			foreach ( $delete_ids as $id ) {
 				self::delete_post_count( $id );
 			}
@@ -484,11 +485,15 @@ class Top_Ten_Statistics {
 
 	/**
 	 * Class instance.
+	 *
+	 * @var class Class instance.
 	 */
 	static $instance;
 
 	/**
 	 * WP_List_Table object.
+	 *
+	 * @var object WP_List_Table object.
 	 */
 	public $pop_posts_obj;
 
@@ -507,7 +512,7 @@ class Top_Ten_Statistics {
 	 *
 	 * @param  string $status Status of screen.
 	 * @param  string $option Option name.
-	 * @param  string $value  Option value
+	 * @param  string $value  Option value.
 	 * @return string Value.
 	 */
 	public static function set_screen( $status, $option, $value ) {
@@ -521,7 +526,7 @@ class Top_Ten_Statistics {
 		$args = null;
 		?>
 		<div class="wrap">
-			<h1><?php printf( _x( '%s Popular Posts', 'Plugin name', 'top-10' ), 'Top 10' ); ?></h1>
+			<h1><?php esc_html( 'Top 10 Popular Posts', 'top-10' ); ?></h1>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">

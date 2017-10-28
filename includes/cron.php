@@ -20,8 +20,8 @@ function tptn_cron() {
 	$from_date = gmdate( 'Y-m-d H' , $from_date );
 
 	$resultscount = $wpdb->query(
-		$wpdb->prepare( // WPCS: unprepared SQL OK.
-			 "DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
+		$wpdb->prepare(
+			"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
 			$from_date
 		)
 	); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.

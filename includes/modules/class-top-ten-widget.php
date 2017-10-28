@@ -81,32 +81,32 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>">
-			<?php esc_html_e( 'No. of posts', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'limit' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'limit' ) ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>" />
+			<?php esc_html_e( 'No. of posts', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'limit' ) ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>" />
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'offset' ) ); ?>">
-			<?php esc_html_e( 'Offset', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'offset' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'offset' ) ); ?>" type="text" value="<?php echo esc_attr( $offset ); ?>" />
+			<?php esc_html_e( 'Offset', 'top-10' ); ?>: <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'offset' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'offset' ) ); ?>" type="text" value="<?php echo esc_attr( $offset ); ?>" />
 			</label>
 		</p>
 		<p>
-			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'daily' ) ); ?>">
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'daily' ) ); ?>">
 			  <option value="overall" <?php selected( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
 			  <option value="daily" <?php selected( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
 			<?php esc_html_e( 'In days and hours (applies only to custom option above)', 'top-10' ); ?>:
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'daily_range' ) ); ?>">
-				<input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'daily_range' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'daily_range' ) ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" /> <?php esc_html_e( 'days', 'top-10' ); ?>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'daily_range' ) ); ?>">
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'daily_range' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'daily_range' ) ); ?>" type="text" value="<?php echo esc_attr( $daily_range ); ?>" /> <?php esc_html_e( 'days', 'top-10' ); ?>
 			</label>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'hour_range' ) ); ?>">
-				<input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'hour_range' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'hour_range' ) ); ?>" type="text" value="<?php echo esc_attr( $hour_range ); ?>" /> <?php esc_html_e( 'hours', 'top-10' ); ?>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'hour_range' ) ); ?>">
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'hour_range' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'hour_range' ) ); ?>" type="text" value="<?php echo esc_attr( $hour_range ); ?>" /> <?php esc_html_e( 'hours', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'disp_list_count' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox" 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>">
+			<input id="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox"
 									<?php
 									if ( $disp_list_count ) {
 										echo 'checked="checked"'; }
@@ -115,8 +115,8 @@ class Top_Ten_Widget extends WP_Widget {
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_excerpt' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox" 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'show_excerpt' ) ); ?>">
+			<input id="<?php echo esc_attr( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox"
 									<?php
 									if ( $show_excerpt ) {
 										echo 'checked="checked"'; }
@@ -125,8 +125,8 @@ class Top_Ten_Widget extends WP_Widget {
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_author' ) ); ?>">
-			<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox" 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'show_author' ) ); ?>">
+			<input id="<?php echo esc_attr( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox"
 									<?php
 									if ( $show_author ) {
 										echo 'checked="checked"'; }
@@ -135,8 +135,8 @@ class Top_Ten_Widget extends WP_Widget {
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'show_date' ) ); ?>">
-				<input id="<?php echo esc_attr_e( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox" 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'show_date' ) ); ?>">
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox"
 										<?php
 										if ( $show_date ) {
 											echo 'checked="checked"'; }
@@ -146,7 +146,7 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<?php esc_html_e( 'Thumbnail options', 'top-10' ); ?>: <br />
-			<select class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'post_thumb_op' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_thumb_op' ) ); ?>">
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'post_thumb_op' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_thumb_op' ) ); ?>">
 			  <option value="inline" <?php selected( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title','top-10' ); ?></option>
 			  <option value="after" <?php selected( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title','top-10' ); ?></option>
 			  <option value="thumbs_only" <?php selected( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text','top-10' ); ?></option>
@@ -154,15 +154,15 @@ class Top_Ten_Widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'thumb_height' ) ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'thumb_height' ) ); ?>">
 				<?php esc_html_e( 'Thumbnail height', 'top-10' ); ?>:
-				<input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'thumb_height' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'thumb_height' ) ); ?>" type="text" value="<?php echo esc_attr( $thumb_height ); ?>" />
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'thumb_height' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'thumb_height' ) ); ?>" type="text" value="<?php echo esc_attr( $thumb_height ); ?>" />
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr_e( $this->get_field_id( 'thumb_width' ) ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'thumb_width' ) ); ?>">
 				<?php esc_html_e( 'Thumbnail width', 'top-10' ); ?>:
-				<input class="widefat" id="<?php echo esc_attr_e( $this->get_field_id( 'thumb_width' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'thumb_width' ) ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'thumb_width' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'thumb_width' ) ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
 		</p>
 		<p><?php esc_html_e( 'Post types to include:', 'top-10' ); ?><br />
@@ -170,8 +170,8 @@ class Top_Ten_Widget extends WP_Widget {
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
 
 				<label>
-					<input id="<?php echo esc_attr_e( $this->get_field_id( 'post_types' ) ); ?>" name="<?php echo esc_attr_e( $this->get_field_name( 'post_types' ) ); ?>[]" type="checkbox" value="<?php echo esc_attr_e( $wp_post_type ); ?>" <?php checked( true, in_array( $wp_post_type, $posts_types_inc, true ), true ); ?> />
-					<?php echo esc_attr_e( $wp_post_type ); ?>
+					<input id="<?php echo esc_attr( $this->get_field_id( 'post_types' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_types' ) ); ?>[]" type="checkbox" value="<?php echo esc_attr( $wp_post_type ); ?>" <?php checked( true, in_array( $wp_post_type, $posts_types_inc, true ), true ); ?> />
+					<?php echo esc_attr( $wp_post_type ); ?>
 				</label>
 				<br />
 
@@ -253,8 +253,9 @@ class Top_Ten_Widget extends WP_Widget {
 		if ( isset( $post ) ) {
 			$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
 
-			if ( isset( $tptn_post_meta['disable_here'] ) && ( 1 == $tptn_post_meta['disable_here'] ) ) {
-				return; }
+			if ( isset( $tptn_post_meta['disable_here'] ) && ( $tptn_post_meta['disable_here'] ) ) {
+				return;
+			}
 		}
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );

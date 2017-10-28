@@ -107,6 +107,11 @@ function tptn_settings_help() {
 
 }
 
+/**
+ * Generates the Tools help page.
+ *
+ * @since 2.5.0
+ */
 function tptn_settings_tools_help() {
 	global $tptn_settings_tools_help;
 
