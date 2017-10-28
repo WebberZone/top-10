@@ -4,7 +4,7 @@ Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 4.1
-Tested up to: 4.7
+Tested up to: 4.9
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -119,7 +119,7 @@ The main CSS classes include:
 
 *daily* : If set to 1, then the shortcode will return the daily popular posts list
 
-In addition to these attributes, the shortcode can take all the options as attributes. To see the detailed list take a look at the function `tptn_default_options()` in **top-10.php** file
+In addition to these attributes, the shortcode can take all the options as attributes. To see the detailed list take a look at the function `tptn_register_settings()` in **includes/admin/register-settings**
 
 
 `[tptn_views]` lets you display the number of visits. The plugin takes one optional attribute `daily` as follows:
@@ -164,6 +164,20 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 
 == Changelog ==
+
+= 2.5.0 =
+
+* Features:
+	* Upgrade old options to Settings API
+
+* Enhancements:
+	* Make $ajax_tptn_tracker global. Contributed by [@pkirk](https://github.com/pkirk)
+
+* Bug fixes:
+	* Make sure that $post object is available in tptn_pc_content filter. Contributed by [@mtws](https://github.com/mtws)
+
+* Deprecated:
+	* `tptn_default_options` (no replacement) and `tptn_read_options` (Use `tptn_get_settings` instead)
 
 = 2.4.4 =
 
