@@ -175,6 +175,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Bug fixes:
 	* Make sure that $post object is available in tptn_pc_content filter. Contributed by [@mtws](https://github.com/mtws)
+	* When editing Attachment post types, metabox should now save correctly
 
 * Deprecated:
 	* `tptn_default_options` (no replacement) and `tptn_read_options` (Use `tptn_get_settings` instead)

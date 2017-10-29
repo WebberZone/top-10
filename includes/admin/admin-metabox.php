@@ -265,4 +265,5 @@ function tptn_save_meta_box( $post_id ) {
 
 }
 add_action( 'save_post', 'tptn_save_meta_box' );
+add_action( 'edit_attachment', 'tptn_save_meta_box' );
 
