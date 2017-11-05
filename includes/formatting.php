@@ -75,7 +75,7 @@ function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
 	 * @param   string  $content    Formatted content
 	 * @param   int     $no_of_char Maximum length of excerpt in characters
 	 */
-	return apply_filters( 'tptn_max_formatted_content' , $content, $no_of_char );
+	return apply_filters( 'tptn_max_formatted_content', $content, $no_of_char );
 }
 
 

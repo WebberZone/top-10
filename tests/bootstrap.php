@@ -1,8 +1,8 @@
 <?php
 
 $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
-$_SERVER['SERVER_NAME'] = '';
-$PHP_SELF = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
+$_SERVER['SERVER_NAME']     = '';
+$PHP_SELF                   = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {

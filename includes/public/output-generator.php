@@ -30,7 +30,7 @@ function tptn_link_attributes( $args, $result ) {
 	$target_attribute = ( $args['link_new_window'] ) ? ' target="_blank" ' : ' ';
 
 	$link_attributes = array(
-		'rel_attribute' => $rel_attribute,
+		'rel_attribute'    => $rel_attribute,
 		'target_attribute' => $target_attribute,
 	);
 
@@ -268,8 +268,8 @@ function tptn_author( $args, $result ) {
  */
 function tptn_list_link( $args, $result ) {
 
-	$output = '';
-	$title = tptn_post_title( $args, $result );
+	$output          = '';
+	$title           = tptn_post_title( $args, $result );
 	$link_attributes = tptn_link_attributes( $args, $result );
 
 	if ( 'after' === $args['post_thumb_op'] ) {
@@ -283,15 +283,15 @@ function tptn_list_link( $args, $result ) {
 
 		$output .= tptn_get_the_post_thumbnail(
 			array(
-				'postid' => $result,
-				'thumb_height' => $args['thumb_height'],
-				'thumb_width' => $args['thumb_width'],
-				'thumb_meta' => $args['thumb_meta'],
-				'thumb_html' => $args['thumb_html'],
-				'thumb_default' => $args['thumb_default'],
+				'postid'             => $result,
+				'thumb_height'       => $args['thumb_height'],
+				'thumb_width'        => $args['thumb_width'],
+				'thumb_meta'         => $args['thumb_meta'],
+				'thumb_html'         => $args['thumb_html'],
+				'thumb_default'      => $args['thumb_default'],
 				'thumb_default_show' => $args['thumb_default_show'],
-				'scan_images' => $args['scan_images'],
-				'class' => 'tptn_thumb',
+				'scan_images'        => $args['scan_images'],
+				'class'              => 'tptn_thumb',
 			)
 		);
 

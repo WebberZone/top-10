@@ -23,7 +23,7 @@ function tptn_exclude_categories_join( $join ) {
 
 	if ( '' !== tptn_get_option( 'exclude_categories' ) ) {
 
-		$sql = $join;
+		$sql  = $join;
 		$sql .= " LEFT JOIN $wpdb->term_relationships AS excat_tr ON ($wpdb->posts.ID = excat_tr.object_id) ";
 		$sql .= " LEFT JOIN $wpdb->term_taxonomy AS excat_tt ON (excat_tr.term_taxonomy_id = excat_tt.term_taxonomy_id) ";
 
@@ -80,7 +80,7 @@ function tptn_exclude_categories_groupby( $groupby ) {
 
 	if ( '' !== tptn_get_option( 'exclude_categories' ) && '' !== $groupby ) {
 
-		$sql = $groupby;
+		$sql  = $groupby;
 		$sql .= ', excat_tt.term_taxonomy_id ';
 
 		return $sql;

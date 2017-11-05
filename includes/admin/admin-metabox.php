@@ -36,8 +36,8 @@ function tptn_add_meta_box( $post_type, $post ) {
 		return;
 	}
 
-	$args = array(
-		'public'   => true,
+	$args       = array(
+		'public' => true,
 	);
 	$post_types = get_post_types( $args );
 
@@ -62,7 +62,7 @@ function tptn_add_meta_box( $post_type, $post ) {
 		);
 	}
 }
-add_action( 'add_meta_boxes', 'tptn_add_meta_box' , 10, 2 );
+add_action( 'add_meta_boxes', 'tptn_add_meta_box', 10, 2 );
 
 
 /**
@@ -81,12 +81,12 @@ function tptn_call_meta_box() {
 	// Get the number of visits for the post being editted.
 	$resultscount = $wpdb->get_row(
 		$wpdb->prepare(
-			"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " ,
+			"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ",
 			$post->ID,
 			get_current_blog_id()
 		)
 	);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
-	$total_count = $resultscount ? $resultscount->cntaccess : 0;
+	$total_count  = $resultscount ? $resultscount->cntaccess : 0;
 
 	// Get the post meta.
 	$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
@@ -114,7 +114,7 @@ function tptn_call_meta_box() {
 <?php
 
 	$results = get_post_meta( $post->ID, tptn_get_option( 'thumb_meta' ), true );
-	$value = ( $results ) ? $results : '';
+	$value   = ( $results ) ? $results : '';
 ?>
 	<p>
 		<label for="disable_here"><strong><?php esc_html_e( 'Disable Popular Posts display:', 'top-10' ); ?></strong></label>
@@ -188,7 +188,7 @@ function tptn_save_meta_box( $post_id ) {
 	// Update the posts view count.
 	if ( isset( $_POST['total_count'] ) ) { // Input var okay.
 		$total_count = intval( $_POST['total_count'] ); // Input var okay.
-		$blog_id = get_current_blog_id();
+		$blog_id     = get_current_blog_id();
 
 		if ( 0 === $total_count ) {
 			$wpdb->query(
