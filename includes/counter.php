@@ -214,7 +214,7 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 					$from_date    = gmdate( 'Y-m-d H', $from_date );
 				}
 
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // WPCS: unprepared SQL OK.
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // WPCS: unprepared SQL OK.
 				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 			case 'overall':

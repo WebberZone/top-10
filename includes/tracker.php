@@ -140,7 +140,7 @@ function tptn_parse_request( $wp ) {
 
 			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '1', '%d') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 			}
@@ -149,7 +149,7 @@ function tptn_parse_request( $wp ) {
 
 				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
-				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
@@ -214,7 +214,7 @@ function tptn_tracker_parser() {
 
 		if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '1', '%d') ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1', %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 			$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 		}
@@ -223,7 +223,7 @@ function tptn_tracker_parser() {
 
 			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
-			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES('%d', '1', '%s', '%d' ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1', %s, %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 
 			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 		}

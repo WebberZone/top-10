@@ -24,7 +24,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	/**
 	 * Register widget with WordPress.
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			'widget_tptn_count', // Base ID.
 			__( 'Overall count [Top 10]', 'top-10' ), // Name.
@@ -44,7 +44,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Previously saved values from database.
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 
 		?>
@@ -78,7 +78,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	 *
 	 * @return array Updated safe values to be saved.
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance          = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
 
@@ -100,7 +100,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Saved values from database.
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 		global $wpdb;
 
 		$table_name = $wpdb->base_prefix . 'top_ten';

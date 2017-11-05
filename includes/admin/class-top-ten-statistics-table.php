@@ -84,7 +84,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$join .= $wpdb->prepare(  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily}
-			WHERE ttd.dp_date >= '%s'
+			WHERE ttd.dp_date >= %s
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber
 		", $from_date
@@ -97,12 +97,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		/* If search argument is set, do a search for it. */
 		if ( isset( $args['search'] ) ) {
-			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
 		/* If post filter argument is set, do a search for it. */
 		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
-			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 		}
 
 		// Create the base GROUP BY clause.
@@ -191,11 +191,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		);
 
 		if ( isset( $args['search'] ) ) {
-			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE '%%%s%%' ", $args['search'] );
+			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
 		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
-			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = '%s' ", $args['post-type-filter'] );
+			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 		}
 
 		return $wpdb->get_var( $sql ); // WPCS: Unprepared SQL OK.
@@ -235,7 +235,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @param array $item Current item.
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
 			'bulk-delete',
@@ -249,7 +249,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @param array $item Current item.
 	 * @return string
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 
 		$delete_nonce = wp_create_nonce( 'tptn_delete_entry' );
 
@@ -324,7 +324,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_columns() {
+	public function get_columns() {
 		$columns = array(
 			'cb'          => '<input type="checkbox" />',
 			'title'       => __( 'Title', 'top-10' ),
@@ -418,7 +418,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// If the delete bulk action is triggered.
 		if ( ( isset( $_REQUEST['action'] ) && 'bulk-delete' === $_REQUEST['action'] )
-			 || ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
+			|| ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
 		) {
 			$delete_ids = sanitize_text_field( wp_unslash( $_REQUEST['bulk-delete'] ) );
 
@@ -488,7 +488,7 @@ class Top_Ten_Statistics {
 	 *
 	 * @var class Class instance.
 	 */
-	static $instance;
+	public static $instance;
 
 	/**
 	 * WP_List_Table object.

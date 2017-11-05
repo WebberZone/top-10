@@ -71,7 +71,7 @@ add_action( 'add_meta_boxes', 'tptn_add_meta_box', 10, 2 );
  * @since 1.9.10
  */
 function tptn_call_meta_box() {
-	global $wpdb;
+	global $wpdb, $post;
 
 	$table_name = $wpdb->base_prefix . 'top_ten';
 
@@ -201,7 +201,7 @@ function tptn_save_meta_box( $post_id ) {
 		} else {
 			$wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES('%d', '%d', '%d') ON DUPLICATE KEY UPDATE cntaccess= %d ",
+					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ",
 					$post_id,
 					$total_count,
 					$blog_id,

@@ -24,7 +24,7 @@ class Top_Ten_Widget extends WP_Widget {
 	/**
 	 * Register widget with WordPress.
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			'widget_tptn_pop', // Base ID.
 			__( 'Popular Posts [Top 10]', 'top-10' ), // Name.
@@ -46,7 +46,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Previously saved values from database.
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 		$title           = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$limit           = isset( $instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
 		$offset          = isset( $instance['offset'] ) ? esc_attr( $instance['offset'] ) : '';
@@ -92,8 +92,8 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'daily' ) ); ?>">
-			  <option value="overall" <?php selected( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
-			  <option value="daily" <?php selected( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
+				<option value="overall" <?php selected( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
+				<option value="daily" <?php selected( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -107,51 +107,31 @@ class Top_Ten_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>">
-			<input id="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox"
-									<?php
-									if ( $disp_list_count ) {
-										echo 'checked="checked"'; }
-?>
- /> <?php esc_html_e( 'Show count?', 'top-10' ); ?>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'disp_list_count' ) ); ?>" type="checkbox" <?php checked( true, $disp_list_count, true ); ?> /> <?php esc_html_e( 'Show count?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'show_excerpt' ) ); ?>">
-			<input id="<?php echo esc_attr( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox"
-									<?php
-									if ( $show_excerpt ) {
-										echo 'checked="checked"'; }
-?>
- /> <?php esc_html_e( 'Show excerpt?', 'top-10' ); ?>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_excerpt' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_excerpt' ) ); ?>" type="checkbox" <?php checked( true, $show_excerpt, true ); ?> /> <?php esc_html_e( 'Show excerpt?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'show_author' ) ); ?>">
-			<input id="<?php echo esc_attr( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox"
-									<?php
-									if ( $show_author ) {
-										echo 'checked="checked"'; }
-?>
- /> <?php esc_html_e( 'Show author?', 'top-10' ); ?>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_author' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_author' ) ); ?>" type="checkbox" <?php checked( true, $show_author, true ); ?> /> <?php esc_html_e( 'Show author?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'show_date' ) ); ?>">
-				<input id="<?php echo esc_attr( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox"
-										<?php
-										if ( $show_date ) {
-											echo 'checked="checked"'; }
-?>
- /> <?php esc_html_e( 'Show date?', 'top-10' ); ?>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_date' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_date' ) ); ?>" type="checkbox" <?php checked( true, $show_date, true ); ?> /> <?php esc_html_e( 'Show date?', 'top-10' ); ?>
 			</label>
 		</p>
 		<p>
 			<?php esc_html_e( 'Thumbnail options', 'top-10' ); ?>: <br />
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'post_thumb_op' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_thumb_op' ) ); ?>">
-			  <option value="inline" <?php selected( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title', 'top-10' ); ?></option>
-			  <option value="after" <?php selected( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title', 'top-10' ); ?></option>
-			  <option value="thumbs_only" <?php selected( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text', 'top-10' ); ?></option>
-			  <option value="text_only" <?php selected( 'text_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'No thumbnails, only text.', 'top-10' ); ?></option>
+				<option value="inline" <?php selected( 'inline', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, before title', 'top-10' ); ?></option>
+				<option value="after" <?php selected( 'after', $post_thumb_op, true ); ?>><?php esc_html_e( 'Thumbnails inline, after title', 'top-10' ); ?></option>
+				<option value="thumbs_only" <?php selected( 'thumbs_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'Only thumbnails, no text', 'top-10' ); ?></option>
+				<option value="text_only" <?php selected( 'text_only', $post_thumb_op, true ); ?>><?php esc_html_e( 'No thumbnails, only text.', 'top-10' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -203,7 +183,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 *
 	 * @return array Updated safe values to be saved.
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance                    = $old_instance;
 		$instance['title']           = strip_tags( $new_instance['title'] );
 		$instance['limit']           = $new_instance['limit'];
@@ -247,7 +227,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Saved values from database.
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 		global $post;
 
 		// Get the post meta.
@@ -328,7 +308,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 *
 	 * @since   2.3.0
 	 */
-	function front_end_styles() {
+	public function front_end_styles() {
 
 		if ( ! 'left_thumbs' === tptn_get_option( 'tptn_styles' ) ) {
 			return;

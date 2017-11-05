@@ -46,7 +46,7 @@ add_filter( 'manage_pages_columns', 'tptn_column' );
  * @param   int|string $id             Post ID.
  */
 function tptn_value( $column_name, $id ) {
-	global $wpdb, $tptn_settings;
+	global $wpdb;
 
 	$blog_id = get_current_blog_id();
 
@@ -76,7 +76,7 @@ function tptn_value( $column_name, $id ) {
 			$from_date    = gmdate( 'Y-m-d H', $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= %s AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 		echo esc_html( $cntaccess );
 	}
@@ -103,7 +103,7 @@ function tptn_value( $column_name, $id ) {
 			$from_date    = gmdate( 'Y-m-d H', $from_date );
 		}
 
-		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= '%s' AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= %s AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 		$cntaccess   .= ' / ' . number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 
 		echo esc_html( $cntaccess );
