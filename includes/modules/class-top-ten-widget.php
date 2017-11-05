@@ -31,6 +31,7 @@ class Top_Ten_Widget extends WP_Widget {
 			array(
 				'description' => __( 'Display popular posts', 'where-did-they-go-from-here' ),
 				'customize_selective_refresh' => true,
+				'classname' => 'tptn_posts_list_widget',
 			)
 		);
 
