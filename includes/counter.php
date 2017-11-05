@@ -24,17 +24,17 @@ function tptn_pc_content( $content ) {
 		}
 	}
 
-	if ( ( is_single() ) && ( $add_to['single'] ) ) {
+	if ( ( is_single() ) && ! empty( $add_to['single'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_page() ) && ( $add_to['page'] ) ) {
+	} elseif ( ( is_page() ) && ! empty( $add_to['page'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_home() ) && ( $add_to['home'] ) ) {
+	} elseif ( ( is_home() ) && ! empty( $add_to['home'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_category() ) && ( $add_to['category_archives'] ) ) {
+	} elseif ( ( is_category() ) && ! empty( $add_to['category_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( is_tag() ) && ( $add_to['tag_archives'] ) ) {
+	} elseif ( ( is_tag() ) && ! empty( $add_to['tag_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
-	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ( $add_to['other_archives'] ) ) {
+	} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ! empty( $add_to['other_archives'] ) ) {
 		return $content . echo_tptn_post_count( 0 );
 	} else {
 		return $content;
