@@ -825,7 +825,9 @@ function tptn_settings_defaults() {
 		foreach ( $settings as $option ) {
 			// When checkbox is set to true, set this to 1.
 			if ( 'checkbox' === $option['type'] && ! empty( $option['options'] ) ) {
-				$options[ $option['id'] ] = '1';
+				$options[ $option['id'] ] = 1;
+			} else {
+				$options[ $option['id'] ] = 0;
 			}
 			// If an option is set.
 			if ( in_array( $option['type'], array( 'textarea', 'text', 'csv', 'numbercsv', 'posttypes', 'number' ), true ) && isset( $option['options'] ) ) {
