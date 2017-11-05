@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
@@ -56,17 +56,17 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
-			$from_date = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
-			$from_date = gmdate( 'Y-m-d 0' , $from_date );
+			$from_date    = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
+			$from_date    = gmdate( 'Y-m-d 0', $from_date );
 		} else {
 			$current_time = current_time( 'timestamp', 0 );
-			$from_date = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
-			$from_date = gmdate( 'Y-m-d H' , $from_date );
+			$from_date    = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
+			$from_date    = gmdate( 'Y-m-d H', $from_date );
 		}
 
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
-		$table_name = $wpdb->base_prefix . 'top_ten AS ttt';
+		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
 
 		// Fields to return.
 		$fields[] = 'ID';
@@ -80,7 +80,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause.
-		$join = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
+		$join  = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
 		$join .= $wpdb->prepare(  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
 			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily}
@@ -91,7 +91,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		);
 
 		// Create the base WHERE clause.
-		$where = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
+		$where  = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
 		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
 		$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
 
@@ -254,8 +254,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$delete_nonce = wp_create_nonce( 'tptn_delete_entry' );
 
 		$actions = array(
-			'view' => sprintf( '<a href="%s" target="_blank">' . __( 'View', 'top-10' ) . '</a>', get_permalink( $item['ID'] ) ),
-			'edit' => sprintf( '<a href="%s">' . __( 'Edit', 'top-10' ) . '</a>', get_edit_post_link( $item['ID'] ) ),
+			'view'   => sprintf( '<a href="%s" target="_blank">' . __( 'View', 'top-10' ) . '</a>', get_permalink( $item['ID'] ) ),
+			'edit'   => sprintf( '<a href="%s">' . __( 'Edit', 'top-10' ) . '</a>', get_edit_post_link( $item['ID'] ) ),
 			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'top-10' ) . '</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['ID'] ), $delete_nonce ),
 		);
 
@@ -281,7 +281,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$t_time = get_the_time( __( 'Y/m/d g:i:s a', 'top-10' ) );
 		$m_time = $item['post_date'];
-		$time = get_post_time( 'G', true, $item['ID'] );
+		$time   = get_post_time( 'G', true, $item['ID'] );
 
 		$time_diff = time() - $time;
 
@@ -311,7 +311,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				add_query_arg(
 					array(
 						'post_type' => $item['post_type'],
-						'author' => ( false === $author_info ) ? 0 : $author_info->ID,
+						'author'    => ( false === $author_info ) ? 0 : $author_info->ID,
 					), 'edit.php'
 				)
 			),
@@ -326,13 +326,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'cb'            => '<input type="checkbox" />',
-			'title'         => __( 'Title', 'top-10' ),
-			'total_count'   => __( 'Total visits', 'top-10' ),
-			'daily_count'   => __( 'Daily visits', 'top-10' ),
-			'post_type'     => __( 'Post type', 'top-10' ),
-			'author'        => __( 'Author', 'top-10' ),
-			'date'          => __( 'Date', 'top-10' ),
+			'cb'          => '<input type="checkbox" />',
+			'title'       => __( 'Title', 'top-10' ),
+			'total_count' => __( 'Total visits', 'top-10' ),
+			'daily_count' => __( 'Daily visits', 'top-10' ),
+			'post_type'   => __( 'Post type', 'top-10' ),
+			'author'      => __( 'Author', 'top-10' ),
+			'date'        => __( 'Date', 'top-10' ),
 		);
 
 		/**
@@ -352,7 +352,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'title' => array( 'title', false ),
+			'title'       => array( 'title', false ),
 			'total_count' => array( 'total_count', false ),
 			'daily_count' => array( 'daily_count', false ),
 		);
@@ -383,11 +383,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		/** Process bulk action */
 		$this->process_bulk_action();
 
-		$per_page     = $this->get_items_per_page( 'pop_posts_per_page', 20 );
+		$per_page = $this->get_items_per_page( 'pop_posts_per_page', 20 );
 
 		$current_page = $this->get_pagenum();
 
-		$total_items  = self::record_count( $args );
+		$total_items = self::record_count( $args );
 
 		$this->set_pagination_args(
 			array(
@@ -444,7 +444,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				'public' => true,
 			)
 		);
-		$all = array(
+		$all        = array(
 			'all' => 'All',
 		);
 		$post_types = $all + $post_types;
@@ -555,7 +555,7 @@ class Top_Ten_Statistics {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">
-							<?php include_once( 'sidebar.php' ); ?>
+							<?php include_once 'sidebar.php'; ?>
 						</div><!-- /side-sortables -->
 					</div><!-- /postbox-container-1 -->
 				</div><!-- /post-body -->

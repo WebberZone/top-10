@@ -16,7 +16,7 @@ function tptn_pc_content( $content ) {
 	global $post;
 
 	$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
-	$add_to = tptn_get_option( 'add_to' );
+	$add_to              = tptn_get_option( 'add_to' );
 
 	if ( isset( $post ) ) {
 		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
@@ -92,8 +92,8 @@ function echo_tptn_post_count( $echo = 1 ) {
 
 	$id = intval( $post->ID );
 
-	$nonce_action = 'tptn-nonce-' . $id ;
-	$nonce = wp_create_nonce( $nonce_action );
+	$nonce_action = 'tptn-nonce-' . $id;
+	$nonce        = wp_create_nonce( $nonce_action );
 
 	if ( tptn_get_option( 'dynamic_post_count' ) ) {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id=' . $id . '&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
@@ -128,9 +128,9 @@ function echo_tptn_post_count( $echo = 1 ) {
  */
 function get_tptn_post_count( $id = false, $blog_id = false ) {
 
-	$count_disp_form = stripslashes( tptn_get_option( 'count_disp_form' ) );
+	$count_disp_form      = stripslashes( tptn_get_option( 'count_disp_form' ) );
 	$count_disp_form_zero = stripslashes( tptn_get_option( 'count_disp_form_zero' ) );
-	$totalcntaccess = get_tptn_post_count_only( $id, 'total', $blog_id );
+	$totalcntaccess       = get_tptn_post_count_only( $id, 'total', $blog_id );
 
 	if ( $id > 0 ) {
 
@@ -187,7 +187,7 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	if ( empty( $blog_id ) ) {
@@ -197,29 +197,29 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 	if ( $id > 0 ) {
 		switch ( $count ) {
 			case 'total':
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d " , $id, $blog_id ) ); // WPCS: unprepared SQL OK.
-				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // WPCS: unprepared SQL OK.
+				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 				break;
 			case 'daily':
 				$daily_range = tptn_get_option( 'daily_range' );
-				$hour_range = tptn_get_option( 'hour_range' );
+				$hour_range  = tptn_get_option( 'hour_range' );
 
 				if ( tptn_get_option( 'daily_midnight' ) ) {
 					$current_time = current_time( 'timestamp', 0 );
-					$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
-					$from_date = gmdate( 'Y-m-d 0' , $from_date );
+					$from_date    = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
+					$from_date    = gmdate( 'Y-m-d 0', $from_date );
 				} else {
 					$current_time = current_time( 'timestamp', 0 );
-					$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-					$from_date = gmdate( 'Y-m-d H' , $from_date );
+					$from_date    = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
+					$from_date    = gmdate( 'Y-m-d H', $from_date );
 				}
 
 				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= '%s' GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // WPCS: unprepared SQL OK.
-				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
+				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 			case 'overall':
 				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // WPCS: unprepared SQL OK.
-				$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
+				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 		}
 		return apply_filters( 'tptn_post_count_only', $cntaccess );

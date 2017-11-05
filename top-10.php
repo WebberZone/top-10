@@ -135,22 +135,22 @@ function tptn_trunc_count( $daily = true ) {
  *---------------------------------------------------------------------------*
  */
 
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/register-settings.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/activate-deactivate.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/display-posts.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/styles.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/output-generator.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/public/media.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/l10n.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/counter.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/tracker.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/cron.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/formatting.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php' );
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.php' );
+require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/register-settings.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/activate-deactivate.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/public/display-posts.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/public/styles.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/public/output-generator.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/public/media.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/l10n.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/counter.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/tracker.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/cron.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/formatting.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.php';
 
 
 /*
@@ -161,16 +161,16 @@ require_once( TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.
 
 if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/settings-page.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/tools.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics-table.php' );
-	require_once( TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php' );
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/settings-page.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/tools.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics-table.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php';
 
 } // End admin.inc
 
@@ -180,5 +180,5 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
  *---------------------------------------------------------------------------*
  */
 
-require_once( TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php' );
+require_once TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php';
 

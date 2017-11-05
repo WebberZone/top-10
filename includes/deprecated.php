@@ -60,9 +60,9 @@ function tptn_add_viewed_count( $content = '' ) {
 
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
-	$home_url = home_url( '/' );
+	$home_url    = home_url( '/' );
 	$track_users = tptn_get_option( 'track_users' );
-	$trackers = tptn_get_option( 'trackers' );
+	$trackers    = tptn_get_option( 'trackers' );
 
 	/**
 	 * Filter the script URL of the counter.
@@ -76,9 +76,9 @@ function tptn_add_viewed_count( $content = '' ) {
 
 	if ( is_singular() && 'draft' !== $post->post_status ) {
 
-		$current_user = wp_get_current_user();  // Let's get the current user
-		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;  // Is the current user the post author?
-		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
+		$current_user        = wp_get_current_user();  // Let's get the current user
+		$post_author         = ( $current_user->ID == $post->post_author ) ? true : false;  // Is the current user the post author?
+		$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
 		$include_code = true;
@@ -94,9 +94,9 @@ function tptn_add_viewed_count( $content = '' ) {
 
 		if ( $include_code ) {
 
-			$output = '';
-			$id = intval( $post->ID );
-			$blog_id = get_current_blog_id();
+			$output           = '';
+			$id               = intval( $post->ID );
+			$blog_id          = get_current_blog_id();
 			$activate_counter = ! empty( $trackers['overall'] ) ? 1 : 0;     // It's 1 if we're updating the overall count.
 			$activate_counter = $activate_counter + ( ! empty( $trackers['daily'] ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
 
@@ -165,14 +165,14 @@ function tptn_default_options() {
 
 	_deprecated_function( __FUNCTION__, '2.5.0' );
 
-	$title = __( '<h3>Popular Posts</h3>', 'top-10' );
-	$title_daily = __( '<h3>Daily Popular</h3>', 'top-10' );
+	$title             = __( '<h3>Popular Posts</h3>', 'top-10' );
+	$title_daily       = __( '<h3>Daily Popular</h3>', 'top-10' );
 	$blank_output_text = __( 'No top posts yet', 'top-10' );
-	$thumb_default = plugins_url( 'default.png' , __FILE__ );
+	$thumb_default     = plugins_url( 'default.png', __FILE__ );
 
 	// Get relevant post types.
-	$args = array(
-		'public' => true,
+	$args       = array(
+		'public'   => true,
 		'_builtin' => true,
 	);
 	$post_types = http_build_query( get_post_types( $args ), '', '&' );
@@ -301,7 +301,7 @@ function tptn_read_options() {
 
 	foreach ( $defaults as $k => $v ) {
 		if ( ! isset( $tptn_settings[ $k ] ) ) {
-			$tptn_settings[ $k ] = $v;
+			$tptn_settings[ $k ]   = $v;
 			$tptn_settings_changed = true;
 		}
 	}

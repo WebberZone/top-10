@@ -29,9 +29,9 @@ class Top_Ten_Count_Widget extends WP_Widget {
 			'widget_tptn_count', // Base ID.
 			__( 'Overall count [Top 10]', 'top-10' ), // Name.
 			array(
-				'description' => __( 'Display overall count', 'where-did-they-go-from-here' ),
+				'description'                 => __( 'Display overall count', 'where-did-they-go-from-here' ),
 				'customize_selective_refresh' => true,
-				'classname' => 'tptn_posts_count_widget',
+				'classname'                   => 'tptn_posts_count_widget',
 			)
 		);
 
@@ -79,7 +79,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
+		$instance          = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
 
 		/**
@@ -89,7 +89,7 @@ class Top_Ten_Count_Widget extends WP_Widget {
 		 *
 		 * @param   array   $instance   Widget options array
 		 */
-		return apply_filters( 'tptn_widget_options_update' , $instance );
+		return apply_filters( 'tptn_widget_options_update', $instance );
 	} //ending update
 
 	/**
@@ -108,9 +108,9 @@ class Top_Ten_Count_Widget extends WP_Widget {
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'] );
 
 		$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // WPCS: unprepared SQL OK.
-		$cntaccess = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
+		$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 
-		$output = $args['before_widget'];
+		$output  = $args['before_widget'];
 		$output .= $args['before_title'] . $title . $args['after_title'];
 
 		$output .= $cntaccess;

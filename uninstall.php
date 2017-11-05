@@ -20,7 +20,7 @@ $tptn_settings = get_option( 'ald_tptn_settings' );
 
 if ( $tptn_settings['uninstall_clean_tables'] ) {
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	$wpdb->query( "DROP TABLE $table_name" ); // WPCS: unprepared SQL OK.

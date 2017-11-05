@@ -23,21 +23,21 @@ function tptn_pop_posts( $args ) {
 
 	// if set, save $exclude_categories.
 	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
-		$exclude_categories = explode( ',', $args['exclude_categories'] );
+		$exclude_categories   = explode( ',', $args['exclude_categories'] );
 		$args['strict_limit'] = false;
 	}
 
 	$defaults = array(
-		'daily' => false,
-		'is_widget' => false,
-		'instance_id' => 1,
+		'daily'        => false,
+		'is_widget'    => false,
+		'instance_id'  => 1,
 		'is_shortcode' => false,
-		'is_manual' => false,
-		'echo' => false,
+		'is_manual'    => false,
+		'echo'         => false,
 		'strict_limit' => false,
-		'posts_only' => false,
-		'heading' => 1,
-		'offset' => 0,
+		'posts_only'   => false,
+		'heading'      => 1,
+		'offset'       => 0,
 	);
 
 	// Merge the $defaults array with the $tptn_settings array.
@@ -60,7 +60,7 @@ function tptn_pop_posts( $args ) {
 
 	// Check if the cache is enabled and if the output exists. If so, return the output.
 	if ( $args['cache'] && ! $args['posts_only'] ) {
-		$cache_name = 'tptn';
+		$cache_name  = 'tptn';
 		$cache_name .= $args['daily'] ? '_daily' : '_total';
 		$cache_name .= $args['is_widget'] ? '_widget' . $args['instance_id'] : '';
 		$cache_name .= $args['is_shortcode'] ? '_shortcode' : '';
@@ -95,8 +95,8 @@ function tptn_pop_posts( $args ) {
 
 	$counter = 0;
 
-	$daily_class = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
-	$widget_class = $args['is_widget'] ? ' tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '';
+	$daily_class     = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
+	$widget_class    = $args['is_widget'] ? ' tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '';
 	$shortcode_class = $args['is_shortcode'] ? ' tptn_posts_shortcode' : '';
 
 	$post_classes = $daily_class . $widget_class . $shortcode_class;
@@ -291,18 +291,18 @@ function get_tptn_pop_posts( $args = array() ) {
 	global $wpdb, $tptn_settings;
 
 	// Initialise some variables.
-	$fields = array();
-	$where = '';
-	$join = '';
+	$fields  = array();
+	$where   = '';
+	$join    = '';
 	$groupby = '';
 	$orderby = '';
-	$limits = '';
+	$limits  = '';
 
 	$defaults = array(
-		'daily' => false,
+		'daily'        => false,
 		'strict_limit' => true,
-		'posts_only' => false,
-		'offset' => 0,
+		'posts_only'   => false,
+		'offset'       => 0,
 	);
 
 	// Merge the $defaults array with the $tptn_settings array.
@@ -317,7 +317,7 @@ function get_tptn_pop_posts( $args = array() ) {
 		$table_name = $wpdb->base_prefix . 'top_ten';
 	}
 
-	$limit = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
+	$limit  = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
 	$offset = isset( $args['offset'] ) ? $args['offset'] : 0;
 
 	// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
@@ -333,7 +333,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	if ( empty( $post_types ) || 'all' === $args['post_types'] ) {
 		$post_types = get_post_types(
 			array(
-				'public'    => true,
+				'public' => true,
 			)
 		);
 	}
@@ -342,12 +342,12 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	if ( $args['daily_midnight'] ) {
 		$current_time = current_time( 'timestamp', 0 );
-		$from_date = $current_time - ( max( 0, ( $args['daily_range'] - 1 ) ) * DAY_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d 0' , $from_date );
+		$from_date    = $current_time - ( max( 0, ( $args['daily_range'] - 1 ) ) * DAY_IN_SECONDS );
+		$from_date    = gmdate( 'Y-m-d 0', $from_date );
 	} else {
 		$current_time = current_time( 'timestamp', 0 );
-		$from_date = $current_time - ( $args['daily_range'] * DAY_IN_SECONDS + $args['hour_range'] * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H' , $from_date );
+		$from_date    = $current_time - ( $args['daily_range'] * DAY_IN_SECONDS + $args['hour_range'] * HOUR_IN_SECONDS );
+		$from_date    = gmdate( 'Y-m-d H', $from_date );
 	}
 
 	/**
@@ -514,7 +514,7 @@ function tptn_show_pop_posts( $args = null ) {
  */
 function tptn_show_daily_pop_posts( $args = null ) {
 	if ( is_array( $args ) || ! isset( $args ) ) {
-		$args['daily'] = 1;
+		$args['daily']  = 1;
 		$args['manual'] = 1;
 	} else {
 		$args .= '&daily=1&is_manual=1';

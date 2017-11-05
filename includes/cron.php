@@ -16,8 +16,8 @@ function tptn_cron() {
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	$current_time = current_time( 'timestamp', 0 );
-	$from_date = strtotime( '-90 DAY' , $current_time );
-	$from_date = gmdate( 'Y-m-d H' , $from_date );
+	$from_date    = strtotime( '-90 DAY', $current_time );
+	$from_date    = gmdate( 'Y-m-d H', $from_date );
 
 	$resultscount = $wpdb->query(
 		$wpdb->prepare(
@@ -71,21 +71,21 @@ if ( ! function_exists( 'ald_more_reccurences' ) ) :
 	 */
 	function ald_more_reccurences( $schedules ) {
 		// Add a 'weekly' interval.
-		$schedules['weekly'] = array(
+		$schedules['weekly']      = array(
 			'interval' => WEEK_IN_SECONDS,
-			'display' => __( 'Once Weekly', 'top-10' ),
+			'display'  => __( 'Once Weekly', 'top-10' ),
 		);
 		$schedules['fortnightly'] = array(
 			'interval' => 2 * WEEK_IN_SECONDS,
-			'display' => __( 'Once Fortnightly', 'top-10' ),
+			'display'  => __( 'Once Fortnightly', 'top-10' ),
 		);
-		$schedules['monthly'] = array(
+		$schedules['monthly']     = array(
 			'interval' => 30 * DAY_IN_SECONDS,
-			'display' => __( 'Once Monthly', 'top-10' ),
+			'display'  => __( 'Once Monthly', 'top-10' ),
 		);
-		$schedules['quarterly'] = array(
+		$schedules['quarterly']   = array(
 			'interval' => 90 * DAY_IN_SECONDS,
-			'display' => __( 'Once quarterly', 'top-10' ),
+			'display'  => __( 'Once quarterly', 'top-10' ),
 		);
 		return $schedules;
 	}

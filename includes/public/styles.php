@@ -31,7 +31,7 @@ function tptn_heading_styles() {
 		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', TOP_TEN_PLUGIN_FILE ) );
 		wp_enqueue_style( 'tptn-style-left-thumbs' );
 
-		$width = tptn_get_option( 'thumb_width' );
+		$width  = tptn_get_option( 'thumb_width' );
 		$height = tptn_get_option( 'thumb_height' );
 
 		$custom_css = "

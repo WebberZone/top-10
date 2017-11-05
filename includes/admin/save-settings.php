@@ -38,7 +38,7 @@ function tptn_settings_sanitize( $input = array() ) {
 	parse_str( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ), $referrer ); // Input var okay.
 
 	// Get the various settings we've registered.
-	$settings = tptn_get_registered_settings();
+	$settings       = tptn_get_registered_settings();
 	$settings_types = tptn_get_registered_settings_types();
 
 	// Check if we need to set to defaults.
@@ -202,21 +202,21 @@ function tptn_sanitize_textarea_field( $value ) {
 
 	// We need more tags to allow for script and style.
 	$moretags = array(
-		'script'    => array(
-			'type'     => true,
-			'src'      => true,
-			'async'    => true,
-			'defer'    => true,
-			'charset'  => true,
-			'lang'     => true,
+		'script' => array(
+			'type'    => true,
+			'src'     => true,
+			'async'   => true,
+			'defer'   => true,
+			'charset' => true,
+			'lang'    => true,
 		),
-		'style'     => array(
-			'type'     => true,
-			'media'    => true,
-			'scoped'   => true,
-			'lang'     => true,
+		'style'  => array(
+			'type'   => true,
+			'media'  => true,
+			'scoped' => true,
+			'lang'   => true,
 		),
-		'link'      => array(
+		'link'   => array(
 			'rel'      => true,
 			'type'     => true,
 			'href'     => true,
@@ -300,12 +300,12 @@ function tptn_sanitize_exclude_cat( $settings ) {
 				$cat = get_term_by( 'slug', $cat_name, 'category' );
 			}
 			if ( isset( $cat->term_taxonomy_id ) ) {
-				$exclude_categories[] = $cat->term_taxonomy_id;
+				$exclude_categories[]       = $cat->term_taxonomy_id;
 				$exclude_categories_slugs[] = $cat->name;
 			}
 		}
 		$settings['exclude_categories'] = isset( $exclude_categories ) ? join( ',', $exclude_categories ) : '';
-		$settings['exclude_cat_slugs'] = isset( $exclude_categories_slugs ) ? join( ',', $exclude_categories_slugs ) : '';
+		$settings['exclude_cat_slugs']  = isset( $exclude_categories_slugs ) ? join( ',', $exclude_categories_slugs ) : '';
 
 	}
 
@@ -325,7 +325,7 @@ add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_exclude_cat' );
 function tptn_sanitize_cron( $settings ) {
 
 	$settings['cron_hour'] = min( 23, absint( $settings['cron_hour'] ) );
-	$settings['cron_min'] = min( 59, absint( $settings['cron_min'] ) );
+	$settings['cron_min']  = min( 59, absint( $settings['cron_min'] ) );
 
 	if ( ! empty( $settings['cron_on'] ) ) {
 		tptn_enable_run( $settings['cron_hour'], $settings['cron_min'], $settings['cron_recurrence'] );

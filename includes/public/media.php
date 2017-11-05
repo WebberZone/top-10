@@ -19,9 +19,9 @@ function tptn_add_image_sizes() {
 
 	// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid.
 	if ( 'tptn_thumbnail' === tptn_get_option( 'thumb_size' ) ) {
-		$width = tptn_get_option( 'thumb_width', 150 );
+		$width  = tptn_get_option( 'thumb_width', 150 );
 		$height = tptn_get_option( 'thumb_height', 150 );
-		$crop = tptn_get_option( 'thumb_crop', true );
+		$crop   = tptn_get_option( 'thumb_crop', true );
 
 		add_image_size( 'tptn_thumbnail', $width, $height, $crop );
 	}
@@ -39,15 +39,15 @@ add_action( 'init', 'tptn_add_image_sizes' );
 function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	$defaults = array(
-		'postid' => '',
-		'thumb_height' => '150',            // Max height of thumbnails.
-		'thumb_width' => '150',         // Max width of thumbnails.
-		'thumb_meta' => 'post-image',       // Meta field that is used to store the location of default thumbnail image.
-		'thumb_html' => 'html',     // HTML / CSS for width and height attributes.
-		'thumb_default' => '',  // Default thumbnail image.
+		'postid'             => '',
+		'thumb_height'       => '150',            // Max height of thumbnails.
+		'thumb_width'        => '150',         // Max width of thumbnails.
+		'thumb_meta'         => 'post-image',       // Meta field that is used to store the location of default thumbnail image.
+		'thumb_html'         => 'html',     // HTML / CSS for width and height attributes.
+		'thumb_default'      => '',  // Default thumbnail image.
 		'thumb_default_show' => true,   // Show default thumb if none found (if false, don't show thumb at all).
-		'scan_images' => false,         // Scan post for images.
-		'class' => 'tptn_thumb',            // Class of the thumbnail.
+		'scan_images'        => false,         // Scan post for images.
+		'class'              => 'tptn_thumb',            // Class of the thumbnail.
 	);
 
 	// Parse incomming $args into an array and merge it with $defaults.
@@ -84,14 +84,14 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	 */
 	$post_title = apply_filters( 'tptn_thumb_title', $post_title, $result );
 
-	$output = '';
+	$output    = '';
 	$postimage = '';
-	$pick = '';
+	$pick      = '';
 
 	// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page.
 	if ( ! $postimage ) {
 		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );   // Check the post meta first.
-		$pick = 'meta';
+		$pick      = 'meta';
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
 
@@ -133,19 +133,19 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	// If there is no thumbnail found, fetch the first child image.
 	if ( ! $postimage ) {
 		$postimage = tptn_get_first_image( $result->ID, $args['thumb_width'], $args['thumb_height'] );  // Get the first image.
-		$pick = 'firstchild';
+		$pick      = 'firstchild';
 	}
 
 	// If no other thumbnail set, try to get the custom video thumbnail set by the Video Thumbnails plugin.
 	if ( ! $postimage ) {
 		$postimage = get_post_meta( $result->ID, '_video_thumbnail', true );
-		$pick = 'video_thumb';
+		$pick      = 'video_thumb';
 	}
 
 	// If no thumb found and settings permit, use default thumb.
 	if ( ! $postimage && $args['thumb_default_show'] ) {
 		$postimage = $args['thumb_default'];
-		$pick = 'default_thumb';
+		$pick      = 'default_thumb';
 	}
 
 	// Hopefully, we've found a thumbnail by now. If so, run it through the custom filter, check for SSL and create the image tag.
@@ -167,7 +167,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		$postimage = apply_filters( 'tptn_thumb_url', $postimage, $args['thumb_width'], $args['thumb_height'], $result );
 
 		/* Backward compatibility */
-		$thumb_timthumb = false;
+		$thumb_timthumb   = false;
 		$thumb_timthumb_q = 75;
 
 		/**
@@ -243,12 +243,12 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
  */
 function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
 	$args = array(
-		'numberposts' => 1,
-		'order' => 'ASC',
+		'numberposts'    => 1,
+		'order'          => 'ASC',
 		'post_mime_type' => 'image',
-		'post_parent' => $postID,
-		'post_status' => null,
-		'post_type' => 'attachment',
+		'post_parent'    => $postID,
+		'post_status'    => null,
+		'post_type'      => 'attachment',
 	);
 
 	$attachments = get_children( $args );
@@ -334,17 +334,17 @@ function tptn_get_thumb_size( $args ) {
 	$tptn_thumb_size = tptn_get_all_image_sizes( $args['thumb_size'] );
 
 	if ( isset( $tptn_thumb_size['width'] ) ) {
-		$thumb_width = $tptn_thumb_size['width'];
+		$thumb_width  = $tptn_thumb_size['width'];
 		$thumb_height = $tptn_thumb_size['height'];
 	}
 
 	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) {
-		$thumb_width = $args['thumb_width'];
+		$thumb_width        = $args['thumb_width'];
 		$args['thumb_html'] = 'css';
 	}
 
 	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) {
-		$thumb_height = $args['thumb_height'];
+		$thumb_height       = $args['thumb_height'];
 		$args['thumb_html'] = 'css';
 	}
 
@@ -379,10 +379,10 @@ function tptn_get_all_image_sizes( $size = '' ) {
 	foreach ( $intermediate_image_sizes as $_size ) {
 		if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
 
-			$sizes[ $_size ]['name'] = $_size;
-			$sizes[ $_size ]['width'] = get_option( $_size . '_size_w' );
+			$sizes[ $_size ]['name']   = $_size;
+			$sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
 			$sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
-			$sizes[ $_size ]['crop'] = (bool) get_option( $_size . '_crop' );
+			$sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
 
 			if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
 				unset( $sizes[ $_size ] );
@@ -390,10 +390,10 @@ function tptn_get_all_image_sizes( $size = '' ) {
 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
 
 			$sizes[ $_size ] = array(
-				'name' => $_size,
-				'width' => $_wp_additional_image_sizes[ $_size ]['width'],
+				'name'   => $_size,
+				'width'  => $_wp_additional_image_sizes[ $_size ]['width'],
 				'height' => $_wp_additional_image_sizes[ $_size ]['height'],
-				'crop' => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
+				'crop'   => (bool) $_wp_additional_image_sizes[ $_size ]['crop'],
 			);
 		}
 	}

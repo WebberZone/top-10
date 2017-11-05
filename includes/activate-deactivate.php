@@ -52,7 +52,7 @@ function tptn_single_activate() {
 
 	$tptn_settings = tptn_get_settings();
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // WPCS: unprepared SQL OK.
@@ -64,7 +64,7 @@ function tptn_single_activate() {
 			PRIMARY KEY  (postnumber, blog_id)
 			);";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		add_site_option( 'tptn_db_version', $tptn_db_version );
@@ -80,7 +80,7 @@ function tptn_single_activate() {
 			PRIMARY KEY  (postnumber, dp_date, blog_id)
 		);";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		add_site_option( 'tptn_db_version', $tptn_db_version );
