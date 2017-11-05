@@ -41,7 +41,7 @@ function tptn_pop_posts( $args ) {
 	);
 
 	// Merge the $defaults array with the $tptn_settings array.
-	$defaults = array_merge( $defaults, $tptn_settings );
+	$defaults = array_merge( $defaults, tptn_settings_defaults(), $tptn_settings );
 
 	// Parse incomming $args into an array and merge it with $defaults.
 	$args = wp_parse_args( $args, $defaults );
