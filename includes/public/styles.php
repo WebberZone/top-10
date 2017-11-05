@@ -26,16 +26,18 @@ add_action( 'wp_head', 'tptn_header' );
  * Enqueue styles.
  */
 function tptn_heading_styles() {
-	global $tptn_settings;
 
-	if ( 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
+	if ( 'left_thumbs' === tptn_get_option( 'tptn_styles' ) ) {
 		wp_register_style( 'tptn-style-left-thumbs', plugins_url( 'css/default-style.css', TOP_TEN_PLUGIN_FILE ) );
 		wp_enqueue_style( 'tptn-style-left-thumbs' );
 
+		$width = tptn_get_option( 'thumb_width' );
+		$height = tptn_get_option( 'thumb_height' );
+
 		$custom_css = "
 img.tptn_thumb {
-  width: {$tptn_settings['thumb_width']}px !important;
-  height: {$tptn_settings['thumb_height']}px !important;
+  width: {$width}px !important;
+  height: {$height}px !important;
 }
                 ";
 
