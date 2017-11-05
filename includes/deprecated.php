@@ -97,8 +97,8 @@ function tptn_add_viewed_count( $content = '' ) {
 			$output = '';
 			$id = intval( $post->ID );
 			$blog_id = get_current_blog_id();
-			$activate_counter = $trackers['overall'] ? 1 : 0;     // It's 1 if we're updating the overall count.
-			$activate_counter = $activate_counter + ( $trackers['daily'] ? 10 : 0 );  // It's 10 if we're updating the daily count.
+			$activate_counter = ! empty( $trackers['overall'] ) ? 1 : 0;     // It's 1 if we're updating the overall count.
+			$activate_counter = $activate_counter + ( ! empty( $trackers['daily'] ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
 
 			if ( $activate_counter > 0 ) {
 					$output = '
