@@ -247,7 +247,7 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	function widget( $args, $instance ) {
-		global $tptn_settings, $post;
+		global $post;
 
 		// Get the post meta.
 		if ( isset( $post ) ) {
@@ -258,16 +258,16 @@ class Top_Ten_Widget extends WP_Widget {
 			}
 		}
 
-		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( $tptn_settings['title'] ) : $instance['title'] );
+		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( tptn_get_option( 'title' ) ) : $instance['title'] );
 
-		$limit = isset( $instance['limit'] ) ? $instance['limit'] : $tptn_settings['limit'];
+		$limit = isset( $instance['limit'] ) ? $instance['limit'] : tptn_get_option( 'limit' );
 		if ( empty( $limit ) ) {
-			$limit = $tptn_settings['limit'];
+			$limit = tptn_get_option( 'limit' );
 		}
 
 		$offset = isset( $instance['offset'] ) ? $instance['offset'] : 0;
-		$daily_range = ( empty( $instance['daily_range'] ) ) ? $tptn_settings['daily_range'] : $instance['daily_range'];
-		$hour_range = ( empty( $instance['hour_range'] ) ) ? $tptn_settings['hour_range'] : $instance['hour_range'];
+		$daily_range = ( empty( $instance['daily_range'] ) ) ? tptn_get_option( 'daily_range' ) : $instance['daily_range'];
+		$hour_range = ( empty( $instance['hour_range'] ) ) ? tptn_get_option( 'hour_range' ) : $instance['hour_range'];
 
 		$daily = ( isset( $instance['daily'] ) && ( 'daily' === $instance['daily'] ) ) ? true : false;
 
@@ -276,14 +276,14 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$post_thumb_op = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
 
-		$thumb_height = ( isset( $instance['thumb_height'] ) && '' !== $instance['thumb_height'] ) ? absint( $instance['thumb_height'] ) : $tptn_settings['thumb_height'];
-		$thumb_width = ( isset( $instance['thumb_width'] ) && '' !== $instance['thumb_width'] ) ? absint( $instance['thumb_width'] ) : $tptn_settings['thumb_width'];
+		$thumb_height = ( isset( $instance['thumb_height'] ) && '' !== $instance['thumb_height'] ) ? absint( $instance['thumb_height'] ) : tptn_get_option( 'thumb_height' );
+		$thumb_width = ( isset( $instance['thumb_width'] ) && '' !== $instance['thumb_width'] ) ? absint( $instance['thumb_width'] ) : tptn_get_option( 'thumb_width' );
 
 		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
 		$show_author = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
 		$show_date = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
-		$post_types = isset( $instance['post_types'] ) ? $instance['post_types'] : $tptn_settings['post_types'];
+		$post_types = isset( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
 
 		$arguments = array(
 			'is_widget' => 1,
@@ -328,9 +328,8 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @since   2.3.0
 	 */
 	function front_end_styles() {
-		global $tptn_settings;
 
-		if ( ! 'left_thumbs' === $tptn_settings['tptn_styles'] ) {
+		if ( ! 'left_thumbs' === tptn_get_option( 'tptn_styles' ) ) {
 			return;
 		}
 
@@ -347,8 +346,8 @@ class Top_Ten_Widget extends WP_Widget {
 				continue;   // Not active.
 			}
 
-			$thumb_height = ( isset( $options['thumb_height'] ) && '' !== $options['thumb_height'] ) ? absint( $options['thumb_height'] ) : $tptn_settings['thumb_height'];
-			$thumb_width = ( isset( $options['thumb_width'] ) && '' !== $options['thumb_width'] ) ? absint( $options['thumb_width'] ) : $tptn_settings['thumb_width'];
+			$thumb_height = ( isset( $options['thumb_height'] ) && '' !== $options['thumb_height'] ) ? absint( $options['thumb_height'] ) : tptn_get_option( 'thumb_height' );
+			$thumb_width = ( isset( $options['thumb_width'] ) && '' !== $options['thumb_width'] ) ? absint( $options['thumb_width'] ) : tptn_get_option( 'thumb_width' );
 
 			// Enqueue the custom css for the thumb width and height for this specific widget.
 			$custom_css = "
