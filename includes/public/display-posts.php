@@ -211,7 +211,7 @@ function tptn_pop_posts( $args ) {
 			$output .= apply_filters( 'tptn_list', $tptn_list, $result, $args );
 
 			// Opening span created in tptn_list_link().
-			if ( 'inline' == $args['post_thumb_op'] || 'text_only' == $args['post_thumb_op'] ) {
+			if ( 'inline' === $args['post_thumb_op'] || 'text_only' === $args['post_thumb_op'] ) {
 				$output .= '</span>';
 			}
 
@@ -219,7 +219,7 @@ function tptn_pop_posts( $args ) {
 
 			$counter++;
 
-			if ( $counter == $args['limit'] ) {
+			if ( $counter === $args['limit'] ) {
 				break;  // End loop when related posts limit is reached.
 			}
 		}
@@ -371,7 +371,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
 
 	if ( $args['daily'] ) {
-		$where .= $wpdb->prepare( " AND dp_date >= '%s' ", $from_date );    // Only fetch posts that are tracked after this date.
+		$where .= $wpdb->prepare( ' AND dp_date >= %s ', $from_date );    // Only fetch posts that are tracked after this date.
 	}
 
 	// Convert exclude post IDs string to array so it can be filtered.
@@ -394,7 +394,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// How old should the posts be?
 	if ( $args['how_old'] ) {
-		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > '%s' ", gmdate( 'Y-m-d H:m:s', $current_time - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
+		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", gmdate( 'Y-m-d H:m:s', $current_time - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
 	}
 
 	// Create the base GROUP BY clause.

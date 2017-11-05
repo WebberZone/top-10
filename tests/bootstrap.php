@@ -1,4 +1,13 @@
 <?php
+/**
+ * Bootstrap.
+ *
+ * @package   Top_Ten
+ * @author    Ajay D'Souza <me@ajaydsouza.com>
+ * @license   GPL-2.0+
+ * @link      https://webberzone.com
+ * @copyright 2008-2017 Ajay D'Souza
+ */
 
 $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 $_SERVER['SERVER_NAME']     = '';

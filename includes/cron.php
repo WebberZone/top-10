@@ -21,7 +21,7 @@ function tptn_cron() {
 
 	$resultscount = $wpdb->query(
 		$wpdb->prepare(
-			"DELETE FROM {$table_name_daily} WHERE dp_date <= '%s' ",
+			"DELETE FROM {$table_name_daily} WHERE dp_date <= %s ",
 			$from_date
 		)
 	); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.

@@ -21,7 +21,7 @@ function tptn_exclude_post_ids( $exclude_post_ids ) {
 	$tptn_post_metas = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE `meta_key` = 'tptn_post_meta'", ARRAY_A );
 
 	foreach ( $tptn_post_metas as $tptn_post_meta ) {
-		$meta_value = unserialize( $tptn_post_meta['meta_value'] );
+		$meta_value = maybe_unserialize( $tptn_post_meta['meta_value'] );
 
 		if ( $meta_value['exclude_this_post'] ) {
 			$exclude_post_ids[] = $tptn_post_meta['post_id'];

@@ -76,7 +76,7 @@ function tptn_add_viewed_count( $content = '' ) {
 
 	if ( is_singular() && 'draft' !== $post->post_status ) {
 
-		$current_user        = wp_get_current_user();  // Let's get the current user
+		$current_user        = wp_get_current_user();  // Let's get the current user.
 		$post_author         = ( $current_user->ID == $post->post_author ) ? true : false;  // Is the current user the post author?
 		$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
@@ -124,7 +124,7 @@ function tptn_add_viewed_count( $content = '' ) {
 			 */
 			$output = apply_filters( 'tptn_viewed_count', $output );
 
-			echo $output;
+			echo $output; // WPCS: XSS OK.
 		}
 	}
 }
@@ -145,7 +145,7 @@ function tptn_add_tracker( $echo = true ) {
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
 	if ( $echo ) {
-		echo tptn_add_viewed_count( '' );
+		echo tptn_add_viewed_count( '' ); // WPCS: XSS OK.
 	} else {
 		return tptn_add_viewed_count( '' );
 	}
@@ -180,7 +180,7 @@ function tptn_default_options() {
 	$tptn_settings = array(
 
 		/* General options */
-		'activate_daily'           => true,         // Activate the daily count
+		'activate_daily'           => true,         // Activate the daily count.
 		'activate_overall'         => true,         // Activate overall count.
 		'cache'                    => false,        // Enable Caching using Transienst API.
 		'cache_time'               => HOUR_IN_SECONDS,  // Cache for 1 Hour.

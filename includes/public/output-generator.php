@@ -273,8 +273,8 @@ function tptn_list_link( $args, $result ) {
 	$link_attributes = tptn_link_attributes( $args, $result );
 
 	if ( 'after' === $args['post_thumb_op'] ) {
-		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
-		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after
+		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link.
+		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title if post thumbnail is to be displayed after.
 		$output .= '</a>'; // Close the link.
 	}
 
@@ -300,8 +300,8 @@ function tptn_list_link( $args, $result ) {
 
 	if ( 'inline' === $args['post_thumb_op'] || 'text_only' === $args['post_thumb_op'] ) {
 		$output .= '<span class="tptn_after_thumb">';
-		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link
-		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings
+		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link.
+		$output .= '<span class="tptn_title">' . $title . '</span>'; // Add title when required by settings.
 		$output .= '</a>'; // Close the link.
 	}
 
