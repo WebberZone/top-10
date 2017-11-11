@@ -15,8 +15,19 @@ function tptn_cron() {
 
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
+	$delete_from = 90;
+
+	/**
+	 * Override maintenance day range.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param int $delete_from Number of days before which post data is deleted from daily tables.
+	 */
+	$delete_from = apply_filters( 'tptn_maintenance_days', $delete_from );
+
 	$current_time = current_time( 'timestamp', 0 );
-	$from_date    = strtotime( '-90 DAY', $current_time );
+	$from_date    = strtotime( "-{$delete_from} DAY", $current_time );
 	$from_date    = gmdate( 'Y-m-d H', $from_date );
 
 	$resultscount = $wpdb->query(
