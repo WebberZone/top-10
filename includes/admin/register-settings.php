@@ -37,7 +37,7 @@ function tptn_get_option( $key = '', $default = null ) {
 		$default = tptn_get_default_option( $key );
 	}
 
-	$value = ! empty( $tptn_settings[ $key ] ) ? $tptn_settings[ $key ] : $default;
+	$value = isset( $tptn_settings[ $key ] ) ? $tptn_settings[ $key ] : $default;
 
 	/**
 	 * Filter the value for the option being fetched.
@@ -378,7 +378,7 @@ function tptn_get_registered_settings() {
 				'track_users'           => array(
 					'id'      => 'track_users',
 					'name'    => esc_html__( 'Track user groups', 'top-10' ) . ':',
-					'desc'    => esc_html__( 'If the current user falls into any one of the three groups when browsing a post, then the tracker is disabled.', 'top-10' ),
+					'desc'    => esc_html__( 'Uncheck above to disable tracking if the current user falls into any one of these groups.', 'top-10' ),
 					'type'    => 'multicheck',
 					'default' => array(
 						'editors' => 'editors',
@@ -389,6 +389,13 @@ function tptn_get_registered_settings() {
 						'editors' => esc_html__( 'Editors', 'top-10' ),
 						'admins'  => esc_html__( 'Admins', 'top-10' ),
 					),
+				),
+				'logged_in'             => array(
+					'id'      => 'logged_in',
+					'name'    => esc_html__( 'Track logged-in users', 'top-10' ),
+					'desc'    => esc_html__( 'Uncheck to stop tracking logged in users. Only logged out visitors will be tracked if this is disabled. Unchecking this will override the above setting.', 'top-10' ),
+					'type'    => 'checkbox',
+					'options' => true,
 				),
 				'pv_in_admin'           => array(
 					'id'      => 'pv_in_admin',
