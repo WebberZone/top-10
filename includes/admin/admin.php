@@ -335,10 +335,10 @@ add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __DIR__ )
 function tptn_plugin_actions( $links, $file ) {
 	$plugin = plugin_basename( TOP_TEN_PLUGIN_FILE );
 
-	if ( $file == $plugin ) {
+	if ( $file === $plugin ) {
 		$links[] = '<a href="https://wordpress.org/support/plugin/top-10/">' . __( 'Support', 'top-10' ) . '</a>';
 		$links[] = '<a href="https://ajaydsouza.com/donate/">' . __( 'Donate', 'top-10' ) . '</a>';
-		$links[] = '<a href="https://github.com/WebberZone/top-10">' . __( 'Contribute', 'contextual-related-posts' ) . '</a>';
+		$links[] = '<a href="https://github.com/WebberZone/top-10">' . __( 'Contribute', 'top-10' ) . '</a>';
 	}
 	return $links;
 }
