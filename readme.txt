@@ -171,6 +171,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Upgrade old options to Settings API
 	* New widget to display the overall count i.e. visits across all your site posts
 	* Added a filter to override the number of days that maintenance considers to delete the database entries
+	* New option to disable tracking for logged in users. Find "Track logged-in users" under the "Counter/Tracker" tab in the settings screen
 
 * Enhancements:
 	* Make $ajax_tptn_tracker global. Contributed by [@pkirk](https://github.com/pkirk)

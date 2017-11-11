@@ -25,13 +25,16 @@ function tptn_enqueue_scripts() {
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
 		$include_code = true;
-		if ( ( $post_author ) && ( ! $track_users['authors'] ) ) {
+		if ( ( $post_author ) && ( empty( $track_users['authors'] ) ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_admin ) && ( ! $track_users['admins'] ) ) {
+		if ( ( $current_user_admin ) && ( empty( $track_users['admins'] ) ) ) {
 			$include_code = false;
 		}
-		if ( ( $current_user_editor ) && ( ! $track_users['editors'] ) ) {
+		if ( ( $current_user_editor ) && ( empty( $track_users['editors'] ) ) ) {
+			$include_code = false;
+		}
+		if ( ( $current_user->exists() ) && ( ! tptn_get_option( 'logged_in' ) ) ) {
 			$include_code = false;
 		}
 
