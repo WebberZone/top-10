@@ -66,7 +66,6 @@ function tptn_enqueue_scripts() {
 
 			$ajax_tptn_tracker = array(
 				'ajax_url'         => $home_url,
-				'top_ten_nonce'    => wp_create_nonce( 'tptn-tracker-nonce' ),
 				'top_ten_id'       => $id,
 				'top_ten_blog_id'  => $blog_id,
 				'activate_counter' => $activate_counter,
@@ -199,11 +198,6 @@ add_action( 'parse_request', 'tptn_parse_request' );
 function tptn_tracker_parser() {
 
 	global $wpdb;
-
-	// Check for the nonce and exit if failed.
-	if ( isset( $_POST['top_ten_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['top_ten_nonce'] ), 'tptn-tracker-nonce' ) ) { // Input var okay.
-		wp_die( esc_html__( 'Top 10: Security check failed', 'top-10' ) );
-	}
 
 	$table_name    = $wpdb->base_prefix . 'top_ten';
 	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
