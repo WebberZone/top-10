@@ -277,6 +277,20 @@ function tptn_textarea_callback( $args ) {
 
 
 /**
+ * Display CSS fields.
+ *
+ * @since 2.5.1
+ *
+ * @param array $args Array of arguments.
+ * @return void
+ */
+function tptn_css_callback( $args ) {
+
+	tptn_textarea_callback( $args );
+}
+
+
+/**
  * Display checboxes.
  *
  * @since 2.5.0

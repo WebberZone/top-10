@@ -711,12 +711,12 @@ function tptn_get_registered_settings() {
 					'default' => 'no_style',
 					'options' => tptn_get_styles(),
 				),
-				'custom_CSS'  => array(
-					'id'      => 'custom_CSS',
+				'custom_css'  => array(
+					'id'      => 'custom_css',
 					'name'    => esc_html__( 'Custom CSS', 'top-10' ),
 					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
 					'desc'    => sprintf( esc_html__( 'Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available CSS classes to style.', 'top-10' ), '<a href="' . esc_url( 'http://wordpress.org/plugins/top-10/faq/' ) . '" target="_blank">', '</a>', '<code>', '</code>' ),
-					'type'    => 'textarea',
+					'type'    => 'css',
 					'options' => '',
 				),
 			)
@@ -959,7 +959,8 @@ function tptn_upgrade_settings() {
 	// Convert 'blank_output' to the new format: true = 'blank' and false = 'custom_text'.
 	$settings['blank_output'] = ! empty( $old_settings['blank_output'] ) ? 'blank' : 'custom_text';
 
-	delete_option( 'ald_tptn_settings' );
+	$settings['custom_css'] = $old_settings['custom_CSS'];
+
 	return $settings;
 
 }

@@ -260,7 +260,7 @@ function tptn_default_options() {
 		'thumb_default_show'       => true,         // Show default thumb if none found (if false, don't show thumb at all).
 
 		/* Custom styles */
-		'custom_CSS'               => '',           // Custom CSS to style the output.
+		'custom_css'               => '',           // Custom CSS to style the output.
 		'include_default_style'    => false,        // Include default Top 10 style.
 		'tptn_styles'              => 'no_style',   // Defaault style is left thubnails.
 

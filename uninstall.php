@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 global $wpdb;
 
-$tptn_settings = get_option( 'ald_tptn_settings' );
+$tptn_settings = get_option( 'tptn_settings' );
 
 if ( $tptn_settings['uninstall_clean_tables'] ) {
 
@@ -35,5 +35,6 @@ if ( $tptn_settings['uninstall_clean_options'] ) {
 		wp_clear_scheduled_hook( 'tptn_cron_hook' );
 	}
 	delete_option( 'ald_tptn_settings' );
+	delete_option( 'tptn_settings' );
 }
 
