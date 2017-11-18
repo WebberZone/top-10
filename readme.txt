@@ -165,6 +165,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.5.2 =
+
+* Bug fixes:
+	* Settings / Thumbnail / Thumbnail size did not display the correct option even though the admin had this correctly saved
+
 = 2.5.1 =
 
 * Bug fixes:

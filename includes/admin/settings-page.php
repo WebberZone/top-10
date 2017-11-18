@@ -433,6 +433,7 @@ function tptn_radiodesc_callback( $args ) {
  * @return void
  */
 function tptn_thumbsizes_callback( $args ) {
+	global $tptn_settings;
 	$html = '';
 
 	if ( ! isset( $args['options']['tptn_thumbnail'] ) ) {
