@@ -526,7 +526,7 @@ class Top_Ten_Statistics {
 		$args = null;
 		?>
 		<div class="wrap">
-			<h1><?php esc_html( 'Top 10 Popular Posts', 'top-10' ); ?></h1>
+			<h1><?php esc_html_e( 'Top 10 Popular Posts', 'top-10' ); ?></h1>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
