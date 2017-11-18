@@ -219,7 +219,7 @@ function tptn_pop_posts( $args ) {
 
 			$counter++;
 
-			if ( $counter === $args['limit'] ) {
+			if ( $counter === (int) $args['limit'] ) {
 				break;  // End loop when related posts limit is reached.
 			}
 		}

@@ -961,6 +961,7 @@ function tptn_upgrade_settings() {
 
 	$settings['custom_css'] = $old_settings['custom_CSS'];
 
+	delete_option( 'ald_tptn_settings' );
 	return $settings;
 
 }
