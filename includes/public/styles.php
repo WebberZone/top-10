@@ -12,11 +12,11 @@
  */
 function tptn_header() {
 
-	$tptn_custom_CSS = stripslashes( tptn_get_option( 'custom_CSS' ) );
+	$tptn_custom_css = stripslashes( tptn_get_option( 'custom_css' ) );
 
 	// Add CSS to header.
-	if ( '' != $tptn_custom_CSS ) {
-		echo '<style type="text/css">' . $tptn_custom_CSS . '</style>';
+	if ( '' != $tptn_custom_css ) {
+		echo '<style type="text/css">' . $tptn_custom_css . '</style>';
 	}
 }
 add_action( 'wp_head', 'tptn_header' );

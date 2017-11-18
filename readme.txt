@@ -165,6 +165,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.5.1 =
+
+* Bug fixes:
+	* Custom CSS did not get upgraded or saved properly
+	* Uninstalling the plugin will delete the settings properly
+	* Old settings will not be deleted but retained in the database
+
 = 2.5.0 =
 
 * Features:
@@ -231,7 +238,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.5.0 =
+= 2.5.1 =
 * Major release! Brand new settings interface so please do verify your settings after the upgrade. Several new features and bug fixes.
 Check the Changelog for more details
 
