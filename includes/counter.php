@@ -58,7 +58,7 @@ function tptn_rss_filter( $content ) {
 
 	$add_to = tptn_get_option( 'add_to' );
 
-	if ( $add_to['feed'] ) {
+	if ( ! empty( $add_to['feed'] ) ) {
 		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	} else {
 		return $content;
