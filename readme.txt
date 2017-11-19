@@ -165,6 +165,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.5.4 =
+
+* Bug fixes:
+	* Fixed PHP Illegal string offset error
+
 = 2.5.3 =
 
 * Bug fixes:
@@ -247,7 +252,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.5.3 =
+= 2.5.4 =
 * Major release! Brand new settings interface so please do verify your settings after the upgrade. Several new features and bug fixes.
 Check the Changelog for more details
 
