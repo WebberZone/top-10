@@ -36,6 +36,12 @@ function tptn_tools_page() {
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
 	}
 
+	/* Delete old settings */
+	if ( ( isset( $_POST['tptn_delete_old_settings'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		delete_option( 'ald_tptn_settings' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'error' );
+	}
+
 	/* Clean duplicates */
 	if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_clean_duplicates( true );
@@ -82,11 +88,19 @@ function tptn_tools_page() {
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Other tools', 'top-10' ); ?></h2>
 				<p>
+					<input name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" value="<?php esc_attr_e( 'Delete old settings', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;" />
+				</p>
+				<p class="description">
+					<?php esc_html_e( 'From v2.5.x, Top 10 stores the settings in a new key in the database. This will delete the old settings for the current blog. It is recommended that you do this at the earliest after upgrade. However, you should do this only if you are comfortable with the new settings.', 'top-10' ); ?>
+				</p>
+
+				<p>
 					<input name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" value="<?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;" />
 				</p>
 				<p class="description">
 					<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
 				</p>
+
 				<p>
 					<input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;" />
 				</p>

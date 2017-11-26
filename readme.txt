@@ -167,6 +167,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.5.4 =
 
+* Features:
+	* New button in the Tools page to delete the pre-2.5.x settings
+
 * Bug fixes:
 	* Fixed PHP Illegal string offset error
 
