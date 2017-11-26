@@ -323,3 +323,31 @@ function tptn_read_options() {
 }
 
 
+/**
+ * Function to limit content by characters.
+ *
+ * @since   1.9.8
+ *
+ * @deprecated 2.5.4
+ *
+ * @param   string $content    Content to be used to make an excerpt.
+ * @param   int    $no_of_char Maximum length of excerpt in characters.
+ * @return  string             Formatted content.
+ */
+function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
+	_deprecated_function( __FUNCTION__, '2.5.4', 'tptn_trim_char()' );
+
+	$content = tptn_trim_char( $content, $no_of_char );
+
+	/**
+	 * Filters formatted content after cropping.
+	 *
+	 * @since   1.9.10.1
+	 *
+	 * @param   string  $content    Formatted content
+	 * @param   int     $no_of_char Maximum length of excerpt in characters
+	 */
+	return apply_filters( 'tptn_max_formatted_content', $content, $no_of_char );
+}
+
+
