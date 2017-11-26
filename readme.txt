@@ -172,6 +172,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Enhancements:
 	* New function `tptn_trim_char` replaces `tptn_max_formatted_content` which should now support non-English characters as well
+	* Counts in the "Popular Posts" page are now number formatted
 
 * Bug fixes:
 	* Fixed PHP Illegal string offset error
