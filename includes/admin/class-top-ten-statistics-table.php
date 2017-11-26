@@ -223,7 +223,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				return $item[ $column_name ];
 			case 'total_count':
 			case 'daily_count':
-				return intval( $item[ $column_name ] );
+				return number_format_i18n( absint( $item[ $column_name ] ) );
 			default:
 				return print_r( $item, true ); // Show the whole array for troubleshooting purposes.
 		}
