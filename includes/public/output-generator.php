@@ -195,7 +195,7 @@ function tptn_after_list_item( $args, $result ) {
  */
 function tptn_post_title( $args, $result ) {
 
-	$title = tptn_max_formatted_content( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed.
+	$title = tptn_trim_char( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed.
 
 	/**
 	 * Filter the post title of each list item.

@@ -170,6 +170,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Features:
 	* New button in the Tools page to delete the pre-2.5.x settings
 
+* Enhancements:
+	* New function `tptn_trim_char` replaces `tptn_max_formatted_content` which should now support non-English characters as well
+
 * Bug fixes:
 	* Fixed PHP Illegal string offset error
 

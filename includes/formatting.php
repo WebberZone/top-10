@@ -46,36 +46,38 @@ function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
 
 
 /**
- * Function to limit content by characters.
+ * Truncate a string to a certain length.
  *
- * @since   1.9.8
- * @param   string $content    Content to be used to make an excerpt.
- * @param   int    $no_of_char Maximum length of excerpt in characters.
- * @return  string             Formatted content.
+ * @since 2.5.4
+ *
+ * @param  string $string String to truncate.
+ * @param  int    $count Maximum number of characters to take.
+ * @param  string $more What to append if $string needs to be trimmed.
+ * @param  bool   $break_words Optionally choose to break words.
+ * @return string Truncated string.
  */
-function tptn_max_formatted_content( $content, $no_of_char = -1 ) {
-	$content = strip_tags( $content );
-
-	if ( ( $no_of_char > 0 ) && ( strlen( $content ) > $no_of_char ) ) {
-		$no_of_words = preg_split( '/[\s]+/', substr( $content, 0, $no_of_char ) );
-
-		// Break back down into a string of words, but drop the last one if it's chopped off.
-		if ( substr( $content, $no_of_char, 1 ) === ' ' ) {
-			$content = implode( ' ', $no_of_words );
-		} else {
-			$content = implode( ' ', array_slice( $no_of_words, 0, -1 ) ) . '&hellip;';
-		}
+function tptn_trim_char( $string, $count = 60, $more = '&hellip;', $break_words = false ) {
+	$string = wp_strip_all_tags( $string, true );
+	if ( 0 === $count ) {
+		return '';
 	}
-
+	if ( mb_strlen( $string ) > $count && $count > 0 ) {
+		$count -= min( $count, mb_strlen( $more ) );
+		if ( ! $break_words ) {
+			$string = preg_replace( '/\s+?(\S+)?$/u', '', mb_substr( $string, 0, $count + 1 ) );
+		}
+		$string = mb_substr( $string, 0, $count ) . $more;
+	}
 	/**
-	 * Filters formatted content after cropping.
+	 * Filters truncated string.
 	 *
-	 * @since   1.9.10.1
+	 * @since 2.4.0
 	 *
-	 * @param   string  $content    Formatted content
-	 * @param   int     $no_of_char Maximum length of excerpt in characters
+	 * @param string $string String to truncate.
+	 * @param int $count Maximum number of characters to take.
+	 * @param string $more What to append if $string needs to be trimmed.
+	 * @param bool $break_words Optionally choose to break words.
 	 */
-	return apply_filters( 'tptn_max_formatted_content', $content, $no_of_char );
+	return apply_filters( 'tptn_trim_char', $string, $count, $more, $break_words );
 }
-
 
