@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-18 11:05+0000\n"
+"POT-Creation-Date: 2017-11-26 11:13+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WebberZone <plugins@webberzone.com>\n"
@@ -117,7 +117,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin.php:37 includes/admin/tools.php:56
+#: includes/admin/admin.php:37 includes/admin/tools.php:62
 msgid "Top 10 Tools"
 msgstr ""
 
@@ -126,6 +126,7 @@ msgid "Tools"
 msgstr ""
 
 #: includes/admin/admin.php:44
+#: includes/admin/class-top-ten-statistics-table.php:529
 msgid "Top 10 Popular Posts"
 msgstr ""
 
@@ -898,7 +899,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/register-settings.php:695
-#: includes/admin/settings-page.php:669
+#: includes/admin/settings-page.php:684
 msgid "Default thumbnail"
 msgstr ""
 
@@ -966,29 +967,29 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-#: includes/admin/register-settings.php:978
+#: includes/admin/register-settings.php:979
 msgid "No styles"
 msgstr ""
 
-#: includes/admin/register-settings.php:979
+#: includes/admin/register-settings.php:980
 msgid "Select this option if you plan to add your own styles"
 msgstr ""
 
-#: includes/admin/register-settings.php:983
+#: includes/admin/register-settings.php:984
 msgid "Text only"
 msgstr ""
 
-#: includes/admin/register-settings.php:984
+#: includes/admin/register-settings.php:985
 msgid ""
 "Disable thumbnails and no longer include the default style sheet included in "
 "the plugin"
 msgstr ""
 
-#: includes/admin/register-settings.php:988
+#: includes/admin/register-settings.php:989
 msgid "Left thumbnails"
 msgstr ""
 
-#: includes/admin/register-settings.php:989
+#: includes/admin/register-settings.php:990
 msgid ""
 "Enabling this option will set the post thumbnail to be before text. "
 "Disabling this option will not revert any settings."
@@ -1022,7 +1023,7 @@ msgid ""
 "The callback function used for the <strong>%s</strong> setting is missing."
 msgstr ""
 
-#: includes/admin/settings-page.php:298
+#: includes/admin/settings-page.php:312
 msgid "Modified from default setting"
 msgstr ""
 
@@ -1082,45 +1083,49 @@ msgstr ""
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: includes/admin/tools.php:43
+#: includes/admin/tools.php:42
+msgid "Old settings key has been deleted"
+msgstr ""
+
+#: includes/admin/tools.php:49
 msgid "Duplicate rows cleaned from the tables"
 msgstr ""
 
-#: includes/admin/tools.php:50
+#: includes/admin/tools.php:56
 msgid "Post counts across blog IDs 0 and 1 have been merged"
 msgstr ""
 
-#: includes/admin/tools.php:66 includes/admin/tools.php:68
+#: includes/admin/tools.php:72 includes/admin/tools.php:74
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/tools.php:71
+#: includes/admin/tools.php:77
 msgid ""
 "Clear the Top 10 cache. This will also be cleared automatically when you "
 "save the settings page."
 msgstr ""
 
-#: includes/admin/tools.php:74
+#: includes/admin/tools.php:80
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/tools.php:76
+#: includes/admin/tools.php:82
 msgid "Reset Popular Posts Network-wide"
 msgstr ""
 
-#: includes/admin/tools.php:76
+#: includes/admin/tools.php:82
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:77
+#: includes/admin/tools.php:83
 msgid "Reset Daily Popular Posts Network-wide"
 msgstr ""
 
-#: includes/admin/tools.php:77
+#: includes/admin/tools.php:83
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:80
+#: includes/admin/tools.php:86
 msgid ""
 "This will reset the Top 10 tables. If you are running Top 10 on multisite "
 "then it will delete the popular posts across the entire network. This cannot "
@@ -1128,31 +1133,47 @@ msgid ""
 "proceeding"
 msgstr ""
 
-#: includes/admin/tools.php:83
+#: includes/admin/tools.php:89
 msgid "Other tools"
 msgstr ""
 
-#: includes/admin/tools.php:85
-msgid "Merge blog ID 0 and 1 post counts"
-msgstr ""
-
-#: includes/admin/tools.php:85
-msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
-msgstr ""
-
-#: includes/admin/tools.php:88
-msgid "This will merge post counts for posts with table entries of 0 and 1"
+#: includes/admin/tools.php:91
+msgid "Delete old settings"
 msgstr ""
 
 #: includes/admin/tools.php:91
-msgid "Merge duplicates across blog IDs"
-msgstr ""
-
-#: includes/admin/tools.php:91
-msgid "This will delete the duplicate entries in the tables. Proceed?"
+msgid "This will delete the settings before v2.5.x. Proceed?"
 msgstr ""
 
 #: includes/admin/tools.php:94
+msgid ""
+"From v2.5.x, Top 10 stores the settings in a new key in the database. This "
+"will delete the old settings for the current blog. It is recommended that "
+"you do this at the earliest after upgrade. However, you should do this only "
+"if you are comfortable with the new settings."
+msgstr ""
+
+#: includes/admin/tools.php:98
+msgid "Merge blog ID 0 and 1 post counts"
+msgstr ""
+
+#: includes/admin/tools.php:98
+msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
+msgstr ""
+
+#: includes/admin/tools.php:101
+msgid "This will merge post counts for posts with table entries of 0 and 1"
+msgstr ""
+
+#: includes/admin/tools.php:105
+msgid "Merge duplicates across blog IDs"
+msgstr ""
+
+#: includes/admin/tools.php:105
+msgid "This will delete the duplicate entries in the tables. Proceed?"
+msgstr ""
+
+#: includes/admin/tools.php:108
 msgid ""
 "In older versions, the plugin created entries with duplicate post IDs. "
 "Clicking the button below will merge these duplicate IDs"
