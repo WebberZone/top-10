@@ -46,7 +46,7 @@ function tptn_settings_sanitize( $input = array() ) {
 
 	if ( $reset ) {
 		tptn_settings_reset();
-		$tptn_settings = get_option( 'tptn_settings' );
+		$tptn_settings = tptn_get_settings();
 
 		add_settings_error( 'tptn-notices', '', __( 'Settings have been reset to their default values. Reload this page to view the updated settings', 'top-10' ), 'error' );
 
