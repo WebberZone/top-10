@@ -91,8 +91,6 @@ function tptn_single_activate() {
 
 	if ( $installed_ver != $tptn_db_version ) {
 
-		$wpdb->hide_errors();
-
         $sql = "ALTER TABLE " . $table_name . " DROP PRIMARY KEY ";
         $wpdb->query($sql);
         $sql = "ALTER TABLE " . $table_name_daily . " DROP PRIMARY KEY ";
@@ -115,8 +113,6 @@ function tptn_single_activate() {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-
-		$wpdb->show_errors();
 
 		update_site_option( 'tptn_db_version', $tptn_db_version );
 	}
