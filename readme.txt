@@ -165,6 +165,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.5.5 =
+
+* Bug fixes:
+	* Fixed missing semi-colon in tracker code
+
 = 2.5.4 =
 
 * Features:
