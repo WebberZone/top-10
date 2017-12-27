@@ -72,7 +72,7 @@ if ( ! defined( 'TOP_TEN_PLUGIN_FILE' ) ) {
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = '5.0';
+$tptn_db_version = '6.0';
 
 
 /**

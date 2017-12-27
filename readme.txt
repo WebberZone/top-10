@@ -169,6 +169,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Bug fixes:
 	* Fixed missing semi-colon in tracker code
+	* Multi-site tracking failed in old installs where the PRIMARY KEY was not properly updated in the database. DB version has been updated to 6.0 to initiate primary key across all installs
 
 = 2.5.4 =
 
