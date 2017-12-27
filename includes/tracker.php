@@ -178,7 +178,7 @@ function tptn_parse_request( $wp ) {
 			$output = get_tptn_post_count( $id );
 
 			header( 'content-type: application/x-javascript' );
-			echo 'document.write("' . $output . '")'; // WPCS: XSS OK.
+			echo 'document.write("' . $output . '");'; // WPCS: XSS OK.
 
 			// Stop anything else from loading as it is not needed.
 			exit;
