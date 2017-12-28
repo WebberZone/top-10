@@ -90,7 +90,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page.
 	if ( ! $postimage ) {
-		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );   // Check the post meta first.
+		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );
 		$pick      = 'meta';
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
@@ -227,8 +227,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	 *
 	 * @param   array   $output Formatted output
 	 * @param   array   $args   Argument list
+	 * @param   string  $postimage Thumbnail URL
 	 */
-	return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args );
+	return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args, $postimage );
 }
 
 
