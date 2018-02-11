@@ -25,6 +25,12 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_tools_page() {
 
 	/* Truncate overall posts table */
+	if ( ( isset( $_POST['tptn_recreate_primary_key'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		tptn_recreate_primary_key();
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Primary Key has been recreated', 'top-10' ), 'error' );
+	}
+
+	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_trunc_count( false );
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'error' );
@@ -75,6 +81,14 @@ function tptn_tools_page() {
 				</p>
 				<p class="description">
 					<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
+				</p>
+
+				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></h2>
+				<p>
+					<input name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" value="<?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?>" class="button button-secondary" />
+				</p>
+				<p class="description">
+					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables.', 'top-10' ); ?>
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
@@ -198,3 +212,30 @@ function tptn_merge_blogids( $daily = false ) {
 
 	$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" ); // WPCS: unprepared SQL OK.
 }
+
+/**
+ * Function to delete and create the primary keys in the database table.
+ *
+ * @since   2.5.6
+ */
+function tptn_recreate_primary_key() {
+	global $wpdb;
+
+	$table_name       = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+
+	$wpdb->hide_errors();
+
+	if ( $wpdb->query( $wpdb->prepare( "SHOW INDEXES FROM {$table_name} WHERE Key_name = %s", 'PRIMARY' ) ) ) {
+		$wpdb->query( 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY ' ); // WPCS: unprepared SQL OK.
+	}
+	if ( $wpdb->query( $wpdb->prepare( "SHOW INDEXES FROM {$table_name_daily} WHERE Key_name = %s", 'PRIMARY' ) ) ) {
+		$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY ' ); // WPCS: unprepared SQL OK.
+	}
+
+	$wpdb->query( 'ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY(postnumber, blog_id) ' ); // WPCS: unprepared SQL OK.
+	$wpdb->query( 'ALTER TABLE ' . $table_name_daily . ' ADD PRIMARY KEY(postnumber, dp_date, blog_id) ' ); // WPCS: unprepared SQL OK.
+
+	$wpdb->show_errors();
+}
+
