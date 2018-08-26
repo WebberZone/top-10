@@ -237,7 +237,7 @@ function tptn_author( $args, $result ) {
 	$author_name = apply_filters( 'tptn_author_name', $author_name, $author_info );
 
 	if ( ! empty( $author_name ) ) {
-		$tptn_author = '<span class="crp_author"> ' . __( ' by ', 'contextual-related-posts' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
+		$tptn_author = '<span class="crp_author"> ' . __( ' by ', 'top-10' ) . '<a href="' . $author_link . '">' . $author_name . '</a></span> ';
 	} else {
 		$tptn_author = '';
 	}
