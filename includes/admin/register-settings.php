@@ -434,7 +434,7 @@ function tptn_get_registered_settings() {
 				'post_types'              => array(
 					'id'      => 'post_types',
 					'name'    => esc_html__( 'Post types to include', 'top-10' ),
-					'desc'    => esc_html__( 'Select which post types you want to include in the list of posts. This field can be overridden using a comma separated list of post types when using the manual display.', 'top-10' ),
+					'desc'    => esc_html__( 'At least one option should be selected above. Select which post types you want to include in the list of posts. This field can be overridden using a comma separated list of post types when using the manual display.', 'top-10' ),
 					'type'    => 'posttypes',
 					'options' => 'post',
 				),

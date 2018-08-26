@@ -332,7 +332,7 @@ function tptn_multicheck_callback( $args ) {
 	$html = '';
 
 	if ( ! empty( $args['options'] ) ) {
-		$html .= sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', $args['id'] );
+		$html .= sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
 
 		foreach ( $args['options'] as $key => $option ) {
 			if ( isset( $tptn_settings[ $args['id'] ][ $key ] ) ) {
@@ -589,6 +589,8 @@ function tptn_posttypes_callback( $args ) {
 		)
 	);
 	$posts_types_inc = array_intersect( $wp_post_types, $post_types );
+
+	$html .= sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
 
 	foreach ( $wp_post_types as $wp_post_type ) {
 
