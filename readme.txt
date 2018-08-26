@@ -170,6 +170,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.5.7 =
+
+* Bug fixes:
+	* Fixed translation of " by " which had the incorrect text domain
+
 = 2.5.6 =
 
 * Features:
