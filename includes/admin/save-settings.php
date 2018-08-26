@@ -271,7 +271,7 @@ add_filter( 'tptn_settings_sanitize_checkbox', 'tptn_sanitize_checkbox_field' );
  */
 function tptn_sanitize_posttypes_field( $value ) {
 
-	$post_types = is_array( $value ) ? array_map( 'sanitize_text_field', wp_unslash( $value ) ) : array( 'post', 'page' );
+	$post_types = is_array( $value ) ? array_map( 'sanitize_text_field', wp_unslash( $value ) ) : array( 'post' );
 
 	return implode( ',', $post_types );
 }
