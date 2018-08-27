@@ -185,12 +185,12 @@ class Top_Ten_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                    = $old_instance;
-		$instance['title']           = strip_tags( $new_instance['title'] );
+		$instance['title']           = wp_strip_all_tags( $new_instance['title'] );
 		$instance['limit']           = $new_instance['limit'];
 		$instance['offset']          = $new_instance['offset'];
 		$instance['daily']           = $new_instance['daily'];
-		$instance['daily_range']     = strip_tags( $new_instance['daily_range'] );
-		$instance['hour_range']      = strip_tags( $new_instance['hour_range'] );
+		$instance['daily_range']     = wp_strip_all_tags( $new_instance['daily_range'] );
+		$instance['hour_range']      = wp_strip_all_tags( $new_instance['hour_range'] );
 		$instance['disp_list_count'] = isset( $new_instance['disp_list_count'] ) ? true : false;
 		$instance['show_excerpt']    = isset( $new_instance['show_excerpt'] ) ? true : false;
 		$instance['show_author']     = isset( $new_instance['show_author'] ) ? true : false;
@@ -239,7 +239,7 @@ class Top_Ten_Widget extends WP_Widget {
 			}
 		}
 
-		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? strip_tags( tptn_get_option( 'title' ) ) : $instance['title'] );
+		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? wp_strip_all_tags( tptn_get_option( 'title' ) ) : $instance['title'] );
 
 		$limit = isset( $instance['limit'] ) ? $instance['limit'] : tptn_get_option( 'limit' );
 		if ( empty( $limit ) ) {
