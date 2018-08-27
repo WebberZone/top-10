@@ -88,7 +88,10 @@ function tptn_tools_page() {
 					<input name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" value="<?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?>" class="button button-secondary" />
 				</p>
 				<p class="description">
-					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables.', 'top-10' ); ?>
+					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
+				</p>
+				<p>
+					<code style="display:block;"><?php echo tptn_recreate_primary_key_html(); // WPCS: XSS ok. ?></code>
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
@@ -180,7 +183,7 @@ function tptn_merge_blogids( $daily = false ) {
 	}
 
 	if ( $daily ) {
-		$wpdb->query(
+		$wpdb->query( // WPCS: unprepared SQL OK.
 			"
             INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
                 SELECT
@@ -195,7 +198,7 @@ function tptn_merge_blogids( $daily = false ) {
         "
 		);
 	} else {
-		$wpdb->query(
+		$wpdb->query( // WPCS: unprepared SQL OK.
 			"
             INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
                 SELECT
@@ -239,3 +242,30 @@ function tptn_recreate_primary_key() {
 	$wpdb->show_errors();
 }
 
+/**
+ * Retrieves the SQL code to recreate the PRIMARY KEY.
+ *
+ * @since   2.5.7
+ */
+function tptn_recreate_primary_key_html() {
+	global $wpdb;
+
+	$table_name       = $wpdb->base_prefix . 'top_ten';
+	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+
+	$sql  = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY; ';
+	$sql .= '<br />';
+	$sql .= 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY; ';
+	$sql .= '<br />';
+	$sql .= 'ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY(postnumber, blog_id); ';
+	$sql .= '<br />';
+	$sql .= 'ALTER TABLE ' . $table_name_daily . ' ADD PRIMARY KEY(postnumber, dp_date, blog_id); ';
+
+	/**
+	 * Filters the SQL code to recreate the PRIMARY KEY.
+	 *
+	 * @since   2.5.7
+	 * @param string $sql SQL code to recreate PRIMARY KEY.
+	 */
+	return apply_filters( 'tptn_recreate_primary_key_html', $sql );
+}
