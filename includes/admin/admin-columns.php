@@ -189,11 +189,11 @@ add_filter( 'posts_clauses', 'tptn_column_clauses', 10, 2 );
  * @since   1.2
  */
 function tptn_admin_css() {
-?>
+	?>
 <style type="text/css">
 	#tptn_total, #tptn_daily, #tptn_both { max-width: 100px; }
 </style>
-<?php
+	<?php
 }
 add_action( 'admin_head', 'tptn_admin_css' );
 

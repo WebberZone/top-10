@@ -435,46 +435,46 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @param string $which Which part of the table are we.
 	 */
 	public function extra_tablenav( $which ) {
-	?>
+		?>
 		<div class="alignleft actions">
-	<?php
-	if ( 'top' === $which ) {
-		$post_types = get_post_types(
-			array(
-				'public' => true,
-			)
-		);
-		$all        = array(
-			'all' => 'All',
-		);
-		$post_types = $all + $post_types;
-
-		if ( $post_types ) {
-
-			echo '<select name="post-type-filter">';
-
-			foreach ( $post_types as $post_type ) {
-				$selected = '';
-				if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] === $post_type ) {
-					$selected = ' selected = "selected"';
-				}
-				?>
-				<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
-				<?php
-			}
-
-			echo '</select>';
-
-			submit_button(
-				__( 'Filter', 'top-10' ), 'button', 'filter_action', false, array(
-					'id' => 'top-10-query-submit',
+		<?php
+		if ( 'top' === $which ) {
+			$post_types = get_post_types(
+				array(
+					'public' => true,
 				)
 			);
+			$all        = array(
+				'all' => 'All',
+			);
+			$post_types = $all + $post_types;
+
+			if ( $post_types ) {
+
+				echo '<select name="post-type-filter">';
+
+				foreach ( $post_types as $post_type ) {
+					$selected = '';
+					if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] === $post_type ) {
+						$selected = ' selected = "selected"';
+					}
+					?>
+				<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
+						<?php
+				}
+
+				echo '</select>';
+
+				submit_button(
+					__( 'Filter', 'top-10' ), 'button', 'filter_action', false, array(
+						'id' => 'top-10-query-submit',
+					)
+				);
+			}
 		}
-	}
-	?>
+		?>
 		</div>
-	<?php
+		<?php
 	}
 }
 
@@ -562,7 +562,7 @@ class Top_Ten_Statistics {
 				<br class="clear" />
 			</div><!-- /poststuff -->
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
