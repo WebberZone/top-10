@@ -22,7 +22,7 @@ function tptn_pop_posts( $args ) {
 	global $tptn_settings;
 
 	// if set, save $exclude_categories.
-	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) {
+	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) { // WPCS: loose comparison ok.
 		$exclude_categories   = explode( ',', $args['exclude_categories'] );
 		$args['strict_limit'] = false;
 	}
@@ -387,7 +387,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Convert it back to string.
 	$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
 
-	if ( '' != $exclude_post_ids ) {
+	if ( '' != $exclude_post_ids ) { // WPCS: loose comparison ok.
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 	}
 	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types.

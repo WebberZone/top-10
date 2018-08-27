@@ -92,9 +92,9 @@ function tptn_single_activate() {
 	if ( $installed_ver != $tptn_db_version ) {
 
 		$sql = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY ';
-		$wpdb->query( $sql );
+		$wpdb->query( $sql ); // WPCS: unprepared SQL ok.
 		$sql = 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY ';
-		$wpdb->query( $sql );
+		$wpdb->query( $sql ); // WPCS: unprepared SQL ok.
 
 		$sql = 'CREATE TABLE ' . $table_name . " (
 			postnumber bigint(20) NOT NULL,
