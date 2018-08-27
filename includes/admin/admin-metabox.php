@@ -104,18 +104,18 @@ function tptn_call_meta_box() {
 		$exclude_this_post = 0;
 	}
 
-?>
+	?>
 	<p>
 		<label for="total_count"><strong><?php esc_html_e( 'Visit count:', 'top-10' ); ?></strong></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo esc_attr( $total_count ); ?>" style="width:100%" />
 		<em><?php esc_html_e( 'Enter a number above to update the visit count. Leaving the above box blank will set the count to zero', 'top-10' ); ?></em>
 	</p>
 
-<?php
+	<?php
 
 	$results = get_post_meta( $post->ID, tptn_get_option( 'thumb_meta' ), true );
 	$value   = ( $results ) ? $results : '';
-?>
+	?>
 	<p>
 		<label for="disable_here"><strong><?php esc_html_e( 'Disable Popular Posts display:', 'top-10' ); ?></strong></label>
 		<input type="checkbox" id="disable_here" name="disable_here" <?php checked( 1, $disable_here, true ); ?> />

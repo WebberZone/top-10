@@ -66,7 +66,7 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'plugin-install' );
 	add_thickbox();
-?>
+	?>
 	<script type="text/javascript">
 	//<![CDATA[
 		// Function to clear the cache.
@@ -209,7 +209,7 @@ function tptn_adminhead() {
 
 	//]]>
 	</script>
-<?php
+	<?php
 }
 
 
@@ -292,13 +292,13 @@ add_filter( 'admin_footer_text', 'tptn_admin_footer' );
  * return void
  */
 function tptn_admin_head() {
-?>
+	?>
 	<style type="text/css" media="screen">
 		#dashboard_right_now .tptn-article-count:before {
 			content: "\f331";
 		}
 	</style>
-<?php
+	<?php
 }
 add_filter( 'admin_head', 'tptn_admin_head' );
 
