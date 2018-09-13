@@ -176,7 +176,8 @@ function tptn_register_settings() {
 		foreach ( $settings as $setting ) {
 
 			$args = wp_parse_args(
-				$setting, array(
+				$setting,
+				array(
 					'section'          => $section,
 					'id'               => null,
 					'name'             => '',
@@ -222,7 +223,8 @@ function tptn_get_registered_settings() {
 	$tptn_settings = array(
 		/*** General settings */
 		'general'     => apply_filters(
-			'tptn_settings_general', array(
+			'tptn_settings_general',
+			array(
 				'trackers'                => array(
 					'id'      => 'trackers',
 					'name'    => esc_html__( 'Enable trackers', 'top-10' ),
@@ -323,7 +325,8 @@ function tptn_get_registered_settings() {
 		),
 		/*** Output settings */
 		'counter'     => apply_filters(
-			'tptn_settings_counter', array(
+			'tptn_settings_counter',
+			array(
 				'add_to'                => array(
 					'id'      => 'add_to',
 					'name'    => esc_html__( 'Display number of views on', 'top-10' ) . ':',
@@ -415,7 +418,8 @@ function tptn_get_registered_settings() {
 		),
 		/*** List settings */
 		'list'        => apply_filters(
-			'tptn_settings_list', array(
+			'tptn_settings_list',
+			array(
 				'limit'                   => array(
 					'id'      => 'limit',
 					'name'    => esc_html__( 'Number of posts to display', 'top-10' ),
@@ -609,7 +613,8 @@ function tptn_get_registered_settings() {
 		),
 		/*** Thumbnail settings */
 		'thumbnail'   => apply_filters(
-			'tptn_settings_thumbnail', array(
+			'tptn_settings_thumbnail',
+			array(
 				'post_thumb_op'      => array(
 					'id'      => 'post_thumb_op',
 					'name'    => esc_html__( 'Location of the post thumbnail', 'top-10' ),
@@ -702,7 +707,8 @@ function tptn_get_registered_settings() {
 		),
 		/*** Styles settings */
 		'styles'      => apply_filters(
-			'tptn_settings_styles', array(
+			'tptn_settings_styles',
+			array(
 				'tptn_styles' => array(
 					'id'      => 'tptn_styles',
 					'name'    => esc_html__( 'Popular posts style', 'top-10' ),
@@ -723,7 +729,8 @@ function tptn_get_registered_settings() {
 		),
 		/*** Maintenance settings */
 		'maintenance' => apply_filters(
-			'tptn_settings_maintenance', array(
+			'tptn_settings_maintenance',
+			array(
 				'cron_on'         => array(
 					'id'      => 'cron_on',
 					'name'    => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
