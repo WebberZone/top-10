@@ -25,7 +25,9 @@ function tptn_shortcode( $atts, $content = null ) {
 				'is_shortcode' => 1,
 				'offset'       => 0,
 			)
-		), $atts, 'top-10'
+		),
+		$atts,
+		'top-10'
 	);
 
 	return tptn_pop_posts( $atts );
@@ -45,7 +47,8 @@ function tptn_shortcode_views( $atts, $content = null ) {
 	$a = shortcode_atts(
 		array(
 			'daily' => '0',
-		), $atts
+		),
+		$atts
 	);
 
 	return get_tptn_post_count_only( get_the_ID(), ( $a['daily'] ? 'daily' : 'total' ) );
