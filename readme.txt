@@ -178,6 +178,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* Fixed translation of " by " which had the incorrect text domain
 	* Post types to includes selects "post" in case no option is selected
+	* Unchecking all boxes of a "Display number of views on" setting would sometimes pick the default value
 
 = 2.5.6 =
 

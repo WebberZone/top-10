@@ -16,7 +16,7 @@ function tptn_pc_content( $content ) {
 	global $post;
 
 	$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
-	$add_to              = tptn_get_option( 'add_to' );
+	$add_to              = tptn_get_option( 'add_to', false );
 
 	if ( isset( $post ) ) {
 		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
@@ -56,7 +56,7 @@ function tptn_rss_filter( $content ) {
 
 	$id = intval( $post->ID );
 
-	$add_to = tptn_get_option( 'add_to' );
+	$add_to = tptn_get_option( 'add_to', false );
 
 	if ( ! empty( $add_to['feed'] ) ) {
 		return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
