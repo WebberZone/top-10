@@ -3,8 +3,8 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 4.1
-Tested up to: 4.9
+Requires at least: 4.5
+Tested up to: 5.0
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -170,6 +170,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.6.0 =
+
+* Bug fixes:
+	* Only delete option if null value is passed to tptn_update_option
+
 = 2.5.7 =
 
 * Enhancements:
@@ -285,7 +290,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.5.4 =
+= 2.6.0 =
 * Major release! Brand new settings interface so please do verify your settings after the upgrade. Several new features and bug fixes.
 Check the Changelog for more details
 
