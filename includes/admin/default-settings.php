@@ -206,6 +206,13 @@ function tptn_get_registered_settings() {
 					'type'    => 'checkbox',
 					'options' => true,
 				),
+				'exclude_on_post_ids'   => array(
+					'id'      => 'exclude_on_post_ids',
+					'name'    => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
+					'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
+					'type'    => 'numbercsv',
+					'options' => '',
+				),
 				'pv_in_admin'           => array(
 					'id'      => 'pv_in_admin',
 					'name'    => esc_html__( 'Page views in admin', 'top-10' ),
@@ -373,13 +380,6 @@ function tptn_get_registered_settings() {
 					'desc'    => '',
 					'type'    => 'checkbox',
 					'options' => false,
-				),
-				'exclude_on_post_ids'     => array(
-					'id'      => 'exclude_on_post_ids',
-					'name'    => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
-					'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
-					'type'    => 'numbercsv',
-					'options' => '',
 				),
 				'html_wrapper_header'     => array(
 					'id'   => 'html_wrapper_header',
