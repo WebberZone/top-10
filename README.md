@@ -5,9 +5,9 @@
 
 # Top 10  - Popular posts plugin for WordPress
 
-__Requires:__ 4.1
+__Requires:__ 4.5
 
-__Tested up to:__ 4.9
+__Tested up to:__ 5.0
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
