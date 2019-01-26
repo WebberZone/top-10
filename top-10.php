@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2016 Ajay D'Souza
+ * @copyright 2008-2019 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name: Top 10
@@ -110,25 +110,6 @@ function tptn_get_settings() {
 }
 
 
-/**
- * Function to delete all rows in the posts table.
- *
- * @since   1.3
- * @param   bool $daily  Daily flag.
- */
-function tptn_trunc_count( $daily = true ) {
-	global $wpdb;
-
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
-	}
-
-	$sql = "TRUNCATE TABLE $table_name";
-	$wpdb->query( $sql ); // WPCS: unprepared SQL OK.
-}
-
-
 /*
  *---------------------------------------------------------------------------*
  * Top 10 modules
@@ -146,6 +127,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/l10n.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/counter.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/tracker.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/cron.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/helpers.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/formatting.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/shortcode.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php';
