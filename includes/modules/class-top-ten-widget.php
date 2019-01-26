@@ -6,7 +6,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2016 Ajay D'Souza
+ * @copyright 2008-2019 Ajay D'Souza
  */
 
 // If this file is called directly, abort.
@@ -298,7 +298,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 		$output .= $args['after_widget'];
 
-		echo $output; // WPCS: XSS OK.
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	} //ending function widget
 

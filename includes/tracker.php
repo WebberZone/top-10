@@ -142,7 +142,7 @@ function tptn_parse_request( $wp ) {
 
 			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 			}
@@ -151,7 +151,7 @@ function tptn_parse_request( $wp ) {
 
 				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
-				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
@@ -178,7 +178,7 @@ function tptn_parse_request( $wp ) {
 			$output = get_tptn_post_count( $id );
 
 			header( 'content-type: application/x-javascript' );
-			echo 'document.write("' . $output . '");'; // WPCS: XSS OK.
+			echo 'document.write("' . $output . '");'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			// Stop anything else from loading as it is not needed.
 			exit;
@@ -203,15 +203,15 @@ function tptn_tracker_parser() {
 	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
 	$str           = '';
 
-	$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // WPCS: CSRF ok.
-	$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // WPCS: CSRF ok.
-	$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // WPCS: CSRF ok.
+	$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	if ( $id > 0 ) {
 
 		if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1', %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1', %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 		}
@@ -220,7 +220,7 @@ function tptn_tracker_parser() {
 
 			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
 
-			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1', %s, %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1', %s, %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 		}

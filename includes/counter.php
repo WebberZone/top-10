@@ -19,7 +19,7 @@ function tptn_pc_content( $content ) {
 	$add_to              = tptn_get_option( 'add_to', false );
 
 	if ( isset( $post ) ) {
-		if ( in_array( $post->ID, $exclude_on_post_ids ) ) {
+		if ( in_array( $post->ID, $exclude_on_post_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			return $content;    // Exit without adding related posts.
 		}
 	}
@@ -96,7 +96,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	$nonce        = wp_create_nonce( $nonce_action );
 
 	if ( tptn_get_option( 'dynamic_post_count' ) ) {
-		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id=' . $id . '&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>';
+		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '"><script type="text/javascript" data-cfasync="false" src="' . $home_url . '?top_ten_id=' . $id . '&amp;view_counter=1&amp;_wpnonce=' . $nonce . '"></script></div>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	} else {
 		$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . get_tptn_post_count( $id ) . '</div>';
 	}
@@ -111,7 +111,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	$output = apply_filters( 'tptn_view_post_count', $output );
 
 	if ( $echo ) {
-		echo $output; // WPCS: XSS OK.
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		return $output;
 	}
@@ -136,34 +136,34 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 
 		// Total count per post.
 		if ( ( false !== strpos( $count_disp_form, '%totalcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%totalcount%' ) ) ) {
-			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
+			if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
 				$count_disp_form_zero = str_replace( '%totalcount%', $totalcntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( '%totalcount%', ( 0 == $totalcntaccess ? $totalcntaccess + 1 : $totalcntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%totalcount%', ( 0 === (int) $totalcntaccess ? $totalcntaccess + 1 : $totalcntaccess ), $count_disp_form );
 			}
 		}
 
 		// Now process daily count.
 		if ( ( false !== strpos( $count_disp_form, '%dailycount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%dailycount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'daily' );
-			if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
+			if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
 				$count_disp_form_zero = str_replace( '%dailycount%', $cntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( '%dailycount%', ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%dailycount%', ( 0 === (int) $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
 			}
 		}
 
 		// Now process overall count.
 		if ( ( false !== strpos( $count_disp_form, '%overallcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%overallcount%' ) ) ) {
 			$cntaccess = get_tptn_post_count_only( $id, 'overall' );
-			if ( ( 0 == $cntaccess ) && ( ! is_singular() ) ) {
+			if ( ( 0 === (int) $cntaccess ) && ( ! is_singular() ) ) {
 				$count_disp_form_zero = str_replace( '%overallcount%', $cntaccess, $count_disp_form_zero );
 			} else {
-				$count_disp_form = str_replace( '%overallcount%', ( 0 == $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
+				$count_disp_form = str_replace( '%overallcount%', ( 0 === (int) $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
 			}
 		}
 
-		if ( ( 0 == $totalcntaccess ) && ( ! is_singular() ) ) {
+		if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
 			return apply_filters( 'tptn_post_count', $count_disp_form_zero );
 		} else {
 			return apply_filters( 'tptn_post_count', $count_disp_form );
@@ -197,7 +197,7 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 	if ( $id > 0 ) {
 		switch ( $count ) {
 			case 'total':
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // WPCS: unprepared SQL OK.
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 				break;
 			case 'daily':
@@ -214,11 +214,11 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 					$from_date    = gmdate( 'Y-m-d H', $from_date );
 				}
 
-				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // WPCS: unprepared SQL OK.
+				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 			case 'overall':
-				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // WPCS: unprepared SQL OK.
+				$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 				break;
 		}

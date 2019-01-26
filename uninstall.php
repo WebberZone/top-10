@@ -6,7 +6,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2016 Ajay D'Souza
+ * @copyright 2008-2019 Ajay D'Souza
  */
 
 // If this file is called directly, abort.
@@ -23,8 +23,8 @@ if ( $tptn_settings['uninstall_clean_tables'] ) {
 	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	$wpdb->query( "DROP TABLE $table_name" ); // WPCS: unprepared SQL OK.
-	$wpdb->query( "DROP TABLE $table_name_daily" ); // WPCS: unprepared SQL OK.
+	$wpdb->query( "DROP TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+	$wpdb->query( "DROP TABLE $table_name_daily" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 	delete_option( 'tptn_db_version' );
 
 }

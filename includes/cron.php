@@ -30,12 +30,12 @@ function tptn_cron() {
 	$from_date    = strtotime( "-{$delete_from} DAY", $current_time );
 	$from_date    = gmdate( 'Y-m-d H', $from_date );
 
-	$resultscount = $wpdb->query(
+	$resultscount = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->prepare(
-			"DELETE FROM {$table_name_daily} WHERE dp_date <= %s ",
+			"DELETE FROM {$table_name_daily} WHERE dp_date <= %s ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$from_date
 		)
-	); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+	);
 
 }
 add_action( 'tptn_cron_hook', 'tptn_cron' );

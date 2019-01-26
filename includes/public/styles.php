@@ -16,7 +16,7 @@ function tptn_header() {
 
 	// Add CSS to header.
 	if ( '' != $tptn_custom_css ) { // WPCS: loose comparison ok.
-		echo '<style type="text/css">' . $tptn_custom_css . '</style>'; // WPCS: XSS ok.
+		echo '<style type="text/css">' . $tptn_custom_css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 add_action( 'wp_head', 'tptn_header' );

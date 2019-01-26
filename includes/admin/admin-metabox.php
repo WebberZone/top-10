@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2016 Ajay D'Souza
+ * @copyright 2008-2019 Ajay D'Souza
  */
 
 /**** If this file is called directly, abort. ****/
@@ -142,7 +142,7 @@ function tptn_call_meta_box() {
 			<em style="color:red">
 				<?php
 					/* translators: 1: Plugin name */
-					printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); // WPCS: XSS OK.
+					printf( __( 'You have %1$s installed. If you are trying to modify the thumbnail, then you will need to make the same change in the %1$s meta box on this page.', 'top-10' ), 'Contextual Related Posts' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				?>
 			</em>
 		<?php } ?>
