@@ -18,7 +18,7 @@ function tptn_exclude_post_ids( $exclude_post_ids ) {
 
 	$exclude_post_ids = (array) $exclude_post_ids;
 
-	$tptn_post_metas = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE `meta_key` = 'tptn_post_meta'", ARRAY_A );
+	$tptn_post_metas = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE `meta_key` = 'tptn_post_meta'", ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 	foreach ( $tptn_post_metas as $tptn_post_meta ) {
 		$meta_value = maybe_unserialize( $tptn_post_meta['meta_value'] );

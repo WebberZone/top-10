@@ -79,13 +79,13 @@ function tptn_call_meta_box() {
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
 
 	// Get the number of visits for the post being editted.
-	$resultscount = $wpdb->get_row(
+	$resultscount = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->prepare(
-			"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ",
+			"SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$post->ID,
 			get_current_blog_id()
 		)
-	);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+	);
 	$total_count  = $resultscount ? $resultscount->cntaccess : 0;
 
 	// Get the post meta.
@@ -191,23 +191,23 @@ function tptn_save_meta_box( $post_id ) {
 		$blog_id     = get_current_blog_id();
 
 		if ( 0 === $total_count ) {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare(
-					"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d",
+					"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					$post_id,
 					$blog_id
 				)
-			);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			);
 		} else {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare(
-					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ",
+					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					$post_id,
 					$total_count,
 					$blog_id,
 					$total_count
 				)
-			);  // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+			);
 		}
 	}
 

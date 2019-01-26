@@ -13,7 +13,7 @@
 function tptn_add_image_sizes() {
 	global $tptn_settings;
 
-	if ( ! in_array( $tptn_settings['thumb_size'], get_intermediate_image_sizes() ) ) {
+	if ( ! in_array( $tptn_settings['thumb_size'], get_intermediate_image_sizes() ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$tptn_settings['thumb_size'] = 'tptn_thumbnail';
 	}
 
@@ -95,7 +95,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
 
-			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) {
+			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 				$postthumb = wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) );
 				$postimage = $postthumb[0];
 			}
@@ -105,7 +105,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 
 	// If there is no thumbnail found, check the post thumbnail.
 	if ( ! $postimage ) {
-		if ( false != get_post_thumbnail_id( $result->ID ) ) {
+		if ( false != get_post_thumbnail_id( $result->ID ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), array( $args['thumb_width'], $args['thumb_height'] ) );
 			$postimage = $postthumb[0];
 		}
@@ -122,7 +122,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 		if ( $postimage ) {
 			$postimage_id = tptn_get_attachment_id_from_url( $postimage );
 
-			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) {
+			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 				$postthumb = wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) );
 				$postimage = $postthumb[0];
 			}
@@ -189,9 +189,9 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 			$postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
 
-		if ( 'css' == $args['thumb_html'] ) {
+		if ( 'css' === $args['thumb_html'] ) {
 			$thumb_html = 'style="max-width:' . $args['thumb_width'] . 'px;max-height:' . $args['thumb_height'] . 'px;"';
-		} elseif ( 'html' == $args['thumb_html'] ) {
+		} elseif ( 'html' === $args['thumb_html'] ) {
 			$thumb_html = 'width="' . $args['thumb_width'] . '" height="' . $args['thumb_height'] . '"';
 		} else {
 			$thumb_html = '';
@@ -237,17 +237,17 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
  * Get the first child image in the post.
  *
  * @since   1.9.8
- * @param   mixed $postID Post ID.
+ * @param   mixed $postid Post ID.
  * @param   int   $thumb_width Thumb width.
  * @param   int   $thumb_height Thumb height.
  * @return  string  Location of thumbnail
  */
-function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
+function tptn_get_first_image( $postid, $thumb_width, $thumb_height ) {
 	$args = array(
 		'numberposts'    => 1,
 		'order'          => 'ASC',
 		'post_mime_type' => 'image',
-		'post_parent'    => $postID,
+		'post_parent'    => $postid,
 		'post_status'    => null,
 		'post_type'      => 'attachment',
 	);
@@ -264,7 +264,7 @@ function tptn_get_first_image( $postID, $thumb_width, $thumb_height ) {
 			 * @since   1.9.10.1
 			 *
 			 * @param   array   $image_attributes[0]    URL of the image
-			 * @param   int     $postID                 Post ID
+			 * @param   int     $postid                 Post ID
 			 */
 			return apply_filters( 'tptn_get_first_image', $image_attributes[0] );
 		}
@@ -288,7 +288,7 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 	$attachment_id = false;
 
 	// If there is no url, return.
-	if ( '' == $attachment_url ) {
+	if ( '' == $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return;
 	}
 
@@ -305,7 +305,7 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 		$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
 
 		// Finally, run a custom database query to get the attachment ID from the modified attachment URL.
-		$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = %s AND wposts.post_type = 'attachment'", $attachment_url ) );
+		$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = %s AND wposts.post_type = 'attachment'", $attachment_url ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 	}
 
@@ -339,12 +339,12 @@ function tptn_get_thumb_size( $args ) {
 		$thumb_height = $tptn_thumb_size['height'];
 	}
 
-	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) {
+	if ( empty( $thumb_width ) || ( $args['is_widget'] && $thumb_width != $args['thumb_width'] ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		$thumb_width        = $args['thumb_width'];
 		$args['thumb_html'] = 'css';
 	}
 
-	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) {
+	if ( empty( $thumb_height ) || ( $args['is_widget'] && $thumb_height != $args['thumb_height'] ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		$thumb_height       = $args['thumb_height'];
 		$args['thumb_html'] = 'css';
 	}
@@ -378,14 +378,14 @@ function tptn_get_all_image_sizes( $size = '' ) {
 	$intermediate_image_sizes = get_intermediate_image_sizes();
 
 	foreach ( $intermediate_image_sizes as $_size ) {
-		if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
+		if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 
 			$sizes[ $_size ]['name']   = $_size;
 			$sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
 			$sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
 			$sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
 
-			if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) {
+			if ( ( 0 == $sizes[ $_size ]['width'] ) && ( 0 == $sizes[ $_size ]['height'] ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 				unset( $sizes[ $_size ] );
 			}
 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
