@@ -174,6 +174,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Enhancements:
 	* Load tracker in footer
+	* Renamed top-10-tracker.js to top-10-tracker.min.js
 
 * Bug fixes:
 	* Only delete option if null value is passed to tptn_update_option
