@@ -172,6 +172,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.6.0 =
 
+* Enhancements:
+	* Load tracker in footer
+
 * Bug fixes:
 	* Only delete option if null value is passed to tptn_update_option
 
