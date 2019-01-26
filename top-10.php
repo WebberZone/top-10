@@ -152,6 +152,7 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics-table.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php';
 

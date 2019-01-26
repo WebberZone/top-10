@@ -96,7 +96,7 @@ function tptn_cache_get_widget_keys() {
 		WHERE `option_name` LIKE '_transient_tptn_%_widget%'
 	";
 
-	$results = $wpdb->get_results( $sql ); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+	$results = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 	if ( is_array( $results ) ) {
 		foreach ( $results as $result ) {

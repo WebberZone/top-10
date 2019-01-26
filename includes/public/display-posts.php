@@ -22,7 +22,7 @@ function tptn_pop_posts( $args ) {
 	global $tptn_settings;
 
 	// if set, save $exclude_categories.
-	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) { // WPCS: loose comparison ok.
+	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		$exclude_categories   = explode( ',', $args['exclude_categories'] );
 		$args['strict_limit'] = false;
 	}
@@ -127,7 +127,7 @@ function tptn_pop_posts( $args ) {
 			$resultid = tptn_object_id_cur_lang( $result->ID );
 
 			// If this is NULL or already processed ID or matches current post then skip processing this loop.
-			if ( ! $resultid || in_array( $resultid, $processed_results ) ) {
+			if ( ! $resultid || in_array( $resultid, $processed_results ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				continue;
 			}
 
@@ -154,7 +154,7 @@ function tptn_pop_posts( $args ) {
 
 				$p_in_c = false;    // Variable to check if post exists in a particular category.
 				foreach ( $categorys as $cat ) {    // Loop to check if post exists in excluded category.
-					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false;
+					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false; // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 					if ( $p_in_c ) {
 						break; // Skip loop execution and go to the next step.
 					}
@@ -387,7 +387,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Convert it back to string.
 	$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
 
-	if ( '' != $exclude_post_ids ) { // WPCS: loose comparison ok.
+	if ( '' != $exclude_post_ids ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 	}
 	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types.
@@ -460,7 +460,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	$sql = "SELECT DISTINCT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
 	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set.
-		$results = $wpdb->get_results( $sql, ARRAY_A ); // WPCS: unprepared SQL OK.
+		$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 		/**
 		 * Filter the array of top post IDs.
@@ -473,7 +473,7 @@ function get_tptn_pop_posts( $args = array() ) {
 		return apply_filters( 'tptn_pop_posts_array', $results, $args );
 	}
 
-	$results = $wpdb->get_results( $sql ); // WPCS: unprepared SQL OK.
+	$results = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 	/**
 	 * Filter object containing post IDs of popular posts

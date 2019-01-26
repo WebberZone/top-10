@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function tptn_options_page() {
-	$active_tab = isset( $_GET['tab'] ) && array_key_exists( sanitize_key( wp_unslash( $_GET['tab'] ) ), tptn_get_settings_sections() ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'general'; // Input var okay.
+	$active_tab = isset( $_GET['tab'] ) && array_key_exists( sanitize_key( wp_unslash( $_GET['tab'] ) ), tptn_get_settings_sections() ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'general'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	ob_start();
 	?>
@@ -309,7 +309,7 @@ function tptn_checkbox_callback( $args ) {
 
 	$html  = sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
 	$html .= sprintf( '<input type="checkbox" id="tptn_settings[%1$s]" name="tptn_settings[%1$s]" value="1" %2$s />', sanitize_key( $args['id'] ), $checked );
-	$html .= ( $set <> $default ) ? '<em style="color:orange"> ' . esc_html__( 'Modified from default setting', 'top-10' ) . '</em>' : '';
+	$html .= ( $set <> $default ) ? '<em style="color:orange"> ' . esc_html__( 'Modified from default setting', 'top-10' ) . '</em>' : ''; // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
@@ -615,7 +615,7 @@ function tptn_posttypes_callback( $args ) {
  */
 function tptn_tags_search() {
 
-	if ( ! isset( $_REQUEST['tax'] ) ) {
+	if ( ! isset( $_REQUEST['tax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		wp_die( 0 );
 	}
 
@@ -629,7 +629,7 @@ function tptn_tags_search() {
 		wp_die( -1 );
 	}
 
-	$s = wp_unslash( $_REQUEST['q'] );
+	$s = isset( $_REQUEST['q'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$comma = _x( ',', 'tag delimiter' );
 	if ( ',' !== $comma ) {
