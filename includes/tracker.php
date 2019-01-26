@@ -79,7 +79,7 @@ function tptn_enqueue_scripts() {
 			 */
 			$ajax_tptn_tracker = apply_filters( 'tptn_tracker_script_args', $ajax_tptn_tracker );
 
-			wp_enqueue_script( 'tptn_tracker', plugins_url( 'includes/js/top-10-tracker.js', TOP_TEN_PLUGIN_FILE ), array( 'jquery' ), '1.0', true );
+			wp_enqueue_script( 'tptn_tracker', plugins_url( 'includes/js/top-10-tracker.min.js', TOP_TEN_PLUGIN_FILE ), array( 'jquery' ), '1.0', true );
 
 			wp_localize_script( 'tptn_tracker', 'ajax_tptn_tracker', $ajax_tptn_tracker );
 
