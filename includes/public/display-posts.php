@@ -501,7 +501,7 @@ function tptn_show_pop_posts( $args = null ) {
 		$args .= '&is_manual=1';
 	}
 
-	echo tptn_pop_posts( $args ); // WPCS: XSS OK.
+	echo tptn_pop_posts( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 

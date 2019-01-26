@@ -21,12 +21,12 @@ function tptn_activation_hook( $network_wide ) {
 	if ( is_multisite() && $network_wide ) {
 
 		// Get all blogs in the network and activate plugin on each one.
-		$blog_ids = $wpdb->get_col(
+		$blog_ids = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 			"
         	SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0' AND deleted = '0'
 		"
-		); // DB call ok; no-cache ok; WPCS: unprepared SQL OK.
+		);
 		foreach ( $blog_ids as $blog_id ) {
 			switch_to_blog( $blog_id );
 			tptn_single_activate();
@@ -55,9 +55,10 @@ function tptn_single_activate() {
 	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // WPCS: unprepared SQL OK.
+	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
-		$sql = 'CREATE TABLE ' . $table_name . " (
+		$sql = 'CREATE TABLE ' . $table_name . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+			" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
@@ -69,9 +70,10 @@ function tptn_single_activate() {
 
 	}
 
-	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) { // WPCS: unprepared SQL OK.
+	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
-		$sql = 'CREATE TABLE ' . $table_name_daily . " (
+		$sql = 'CREATE TABLE ' . $table_name_daily . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+			" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			dp_date DATETIME NOT NULL,
@@ -89,12 +91,12 @@ function tptn_single_activate() {
 	// Upgrade table code.
 	$installed_ver = get_site_option( 'tptn_db_version' );
 
-	if ( $installed_ver != $tptn_db_version ) {
+	if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 
 		$sql = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY ';
-		$wpdb->query( $sql ); // WPCS: unprepared SQL ok.
+		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$sql = 'ALTER TABLE ' . $table_name_daily . ' DROP PRIMARY KEY ';
-		$wpdb->query( $sql ); // WPCS: unprepared SQL ok.
+		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		$sql = 'CREATE TABLE ' . $table_name . " (
 			postnumber bigint(20) NOT NULL,
@@ -167,7 +169,7 @@ add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
 function tptn_update_db_check() {
 	global $tptn_db_version, $network_wide;
 
-	if ( get_site_option( 'tptn_db_version' ) != $tptn_db_version ) {
+	if ( get_site_option( 'tptn_db_version' ) != $tptn_db_version ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		tptn_activation_hook( $network_wide );
 	}
 }

@@ -91,7 +91,7 @@ function tptn_tools_page() {
 					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
 				</p>
 				<p>
-					<code style="display:block;"><?php echo tptn_recreate_primary_key_html(); // WPCS: XSS ok. ?></code>
+					<code style="display:block;"><?php echo tptn_recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
@@ -143,7 +143,7 @@ function tptn_tools_page() {
 	</div><!-- /.wrap -->
 
 	<?php
-	echo ob_get_clean(); // WPCS: XSS OK.
+	echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**

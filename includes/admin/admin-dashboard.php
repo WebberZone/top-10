@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2016 Ajay D'Souza
+ * @copyright 2008-2019 Ajay D'Souza
  */
 
 /**** If this file is called directly, abort. ****/
@@ -100,7 +100,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
  * @since   1.1
  */
 function tptn_pop_dashboard() {
-	echo tptn_pop_display( false, 0, 10, true ); // WPCS: XSS OK.
+	echo tptn_pop_display( false, 0, 10, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -110,7 +110,7 @@ function tptn_pop_dashboard() {
  * @since   1.2
  */
 function tptn_pop_daily_dashboard() {
-	echo tptn_pop_display( true, 0, 10, true ); // WPCS: XSS OK.
+	echo tptn_pop_display( true, 0, 10, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 

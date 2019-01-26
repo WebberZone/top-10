@@ -76,10 +76,17 @@ function tptn_add_viewed_count( $content = '' ) {
 
 	if ( is_singular() && 'draft' !== $post->post_status ) {
 
-		$current_user        = wp_get_current_user();  // Let's get the current user.
-		$post_author         = ( $current_user->ID == $post->post_author ) ? true : false;  // Is the current user the post author?
-		$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
-		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
+		// Let's get the current user.
+		$current_user = wp_get_current_user();
+
+		// Is the current user the post author?
+		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;  // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+
+		// Is the current user an admin?
+		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;
+
+		// Is the current user an editor?
+		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;
 
 		$include_code = true;
 		if ( ( $post_author ) && ( empty( $track_users['authors'] ) ) ) {
@@ -127,7 +134,7 @@ function tptn_add_viewed_count( $content = '' ) {
 			 */
 			$output = apply_filters( 'tptn_viewed_count', $output );
 
-			echo $output; // WPCS: XSS OK.
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 }
@@ -148,7 +155,7 @@ function tptn_add_tracker( $echo = true ) {
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
 	if ( $echo ) {
-		echo tptn_add_viewed_count( '' ); // WPCS: XSS OK.
+		echo tptn_add_viewed_count( '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		return tptn_add_viewed_count( '' );
 	}

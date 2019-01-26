@@ -110,7 +110,7 @@ function tptn_options_page() {
 	</div><!-- /.wrap -->
 
 	<?php
-	echo ob_get_clean(); // WPCS: XSS OK.
+	echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -177,7 +177,7 @@ function tptn_header_callback( $args ) {
 	 * @param string $html HTML string.
 	 * @param array  $args Arguments array.
 	 */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -217,7 +217,7 @@ function tptn_text_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -272,7 +272,7 @@ function tptn_textarea_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -313,7 +313,7 @@ function tptn_checkbox_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -349,7 +349,7 @@ function tptn_multicheck_callback( $args ) {
 	}
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -383,7 +383,7 @@ function tptn_radio_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -418,7 +418,7 @@ function tptn_radiodesc_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -461,7 +461,7 @@ function tptn_thumbsizes_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -494,7 +494,7 @@ function tptn_number_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -533,7 +533,7 @@ function tptn_select_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -551,7 +551,7 @@ function tptn_descriptive_text_callback( $args ) {
 	$html = '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -602,7 +602,7 @@ function tptn_posttypes_callback( $args ) {
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */
-	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // WPCS: XSS OK.
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
