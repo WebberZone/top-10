@@ -543,6 +543,13 @@ function tptn_settings_thumbnail() {
 			'type'    => 'checkbox',
 			'options' => true,
 		),
+		'thumb_create_sizes' => array(
+			'id'      => 'thumb_create_sizes',
+			'name'    => esc_html__( 'Generate thumbnail sizes', 'top-10' ),
+			'desc'    => esc_html__( 'If you select this option and Custom size is selected above, the plugin will register the image size with WordPress to create new thumbnails. Does not update old images as explained above.', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => true,
+		),
 		'thumb_html'         => array(
 			'id'      => 'thumb_html',
 			'name'    => esc_html__( 'Thumbnail size attributes', 'top-10' ),

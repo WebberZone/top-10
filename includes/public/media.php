@@ -11,14 +11,14 @@
  * @since 2.0.0
  */
 function tptn_add_image_sizes() {
-	global $tptn_settings;
+	$thumb_size = tptn_get_option( 'thumb_size' );
 
-	if ( ! in_array( $tptn_settings['thumb_size'], get_intermediate_image_sizes() ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$tptn_settings['thumb_size'] = 'tptn_thumbnail';
+	if ( ! in_array( $thumb_size, get_intermediate_image_sizes() ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		$thumb_size = 'tptn_thumbnail';
 	}
 
 	// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid.
-	if ( 'tptn_thumbnail' === tptn_get_option( 'thumb_size' ) ) {
+	if ( 'tptn_thumbnail' === $thumb_size && tptn_get_option( 'thumb_create_sizes' ) ) {
 		$width  = tptn_get_option( 'thumb_width', 150 );
 		$height = tptn_get_option( 'thumb_height', 150 );
 		$crop   = tptn_get_option( 'thumb_crop', true );
