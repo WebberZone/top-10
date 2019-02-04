@@ -189,35 +189,41 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 			$postimage = preg_replace( '~http://~', 'https://', $postimage );
 		}
 
-		if ( 'css' === $args['thumb_html'] ) {
-			$thumb_html = 'style="max-width:' . $args['thumb_width'] . 'px;max-height:' . $args['thumb_height'] . 'px;"';
-		} elseif ( 'html' === $args['thumb_html'] ) {
-			$thumb_html = 'width="' . $args['thumb_width'] . '" height="' . $args['thumb_height'] . '"';
-		} else {
-			$thumb_html = '';
-		}
-
-		/**
-		 * Filters the thumbnail HTML and allows a filter function to add any more HTML if needed.
-		 *
-		 * @since   2.2.0
-		 *
-		 * @param   string  $thumb_html Thumbnail HTML
-		 */
-		$thumb_html = apply_filters( 'tptn_thumb_html', $thumb_html );
-
 		$class = $args['class'] . ' tptn_' . $pick;
 
 		/**
 		 * Filters the thumbnail classes and allows a filter function to add any more classes if needed.
 		 *
-		 * @since   2.2.0
+		 * @since 2.2.0
 		 *
-		 * @param   string  $thumb_html Thumbnail HTML
+		 * @param string $class Thumbnail Class
 		 */
-		$class = apply_filters( 'tptn_thumb_class', $class );
+		$attr['class'] = apply_filters( 'tptn_thumb_class', $class );
 
-		$output .= '<img src="' . $postimage . '" alt="' . $post_title . '" title="' . $post_title . '" ' . $thumb_html . ' class="' . $class . '" />';
+		/**
+		 * Filters the thumbnail alt.
+		 *
+		 * @since 2.6.0
+		 *
+		 * @param string $post_title Thumbnail alt attribute
+		 */
+		$attr['alt'] = apply_filters( 'tptn_thumb_alt', $post_title );
+
+		/**
+		 * Filters the thumbnail title.
+		 *
+		 * @since 2.6.0
+		 *
+		 * @param string $post_title Thumbnail title attribute
+		 */
+		$attr['title'] = apply_filters( 'tptn_thumb_title', $post_title );
+
+		$attr['thumb_html']   = $args['thumb_html'];
+		$attr['thumb_width']  = $args['thumb_width'];
+		$attr['thumb_height'] = $args['thumb_height'];
+
+		$output .= tptn_get_image_html( $postimage, $attr );
+
 	}
 
 	/**
@@ -230,6 +236,117 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	 * @param   string  $postimage Thumbnail URL
 	 */
 	return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args, $postimage );
+}
+
+/**
+ * Get an HTML img element
+ *
+ * @since 2.6.0
+ *
+ * @param string $attachment_url Image URL.
+ * @param array  $attr Attributes for the image markup.
+ * @return string HTML img element or empty string on failure.
+ */
+function tptn_get_image_html( $attachment_url, $attr = array() ) {
+
+	// If there is no url, return.
+	if ( '' == $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		return;
+	}
+
+	$default_attr = array(
+		'src'          => $attachment_url,
+		'thumb_html'   => tptn_get_option( 'thumb_html', 'html' ),
+		'thumb_width'  => tptn_get_option( 'thumb_width', 150 ),
+		'thumb_height' => tptn_get_option( 'thumb_height', 150 ),
+	);
+
+	$attr = wp_parse_args( $attr, $default_attr );
+
+	$hwstring = tptn_get_image_hwstring( $attr );
+
+	// Generate 'srcset' and 'sizes' if not already present.
+	if ( empty( $attr['srcset'] ) ) {
+		$attachment_id = tptn_get_attachment_id_from_url( $attachment_url );
+		$image_meta    = wp_get_attachment_metadata( $attachment_id );
+
+		if ( is_array( $image_meta ) ) {
+			$size_array = array( absint( $attr['thumb_width'] ), absint( $attr['thumb_height'] ) );
+			$srcset     = wp_calculate_image_srcset( $size_array, $attachment_url, $image_meta, $attachment_id );
+			$sizes      = wp_calculate_image_sizes( $size_array, $attachment_url, $image_meta, $attachment_id );
+
+			if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
+				$attr['srcset'] = $srcset;
+
+				if ( empty( $attr['sizes'] ) ) {
+					$attr['sizes'] = $sizes;
+				}
+			}
+		}
+	}
+
+	// Unset attributes we don't want to display.
+	unset( $attr['thumb_html'] );
+	unset( $attr['thumb_width'] );
+	unset( $attr['thumb_height'] );
+
+	/**
+	 * Filters the list of attachment image attributes.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param array  $attr Attributes for the image markup.
+	 * @param string $attachment_url Image URL.
+	 */
+	$attr = apply_filters( 'tptn_get_image_attributes', $attr, $attachment_url );
+	$attr = array_map( 'esc_attr', $attr );
+
+	$html = '<img ' . $hwstring;
+	foreach ( $attr as $name => $value ) {
+		$html .= " $name=" . '"' . $value . '"';
+	}
+	$html .= ' />';
+
+	return apply_filters( 'tptn_get_image_html', $html );
+}
+
+
+/**
+ * Retrieve width and height attributes using given width and height values.
+ *
+ * @since 2.6.0
+ *
+ * @param array $args Argument array.
+ *
+ * @return string Height-width string.
+ */
+function tptn_get_image_hwstring( $args = array() ) {
+
+	$default_args = array(
+		'thumb_html'   => tptn_get_option( 'thumb_html', 'html' ),
+		'thumb_width'  => tptn_get_option( 'thumb_width', 150 ),
+		'thumb_height' => tptn_get_option( 'thumb_height', 150 ),
+	);
+
+	$args = wp_parse_args( $args, $default_args );
+
+	if ( 'css' === $args['thumb_html'] ) {
+		$thumb_html = ' style="max-width:' . $args['thumb_width'] . 'px;max-height:' . $args['thumb_height'] . 'px;" ';
+	} elseif ( 'html' === $args['thumb_html'] ) {
+		$thumb_html = ' width="' . $args['thumb_width'] . '" height="' . $args['thumb_height'] . '" ';
+	} else {
+		$thumb_html = '';
+	}
+
+	/**
+	 * Filters the thumbnail HTML and allows a filter function to add any more HTML if needed.
+	 *
+	 * @since   2.2.0
+	 *
+	 * @param string $thumb_html Thumbnail HTML.
+	 * @param array  $args       Argument array.
+	 */
+	return apply_filters( 'tptn_thumb_html', $thumb_html, $args );
 }
 
 
