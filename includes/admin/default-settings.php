@@ -270,6 +270,13 @@ function tptn_settings_counter() {
 			'type'    => 'checkbox',
 			'options' => true,
 		),
+		'debug_mode'            => array(
+			'id'      => 'debug_mode',
+			'name'    => esc_html__( 'Debug mode', 'top-10' ),
+			'desc'    => esc_html__( 'Setting this to true will force the tracker to display an output in the browser. This is useful if you are having issues and are seeking support.', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => false,
+		),
 	);
 
 	/**

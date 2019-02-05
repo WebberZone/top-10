@@ -44,6 +44,7 @@ function tptn_enqueue_scripts() {
 			$blog_id          = get_current_blog_id();
 			$activate_counter = ! empty( $trackers['overall'] ) ? 1 : 0;     // It's 1 if we're updating the overall count.
 			$activate_counter = $activate_counter + ( ! empty( $trackers['daily'] ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
+			$top_ten_debug    = absint( tptn_get_option( 'debug_mode' ) );
 
 			if ( 'query_based' === tptn_get_option( 'tracker_type' ) ) {
 				$home_url = home_url( '/' );
@@ -69,6 +70,7 @@ function tptn_enqueue_scripts() {
 				'top_ten_id'       => $id,
 				'top_ten_blog_id'  => $blog_id,
 				'activate_counter' => $activate_counter,
+				'top_ten_debug'    => $top_ten_debug,
 				'tptn_rnd'         => wp_rand( 1, time() ),
 			);
 
@@ -206,6 +208,7 @@ function tptn_tracker_parser() {
 	$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	if ( $id > 0 ) {
 
@@ -226,7 +229,13 @@ function tptn_tracker_parser() {
 		}
 	}
 
-	echo esc_html( $str );
+	// If the debug parameter is set then we output $str else we send a No Content header.
+	if ( 1 === $top_ten_debug ) {
+		echo esc_html( $str );
+	} else {
+		header( 'HTTP/1.0 204 No Content' );
+		header( 'Cache-Control: max-age=15, s-maxage=0' );
+	}
 
 	wp_die();
 }

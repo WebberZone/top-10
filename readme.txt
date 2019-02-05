@@ -175,6 +175,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Features:
 	* New option to disable creation of image thumbnails. Find this under Thumbnail options
 	* Thumbnail HTML markup includes `srcset` and `sizes` attributes when available. Read [Responsive Images in WordPress 4.4](https://make.wordpress.org/core/2015/11/10/responsive-images-in-wordpress-4-4/)
+	* New option to turn on debug mode. You can turn this on when requesting support. Find it under the Counter/Tracker tab
 
 * Enhancements:
 	* Load tracker in footer
