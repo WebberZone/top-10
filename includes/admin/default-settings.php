@@ -227,6 +227,13 @@ function tptn_settings_counter() {
 			'default' => 'query_based',
 			'options' => tptn_get_tracker_types(),
 		),
+		'tracker_all_pages'     => array(
+			'id'      => 'tracker_all_pages',
+			'name'    => esc_html__( 'Load tracker on all pages', 'top-10' ),
+			'desc'    => esc_html__( 'This will load the tracker js on all pages. Helpful if you are running minification/concatenation plugins.', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => false,
+		),
 		'track_users'           => array(
 			'id'      => 'track_users',
 			'name'    => esc_html__( 'Track user groups', 'top-10' ) . ':',
