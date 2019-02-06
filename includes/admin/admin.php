@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function tptn_add_admin_pages_links() {
-	global $tptn_settings_page, $tptn_settings_tools_help;
+	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily;
 
 	$tptn_settings_page = add_menu_page( esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page', 'dashicons-editor-ol' );
 	add_action( "load-$tptn_settings_page", 'tptn_settings_help' ); // Load the settings contextual help.
@@ -41,13 +41,13 @@ function tptn_add_admin_pages_links() {
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Statistics();
 
-	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
-	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	$tptn_settings_popular_posts = add_submenu_page( 'tptn_options_page', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	add_action( "load-$tptn_settings_popular_posts", array( $tptn_stats_screen, 'screen_option' ) );
+	add_action( 'admin_head-' . $tptn_settings_popular_posts, 'tptn_adminhead' );
 
-	$plugin_page = add_submenu_page( 'tptn_options_page', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
-	add_action( "load-$plugin_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
+	$tptn_settings_popular_posts_daily = add_submenu_page( 'tptn_options_page', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	add_action( "load-$tptn_settings_popular_posts_daily", array( $tptn_stats_screen, 'screen_option' ) );
+	add_action( 'admin_head-' . $tptn_settings_popular_posts_daily, 'tptn_adminhead' );
 
 }
 add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
@@ -60,6 +60,7 @@ add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
  * @return void
  */
 function tptn_adminhead() {
+	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily;
 
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
@@ -68,14 +69,17 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	add_thickbox();
 
-	wp_enqueue_style(
-		'tptn-admin-ui-css',
-		plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
-		false,
-		'1.0',
-		false
-	);
+	$screen = get_current_screen();
 
+	if ( $screen->id === $tptn_settings_popular_posts || $screen->id === $tptn_settings_popular_posts_daily ) {
+		wp_enqueue_style(
+			'tptn-admin-ui-css',
+			plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
+			false,
+			'1.0',
+			false
+		);
+	}
 	?>
 	<script type="text/javascript">
 	//<![CDATA[
