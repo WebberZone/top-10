@@ -28,6 +28,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class Top_Ten_Statistics_Table extends WP_List_Table {
 
 	/**
+	 * Holds the post type array elements for translation.
+	 *
+	 * @var array
+	 */
+	public $all_post_type;
+
+	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
@@ -36,6 +43,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
 				'plural'   => __( 'popular_posts', 'top-10' ), // plural name of the listed records.
 			)
+		);
+		$this->all_post_type = array(
+			'all' => __( 'All post types', 'top-10' ),
 		);
 	}
 
@@ -48,7 +58,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return  array   Array of popular posts
 	 */
-	public static function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
+	public function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
 
 		global $wpdb;
 
@@ -56,10 +66,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		if ( tptn_get_option( 'daily_midnight' ) ) {
 			$current_time = current_time( 'timestamp', 0 );
+			$current_time = isset( $args['post-date-filter'] ) ? strtotime( $args['post-date-filter'] ) : $current_time;
 			$from_date    = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
 			$from_date    = gmdate( 'Y-m-d 0', $from_date );
 		} else {
 			$current_time = current_time( 'timestamp', 0 );
+			$current_time = isset( $args['post-date-filter'] ) ? strtotime( $args['post-date-filter'] ) : $current_time;
 			$from_date    = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
 			$from_date    = gmdate( 'Y-m-d H', $from_date );
 		}
@@ -84,7 +96,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$join .= $wpdb->prepare(
 			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			'WHERE ttd.dp_date >= %s
+			'WHERE DATE(ttd.dp_date) = DATE(%s)
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber
 			',
@@ -102,7 +114,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		}
 
 		/* If post filter argument is set, do a search for it. */
-		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
+		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 		}
 
@@ -179,7 +191,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * @param  string $args Array of arguments.
 	 * @return null|string null|string
 	 */
-	public static function record_count( $args = null ) {
+	public function record_count( $args = null ) {
+
 		global $wpdb;
 
 		$sql = $wpdb->prepare(
@@ -196,7 +209,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
-		if ( isset( $args['post-type-filter'] ) && 'All' !== $args['post-type-filter'] ) {
+		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 		}
 
@@ -445,15 +458,21 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		<div class="alignleft actions">
 		<?php
 		if ( 'top' === $which ) {
+			ob_start();
+
+			// Add date selector.
+			$current_time = current_time( 'timestamp', 0 );
+			$current_date = gmdate( 'd M Y', $current_time );
+
+			$post_date = isset( $_REQUEST['post-date-filter'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="text" id="datepicker" class="datepicker" name="post-date-filter" value="' . esc_attr( $post_date ) . '" />';
+
 			$post_types = get_post_types(
 				array(
 					'public' => true,
 				)
 			);
-			$all        = array(
-				'all' => 'All',
-			);
-			$post_types = $all + $post_types;
+			$post_types = $this->all_post_type + $post_types;
 
 			if ( $post_types ) {
 
@@ -471,15 +490,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 				echo '</select>';
 
-				submit_button(
-					__( 'Filter', 'top-10' ),
-					'button',
-					'filter_action',
-					false,
-					array(
-						'id' => 'top-10-query-submit',
-					)
-				);
+			}
+
+			$output = ob_get_clean();
+
+			if ( ! empty( $output ) ) {
+				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'top-10-query-submit' ) );
 			}
 		}
 		?>
