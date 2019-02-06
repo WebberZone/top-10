@@ -65,7 +65,17 @@ function tptn_adminhead() {
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'plugin-install' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
 	add_thickbox();
+
+	wp_enqueue_style(
+		'tptn-admin-ui-css',
+		plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
+		false,
+		'1.0',
+		false
+	);
+
 	?>
 	<script type="text/javascript">
 	//<![CDATA[
@@ -204,6 +214,11 @@ function tptn_adminhead() {
 					}
 				});
 			});
+
+			$('.datepicker').datepicker({
+				dateFormat: 'd M yy'
+			});
+
 
 		});
 
