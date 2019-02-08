@@ -173,7 +173,7 @@ function tptn_pop_posts( $args ) {
 			}
 
 			if ( $args['show_date'] ) {
-				$output .= '<span class="tptn_date"> ' . mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date ) . '</span> ';
+				$output .= '<span class="tptn_date"> ' . tptn_date( $args, $result ) . '</span> ';
 			}
 
 			if ( $args['show_excerpt'] ) {
@@ -182,29 +182,16 @@ function tptn_pop_posts( $args ) {
 
 			if ( $args['disp_list_count'] ) {
 
-				$tptn_list_count = '(' . tptn_number_format_i18n( $sum_count ) . ')';
-
-				/**
-				 * Filter the formatted list count text.
-				 *
-				 * @since   2.1.0
-				 *
-				 * @param   string  $tptn_list_count    Formatted list count
-				 * @param   int     $sum_count          Post count
-				 * @param   object  $result             Post object
-				 */
-				$tptn_list_count = apply_filters( 'tptn_list_count', $tptn_list_count, $sum_count, $result );
-
-				$output .= ' <span class="tptn_list_count">' . $tptn_list_count . '</span>';
+				$output .= ' <span class="tptn_list_count">' . tptn_list_count( $args, $result, $sum_count ) . '</span>';
 			}
 
 			$tptn_list = '';
 			/**
-			 * Filter Formatted list item with link and and thumbnail.
+			 * Filter to add content to the end of each item in the list.
 			 *
 			 * @since   2.2.0
 			 *
-			 * @param   string  $tptn_list
+			 * @param   string  $tptn_list Empty string at the end of each list item.
 			 * @param   object  $result Object of the current post result
 			 * @param   array   $args   Array of arguments
 			 */

@@ -317,3 +317,62 @@ function tptn_list_link( $args, $result ) {
 	return apply_filters( 'tptn_list_link', $output, $result, $args );
 
 }
+
+
+/**
+ * Returns the title of each list item.
+ *
+ * @since   2.6.0
+ *
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
+ * @return  string Formatted post date
+ */
+function tptn_date( $args, $result ) {
+
+	$date = mysql2date( get_option( 'date_format', 'd/m/y' ), $result->post_date );
+
+	/**
+	 * Filter the post title of each list item.
+	 *
+	 * @since   2.6.0
+	 *
+	 * @param   string  $date   Title of the post.
+	 * @param   object  $result Object of the current post result
+	 * @param   array   $args   Array of arguments
+	 */
+	return apply_filters( 'tptn_date', $date, $result, $args );
+
+}
+
+
+/**
+ * Returns the title of each list item.
+ *
+ * @since   2.6.0
+ *
+ * @param   array  $args   Array of arguments.
+ * @param   object $result Object of the current post result.
+ * @param   int    $visits Number of visits.
+ * @return  string Formatted post date
+ */
+function tptn_list_count( $args, $result, $visits ) {
+
+	$tptn_list_count = '(' . tptn_number_format_i18n( $visits ) . ')';
+
+	/**
+	 * Filter the formatted list count text.
+	 *
+	 * @since   2.1.0
+	 *
+	 * @param   string $tptn_list_count Formatted list count
+	 * @param   int    $sum_count       Post count
+	 * @param   object $result          Post object
+	 * @param   array  $args            Array of arguments.
+	 * @param   int    $visits          Number of visits.
+	 */
+	return apply_filters( 'tptn_list_count', $tptn_list_count, $sum_count, $result, $args, $visits );
+
+}
+
+
