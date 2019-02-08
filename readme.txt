@@ -178,6 +178,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* New option to turn on debug mode. You can turn this on when requesting support. Find it under the Counter/Tracker tab
 	* New option to add the tracker js file on all pages, not just singular pages. Helps with minification/concatenation
 	* New date filter in the Popular posts listing page to see the views on a particular date
+	* New option to turn ON/OFF the number formatting of the post counts. ON by default
 
 * Enhancements:
 	* Load tracker in footer

@@ -54,3 +54,32 @@ function tptn_get_from_date( $time = null ) {
 	return apply_filters( 'tptn_get_from_date', $from_date );
 }
 
+
+/**
+ * Convert float number to format based on the locale if number_format_count is true.
+ *
+ * @since 2.6.0
+ *
+ * @param float $number   The number to convert based on locale.
+ * @param int   $decimals Optional. Precision of the number of decimal places. Default 0.
+ * @return string Converted number in string format.
+ */
+function tptn_number_format_i18n( $number, $decimals = 0 ) {
+
+	$formatted = $number;
+
+	if ( tptn_get_option( 'number_format_count' ) ) {
+		$formatted = number_format_i18n( $number );
+	}
+
+	/**
+	 * Filters the number formatted based on the locale.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param string $formatted Converted number in string format.
+	 * @param float  $number    The number to convert based on locale.
+	 * @param int    $decimals  Precision of the number of decimal places.
+	 */
+	return apply_filters( 'number_format_i18n', $formatted, $number, $decimals );
+}
