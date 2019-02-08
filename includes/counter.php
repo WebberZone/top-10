@@ -204,15 +204,7 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 				$daily_range = tptn_get_option( 'daily_range' );
 				$hour_range  = tptn_get_option( 'hour_range' );
 
-				if ( tptn_get_option( 'daily_midnight' ) ) {
-					$current_time = current_time( 'timestamp', 0 );
-					$from_date    = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
-					$from_date    = gmdate( 'Y-m-d 0', $from_date );
-				} else {
-					$current_time = current_time( 'timestamp', 0 );
-					$from_date    = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-					$from_date    = gmdate( 'Y-m-d H', $from_date );
-				}
+				$from_date = tptn_get_from_date();
 
 				$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
