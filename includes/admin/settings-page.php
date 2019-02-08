@@ -303,9 +303,9 @@ function tptn_checkbox_callback( $args ) {
 	// First, we read the options collection.
 	global $tptn_settings;
 
-	$checked = ! empty( $tptn_settings[ $args['id'] ] ) ? checked( 1, $tptn_settings[ $args['id'] ], false ) : '';
 	$default = isset( $args['options'] ) ? $args['options'] : '';
-	$set     = isset( $tptn_settings[ $args['id'] ] ) ? $tptn_settings[ $args['id'] ] : '';
+	$set     = isset( $tptn_settings[ $args['id'] ] ) ? $tptn_settings[ $args['id'] ] : tptn_get_default_option( $args['id'] );
+	$checked = ! empty( $set ) ? checked( 1, (int) $set, false ) : '';
 
 	$html  = sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
 	$html .= sprintf( '<input type="checkbox" id="tptn_settings[%1$s]" name="tptn_settings[%1$s]" value="1" %2$s />', sanitize_key( $args['id'] ), $checked );
