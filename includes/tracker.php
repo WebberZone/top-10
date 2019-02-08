@@ -120,7 +120,6 @@ add_filter( 'query_vars', 'tptn_query_vars' );
  * @param   object $wp WordPress object.
  */
 function tptn_parse_request( $wp ) {
-	global $wpdb;
 
 	if ( empty( $wp ) ) {
 		global $wp;
@@ -134,34 +133,13 @@ function tptn_parse_request( $wp ) {
 		exit;
 	}
 
-	$table_name    = $wpdb->base_prefix . 'top_ten';
-	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
-	$str           = '';
-
 	if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) && ! empty( $wp->query_vars['top_ten_id'] ) ) {
 
 		$id               = absint( $wp->query_vars['top_ten_id'] );
 		$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] );
 		$activate_counter = absint( $wp->query_vars['activate_counter'] );
 
-		if ( $id > 0 ) {
-
-			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
-			}
-
-			if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
-
-				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
-			}
-		}
+		$str = tptn_update_count( $id, $blog_id, $activate_counter );
 
 		// If the debug parameter is set then we output $str else we send a No Content header.
 		if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === absint( $wp->query_vars['top_ten_debug'] ) ) {
@@ -203,35 +181,12 @@ add_action( 'parse_request', 'tptn_parse_request' );
  */
 function tptn_tracker_parser() {
 
-	global $wpdb;
-
-	$table_name    = $wpdb->base_prefix . 'top_ten';
-	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
-	$str           = '';
-
 	$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-	if ( $id > 0 ) {
-
-		if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1', %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-			$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
-		}
-
-		if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
-
-			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1', %s, %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
-		}
-	}
+	$str = tptn_update_count( $id, $blog_id, $activate_counter );
 
 	// If the debug parameter is set then we output $str else we send a No Content header.
 	if ( 1 === $top_ten_debug ) {
@@ -245,6 +200,58 @@ function tptn_tracker_parser() {
 }
 add_action( 'wp_ajax_nopriv_tptn_tracker', 'tptn_tracker_parser' );
 add_action( 'wp_ajax_tptn_tracker', 'tptn_tracker_parser' );
+
+
+/**
+ * Function to update the count in the database.
+ *
+ * @since 2.6.0
+ *
+ * @param int $id Post ID.
+ * @param int $blog_id Blog ID.
+ * @param int $activate_counter Activate counter flag.
+ *
+ * @return string Response on database update.
+ */
+function tptn_update_count( $id, $blog_id, $activate_counter ) {
+
+	global $wpdb;
+
+	$table_name    = $wpdb->base_prefix . 'top_ten';
+	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$str           = '';
+
+	if ( $id > 0 ) {
+
+		if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
+
+			$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+			$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
+		}
+
+		if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
+
+			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
+
+			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
+		}
+	}
+
+	/**
+	 * Filter the response on database update.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param string $str Response string.
+	 * @param int $id Post ID.
+	 * @param int $blog_id Blog ID.
+	 * @param int $activate_counter Activate counter flag.
+	 */
+	return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter );
+}
 
 
 /**
