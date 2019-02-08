@@ -98,7 +98,7 @@ add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
  * @since   2.0.0
  *
  * @param   array $vars   Query variables array.
- * @return  array   $Query variables array with Top 10 parameters appended
+ * @return  array Query variables array with Top 10 parameters appended
  */
 function tptn_query_vars( $vars ) {
 	// Add these to the list of queryvars that WP gathers.
@@ -107,7 +107,15 @@ function tptn_query_vars( $vars ) {
 	$vars[] = 'activate_counter';
 	$vars[] = 'view_counter';
 	$vars[] = 'top_ten_debug';
-	return $vars;
+
+	/**
+	 * Function to add additional queries to query_vars.
+	 *
+	 * @since   2.6.0
+	 *
+	 * @param array $vars Updated Query variables array with Top 10 queries added.
+	 */
+	return apply_filters( 'tptn_query_vars', $vars );
 }
 add_filter( 'query_vars', 'tptn_query_vars' );
 
