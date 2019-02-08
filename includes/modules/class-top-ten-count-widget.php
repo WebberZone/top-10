@@ -101,19 +101,13 @@ class Top_Ten_Count_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
-		global $wpdb;
-
-		$table_name = $wpdb->base_prefix . 'top_ten';
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'] );
-
-		$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as sum_count FROM ' . $table_name ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		$cntaccess    = number_format_i18n( ( ( $resultscount ) ? $resultscount->sum_count : 0 ) );
 
 		$output  = $args['before_widget'];
 		$output .= $args['before_title'] . $title . $args['after_title'];
 
-		$output .= $cntaccess;
+		$output .= get_tptn_post_count_only( 1, 'overall', 0 );
 
 		$output .= $args['after_widget'];
 
