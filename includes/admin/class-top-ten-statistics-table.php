@@ -64,17 +64,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$blog_id = get_current_blog_id();
 
-		if ( tptn_get_option( 'daily_midnight' ) ) {
-			$current_time = current_time( 'timestamp', 0 );
-			$current_time = isset( $args['post-date-filter'] ) ? strtotime( $args['post-date-filter'] ) : $current_time;
-			$from_date    = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
-			$from_date    = gmdate( 'Y-m-d 0', $from_date );
-		} else {
-			$current_time = current_time( 'timestamp', 0 );
-			$current_time = isset( $args['post-date-filter'] ) ? strtotime( $args['post-date-filter'] ) : $current_time;
-			$from_date    = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
-			$from_date    = gmdate( 'Y-m-d H', $from_date );
-		}
+		$from_date = tptn_get_from_date( $args['post-date-filter'] );
 
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
