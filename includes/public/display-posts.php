@@ -182,7 +182,7 @@ function tptn_pop_posts( $args ) {
 
 			if ( $args['disp_list_count'] ) {
 
-				$tptn_list_count = '(' . number_format_i18n( $sum_count ) . ')';
+				$tptn_list_count = '(' . tptn_number_format_i18n( $sum_count ) . ')';
 
 				/**
 				 * Filter the formatted list count text.

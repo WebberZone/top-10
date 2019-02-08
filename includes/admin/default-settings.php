@@ -212,6 +212,13 @@ function tptn_settings_counter() {
 			'type'    => 'textarea',
 			'options' => 'No visits yet',
 		),
+		'number_format_count'   => array(
+			'id'      => 'number_format_count',
+			'name'    => esc_html__( 'Number format post count', 'top-10' ),
+			'desc'    => esc_html__( 'Activating this option will convert the post counts into a number format based on the locale', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => true,
+		),
 		'dynamic_post_count'    => array(
 			'id'      => 'dynamic_post_count',
 			'name'    => esc_html__( 'Always display latest post count', 'top-10' ),
