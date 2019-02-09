@@ -365,13 +365,13 @@ function tptn_list_count( $args, $result, $visits ) {
 	 *
 	 * @since   2.1.0
 	 *
-	 * @param   string $tptn_list_count Formatted list count
+	 * @param   string $visits Formatted list count
 	 * @param   int    $sum_count       Post count
 	 * @param   object $result          Post object
 	 * @param   array  $args            Array of arguments.
 	 * @param   int    $visits          Number of visits.
 	 */
-	return apply_filters( 'tptn_list_count', $tptn_list_count, $sum_count, $result, $args, $visits );
+	return apply_filters( 'tptn_list_count', $tptn_list_count, $visits, $result, $args, $visits );
 
 }
 
