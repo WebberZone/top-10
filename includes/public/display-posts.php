@@ -327,15 +327,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	$blog_id = get_current_blog_id();
 
-	if ( $args['daily_midnight'] ) {
-		$current_time = current_time( 'timestamp', 0 );
-		$from_date    = $current_time - ( max( 0, ( $args['daily_range'] - 1 ) ) * DAY_IN_SECONDS );
-		$from_date    = gmdate( 'Y-m-d 0', $from_date );
-	} else {
-		$current_time = current_time( 'timestamp', 0 );
-		$from_date    = $current_time - ( $args['daily_range'] * DAY_IN_SECONDS + $args['hour_range'] * HOUR_IN_SECONDS );
-		$from_date    = gmdate( 'Y-m-d H', $from_date );
-	}
+	$from_date = tptn_get_from_date();
 
 	/**
 	 *
