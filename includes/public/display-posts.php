@@ -327,7 +327,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	$blog_id = get_current_blog_id();
 
-	$from_date = tptn_get_from_date();
+	$from_date = tptn_get_from_date( null, $args['daily_range'], $args['hour_range'] );
 
 	/**
 	 *
