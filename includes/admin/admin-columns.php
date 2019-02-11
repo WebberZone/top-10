@@ -63,9 +63,6 @@ function tptn_value( $column_name, $id ) {
 	if ( ( 'tptn_daily' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
 
-		$daily_range = tptn_get_option( 'daily_range' );
-		$hour_range  = tptn_get_option( 'hour_range' );
-
 		$from_date = tptn_get_from_date();
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as sum_count FROM {$table_name} WHERE postnumber = %d AND dp_date >= %s AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -81,9 +78,6 @@ function tptn_value( $column_name, $id ) {
 		$cntaccess    = tptn_number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
-
-		$daily_range = tptn_get_option( 'daily_range' );
-		$hour_range  = tptn_get_option( 'hour_range' );
 
 		$from_date = tptn_get_from_date();
 
@@ -141,9 +135,6 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_daily' === $wp_query->query['orderby'] ) {
 
 		$table_name = $wpdb->base_prefix . 'top_ten_daily';
-
-		$daily_range = tptn_get_option( 'daily_range' );
-		$hour_range  = tptn_get_option( 'hour_range' );
 
 		$from_date = tptn_get_from_date();
 

@@ -29,18 +29,22 @@ function tptn_trunc_count( $daily = true ) {
  *
  * @since 2.6.0
  *
- * @param string $time A date/time string.
+ * @param string $time        A date/time string.
+ * @param int    $daily_range Daily range.
+ * @param int    $hour_range  Hour range.
  * @return string From date
  */
-function tptn_get_from_date( $time = null ) {
+function tptn_get_from_date( $time = null, $daily_range = null, $hour_range = null ) {
 
 	$current_time = isset( $time ) ? strtotime( $time ) : current_time( 'timestamp', 0 );
+	$daily_range  = isset( $daily_range ) ? $daily_range : tptn_get_option( 'daily_range' );
+	$hour_range   = isset( $hour_range ) ? $hour_range : tptn_get_option( 'hour_range' );
 
 	if ( tptn_get_option( 'daily_midnight' ) ) {
-		$from_date = $current_time - ( max( 0, ( tptn_get_option( 'daily_range' ) - 1 ) ) * DAY_IN_SECONDS );
+		$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 		$from_date = gmdate( 'Y-m-d 0', $from_date );
 	} else {
-		$from_date = $current_time - ( tptn_get_option( 'daily_range' ) * DAY_IN_SECONDS + tptn_get_option( 'hour_range' ) * HOUR_IN_SECONDS );
+		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
 		$from_date = gmdate( 'Y-m-d H', $from_date );
 	}
 
@@ -49,9 +53,12 @@ function tptn_get_from_date( $time = null ) {
 	 *
 	 * @since 2.6.0
 	 *
-	 * @param string $time From date.
+	 * @param string $from_date   From date.
+	 * @param string $time        A date/time string.
+	 * @param int    $daily_range Daily range.
+	 * @param int    $hour_range  Hour range.
 	 */
-	return apply_filters( 'tptn_get_from_date', $from_date );
+	return apply_filters( 'tptn_get_from_date', $from_date, $time, $daily_range, $hour_range );
 }
 
 

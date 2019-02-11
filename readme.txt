@@ -170,6 +170,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.6.1 =
+
+* Bug fixes:
+	* Fixed widget daily and hourly range not working which was broken in v2.6.0
+
 = 2.6.0 =
 
 * Features:
@@ -303,7 +308,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.6.0 =
-* Major release! Brand new settings interface so please do verify your settings after the upgrade. Several new features and bug fixes.
+= 2.6.1 =
+* Major release! Several new features and bug fixes. Please verify your settings after upgrade.
 Check the Changelog for more details
 
