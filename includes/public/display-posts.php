@@ -373,7 +373,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// How old should the posts be?
 	if ( $args['how_old'] ) {
-		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", gmdate( 'Y-m-d H:m:s', $current_time - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
+		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", gmdate( 'Y-m-d H:m:s', current_time( 'timestamp', 0 ) - ( $args['how_old'] * DAY_IN_SECONDS ) ) );
 	}
 
 	// Create the base GROUP BY clause.
