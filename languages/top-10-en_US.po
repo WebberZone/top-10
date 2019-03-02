@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-11 12:07+0530\n"
+"POT-Creation-Date: 2019-03-02 13:07+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WebberZone <plugins@webberzone.com>\n"
@@ -44,7 +44,7 @@ msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
 #: includes/admin/admin-dashboard.php:127 includes/admin/admin.php:44
-#: includes/admin/class-top-ten-statistics.php:124
+#: includes/admin/class-top-ten-statistics.php:128
 msgid "Popular Posts"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr ""
 msgid "Top 10"
 msgstr ""
 
-#: includes/admin/admin.php:34 includes/admin/admin.php:336
+#: includes/admin/admin.php:34 includes/admin/admin.php:366
 msgid "Settings"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "New information not saved. Do you wish to leave the page?"
 msgstr ""
 
-#: includes/admin/admin.php:290
+#: includes/admin/admin.php:320
 #, php-format
 msgid ""
 "Thank you for using <a href=\"%1$s\" target=\"_blank\">Top 10</a>! Please <a "
@@ -145,15 +145,15 @@ msgid ""
 "\"_blank\">WordPress.org</a>"
 msgstr ""
 
-#: includes/admin/admin.php:358 includes/admin/sidebar.php:55
+#: includes/admin/admin.php:388 includes/admin/sidebar.php:55
 msgid "Support"
 msgstr ""
 
-#: includes/admin/admin.php:359
+#: includes/admin/admin.php:389
 msgid "Donate"
 msgstr ""
 
-#: includes/admin/admin.php:360
+#: includes/admin/admin.php:390
 msgid "Contribute"
 msgstr ""
 
@@ -173,74 +173,74 @@ msgstr ""
 msgid "All post types"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:213
+#: includes/admin/class-top-ten-statistics-table.php:215
 msgid "No popular posts available."
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:264
+#: includes/admin/class-top-ten-statistics-table.php:266
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:265
+#: includes/admin/class-top-ten-statistics-table.php:267
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:266
+#: includes/admin/class-top-ten-statistics-table.php:268
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:289
+#: includes/admin/class-top-ten-statistics-table.php:291
 msgid "Y/m/d g:i:s a"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:297
+#: includes/admin/class-top-ten-statistics-table.php:299
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:299
+#: includes/admin/class-top-ten-statistics-table.php:301
 msgid "Y/m/d"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:338
+#: includes/admin/class-top-ten-statistics-table.php:340
 #: includes/modules/class-top-ten-count-widget.php:53
 #: includes/modules/class-top-ten-widget.php:80
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:339
+#: includes/admin/class-top-ten-statistics-table.php:341
 msgid "Total visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:340
+#: includes/admin/class-top-ten-statistics-table.php:342
 msgid "Daily visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:341
+#: includes/admin/class-top-ten-statistics-table.php:343
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:342
+#: includes/admin/class-top-ten-statistics-table.php:344
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:343
+#: includes/admin/class-top-ten-statistics-table.php:345
 msgid "Date"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:377
+#: includes/admin/class-top-ten-statistics-table.php:379
 msgid "Delete Count"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:424
+#: includes/admin/class-top-ten-statistics-table.php:426
 msgid "Are you sure you want to do this"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:489
+#: includes/admin/class-top-ten-statistics-table.php:494
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics.php:99
+#: includes/admin/class-top-ten-statistics.php:103
 msgid "Search Table"
 msgstr ""
 
@@ -364,7 +364,6 @@ msgid "Display number of views on"
 msgstr ""
 
 #: includes/admin/default-settings.php:183
-#: includes/admin/default-settings.php:392
 #, php-format
 msgid ""
 "If you choose to disable this, please add %1$s to your template file where "
@@ -411,7 +410,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:209
-msgid "What do display when there are no visits?"
+msgid "What to display when there are no visits?"
 msgstr ""
 
 #: includes/admin/default-settings.php:211
