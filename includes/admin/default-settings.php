@@ -206,7 +206,7 @@ function tptn_settings_counter() {
 		),
 		'count_disp_form_zero'  => array(
 			'id'      => 'count_disp_form_zero',
-			'name'    => esc_html__( 'What do display when there are no visits?', 'top-10' ),
+			'name'    => esc_html__( 'What to display when there are no visits?', 'top-10' ),
 			/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
 			'desc'    => esc_html__( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ),
 			'type'    => 'textarea',
@@ -389,7 +389,7 @@ function tptn_settings_list() {
 			'id'      => 'blank_output',
 			'name'    => esc_html__( 'Show when no posts are found', 'top-10' ),
 			/* translators: 1: Code. */
-			'desc'    => sprintf( esc_html__( 'If you choose to disable this, please add %1$s to your template file where you want it displayed', 'top-10' ), "<code>&lt;?php if ( function_exists( 'echo_wherego' ) ) { echo_wherego(); } ?&gt;</code>" ),
+			'desc'    => '',
 			'type'    => 'radio',
 			'default' => 'blank',
 			'options' => array(
