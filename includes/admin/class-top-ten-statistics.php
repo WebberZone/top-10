@@ -90,8 +90,12 @@ class Top_Ten_Statistics {
 								}
 
 								// If this is a post date filter?
-								if ( isset( $_REQUEST['post-date-filter'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-date-filter'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+								if ( isset( $_REQUEST['post-date-filter-to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+									$args['post-date-filter-to'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+								}
+
+								if ( isset( $_REQUEST['post-date-filter-from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+									$args['post-date-filter-from'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 								}
 
 								$this->pop_posts_obj->prepare_items( $args );

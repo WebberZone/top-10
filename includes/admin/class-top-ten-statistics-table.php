@@ -64,7 +64,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$blog_id = get_current_blog_id();
 
-		$from_date = tptn_get_from_date( $args['post-date-filter'] );
+		$from_date = tptn_get_from_date( $args['post-date-filter-from'], 1, 0 );
+		$to_date   = tptn_get_from_date( $args['post-date-filter-to'], 1, 0 );
 
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
@@ -86,11 +87,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$join .= $wpdb->prepare(
 			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			'WHERE DATE(ttd.dp_date) = DATE(%s)
+			'WHERE DATE(ttd.dp_date) >= DATE(%s) AND DATE(ttd.dp_date) <= DATE(%s)
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber
 			',
-			$from_date
+			$from_date,
+			$to_date
 		);
 
 		// Create the base WHERE clause.
@@ -99,7 +101,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
 
 		/* If search argument is set, do a search for it. */
-		if ( isset( $args['search'] ) ) {
+		if ( ! empty( $args['search'] ) ) {
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
@@ -454,8 +456,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$current_time = current_time( 'timestamp', 0 );
 			$current_date = gmdate( 'd M Y', $current_time );
 
-			$post_date = isset( $_REQUEST['post-date-filter'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			echo '<input type="text" id="datepicker" class="datepicker" name="post-date-filter" value="' . esc_attr( $post_date ) . '" />';
+			$post_date_from = isset( $_REQUEST['post-date-filter-from'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="text" id="datepicker-from" name="post-date-filter-from" value="' . esc_attr( $post_date_from ) . '" size="11" />';
+
+			$post_date_to = isset( $_REQUEST['post-date-filter-to'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="text" id="datepicker-to" name="post-date-filter-to" value="' . esc_attr( $post_date_to ) . '" size="11" />';
 
 			$post_types = get_post_types(
 				array(
@@ -475,7 +480,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 					}
 					?>
 				<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
-						<?php
+					<?php
 				}
 
 				echo '</select>';
