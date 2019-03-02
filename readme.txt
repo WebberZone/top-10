@@ -172,6 +172,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.6.2 =
 
+* Enhancements:
+	* Select a date range in the Popular Posts listing page in the admin
+
 * Bug fixes:
 	* Fixed "Published post date" setting was not working. Thanks [@jherrerai](https://github.com/jherrerai)
 	* Modified PolyLang and WPML function implementations
