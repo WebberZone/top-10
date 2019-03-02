@@ -170,6 +170,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.6.2 =
+
+* Bug fixes:
+	* Fixed "Published post date" setting was not working. Thanks [@jherrerai](https://github.com/jherrerai)
+
 = 2.6.1 =
 
 * Bug fixes:
@@ -308,7 +313,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.6.1 =
-* Major release! Several new features and bug fixes. Please verify your settings after upgrade.
+= 2.6.2 =
+* Bug fix release! Please verify your settings after upgrade.
 Check the Changelog for more details
 
