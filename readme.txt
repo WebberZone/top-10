@@ -174,6 +174,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Bug fixes:
 	* Fixed "Published post date" setting was not working. Thanks [@jherrerai](https://github.com/jherrerai)
+	* Modified PolyLang and WPML function implementations
 
 = 2.6.1 =
 
