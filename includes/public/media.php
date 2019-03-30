@@ -378,12 +378,14 @@ function tptn_get_first_image( $postid, $thumb_width, $thumb_height ) {
 			/**
 			 * Filters first child attachment from the post.
 			 *
-			 * @since   1.9.10.1
+			 * @since 1.9.10.1
 			 *
-			 * @param   array   $image_attributes[0]    URL of the image
-			 * @param   int     $postid                 Post ID
+			 * @param array $image_attributes[0] URL of the image
+			 * @param int   $postid              Post ID
+			 * @param int   $thumb_width         Thumb width
+			 * @param int   $thumb_height        Thumb height
 			 */
-			return apply_filters( 'tptn_get_first_image', $image_attributes[0] );
+			return apply_filters( 'tptn_get_first_image', $image_attributes[0], $postid, $thumb_width, $thumb_height );
 		}
 	} else {
 		return false;
