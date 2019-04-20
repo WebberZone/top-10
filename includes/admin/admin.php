@@ -363,7 +363,7 @@ function tptn_plugin_actions_links( $links ) {
 
 	return array_merge(
 		array(
-			'settings' => '<a href="' . admin_url( 'options-general.php?page=tptn_options_page' ) . '">' . __( 'Settings', 'top-10' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=tptn_options_page' ) . '">' . __( 'Settings', 'top-10' ) . '</a>',
 		),
 		$links
 	);
