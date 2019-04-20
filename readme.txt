@@ -175,6 +175,10 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Enhancements:
 	* `tptn_get_first_image` filter has additional attributes `$image_attributes[0], $postid, $thumb_width, $thumb_height`
 
+* Bug fixes:
+	* Reverted PolyLang implementation that was broken in v2.6.2
+	* Delete deprecated settings on save
+
 = 2.6.2 =
 
 * Enhancements:
