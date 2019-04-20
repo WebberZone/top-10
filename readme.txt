@@ -179,6 +179,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Reverted PolyLang implementation that was broken in v2.6.2
 	* Delete deprecated settings on save
 	* Fix settings link in plugins listing page
+	* Fix exclude categories setting on save
 
 = 2.6.2 =
 
