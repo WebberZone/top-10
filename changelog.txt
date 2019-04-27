@@ -1,5 +1,47 @@
 This file holds the archive of changelog entries
 
+= 2.4.4 =
+
+* Enhancements:
+	* Changed tracker type to Query based for better compatibility
+
+* Bug fixes:
+	* Security fix: Potential SQL injection vulnerability. Reported by [DefenseCode ThunderScan](http://www.defensecode.com/)
+	* Revisions no longer displayed in the "View Popular Posts" screen in admin area
+
+= 2.4.3 =
+
+* Bug fixes:
+	* Fatal error when running PHP 7.1.x
+
+= 2.4.2 =
+
+* Bug fixes:
+	* The plugin will no longer generate any notices if post author is missing
+	* Fixed T_FUNCTION error in admin area on blogs running on PHP versions before 5.3
+	* Fixed bug where any special characters in the post title would break the output
+
+= 2.4.1 =
+
+* Bug fixes:
+	* Fixes fatal error caused on installs which have versions below PHP5.6
+
+= 2.4.0 =
+
+* Features:
+	* New tracker using a properly enqueued `.js` file. Two inbuilt options to use query variables or ajaxurl to process the counts
+	* Shortcode and the widget now have an added parameter for 'offset'. This is useful if you would like to display different widgets/shortcodes but not always start from the first post
+
+* Bug fixes:
+	* Attachments now work with the widget and elsewhere
+	* New tracker now works when jQuery is loaded in the footer
+	* Don't add tracker code when previewing in customizer
+	* Doesn't report an error if no author is assigned to a post
+
+* Deprecated:
+	* `tptn_add_tracker` and `tptn_add_viewed_count` have been deprecated. These should no longer be needed with the new tracker option.
+	* wick script in Settings page which was used for fetching category slugs. You should now use the category name (prompted automatically). Slugs will be automatically converted into names.
+
 = 2.3.2 =
 
 * Bug fixes:

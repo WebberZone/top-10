@@ -3,7 +3,7 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 4.5
+Requires at least: 4.7
 Tested up to: 5.2
 License: GPLv2 or later
 
@@ -116,21 +116,7 @@ The main CSS classes include:
 
 = Shortcodes =
 
-`[tptn_list]` lets you insert the popular posts anywhere in your post content. It takes three main optional attributes `limit`, `heading` and `daily` as follows:
-
-*limit* : Maximum number of posts to return. The actual number displayed may be lower depending on the category / post exclusion settings.
-
-*heading* : Set to 0 to disable the heading specified in **Title of popular posts:** under **Output options**
-
-*daily* : If set to 1, then the shortcode will return the daily popular posts list
-
-In addition to these attributes, the shortcode can take all the options as attributes. To see the detailed list take a look at the function `tptn_register_settings()` in **includes/admin/register-settings**
-
-
-`[tptn_views]` lets you display the number of visits. The plugin takes one optional attribute `daily` as follows:
-
-*daily* : If set to 1, then the shortcode will return the number of _daily_ views
-
+You can find details of the shortcodes in this [article](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
 
 = Manual install =
 
@@ -171,6 +157,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 == Changelog ==
 
 = 2.6.3 =
+
+Release post: [https://wzn.io/2L7w8mi](https://wzn.io/2L7w8mi)
 
 * Enhancements:
 	* `tptn_get_first_image` filter has additional attributes `$image_attributes[0], $postid, $thumb_width, $thumb_height`
@@ -281,54 +269,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Deprecated:
 	* `tptn_default_options` (no replacement) and `tptn_read_options` (Use `tptn_get_settings` instead)
 
-= 2.4.4 =
-
-* Enhancements:
-	* Changed tracker type to Query based for better compatibility
-
-* Bug fixes:
-	* Security fix: Potential SQL injection vulnerability. Reported by [DefenseCode ThunderScan](http://www.defensecode.com/)
-	* Revisions no longer displayed in the "View Popular Posts" screen in admin area
-
-= 2.4.3 =
-
-* Bug fixes:
-	* Fatal error when running PHP 7.1.x
-
-= 2.4.2 =
-
-* Bug fixes:
-	* The plugin will no longer generate any notices if post author is missing
-	* Fixed T_FUNCTION error in admin area on blogs running on PHP versions before 5.3
-	* Fixed bug where any special characters in the post title would break the output
-
-= 2.4.1 =
-
-* Bug fixes:
-	* Fixes fatal error caused on installs which have versions below PHP5.6
-
-= 2.4.0 =
-
-* Features:
-	* New tracker using a properly enqueued `.js` file. Two inbuilt options to use query variables or ajaxurl to process the counts
-	* Shortcode and the widget now have an added parameter for 'offset'. This is useful if you would like to display different widgets/shortcodes but not always start from the first post
-
-* Bug fixes:
-	* Attachments now work with the widget and elsewhere
-	* New tracker now works when jQuery is loaded in the footer
-	* Don't add tracker code when previewing in customizer
-	* Doesn't report an error if no author is assigned to a post
-
-* Deprecated:
-	* `tptn_add_tracker` and `tptn_add_viewed_count` have been deprecated. These should no longer be needed with the new tracker option.
-	* wick script in Settings page which was used for fetching category slugs. You should now use the category name (prompted automatically). Slugs will be automatically converted into names.
-
 For previous changelog entries, please refer to the separate changelog.txt file
 
 
 == Upgrade Notice ==
 
-= 2.6.2 =
+= 2.6.3 =
 * Bug fix release! Please verify your settings after upgrade.
 Check the Changelog for more details
 
