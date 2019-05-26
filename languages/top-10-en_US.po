@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 10:16+0100\n"
+"POT-Creation-Date: 2019-05-27 00:10+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WebberZone <plugins@webberzone.com>\n"
@@ -43,12 +43,12 @@ msgstr ""
 msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:127 includes/admin/admin.php:44
+#: includes/admin/admin-dashboard.php:127 includes/admin/admin.php:40
 #: includes/admin/class-top-ten-statistics.php:128
 msgid "Popular Posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:132 includes/admin/admin.php:48
+#: includes/admin/admin-dashboard.php:132 includes/admin/admin.php:44
 msgid "Daily Popular Posts"
 msgstr ""
 
@@ -113,31 +113,39 @@ msgstr ""
 msgid "Top 10"
 msgstr ""
 
-#: includes/admin/admin.php:34 includes/admin/admin.php:366
+#: includes/admin/admin.php:34 includes/admin/admin.php:370
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin.php:37 includes/admin/tools.php:68
-msgid "Top 10 Tools"
-msgstr ""
-
-#: includes/admin/admin.php:37
-msgid "Tools"
-msgstr ""
-
-#: includes/admin/admin.php:44 includes/admin/class-top-ten-statistics.php:74
+#: includes/admin/admin.php:40 includes/admin/class-top-ten-statistics.php:74
 msgid "Top 10 Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:48
+#: includes/admin/admin.php:44
 msgid "Top 10 Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:202
+#: includes/admin/admin.php:49 includes/admin/tools.php:74
+msgid "Top 10 Tools"
+msgstr ""
+
+#: includes/admin/admin.php:49
+msgid "Tools"
+msgstr ""
+
+#: includes/admin/admin.php:53
+msgid "Top 10 Import Export Tables"
+msgstr ""
+
+#: includes/admin/admin.php:53
+msgid "Import/Export"
+msgstr ""
+
+#: includes/admin/admin.php:206
 msgid "New information not saved. Do you wish to leave the page?"
 msgstr ""
 
-#: includes/admin/admin.php:320
+#: includes/admin/admin.php:324
 #, php-format
 msgid ""
 "Thank you for using <a href=\"%1$s\" target=\"_blank\">Top 10</a>! Please <a "
@@ -145,15 +153,15 @@ msgid ""
 "\"_blank\">WordPress.org</a>"
 msgstr ""
 
-#: includes/admin/admin.php:388 includes/admin/sidebar.php:55
+#: includes/admin/admin.php:392 includes/admin/sidebar.php:55
 msgid "Support"
 msgstr ""
 
-#: includes/admin/admin.php:389
+#: includes/admin/admin.php:393
 msgid "Donate"
 msgstr ""
 
-#: includes/admin/admin.php:390
+#: includes/admin/admin.php:394
 msgid "Contribute"
 msgstr ""
 
@@ -225,6 +233,7 @@ msgid "Author"
 msgstr ""
 
 #: includes/admin/class-top-ten-statistics-table.php:345
+#: includes/admin/import-export.php:183
 msgid "Date"
 msgstr ""
 
@@ -914,6 +923,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/help-tab.php:35 includes/admin/help-tab.php:126
+#: includes/admin/help-tab.php:166
 #, php-format
 msgid ""
 "For more information or how to get support visit the <a href=\"%1$s"
@@ -921,6 +931,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/help-tab.php:37 includes/admin/help-tab.php:128
+#: includes/admin/help-tab.php:168
 #, php-format
 msgid ""
 "Support queries should be posted in the <a href=\"%1$s\">WordPress.org "
@@ -935,7 +946,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/help-tab.php:49 includes/admin/help-tab.php:140
-#: includes/admin/settings-page.php:125
+#: includes/admin/help-tab.php:179 includes/admin/settings-page.php:125
 msgid "General"
 msgstr ""
 
@@ -1037,6 +1048,138 @@ msgid ""
 "fixes for older versions of Top 10."
 msgstr ""
 
+#: includes/admin/help-tab.php:171
+#, php-format
+msgid "<a href=\"%1$s\">Top 10 Knowledge base</a>"
+msgstr ""
+
+#: includes/admin/help-tab.php:181
+msgid "This screen allows you to import and export the database tables."
+msgstr ""
+
+#: includes/admin/help-tab.php:182
+msgid "Refer to the knowledge base to learn how to use this in detail."
+msgstr ""
+
+#: includes/admin/import-export.php:29
+msgid "Data has been imported into the table"
+msgstr ""
+
+#: includes/admin/import-export.php:34
+msgid "Settings have been imported successfully"
+msgstr ""
+
+#: includes/admin/import-export.php:40
+msgid "Top 10 - Import/Export tables"
+msgstr ""
+
+#: includes/admin/import-export.php:50
+msgid "Export/Import settings"
+msgstr ""
+
+#: includes/admin/import-export.php:52
+msgid ""
+"Export the plugin settings for this site as a .json file. This allows you to "
+"easily import the configuration into another site."
+msgstr ""
+
+#: includes/admin/import-export.php:56
+msgid "Export Settings"
+msgstr ""
+
+#: includes/admin/import-export.php:65
+msgid ""
+"Import the plugin settings from a .json file. This file can be obtained by "
+"exporting the settings on another site using the form above."
+msgstr ""
+
+#: includes/admin/import-export.php:71
+msgid "Import Settings"
+msgstr ""
+
+#: includes/admin/import-export.php:80
+msgid "Export tables"
+msgstr ""
+
+#: includes/admin/import-export.php:82
+msgid ""
+"Click the buttons below to export the overall and the daily tables. The file "
+"is downloaded as an CSV file which you should be able to edit in Excel or "
+"any other compatible software."
+msgstr ""
+
+#: includes/admin/import-export.php:83
+msgid ""
+"If you are using WordPress Multisite then this will include the counts "
+"across all sites as the plugin uses a single table to store counts."
+msgstr ""
+
+#: includes/admin/import-export.php:87
+msgid "Export overall tables"
+msgstr ""
+
+#: includes/admin/import-export.php:88
+msgid "Export daily tables"
+msgstr ""
+
+#: includes/admin/import-export.php:96
+msgid "Import tables"
+msgstr ""
+
+#: includes/admin/import-export.php:98
+msgid ""
+"This action will replace the data in your tables, so I suggest that you "
+"export the existing data using the buttons above, amend it and then import "
+"it. It is important to maintain the export format of the data to avoid "
+"corruption."
+msgstr ""
+
+#: includes/admin/import-export.php:101
+msgid ""
+"Backup your database before proceeding so you will be able to restore it in "
+"case anything goes wrong."
+msgstr ""
+
+#: includes/admin/import-export.php:103
+msgid "Import Overall Table"
+msgstr ""
+
+#: includes/admin/import-export.php:108
+msgid "Import Overall CSV"
+msgstr ""
+
+#: includes/admin/import-export.php:111
+msgid "Import Daily Table"
+msgstr ""
+
+#: includes/admin/import-export.php:116
+msgid "Import Daily CSV"
+msgstr ""
+
+#: includes/admin/import-export.php:179
+msgid "Post ID"
+msgstr ""
+
+#: includes/admin/import-export.php:180
+msgid "Visits"
+msgstr ""
+
+#: includes/admin/import-export.php:185
+msgid "Blog ID"
+msgstr ""
+
+#: includes/admin/import-export.php:264
+msgid "Please upload a valid .csv file"
+msgstr ""
+
+#: includes/admin/import-export.php:270 includes/admin/import-export.php:373
+msgid "Please upload a file to import"
+msgstr ""
+
+#: includes/admin/import-export.php:367
+msgid "Please upload a valid .json file"
+msgstr ""
+
 #: includes/admin/save-settings.php:51
 msgid ""
 "Settings have been reset to their default values. Reload this page to view "
@@ -1126,63 +1269,51 @@ msgid "Top 10 popular posts reset"
 msgstr ""
 
 #: includes/admin/tools.php:42
-msgid "Top 10 daily popular posts reset"
+msgid "Top 10 tables have been recreated"
 msgstr ""
 
 #: includes/admin/tools.php:48
+msgid "Top 10 daily popular posts reset"
+msgstr ""
+
+#: includes/admin/tools.php:54
 msgid "Old settings key has been deleted"
 msgstr ""
 
-#: includes/admin/tools.php:55
+#: includes/admin/tools.php:61
 msgid "Duplicate rows cleaned from the tables"
 msgstr ""
 
-#: includes/admin/tools.php:62
+#: includes/admin/tools.php:68
 msgid "Post counts across blog IDs 0 and 1 have been merged"
 msgstr ""
 
-#: includes/admin/tools.php:78 includes/admin/tools.php:80
+#: includes/admin/tools.php:84 includes/admin/tools.php:86
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/tools.php:83
+#: includes/admin/tools.php:89
 msgid ""
 "Clear the Top 10 cache. This will also be cleared automatically when you "
 "save the settings page."
 msgstr ""
 
-#: includes/admin/tools.php:86 includes/admin/tools.php:88
+#: includes/admin/tools.php:92 includes/admin/tools.php:94
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/tools.php:91
+#: includes/admin/tools.php:97
 msgid ""
 "Deletes and reinitializes the primary key in the database tables. If the "
 "above function gives an error, then you can run the below code in phpMyAdmin "
 "or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/tools.php:97
+#: includes/admin/tools.php:103
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/tools.php:99
-msgid "Reset Popular Posts Network-wide"
-msgstr ""
-
-#: includes/admin/tools.php:99
-msgid "Are you sure you want to reset the popular posts?"
-msgstr ""
-
-#: includes/admin/tools.php:100
-msgid "Reset Daily Popular Posts Network-wide"
-msgstr ""
-
-#: includes/admin/tools.php:100
-msgid "Are you sure you want to reset the daily popular posts?"
-msgstr ""
-
-#: includes/admin/tools.php:103
+#: includes/admin/tools.php:105
 msgid ""
 "This will reset the Top 10 tables. If you are running Top 10 on multisite "
 "then it will delete the popular posts across the entire network. This cannot "
@@ -1190,19 +1321,44 @@ msgid ""
 "proceeding"
 msgstr ""
 
-#: includes/admin/tools.php:106
+#: includes/admin/tools.php:108
+msgid "Reset Popular Posts Network-wide"
+msgstr ""
+
+#: includes/admin/tools.php:108
+msgid "Are you sure you want to reset the popular posts?"
+msgstr ""
+
+#: includes/admin/tools.php:109
+msgid "Reset Daily Popular Posts Network-wide"
+msgstr ""
+
+#: includes/admin/tools.php:109
+msgid "Are you sure you want to reset the daily popular posts?"
+msgstr ""
+
+#: includes/admin/tools.php:112 includes/admin/tools.php:117
+msgid "Recreate Database Tables"
+msgstr ""
+
+#: includes/admin/tools.php:114
+msgid ""
+"Only click the button below after performing a full backup of the database. "
+"You can use any of the popular backup plugins or phpMyAdmin to achieve this. "
+"The authors of this plugin do not guarantee that everything will go smoothly "
+"as it depends on your site environment and volume of data. If you are not "
+"comfortable, please do not proceed."
+msgstr ""
+
+#: includes/admin/tools.php:117
+msgid "Hit Cancel if you have not backed up your database"
+msgstr ""
+
+#: includes/admin/tools.php:120
 msgid "Other tools"
 msgstr ""
 
-#: includes/admin/tools.php:108
-msgid "Delete old settings"
-msgstr ""
-
-#: includes/admin/tools.php:108
-msgid "This will delete the settings before v2.5.x. Proceed?"
-msgstr ""
-
-#: includes/admin/tools.php:111
+#: includes/admin/tools.php:122
 msgid ""
 "From v2.5.x, Top 10 stores the settings in a new key in the database. This "
 "will delete the old settings for the current blog. It is recommended that "
@@ -1210,30 +1366,38 @@ msgid ""
 "if you are comfortable with the new settings."
 msgstr ""
 
-#: includes/admin/tools.php:115
-msgid "Merge blog ID 0 and 1 post counts"
-msgstr ""
-
-#: includes/admin/tools.php:115
-msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
-msgstr ""
-
-#: includes/admin/tools.php:118
-msgid "This will merge post counts for posts with table entries of 0 and 1"
-msgstr ""
-
-#: includes/admin/tools.php:122
-msgid "Merge duplicates across blog IDs"
-msgstr ""
-
-#: includes/admin/tools.php:122
-msgid "This will delete the duplicate entries in the tables. Proceed?"
+#: includes/admin/tools.php:125
+msgid "Delete old settings"
 msgstr ""
 
 #: includes/admin/tools.php:125
+msgid "This will delete the settings before v2.5.x. Proceed?"
+msgstr ""
+
+#: includes/admin/tools.php:129
+msgid "This will merge post counts for posts with table entries of 0 and 1"
+msgstr ""
+
+#: includes/admin/tools.php:132
+msgid "Merge blog ID 0 and 1 post counts"
+msgstr ""
+
+#: includes/admin/tools.php:132
+msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
+msgstr ""
+
+#: includes/admin/tools.php:136
 msgid ""
 "In older versions, the plugin created entries with duplicate post IDs. "
 "Clicking the button below will merge these duplicate IDs"
+msgstr ""
+
+#: includes/admin/tools.php:139
+msgid "Merge duplicates across blog IDs"
+msgstr ""
+
+#: includes/admin/tools.php:139
+msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
 #: includes/cron.php:87
