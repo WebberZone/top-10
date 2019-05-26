@@ -162,6 +162,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
 	* New export/import interface to export and import the Top 10 tables
 
+* Enhancements:
+	* `tptn_views` shortcode adds a new parameter 'count' to explicitly set the count type. Choose from daily, total or overall. This is overridden if daily is set to 0 (backwards compatibility)
+
 = 2.6.3 =
 
 Release post: [https://wzn.io/2L7w8mi](https://wzn.io/2L7w8mi)
