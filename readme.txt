@@ -156,6 +156,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.7.0 =
+
+* Features:
+	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
+	* New export/import interface to export and import the Top 10 tables
+
 = 2.6.3 =
 
 Release post: [https://wzn.io/2L7w8mi](https://wzn.io/2L7w8mi)
