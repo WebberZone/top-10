@@ -64,8 +64,9 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 6. Top 10 options - Maintenance
 7. Top 10 widget options
 8. Top 10 Meta box on the Edit Post screen
-9. Reset count and tools
+9. Top 10 Tools page
 10. Top 10 - Popular posts view in Admin
+11. Top 10 Export/Import interface
 
 == Installation ==
 
