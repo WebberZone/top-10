@@ -146,3 +146,42 @@ function tptn_settings_tools_help() {
 
 	do_action( 'tptn_settings_tools_help', $screen );
 }
+
+/**
+ * Generates the Tools help page.
+ *
+ * @since 2.7.0
+ */
+function tptn_settings_exim_help() {
+	global $tptn_settings_exim_help;
+
+	$screen = get_current_screen();
+
+	if ( $screen->id !== $tptn_settings_exim_help ) {
+		return;
+	}
+
+	$screen->set_help_sidebar(
+		/* translators: 1: Support link. */
+		'<p>' . sprintf( __( 'For more information or how to get support visit the <a href="%1$s">WebberZone support site</a>.', 'top-10' ), esc_url( 'https://webberzone.com/support/' ) ) . '</p>' .
+		/* translators: 1: Forum link. */
+		'<p>' . sprintf( __( 'Support queries should be posted in the <a href="%1$s">WordPress.org support forums</a>.', 'top-10' ), esc_url( 'https://wordpress.org/support/plugin/top-10' ) ) . '</p>' .
+		'<p>' . sprintf(
+			/* translators: 1: Knowledgebase link. */
+			__( '<a href="%1$s">Top 10 Knowledge base</a>', 'top-10' ),
+			esc_url( 'https://webberzone.com/support/section/top-10/' ),
+		) . '</p>'
+	);
+
+	$screen->add_help_tab(
+		array(
+			'id'      => 'tptn-settings-general',
+			'title'   => __( 'General', 'top-10' ),
+			'content' =>
+			'<p>' . __( 'This screen allows you to import and export the database tables.', 'top-10' ) . '</p>' .
+				'<p>' . __( 'Refer to the knowledge base to learn how to use this in detail.', 'top-10' ) . '</p>',
+		)
+	);
+
+	do_action( 'tptn_settings_tools_help', $screen );
+}
