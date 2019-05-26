@@ -43,15 +43,19 @@ add_shortcode( 'tptn_list', 'tptn_shortcode' );
  * @param   string $content    Content.
  * @return  string  Views of the post
  */
-function tptn_shortcode_views( $atts, $content = null ) {
+function tptn_shortcode_views( $atts, $content = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	$a = shortcode_atts(
 		array(
 			'daily' => '0',
+			'count' => 'total',
 		),
 		$atts
 	);
 
-	return get_tptn_post_count_only( get_the_ID(), ( $a['daily'] ? 'daily' : 'total' ) );
+	// If daily is explicitly set to 1, then pass daily, else pass count.
+	$count = $a['daily'] ? 'daily' : $a['count'];
+
+	return get_tptn_post_count_only( get_the_ID(), $count );
 }
 add_shortcode( 'tptn_views', 'tptn_shortcode_views' );
 
