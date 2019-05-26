@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function tptn_add_admin_pages_links() {
-	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily;
+	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help;
 
 	$tptn_settings_page = add_menu_page( esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page', 'dashicons-editor-ol' );
 	add_action( "load-$tptn_settings_page", 'tptn_settings_help' ); // Load the settings contextual help.
@@ -33,10 +33,6 @@ function tptn_add_admin_pages_links() {
 
 	$plugin_page = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
 	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
-
-	$tptn_settings_tools_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
-	add_action( "load-$tptn_settings_tools_help", 'tptn_settings_tools_help' );
-	add_action( 'admin_head-' . $tptn_settings_tools_help, 'tptn_adminhead' );
 
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Statistics();
@@ -49,6 +45,14 @@ function tptn_add_admin_pages_links() {
 	add_action( "load-$tptn_settings_popular_posts_daily", array( $tptn_stats_screen, 'screen_option' ) );
 	add_action( 'admin_head-' . $tptn_settings_popular_posts_daily, 'tptn_adminhead' );
 
+	// Add links to Tools pages.
+	$tptn_settings_tools_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
+	add_action( "load-$tptn_settings_tools_help", 'tptn_settings_tools_help' );
+	add_action( 'admin_head-' . $tptn_settings_tools_help, 'tptn_adminhead' );
+
+	$tptn_settings_exim_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Import Export Tables', 'top-10' ), esc_html__( 'Import/Export', 'top-10' ), 'manage_options', 'tptn_exim_page', 'tptn_exim_page' );
+	add_action( "load-$tptn_settings_exim_help", 'tptn_settings_exim_help' );
+	add_action( 'admin_head-' . $tptn_settings_exim_help, 'tptn_adminhead' );
 }
 add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
 

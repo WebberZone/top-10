@@ -149,6 +149,7 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/tools.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/import-export.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-metabox.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-columns.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php';
