@@ -32,6 +32,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
 * **Styles**: The output is wrapped in CSS classes which allows you to easily style the list. You can enter your custom CSS styles from within WordPress Admin area or use the style included.
 * **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 also adds two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
+* **Export/Import interface**: Export the count tables and settings to restore in the same site or on other installs
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 * **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 

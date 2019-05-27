@@ -5,9 +5,9 @@
 [![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Build Status](https://travis-ci.org/WebberZone/top-10.svg?branch=master)](https://travis-ci.org/WebberZone/top-10)
 
-__Requires:__ 4.5
+__Requires:__ 4.7
 
-__Tested up to:__ 5.1
+__Tested up to:__ 5.2
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -38,8 +38,14 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
 * **Styles**: The output is wrapped in CSS classes which allows you to easily style the list. You can enter your custom CSS styles from within WordPress Admin area or use the style included.
 * **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 also adds two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
+* **Export/Import interface**: Export the count tables and settings to restore in the same site or on other installs
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 * **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
+
+### GDPR
+Top 10 is GDPR compliant as it doesn't collect any personal data about your visitors when installed out of the box. You can see the data the plugin stores in the `wp_top_ten` and `wp_top_ten_daily` tables in the database. Note: the prefix `wp` might be different if you have changed it from the default.
+
+YOU ARE RESPONSIBLE FOR ENSURING THAT ALL GDPR REQUIREMENTS ARE MET ON YOUR WEBSITE.
 
 ### Donations
 
