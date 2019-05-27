@@ -158,6 +158,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+Release post: [https://wzn.io/2HWbtwr](https://wzn.io/2HWbtwr)
+
 = 2.7.0 =
 
 * Features:
