@@ -169,7 +169,7 @@ function tptn_settings_exim_help() {
 		'<p>' . sprintf(
 			/* translators: 1: Knowledgebase link. */
 			__( '<a href="%1$s">Top 10 Knowledge base</a>', 'top-10' ),
-			esc_url( 'https://webberzone.com/support/section/top-10/' ),
+			esc_url( 'https://webberzone.com/support/section/top-10/' )
 		) . '</p>'
 	);
 
