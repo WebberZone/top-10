@@ -158,6 +158,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.8.0 =
+
+* Features:
+	* Also delete transients and other settings on uninstall
+
 = 2.7.0 =
 
 Release post: [https://wzn.io/2HWbtwr](https://wzn.io/2HWbtwr)

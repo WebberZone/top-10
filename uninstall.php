@@ -10,7 +10,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
@@ -36,5 +36,12 @@ if ( $tptn_settings['uninstall_clean_options'] ) {
 	}
 	delete_option( 'ald_tptn_settings' );
 	delete_option( 'tptn_settings' );
+
+	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		"
+		DELETE FROM {$wpdb->options}
+		WHERE option_name LIKE '%tptn%'
+		"
+	);
 }
 
