@@ -58,7 +58,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return  array   Array of popular posts
 	 */
-	public function get_popular_posts( $per_page = 5, $page_number = 1, $args = null ) {
+	public function get_popular_posts( $per_page = 20, $page_number = 1, $args = null ) {
 
 		global $wpdb;
 
@@ -288,7 +288,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_date( $item ) {
 
-		$t_time = get_the_time( __( 'Y/m/d g:i:s a', 'top-10' ) );
 		$m_time = $item['post_date'];
 		$time   = get_post_time( 'G', true, $item['ID'] );
 
@@ -301,7 +300,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
 		}
 
-		echo '<abbr title="' . esc_attr( $t_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
+		echo '<abbr title="' . esc_attr( $h_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
 	}
 
 	/**
