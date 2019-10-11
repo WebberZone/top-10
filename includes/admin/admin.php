@@ -64,7 +64,7 @@ add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
  * @return void
  */
 function tptn_adminhead() {
-	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily;
+	global $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page;
 
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
@@ -75,7 +75,7 @@ function tptn_adminhead() {
 
 	$screen = get_current_screen();
 
-	if ( $screen->id === $tptn_settings_popular_posts || $screen->id === $tptn_settings_popular_posts_daily ) {
+	if ( $screen->id === $tptn_settings_popular_posts || $screen->id === $tptn_settings_popular_posts_daily || $screen->id === $tptn_network_pop_posts_page . '-network' ) {
 		wp_enqueue_style(
 			'tptn-admin-ui-css',
 			plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
@@ -398,3 +398,20 @@ function tptn_plugin_actions( $links, $file ) {
 add_filter( 'plugin_row_meta', 'tptn_plugin_actions', 10, 2 );
 
 
+/**
+ * Add a menu entry to the Network Admin
+ *
+ * @since 2.8.0
+ */
+function tptn_network_admin_menu_links() {
+	global $tptn_network_pop_posts_page;
+
+	// Initialise Top 10 Statistics pages.
+	$tptn_stats_screen = new Top_Ten_Network_Statistics();
+
+	$tptn_network_pop_posts_page = add_menu_page( esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_network_options', 'tptn_network_pop_posts_page', array( $tptn_stats_screen, 'plugin_settings_page' ), 'dashicons-editor-ol' );
+	add_action( "load-$tptn_network_pop_posts_page", array( $tptn_stats_screen, 'screen_option' ) );
+	add_action( 'admin_head-' . $tptn_network_pop_posts_page, 'tptn_adminhead' );
+
+}
+add_action( 'network_admin_menu', 'tptn_network_admin_menu_links' );
