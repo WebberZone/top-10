@@ -155,6 +155,8 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin-dashboard.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-statistics-table.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-network-statistics.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-network-statistics-table.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/cache.php';
 
 } // End admin.inc
