@@ -502,4 +502,67 @@ function tptn_show_daily_pop_posts( $args = null ) {
 	tptn_show_pop_posts( $args );
 }
 
+/**
+ * Add custom feeds for the overall and daily popular posts.
+ *
+ * @since 2.8.0
+ *
+ * @return void
+ */
+function tptn_pop_posts_feed() {
 
+	$popular_posts_overall = tptn_get_option( 'feed_permalink_overall' );
+	$popular_posts_daily   = tptn_get_option( 'feed_permalink_daily' );
+
+	add_feed( $popular_posts_overall, 'tptn_pop_posts_feed_overall' );
+	add_feed( $popular_posts_daily, 'tptn_pop_posts_feed_daily' );
+}
+add_action( 'init', 'tptn_pop_posts_feed' );
+
+/**
+ * Callback for overall popular posts.
+ *
+ * @since 2.8.0
+ *
+ * @return void
+ */
+function tptn_pop_posts_feed_overall() {
+	tptn_pop_posts_feed_callback( false );
+}
+
+/**
+ * Callback for daily popular posts.
+ *
+ * @since 2.8.0
+ *
+ * @return void
+ */
+function tptn_pop_posts_feed_daily() {
+	tptn_pop_posts_feed_callback( true );
+}
+
+/**
+ * Callback function for add_feed to locate the correct template.
+ *
+ * @since 2.8.0
+ *
+ * @param bool $daily Daily posts flag.
+ *
+ * @return void
+ */
+function tptn_pop_posts_feed_callback( $daily = false ) {
+	add_filter( 'pre_option_rss_use_excerpt', '__return_zero' );
+
+	set_query_var( 'daily', $daily );
+
+	$template = locate_template( 'feed-rss2-popular-posts.php' );
+
+	if ( ! $template ) {
+		$template = TOP_TEN_PLUGIN_DIR . 'includes/public/feed-rss2-popular-posts.php';
+	}
+
+	if ( $template ) {
+		load_template( $template );
+	}
+
+}

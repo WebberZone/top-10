@@ -50,6 +50,9 @@ function tptn_settings_sanitize( $input = array() ) {
 
 		add_settings_error( 'tptn-notices', '', __( 'Settings have been reset to their default values. Reload this page to view the updated settings', 'top-10' ), 'error' );
 
+		// Flush rewrite rules.
+		flush_rewrite_rules();
+
 		return $tptn_settings;
 	}
 
@@ -115,6 +118,9 @@ function tptn_settings_sanitize( $input = array() ) {
 			unset( $output[ $key ] );
 		}
 	}
+
+	// Flush rewrite rules.
+	flush_rewrite_rules();
 
 	add_settings_error( 'tptn-notices', '', __( 'Settings updated.', 'top-10' ), 'updated' );
 

@@ -103,6 +103,16 @@ function tptn_settings_help() {
 		)
 	);
 
+	$screen->add_help_tab(
+		array(
+			'id'      => 'tptn-settings-feed',
+			'title'   => __( 'Feed', 'top-10' ),
+			'content' =>
+			'<p>' . __( 'This screen provides options to control the custom feeds for the daily and overall popular posts. You can access the custom feed at example.com/feed/popular-posts/ replacing example.com with your blog domain.', 'top-10' ) . '</p>' .
+				'<p>' . __( 'You can also change the permalink in the settings below. You will need to refresh your permalinks if you change these settings. Alternatively save the settings page twice.', 'top-10' ) . '</p>',
+		)
+	);
+
 	do_action( 'tptn_settings_help', $screen );
 
 }
