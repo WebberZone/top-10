@@ -5,9 +5,9 @@
 [![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Build Status](https://travis-ci.org/WebberZone/top-10.svg?branch=master)](https://travis-ci.org/WebberZone/top-10)
 
-__Requires:__ 4.7
+__Requires:__ 4.8
 
-__Tested up to:__ 5.2
+__Tested up to:__ 5.3
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
