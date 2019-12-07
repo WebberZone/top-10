@@ -162,6 +162,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.8.0 =
 
+Release post: [https://wzn.io/34VvWMe](https://wzn.io/34VvWMe)
+
 * Features:
 	* Custom feed for popular posts: Find new options under a new tab called Feed in the settings page where you can set the URL for the overall and daily feeds
 	* New page in the network admin menu to view the popular posts across the network
