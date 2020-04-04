@@ -452,8 +452,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			ob_start();
 
 			// Add date selector.
-			$current_time = current_time( 'timestamp', 0 );
-			$current_date = gmdate( 'd M Y', $current_time );
+			$current_date = current_time( 'd M Y' );
 
 			$post_date_from = isset( $_REQUEST['post-date-filter-from'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			echo '<input type="text" id="datepicker-from" name="post-date-filter-from" value="' . esc_attr( $post_date_from ) . '" size="11" />';

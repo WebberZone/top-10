@@ -240,7 +240,7 @@ function tptn_update_count( $id, $blog_id, $activate_counter ) {
 
 		if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-			$current_date = gmdate( 'Y-m-d H', current_time( 'timestamp', 0 ) );
+			$current_date = current_time( 'Y-m-d H' );
 
 			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
