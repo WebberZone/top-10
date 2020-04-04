@@ -107,9 +107,12 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 	if ( ! $postimage ) {
 		if ( false != get_post_thumbnail_id( $result->ID ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$postthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $result->ID ), array( $args['thumb_width'], $args['thumb_height'] ) );
-			$postimage = $postthumb[0];
+
+			if ( false !== $postthumb ) {
+				$postimage = $postthumb[0];
+				$pick      = 'featured';
+			}
 		}
-		$pick = 'featured';
 	}
 
 	// If there is no thumbnail found, fetch the first image in the post, if enabled.
@@ -125,8 +128,8 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 			if ( false != wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 				$postthumb = wp_get_attachment_image_src( $postimage_id, array( $args['thumb_width'], $args['thumb_height'] ) );
 				$postimage = $postthumb[0];
+				$pick     .= 'correct';
 			}
-			$pick .= 'correct';
 		}
 	}
 
