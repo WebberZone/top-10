@@ -283,7 +283,7 @@ function tptn_import_tables() {
 
 		if ( $daily ) {
 			$dp_date = str_replace( '/', '-', $line[2] );
-			$dp_date = date( 'Y-m-d H', strtotime( $dp_date ) );
+			$dp_date = gmdate( 'Y-m-d H', strtotime( $dp_date ) );
 
 			$wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, %d, %s, %d ) ", $line[0], $line[1], $dp_date, $line[3] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		} else {
@@ -333,7 +333,7 @@ function tptn_process_settings_export() {
 
 	nocache_headers();
 	header( 'Content-Type: application/json; charset=utf-8' );
-	header( 'Content-Disposition: attachment; filename=tptn-settings-export-' . date( 'm-d-Y' ) . '.json' );
+	header( 'Content-Disposition: attachment; filename=tptn-settings-export-' . gmdate( 'm-d-Y' ) . '.json' );
 	header( 'Expires: 0' );
 
 	echo wp_json_encode( $settings );
