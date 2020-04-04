@@ -36,7 +36,7 @@ function tptn_trunc_count( $daily = true ) {
  */
 function tptn_get_from_date( $time = null, $daily_range = null, $hour_range = null ) {
 
-	$current_time = isset( $time ) ? strtotime( $time ) : current_time( 'timestamp', 0 );
+	$current_time = isset( $time ) ? strtotime( $time ) : strtotime( current_time( 'mysql' ) );
 	$daily_range  = isset( $daily_range ) ? $daily_range : tptn_get_option( 'daily_range' );
 	$hour_range   = isset( $hour_range ) ? $hour_range : tptn_get_option( 'hour_range' );
 

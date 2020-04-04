@@ -26,7 +26,7 @@ function tptn_cron() {
 	 */
 	$delete_from = apply_filters( 'tptn_maintenance_days', $delete_from );
 
-	$current_time = current_time( 'timestamp', 0 );
+	$current_time = strtotime( current_time( 'mysql' ) );
 	$from_date    = strtotime( "-{$delete_from} DAY", $current_time );
 	$from_date    = gmdate( 'Y-m-d H', $from_date );
 
