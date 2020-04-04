@@ -4,7 +4,7 @@ Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
 Requires at least: 4.8
-Tested up to: 5.3
+Tested up to: 5.4
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -160,6 +160,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.9.0 =
+
+* Bug fixes:
+	* Fixed media lookup returning PHP errors/warnings in rare cases
+	* Use `current_time` and `gmdate` as per latest WordPress Coding Standards
+
 = 2.8.0 =
 
 Release post: [https://wzn.io/34VvWMe](https://wzn.io/34VvWMe)
@@ -298,7 +304,7 @@ For previous changelog entries, please refer to the separate changelog.txt file
 
 == Upgrade Notice ==
 
-= 2.6.3 =
-* Bug fix release! Please verify your settings after upgrade.
+= 2.9.0 =
+Bug fixes.
 Check the Changelog for more details
 
