@@ -162,6 +162,10 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.9.0 =
 
+* Enhancements:
+	* Implemented CodeMirror to format custom styles box
+	* Admin scripts are no longer loaded into the head - but using a separate JavaScript file
+
 * Bug fixes:
 	* Fixed media lookup returning PHP errors/warnings in rare cases
 	* Use `current_time` and `gmdate` as per latest WordPress Coding Standards

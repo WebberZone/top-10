@@ -647,12 +647,13 @@ function tptn_settings_styles() {
 			'options' => tptn_get_styles(),
 		),
 		'custom_css'  => array(
-			'id'      => 'custom_css',
-			'name'    => esc_html__( 'Custom CSS', 'top-10' ),
+			'id'          => 'custom_css',
+			'name'        => esc_html__( 'Custom CSS', 'top-10' ),
 			/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
-			'desc'    => sprintf( esc_html__( 'Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available CSS classes to style.', 'top-10' ), '<a href="' . esc_url( 'http://wordpress.org/plugins/top-10/faq/' ) . '" target="_blank">', '</a>', '<code>', '</code>' ),
-			'type'    => 'css',
-			'options' => '',
+			'desc'        => sprintf( esc_html__( 'Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available CSS classes to style.', 'top-10' ), '<a href="' . esc_url( 'https://wordpress.org/plugins/top-10/faq/' ) . '" target="_blank">', '</a>', '<code>', '</code>' ),
+			'type'        => 'css',
+			'options'     => '',
+			'field_class' => 'codemirror_css',
 		),
 	);
 
