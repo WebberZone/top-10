@@ -117,13 +117,19 @@ jQuery(document).ready(function($) {
 		}
 	}
 
+	function formNotModified() {
+		formmodified = 0;
+	}
+
 	$('form *').change( confirmFormChange );
 
 	window.onbeforeunload = confirmExit;
 
-	$( "input[name='submit']" ).click( function() {
-		formmodified = 0;
-	});
+	$( "input[name='submit']" ).click(formNotModified);
+	$( "input[id='search-submit']" ).click(formNotModified);
+	$( "input[id='doaction']" ).click(formNotModified);
+	$( "input[id='doaction2']" ).click(formNotModified);
+	$( "input[name='filter_action']" ).click(formNotModified);
 
 	$( function() {
 		$( "#post-body-content" ).tabs({
