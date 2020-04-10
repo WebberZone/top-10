@@ -175,7 +175,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.8.0 =
 
-Release post: [https://wzn.io/34VvWMe](https://wzn.io/34VvWMe)
+Release post: [https://webberzone.com/blog/contextual-related-posts-v2-8-0/](https://webberzone.com/blog/contextual-related-posts-v2-8-0/)
 
 * Features:
 	* Custom feed for popular posts: Find new options under a new tab called Feed in the settings page where you can set the URL for the overall and daily feeds
@@ -184,7 +184,7 @@ Release post: [https://wzn.io/34VvWMe](https://wzn.io/34VvWMe)
 
 = 2.7.0 =
 
-Release post: [https://wzn.io/2HWbtwr](https://wzn.io/2HWbtwr)
+Release post: [https://webberzone.com/blog/contextual-related-posts-v2-7-0/](https://webberzone.com/blog/contextual-related-posts-v2-7-0/)
 
 * Features:
 	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
@@ -193,120 +193,7 @@ Release post: [https://wzn.io/2HWbtwr](https://wzn.io/2HWbtwr)
 * Enhancements:
 	* `tptn_views` shortcode adds a new parameter 'count' to explicitly set the count type. Choose from daily, total or overall. This is overridden if daily is set to 0 (backwards compatibility)
 
-= 2.6.3 =
-
-Release post: [https://wzn.io/2L7w8mi](https://wzn.io/2L7w8mi)
-
-* Enhancements:
-	* `tptn_get_first_image` filter has additional attributes `$image_attributes[0], $postid, $thumb_width, $thumb_height`
-
-* Bug fixes:
-	* Reverted PolyLang implementation that was broken in v2.6.2
-	* Delete deprecated settings on save
-	* Fix settings link in plugins listing page
-	* Fix exclude categories setting on save
-
-= 2.6.2 =
-
-* Enhancements:
-	* Select a date range in the Popular Posts listing page in the admin
-
-* Bug fixes:
-	* Fixed "Published post date" setting was not working. Thanks [@jherrerai](https://github.com/jherrerai)
-	* Modified PolyLang and WPML function implementations
-
-= 2.6.1 =
-
-* Bug fixes:
-	* Fixed widget daily and hourly range not working which was broken in v2.6.0
-
-= 2.6.0 =
-
-* Features:
-	* New option to disable creation of image thumbnails. Find this under Thumbnail options
-	* Thumbnail HTML markup includes `srcset` and `sizes` attributes when available. Read [Responsive Images in WordPress 4.4](https://make.wordpress.org/core/2015/11/10/responsive-images-in-wordpress-4-4/)
-	* New option to turn on debug mode. You can turn this on when requesting support. Find it under the Counter/Tracker tab
-	* New option to add the tracker js file on all pages, not just singular pages. Helps with minification/concatenation
-	* New date filter in the Popular posts listing page to see the views on a particular date
-	* New option to turn ON/OFF the number formatting of the post counts. ON by default
-
-* Enhancements:
-	* Load tracker in footer
-	* Renamed top-10-tracker.js to top-10-tracker.min.js
-
-* Bug fixes:
-	* Only delete option if null value is passed to tptn_update_option
-	* "Exclude display on these post IDs" moved under Counter section
-
-= 2.5.7 =
-
-* Enhancements:
-	* Tools page now has the code to Recreate the PRIMARY KEY in case the button gives an error. You will need to run this in phpMyAdmin or Adminer
-
-* Bug fixes:
-	* Fixed translation of " by " which had the incorrect text domain
-	* Post types to includes selects "post" in case no option is selected
-	* Unchecking all boxes of a "Display number of views on" setting would sometimes pick the default value
-
-= 2.5.6 =
-
-* Features:
-	* Added new button under Tools to recreate the PRIMARY KEYs
-
-= 2.5.5 =
-
-* Bug fixes:
-	* Fixed missing semi-colon in tracker code
-	* Multi-site tracking failed in old installs where the PRIMARY KEY was not properly updated in the database. DB version has been updated to 6.0 to initiate primary key across all installs
-
-= 2.5.4 =
-
-* Features:
-	* New button in the Tools page to delete the pre-2.5.x settings
-
-* Enhancements:
-	* New function `tptn_trim_char` replaces `tptn_max_formatted_content` which should now support non-English characters as well
-	* Counts in the "Popular Posts" page are now number formatted
-
-* Bug fixes:
-	* Fixed PHP Illegal string offset error
-
-= 2.5.3 =
-
-* Bug fixes:
-	* Fixed number of posts displayed in the popular posts list
-
-= 2.5.2 =
-
-* Bug fixes:
-	* Settings / Thumbnail / Thumbnail size did not display the correct option even though the admin had this correctly saved
-
-= 2.5.1 =
-
-* Bug fixes:
-	* Custom CSS did not get upgraded or saved properly
-	* Uninstalling the plugin will delete the settings properly
-
-= 2.5.0 =
-
-* Features:
-	* Upgrade old options to Settings API
-	* New widget to display the overall count i.e. visits across all your site posts
-	* Added a filter to override the number of days that maintenance considers to delete the database entries
-	* New option to disable tracking for logged in users. Find "Track logged-in users" under the "Counter/Tracker" tab in the settings screen
-
-* Enhancements:
-	* Make $ajax_tptn_tracker global. Contributed by [@pkirk](https://github.com/pkirk)
-
-* Bug fixes:
-	* Make sure that $post object is available in `tptn_pc_content` filter. Contributed by [@mtws](https://github.com/mtws)
-	* When editing Attachment post types, metabox should now save correctly
-	* Disable `top_ten_nonce` as it wasn't needed for front-end users and conflicted with caching plugins
-
-* Deprecated:
-	* `tptn_default_options` (no replacement) and `tptn_read_options` (Use `tptn_get_settings` instead)
-
-For previous changelog entries, please refer to the separate changelog.txt file
+For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
 
 == Upgrade Notice ==
