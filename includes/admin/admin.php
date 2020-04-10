@@ -21,7 +21,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 2.5.0
  *
- * @global $tptn_settings_page
+ * @global string $tptn_settings_page Settings page hook.
+ * @global string $tptn_settings_popular_posts Popular posts page hook.
+ * @global string $tptn_settings_popular_posts_daily Daily popular page hook.
+ * @global string $tptn_settings_tools_help Tools page hook.
+ * @global string $tptn_settings_exim_help Export/Import page hook.
  * @return void
  */
 function tptn_add_admin_pages_links() {
@@ -29,241 +33,26 @@ function tptn_add_admin_pages_links() {
 
 	$tptn_settings_page = add_menu_page( esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page', 'dashicons-editor-ol' );
 	add_action( "load-$tptn_settings_page", 'tptn_settings_help' ); // Load the settings contextual help.
-	add_action( "admin_head-$tptn_settings_page", 'tptn_adminhead' ); // Load the admin head.
 
 	$plugin_page = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
-	add_action( 'admin_head-' . $plugin_page, 'tptn_adminhead' );
 
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Statistics();
 
 	$tptn_settings_popular_posts = add_submenu_page( 'tptn_options_page', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$tptn_settings_popular_posts", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $tptn_settings_popular_posts, 'tptn_adminhead' );
 
 	$tptn_settings_popular_posts_daily = add_submenu_page( 'tptn_options_page', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$tptn_settings_popular_posts_daily", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $tptn_settings_popular_posts_daily, 'tptn_adminhead' );
 
 	// Add links to Tools pages.
 	$tptn_settings_tools_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
 	add_action( "load-$tptn_settings_tools_help", 'tptn_settings_tools_help' );
-	add_action( 'admin_head-' . $tptn_settings_tools_help, 'tptn_adminhead' );
 
 	$tptn_settings_exim_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Import Export Tables', 'top-10' ), esc_html__( 'Import/Export', 'top-10' ), 'manage_options', 'tptn_exim_page', 'tptn_exim_page' );
 	add_action( "load-$tptn_settings_exim_help", 'tptn_settings_exim_help' );
-	add_action( 'admin_head-' . $tptn_settings_exim_help, 'tptn_adminhead' );
 }
 add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
-
-
-/**
- * Function to add CSS and JS to the Admin header.
- *
- * @since 2.5.0
- * @return void
- */
-function tptn_adminhead() {
-	global $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page;
-
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'plugin-install' );
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	add_thickbox();
-
-	$screen = get_current_screen();
-
-	if ( $screen->id === $tptn_settings_popular_posts || $screen->id === $tptn_settings_popular_posts_daily || $screen->id === $tptn_network_pop_posts_page . '-network' ) {
-		wp_enqueue_style(
-			'tptn-admin-ui-css',
-			plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
-			false,
-			'1.0',
-			false
-		);
-	}
-	?>
-	<script type="text/javascript">
-	//<![CDATA[
-		// Function to clear the cache.
-		function clearCache() {
-			/**** since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php ****/
-			jQuery.post(ajaxurl, {
-				action: 'tptn_clear_cache'
-			}, function (response, textStatus, jqXHR) {
-				alert(response.message);
-			}, 'json');
-		}
-
-		// Function to add auto suggest.
-		jQuery(document).ready(function($) {
-			$.fn.tptnTagsSuggest = function( options ) {
-
-				var cache;
-				var last;
-				var $element = $( this );
-
-				var taxonomy = $element.attr( 'data-wp-taxonomy' ) || 'category';
-
-				function split( val ) {
-					return val.split( /,\s*/ );
-				}
-
-				function extractLast( term ) {
-					return split( term ).pop();
-				}
-
-				$element.on( "keydown", function( event ) {
-						// Don't navigate away from the field on tab when selecting an item.
-						if ( event.keyCode === $.ui.keyCode.TAB &&
-						$( this ).autocomplete( 'instance' ).menu.active ) {
-							event.preventDefault();
-						}
-					})
-					.autocomplete({
-						minLength: 2,
-						source: function( request, response ) {
-							var term;
-
-							if ( last === request.term ) {
-								response( cache );
-								return;
-							}
-
-							term = extractLast( request.term );
-
-							if ( last === request.term ) {
-								response( cache );
-								return;
-							}
-
-							$.ajax({
-								type: 'POST',
-								dataType: 'json',
-								url: '<?php echo admin_url( 'admin-ajax.php' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>',
-								data: {
-									action: 'tptn_tag_search',
-									tax: taxonomy,
-									q: term
-								},
-								success: function( data ) {
-									cache = data;
-
-									response( data );
-								}
-							});
-
-							last = request.term;
-
-						},
-						search: function() {
-							// Custom minLength.
-							var term = extractLast( this.value );
-
-							if ( term.length < 2 ) {
-								return false;
-							}
-						},
-						focus: function( event, ui ) {
-							// Prevent value inserted on focus.
-							event.preventDefault();
-						},
-						select: function( event, ui ) {
-							var terms = split( this.value );
-
-							// Remove the last user input.
-							terms.pop();
-
-							// Add the selected item.
-							terms.push( ui.item.value );
-
-							// Add placeholder to get the comma-and-space at the end.
-							terms.push( "" );
-							this.value = terms.join( ", " );
-							return false;
-						}
-					});
-
-			};
-
-			$( '.category_autocomplete' ).each( function ( i, element ) {
-				$( element ).tptnTagsSuggest();
-			});
-
-			// Prompt the user when they leave the page without saving the form.
-			formmodified=0;
-
-			$('form *').change(function(){
-				formmodified=1;
-			});
-
-			window.onbeforeunload = confirmExit;
-
-			function confirmExit() {
-				if (formmodified == 1) {
-					return "<?php esc_html__( 'New information not saved. Do you wish to leave the page?', 'where-did-they-go-from-here' ); ?>";
-				}
-			}
-
-			$( "input[name='submit']" ).click( function() {
-				formmodified = 0;
-			});
-
-			$( function() {
-				$( "#post-body-content" ).tabs({
-					create: function( event, ui ) {
-						$( ui.tab.find("a") ).addClass( "nav-tab-active" );
-					},
-					activate: function( event, ui ) {
-						$( ui.oldTab.find("a") ).removeClass( "nav-tab-active" );
-						$( ui.newTab.find("a") ).addClass( "nav-tab-active" );
-					}
-				});
-			});
-
-			$( function() {
-				var dateFormat = 'dd M yy',
-				from = $( "#datepicker-from" )
-					.datepicker({
-						changeMonth: true,
-						maxDate: 0,
-						dateFormat: dateFormat
-					})
-					.on( "change", function() {
-						to.datepicker( "option", "minDate", getDate( this ) );
-					}),
-				to = $( "#datepicker-to" )
-					.datepicker({
-						changeMonth: true,
-						maxDate: 0,
-						dateFormat: dateFormat
-					})
-					.on( "change", function() {
-						from.datepicker( "option", "maxDate", getDate( this ) );
-					});
-
-				function getDate( element ) {
-					var date;
-					try {
-						date = $.datepicker.parseDate( dateFormat, element.value );
-					} catch( error ) {
-						date = null;
-					}
-
-					return date;
-				}
-			} );
-
-
-
-		});
-
-	//]]>
-	</script>
-	<?php
-}
 
 
 /**
@@ -411,7 +200,55 @@ function tptn_network_admin_menu_links() {
 
 	$tptn_network_pop_posts_page = add_menu_page( esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_network_options', 'tptn_network_pop_posts_page', array( $tptn_stats_screen, 'plugin_settings_page' ), 'dashicons-editor-ol' );
 	add_action( "load-$tptn_network_pop_posts_page", array( $tptn_stats_screen, 'screen_option' ) );
-	add_action( 'admin_head-' . $tptn_network_pop_posts_page, 'tptn_adminhead' );
 
 }
 add_action( 'network_admin_menu', 'tptn_network_admin_menu_links' );
+
+/**
+ * Enqueue Admin JS
+ *
+ * @since 2.9.0
+ * @global $tptn_settings_page
+ *
+ * @param string $hook The current admin page.
+ */
+function tptn_load_admin_scripts( $hook ) {
+
+	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page;
+
+	if ( ! in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
+		return;
+	}
+
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-autocomplete' );
+	wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'plugin-install' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
+	add_thickbox();
+
+	if ( in_array( $hook, array( $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page . '-network' ), true ) ) {
+		wp_enqueue_style(
+			'tptn-admin-ui-css',
+			plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
+			false,
+			'1.0',
+			false
+		);
+	}
+
+	wp_enqueue_code_editor(
+		array(
+			'type'       => 'text/html',
+			'codemirror' => array(
+				'indentUnit' => 2,
+				'tabSize'    => 2,
+			),
+		)
+	);
+
+	wp_enqueue_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery' ), '1.0', true );
+
+}
+add_action( 'admin_enqueue_scripts', 'tptn_load_admin_scripts' );
+
