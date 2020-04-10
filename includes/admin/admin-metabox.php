@@ -21,10 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 1.9.10
  *
- * @param text   $post_type  Post type.
- * @param object $post Post object.
+ * @param text $post_type  Post type.
  */
-function tptn_add_meta_box( $post_type, $post ) {
+function tptn_add_meta_box( $post_type ) {
 
 	// If metaboxes are disabled, then exit.
 	if ( ! tptn_get_option( 'show_metabox' ) ) {
@@ -62,7 +61,7 @@ function tptn_add_meta_box( $post_type, $post ) {
 		);
 	}
 }
-add_action( 'add_meta_boxes', 'tptn_add_meta_box', 10, 2 );
+add_action( 'add_meta_boxes', 'tptn_add_meta_box' );
 
 
 /**
@@ -109,6 +108,7 @@ function tptn_call_meta_box() {
 		<label for="total_count"><strong><?php esc_html_e( 'Visit count:', 'top-10' ); ?></strong></label>
 		<input type="text" id="total_count" name="total_count" value="<?php echo esc_attr( $total_count ); ?>" style="width:100%" />
 		<em><?php esc_html_e( 'Enter a number above to update the visit count. Leaving the above box blank will set the count to zero', 'top-10' ); ?></em>
+		<input type="hidden" id="total_count_original" name="total_count_original" value="<?php echo esc_attr( $total_count ); ?>">
 	</p>
 
 	<?php
@@ -176,7 +176,7 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	// If our nonce isn't there, or we can't verify it, bail.
-	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['tptn_meta_box_nonce'] ), 'tptn_meta_box' ) ) { // Input var okay.
+	if ( ! isset( $_POST['tptn_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['tptn_meta_box_nonce'] ), 'tptn_meta_box' ) ) {
 		return;
 	}
 
@@ -186,9 +186,10 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	// Update the posts view count.
-	if ( isset( $_POST['total_count'] ) ) { // Input var okay.
-		$total_count = intval( $_POST['total_count'] ); // Input var okay.
-		$blog_id     = get_current_blog_id();
+	if ( isset( $_POST['total_count'] ) && isset( $_POST['total_count_original'] ) ) {
+		$total_count          = intval( $_POST['total_count'] );
+		$total_count_original = intval( $_POST['total_count_original'] );
+		$blog_id              = get_current_blog_id();
 
 		if ( 0 === $total_count ) {
 			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -198,7 +199,7 @@ function tptn_save_meta_box( $post_id ) {
 					$blog_id
 				)
 			);
-		} else {
+		} elseif ( $total_count_original !== $total_count ) {
 			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare(
 					"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -212,8 +213,8 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	// Update the thumbnail URL.
-	if ( isset( $_POST['thumb_meta'] ) ) { // Input var okay.
-		$thumb_meta = empty( $_POST['thumb_meta'] ) ? '' : sanitize_text_field( wp_unslash( $_POST['thumb_meta'] ) ); // Input var okay.
+	if ( isset( $_POST['thumb_meta'] ) ) {
+		$thumb_meta = empty( $_POST['thumb_meta'] ) ? '' : sanitize_text_field( wp_unslash( $_POST['thumb_meta'] ) );
 	}
 
 	if ( ! empty( $thumb_meta ) ) {
@@ -223,13 +224,13 @@ function tptn_save_meta_box( $post_id ) {
 	}
 
 	// Disable posts.
-	if ( isset( $_POST['disable_here'] ) ) { // Input var okay.
+	if ( isset( $_POST['disable_here'] ) ) {
 		$tptn_post_meta['disable_here'] = 1;
 	} else {
 		$tptn_post_meta['disable_here'] = 0;
 	}
 
-	if ( isset( $_POST['exclude_this_post'] ) ) { // Input var okay.
+	if ( isset( $_POST['exclude_this_post'] ) ) {
 		$tptn_post_meta['exclude_this_post'] = 1;
 	} else {
 		$tptn_post_meta['exclude_this_post'] = 0;

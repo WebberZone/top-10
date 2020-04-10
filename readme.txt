@@ -3,7 +3,7 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: trunk
-Requires at least: 4.8
+Requires at least: 4.9
 Tested up to: 5.4
 License: GPLv2 or later
 
@@ -171,6 +171,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Use `current_time` and `gmdate` as per latest WordPress Coding Standards
 	* No more unnecessary form modified errors in the popular posts tables in Admin area
 	* Fixed notices in PHP 7.4 when viewing popular posts listings
+	* When editing posts, the count from the metabox will only be used if it is modified
 
 = 2.8.0 =
 
