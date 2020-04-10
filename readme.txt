@@ -169,6 +169,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* Fixed media lookup returning PHP errors/warnings in rare cases
 	* Use `current_time` and `gmdate` as per latest WordPress Coding Standards
+	* No more unnecessary form modified errors in the popular posts tables in Admin area
 
 = 2.8.0 =
 
