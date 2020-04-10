@@ -57,7 +57,7 @@ class Top_Ten_Network_Statistics {
 	 * @param  string $value  Option value.
 	 * @return string Value.
 	 */
-	public static function set_screen( $status, $option, $value ) {
+	public static function set_screen( $status, $option, $value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
 		return $value;
 	}
 
