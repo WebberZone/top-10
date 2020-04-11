@@ -230,3 +230,109 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 }
 
 
+/**
+ * Delete post count.
+ *
+ * @since 2.9.0
+ *
+ * @param int  $post_id Post ID.
+ * @param int  $blog_id Blog ID.
+ * @param bool $daily   Daily flag.
+ * @return bool|int Number of rows affected or false if error.
+ */
+function tptn_delete_count( $post_id, $blog_id, $daily = false ) {
+	global $wpdb;
+
+	$post_id = intval( $post_id );
+	$blog_id = intval( $blog_id );
+
+	if ( empty( $post_id ) || empty( $blog_id ) ) {
+		return false;
+	}
+
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	if ( $daily ) {
+		$table_name .= '_daily';
+	}
+
+	$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$post_id,
+			$blog_id
+		)
+	);
+
+	return $results;
+}
+
+
+/**
+ * Function to update the Top 10 count with ajax.
+ *
+ * @since 2.9.0
+ */
+function tptn_edit_count_ajax() {
+
+	if ( ! isset( $_REQUEST['total_count'] ) || ! isset( $_REQUEST['post_id'] ) || ! isset( $_REQUEST['total_count_original'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		wp_die( 0 );
+	}
+
+	$results = 0;
+
+	$post_id              = intval( $_REQUEST['post_id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$blog_id              = get_current_blog_id();
+	$total_count          = filter_var( $_REQUEST['total_count'], FILTER_SANITIZE_NUMBER_INT ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	$total_count_original = filter_var( $_REQUEST['total_count_original'], FILTER_SANITIZE_NUMBER_INT ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+
+	// If our current user can't edit this post, bail.
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		wp_die( 0 );
+	}
+
+	if ( $total_count_original !== $total_count ) {
+		$results = tptn_edit_count( $post_id, $blog_id, $total_count );
+	}
+	echo wp_json_encode( $results );
+	wp_die();
+}
+add_action( 'wp_ajax_tptn_edit_count_ajax', 'tptn_edit_count_ajax' );
+
+
+/**
+ * Function to edit the count.
+ *
+ * @since 2.9.0
+ *
+ * @param int $post_id Post ID.
+ * @param int $blog_id Blog ID.
+ * @param int $total_count Total count.
+ * @return bool|int Number of rows affected or false if error.
+ */
+function tptn_edit_count( $post_id, $blog_id, $total_count ) {
+
+	global $wpdb;
+
+	$post_id     = intval( $post_id );
+	$blog_id     = intval( $blog_id );
+	$total_count = intval( $total_count );
+
+	if ( empty( $post_id ) || empty( $blog_id ) || empty( $total_count ) ) {
+		return false;
+	}
+
+	$table_name = $wpdb->base_prefix . 'top_ten';
+
+	$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$post_id,
+			$total_count,
+			$blog_id,
+			$total_count
+		)
+	);
+
+	return $results;
+}
+

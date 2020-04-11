@@ -667,3 +667,26 @@ a.ui-button:active,
 	-webkit-box-shadow: -8px -8px 8px #aaaaaa;
 	box-shadow: -8px -8px 8px #aaaaaa;
 }
+
+/* Live editing styles
+----------------------------------*/
+.live_edit {
+	padding: 0 2px;
+}
+.live_edit_mode {
+	border: 1px solid black;
+}
+.live_edit_mode_success {
+	background-color: lightgreen;
+	-webkit-transition: background-color 0.5s ease;
+	-moz-transition: background-color 0.5s ease;
+	-o-transition: background-color 0.5s ease;
+	transition: background-color 0.5s ease;
+}
+.live_edit_mode_error {
+	background-color: lightpink;
+	-webkit-transition: background-color 0.5s ease;
+	-moz-transition: background-color 0.5s ease;
+	-o-transition: background-color 0.5s ease;
+	transition: background-color 0.5s ease;
+}
