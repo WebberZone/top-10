@@ -162,6 +162,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.9.0 =
 
+* Features:
+	* Edit the total visits from the Top 10 > Popular Posts page
+
 * Enhancements:
 	* Implemented CodeMirror to format custom styles box
 	* Admin scripts are no longer loaded into the head - but using a separate JavaScript file

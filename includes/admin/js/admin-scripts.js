@@ -222,4 +222,43 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Editable table code.
+	$('.live_edit').click(function(){
+		$(this).addClass('live_edit_mode');
+		$(this).removeClass("live_edit_mode_success");
+		$(this).removeClass("live_edit_mode_error");
+	});
+
+	$(".live_edit").on('focusout keypress',function(e){
+		if (e.type !== "focusout" && e.which !== 13) {
+			return;
+		}
+		var $element = $( this );
+		var post_id  = $element.attr( 'data-wp-post-id' );
+		var count    = $element.attr( 'data-wp-count' );
+		var value    = $element.text();
+
+		$element.removeClass("live_edit_mode");
+
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			url: ajaxurl,
+			data: {
+				action: 'tptn_edit_count_ajax',
+				post_id: post_id,
+				total_count: value,
+				total_count_original: count
+			},
+			success: function( response ) {
+				if ( response === false ) {
+					$element.addClass("live_edit_mode_error");
+					$element.html(count);
+				} else if ( response > 0 ) {
+					$element.addClass("live_edit_mode_success");
+				}
+			},
+		});
+	});
+
 });

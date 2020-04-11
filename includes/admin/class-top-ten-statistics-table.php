@@ -236,7 +236,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'post_type':
 				return $item[ $column_name ];
-			case 'total_count':
 			case 'daily_count':
 				return tptn_number_format_i18n( absint( $item[ $column_name ] ) );
 			default:
@@ -333,6 +332,21 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				)
 			),
 			esc_html( $author_name )
+		);
+	}
+
+	/**
+	 * Render the Total Count column.
+	 *
+	 * @param array $item Current item.
+	 * @return string
+	 */
+	public function column_total_count( $item ) {
+		return sprintf(
+			'<div contentEditable="true" class="live_edit" id="total_count_%1$s" data-wp-post-id="%1$s" data-wp-count="%2$s">%3$s</div>',
+			$item['ID'],
+			$item['total_count'],
+			tptn_number_format_i18n( absint( $item['total_count'] ) )
 		);
 	}
 
