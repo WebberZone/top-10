@@ -11,12 +11,14 @@ function clearCache() {
 jQuery(document).ready(function($) {
 	// Function to add auto suggest.
 	$.fn.tptnTagsSuggest = function( options ) {
-
 		var cache;
 		var last;
 		var $element = $( this );
 
-		var taxonomy = $element.attr( 'data-wp-taxonomy' ) || 'category';
+		options = options || {};
+
+		var taxonomy = options.taxonomy || $element.attr( 'data-wp-taxonomy' ) || 'category';
+		delete( options.taxonomy );
 
 		function split( val ) {
 			return val.split( /,\s*/ );
@@ -59,11 +61,9 @@ jQuery(document).ready(function($) {
 							tax: taxonomy,
 							q: term
 						},
-						success: function( data ) {
-							cache = data;
-
-							response( data );
-						}
+					}).done( function( data ) {
+						cache = data;
+						response( data );
 					});
 
 					last = request.term;
@@ -83,12 +83,17 @@ jQuery(document).ready(function($) {
 				},
 				select: function( event, ui ) {
 					var terms = split( this.value );
+					var val   = ui.item.value;
+
+					if ( val.indexOf(',') !== -1 ) {
+						val = '"' + val + '"'
+					}
 
 					// Remove the last user input.
 					terms.pop();
 
 					// Add the selected item.
-					terms.push( ui.item.value );
+					terms.push( val );
 
 					// Add placeholder to get the comma-and-space at the end.
 					terms.push( "" );
@@ -96,7 +101,6 @@ jQuery(document).ready(function($) {
 					return false;
 				}
 			});
-
 	};
 
 
