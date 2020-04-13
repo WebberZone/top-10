@@ -164,6 +164,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Features:
 	* Edit the total visits from the Top 10 > Popular Posts page
+	* New shortcode setting `include_cat_ids` to limit top posts to selected categories/taxonomies. Use a comma separated list of [term_taxonomy_id](https://codex.wordpress.org/WordPress_Taxonomy#wp_term_taxonomy)
+	* New setting in widget to only include certain categories. Doesn't work with custom taxonomies
 
 * Enhancements:
 	* Implemented CodeMirror to format custom styles box
