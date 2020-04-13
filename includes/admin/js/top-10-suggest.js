@@ -11,12 +11,84 @@ jQuery(document).ready(function($) {
 		delete( options.taxonomy );
 
 		function split( val ) {
-			return val.split( /,\s*/ );
+			return val.split( /,(?=(?:(?:[^"]*"){2})*[^"]*$)/ ); // Split typical CSV format, with commas and double quotes.
 		}
 
 		function extractLast( term ) {
 			return split( term ).pop();
 		}
+
+		options = $.extend({
+			minLength: 2,
+			position: {
+				my: 'left top+2',
+				at: 'left bottom',
+				collision: 'none'
+			},
+			source: function( request, response ) {
+				var term;
+
+				if ( last === request.term ) {
+					response( cache );
+					return;
+				}
+
+				term = extractLast( request.term );
+
+				if ( last === request.term ) {
+					response( cache );
+					return;
+				}
+
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					url: ajaxurl,
+					data: {
+						action: 'tptn_tag_search',
+						tax: taxonomy,
+						q: term
+					},
+				}).done( function( data ) {
+					cache = data;
+					response( data );
+				});
+
+				last = request.term;
+
+			},
+			search: function() {
+				// Custom minLength.
+				var term = extractLast( this.value );
+
+				if ( term.length < 2 ) {
+					return false;
+				}
+			},
+			focus: function( event, ui ) {
+				// Prevent value inserted on focus.
+				event.preventDefault();
+			},
+			select: function( event, ui ) {
+				var terms = split( this.value );
+				var val   = ui.item.value;
+
+				if ( val.indexOf(',') !== -1 ) {
+					val = '"' + val + '"'
+				}
+
+				// Remove the last user input.
+				terms.pop();
+
+				// Add the selected item.
+				terms.push( val );
+
+				// Add placeholder to get the comma-and-space at the end.
+				terms.push( "" );
+				this.value = terms.join( ", " );
+				return false;
+			}
+		}, options );
 
 		$element.on( "keydown", function( event ) {
 				// Don't navigate away from the field on tab when selecting an item.
@@ -25,72 +97,7 @@ jQuery(document).ready(function($) {
 					event.preventDefault();
 				}
 			})
-			.autocomplete({
-				minLength: 2,
-				source: function( request, response ) {
-					var term;
-
-					if ( last === request.term ) {
-						response( cache );
-						return;
-					}
-
-					term = extractLast( request.term );
-
-					if ( last === request.term ) {
-						response( cache );
-						return;
-					}
-
-					$.ajax({
-						type: 'POST',
-						dataType: 'json',
-						url: ajaxurl,
-						data: {
-							action: 'tptn_tag_search',
-							tax: taxonomy,
-							q: term
-						},
-					}).done( function( data ) {
-						cache = data;
-						response( data );
-					});
-
-					last = request.term;
-
-				},
-				search: function() {
-					// Custom minLength.
-					var term = extractLast( this.value );
-
-					if ( term.length < 2 ) {
-						return false;
-					}
-				},
-				focus: function( event, ui ) {
-					// Prevent value inserted on focus.
-					event.preventDefault();
-				},
-				select: function( event, ui ) {
-					var terms = split( this.value );
-					var val   = ui.item.value;
-
-					if ( val.indexOf(',') !== -1 ) {
-						val = '"' + val + '"'
-					}
-
-					// Remove the last user input.
-					terms.pop();
-
-					// Add the selected item.
-					terms.push( val );
-
-					// Add placeholder to get the comma-and-space at the end.
-					terms.push( "" );
-					this.value = terms.join( ", " );
-					return false;
-				}
-			});
+			.autocomplete( options );
 	};
 
 	$( '.category_autocomplete' ).each( function ( i, element ) {

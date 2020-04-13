@@ -668,7 +668,6 @@ function tptn_tags_search() {
 	wp_die();
 
 }
-add_action( 'wp_ajax_nopriv_tptn_tag_search', 'tptn_tags_search' );
 add_action( 'wp_ajax_tptn_tag_search', 'tptn_tags_search' );
 
 
