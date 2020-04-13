@@ -208,7 +208,6 @@ add_action( 'network_admin_menu', 'tptn_network_admin_menu_links' );
  * Enqueue Admin JS
  *
  * @since 2.9.0
- * @global $tptn_settings_page
  *
  * @param string $hook The current admin page.
  */
@@ -216,39 +215,78 @@ function tptn_load_admin_scripts( $hook ) {
 
 	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page;
 
-	if ( ! in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
-		return;
+	wp_register_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ), '1.0', true );
+	wp_register_script( 'top-ten-suggest-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/top-10-suggest.min.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.0', true );
+
+	wp_register_style(
+		'tptn-admin-customizer-css',
+		TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-customizer.min.css',
+		false,
+		'1.0',
+		false
+	);
+
+	if ( in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
+
+		wp_enqueue_script( 'top-ten-admin-js' );
+		wp_enqueue_script( 'top-ten-suggest-js' );
+		wp_enqueue_script( 'plugin-install' );
+		add_thickbox();
+
+		wp_enqueue_code_editor(
+			array(
+				'type'       => 'text/html',
+				'codemirror' => array(
+					'indentUnit' => 2,
+					'tabSize'    => 2,
+				),
+			)
+		);
+
 	}
 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'plugin-install' );
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	add_thickbox();
-
+	// Only enqueue the styles if this is a popular posts page.
 	if ( in_array( $hook, array( $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page . '-network' ), true ) ) {
 		wp_enqueue_style(
 			'tptn-admin-ui-css',
-			plugins_url( 'includes/admin/css/top-10-admin.min.css', TOP_TEN_PLUGIN_FILE ),
+			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
 			false,
 			'1.0',
 			false
 		);
 	}
-
-	wp_enqueue_code_editor(
-		array(
-			'type'       => 'text/html',
-			'codemirror' => array(
-				'indentUnit' => 2,
-				'tabSize'    => 2,
-			),
-		)
-	);
-
-	wp_enqueue_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery' ), '1.0', true );
-
 }
 add_action( 'admin_enqueue_scripts', 'tptn_load_admin_scripts' );
+
+
+/**
+ * This function enqueues scripts and styles in the Customizer.
+ *
+ * @since 2.9.0
+ */
+function tptn_customize_controls_enqueue_scripts() {
+	wp_enqueue_script( 'customize-controls' );
+	wp_enqueue_script( 'top-ten-suggest-js' );
+
+	wp_enqueue_style( 'tptn-admin-customizer-css' );
+
+}
+add_action( 'customize_controls_enqueue_scripts', 'tptn_customize_controls_enqueue_scripts', 99 );
+
+
+/**
+ * This function enqueues scripts and styles on widgets.php.
+ *
+ * @since 2.9.0
+ *
+ * @param string $hook The current admin page.
+ */
+function tptn_enqueue_scripts_widgets( $hook ) {
+	if ( 'widgets.php' !== $hook ) {
+		return;
+	}
+	wp_enqueue_script( 'top-ten-suggest-js' );
+	wp_enqueue_style( 'tptn-admin-customizer-css' );
+}
+add_action( 'admin_enqueue_scripts', 'tptn_enqueue_scripts_widgets', 99 );
 

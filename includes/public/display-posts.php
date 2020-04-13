@@ -376,6 +376,12 @@ function get_tptn_pop_posts( $args = array() ) {
 		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", current_time( 'Y-m-d H:m:s' ) - ( $args['how_old'] * DAY_IN_SECONDS ) );
 	}
 
+	if ( isset( $args['include_cat_ids'] ) && ! empty( $args['include_cat_ids'] ) ) {
+		$include_cat_ids = $args['include_cat_ids'];
+
+		$where .= " AND $wpdb->posts.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ($include_cat_ids) )";
+	}
+
 	// Create the base GROUP BY clause.
 	if ( $args['daily'] ) {
 		$groupby = ' postnumber ';

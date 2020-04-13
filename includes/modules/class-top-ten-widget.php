@@ -47,19 +47,21 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title           = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
-		$limit           = isset( $instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
-		$offset          = isset( $instance['offset'] ) ? esc_attr( $instance['offset'] ) : '';
-		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
-		$show_excerpt    = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
-		$show_author     = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
-		$show_date       = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
-		$post_thumb_op   = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
-		$thumb_height    = isset( $instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : '';
-		$thumb_width     = isset( $instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : '';
-		$daily           = isset( $instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
-		$daily_range     = isset( $instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
-		$hour_range      = isset( $instance['hour_range'] ) ? esc_attr( $instance['hour_range'] ) : '';
+		$title              = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
+		$limit              = isset( $instance['limit'] ) ? esc_attr( $instance['limit'] ) : '';
+		$offset             = isset( $instance['offset'] ) ? esc_attr( $instance['offset'] ) : '';
+		$disp_list_count    = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
+		$show_excerpt       = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
+		$show_author        = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
+		$show_date          = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
+		$post_thumb_op      = isset( $instance['post_thumb_op'] ) ? esc_attr( $instance['post_thumb_op'] ) : 'text_only';
+		$thumb_height       = isset( $instance['thumb_height'] ) ? esc_attr( $instance['thumb_height'] ) : '';
+		$thumb_width        = isset( $instance['thumb_width'] ) ? esc_attr( $instance['thumb_width'] ) : '';
+		$daily              = isset( $instance['daily'] ) ? esc_attr( $instance['daily'] ) : 'overall';
+		$daily_range        = isset( $instance['daily_range'] ) ? esc_attr( $instance['daily_range'] ) : '';
+		$hour_range         = isset( $instance['hour_range'] ) ? esc_attr( $instance['hour_range'] ) : '';
+		$include_categories = isset( $instance['include_categories'] ) ? esc_attr( $instance['include_categories'] ) : '';
+		$include_cat_ids    = isset( $instance['include_cat_ids'] ) ? esc_attr( $instance['include_cat_ids'] ) : '';
 
 		// Parse the Post types.
 		$post_types = array();
@@ -146,6 +148,13 @@ class Top_Ten_Widget extends WP_Widget {
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'thumb_width' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'thumb_width' ) ); ?>" type="text" value="<?php echo esc_attr( $thumb_width ); ?>" />
 			</label>
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'include_categories' ) ); ?>">
+				<?php esc_html_e( 'Only from categories', 'top-10' ); ?>:
+				<input class="widefat category_autocomplete" id="<?php echo esc_attr( $this->get_field_id( 'include_categories' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'include_categories' ) ); ?>" type="text" value="<?php echo esc_attr( $include_categories ); ?>" />
+			</label>
+			<input type="hidden" id="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" name="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" value="<?php echo esc_attr( $include_cat_ids ); ?>" />
+		</p>
 		<p><?php esc_html_e( 'Post types to include:', 'top-10' ); ?><br />
 
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
@@ -171,7 +180,7 @@ class Top_Ten_Widget extends WP_Widget {
 		?>
 
 		<?php
-	} //ending form creation
+	}
 
 	/**
 	 * Sanitize widget form values as they are saved.
@@ -209,6 +218,20 @@ class Top_Ten_Widget extends WP_Widget {
 		$post_types             = array_intersect( $wp_post_types, $post_types );
 		$instance['post_types'] = http_build_query( $post_types, '', '&' );
 
+		// Save include_categories.
+		$include_categories = array_unique( str_getcsv( $new_instance['include_categories'] ) );
+
+		foreach ( $include_categories as $cat_name ) {
+			$cat = get_term_by( 'name', $cat_name, 'category' );
+
+			if ( isset( $cat->term_taxonomy_id ) ) {
+				$include_cat_ids[]   = $cat->term_taxonomy_id;
+				$include_cat_names[] = $cat->name;
+			}
+		}
+		$instance['include_cat_ids']    = isset( $include_cat_ids ) ? join( ',', $include_cat_ids ) : '';
+		$instance['include_categories'] = isset( $include_cat_names ) ? tptn_str_putcsv( $include_cat_names ) : '';
+
 		/**
 		 * Filters Update widget options array.
 		 *
@@ -217,7 +240,7 @@ class Top_Ten_Widget extends WP_Widget {
 		 * @param   array   $instance   Widget options array
 		 */
 		return apply_filters( 'tptn_widget_options_update', $instance );
-	} //ending update
+	}
 
 	/**
 	 * Front-end display of widget.
@@ -265,6 +288,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$show_author     = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
 		$show_date       = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
 		$post_types      = isset( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
+		$include_cat_ids = isset( $instance['include_cat_ids'] ) ? esc_attr( $instance['include_cat_ids'] ) : '';
 
 		$arguments = array(
 			'is_widget'       => 1,
@@ -283,6 +307,7 @@ class Top_Ten_Widget extends WP_Widget {
 			'thumb_width'     => $thumb_width,
 			'disp_list_count' => $disp_list_count,
 			'post_types'      => $post_types,
+			'include_cat_ids' => $include_cat_ids,
 		);
 
 		/**
@@ -300,7 +325,7 @@ class Top_Ten_Widget extends WP_Widget {
 
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-	} //ending function widget
+	}
 
 
 	/**
