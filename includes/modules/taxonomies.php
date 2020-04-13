@@ -55,9 +55,9 @@ function tptn_exclude_categories_where( $where ) {
 		$sql = $where;
 
 		$sql .= " AND $wpdb->posts.ID NOT IN (
-            SELECT object_id
-            FROM $wpdb->term_relationships
-            WHERE term_taxonomy_id IN ($terms)
+			SELECT object_id
+			FROM $wpdb->term_relationships
+			WHERE term_taxonomy_id IN ($terms)
         )";
 
 		return $sql;
