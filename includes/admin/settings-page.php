@@ -656,8 +656,8 @@ function tptn_tags_search() {
 	}
 
 	$results = get_terms(
-		$taxonomy,
 		array(
+			'taxonomy'   => $taxonomy,
 			'name__like' => $s,
 			'fields'     => 'names',
 			'hide_empty' => false,
