@@ -97,7 +97,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 == Frequently Asked Questions ==
 
 Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/) and the [FAQ on the WebberZone knowledgebase](https://webberzone.com/support/section/top-10/).
-It is the fastest way to get support as I monitor the forums regularly. I also provide [premium *paid* support via email](https://webberzone.com/support/).
+It is the fastest way to get support as I monitor the forums regularly. I also provide [*paid* premium support via email](https://webberzone.com/support/).
 
 
 = How can I customise the output? =
@@ -120,7 +120,7 @@ The main CSS classes include:
 
 = Shortcodes =
 
-You can find details of the shortcodes in this [article](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
+You can find details of the shortcodes in this [knowledge base article](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
 
 = Manual install =
 
@@ -138,7 +138,7 @@ View [examples of the plugin API](https://gist.github.com/ajaydsouza/c8defd4b46e
 
 = Can this plugin replace Google Analytics? =
 
-No. Top 10 has been designed to only track the number of page-views on your blog posts and display the same. It isn't designed to replace Google Analytics or any other full fledged statistics application.
+No. Top 10 has been designed to only track the number of page-views on your blog posts and display the same. It isn't designed to replace Google Analytics or any other full fledged analytics application.
 
 = How does the scheduled maintenance work? =
 
@@ -162,6 +162,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.9.0 =
 
+Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
+
 * Features:
 	* Edit the total visits from the Top 10 > Popular Posts page
 	* New shortcode setting `include_cat_ids` to limit top posts to selected categories/taxonomies. Use a comma separated list of [term_taxonomy_id](https://codex.wordpress.org/WordPress_Taxonomy#wp_term_taxonomy)
@@ -180,7 +182,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.8.0 =
 
-Release post: [https://webberzone.com/blog/contextual-related-posts-v2-8-0/](https://webberzone.com/blog/contextual-related-posts-v2-8-0/)
+Release post: [https://webberzone.com/blog/top-10-v2-8-0/](https://webberzone.com/blog/top-10-v2-8-0/)
 
 * Features:
 	* Custom feed for popular posts: Find new options under a new tab called Feed in the settings page where you can set the URL for the overall and daily feeds
@@ -189,7 +191,7 @@ Release post: [https://webberzone.com/blog/contextual-related-posts-v2-8-0/](htt
 
 = 2.7.0 =
 
-Release post: [https://webberzone.com/blog/contextual-related-posts-v2-7-0/](https://webberzone.com/blog/contextual-related-posts-v2-7-0/)
+Release post: [https://webberzone.com/blog/top-10-v2-7-0/](https://webberzone.com/blog/top-10-v2-7-0/)
 
 * Features:
 	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
@@ -204,6 +206,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 == Upgrade Notice ==
 
 = 2.9.0 =
-Bug fixes.
+Bug fixes and new features;
 Check the Changelog for more details
 
