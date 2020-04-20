@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-15 09:49+0100\n"
+"POT-Creation-Date: 2020-04-20 18:40+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WebberZone <plugins@webberzone.com>\n"
@@ -1603,19 +1603,19 @@ msgstr ""
 msgid " by "
 msgstr ""
 
-#: includes/tracker.php:276
+#: includes/tracker.php:280
 msgid "Query variable based"
 msgstr ""
 
-#: includes/tracker.php:277
+#: includes/tracker.php:281
 msgid "Uses query variables to record visits"
 msgstr ""
 
-#: includes/tracker.php:281
+#: includes/tracker.php:285
 msgid "Ajaxurl based"
 msgstr ""
 
-#: includes/tracker.php:282
+#: includes/tracker.php:286
 msgid ""
 "Uses admin-ajax.php which is inbuilt within WordPress to process the tracker"
 msgstr ""

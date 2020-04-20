@@ -162,6 +162,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 2.9.1 =
 
+Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
+
 * Bug fixes:
 	* Published age of posts parameter was no longer working
 	* Importing settings should now work properly - previously checkboxes all ended up being enabled
