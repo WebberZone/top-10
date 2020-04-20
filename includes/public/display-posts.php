@@ -373,7 +373,9 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// How old should the posts be?
 	if ( $args['how_old'] ) {
-		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", current_time( 'Y-m-d H:m:s' ) - ( $args['how_old'] * DAY_IN_SECONDS ) );
+		$how_old_date = tptn_get_from_date( null, $args['how_old'] + 1, 0 );
+
+		$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", $how_old_date );
 	}
 
 	if ( isset( $args['include_cat_ids'] ) && ! empty( $args['include_cat_ids'] ) ) {
