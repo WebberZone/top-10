@@ -14,10 +14,14 @@
 function tptn_enqueue_scripts() {
 	global $post, $ajax_tptn_tracker;
 
+	if ( ! is_object( $post ) ) {
+		return;
+	}
+
 	$track_users = tptn_get_option( 'track_users' );
 	$trackers    = tptn_get_option( 'trackers' );
 
-	if ( ( is_singular() || tptn_get_option( 'tracker_all_pages' ) ) && 'draft' !== $post->post_status && ! is_customize_preview() ) {
+	if ( ( is_singular() || tptn_get_option( 'tracker_all_pages' ) ) && ( 'draft' !== $post->post_status ) && ! is_customize_preview() ) {
 
 		$current_user        = wp_get_current_user();  // Let's get the current user.
 		$post_author         = ( $current_user->ID === $post->post_author ) ? true : false; // Is the current user the post author?
