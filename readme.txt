@@ -160,6 +160,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.9.3 =
+
+Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
+
+* Bug fixes:
+	* `include_cat_ids` didn't work with the shortcode
+
 = 2.9.2 =
 
 Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
@@ -221,7 +228,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 2.9.2 =
-Bug fixes and new features;
-Check the Changelog for more details
+= 2.9.3 =
+Bug fixes and new features; Check the Changelog for more details
 
