@@ -60,11 +60,7 @@ function tptn_pop_posts( $args ) {
 
 	// Check if the cache is enabled and if the output exists. If so, return the output.
 	if ( $args['cache'] && ! $args['posts_only'] ) {
-		$cache_name  = 'tptn';
-		$cache_name .= $args['daily'] ? '_daily' : '_total';
-		$cache_name .= $args['is_widget'] ? '_widget' . $args['instance_id'] : '';
-		$cache_name .= $args['is_shortcode'] ? '_shortcode' : '';
-		$cache_name .= $args['is_manual'] ? '_manual' : '';
+		$cache_name = tptn_cache_get_key( $args );
 
 		$output = get_transient( $cache_name );
 
@@ -573,4 +569,20 @@ function tptn_pop_posts_feed_callback( $daily = false ) {
 		load_template( $template );
 	}
 
+}
+
+
+/**
+ * Get the key based on a list of parameters.
+ *
+ * @since 2.9.3
+ *
+ * @param array $attr   Array of attributes.
+ * @return string Cache key
+ */
+function tptn_cache_get_key( $attr ) {
+
+	$key = 'tptn_cache_' . md5( wp_json_encode( $attr ) );
+
+	return $key;
 }

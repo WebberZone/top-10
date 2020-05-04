@@ -164,6 +164,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
 
+* Enhancements:
+	* Cache now uses MD5 generated keys based on the Top 10 parameters being passed. This means the cache should now work with shortcodes and manual implementations
+
 * Bug fixes:
 	* `include_cat_ids` didn't work with the shortcode
 
