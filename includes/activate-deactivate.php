@@ -50,7 +50,9 @@ register_activation_hook( TOP_TEN_PLUGIN_FILE, 'tptn_activation_hook' );
 function tptn_single_activate() {
 	global $wpdb, $tptn_db_version;
 
-	$tptn_settings = tptn_get_settings();
+	$tptn_settings   = tptn_get_settings();
+	$charset_collate = $wpdb->get_charset_collate();
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
@@ -63,9 +65,8 @@ function tptn_single_activate() {
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, blog_id)
-			);";
+			) $charset_collate;";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 	}
@@ -79,9 +80,8 @@ function tptn_single_activate() {
 			dp_date DATETIME NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, dp_date, blog_id)
-		);";
+			) $charset_collate;";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 	}
@@ -103,7 +103,7 @@ function tptn_single_activate() {
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, blog_id)
-			);";
+			) $charset_collate;";
 
 		$sql .= 'CREATE TABLE ' . $table_name_daily . " (
 			postnumber bigint(20) NOT NULL,
@@ -111,9 +111,8 @@ function tptn_single_activate() {
 			dp_date DATETIME NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, dp_date, blog_id)
-		);";
+			) $charset_collate;";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
 		update_site_option( 'tptn_db_version', $tptn_db_version );
