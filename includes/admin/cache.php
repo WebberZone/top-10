@@ -12,13 +12,14 @@
  */
 function tptn_ajax_clearcache() {
 
-	tptn_cache_delete();
+	$count = tptn_cache_delete();
 
 	exit(
 		wp_json_encode(
 			array(
 				'success' => 1,
-				'message' => __( 'Top 10 cache has been cleared', 'top-10' ),
+				/* translators: 1: Number of entries. */
+				'message' => sprintf( _n( '%s entry cleared', '%s entries cleared', $count, 'text-domain' ), number_format_i18n( $count ) ),
 			)
 		)
 	);
@@ -60,9 +61,13 @@ function tptn_cache_get_keys() {
 /**
  * Delete the Top 10 cache.
  *
- * @param   array $transients Array of transients to delete.
+ * @since 2.3.0
+ *
+ * @param array $transients Array of transients to delete.
+ * @return int Number of transients deleted.
  */
 function tptn_cache_delete( $transients = array() ) {
+	$loop = 0;
 
 	$default_transients = tptn_cache_get_keys();
 
@@ -73,8 +78,12 @@ function tptn_cache_delete( $transients = array() ) {
 	}
 
 	foreach ( $transients as $transient ) {
-		delete_transient( $transient );
+		$del = delete_transient( $transient );
+		if ( $del ) {
+			$loop++;
+		}
 	}
+	return $loop;
 }
 
 
@@ -93,7 +102,7 @@ function tptn_cache_get_widget_keys() {
 	$sql = "
 		SELECT option_name
 		FROM {$wpdb->options}
-		WHERE `option_name` LIKE '_transient_tptn_%_widget%'
+		WHERE `option_name` LIKE '_transient_tptn_%'
 	";
 
 	$results = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
