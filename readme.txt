@@ -167,6 +167,7 @@ Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.co
 * Enhancements:
 	* Cache now uses MD5 generated keys based on the Top 10 parameters being passed. This means the cache should now work with shortcodes and manual implementations
 	* Database creation now uses the correct collation
+    * Password protected posts will no longer show the excerpt
 
 * Bug fixes:
 	* `include_cat_ids` didn't work with the shortcode
