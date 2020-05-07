@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-20 18:40+0100\n"
+"POT-Creation-Date: 2020-05-07 22:00+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
 "Language-Team: WebberZone <plugins@webberzone.com>\n"
@@ -164,10 +164,6 @@ msgstr ""
 
 #: includes/admin/admin.php:201
 msgid "Top 10 - Network Popular Posts"
-msgstr ""
-
-#: includes/admin/cache.php:21
-msgid "Top 10 cache has been cleared"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:36
@@ -1491,6 +1487,10 @@ msgstr ""
 msgid "<h3>Daily Popular</h3>"
 msgstr ""
 
+#: includes/formatting.php:38
+msgid "There is no excerpt because this is a protected post."
+msgstr ""
+
 #: includes/modules/class-top-ten-count-widget.php:30
 msgid "Overall count [Top 10]"
 msgstr ""
@@ -1575,13 +1575,13 @@ msgstr ""
 msgid "Post types to include:"
 msgstr ""
 
-#: includes/public/display-posts.php:92
+#: includes/public/display-posts.php:88
 msgid ""
 "posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the "
 "posts only."
 msgstr ""
 
-#: includes/public/display-posts.php:219
+#: includes/public/display-posts.php:215
 #, php-format
 msgid ""
 "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
