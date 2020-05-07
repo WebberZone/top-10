@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 2.9.2
+Stable tag: 2.9.3
 Requires at least: 4.9
 Tested up to: 5.4
 License: GPLv2 or later
@@ -234,5 +234,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 == Upgrade Notice ==
 
 = 2.9.3 =
-Bug fixes and new features; Check the Changelog for more details
+Bug fixes and new features; Check the Changelog for more details or the release posts on https://webberzone.com
 
