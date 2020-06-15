@@ -5,6 +5,7 @@ Donate link: https://ajaydsouza.com/donate/
 Stable tag: 2.9.4
 Requires at least: 4.9
 Tested up to: 5.4
+Requires PHP: 5.6
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -229,6 +230,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 2.9.3 =
+= 2.9.4 =
 Bug fixes and new features; Check the Changelog for more details or the release posts on https://webberzone.com
 
