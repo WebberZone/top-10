@@ -1,5 +1,16 @@
 This file holds the archive of changelog entries
 
+= 2.7.0 =
+
+Release post: [https://webberzone.com/blog/top-10-v2-7-0/](https://webberzone.com/blog/top-10-v2-7-0/)
+
+* Features:
+	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
+	* New export/import interface to export and import the Top 10 tables and settings
+
+* Enhancements:
+	* `tptn_views` shortcode adds a new parameter 'count' to explicitly set the count type. Choose from daily, total or overall. This is overridden if daily is set to 0 (backwards compatibility)
+
 = 2.6.3 =
 
 * Enhancements:

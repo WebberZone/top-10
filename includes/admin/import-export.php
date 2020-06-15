@@ -82,7 +82,7 @@ function tptn_exim_page() {
 					<?php esc_html_e( 'Click the buttons below to export the overall and the daily tables. The file is downloaded as an CSV file which you should be able to edit in Excel or any other compatible software.', 'top-10' ); ?>
 					<?php esc_html_e( 'If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts.', 'top-10' ); ?>
 				</p>
-				<p><input type="hidden" name="tptn_action" value="export_settings" /></p>
+				<p><input type="hidden" name="tptn_action" value="export_tables" /></p>
 				<p>
 					<?php submit_button( esc_html__( 'Export overall tables', 'top-10' ), 'primary', 'tptn_export_total', false ); ?>
 					<?php submit_button( esc_html__( 'Export daily tables', 'top-10' ), 'primary', 'tptn_export_daily', false ); ?>
@@ -116,7 +116,7 @@ function tptn_exim_page() {
 					<?php submit_button( esc_html__( 'Import Daily CSV', 'top-10' ), 'primary', 'tptn_import_daily', false ); ?>
 				</p>
 
-				<input type="hidden" name="tptn_action" value="import_settings" />
+				<input type="hidden" name="tptn_action" value="import_tables" />
 				<?php wp_nonce_field( 'tptn_import_nonce', 'tptn_import_nonce' ); ?>
 			</form>
 
@@ -141,14 +141,14 @@ function tptn_exim_page() {
 
 
 /**
- * Process a settings export that generates a .json file of the shop settings
+ * Process a settings export that generates a .csv file of the Top 10 table.
  *
  * @since 2.7.0
  */
 function tptn_export_tables() {
 	global $wpdb;
 
-	if ( empty( $_POST['tptn_action'] ) || 'export_settings' !== $_POST['tptn_action'] ) {
+	if ( empty( $_POST['tptn_action'] ) || 'export_tables' !== $_POST['tptn_action'] ) {
 		return;
 	}
 
@@ -224,14 +224,14 @@ function tptn_export_tables() {
 add_action( 'admin_init', 'tptn_export_tables' );
 
 /**
- * Process a settings export that generates a .json file of the shop settings
+ * Process a .csv file to import the table into the database.
  *
  * @since 2.7.0
  */
 function tptn_import_tables() {
 	global $wpdb;
 
-	if ( empty( $_POST['tptn_action'] ) || 'import_settings' !== $_POST['tptn_action'] ) {
+	if ( empty( $_POST['tptn_action'] ) || 'import_tables' !== $_POST['tptn_action'] ) {
 		return;
 	}
 
@@ -306,10 +306,10 @@ function tptn_import_tables() {
 	exit;
 
 }
-add_action( 'admin_init', 'tptn_import_tables' );
+add_action( 'admin_init', 'tptn_import_tables', 9 );
 
 /**
- * Process a settings export that generates a .json file of the shop settings
+ * Process a settings export that generates a .json file of the Top 10 settings
  *
  * @since 2.7.0
  */
