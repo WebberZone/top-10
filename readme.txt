@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 2.9.3
+Stable tag: 2.9.4
 Requires at least: 4.9
 Tested up to: 5.4
 License: GPLv2 or later
@@ -160,6 +160,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 2.9.4 =
+
+Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
+
+* Bug fixes:
+	* .json file error when trying to import tables in the Tools page
+
 = 2.9.3 =
 
 Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
@@ -216,17 +223,6 @@ Release post: [https://webberzone.com/blog/top-10-v2-8-0/](https://webberzone.co
 	* Custom feed for popular posts: Find new options under a new tab called Feed in the settings page where you can set the URL for the overall and daily feeds
 	* New page in the network admin menu to view the popular posts across the network
 	* Also delete transients and other settings on uninstall
-
-= 2.7.0 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-7-0/](https://webberzone.com/blog/top-10-v2-7-0/)
-
-* Features:
-	* Recreate the Top 10 database tables. You can find the button in the Tools page. Backup your database first
-	* New export/import interface to export and import the Top 10 tables and settings
-
-* Enhancements:
-	* `tptn_views` shortcode adds a new parameter 'count' to explicitly set the count type. Choose from daily, total or overall. This is overridden if daily is set to 0 (backwards compatibility)
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
