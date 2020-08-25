@@ -56,7 +56,7 @@ function tptn_exim_page() {
 					<?php submit_button( esc_html__( 'Export Settings', 'top-10' ), 'primary', 'tptn_export_settings', false ); ?>
 				</p>
 
-				<?php wp_nonce_field( 'tptn_export_setting_nonce', 'tptn_export_setting_nonce' ); ?>
+				<?php wp_nonce_field( 'tptn_export_settings_nonce', 'tptn_export_settings_nonce' ); ?>
 			</form>
 
 			<form method="post" enctype="multipart/form-data">
@@ -152,7 +152,7 @@ function tptn_export_tables() {
 		return;
 	}
 
-	if ( isset( $_POST['tptn_export_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['tptn_export_nonce'] ), 'tptn_export_nonce' ) ) {
+	if ( ! wp_verify_nonce( sanitize_key( $_POST['tptn_export_nonce'] ), 'tptn_export_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		return;
 	}
 
@@ -235,7 +235,7 @@ function tptn_import_tables() {
 		return;
 	}
 
-	if ( isset( $_POST['tptn_import_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['tptn_import_nonce'] ), 'tptn_import_nonce' ) ) {
+	if ( ! wp_verify_nonce( sanitize_key( $_POST['tptn_import_nonce'] ), 'tptn_import_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		return;
 	}
 
@@ -319,7 +319,7 @@ function tptn_process_settings_export() {
 		return;
 	}
 
-	if ( isset( $_POST['tptn_export_settings_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['tptn_export_settings_nonce'] ), 'tptn_export_settings_nonce' ) ) {
+	if ( ! wp_verify_nonce( sanitize_key( $_POST['tptn_export_settings_nonce'] ), 'tptn_export_settings_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		return;
 	}
 
@@ -352,7 +352,7 @@ function tptn_process_settings_import() {
 		return;
 	}
 
-	if ( isset( $_POST['tptn_import_settings_nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['tptn_import_settings_nonce'] ), 'tptn_import_settings_nonce' ) ) {
+	if ( ! wp_verify_nonce( sanitize_key( $_POST['tptn_import_settings_nonce'] ), 'tptn_import_settings_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		return;
 	}
 
