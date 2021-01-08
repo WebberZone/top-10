@@ -610,6 +610,60 @@ function tptn_posttypes_callback( $args ) {
 
 
 /**
+ * Display taxonomies fields.
+ *
+ * @since 3.0.0
+ *
+ * @param array $args Array of arguments.
+ * @return void
+ */
+function tptn_taxonomies_callback( $args ) {
+
+	global $tptn_settings;
+	$html = '';
+
+	if ( isset( $tptn_settings[ $args['id'] ] ) ) {
+		$options = $tptn_settings[ $args['id'] ];
+	} else {
+		$options = isset( $args['options'] ) ? $args['options'] : '';
+	}
+
+	// If taxonomies is empty or contains a query string then use parse_str else consider it comma-separated.
+	if ( is_array( $options ) ) {
+		$taxonomies = $options;
+	} elseif ( ! is_array( $options ) && false === strpos( $options, '=' ) ) {
+		$taxonomies = explode( ',', $options );
+	} else {
+		parse_str( $options, $taxonomies );
+	}
+
+	/* Fetch taxonomies */
+	$argsc         = array(
+		'public' => true,
+	);
+	$output        = 'objects';
+	$operator      = 'and';
+	$wp_taxonomies = get_taxonomies( $argsc, $output, $operator );
+
+	$taxonomies_inc = array_intersect( wp_list_pluck( (array) $wp_taxonomies, 'name' ), $taxonomies );
+
+	$html .= sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
+
+	foreach ( $wp_taxonomies as $wp_taxonomy ) {
+
+		$html .= sprintf( '<input name="tptn_settings[%1$s][%2$s]" id="tptn_settings[%1$s][%2$s]" type="checkbox" value="%2$s" %3$s /> ', sanitize_key( $args['id'] ), esc_attr( $wp_taxonomy->name ), checked( true, in_array( $wp_taxonomy->name, $taxonomies_inc, true ), false ) );
+		$html .= sprintf( '<label for="tptn_settings[%1$s][%2$s]">%3$s (%4$s)</label> <br />', sanitize_key( $args['id'] ), esc_attr( $wp_taxonomy->name ), $wp_taxonomy->labels->name, $wp_taxonomy->name );
+
+	}
+
+	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
+
+	/** This filter has been defined in settings-page.php */
+	echo apply_filters( 'tptn_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+
+/**
  * Function to add an action to search for tags using Ajax.
  *
  * @since 2.1.0
