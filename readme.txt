@@ -161,82 +161,19 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 2.9.5 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
-
-* Bug fixes:
-	* Security fix: Nonces were not always checked in import module
-
-= 2.9.4 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
-
-* Bug fixes:
-	* .json file error when trying to import tables in the Tools page
-
-= 2.9.3 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
-
-* Enhancements:
-	* Cache now uses MD5 generated keys based on the Top 10 parameters being passed. This means the cache should now work with shortcodes and manual implementations
-	* Database creation now uses the correct collation
-
-* Bug fixes:
-	* `include_cat_ids` didn't work with the shortcode
-    * Password protected posts will no longer show the excerpt
-
-= 2.9.2 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
-
-* Bug fixes:
-	* Custom CSS box would not save
-
-= 2.9.1 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
-
-* Bug fixes:
-	* Published age of posts parameter was no longer working
-	* Importing settings should now work properly - previously checkboxes all ended up being enabled
-	* In rare cases, the tracker would throw PHP errors e.g. on search results page where no posts were loaded and tracker was enabled to load on all pages
-
-= 2.9.0 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-9-0/](https://webberzone.com/blog/top-10-v2-9-0/)
+= 3.0.0 =
 
 * Features:
-	* Edit the total visits from the Top 10 > Popular Posts page
-	* New shortcode setting `include_cat_ids` to limit top posts to selected categories/taxonomies. Use a comma separated list of [term_taxonomy_id](https://codex.wordpress.org/WordPress_Taxonomy#wp_term_taxonomy)
-	* New setting in widget to only include certain categories. Doesn't work with custom taxonomies
+    * New Top_Ten_Query class for fetching popular posts. Adds the function `get_tptn_posts()` which replaces `get_tptn_pop_posts()` which will be deprecated in a future version
 
-* Enhancements:
-	* Implemented CodeMirror to format custom styles box
-	* Admin scripts are no longer loaded into the head - but using a separate JavaScript file
-
-* Bug fixes:
-	* Fixed media lookup returning PHP errors/warnings in rare cases
-	* Use `current_time` and `gmdate` as per latest WordPress Coding Standards
-	* No more unnecessary form modified errors in the popular posts tables in Admin area
-	* Fixed notices in PHP 7.4 when viewing popular posts listings
-	* When editing posts, the count from the metabox will only be used if it is modified
-
-= 2.8.0 =
-
-Release post: [https://webberzone.com/blog/top-10-v2-8-0/](https://webberzone.com/blog/top-10-v2-8-0/)
-
-* Features:
-	* Custom feed for popular posts: Find new options under a new tab called Feed in the settings page where you can set the URL for the overall and daily feeds
-	* New page in the network admin menu to view the popular posts across the network
-	* Also delete transients and other settings on uninstall
+* Enhancements/Modifications:
+	* No popular posts feed will be added if the corresponding slug is set to blank.
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
 
 == Upgrade Notice ==
 
-= 2.9.5 =
-Security fix; Check the Changelog for more details or the release posts on https://webberzone.com
+= 3.0.0 =
+Major release; Please check the plugin settings; Read all details in the release post
 
