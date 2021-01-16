@@ -13,10 +13,10 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Function to return formatted list of popular posts.
  *
- * @since   1.5
+ * @since 1.5
  *
- * @param   mixed $args   Arguments array.
- * @return  array|string  Array of posts if posts_only = 0 or a formatted string if posts_only = 1
+ * @param  mixed $args   Arguments array.
+ * @return string  HTML output of the popular posts.
  */
 function tptn_pop_posts( $args ) {
 	global $tptn_settings;
@@ -35,7 +35,6 @@ function tptn_pop_posts( $args ) {
 		'is_manual'    => false,
 		'echo'         => false,
 		'strict_limit' => false,
-		'posts_only'   => false,
 		'heading'      => 1,
 		'offset'       => 0,
 	);
@@ -59,7 +58,7 @@ function tptn_pop_posts( $args ) {
 	do_action( 'pre_tptn_pop_posts', $output, $args );
 
 	// Check if the cache is enabled and if the output exists. If so, return the output.
-	if ( $args['cache'] && ! $args['posts_only'] ) {
+	if ( $args['cache'] ) {
 		$cache_name = tptn_cache_get_key( $args );
 
 		$output = get_transient( $cache_name );
@@ -82,12 +81,7 @@ function tptn_pop_posts( $args ) {
 	list( $args['thumb_width'], $args['thumb_height'] ) = tptn_get_thumb_size( $args );
 
 	// Retrieve the popular posts.
-	$results = get_tptn_pop_posts( $args );
-
-	if ( $args['posts_only'] ) {    // Return the array of posts only if the variable is set.
-		_deprecated_argument( __FUNCTION__, '2.2.0', esc_html__( 'posts_only argument has been deprecated. Use get_tptn_pop_posts() to get the posts only.', 'top-10' ) );
-		return $results;
-	}
+	$results = get_tptn_posts( $args );
 
 	$counter = 0;
 
@@ -352,11 +346,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Convert exclude post IDs string to array so it can be filtered.
 	$exclude_post_ids = explode( ',', $args['exclude_post_ids'] );
 
-	/**
-	 * Filter exclude post IDs array.
-	 *
-	 * @param array   $exclude_post_ids  Array of post IDs.
-	 */
+	/** This filter is documented in class-top-ten-query.php */
 	$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids );
 
 	// Convert it back to string.
@@ -497,10 +487,9 @@ function tptn_show_pop_posts( $args = null ) {
  */
 function tptn_show_daily_pop_posts( $args = null ) {
 	if ( is_array( $args ) || ! isset( $args ) ) {
-		$args['daily']  = 1;
-		$args['manual'] = 1;
+		$args['daily'] = 1;
 	} else {
-		$args .= '&daily=1&is_manual=1';
+		$args .= '&daily=1';
 	}
 
 	tptn_show_pop_posts( $args );
@@ -585,4 +574,31 @@ function tptn_cache_get_key( $attr ) {
 	$key = 'tptn_cache_' . md5( wp_json_encode( $attr ) );
 
 	return $key;
+}
+
+/**
+ * Retrieves an array of the related posts.
+ *
+ * The defaults are as follows:
+ *
+ * @since 3.0.0
+ *
+ * @see Top_Ten_Query::prepare_query_args()
+ *
+ * @param array $args Optional. Arguments to retrieve posts. See WP_Query::parse_query() for all available arguments.
+ * @return WP_Post[]|int[] Array of post objects or post IDs.
+ */
+function get_tptn_posts( $args = array() ) {
+
+	$get_tptn_posts = new Top_Ten_Query( $args );
+
+	/**
+	 * Filter array of post IDs or objects.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param WP_Post[]|int[] $posts Array of post objects or post IDs.
+	 * @param array           $args  Arguments to retrieve posts.
+	 */
+	return apply_filters( 'get_tptn_posts', $get_tptn_posts->posts, $args );
 }

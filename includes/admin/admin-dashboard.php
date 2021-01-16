@@ -39,14 +39,12 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 		$limit = tptn_get_option( 'limit' );
 	}
 
-	$results = get_tptn_pop_posts(
+	$results = get_tptn_posts(
 		array(
-			'posts_only'   => 1,
-			'strict_limit' => 1,
-			'is_widget'    => 1,
-			'daily'        => $daily,
-			'limit'        => $limit,
-			'post_types'   => 'all',
+			'is_widget'  => 1,
+			'daily'      => $daily,
+			'limit'      => $limit,
+			'post_types' => 'all',
 		)
 	);
 
@@ -55,8 +53,8 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	if ( $results ) {
 		$output .= '<ul>';
 		foreach ( $results as $result ) {
-			$output .= '<li><a href="' . get_permalink( $result['postnumber'] ) . '">' . get_the_title( $result['postnumber'] ) . '</a>';
-			$output .= ' (' . tptn_number_format_i18n( $result['sum_count'] ) . ')';
+			$output .= '<li><a href="' . get_permalink( $result->ID ) . '">' . get_the_title( $result->ID ) . '</a>';
+			$output .= ' (' . tptn_number_format_i18n( $result->sum_count ) . ')';
 			$output .= '</li>';
 		}
 		$output .= '</ul>';
