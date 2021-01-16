@@ -33,6 +33,10 @@ function tptn_get_option( $key = '', $default = null ) {
 
 	global $tptn_settings;
 
+	if ( empty( $tptn_settings ) ) {
+		$tptn_settings = tptn_get_settings();
+	}
+
 	if ( is_null( $default ) ) {
 		$default = tptn_get_default_option( $key );
 	}
