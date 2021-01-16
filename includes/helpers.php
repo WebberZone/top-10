@@ -42,10 +42,10 @@ function tptn_get_from_date( $time = null, $daily_range = null, $hour_range = nu
 
 	if ( tptn_get_option( 'daily_midnight' ) ) {
 		$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d 0', $from_date );
+		$from_date = gmdate( 'Y-m-d 0:0:0', $from_date );
 	} else {
 		$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-		$from_date = gmdate( 'Y-m-d H', $from_date );
+		$from_date = gmdate( 'Y-m-d H:0:0', $from_date );
 	}
 
 	/**
