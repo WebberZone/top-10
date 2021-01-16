@@ -337,6 +337,13 @@ function tptn_settings_list() {
 			'type'    => 'posttypes',
 			'options' => 'post',
 		),
+		'exclude_front'           => array(
+			'id'      => 'exclude_front',
+			'name'    => esc_html__( 'Exclude Front page and Posts page', 'top-10' ),
+			'desc'    => esc_html__( 'If you have set your Front page and Posts page to be specific pages via Settings > Reading, then these will be tracked similar to other pages. Enable this option to exclude them from showing up in the popular posts lists. The tracking will not be disabled.', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => false,
+		),
 		'exclude_post_ids'        => array(
 			'id'      => 'exclude_post_ids',
 			'name'    => esc_html__( 'Post/page IDs to exclude', 'top-10' ),
