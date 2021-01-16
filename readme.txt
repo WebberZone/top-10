@@ -165,6 +165,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Features:
     * New Top_Ten_Query class for fetching popular posts. Adds the function `get_tptn_posts()` which replaces `get_tptn_pop_posts()` which will be deprecated in a future version
+	* New option to exclude the Front page and Posts page if these are set in Settings > Reading or via Customizer
 
 * Enhancements/Modifications:
 	* No popular posts feed will be added if the corresponding slug is set to blank.
