@@ -171,6 +171,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Enhancements/Modifications:
 	* No popular posts feed will be added if the corresponding slug is set to blank.
 
+* Bug fixes:
+	* PHP notices when displaying Network Wide Popular Posts in WordPress Multisite
+
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
 
