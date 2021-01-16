@@ -124,7 +124,9 @@ function tptn_pop_posts( $args ) {
 			// Push the current ID into the array to ensure we're not repeating it.
 			array_push( $processed_results, $resultid );
 
-			$sum_count = $result->sum_count;        // Store the count. We'll need this later.
+			// Store the count. We'll need this later.
+			$count     = $args['daily'] ? 'daily' : 'total';
+			$sum_count = empty( $result->sum_count ) ? get_tptn_post_count_only( $resultid, $count ) : $result->sum_count;
 
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
