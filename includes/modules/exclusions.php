@@ -10,8 +10,8 @@
  *
  * @since   2.2.0
  *
- * @param   array $exclude_post_ids   Original excluded post IDs.
- * @return  array   Updated excluded post ID
+ * @param   int[] $exclude_post_ids   Original excluded post IDs.
+ * @return  int[] Updated excluded post IDs array.
  */
 function tptn_exclude_post_ids( $exclude_post_ids ) {
 	global $wpdb;
