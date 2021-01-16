@@ -10,7 +10,7 @@ $settings = array(
 	'daily_range' => tptn_get_option( 'feed_daily_range' ),
 	'limit'       => tptn_get_option( 'feed_limit' ),
 );
-$topposts = get_tptn_pop_posts( $settings );
+$topposts = get_tptn_posts( $settings );
 
 $topposts = wp_list_pluck( (array) $topposts, 'postnumber' );
 
