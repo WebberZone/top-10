@@ -507,8 +507,13 @@ function tptn_pop_posts_feed() {
 	$popular_posts_overall = tptn_get_option( 'feed_permalink_overall' );
 	$popular_posts_daily   = tptn_get_option( 'feed_permalink_daily' );
 
-	add_feed( $popular_posts_overall, 'tptn_pop_posts_feed_overall' );
-	add_feed( $popular_posts_daily, 'tptn_pop_posts_feed_daily' );
+	if ( ! empty( $popular_posts_overall ) ) {
+		add_feed( $popular_posts_overall, 'tptn_pop_posts_feed_overall' );
+	}
+	if ( ! empty( $popular_posts_daily ) ) {
+		add_feed( $popular_posts_daily, 'tptn_pop_posts_feed_daily' );
+	}
+
 }
 add_action( 'init', 'tptn_pop_posts_feed' );
 
