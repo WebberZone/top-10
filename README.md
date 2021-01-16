@@ -5,9 +5,9 @@
 [![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Build Status](https://travis-ci.org/WebberZone/top-10.svg?branch=master)](https://travis-ci.org/WebberZone/top-10)
 
-__Requires:__ 4.9
+__Requires:__ 5.0
 
-__Tested up to:__ 5.4
+__Tested up to:__ 5.6
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -43,6 +43,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 
 ### GDPR
+
 Top 10 is GDPR compliant as it doesn't collect any personal data about your visitors when installed out of the box. You can see the data the plugin stores in the `wp_top_ten` and `wp_top_ten_daily` tables in the database. Note: the prefix `wp` might be different if you have changed it from the default.
 
 YOU ARE RESPONSIBLE FOR ENSURING THAT ALL GDPR REQUIREMENTS ARE MET ON YOUR WEBSITE.
