@@ -3,7 +3,7 @@ Tags: popular posts, top 10, counter, top posts, daily popular, page views, stat
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 2.9.5
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.6
 License: GPLv2 or later

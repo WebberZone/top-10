@@ -5,10 +5,6 @@
  * Functions to add the popular lists to the WordPress Admin Dashboard
  *
  * @package   Top_Ten
- * @author    Ajay D'Souza <me@ajaydsouza.com>
- * @license   GPL-2.0+
- * @link      https://webberzone.com
- * @copyright 2008-2020 Ajay D'Souza
  */
 
 /**** If this file is called directly, abort. ****/
