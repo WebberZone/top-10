@@ -58,6 +58,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$hour_range         = isset( $instance['hour_range'] ) ? esc_attr( $instance['hour_range'] ) : '';
 		$include_categories = isset( $instance['include_categories'] ) ? esc_attr( $instance['include_categories'] ) : '';
 		$include_cat_ids    = isset( $instance['include_cat_ids'] ) ? esc_attr( $instance['include_cat_ids'] ) : '';
+		$include_post_ids   = isset( $instance['include_post_ids'] ) ? esc_attr( $instance['include_post_ids'] ) : '';
 
 		// Parse the Post types.
 		$post_types = array();
@@ -151,6 +152,12 @@ class Top_Ten_Widget extends WP_Widget {
 			</label>
 			<input type="hidden" id="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" name="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" value="<?php echo esc_attr( $include_cat_ids ); ?>" />
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'include_post_ids' ) ); ?>">
+				<?php esc_html_e( 'Include IDs', 'top-10' ); ?>:
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'include_post_ids' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'include_post_ids' ) ); ?>" type="text" value="<?php echo esc_attr( $include_post_ids ); ?>" />
+			</label>
+		</p>
 		<p><?php esc_html_e( 'Post types to include:', 'top-10' ); ?><br />
 
 			<?php foreach ( $wp_post_types as $wp_post_type ) { ?>
@@ -189,20 +196,21 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance                    = $old_instance;
-		$instance['title']           = wp_strip_all_tags( $new_instance['title'] );
-		$instance['limit']           = $new_instance['limit'];
-		$instance['offset']          = $new_instance['offset'];
-		$instance['daily']           = $new_instance['daily'];
-		$instance['daily_range']     = wp_strip_all_tags( $new_instance['daily_range'] );
-		$instance['hour_range']      = wp_strip_all_tags( $new_instance['hour_range'] );
-		$instance['disp_list_count'] = isset( $new_instance['disp_list_count'] ) ? true : false;
-		$instance['show_excerpt']    = isset( $new_instance['show_excerpt'] ) ? true : false;
-		$instance['show_author']     = isset( $new_instance['show_author'] ) ? true : false;
-		$instance['show_date']       = isset( $new_instance['show_date'] ) ? true : false;
-		$instance['post_thumb_op']   = $new_instance['post_thumb_op'];
-		$instance['thumb_height']    = $new_instance['thumb_height'];
-		$instance['thumb_width']     = $new_instance['thumb_width'];
+		$instance                     = $old_instance;
+		$instance['title']            = wp_strip_all_tags( $new_instance['title'] );
+		$instance['limit']            = $new_instance['limit'];
+		$instance['offset']           = $new_instance['offset'];
+		$instance['daily']            = $new_instance['daily'];
+		$instance['daily_range']      = $new_instance['daily_range'];
+		$instance['hour_range']       = $new_instance['hour_range'];
+		$instance['disp_list_count']  = isset( $new_instance['disp_list_count'] ) ? true : false;
+		$instance['show_excerpt']     = isset( $new_instance['show_excerpt'] ) ? true : false;
+		$instance['show_author']      = isset( $new_instance['show_author'] ) ? true : false;
+		$instance['show_date']        = isset( $new_instance['show_date'] ) ? true : false;
+		$instance['post_thumb_op']    = $new_instance['post_thumb_op'];
+		$instance['thumb_height']     = $new_instance['thumb_height'];
+		$instance['thumb_width']      = $new_instance['thumb_width'];
+		$instance['include_post_ids'] = implode( ',', array_filter( array_map( 'absint', explode( ',', $new_instance['include_post_ids'] ) ) ) );
 
 		// Process post types to be selected.
 		$wp_post_types          = get_post_types(
@@ -279,31 +287,33 @@ class Top_Ten_Widget extends WP_Widget {
 		$thumb_height = ( isset( $instance['thumb_height'] ) && '' !== $instance['thumb_height'] ) ? absint( $instance['thumb_height'] ) : tptn_get_option( 'thumb_height' );
 		$thumb_width  = ( isset( $instance['thumb_width'] ) && '' !== $instance['thumb_width'] ) ? absint( $instance['thumb_width'] ) : tptn_get_option( 'thumb_width' );
 
-		$disp_list_count = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
-		$show_excerpt    = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
-		$show_author     = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
-		$show_date       = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
-		$post_types      = isset( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
-		$include_cat_ids = isset( $instance['include_cat_ids'] ) ? esc_attr( $instance['include_cat_ids'] ) : '';
+		$disp_list_count  = isset( $instance['disp_list_count'] ) ? esc_attr( $instance['disp_list_count'] ) : '';
+		$show_excerpt     = isset( $instance['show_excerpt'] ) ? esc_attr( $instance['show_excerpt'] ) : '';
+		$show_author      = isset( $instance['show_author'] ) ? esc_attr( $instance['show_author'] ) : '';
+		$show_date        = isset( $instance['show_date'] ) ? esc_attr( $instance['show_date'] ) : '';
+		$post_types       = isset( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
+		$include_cat_ids  = isset( $instance['include_cat_ids'] ) ? esc_attr( $instance['include_cat_ids'] ) : '';
+		$include_post_ids = isset( $instance['include_post_ids'] ) ? esc_attr( $instance['include_post_ids'] ) : '';
 
 		$arguments = array(
-			'is_widget'       => 1,
-			'instance_id'     => $this->number,
-			'heading'         => 0,
-			'limit'           => $limit,
-			'offset'          => $offset,
-			'daily'           => $daily,
-			'daily_range'     => $daily_range,
-			'hour_range'      => $hour_range,
-			'show_excerpt'    => $show_excerpt,
-			'show_author'     => $show_author,
-			'show_date'       => $show_date,
-			'post_thumb_op'   => $post_thumb_op,
-			'thumb_height'    => $thumb_height,
-			'thumb_width'     => $thumb_width,
-			'disp_list_count' => $disp_list_count,
-			'post_types'      => $post_types,
-			'include_cat_ids' => $include_cat_ids,
+			'is_widget'        => 1,
+			'instance_id'      => $this->number,
+			'heading'          => 0,
+			'limit'            => $limit,
+			'offset'           => $offset,
+			'daily'            => $daily,
+			'daily_range'      => $daily_range,
+			'hour_range'       => $hour_range,
+			'show_excerpt'     => $show_excerpt,
+			'show_author'      => $show_author,
+			'show_date'        => $show_date,
+			'post_thumb_op'    => $post_thumb_op,
+			'thumb_height'     => $thumb_height,
+			'thumb_width'      => $thumb_width,
+			'disp_list_count'  => $disp_list_count,
+			'post_types'       => $post_types,
+			'include_cat_ids'  => $include_cat_ids,
+			'include_post_ids' => $include_post_ids,
 		);
 
 		/**
