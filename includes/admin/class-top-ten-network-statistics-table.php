@@ -44,7 +44,7 @@ class Top_Ten_Network_Statistics_Table extends WP_List_Table {
 	 *
 	 * @return  array   Array of popular posts
 	 */
-	public function get_popular_posts( $per_page = 20, $page_number = 1, $args = null ) {
+	public static function get_popular_posts( $per_page = 20, $page_number = 1, $args = null ) {
 
 		global $wpdb;
 
@@ -165,7 +165,7 @@ class Top_Ten_Network_Statistics_Table extends WP_List_Table {
 	 * @param  string $args Array of arguments.
 	 * @return null|string null|string
 	 */
-	public function record_count( $args = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClass
+	public static function record_count( $args = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClass
 
 		global $wpdb;
 
@@ -233,14 +233,17 @@ class Top_Ten_Network_Statistics_Table extends WP_List_Table {
 
 		$blog_post = get_blog_post( $item['blog_id'], $item['ID'] );
 
-		// Return the title contents.
-		return sprintf(
-			'<a href="%3$s" target="_blank">%1$s</a> <span style="color:silver">(id:%2$s)</span>',
-			$blog_post->post_title,
-			$item['ID'],
-			get_blog_permalink( $item['blog_id'], $item['ID'] )
-		);
-
+		if ( null === $blog_post ) {
+			return __( 'Invalid post ID. This post might have been deleted.', 'top-10' );
+		} else {
+			// Return the title contents.
+			return sprintf(
+				'<a href="%3$s" target="_blank">%1$s</a> <span style="color:silver">(id:%2$s)</span>',
+				$blog_post->post_title,
+				$item['ID'],
+				get_blog_permalink( $item['blog_id'], $item['ID'] )
+			);
+		}
 	}
 
 
@@ -254,10 +257,12 @@ class Top_Ten_Network_Statistics_Table extends WP_List_Table {
 
 		$blog_post = get_blog_post( $item['blog_id'], $item['ID'] );
 
-		$m_time = $blog_post->post_date;
-		$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
+		if ( $blog_post ) {
+			$m_time = $blog_post->post_date;
+			$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
 
-		echo '<abbr title="' . esc_attr( $h_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
+			echo '<abbr title="' . esc_attr( $h_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
+		}
 	}
 
 	/**
