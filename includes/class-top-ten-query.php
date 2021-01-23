@@ -110,7 +110,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 *
 		 *     @type array|string  $blog_id          An array or comma-separated string of blog IDs.
 		 *     @type bool          $daily            Set to true to get the daily/custom period posts. False for overall.
-		 *     @type array|string  $include_cat_ids  An array or comma-separated string of category IDs.
+		 *     @type array|string  $include_cat_ids  An array or comma-separated string of category/custom taxonomy term_taxonomy_ids.
 		 *     @type array|string  $include_post_ids An array or comma-separated string of post IDs.
 		 *     @type bool          $offset           Offset the related posts returned by this number.
 		 *     @type bool          $strict_limit     If this is set to false, then it will fetch 3x posts.
@@ -192,15 +192,14 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			if ( ! empty( $args['include_cat_ids'] ) ) {
 				$tax_query[] = array(
-					'taxonomy' => 'category',
-					'field'    => 'term_taxonomy_id',
-					'terms'    => wp_parse_id_list( $args['include_cat_ids'] ),
+					'field'            => 'term_taxonomy_id',
+					'terms'            => wp_parse_id_list( $args['include_cat_ids'] ),
+					'include_children' => false,
 				);
 			}
 
 			if ( ! empty( $args['exclude_categories'] ) ) {
 				$tax_query[] = array(
-					'taxonomy'         => 'category',
 					'field'            => 'term_taxonomy_id',
 					'terms'            => wp_parse_id_list( $args['exclude_categories'] ),
 					'operator'         => 'NOT IN',
