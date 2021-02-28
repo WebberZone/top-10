@@ -156,7 +156,7 @@ function tptn_parse_request( $wp ) {
 		// If the debug parameter is set then we output $str else we send a No Content header.
 		if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === absint( $wp->query_vars['top_ten_debug'] ) ) {
 			header( 'content-type: application/x-javascript' );
-			echo esc_html( $str );
+			wp_send_json( $str );
 		} else {
 			header( 'HTTP/1.0 204 No Content' );
 			header( 'Cache-Control: max-age=15, s-maxage=0' );
