@@ -57,16 +57,10 @@ class Top_Ten_Network_Statistics_Table extends WP_List_Table {
 		$limits  = '';
 		$sql     = '';
 
-		$from_date = tptn_get_from_date(
-			isset( $args['post-date-filter-from'] ) ? $args['post-date-filter-from'] : null,
-			1,
-			0
-		);
-		$to_date   = tptn_get_from_date(
-			isset( $args['post-date-filter-to'] ) ? $args['post-date-filter-to'] : null,
-			1,
-			0
-		);
+		$from_date = isset( $args['post-date-filter-from'] ) ? $args['post-date-filter-from'] : current_time( 'd M Y' );
+		$from_date = gmdate( 'Y-m-d', strtotime( $from_date ) );
+		$to_date   = isset( $args['post-date-filter-to'] ) ? $args['post-date-filter-to'] : current_time( 'd M Y' );
+		$to_date   = gmdate( 'Y-m-d', strtotime( $to_date ) );
 
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
