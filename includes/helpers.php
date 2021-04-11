@@ -96,7 +96,7 @@ function tptn_number_format_i18n( $number, $decimals = 0 ) {
  *
  * @since 2.9.0
  *
- * @param string $array Input string.
+ * @param array  $array Input string.
  * @param string $delimiter Delimiter.
  * @param string $enclosure Enclosure.
  * @param string $terminator Terminating string.
@@ -115,7 +115,7 @@ function tptn_str_putcsv( $array, $delimiter = ',', $enclosure = '"', $terminato
 	for ( $i = 0; $i < $array_size; $i++ ) {
 		// Nested array, process nest item.
 		if ( is_array( $work_array[ $i ] ) ) {
-			$string .= str_putcsv( $work_array[ $i ], $delimiter, $enclosure, $terminator );
+			$string .= tptn_str_putcsv( $work_array[ $i ], $delimiter, $enclosure, $terminator );
 		} else {
 			switch ( gettype( $work_array[ $i ] ) ) {
 				// Manually set some strings.
