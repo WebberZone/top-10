@@ -63,6 +63,17 @@ if ( ! defined( 'TOP_TEN_PLUGIN_FILE' ) ) {
 	define( 'TOP_TEN_PLUGIN_FILE', __FILE__ );
 }
 
+/**
+ * Number of days of data to be saved in the daily tables.
+ *
+ * @since 3.0.0
+ *
+ * @var int Number of days of data to be saved in the daily tables.
+ */
+if ( ! defined( 'TOP_TEN_STORE_DATA' ) ) {
+	define( 'TOP_TEN_STORE_DATA', 180 );
+}
+
 
 /**
  * Global variable holding the current database version of Top 10
@@ -146,6 +157,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.p
 if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/admin.php';
+	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/class-top-ten-dashboard.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/settings-page.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/save-settings.php';
 	require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/help-tab.php';

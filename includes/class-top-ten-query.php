@@ -350,7 +350,17 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			$where .= " AND {$this->table_name}.blog_id IN ('" . join( "', '", $this->blog_id ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			if ( $this->is_daily ) {
-				$where .= $wpdb->prepare( " AND {$this->table_name}.dp_date >= %s ", tptn_get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( isset( $this->query_args['from_date'] ) ) {
+					$from_date = tptn_get_from_date( $this->query_args['from_date'], 0, 0 );
+				} else {
+					$from_date = tptn_get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
+				}
+				$where .= $wpdb->prepare( " AND {$this->table_name}.dp_date >= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+				if ( isset( $this->query_args['to_date'] ) ) {
+					$to_date = tptn_get_from_date( $this->query_args['to_date'], 0, 0 );
+					$where  .= $wpdb->prepare( " AND {$this->table_name}.dp_date <= %s ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				}
 			}
 
 			return $where;
