@@ -31,28 +31,26 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_add_admin_pages_links() {
 	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help;
 
-	$tptn_settings_page = add_menu_page( esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page', 'dashicons-editor-ol' );
-	add_action( "load-$tptn_settings_page", 'tptn_settings_help' ); // Load the settings contextual help.
-
-	$plugin_page = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
+	$tptn_settings_page = add_submenu_page( 'tptn_dashboard', esc_html__( 'Top 10 Settings', 'top-10' ), esc_html__( 'Settings', 'top-10' ), 'manage_options', 'tptn_options_page', 'tptn_options_page' );
+	add_action( "load-$tptn_settings_page", 'tptn_settings_help' );
 
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Statistics();
 
-	$tptn_settings_popular_posts = add_submenu_page( 'tptn_options_page', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	$tptn_settings_popular_posts = add_submenu_page( 'tptn_dashboard', __( 'Top 10 Popular Posts', 'top-10' ), __( 'Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$tptn_settings_popular_posts", array( $tptn_stats_screen, 'screen_option' ) );
 
-	$tptn_settings_popular_posts_daily = add_submenu_page( 'tptn_options_page', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
+	$tptn_settings_popular_posts_daily = add_submenu_page( 'tptn_dashboard', __( 'Top 10 Daily Popular Posts', 'top-10' ), __( 'Daily Popular Posts', 'top-10' ), 'manage_options', 'tptn_popular_posts&orderby=daily_count&order=desc', array( $tptn_stats_screen, 'plugin_settings_page' ) );
 	add_action( "load-$tptn_settings_popular_posts_daily", array( $tptn_stats_screen, 'screen_option' ) );
 
 	// Add links to Tools pages.
-	$tptn_settings_tools_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
+	$tptn_settings_tools_help = add_submenu_page( 'tptn_dashboard', esc_html__( 'Top 10 Tools', 'top-10' ), esc_html__( 'Tools', 'top-10' ), 'manage_options', 'tptn_tools_page', 'tptn_tools_page' );
 	add_action( "load-$tptn_settings_tools_help", 'tptn_settings_tools_help' );
 
-	$tptn_settings_exim_help = add_submenu_page( 'tptn_options_page', esc_html__( 'Top 10 Import Export Tables', 'top-10' ), esc_html__( 'Import/Export', 'top-10' ), 'manage_options', 'tptn_exim_page', 'tptn_exim_page' );
+	$tptn_settings_exim_help = add_submenu_page( 'tptn_dashboard', esc_html__( 'Top 10 Import Export Tables', 'top-10' ), esc_html__( 'Import/Export', 'top-10' ), 'manage_options', 'tptn_exim_page', 'tptn_exim_page' );
 	add_action( "load-$tptn_settings_exim_help", 'tptn_settings_exim_help' );
 }
-add_action( 'admin_menu', 'tptn_add_admin_pages_links' );
+add_action( 'admin_menu', 'tptn_add_admin_pages_links', 11 );
 
 
 /**
@@ -106,7 +104,7 @@ add_filter( 'manage_tptn_tag_custom_column', 'tptn_tax_id', 10, 3 );
  */
 function tptn_admin_footer( $footer_text ) {
 
-	if ( get_current_screen()->parent_base === 'tptn_options_page' ) {
+	if ( get_current_screen()->parent_base === 'tptn_dashboard' ) {
 
 		$text = sprintf(
 			/* translators: 1: Top 10 website, 2: Plugin reviews link. */
@@ -156,7 +154,7 @@ function tptn_plugin_actions_links( $links ) {
 
 	return array_merge(
 		array(
-			'settings' => '<a href="' . admin_url( 'admin.php?page=tptn_options_page' ) . '">' . __( 'Settings', 'top-10' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=tptn_dashboard' ) . '">' . __( 'Settings', 'top-10' ) . '</a>',
 		),
 		$links
 	);
@@ -217,7 +215,6 @@ function tptn_load_admin_scripts( $hook ) {
 
 	wp_register_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ), '1.0', true );
 	wp_register_script( 'top-ten-suggest-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/top-10-suggest.min.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.0', true );
-
 	wp_register_style(
 		'tptn-admin-customizer-css',
 		TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-customizer.min.css',

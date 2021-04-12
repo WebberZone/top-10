@@ -688,7 +688,8 @@ function tptn_settings_maintenance() {
 		'cron_on'         => array(
 			'id'      => 'cron_on',
 			'name'    => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
-			'desc'    => esc_html__( 'Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than 90 days in the daily tables.', 'top-10' ),
+			/* translators: 1: Constant holding number of days data is stored. */
+			'desc'    => sprintf( esc_html__( 'Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than %d days in the daily tables.', 'top-10' ), TOP_TEN_STORE_DATA ),
 			'type'    => 'checkbox',
 			'options' => false,
 		),
@@ -900,11 +901,11 @@ function tptn_get_styles() {
 	);
 
 	/**
-	 * Filter the array containing the types of trackers to add your own.
+	 * Filter the array containing the types of styles to add your own.
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param string $trackers Different trackers.
+	 * @param string $styles Different styles.
 	 */
 	return apply_filters( 'tptn_get_styles', $styles );
 }

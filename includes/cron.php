@@ -15,7 +15,7 @@ function tptn_cron() {
 
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	$delete_from = 90;
+	$delete_from = TOP_TEN_STORE_DATA;
 
 	/**
 	 * Override maintenance day range.
