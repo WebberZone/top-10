@@ -365,7 +365,7 @@ class Top_Ten_Dashboard {
 			<table class="widefat striped">
 			<?php
 			foreach ( $results as $result ) :
-				$visits = $result->visits;
+				$visits = tptn_number_format_i18n( $result->visits );
 				$result = get_post( $result->ID );
 				?>
 				<tr>
