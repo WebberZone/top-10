@@ -2,9 +2,9 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 2.9.5
+Stable tag: 3.0.0
 Requires at least: 5.0
-Tested up to: 5.5
+Tested up to: 5.8
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -24,6 +24,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 
 * **Page counter**: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions
 * **Popular posts**: Display a list of popular posts either for total counts or for a custom period. You can choose how many posts are to be displayed along with loads of other customisation options
+* **Gutenberg / Block Editor support**: You can find a block called "Popular Posts [Top 10]" with its own configurable set of options
 * **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
 * **Shortcodes**: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
 * **Thumbnail support**
@@ -167,6 +168,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
     * New Top_Ten_Query class for fetching popular posts. Adds the function `get_tptn_posts()` which replaces `get_tptn_pop_posts()` which will be deprecated in a future version
 	* New option to exclude the Front page and Posts page if these are set in Settings > Reading or via Customizer
 	* New option in the Widget to include specific post IDs in the top lists. You can also use them in the shortcode using `include_post_ids`
+	* New block for Gutenberg aka the block editor. The block is called **Popular Posts [Top 10]** and you can find it under the widgets category
 
 * Enhancements/Modifications:
 	* No popular posts feed will be added if the corresponding slug is set to blank.
