@@ -146,6 +146,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/exclusions.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/blocks/popular-posts.php';
 
 
 /*
