@@ -4,7 +4,7 @@ Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.0.0
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 5.7
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -169,6 +169,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* New option to exclude the Front page and Posts page if these are set in Settings > Reading or via Customizer
 	* New option in the Widget to include specific post IDs in the top lists. You can also use them in the shortcode using `include_post_ids`
 	* New block for Gutenberg aka the block editor. The block is called **Popular Posts [Top 10]** and you can find it under the widgets category
+	* Top 10 now supports the WP REST API. The plugin adds a new tracker type called *REST API based* which you can find under Counter/Tracker settings. Additionally, you can now receive the popular posts via a REST Request to `top-10/v1/popular-posts`
 
 * Enhancements/Modifications:
 	* No popular posts feed will be added if the corresponding slug is set to blank.
