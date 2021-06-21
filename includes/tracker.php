@@ -49,11 +49,24 @@ function tptn_enqueue_scripts() {
 			$activate_counter = ! empty( $trackers['overall'] ) ? 1 : 0;     // It's 1 if we're updating the overall count.
 			$activate_counter = $activate_counter + ( ! empty( $trackers['daily'] ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
 			$top_ten_debug    = absint( tptn_get_option( 'debug_mode' ) );
+			$tracker_type     = tptn_get_option( 'tracker_type' );
 
-			if ( 'query_based' === tptn_get_option( 'tracker_type' ) ) {
-				$home_url = home_url( '/' );
-			} else {
-				$home_url = admin_url( 'admin-ajax.php' );
+			switch ( $tracker_type ) {
+				case 'query_based':
+					$home_url = home_url( '/' );
+					break;
+
+				case 'ajaxurl':
+					$home_url = admin_url( 'admin-ajax.php' );
+					break;
+
+				case 'rest_based':
+					$home_url = rest_url( 'top-10/v1/tracker' );
+					break;
+
+				default:
+					$home_url = rest_url( 'top-10/v1/tracker' );
+					break;
 			}
 
 			/**
@@ -275,6 +288,11 @@ function tptn_update_count( $id, $blog_id, $activate_counter ) {
 function tptn_get_tracker_types() {
 
 	$trackers = array(
+		array(
+			'id'          => 'rest_based',
+			'name'        => __( 'REST API based', 'top-10' ),
+			'description' => __( 'Uses the REST API to record visits', 'top-10' ),
+		),
 		array(
 			'id'          => 'query_based',
 			'name'        => __( 'Query variable based', 'top-10' ),
