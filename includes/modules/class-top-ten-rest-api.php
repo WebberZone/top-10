@@ -167,7 +167,8 @@ class Top_Ten_REST_API extends \WP_REST_Controller {
 		$data             = $posts_controller->prepare_item_for_response( $popular_post, $request );
 
 		// Add pageviews from popular_post object to response.
-		$data->data['views'] = isset( $popular_post->sum_count ) ? $popular_post->sum_count : get_tptn_post_count_only( $popular_post->ID );
+		$visits               = isset( $popular_post->visits ) ? $popular_post->visits : get_tptn_post_count_only( $popular_post->ID );
+		$data->data['visits'] = absint( $visits );
 
 		return $this->prepare_response_for_collection( $data );
 	}

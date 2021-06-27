@@ -125,8 +125,8 @@ function tptn_pop_posts( $args ) {
 			array_push( $processed_results, $resultid );
 
 			// Store the count. We'll need this later.
-			$count     = $args['daily'] ? 'daily' : 'total';
-			$sum_count = empty( $result->sum_count ) ? get_tptn_post_count_only( $resultid, $count ) : $result->sum_count;
+			$count  = $args['daily'] ? 'daily' : 'total';
+			$visits = empty( $result->visits ) ? get_tptn_post_count_only( $resultid, $count ) : $result->visits;
 
 			/**
 			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
@@ -174,7 +174,7 @@ function tptn_pop_posts( $args ) {
 
 			if ( $args['disp_list_count'] ) {
 
-				$output .= ' <span class="tptn_list_count">' . tptn_list_count( $args, $result, $sum_count ) . '</span>';
+				$output .= ' <span class="tptn_list_count">' . tptn_list_count( $args, $result, $visits ) . '</span>';
 			}
 
 			$tptn_list = '';
@@ -329,7 +329,7 @@ function get_tptn_pop_posts( $args = array() ) {
 
 	// Fields to return.
 	$fields[] = "{$table_name}.postnumber";
-	$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as sum_count" : "{$table_name}.cntaccess as sum_count";
+	$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";
 	$fields[] = "{$wpdb->posts}.ID";
 
 	$fields = implode( ', ', $fields );
@@ -378,7 +378,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	}
 
 	// Create the base ORDER BY clause.
-	$orderby = ' sum_count DESC ';
+	$orderby = ' visits DESC ';
 
 	// Create the base LIMITS clause.
 	$limits .= $wpdb->prepare( ' LIMIT %d, %d ', $offset, $limit );

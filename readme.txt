@@ -172,7 +172,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Top 10 now supports the WP REST API. The plugin adds a new tracker type called *REST API based* which you can find under Counter/Tracker settings. Additionally, you can now receive the popular posts via a REST Request to `top-10/v1/popular-posts`
 
 * Enhancements/Modifications:
-	* No popular posts feed will be added if the corresponding slug is set to blank.
+	* No popular posts feed will be added if the corresponding slug is set to blank
+	* Changed `sum_count` to `visits`
 
 * Bug fixes:
 	* PHP notices when displaying Network Wide Popular Posts in WordPress Multisite

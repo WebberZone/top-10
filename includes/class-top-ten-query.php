@@ -299,7 +299,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			}
 
 			$_fields[] = "{$this->table_name}.postnumber";
-			$_fields[] = $this->is_daily ? "SUM({$this->table_name}.cntaccess) as sum_count" : "{$this->table_name}.cntaccess as sum_count";
+			$_fields[] = $this->is_daily ? "SUM({$this->table_name}.cntaccess) as visits" : "{$this->table_name}.cntaccess as visits";
 
 			$_fields = implode( ', ', $_fields );
 
@@ -387,7 +387,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				return $orderby;
 			}
 
-			$orderby = ' sum_count DESC ';
+			$orderby = ' visits DESC ';
 
 			return $orderby;
 		}

@@ -50,7 +50,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 		$output .= '<ul>';
 		foreach ( $results as $result ) {
 			$output .= '<li><a href="' . get_permalink( $result->ID ) . '">' . get_the_title( $result->ID ) . '</a>';
-			$output .= ' (' . tptn_number_format_i18n( $result->sum_count ) . ')';
+			$output .= ' (' . tptn_number_format_i18n( $result->visits ) . ')';
 			$output .= '</li>';
 		}
 		$output .= '</ul>';
