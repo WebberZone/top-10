@@ -366,7 +366,7 @@ function tptn_list_count( $args, $result, $visits ) {
 	 * @since   2.1.0
 	 *
 	 * @param   string $visits Formatted list count
-	 * @param   int    $sum_count       Post count
+	 * @param   int    $visits       Post count
 	 * @param   object $result          Post object
 	 * @param   array  $args            Array of arguments.
 	 * @param   int    $visits          Number of visits.
