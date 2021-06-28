@@ -72,6 +72,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 11. Top 10 - Popular posts view in Admin
 12. Top 10 Export/Import interface
 13. Top 10 - Popular posts view in Network Admin
+14. Top 10 Gutenberg block
 
 == Installation ==
 
