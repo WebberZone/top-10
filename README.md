@@ -81,7 +81,7 @@ For more screenshots visit the [WordPress plugin page](http://wordpress.org/plug
 
 3. Activate the Plugin in WP-Admin.
 
-4. Go to **Top 10** to configure
+4. Go to **Top 10 &raquo; Settings** to configure
 
 5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
 

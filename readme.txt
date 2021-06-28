@@ -90,7 +90,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 
 3. Activate the Plugin in WP-Admin.
 
-4. Go to **Top 10** to configure
+4. Go to **Top 10 &raquo; Settings** to configure
 
 5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
 
@@ -105,39 +105,11 @@ It is the fastest way to get support as I monitor the forums regularly. I also p
 
 = How can I customise the output? =
 
-Several customization options are available via the Settings page in WordPress Admin. You can access this via <strong>Settings &raquo; Top 10</strong>
-
-The main CSS classes include:
-
-* **tptn_posts** and **tptn_posts_daily**: Class of the main wrapper `div`. If you are displaying the related posts on non-singular pages, then you should style this
-
-* **tptn_title**: Class of the `span` tag for title of the post
-
-* **tptn_excerpt**: Class of the `span` tag for excerpt (if included)
-
-* **tptn_thumb**: Class of the post thumbnail `img` tag
-
-* **tptn_list_count**: Class of the `span` tag for post count in top posts list
-
-* **tptn_counter**: Class of the `div` tag that wraps the post count that is driven by the field "Format to display the count in: " under 'Output Options'
+Details on how to use and customize the output is in this [knowledge base article](https://webberzone.com/support/knowledgebase/using-and-customising-top-10/)
 
 = Shortcodes =
 
 You can find details of the shortcodes in this [knowledge base article](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
-
-= Manual install =
-
-The below functions need to be added by editing your theme files where you wish to display them.
-
-Display the post count with `<?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?>`
-
-Display the overall most popular posts with `<?php if ( function_exists( 'tptn_show_pop_posts' ) ) { tptn_show_pop_posts(); } ?>`
-
-Display the daily/custom period popular posts with `<?php if ( function_exists( 'tptn_show_daily_pop_posts' ) ) { tptn_show_daily_pop_posts(); } ?>`
-
-You can also use the WordPress Widgets to display the popular posts in your sidebar / other widgetized areas of your theme
-
-View [examples of the plugin API](https://gist.github.com/ajaydsouza/c8defd4b46e53240e376) to fetch the popular posts
 
 = Can this plugin replace Google Analytics? =
 
