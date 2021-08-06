@@ -28,6 +28,7 @@ class Top_Ten_Widget extends WP_Widget {
 				'description'                 => __( 'Display popular posts', 'where-did-they-go-from-here' ),
 				'customize_selective_refresh' => true,
 				'classname'                   => 'tptn_posts_list_widget',
+				'show_instance_in_rest'       => true,
 			)
 		);
 
@@ -90,6 +91,7 @@ class Top_Ten_Widget extends WP_Widget {
 			</label>
 		</p>
 		<p>
+			<?php esc_html_e( 'Overall or custom period?', 'top-10' ); ?>:
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'daily' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'daily' ) ); ?>">
 				<option value="overall" <?php selected( 'overall', $daily, true ); ?>><?php esc_html_e( 'Overall', 'top-10' ); ?></option>
 				<option value="daily" <?php selected( 'daily', $daily, true ); ?>><?php esc_html_e( 'Custom time period (Enter below)', 'top-10' ); ?></option>
@@ -203,10 +205,10 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['daily']            = $new_instance['daily'];
 		$instance['daily_range']      = $new_instance['daily_range'];
 		$instance['hour_range']       = $new_instance['hour_range'];
-		$instance['disp_list_count']  = isset( $new_instance['disp_list_count'] ) ? true : false;
-		$instance['show_excerpt']     = isset( $new_instance['show_excerpt'] ) ? true : false;
-		$instance['show_author']      = isset( $new_instance['show_author'] ) ? true : false;
-		$instance['show_date']        = isset( $new_instance['show_date'] ) ? true : false;
+		$instance['disp_list_count']  = isset( $new_instance['disp_list_count'] ) ? (bool) $new_instance['disp_list_count'] : false;
+		$instance['show_excerpt']     = isset( $new_instance['show_excerpt'] ) ? (bool) $new_instance['show_excerpt'] : false;
+		$instance['show_author']      = isset( $new_instance['show_author'] ) ? (bool) $new_instance['show_author'] : false;
+		$instance['show_date']        = isset( $new_instance['show_date'] ) ? (bool) $new_instance['show_date'] : false;
 		$instance['post_thumb_op']    = $new_instance['post_thumb_op'];
 		$instance['thumb_height']     = $new_instance['thumb_height'];
 		$instance['thumb_width']      = $new_instance['thumb_width'];
