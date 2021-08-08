@@ -3,7 +3,6 @@
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
-[![Build Status](https://travis-ci.org/WebberZone/top-10.svg?branch=master)](https://travis-ci.org/WebberZone/top-10)
 
 __Requires:__ 5.0
 
