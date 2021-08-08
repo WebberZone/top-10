@@ -258,7 +258,7 @@ class Top_Ten_Widget extends WP_Widget {
 			}
 		}
 
-		$default_title = tptn_get_option( 'title' );
+		$default_title = wp_strip_all_tags( tptn_get_option( 'title' ) );
 		$title         = ! empty( $instance['title'] ) ? $instance['title'] : $default_title;
 
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
