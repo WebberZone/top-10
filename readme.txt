@@ -4,7 +4,7 @@ Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.0.0
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
 License: GPLv2 or later
 
@@ -134,6 +134,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 
 == Changelog ==
+
+= 3.1.0 =
+
+* Bug fixes:
+	* Fixed PHP notice on widgets.php page due to the block
+	* Widget checkboxes are not saved in WordPress 5.8
 
 = 3.0.0 =
 
