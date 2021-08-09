@@ -137,6 +137,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 3.1.0 =
 
+* Enhancements:
+	* Optimised import of tables particularly for larger imports
+
 * Bug fixes:
 	* Fixed PHP notice on widgets.php page due to the block
 	* Widget checkboxes are not saved in WordPress 5.8

@@ -25,13 +25,17 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_exim_page() {
 
 	/* Message for successful file import */
-	if ( isset( $_GET['file_import'] ) && 'success' === $_GET['file_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		add_settings_error( 'tptn-notices', '', esc_html__( 'Data has been imported into the table', 'top-10' ), 'updated' );
+	if ( isset( $_GET['file_import'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'success' === $_GET['file_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Data has been imported into the table', 'top-10' ), 'success' );
+		} elseif ( 'fail' === $_GET['file_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Data import failure. Check the number of columns for the file being imported and if you are uploading it in the right section below', 'top-10' ), 'error' );
+		}
 	}
 
 	/* Message for successful file import */
 	if ( isset( $_GET['settings_import'] ) && 'success' === $_GET['settings_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		add_settings_error( 'tptn-notices', '', esc_html__( 'Settings have been imported successfully', 'top-10' ), 'updated' );
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Settings have been imported successfully', 'top-10' ), 'success' );
 	}
 
 	ob_start();
@@ -62,7 +66,7 @@ function tptn_exim_page() {
 			<form method="post" enctype="multipart/form-data">
 
 				<p class="description">
-					<?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'top-10' ); ?>
+					<?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on this/another site using the form above.', 'top-10' ); ?>
 				</p>
 				<p>
 					<input type="file" name="import_settings_file" />
@@ -95,7 +99,9 @@ function tptn_exim_page() {
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Import tables', 'top-10' ); ?></h2>
 				<p class="description">
-					<?php esc_html_e( 'This action will replace the data in your tables, so I suggest that you export the existing data using the buttons above, amend it and then import it. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
+					<?php esc_html_e( 'This action will replace the data in the table being import. Best practice would be to first export the data using the buttons above. Following this, update the file with the new data and then import it. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
+					<br />
+					<?php esc_html_e( 'Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H.', 'top-10' ); ?>
 				</p>
 				<p class="description">
 					<strong><?php esc_html_e( 'Backup your database before proceeding so you will be able to restore it in case anything goes wrong.', 'top-10' ); ?></strong>
@@ -244,9 +250,11 @@ function tptn_import_tables() {
 	}
 
 	if ( isset( $_POST['tptn_import_total'] ) ) {
-		$daily = false;
+		$daily        = false;
+		$column_count = 3;
 	} elseif ( isset( $_POST['tptn_import_daily'] ) ) {
-		$daily = true;
+		$daily        = true;
+		$column_count = 4;
 	} else {
 		return;
 	}
@@ -270,8 +278,8 @@ function tptn_import_tables() {
 		wp_die( esc_html__( 'Please upload a file to import', 'top-10' ) );
 	}
 
-	// Truncate the table before import.
-	tptn_trunc_count( $daily );
+	$data        = array();
+	$file_import = 'success';
 
 	// Open uploaded CSV file with read-only mode.
 	$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
@@ -281,24 +289,40 @@ function tptn_import_tables() {
 
 	while ( ( $line = fgetcsv( $csv_file, 100, ',' ) ) !== false ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
-		if ( $daily ) {
-			$dp_date = str_replace( '/', '-', $line[2] );
-			$dp_date = gmdate( 'Y-m-d H', strtotime( $dp_date ) );
+		if ( count( $line ) !== $column_count ) {
+			$file_import = 'fail';
+			break;
+		}
 
-			$wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, %d, %s, %d ) ", $line[0], $line[1], $dp_date, $line[3] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $daily ) {
+			$dp_date = new DateTime( $line[2] );
+			$dp_date = $dp_date->format( 'Y-m-d H' );
+
+			$data[] = $wpdb->prepare( '( %d, %d, %s, %d )', $line[0], $line[1], $dp_date, $line[3] );
 		} else {
-			$wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ", $line[0], $line[1], $line[2] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$data[] = $wpdb->prepare( '( %d, %d, %d )', $line[0], $line[1], $line[2] );
 		}
 	}
 
 	// Close file.
 	fclose( $csv_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 
+	if ( ! empty( $data ) ) {
+		// Truncate the table before import.
+		tptn_trunc_count( $daily );
+
+		if ( $daily ) {
+			$wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+		} else {
+			$wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
 	wp_safe_redirect(
 		add_query_arg(
 			array(
 				'page'        => 'tptn_exim_page',
-				'file_import' => 'success',
+				'file_import' => $file_import,
 			),
 			admin_url( 'admin.php' )
 		)
