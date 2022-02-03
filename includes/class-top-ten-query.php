@@ -441,10 +441,11 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				if ( ! empty( $post_ids ) ) {
 					$posts                = get_posts(
 						array(
-							'post__in'  => $post_ids,
-							'fields'    => $query->get( 'fields' ),
-							'orderby'   => 'post__in',
-							'post_type' => $query->get( 'post_type' ),
+							'include'     => $post_ids,
+							'fields'      => $query->get( 'fields' ),
+							'orderby'     => 'post__in',
+							'post_type'   => $query->get( 'post_type' ),
+							'post_status' => $query->get( 'post_status' ),
 						)
 					);
 					$query->found_posts   = count( $posts );
