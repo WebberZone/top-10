@@ -489,10 +489,11 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			if ( ! empty( $include_post_ids ) ) {
 				$extra_posts = get_posts(
 					array(
-						'post__in'  => $include_post_ids,
-						'fields'    => $query->get( 'fields' ),
-						'orderby'   => 'post__in',
-						'post_type' => $query->get( 'post_type' ),
+						'include'     => $include_post_ids,
+						'fields'      => $query->get( 'fields' ),
+						'orderby'     => 'post__in',
+						'post_type'   => $query->get( 'post_type' ),
+						'post_status' => $query->get( 'post_status' ),
 					)
 				);
 				$posts       = array_merge( $extra_posts, $posts );
