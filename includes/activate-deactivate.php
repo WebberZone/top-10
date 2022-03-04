@@ -126,20 +126,27 @@ function tptn_single_activate() {
  *
  * @since 2.0.0
  *
- * @param    int $blog_id    ID of the new blog.
+ * @param  int|WP_Site $blog WordPress 5.1 passes a WP_Site object.
  */
-function tptn_activate_new_site( $blog_id ) {
+function tptn_activate_new_site( $blog ) {
 
-	if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+	if ( ! is_plugin_active_for_network( plugin_basename( TOP_TEN_PLUGIN_FILE ) ) ) {
 		return;
 	}
 
-	switch_to_blog( $blog_id );
+	if ( ! is_int( $blog ) ) {
+		$blog = $blog->id;
+	}
+
+	switch_to_blog( $blog );
 	tptn_single_activate();
 	restore_current_blog();
-
 }
-add_action( 'wpmu_new_blog', 'tptn_activate_new_site' );
+if ( version_compare( get_bloginfo( 'version' ), '5.1', '>=' ) ) {
+	add_action( 'wp_initialize_site', 'tptn_activate_new_site' );
+} else {
+	add_action( 'wpmu_new_blog', 'tptn_activate_new_site' );
+}
 
 
 /**
