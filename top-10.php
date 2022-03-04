@@ -8,13 +8,13 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2021 Ajay D'Souza
+ * @copyright 2008-2022 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name: Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     3.1.0-beta1
+ * Version:     3.1.0-beta2
  * Author:      Ajay D'Souza
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -86,41 +86,6 @@ global $tptn_db_version;
 $tptn_db_version = '6.0';
 
 
-/**
- * Global variable holding the current settings for Top 10
- *
- * @since   1.9.3
- *
- * @var array
- */
-global $tptn_settings;
-$tptn_settings = tptn_get_settings();
-
-
-/**
- * Get Settings.
- *
- * Retrieves all plugin settings
- *
- * @since  2.5.0
- * @return array Top 10 settings
- */
-function tptn_get_settings() {
-
-	$settings = get_option( 'tptn_settings' );
-
-	/**
-	 * Settings array
-	 *
-	 * Retrieves all plugin settings
-	 *
-	 * @since 1.2.0
-	 * @param array $settings Settings array
-	 */
-	return apply_filters( 'tptn_get_settings', $settings );
-}
-
-
 /*
  *---------------------------------------------------------------------------*
  * Top 10 modules
@@ -183,4 +148,39 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
  */
 
 require_once TOP_TEN_PLUGIN_DIR . 'includes/deprecated.php';
+
+
+/**
+ * Global variable holding the current settings for Top 10
+ *
+ * @since 1.9.3
+ *
+ * @var array
+ */
+global $tptn_settings;
+$tptn_settings = tptn_get_settings();
+
+
+/**
+ * Get Settings.
+ *
+ * Retrieves all plugin settings
+ *
+ * @since  2.5.0
+ * @return array Top 10 settings
+ */
+function tptn_get_settings() {
+
+	$settings = get_option( 'tptn_settings' );
+
+	/**
+	 * Settings array
+	 *
+	 * Retrieves all plugin settings
+	 *
+	 * @since 1.2.0
+	 * @param array $settings Settings array
+	 */
+	return apply_filters( 'tptn_get_settings', $settings );
+}
 
