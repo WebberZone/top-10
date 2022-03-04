@@ -24,7 +24,7 @@ function tptn_enqueue_scripts() {
 	if ( ( is_singular() || tptn_get_option( 'tracker_all_pages' ) ) && ( 'draft' !== $post->post_status ) && ! is_customize_preview() ) {
 
 		$current_user        = wp_get_current_user();  // Let's get the current user.
-		$post_author         = ( $current_user->ID === $post->post_author ) ? true : false; // Is the current user the post author?
+		$post_author         = ( (int) $current_user->ID === (int) $post->post_author ) ? true : false; // Is the current user the post author?
 		$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 		$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 
