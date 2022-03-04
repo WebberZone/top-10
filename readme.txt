@@ -145,6 +145,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Widget checkboxes are not saved in WordPress 5.8
 	* `post__in` argument will now remove any false/0 values
 	* Disabling/enabling author tracking didn't always work
+	* WP Multisite: Creating a new blog with automatically configure the plugin
 
 = 3.0.0 =
 
