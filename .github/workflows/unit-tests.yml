@@ -1,4 +1,4 @@
-name: Test
+name: Unit Tests
 
 on:
   # Run on all pushes and on all pull requests.
@@ -23,35 +23,25 @@ jobs:
       matrix:
         # Notes regarding supported versions in WP:
         # The base matrix only contains the PHP versions which are supported on all supported WP versions.
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3']
-        wp: ['latest', '5.2']
+        php: ['7.1', '7.2', '7.3', '7.4']
+        wp: ['latest']
         experimental: [false]
 
         include:
           # Complement the builds run via the matrix with high/low WP builds for PHP 7.4 and 8.0.
           # PHP 8.0 is sort of supported since WP 5.6.
           # PHP 7.4 is supported since WP 5.3.
-          - php: '8.0'
+          - php: '8.1'
             wp: 'latest'
-            experimental: false
+            experimental: true
           - php: '8.0'
             wp: '5.6'
-            experimental: false
+            experimental: true
           - php: '7.4'
-            wp: 'latest'
-            experimental: false
-
-          # Complement the builds run via the matrix with some additional builds against specific WP versions.
-          - php: '7.3'
-            wp: '5.3'
-            experimental: false
-          - php: '5.6'
             wp: '5.5'
-            experimental: false
-
-          # Experimental builds. These are allowed to fail.
+            experimental: true
           - php: '7.4'
-            wp: 'trunk'
+            wp: 'nightly'
             experimental: true
 
     name: "PHP ${{ matrix.php }} - WP ${{ matrix.wp }}"
@@ -81,6 +71,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: phpunit-polyfills
           coverage: none
           # The PHP 5.6 and 7.0 images don't include mysql[i] by default.
           extensions: mysqli
@@ -93,10 +84,10 @@ jobs:
       - name: Determine supported PHPUnit version
         id: set_phpunit
         run: |
-          if [[ "${{ matrix.php }}" > "7.4" ]]; then
-            echo '::set-output name=PHPUNIT::7.5.*'
+          if [[ "${{ matrix.php }}" > "8.0" ]]; then
+            echo '::set-output name=PHPUNIT::9.*'
           else
-            echo '::set-output name=PHPUNIT::5.7.*||6.5.*||7.5.*'
+            echo '::set-output name=PHPUNIT::5.7.*||6.*||7.5.*'
           fi
 
       - name: 'Composer: set up PHPUnit'
@@ -114,6 +105,17 @@ jobs:
         uses: "ramsey/composer-install@v1"
         with:
           composer-options: --ignore-platform-reqs
+
+      - name: 'Run Composer Update'
+        run: |
+          composer update --ignore-platform-reqs
+
+      - name: Tool versions
+        run: |
+          php --version
+          composer --version
+          phpunit --version
+          which phpunit
 
       - name: Run the unit tests - single site
         run: vendor/bin/phpunit

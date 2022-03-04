@@ -2,8 +2,9 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Sample_Plugin
+ * @package Better_Search_Plugin
  */
+require_once dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/.composer/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
@@ -32,3 +33,13 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
+
+activate_plugin( 'top-10/top-10.php' );
+
+echo "Installing Top 10...\n";
+
+global $crp_settings, $current_user;
+
+tptn_activation_hook( true );
+
+$crp_settings = tptn_get_settings();

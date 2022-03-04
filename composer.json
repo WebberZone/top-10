@@ -1,0 +1,23 @@
+{
+    "name": "webberzone/top-10",
+    "description": "Add popular posts to your WordPress site with inbuilt caching. Supports thumbnails, shortcodes, widgets and custom post types!",
+    "type": "wordpress-plugin",
+    "keywords": [
+        "popular posts",
+        "top-10",
+        "popular articles",
+        "tracking",
+        "popular"
+    ],
+    "license": "gpl-2.0-or-later",
+    "authors": [
+        {
+            "name": "WebberZone",
+            "email": "plugins@webberzone.com",
+            "role": "Developer"
+        }
+    ],
+    "requires": {
+        "php": ">=7.1"
+    }
+}
