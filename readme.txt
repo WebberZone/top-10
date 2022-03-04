@@ -135,6 +135,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.2.0 =
+
+* Bug fixes:
+	* `post__in` argument will now remove any false/0 values
+
 = 3.1.0 =
 
 * Enhancements:
