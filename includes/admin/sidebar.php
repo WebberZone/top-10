@@ -20,7 +20,7 @@
 						<input type="hidden" name="business" value="donate@ajaydsouza.com">
 						<input type="hidden" name="lc" value="IN">
 						<input type="hidden" name="item_name" value="<?php esc_html_e( 'Donation for Top 10', 'top-10' ); ?>">
-						<input type="hidden" name="item_number" value="crp_plugin_settings">
+						<input type="hidden" name="item_number" value="tptn_plugin_settings">
 						<strong><?php esc_html_e( 'Enter amount in USD', 'top-10' ); ?></strong>: <input name="amount" value="15.00" size="6" type="text"><br />
 						<input type="hidden" name="currency_code" value="USD">
 						<input type="hidden" name="button_subtype" value="services">
