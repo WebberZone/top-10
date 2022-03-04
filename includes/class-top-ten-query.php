@@ -250,7 +250,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			 */
 			$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids, $args );
 
-			$args['post__not_in'] = $exclude_post_ids;
+			$args['post__not_in'] = array_filter( (array) $exclude_post_ids );
 
 			// Unset what we don't need.
 			unset( $args['title'] );
