@@ -183,4 +183,3 @@ function tptn_get_settings() {
 	 */
 	return apply_filters( 'tptn_get_settings', $settings );
 }
-
