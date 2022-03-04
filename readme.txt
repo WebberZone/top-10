@@ -2,10 +2,10 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.0.0
-Requires at least: 5.0
-Tested up to: 5.8
-Requires PHP: 5.6
+Stable tag: 3.1.0
+Requires at least: 5.6
+Tested up to: 5.9
+Requires PHP: 7.1
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -135,20 +135,16 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.0 =
-
-* Bug fixes:
-	* `post__in` argument will now remove any false/0 values
-	* Disabling/enabling author tracking didn't always work
-
 = 3.1.0 =
 
-* Enhancements:
+* Enhancements/Modifications:
 	* Optimised import of tables particularly for larger imports
 
 * Bug fixes:
 	* Fixed PHP notice on widgets.php page due to the block
 	* Widget checkboxes are not saved in WordPress 5.8
+	* `post__in` argument will now remove any false/0 values
+	* Disabling/enabling author tracking didn't always work
 
 = 3.0.0 =
 
@@ -174,6 +170,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.0.0 =
+= 3.1.0 =
 Major release; Please check the plugin settings; Read all details in the release post
 
