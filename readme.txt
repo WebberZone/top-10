@@ -139,6 +139,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Bug fixes:
 	* `post__in` argument will now remove any false/0 values
+	* Disabling/enabling author tracking didn't always work
 
 = 3.1.0 =
 
