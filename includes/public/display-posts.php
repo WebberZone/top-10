@@ -21,12 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 function tptn_pop_posts( $args ) {
 	global $tptn_settings;
 
-	// if set, save $exclude_categories.
-	if ( isset( $args['exclude_categories'] ) && '' != $args['exclude_categories'] ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-		$exclude_categories   = explode( ',', $args['exclude_categories'] );
-		$args['strict_limit'] = false;
-	}
-
 	$defaults = array(
 		'daily'        => false,
 		'is_widget'    => false,
@@ -113,48 +107,11 @@ function tptn_pop_posts( $args ) {
 
 		foreach ( $results as $result ) {
 
-			/* Support WPML */
-			$resultid = tptn_object_id_cur_lang( $result->ID );
-
-			// If this is NULL or already processed ID or matches current post then skip processing this loop.
-			if ( ! $resultid || in_array( $resultid, $processed_results ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-				continue;
-			}
-
-			// Push the current ID into the array to ensure we're not repeating it.
-			array_push( $processed_results, $resultid );
-
 			// Store the count. We'll need this later.
 			$count  = $args['daily'] ? 'daily' : 'total';
-			$visits = empty( $result->visits ) ? get_tptn_post_count_only( $resultid, $count ) : $result->visits;
+			$visits = empty( $result->visits ) ? get_tptn_post_count_only( $result->ID, $count ) : $result->visits;
 
-			/**
-			 * Filter the post ID for each result. Allows a custom function to hook in and change the ID if needed.
-			 *
-			 * @since   1.9.8.5
-			 *
-			 * @param   int $resultid   ID of the post
-			 */
-			$resultid = apply_filters( 'tptn_post_id', $resultid );
-
-			$result = get_post( $resultid );    // Let's get the Post using the ID.
-
-			// Process the category exclusion if passed in the shortcode.
-			if ( isset( $exclude_categories ) ) {
-
-				$categorys = get_the_category( $result->ID );   // Fetch categories of the plugin.
-
-				$p_in_c = false;    // Variable to check if post exists in a particular category.
-				foreach ( $categorys as $cat ) {    // Loop to check if post exists in excluded category.
-					$p_in_c = ( in_array( $cat->cat_ID, $exclude_categories ) ) ? true : false; // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-					if ( $p_in_c ) {
-						break; // Skip loop execution and go to the next step.
-					}
-				}
-				if ( $p_in_c ) {
-					continue;  // Skip loop execution and go to the next step.
-				}
-			}
+			$result = get_post( $result );
 
 			$output .= tptn_before_list_item( $args, $result );
 
