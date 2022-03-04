@@ -1,12 +1,18 @@
 # Top 10  - Popular posts plugin for WordPress
 
+![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)
+
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
-[![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
+[![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](https://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
+[![Required PHP](https://img.shields.io/wordpress/plugin/required-php/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
+[![Active installs](https://img.shields.io/wordpress/plugin/installs/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
 
-__Requires:__ 5.0
+__Requires:__ 5.6
 
-__Tested up to:__ 5.8
+__Tested up to:__ 5.9
+
+__Requires PHP:__ 7.1
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -26,20 +32,20 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 
 ### Features
 
-* **Page counter**: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions
-* **Popular posts**: Display a list of popular posts either for total counts or for a custom period. You can choose how many posts are to be displayed along with loads of other customisation options
-* **Widget ready**: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
-* **Shortcodes**: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
-* **Thumbnail support**
+* __Page counter__: Counts page views on single posts, pages and *custom post types* on an hourly basis which can then be easily displayed automatically, using shortcodes or functions
+* __Popular posts__: Display a list of popular posts either for total counts or for a custom period. You can choose how many posts are to be displayed along with loads of other customisation options
+* __Widget ready__: Sidebar widgets available for daily popular and overall popular posts. Highly customizable widgets to control what you want to display in the list of posts
+* __Shortcodes__: The plugin includes two shortcodes `[tptn_list]` and `[tptn_views]` to display the posts list and the number of views respectively
+* __Thumbnail support__
   * Support for WordPress post thumbnails. Top 10 will create a custom image size (`tptn_thumbnail`) with the dimensions specified in the Settings page
   * Auto-extract the first image in your post to be displayed as a thumbnail
   * Manually enter the URL of the thumbnail via [WordPress meta fields](http://codex.wordpress.org/Custom_Fields). Specify this using the meta box in your Edit screens.
-* **Exclusions**: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
-* **Styles**: The output is wrapped in CSS classes which allows you to easily style the list. You can enter your custom CSS styles from within WordPress Admin area or use the style included.
-* **Admin interface**: View list of daily and/or overall popular posts from within the dashboard. Top 10 also adds two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
-* **Export/Import interface**: Export the count tables and settings to restore in the same site or on other installs
-* **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
-* **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
+* __Exclusions__: Exclude posts from select categories from appearing in the top posts list. Also exclude posts by ID from appearing in the list
+* __Styles__: The output is wrapped in CSS classes which allows you to easily style the list. You can enter your custom CSS styles from within WordPress Admin area or use the style included.
+* __Admin interface__: View list of daily and/or overall popular posts from within the dashboard. Top 10 also adds two sortable columns to your All Posts and All Pages pages in your WordPress Admin area
+* __Export/Import interface__: Export the count tables and settings to restore in the same site or on other installs
+* __Works with caching plugins__ like WP-Super-Cache, W3 Total Cache or Quick Cache
+* __Extendable code__: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 
 ### GDPR
 
@@ -58,7 +64,7 @@ Top 10 is available for [translation directly on WordPress.org](https://translat
 ## Screenshots
 
 ![Style Options](https://raw.github.com/WebberZone/top-10/master/wporg-assets/screenshot-5.png)
-_Top 10 settings page - Styles Options_
+*Top 10 settings page - Styles Options*
 
 For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
 
@@ -80,11 +86,11 @@ For more screenshots visit the [WordPress plugin page](http://wordpress.org/plug
 
 3. Activate the Plugin in WP-Admin.
 
-4. Go to **Top 10 &raquo; Settings** to configure
+4. Go to __Top 10 &raquo; Settings__ to configure
 
-5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
+5. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
 
-6. Go to **Top 10 &raquo; View Popular Posts** to view the list of popular posts
+6. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
 
 ## Frequently Asked Questions
 
