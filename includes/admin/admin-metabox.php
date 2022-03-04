@@ -134,7 +134,7 @@ function tptn_call_meta_box() {
 	</p>
 
 	<p>
-		<?php if ( function_exists( 'crp_read_options' ) ) { ?>
+		<?php if ( function_exists( 'crp_get_settings' ) ) { ?>
 			<em style="color:red">
 				<?php
 					/* translators: 1: Plugin name */
