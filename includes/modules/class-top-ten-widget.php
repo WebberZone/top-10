@@ -277,7 +277,7 @@ class Top_Ten_Widget extends WP_Widget {
 		$show_excerpt     = isset( $instance['show_excerpt'] ) ? $instance['show_excerpt'] : '';
 		$show_author      = isset( $instance['show_author'] ) ? $instance['show_author'] : '';
 		$show_date        = isset( $instance['show_date'] ) ? $instance['show_date'] : '';
-		$post_types       = isset( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
+		$post_types       = ! empty( $instance['post_types'] ) ? $instance['post_types'] : tptn_get_option( 'post_types' );
 		$include_cat_ids  = isset( $instance['include_cat_ids'] ) ? $instance['include_cat_ids'] : '';
 		$include_post_ids = isset( $instance['include_post_ids'] ) ? $instance['include_post_ids'] : '';
 

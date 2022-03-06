@@ -146,6 +146,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* `post__in` argument will now remove any false/0 values
 	* Disabling/enabling author tracking didn't always work
 	* WP Multisite: Creating a new blog with automatically configure the plugin
+	* Widget incorrectly included all post types when no post types were selected instead of using the global settings
 
 = 3.0.0 =
 
