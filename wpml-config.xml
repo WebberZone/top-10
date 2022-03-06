@@ -1,0 +1,11 @@
+<wpml-config>
+    <admin-texts>
+        <key name="tptn_settings">
+            <key name="title" />
+            <key name="title_daily" />
+            <key name="blank_output_text" />
+            <key name="count_disp_form" />
+            <key name="count_disp_form_zero" />
+        </key>
+    </admin-texts>
+</wpml-config>
