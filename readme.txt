@@ -139,6 +139,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Enhancements/Modifications:
 	* Optimised import of tables particularly for larger imports
+	* Added wpml-config.xml file that will allow settings to be translated with WPML and PolyLang
 
 * Bug fixes:
 	* Fixed PHP notice on widgets.php page due to the block
