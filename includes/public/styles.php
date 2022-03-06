@@ -60,16 +60,16 @@ function tptn_get_style() {
 		case 'left_thumbs':
 			$style['name']      = 'left-thumbs';
 			$style['extra_css'] = "
-			.tptn_related a {
+			.tptn-left-thumbs a {
 			  width: {$thumb_width}px;
 			  height: {$thumb_height}px;
 			  text-decoration: none;
 			}
-			.tptn_related img {
+			.tptn-left-thumbs img {
 			  max-width: {$thumb_width}px;
 			  margin: auto;
 			}
-			.tptn_related .tptn_title {
+			.tptn-left-thumbs .tptn_title {
 			  width: 100%;
 			}
 			";
