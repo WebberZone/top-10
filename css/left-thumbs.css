@@ -1,9 +1,9 @@
-.tptn_posts_daily ul, .tptn_posts ul {
+.tptn-left-thumbs ul {
 	margin:0 !important;
 	padding:0 !important;
 }
 
-.tptn_posts_daily ul li, .tptn_posts ul li {
+.tptn-left-thumbs ul li {
 	clear:both;
 	list-style:none;
 	margin-bottom:15px;
@@ -12,13 +12,13 @@
 	padding:0 !important;
 }
 
-.tptn_posts_daily ul:after, .tptn_posts ul:after, .tptn_posts_daily ul li:after, .tptn_posts ul li:after {
+.tptn-left-thumbs ul:after, .tptn-left-thumbs ul li:after {
 	content:'';
 	display:table;
 	clear: both;
 }
 
-.tptn_posts_daily .tptn_title, .tptn_posts .tptn_title {
+.tptn-left-thumbs .tptn_title {
 	font-weight:bold;
 	display:block;
 	padding-bottom:5px;
@@ -26,14 +26,13 @@
 	line-height: 1.1em;
 }
 
-img.tptn_thumb {
+.tptn-left-thumbs img.tptn_thumb {
 	display:block;
 	float:left;
 	clear:left;
 	margin-right:10px !important;
 	padding:3px !important;
 	border:1px #CCCCCC solid;
-	vertical-align: bottom;
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.4);
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.4);
 	box-shadow: 0 1px 2px rgba(0,0,0,.4);
@@ -42,7 +41,7 @@ img.tptn_thumb {
 	border-radius: 7px;
 }
 
-img.tptn_thumb:after {
+.tptn-left-thumbs img.tptn_thumb:after {
 	content: ' ';
 	width: 100%;
 	height: 100%;
@@ -58,6 +57,6 @@ img.tptn_thumb:after {
 	border-radius: 7px;
 }
 
-.tptn_excerpt {
+.tptn-left-thumbs .tptn_excerpt {
 	display: block;
 }

@@ -79,11 +79,13 @@ function tptn_pop_posts( $args ) {
 
 	$counter = 0;
 
+	$tptn_style      = tptn_get_style();
 	$daily_class     = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
+	$style_class     = ( ! empty( $tptn_style['name'] ) ) ? ' tptn-' . $tptn_style['name'] : '';
 	$widget_class    = $args['is_widget'] ? ' tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '';
 	$shortcode_class = $args['is_shortcode'] ? ' tptn_posts_shortcode' : '';
 
-	$post_classes = $daily_class . $widget_class . $shortcode_class;
+	$post_classes = $daily_class . $style_class . $widget_class . $shortcode_class;
 
 	/**
 	 * Filter the classes added to the div wrapper of the Top 10.
