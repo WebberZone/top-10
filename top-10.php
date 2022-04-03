@@ -31,6 +31,18 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 /**
+ * Holds the version of Top 10.
+ *
+ * @since 3.1.0
+ *
+ * @var string Top 10 Version.
+ */
+if ( ! defined( 'TOP_TEN_VERSION' ) ) {
+	define( 'TOP_TEN_VERSION', '3.1.0' );
+}
+
+
+/**
  * Holds the filesystem directory path (with trailing slash) for Top 10
  *
  * @since 2.3.0
@@ -112,7 +124,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/taxonomies.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-rest-api.php';
-require_once TOP_TEN_PLUGIN_DIR . 'includes/blocks/popular-posts.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/blocks/register-blocks.php';
 
 
 /*
