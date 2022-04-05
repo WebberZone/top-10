@@ -543,8 +543,11 @@ function tptn_settings_thumbnail() {
 		'thumb_size'         => array(
 			'id'      => 'thumb_size',
 			'name'    => esc_html__( 'Thumbnail size', 'top-10' ),
-			/* translators: 1: OTF Regenerate plugin link, 2: Force regenerate plugin link. */
-			'desc'    => esc_html__( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image. If you change the width and/or height below, existing images will not be automatically resized.' ) . '<br />' . sprintf( esc_html__( 'I recommend using %1$s or %2$s to regenerate all image sizes.', 'top-10' ), '<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=otf-regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">OTF Regenerate Thumbnails</a>', '<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>' ),
+			'desc'    => esc_html__( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image. If you change the width and/or height below, existing images will not be automatically resized.' ) . '<br />' . sprintf(
+			/* translators: 1: Force regenerate plugin link. */
+				esc_html__( 'I recommend using %1$s to regenerate all image sizes.', 'top-10' ),
+				'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>'
+			),
 			'type'    => 'thumbsizes',
 			'default' => 'tptn_thumbnail',
 			'options' => tptn_get_all_image_sizes(),

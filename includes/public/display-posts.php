@@ -72,7 +72,7 @@ function tptn_pop_posts( $args ) {
 	}
 
 	// Get thumbnail size.
-	list( $args['thumb_width'], $args['thumb_height'] ) = tptn_get_thumb_size( $args );
+	list( $args['thumb_width'], $args['thumb_height'] ) = tptn_get_thumb_size( $args['thumb_size'] );
 
 	// Retrieve the popular posts.
 	$results = get_tptn_posts( $args );
@@ -103,9 +103,6 @@ function tptn_pop_posts( $args ) {
 		$output .= tptn_heading_title( $args );
 
 		$output .= tptn_before_list( $args );
-
-		// We need this for WPML support.
-		$processed_results = array();
 
 		foreach ( $results as $result ) {
 
