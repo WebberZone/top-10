@@ -111,25 +111,33 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Create the base GROUP BY clause.
 		$groupby = ' ID ';
 
-		// Create the base ORDER BY clause.
-		$orderby = ' total_count DESC ';
-
+		// Create the ORDER BY clause.
+		$orderby = '';
 		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		} elseif ( ! empty( $args['orderby'] ) ) {
+			$orderby = $args['orderby'];
+		}
 
+		if ( $orderby ) {
 			if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				$orderby = ' total_count ';
 			}
 
+			$order = '';
 			if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-					$orderby .= ' ' . $order;
-				} else {
-					$orderby .= ' DESC';
-				}
+			} elseif ( ! empty( $args['order'] ) ) {
+				$order = $args['order'];
 			}
+
+			if ( $order && in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ), true ) ) {
+				$orderby .= " {$order}";
+			} else {
+				$orderby .= ' DESC';
+			}
+		} else {
+			$orderby = ' total_count DESC ';
 		}
 
 		// Create the base LIMITS clause.
@@ -509,4 +517,3 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		<?php
 	}
 }
-
