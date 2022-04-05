@@ -31,6 +31,19 @@ function tptn_add_meta_box( $post_type ) {
 		return;
 	}
 
+	/**
+	 * Filters whether to show the Top 10 meta box.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param bool $show_meta_box Whether the Top 10 meta box should be shown. Default true.
+	 */
+	$show_meta_box = apply_filters( 'tptn_show_meta_box', true );
+
+	if ( ! $show_meta_box ) {
+		return;
+	}
+
 	$args       = array(
 		'public' => true,
 	);
