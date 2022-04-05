@@ -283,9 +283,8 @@ function tptn_list_link( $args, $result ) {
 
 		$output .= tptn_get_the_post_thumbnail(
 			array(
-				'postid'             => $result,
-				'thumb_height'       => $args['thumb_height'],
-				'thumb_width'        => $args['thumb_width'],
+				'post'               => $result,
+				'size'               => $args['thumb_size'],
 				'thumb_meta'         => $args['thumb_meta'],
 				'thumb_html'         => $args['thumb_html'],
 				'thumb_default'      => $args['thumb_default'],
@@ -374,5 +373,3 @@ function tptn_list_count( $args, $result, $visits ) {
 	return apply_filters( 'tptn_list_count', $tptn_list_count, $visits, $result, $args, $visits );
 
 }
-
-

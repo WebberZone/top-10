@@ -66,8 +66,9 @@ function tptn_get_style() {
 			  text-decoration: none;
 			}
 			.tptn-left-thumbs img {
-			  max-width: {$thumb_width}px;
-			  margin: auto;
+				width: {$thumb_width}px;
+				max-height: {$thumb_height}px;
+				margin: auto;
 			}
 			.tptn-left-thumbs .tptn_title {
 			  width: 100%;
