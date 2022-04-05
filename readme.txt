@@ -145,6 +145,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Added wpml-config.xml file that will allow settings to be translated with WPML and PolyLang
 	* Upgraded block to the latest API
 	* Upgraded thumbnail display. If default image is disabled, then the site icon will be displayed if available
+	* Admin dashboard counts match with the Popular posts listings
 
 * Bug fixes:
 	* Fixed PHP notice on widgets.php page due to the block

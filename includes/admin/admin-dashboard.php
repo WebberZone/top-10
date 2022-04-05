@@ -35,22 +35,25 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 		$limit = tptn_get_option( 'limit' );
 	}
 
-	$results = get_tptn_posts(
-		array(
-			'is_widget'  => 1,
-			'daily'      => $daily,
-			'limit'      => $limit,
-			'post_types' => 'all',
-		)
-	);
+	$args   = array();
+	$visits = 'total_count';
+	if ( $daily ) {
+		$args['orderby'] = 'daily_count';
+		$visits          = 'daily_count';
+	}
+	$pop_posts_obj = new Top_Ten_Statistics_Table();
+	$results       = $pop_posts_obj->get_popular_posts( $limit, $page + 1, $args );
 
 	$output = '<div id="tptn_popular_posts' . ( $daily ? '_daily' : '' ) . '">';
 
 	if ( $results ) {
 		$output .= '<ul>';
 		foreach ( $results as $result ) {
-			$output .= '<li><a href="' . get_permalink( $result->ID ) . '">' . get_the_title( $result->ID ) . '</a>';
-			$output .= ' (' . tptn_number_format_i18n( $result->visits ) . ')';
+			if ( ! absint( $result[ $visits ] ) ) {
+				continue;
+			}
+			$output .= '<li><a href="' . get_permalink( $result['ID'] ) . '">' . get_the_title( $result['ID'] ) . '</a>';
+			$output .= ' (' . tptn_number_format_i18n( $result[ $visits ] ) . ')';
 			$output .= '</li>';
 		}
 		$output .= '</ul>';
@@ -129,4 +132,3 @@ function tptn_pop_dashboard_setup() {
 	}
 }
 add_action( 'wp_dashboard_setup', 'tptn_pop_dashboard_setup' );
-
