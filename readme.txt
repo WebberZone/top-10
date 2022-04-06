@@ -154,6 +154,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Disabling/enabling author tracking didn't always work
 	* WP Multisite: Creating a new blog with automatically configure the plugin
 	* Widget incorrectly included all post types when no post types were selected instead of using the global settings
+	* Current post was incorrectly excluded when translation functions were run
 
 = 3.0.0 =
 

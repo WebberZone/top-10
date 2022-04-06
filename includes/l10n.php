@@ -34,8 +34,8 @@ function tptn_translate_ids( $results ) {
 
 		$result = tptn_object_id_cur_lang( $result );
 
-		// If this is NULL or already processed ID or matches current post then skip processing this loop.
-		if ( ! $result->ID || in_array( $result->ID, $processed_ids ) || intval( $result->ID ) === intval( $post->ID ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		// If this is NULL or already processed ID then skip processing this loop.
+		if ( ! $result->ID || in_array( $result->ID, $processed_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			continue;
 		}
 
