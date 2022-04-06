@@ -139,6 +139,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Features:
 	* New filter `tptn_show_meta_box` that can be set to false to disable the Top 10 meta box on Edit screens
+	* New option to exclude the current post from the list
 
 * Enhancements/Modifications:
 	* Optimised import of tables particularly for larger imports

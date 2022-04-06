@@ -239,6 +239,10 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Set post__not_in for WP_Query using exclude_post_ids.
 			$exclude_post_ids = empty( $args['exclude_post_ids'] ) ? array() : wp_parse_id_list( $args['exclude_post_ids'] );
 
+			if ( ! empty( $args['exclude_current_post'] ) ) {
+				array_push( $exclude_post_ids, absint( get_the_ID() ) );
+			}
+
 			/**
 			 * Filter exclude post IDs array.
 			 *
@@ -291,8 +295,6 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 * @return string  Updated Fields
 		 */
 		public function posts_fields( $fields, $query ) {
-			global $wpdb;
-
 			// Return if it is not a Top_Ten_Query.
 			if ( true !== $query->get( 'top_ten_query' ) ) {
 				return $fields;
