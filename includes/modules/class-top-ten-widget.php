@@ -249,13 +249,8 @@ class Top_Ten_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		global $post;
 
-		// Get the post meta.
-		if ( isset( $post ) ) {
-			$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
-
-			if ( isset( $tptn_post_meta['disable_here'] ) && ( $tptn_post_meta['disable_here'] ) ) {
-				return;
-			}
+		if ( tptn_exclude_on( $post, $args ) ) {
+			return;
 		}
 
 		$default_title = wp_strip_all_tags( tptn_get_option( 'title' ) );
