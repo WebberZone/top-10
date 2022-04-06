@@ -332,6 +332,24 @@ function tptn_sanitize_exclude_cat( $settings ) {
 
 	}
 
+	// Sanitize exclude_on_cat_slugs to save a new entry of exclude_on_categories.
+	if ( isset( $settings['exclude_on_cat_slugs'] ) ) {
+
+		$exclude_on_cat_slugs = array_unique( str_getcsv( $settings['exclude_on_cat_slugs'] ) );
+
+		foreach ( $exclude_on_cat_slugs as $cat_name ) {
+			$cat = get_term_by( 'name', $cat_name, 'category' );
+
+			if ( isset( $cat->term_taxonomy_id ) ) {
+				$exclude_on_categories[]       = $cat->term_taxonomy_id;
+				$exclude_on_categories_slugs[] = $cat->name;
+			}
+		}
+		$settings['exclude_on_categories'] = isset( $exclude_on_categories ) ? join( ',', $exclude_on_categories ) : '';
+		$settings['exclude_on_cat_slugs']  = isset( $exclude_on_categories_slugs ) ? tptn_str_putcsv( $exclude_on_categories_slugs ) : '';
+
+	}
+
 	return $settings;
 }
 add_filter( 'tptn_settings_sanitize', 'tptn_sanitize_exclude_cat' );

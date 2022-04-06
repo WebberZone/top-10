@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string  HTML output of the popular posts.
  */
 function tptn_pop_posts( $args ) {
-	global $tptn_settings;
+	global $tptn_settings, $post;
 
 	$defaults = array(
 		'daily'        => false,
@@ -44,12 +44,18 @@ function tptn_pop_posts( $args ) {
 	/**
 	 * Fires before the output processing begins.
 	 *
-	 * @since   2.2.0
+	 * @since 3.1.0
 	 *
-	 * @param   string  $output Formatted list of top posts
-	 * @param   array   $args   Array of arguments
+	 * @param string  $output Formatted list of top posts.
+	 * @param array   $args   Array of arguments.
+	 * @param WP_Post $post   Current Post object.
 	 */
-	do_action( 'pre_tptn_pop_posts', $output, $args );
+	do_action( 'pre_tptn_pop_posts', $output, $args, $post );
+
+	// Check exclusions.
+	if ( tptn_exclude_on( $post, $args ) ) {
+		return '';
+	}
 
 	// Check if the cache is enabled and if the output exists. If so, return the output.
 	if ( $args['cache'] ) {

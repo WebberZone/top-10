@@ -378,6 +378,18 @@ function tptn_settings_list() {
 			'options'  => '',
 			'readonly' => true,
 		),
+		'exclude_on_cat_slugs'    => array(
+			'id'               => 'exclude_on_cat_slugs',
+			'name'             => esc_html__( 'Exclude on Categories', 'top-10' ),
+			'desc'             => esc_html__( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.', 'top-10' ),
+			'type'             => 'csv',
+			'options'          => '',
+			'size'             => 'large',
+			'field_class'      => 'category_autocomplete',
+			'field_attributes' => array(
+				'data-wp-taxonomy' => 'category',
+			),
+		),
 		'customize_output_header' => array(
 			'id'   => 'customize_output_header',
 			'name' => '<h3>' . esc_html__( 'Customize the output', 'top-10' ) . '</h3>',
