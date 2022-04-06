@@ -148,6 +148,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Upgraded block to the latest API
 	* Upgraded thumbnail display. If default image is disabled, then the site icon will be displayed if available
 	* Admin dashboard counts match with the Popular posts listings
+	* Updated chartjs to the latest version
 
 * Bug fixes:
 	* Fixed PHP notice on widgets.php page due to the block

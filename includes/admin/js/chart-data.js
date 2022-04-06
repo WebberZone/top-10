@@ -1,4 +1,4 @@
-// Function to clear the cache.
+// Function to update the chart.
 function updateChart() {
 	jQuery.post(ajaxurl, {
 		action: 'tptn_chart_data',
