@@ -25,8 +25,6 @@ add_action( 'plugins_loaded', 'tptn_lang_init' );
  * @return array Updated array of WP_Post objects.
  */
 function tptn_translate_ids( $results ) {
-	global $post;
-
 	$processed_ids     = array();
 	$processed_results = array();
 
@@ -35,7 +33,7 @@ function tptn_translate_ids( $results ) {
 		$result = tptn_object_id_cur_lang( $result );
 
 		// If this is NULL or already processed ID then skip processing this loop.
-		if ( ! $result->ID || in_array( $result->ID, $processed_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		if ( ! $result || in_array( $result->ID, $processed_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			continue;
 		}
 
