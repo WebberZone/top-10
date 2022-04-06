@@ -344,6 +344,13 @@ function tptn_settings_list() {
 			'type'    => 'checkbox',
 			'options' => false,
 		),
+		'exclude_current_post'    => array(
+			'id'      => 'exclude_current_post',
+			'name'    => esc_html__( 'Exclude current post', 'top-10' ),
+			'desc'    => esc_html__( 'Enabling this will exclude the current post being browsed from being displayed in the popular posts list.', 'top-10' ),
+			'type'    => 'checkbox',
+			'options' => false,
+		),
 		'exclude_post_ids'        => array(
 			'id'      => 'exclude_post_ids',
 			'name'    => esc_html__( 'Post/page IDs to exclude', 'top-10' ),
