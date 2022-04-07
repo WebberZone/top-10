@@ -26,7 +26,6 @@ if ( ! defined( 'WPINC' ) ) {
  * @global string $tptn_settings_popular_posts_daily Daily popular page hook.
  * @global string $tptn_settings_tools_help Tools page hook.
  * @global string $tptn_settings_exim_help Export/Import page hook.
- * @return void
  */
 function tptn_add_admin_pages_links() {
 	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help;
@@ -196,7 +195,14 @@ function tptn_network_admin_menu_links() {
 	// Initialise Top 10 Statistics pages.
 	$tptn_stats_screen = new Top_Ten_Network_Statistics();
 
-	$tptn_network_pop_posts_page = add_menu_page( esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_network_options', 'tptn_network_pop_posts_page', array( $tptn_stats_screen, 'plugin_settings_page' ), 'dashicons-editor-ol' );
+	$tptn_network_pop_posts_page = add_menu_page(
+		esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ),
+		esc_html__( 'Top 10', 'top-10' ),
+		'manage_network_options',
+		'tptn_network_pop_posts_page',
+		array( $tptn_stats_screen, 'plugin_settings_page' ),
+		'dashicons-editor-ol'
+	);
 	add_action( "load-$tptn_network_pop_posts_page", array( $tptn_stats_screen, 'screen_option' ) );
 
 }
@@ -213,14 +219,25 @@ function tptn_load_admin_scripts( $hook ) {
 
 	global $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page;
 
-	wp_register_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ), '1.0', true );
-	wp_register_script( 'top-ten-suggest-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/top-10-suggest.min.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.0', true );
+	wp_register_script(
+		'top-ten-admin-js',
+		TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js',
+		array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ),
+		TOP_TEN_VERSION,
+		true
+	);
+	wp_register_script(
+		'top-ten-suggest-js',
+		TOP_TEN_PLUGIN_URL . 'includes/admin/js/top-10-suggest.min.js',
+		array( 'jquery', 'jquery-ui-autocomplete', 'top-ten-admin-js' ),
+		TOP_TEN_VERSION,
+		true
+	);
 	wp_register_style(
 		'tptn-admin-customizer-css',
 		TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-customizer.min.css',
-		false,
-		'1.0',
-		false
+		array(),
+		TOP_TEN_VERSION,
 	);
 
 	if ( in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
@@ -247,9 +264,8 @@ function tptn_load_admin_scripts( $hook ) {
 		wp_enqueue_style(
 			'tptn-admin-ui-css',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
-			false,
-			'1.0',
-			false
+			array(),
+			'top-ten-admin-js',
 		);
 	}
 }
@@ -286,4 +302,3 @@ function tptn_enqueue_scripts_widgets( $hook ) {
 	wp_enqueue_style( 'tptn-admin-customizer-css' );
 }
 add_action( 'admin_enqueue_scripts', 'tptn_enqueue_scripts_widgets', 99 );
-

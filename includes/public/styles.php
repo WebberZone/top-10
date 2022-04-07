@@ -33,7 +33,12 @@ function tptn_heading_styles() {
 		$style     = $style_array['name'];
 		$extra_css = $style_array['extra_css'];
 
-		wp_register_style( "tptn-style-{$style}", plugins_url( "css/{$style}.min.css", TOP_TEN_PLUGIN_FILE ), array(), '1.0.1' );
+		wp_register_style(
+			"tptn-style-{$style}",
+			plugins_url( "css/{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
+			array(),
+			TOP_TEN_VERSION
+		);
 		wp_enqueue_style( "tptn-style-{$style}" );
 		wp_add_inline_style( "tptn-style-{$style}", $extra_css );
 	}
