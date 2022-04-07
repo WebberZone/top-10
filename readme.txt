@@ -137,6 +137,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 3.1.0 =
 
+Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)
+
 * Features:
 	* New filter `tptn_show_meta_box` that can be set to false to disable the Top 10 meta box on Edit screens
 	* New option to exclude the current post from the list
