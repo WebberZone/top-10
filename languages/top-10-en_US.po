@@ -2,16 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-28 10:19+0100\n"
+"POT-Creation-Date: 2022-04-07 15:58+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ajay D'Souza <me@ajaydsouza.com>\n"
-"Language-Team: WebberZone <plugins@webberzone.com>\n"
+"Last-Translator: Ajay D'Souza\n"
+"Language-Team: Ajay D'Souza\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e;_c;__ngettext;esc_html__;esc_attr__;esc_html_e;"
-"esc_attr_e\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -30,115 +31,115 @@ msgstr ""
 msgid "Views"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:62
+#: includes/admin/admin-dashboard.php:65
 msgid "View all daily popular posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:64
+#: includes/admin/admin-dashboard.php:67
 #: includes/admin/class-top-ten-dashboard.php:164
 msgid "View all popular posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:72
+#: includes/admin/admin-dashboard.php:75
 #, php-format
 msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:121 includes/admin/admin.php:40
+#: includes/admin/admin-dashboard.php:124 includes/admin/admin.php:39
 #: includes/admin/class-top-ten-network-statistics.php:114
 #: includes/admin/class-top-ten-statistics.php:124
 msgid "Popular Posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:126 includes/admin/admin.php:43
+#: includes/admin/admin-dashboard.php:129 includes/admin/admin.php:42
 msgid "Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:104
+#: includes/admin/admin-metabox.php:117
 msgid "Visit count:"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:106
+#: includes/admin/admin-metabox.php:119
 msgid ""
 "Enter a number above to update the visit count. Leaving the above box blank "
 "will set the count to zero"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:116
+#: includes/admin/admin-metabox.php:129
 msgid "Disable Popular Posts display:"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:119
+#: includes/admin/admin-metabox.php:132
 msgid ""
 "If this is checked, then Top 10 will not display the popular posts widgets "
 "when viewing this post."
 msgstr ""
 
-#: includes/admin/admin-metabox.php:123
+#: includes/admin/admin-metabox.php:136
 msgid "Exclude this post from the popular posts list:"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:126
+#: includes/admin/admin-metabox.php:139
 msgid ""
 "If this is checked, then this post will be excluded from the popular posts "
 "list."
 msgstr ""
 
-#: includes/admin/admin-metabox.php:130
+#: includes/admin/admin-metabox.php:143
 msgid "Location of thumbnail:"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:132
+#: includes/admin/admin-metabox.php:145
 msgid ""
 "Enter the full URL to the image (JPG, PNG or GIF) you'd like to use. This "
 "image will be used for the post. It will be resized to the thumbnail size "
 "set under Top 10 Settings &raquo; Thumbnail options."
 msgstr ""
 
-#: includes/admin/admin-metabox.php:133
+#: includes/admin/admin-metabox.php:146
 msgid "The URL above is saved in the meta field:"
 msgstr ""
 
-#: includes/admin/admin-metabox.php:141
+#: includes/admin/admin-metabox.php:154
 #, php-format
 msgid ""
 "You have %1$s installed. If you are trying to modify the thumbnail, then you "
 "will need to make the same change in the %1$s meta box on this page."
 msgstr ""
 
-#: includes/admin/admin.php:34 includes/admin/settings-page.php:32
+#: includes/admin/admin.php:33 includes/admin/settings-page.php:32
 msgid "Top 10 Settings"
 msgstr ""
 
-#: includes/admin/admin.php:34 includes/admin/admin.php:157
+#: includes/admin/admin.php:33 includes/admin/admin.php:156
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin.php:40 includes/admin/class-top-ten-statistics.php:70
+#: includes/admin/admin.php:39 includes/admin/class-top-ten-statistics.php:70
 msgid "Top 10 Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:43
+#: includes/admin/admin.php:42
 msgid "Top 10 Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:47 includes/admin/tools.php:74
+#: includes/admin/admin.php:46 includes/admin/tools.php:74
 msgid "Top 10 Tools"
 msgstr ""
 
-#: includes/admin/admin.php:47
+#: includes/admin/admin.php:46
 msgid "Tools"
 msgstr ""
 
-#: includes/admin/admin.php:50
+#: includes/admin/admin.php:49
 msgid "Top 10 Import Export Tables"
 msgstr ""
 
-#: includes/admin/admin.php:50
+#: includes/admin/admin.php:49
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/admin.php:111
+#: includes/admin/admin.php:110
 #, php-format
 msgid ""
 "Thank you for using <a href=\"%1$s\" target=\"_blank\">Top 10</a>! Please <a "
@@ -146,15 +147,15 @@ msgid ""
 "\"_blank\">WordPress.org</a>"
 msgstr ""
 
-#: includes/admin/admin.php:179 includes/admin/sidebar.php:55
+#: includes/admin/admin.php:178 includes/admin/sidebar.php:55
 msgid "Support"
 msgstr ""
 
-#: includes/admin/admin.php:180
+#: includes/admin/admin.php:179
 msgid "Donate"
 msgstr ""
 
-#: includes/admin/admin.php:181
+#: includes/admin/admin.php:180
 msgid "Contribute"
 msgstr ""
 
@@ -162,9 +163,16 @@ msgstr ""
 msgid "Top 10 - Network Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:199 includes/admin/class-top-ten-dashboard.php:199
+#: includes/admin/admin.php:200 includes/admin/class-top-ten-dashboard.php:199
 msgid "Top 10"
 msgstr ""
+
+#: includes/admin/cache.php:22
+#, php-format
+msgid "%s entry cleared"
+msgid_plural "%s entries cleared"
+msgstr[0] ""
+msgstr[1] ""
 
 #: includes/admin/class-top-ten-dashboard.php:83
 #: includes/admin/class-top-ten-dashboard.php:199
@@ -189,7 +197,7 @@ msgid "Dashboard"
 msgstr ""
 
 #: includes/admin/class-top-ten-dashboard.php:242
-#: includes/admin/import-export.php:180
+#: includes/admin/import-export.php:186
 msgid "Visits"
 msgstr ""
 
@@ -282,7 +290,7 @@ msgid "popular_posts"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:183
-#: includes/admin/class-top-ten-statistics-table.php:213
+#: includes/admin/class-top-ten-statistics-table.php:221
 msgid "No popular posts available."
 msgstr ""
 
@@ -291,12 +299,12 @@ msgid "Invalid post ID. This post might have been deleted."
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:256
-#: includes/admin/class-top-ten-statistics-table.php:297
+#: includes/admin/class-top-ten-statistics-table.php:305
 msgid "Y/m/d"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:294
-#: includes/admin/class-top-ten-statistics-table.php:351
+#: includes/admin/class-top-ten-statistics-table.php:359
 #: includes/modules/class-top-ten-count-widget.php:49
 #: includes/modules/class-top-ten-widget.php:79
 msgid "Title"
@@ -307,33 +315,33 @@ msgid "Blog"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:296
-#: includes/admin/class-top-ten-statistics-table.php:356
-#: includes/admin/import-export.php:183
+#: includes/admin/class-top-ten-statistics-table.php:364
+#: includes/admin/import-export.php:189
 msgid "Date"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:297
-#: includes/admin/class-top-ten-statistics-table.php:352
+#: includes/admin/class-top-ten-statistics-table.php:360
 msgid "Total visits"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:298
-#: includes/admin/class-top-ten-statistics-table.php:353
+#: includes/admin/class-top-ten-statistics-table.php:361
 msgid "Daily visits"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:331
-#: includes/admin/class-top-ten-statistics-table.php:390
+#: includes/admin/class-top-ten-statistics-table.php:398
 msgid "Delete Count"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:378
-#: includes/admin/class-top-ten-statistics-table.php:437
+#: includes/admin/class-top-ten-statistics-table.php:445
 msgid "Are you sure you want to do this"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics-table.php:420
-#: includes/admin/class-top-ten-statistics-table.php:504
+#: includes/admin/class-top-ten-statistics-table.php:512
 msgid "Filter"
 msgstr ""
 
@@ -345,28 +353,28 @@ msgstr ""
 msgid "All post types"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:263
+#: includes/admin/class-top-ten-statistics-table.php:271
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:264
+#: includes/admin/class-top-ten-statistics-table.php:272
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:265
+#: includes/admin/class-top-ten-statistics-table.php:273
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:295
+#: includes/admin/class-top-ten-statistics-table.php:303
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:354
+#: includes/admin/class-top-ten-statistics-table.php:362
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:355
+#: includes/admin/class-top-ten-statistics-table.php:363
 msgid "Author"
 msgstr ""
 
@@ -379,12 +387,12 @@ msgid "Enable trackers"
 msgstr ""
 
 #: includes/admin/default-settings.php:72
-#: includes/modules/class-top-ten-widget.php:94
+#: includes/modules/class-top-ten-widget.php:93
 msgid "Overall"
 msgstr ""
 
 #: includes/admin/default-settings.php:73
-#: includes/admin/default-settings.php:729
+#: includes/admin/default-settings.php:751
 msgid "Daily"
 msgstr ""
 
@@ -660,7 +668,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:320
-#: includes/admin/default-settings.php:778
+#: includes/admin/default-settings.php:800
 msgid "Number of posts to display"
 msgstr ""
 
@@ -683,6 +691,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:335
+#: includes/modules/class-top-ten-widget.php:148
 msgid "Post types to include"
 msgstr ""
 
@@ -706,31 +715,42 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:349
-msgid "Post/page IDs to exclude"
+msgid "Exclude current post"
 msgstr ""
 
 #: includes/admin/default-settings.php:350
+msgid ""
+"Enabling this will exclude the current post being browsed from being "
+"displayed in the popular posts list."
+msgstr ""
+
+#: includes/admin/default-settings.php:356
+msgid "Post/page IDs to exclude"
+msgstr ""
+
+#: includes/admin/default-settings.php:357
 msgid ""
 "Comma-separated list of post or page IDs to exclude from the list. e.g. "
 "188,320,500"
 msgstr ""
 
-#: includes/admin/default-settings.php:356
+#: includes/admin/default-settings.php:363
 msgid "Exclude Categories"
 msgstr ""
 
-#: includes/admin/default-settings.php:357
+#: includes/admin/default-settings.php:364
+#: includes/admin/default-settings.php:384
 msgid ""
 "Comma separated list of category slugs. The field above has an autocomplete "
 "so simply start typing in the starting letters and it will prompt you with "
 "options. Does not support custom taxonomies."
 msgstr ""
 
-#: includes/admin/default-settings.php:368
+#: includes/admin/default-settings.php:375
 msgid "Exclude category IDs"
 msgstr ""
 
-#: includes/admin/default-settings.php:369
+#: includes/admin/default-settings.php:376
 msgid ""
 "This is a readonly field that is automatically populated based on the above "
 "input when the settings are saved. These might differ from the IDs visible "
@@ -738,138 +758,143 @@ msgid ""
 "term_taxonomy_id which is unique to this taxonomy."
 msgstr ""
 
-#: includes/admin/default-settings.php:376
+#: includes/admin/default-settings.php:383
+msgid "Exclude on Categories"
+msgstr ""
+
+#: includes/admin/default-settings.php:395
 msgid "Customize the output"
 msgstr ""
 
-#: includes/admin/default-settings.php:382
+#: includes/admin/default-settings.php:401
 msgid "Heading of posts"
 msgstr ""
 
-#: includes/admin/default-settings.php:383
-#: includes/admin/default-settings.php:391
+#: includes/admin/default-settings.php:402
+#: includes/admin/default-settings.php:410
 msgid "Displayed before the list of the posts as a the master heading"
 msgstr ""
 
-#: includes/admin/default-settings.php:385
+#: includes/admin/default-settings.php:404
 msgid "Popular posts:"
 msgstr ""
 
-#: includes/admin/default-settings.php:390
+#: includes/admin/default-settings.php:409
 msgid "Heading of posts for daily/custom period lists"
 msgstr ""
 
-#: includes/admin/default-settings.php:393
+#: includes/admin/default-settings.php:412
 msgid "Currently trending:"
 msgstr ""
 
-#: includes/admin/default-settings.php:398
+#: includes/admin/default-settings.php:417
 msgid "Show when no posts are found"
 msgstr ""
 
-#: includes/admin/default-settings.php:404
+#: includes/admin/default-settings.php:423
 msgid "Blank output"
 msgstr ""
 
-#: includes/admin/default-settings.php:405
+#: includes/admin/default-settings.php:424
 msgid "Display custom text"
 msgstr ""
 
-#: includes/admin/default-settings.php:410
+#: includes/admin/default-settings.php:429
 msgid "Custom text"
 msgstr ""
 
-#: includes/admin/default-settings.php:411
+#: includes/admin/default-settings.php:430
 msgid ""
 "Enter the custom text that will be displayed if the second option is "
 "selected above"
 msgstr ""
 
-#: includes/admin/default-settings.php:413 includes/deprecated.php:180
+#: includes/admin/default-settings.php:432 includes/deprecated.php:180
 msgid "No top posts yet"
 msgstr ""
 
-#: includes/admin/default-settings.php:417
+#: includes/admin/default-settings.php:436
 msgid "Show post excerpt"
 msgstr ""
 
-#: includes/admin/default-settings.php:424
+#: includes/admin/default-settings.php:443
 msgid "Length of excerpt (in words)"
 msgstr ""
 
-#: includes/admin/default-settings.php:432
-#: includes/blocks/popular-posts/index.js:207
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/admin/default-settings.php:451
+#: includes/blocks/popular-posts/src/edit.js:214
+#: includes/modules/class-top-ten-widget.php:118
 msgid "Show date"
 msgstr ""
 
-#: includes/admin/default-settings.php:439
-#: includes/blocks/popular-posts/index.js:202
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/admin/default-settings.php:458
+#: includes/blocks/popular-posts/src/edit.js:200
+#: includes/modules/class-top-ten-widget.php:114
 msgid "Show author"
 msgstr ""
 
-#: includes/admin/default-settings.php:446
+#: includes/admin/default-settings.php:465
 msgid "Show number of views"
 msgstr ""
 
-#: includes/admin/default-settings.php:453
+#: includes/admin/default-settings.php:472
 msgid "Limit post title length (in characters)"
 msgstr ""
 
-#: includes/admin/default-settings.php:461
+#: includes/admin/default-settings.php:480
 msgid "Open links in new window"
 msgstr ""
 
-#: includes/admin/default-settings.php:468
+#: includes/admin/default-settings.php:487
 msgid "Add nofollow to links"
 msgstr ""
 
-#: includes/admin/default-settings.php:475
+#: includes/admin/default-settings.php:494
 msgid "HTML to display"
 msgstr ""
 
-#: includes/admin/default-settings.php:481
+#: includes/admin/default-settings.php:500
 msgid "Before the list of posts"
 msgstr ""
 
-#: includes/admin/default-settings.php:488
+#: includes/admin/default-settings.php:507
 msgid "After the list of posts"
 msgstr ""
 
-#: includes/admin/default-settings.php:495
+#: includes/admin/default-settings.php:514
 msgid "Before each list item"
 msgstr ""
 
-#: includes/admin/default-settings.php:502
+#: includes/admin/default-settings.php:521
 msgid "After each list item"
 msgstr ""
 
-#: includes/admin/default-settings.php:532
+#: includes/admin/default-settings.php:551
+#: includes/blocks/popular-posts/src/edit.js:245
 msgid "Location of the post thumbnail"
 msgstr ""
 
-#: includes/admin/default-settings.php:537
+#: includes/admin/default-settings.php:556
 msgid "Display thumbnails inline with posts, before title"
 msgstr ""
 
-#: includes/admin/default-settings.php:538
+#: includes/admin/default-settings.php:557
 msgid "Display thumbnails inline with posts, after title"
 msgstr ""
 
-#: includes/admin/default-settings.php:539
+#: includes/admin/default-settings.php:558
 msgid "Display only thumbnails, no text"
 msgstr ""
 
-#: includes/admin/default-settings.php:540
+#: includes/admin/default-settings.php:559
 msgid "Do not display thumbnails, only text"
 msgstr ""
 
-#: includes/admin/default-settings.php:545
+#: includes/admin/default-settings.php:564
 msgid "Thumbnail size"
 msgstr ""
 
-#: includes/admin/default-settings.php:547
+#: includes/admin/default-settings.php:565
 msgid ""
 "You can choose from existing image sizes above or create a custom size. If "
 "you have chosen Custom size above, then enter the width, height and crop "
@@ -877,123 +902,123 @@ msgid ""
 "width and/or height below, existing images will not be automatically resized."
 msgstr ""
 
-#: includes/admin/default-settings.php:547
+#: includes/admin/default-settings.php:567
 #, php-format
-msgid "I recommend using %1$s or %2$s to regenerate all image sizes."
+msgid "I recommend using %1$s to regenerate all image sizes."
 msgstr ""
 
-#: includes/admin/default-settings.php:554
-#: includes/modules/class-top-ten-widget.php:144
+#: includes/admin/default-settings.php:576
+#: includes/modules/class-top-ten-widget.php:135
 msgid "Thumbnail width"
 msgstr ""
 
-#: includes/admin/default-settings.php:562
-#: includes/modules/class-top-ten-widget.php:138
+#: includes/admin/default-settings.php:584
+#: includes/modules/class-top-ten-widget.php:131
 msgid "Thumbnail height"
 msgstr ""
 
-#: includes/admin/default-settings.php:570
+#: includes/admin/default-settings.php:592
 msgid "Hard crop thumbnails"
 msgstr ""
 
-#: includes/admin/default-settings.php:571
+#: includes/admin/default-settings.php:593
 msgid ""
 "Check this box to hard crop the thumbnails. i.e. force the width and height "
 "above vs. maintaining proportions."
 msgstr ""
 
-#: includes/admin/default-settings.php:577
+#: includes/admin/default-settings.php:599
 msgid "Generate thumbnail sizes"
 msgstr ""
 
-#: includes/admin/default-settings.php:578
+#: includes/admin/default-settings.php:600
 msgid ""
 "If you select this option and Custom size is selected above, the plugin will "
 "register the image size with WordPress to create new thumbnails. Does not "
 "update old images as explained above."
 msgstr ""
 
-#: includes/admin/default-settings.php:584
+#: includes/admin/default-settings.php:606
 msgid "Thumbnail size attributes"
 msgstr ""
 
-#: includes/admin/default-settings.php:590
+#: includes/admin/default-settings.php:612
 #, php-format
 msgid "Use CSS to set the width and height: e.g. %s"
 msgstr ""
 
-#: includes/admin/default-settings.php:592
+#: includes/admin/default-settings.php:614
 #, php-format
 msgid "Use HTML attributes to set the width and height: e.g. %s"
 msgstr ""
 
-#: includes/admin/default-settings.php:593
+#: includes/admin/default-settings.php:615
 msgid ""
 "No width or height set. You will need to use external styles to force any "
 "width or height of your choice."
 msgstr ""
 
-#: includes/admin/default-settings.php:598
+#: includes/admin/default-settings.php:620
 msgid "Thumbnail meta field name"
 msgstr ""
 
-#: includes/admin/default-settings.php:599
+#: includes/admin/default-settings.php:621
 msgid ""
 "The value of this field should contain the URL of the image and can be set "
 "in the metabox in the Edit Post screen"
 msgstr ""
 
-#: includes/admin/default-settings.php:605
+#: includes/admin/default-settings.php:627
 msgid "Get first image"
 msgstr ""
 
-#: includes/admin/default-settings.php:606
+#: includes/admin/default-settings.php:628
 msgid ""
 "The plugin will fetch the first image in the post content if this is "
 "enabled. This can slow down the loading of your page if the first image in "
 "the followed posts is large in file-size."
 msgstr ""
 
-#: includes/admin/default-settings.php:612
+#: includes/admin/default-settings.php:634
 msgid "Use default thumbnail?"
 msgstr ""
 
-#: includes/admin/default-settings.php:613
+#: includes/admin/default-settings.php:635
 msgid ""
 "If checked, when no thumbnail is found, show a default one from the URL "
 "below. If not checked and no thumbnail is found, no image will be shown."
 msgstr ""
 
-#: includes/admin/default-settings.php:619 includes/admin/settings-page.php:743
+#: includes/admin/default-settings.php:641 includes/admin/settings-page.php:753
 msgid "Default thumbnail"
 msgstr ""
 
-#: includes/admin/default-settings.php:620
+#: includes/admin/default-settings.php:642
 msgid ""
 "Enter the full URL of the image that you wish to display if no thumbnail is "
 "found. This image will be displayed below."
 msgstr ""
 
-#: includes/admin/default-settings.php:650
+#: includes/admin/default-settings.php:672
 msgid "Popular posts style"
 msgstr ""
 
-#: includes/admin/default-settings.php:658
+#: includes/admin/default-settings.php:680
 msgid "Custom CSS"
 msgstr ""
 
-#: includes/admin/default-settings.php:660
+#: includes/admin/default-settings.php:682
 #, php-format
 msgid ""
 "Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available "
 "CSS classes to style."
 msgstr ""
 
-#: includes/admin/default-settings.php:690
+#: includes/admin/default-settings.php:712
 msgid "Enable scheduled maintenance"
 msgstr ""
 
-#: includes/admin/default-settings.php:692
+#: includes/admin/default-settings.php:714
 #, php-format
 msgid ""
 "Cleaning the database at regular intervals could improve performance, "
@@ -1001,43 +1026,43 @@ msgid ""
 "delete entries older than %d days in the daily tables."
 msgstr ""
 
-#: includes/admin/default-settings.php:698
+#: includes/admin/default-settings.php:720
 msgid "Time to run maintenance"
 msgstr ""
 
-#: includes/admin/default-settings.php:699
+#: includes/admin/default-settings.php:721
 msgid "The next two options allow you to set the time to run the cron."
 msgstr ""
 
-#: includes/admin/default-settings.php:704
+#: includes/admin/default-settings.php:726
 msgid "Hour"
 msgstr ""
 
-#: includes/admin/default-settings.php:714
+#: includes/admin/default-settings.php:736
 msgid "Minute"
 msgstr ""
 
-#: includes/admin/default-settings.php:724
+#: includes/admin/default-settings.php:746
 msgid "Run maintenance"
 msgstr ""
 
-#: includes/admin/default-settings.php:730
+#: includes/admin/default-settings.php:752
 msgid "Weekly"
 msgstr ""
 
-#: includes/admin/default-settings.php:731
+#: includes/admin/default-settings.php:753
 msgid "Fortnightly"
 msgstr ""
 
-#: includes/admin/default-settings.php:732
+#: includes/admin/default-settings.php:754
 msgid "Monthly"
 msgstr ""
 
-#: includes/admin/default-settings.php:760
+#: includes/admin/default-settings.php:782
 msgid "Permalink - Overall"
 msgstr ""
 
-#: includes/admin/default-settings.php:762
+#: includes/admin/default-settings.php:784
 #, php-format
 msgid ""
 "This will set the path of the custom feed generated by the plugin for "
@@ -1045,11 +1070,11 @@ msgid ""
 "when changing this option."
 msgstr ""
 
-#: includes/admin/default-settings.php:769
+#: includes/admin/default-settings.php:791
 msgid "Permalink - Daily"
 msgstr ""
 
-#: includes/admin/default-settings.php:771
+#: includes/admin/default-settings.php:793
 #, php-format
 msgid ""
 "This will set the path of the custom feed generated by the plugin for daily/"
@@ -1057,37 +1082,37 @@ msgid ""
 "%2$s when changing this option."
 msgstr ""
 
-#: includes/admin/default-settings.php:779
+#: includes/admin/default-settings.php:801
 msgid "Maximum number of posts that will be displayed in the custom feed."
 msgstr ""
 
-#: includes/admin/default-settings.php:786
+#: includes/admin/default-settings.php:808
 msgid "Custom period in day(s)"
 msgstr ""
 
-#: includes/admin/default-settings.php:888
+#: includes/admin/default-settings.php:910
 msgid "No styles"
 msgstr ""
 
-#: includes/admin/default-settings.php:889
+#: includes/admin/default-settings.php:911
 msgid "Select this option if you plan to add your own styles"
 msgstr ""
 
-#: includes/admin/default-settings.php:893
+#: includes/admin/default-settings.php:915
 msgid "Text only"
 msgstr ""
 
-#: includes/admin/default-settings.php:894
+#: includes/admin/default-settings.php:916
 msgid ""
 "Disable thumbnails and no longer include the default style sheet included in "
 "the plugin"
 msgstr ""
 
-#: includes/admin/default-settings.php:898
+#: includes/admin/default-settings.php:920
 msgid "Left thumbnails"
 msgstr ""
 
-#: includes/admin/default-settings.php:899
+#: includes/admin/default-settings.php:921
 msgid ""
 "Enabling this option will set the post thumbnail to be before text. "
 "Disabling this option will not revert any settings."
@@ -1222,118 +1247,130 @@ msgstr ""
 msgid "Refer to the knowledge base to learn how to use this in detail."
 msgstr ""
 
-#: includes/admin/import-export.php:29
+#: includes/admin/import-export.php:30
 msgid "Data has been imported into the table"
 msgstr ""
 
-#: includes/admin/import-export.php:34
+#: includes/admin/import-export.php:32
+msgid ""
+"Data import failure. Check the number of columns for the file being imported "
+"and if you are uploading it in the right section below"
+msgstr ""
+
+#: includes/admin/import-export.php:38
 msgid "Settings have been imported successfully"
 msgstr ""
 
-#: includes/admin/import-export.php:40
+#: includes/admin/import-export.php:44
 msgid "Top 10 - Import/Export tables"
 msgstr ""
 
-#: includes/admin/import-export.php:50
+#: includes/admin/import-export.php:54
 msgid "Export/Import settings"
 msgstr ""
 
-#: includes/admin/import-export.php:52
+#: includes/admin/import-export.php:56
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
 msgstr ""
 
-#: includes/admin/import-export.php:56
+#: includes/admin/import-export.php:60
 msgid "Export Settings"
 msgstr ""
 
-#: includes/admin/import-export.php:65
+#: includes/admin/import-export.php:69
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
-"exporting the settings on another site using the form above."
+"exporting the settings on this/another site using the form above."
 msgstr ""
 
-#: includes/admin/import-export.php:71
+#: includes/admin/import-export.php:75
 msgid "Import Settings"
 msgstr ""
 
-#: includes/admin/import-export.php:80
+#: includes/admin/import-export.php:84
 msgid "Export tables"
 msgstr ""
 
-#: includes/admin/import-export.php:82
+#: includes/admin/import-export.php:86
 msgid ""
 "Click the buttons below to export the overall and the daily tables. The file "
 "is downloaded as an CSV file which you should be able to edit in Excel or "
 "any other compatible software."
 msgstr ""
 
-#: includes/admin/import-export.php:83
+#: includes/admin/import-export.php:87
 msgid ""
 "If you are using WordPress Multisite then this will include the counts "
 "across all sites as the plugin uses a single table to store counts."
 msgstr ""
 
-#: includes/admin/import-export.php:87
+#: includes/admin/import-export.php:91
 msgid "Export overall tables"
 msgstr ""
 
-#: includes/admin/import-export.php:88
+#: includes/admin/import-export.php:92
 msgid "Export daily tables"
 msgstr ""
 
-#: includes/admin/import-export.php:96
+#: includes/admin/import-export.php:100
 msgid "Import tables"
 msgstr ""
 
-#: includes/admin/import-export.php:98
+#: includes/admin/import-export.php:102
 msgid ""
-"This action will replace the data in your tables, so I suggest that you "
-"export the existing data using the buttons above, amend it and then import "
-"it. It is important to maintain the export format of the data to avoid "
-"corruption."
+"This action will replace the data in the table being import. Best practice "
+"would be to first export the data using the buttons above. Following this, "
+"update the file with the new data and then import it. It is important to "
+"maintain the export format of the data to avoid corruption."
 msgstr ""
 
-#: includes/admin/import-export.php:101
+#: includes/admin/import-export.php:104
+msgid ""
+"Be careful when opening the file in Excel as it tends to change the date "
+"format. Recommended date-time format is YYYY-MM-DD H."
+msgstr ""
+
+#: includes/admin/import-export.php:107
 msgid ""
 "Backup your database before proceeding so you will be able to restore it in "
 "case anything goes wrong."
 msgstr ""
 
-#: includes/admin/import-export.php:103
+#: includes/admin/import-export.php:109
 msgid "Import Overall Table"
 msgstr ""
 
-#: includes/admin/import-export.php:108
+#: includes/admin/import-export.php:114
 msgid "Import Overall CSV"
 msgstr ""
 
-#: includes/admin/import-export.php:111
+#: includes/admin/import-export.php:117
 msgid "Import Daily Table"
 msgstr ""
 
-#: includes/admin/import-export.php:116
+#: includes/admin/import-export.php:122
 msgid "Import Daily CSV"
 msgstr ""
 
-#: includes/admin/import-export.php:179
+#: includes/admin/import-export.php:185
 msgid "Post ID"
 msgstr ""
 
-#: includes/admin/import-export.php:185
+#: includes/admin/import-export.php:191
 msgid "Blog ID"
 msgstr ""
 
-#: includes/admin/import-export.php:264
+#: includes/admin/import-export.php:272
 msgid "Please upload a valid .csv file"
 msgstr ""
 
-#: includes/admin/import-export.php:270 includes/admin/import-export.php:373
+#: includes/admin/import-export.php:278 includes/admin/import-export.php:397
 msgid "Please upload a file to import"
 msgstr ""
 
-#: includes/admin/import-export.php:367
+#: includes/admin/import-export.php:391
 msgid "Please upload a valid .json file"
 msgstr ""
 
@@ -1367,6 +1404,11 @@ msgstr ""
 
 #: includes/admin/settings-page.php:315
 msgid "Modified from default setting"
+msgstr ""
+
+#: includes/admin/settings-page.php:701
+msgctxt "tag delimiter"
+msgid ","
 msgstr ""
 
 #: includes/admin/sidebar.php:15
@@ -1557,107 +1599,135 @@ msgstr ""
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:22
-#: includes/blocks/popular-posts/index.min.js:1
-#: includes/modules/class-top-ten-widget.php:26
-msgid "Popular Posts [Top 10]"
+#: includes/blocks/popular-posts/src/edit.js:112
+msgid "Popular Posts Settings"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:23
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "Display popular posts by Top 10"
-msgstr ""
-
-#: includes/blocks/popular-posts/index.js:26
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "popular posts"
-msgstr ""
-
-#: includes/blocks/popular-posts/index.js:26
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "popular"
-msgstr ""
-
-#: includes/blocks/popular-posts/index.js:26
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "posts"
-msgstr ""
-
-#: includes/blocks/popular-posts/index.js:145
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:118
 msgid "Show heading"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:150
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "Custom period? Set range below"
+#: includes/blocks/popular-posts/src/edit.js:121
+msgid "Heading displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:155
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:122
+msgid "No Heading displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:132
+msgid "Custom period?"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:135
+msgid "Set range below"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:136
+msgid "Overall popular posts will be shown"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:146
 msgid "Daily range"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:165
-#: includes/blocks/popular-posts/index.min.js:1
-msgid "Hourly range"
+#: includes/blocks/popular-posts/src/edit.js:149
+msgid "Number of days"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:175
-#: includes/blocks/popular-posts/index.min.js:1
-#: includes/modules/class-top-ten-widget.php:84
-msgid "No. of posts"
+#: includes/blocks/popular-posts/src/edit.js:156
+msgid "Hour range"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:186
-#: includes/blocks/popular-posts/index.min.js:1
-#: includes/modules/class-top-ten-widget.php:89
+#: includes/blocks/popular-posts/src/edit.js:159
+msgid "Number of hours"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:166
+#: includes/modules/class-top-ten-rest-api.php:212
+msgid "Number of posts"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:169
+msgid "Maximum number of posts to display"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:176
+#: includes/modules/class-top-ten-widget.php:87
 msgid "Offset"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:197
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:179
+msgid "Number of posts to skip from the top"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:186
+#: includes/modules/class-top-ten-widget.php:110
 msgid "Show excerpt"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:212
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:189
+msgid "Excerpt displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:190
+msgid "No excerpt"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:203
+msgid "\"by Author Name\" displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:204
+msgid "No author displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:217
+msgid "Date of post displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:218
+msgid "Date of post not displayed"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:228
+#: includes/modules/class-top-ten-widget.php:106
 msgid "Show count"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:218
-#: includes/blocks/popular-posts/index.min.js:1
-#: includes/modules/class-top-ten-widget.php:128
-msgid "Thumbnail options"
+#: includes/blocks/popular-posts/src/edit.js:231
+msgid "Display number of visits"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:221
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:232
+msgid "Number of visits hidden"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:242
+msgid "Thumbnail option"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:247
 msgid "Before title"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:222
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:248
 msgid "After title"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:223
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:251
 msgid "Only thumbnail"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:224
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:253
 msgid "Only text"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:228
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:261
 msgid "Other attributes"
 msgstr ""
 
-#: includes/blocks/popular-posts/index.js:229
-#: includes/blocks/popular-posts/index.min.js:1
+#: includes/blocks/popular-posts/src/edit.js:265
 msgid ""
 "Enter other attributes in a URL-style string-query. e.g. post_types=post,"
 "page&link_nofollow=1&exclude_post_ids=5,6"
@@ -1707,10 +1777,6 @@ msgstr ""
 msgid "Invalid post ID."
 msgstr ""
 
-#: includes/modules/class-top-ten-rest-api.php:212
-msgid "Number of posts"
-msgstr ""
-
 #: includes/modules/class-top-ten-rest-api.php:217
 msgid "Post types"
 msgstr ""
@@ -1731,86 +1797,71 @@ msgstr ""
 msgid "Debug flag."
 msgstr ""
 
+#: includes/modules/class-top-ten-widget.php:26
+msgid "Popular Posts [Top 10]"
+msgstr ""
+
 #: includes/modules/class-top-ten-widget.php:28
 msgid "Display popular posts"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:95
+#: includes/modules/class-top-ten-widget.php:83
+msgid "No. of posts"
+msgstr ""
+
+#: includes/modules/class-top-ten-widget.php:91
+msgid "Select period"
+msgstr ""
+
+#: includes/modules/class-top-ten-widget.php:94
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:99
-msgid "In days and hours (applies only to custom option above)"
+#: includes/modules/class-top-ten-widget.php:98
+msgid "Days"
 msgstr ""
 
 #: includes/modules/class-top-ten-widget.php:101
-msgid "days"
+msgid "Hours"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:104
-msgid "hours"
-msgstr ""
-
-#: includes/modules/class-top-ten-widget.php:109
-msgid "Show count?"
-msgstr ""
-
-#: includes/modules/class-top-ten-widget.php:114
-msgid "Show excerpt?"
-msgstr ""
-
-#: includes/modules/class-top-ten-widget.php:119
-msgid "Show author?"
+#: includes/modules/class-top-ten-widget.php:122
+msgid "Thumbnail options"
 msgstr ""
 
 #: includes/modules/class-top-ten-widget.php:124
-msgid "Show date?"
-msgstr ""
-
-#: includes/modules/class-top-ten-widget.php:130
 msgid "Thumbnails inline, before title"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:131
+#: includes/modules/class-top-ten-widget.php:125
 msgid "Thumbnails inline, after title"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:132
+#: includes/modules/class-top-ten-widget.php:126
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:133
+#: includes/modules/class-top-ten-widget.php:127
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:150
+#: includes/modules/class-top-ten-widget.php:139
 msgid "Only from categories"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:157
-msgid "Include IDs"
+#: includes/modules/class-top-ten-widget.php:141
+msgid ""
+"Enter a comma separated list of category, tag or other term taxonomy IDs"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:161
-msgid "Post types to include:"
+#: includes/modules/class-top-ten-widget.php:144
+msgid "Include post IDs"
 msgstr ""
 
-#: includes/public/display-posts.php:211
+#: includes/public/display-posts.php:173
 #, php-format
 msgid ""
 "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
-msgstr ""
-
-#: includes/public/media.php:58
-msgid "thumb_timthumb argument has been deprecated"
-msgstr ""
-
-#: includes/public/media.php:62
-msgid "thumb_timthumb_q argument has been deprecated"
-msgstr ""
-
-#: includes/public/media.php:66
-msgid "filter argument has been deprecated"
 msgstr ""
 
 #: includes/public/output-generator.php:240
