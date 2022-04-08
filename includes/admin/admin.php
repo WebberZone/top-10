@@ -237,7 +237,7 @@ function tptn_load_admin_scripts( $hook ) {
 		'tptn-admin-customizer-css',
 		TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-customizer.min.css',
 		array(),
-		TOP_TEN_VERSION,
+		TOP_TEN_VERSION
 	);
 
 	if ( in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
