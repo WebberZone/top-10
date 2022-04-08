@@ -265,7 +265,7 @@ function tptn_load_admin_scripts( $hook ) {
 			'tptn-admin-ui-css',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
 			array(),
-			'top-ten-admin-js',
+			'top-ten-admin-js'
 		);
 	}
 }
