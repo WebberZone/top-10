@@ -74,7 +74,7 @@ function tptn_enqueue_block_editor_assets() {
 	$style_array = tptn_get_style();
 	$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-	if ( ! empty( $style_array ) ) {
+	if ( ! empty( $style_array['name'] ) ) {
 		$style     = $style_array['name'];
 		$extra_css = $style_array['extra_css'];
 
