@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 Requires at least: 5.6
 Tested up to: 5.9
 Requires PHP: 7.1
@@ -135,6 +135,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.1.3 =
+
+* Bug fixes:
+	* Updated moment.min.js
+	* Fixed PHP errors when editing a post in Gutenberg
+
 = 3.1.2 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)
@@ -185,6 +191,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.1.2 =
+= 3.1.3 =
 Major release; Please check the plugin settings; Read all details in the release post
 
