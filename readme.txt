@@ -1,5 +1,5 @@
 === Top 10  - Popular posts plugin for WordPress ===
-Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
+Tags: popular, popular posts, counter, top posts, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.1.3
