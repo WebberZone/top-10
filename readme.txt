@@ -1,10 +1,10 @@
 === Top 10  - Popular posts plugin for WordPress ===
-Tags: popular, popular posts, counter, top posts, tracker
+Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.1.3
 Requires at least: 5.6
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.1
 License: GPLv2 or later
 
@@ -135,15 +135,20 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.2.0 =
+
+* Enhancements/Modifications:
+	* Use moment.js bundled with WordPress
+
 = 3.1.3 =
+
+Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)
 
 * Bug fixes:
 	* Updated moment.min.js
 	* Fixed PHP errors when editing a post in Gutenberg
 
 = 3.1.2 =
-
-Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)
 
 * Features:
 	* New filter `tptn_show_meta_box` that can be set to false to disable the Top 10 meta box on Edit screens
