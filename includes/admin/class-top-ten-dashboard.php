@@ -213,11 +213,41 @@ class Top_Ten_Dashboard {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		wp_register_script( 'top-ten-chart-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart.min.js', array(), '1.0', true );
-		wp_register_script( 'top-ten-chart-datalabels-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-plugin-datalabels.min.js', array( 'top-ten-chart-js' ), '1.0', true );
-		wp_register_script( 'top-ten-chartjs-adapter-moment-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-adapter-moment.min.js', array( 'moment', 'top-ten-chart-js' ), '1.0', true );
-		wp_register_script( 'top-ten-chart-data-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart-data.min.js', array( 'jquery', 'top-ten-chart-js', 'top-ten-chart-datalabels-js', 'moment', 'top-ten-chartjs-adapter-moment-js' ), '1.0', true );
-		wp_register_script( 'top-ten-admin-js', TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ), '1.0', true );
+		wp_register_script(
+			'top-ten-chart-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart.min.js',
+			array(),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-chart-datalabels-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-plugin-datalabels.min.js',
+			array( 'top-ten-chart-js' ),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-chartjs-adapter-moment-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-adapter-moment.min.js',
+			array( 'moment', 'top-ten-chart-js' ),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-chart-data-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart-data.min.js',
+			array( 'jquery', 'top-ten-chart-js', 'top-ten-chart-datalabels-js', 'moment', 'top-ten-chartjs-adapter-moment-js' ),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-admin-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js',
+			array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ),
+			TOP_TEN_VERSION,
+			true
+		);
 
 		if ( $hook === $this->parent_id ) {
 			wp_enqueue_script( 'moment' );
@@ -229,9 +259,8 @@ class Top_Ten_Dashboard {
 			wp_enqueue_style(
 				'tptn-admin-ui-css',
 				TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
-				false,
-				'1.0',
-				false
+				array(),
+				TOP_TEN_VERSION
 			);
 			wp_localize_script(
 				'top-ten-chart-data-js',
