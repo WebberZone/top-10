@@ -16,6 +16,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 
 import {
+	Disabled,
 	TextControl,
 	TextareaControl,
 	ToggleControl,
@@ -41,14 +42,6 @@ import {
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-	function processNumber(input) {
-		const output =
-			undefined === input || 0 === input || '' === input || isNaN(input)
-				? ''
-				: parseInt(input);
-		return output;
-	}
-
 	const {
 		heading,
 		daily,
@@ -72,16 +65,24 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ daily: !daily });
 	};
 	const onChangeDailyRange = (newDailyRange) => {
-		setAttributes({ daily_range: processNumber(newDailyRange) });
+		setAttributes({
+			daily_range: undefined === newDailyRange ? '' : newDailyRange,
+		});
 	};
 	const onChangeHourRange = (newHourRange) => {
-		setAttributes({ hour_range: processNumber(newHourRange) });
+		setAttributes({
+			hour_range: undefined === newHourRange ? '' : newHourRange,
+		});
 	};
 	const onChangeLimit = (newLimit) => {
-		setAttributes({ limit: processNumber(newLimit) });
+		setAttributes({
+			limit: undefined === newLimit ? '' : newLimit,
+		});
 	};
 	const onChangeOffset = (newOffset) => {
-		setAttributes({ offset: processNumber(newOffset) });
+		setAttributes({
+			offset: undefined === newOffset ? '' : newOffset,
+		});
 	};
 	const toggleShowExcerpt = () => {
 		setAttributes({ show_excerpt: !show_excerpt });
@@ -272,10 +273,16 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<ServerSideRender
-					block="top-10/popular-posts"
-					attributes={attributes}
-				/>
+				<Disabled>
+					<ServerSideRender
+						block="top-10/popular-posts"
+						attributes={attributes}
+						// The preview uses the site's locale to make it more true to how
+						// the block appears on the frontend. Setting the locale
+						// explicitly prevents any middleware from setting it to 'user'.
+						urlQueryArgs={{ _locale: 'site' }}
+					/>
+				</Disabled>
 			</div>
 		</>
 	);
