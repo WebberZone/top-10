@@ -72,7 +72,7 @@ function tptn_disable_run() {
 }
 
 // Let's declare this conditional function to add more schedules. It will be a generic function across all plugins that I develop.
-if ( ! function_exists( 'ald_more_reccurences' ) ) :
+if ( ! function_exists( 'wz_more_recurrences' ) ) :
 
 	/**
 	 * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
@@ -80,7 +80,7 @@ if ( ! function_exists( 'ald_more_reccurences' ) ) :
 	 * @param   array $schedules Array of existing schedules.
 	 * @return  array Filtered array with new schedules
 	 */
-	function ald_more_reccurences( $schedules ) {
+	function wz_more_recurrences( $schedules ) {
 		// Add a 'weekly' interval.
 		$schedules['weekly']      = array(
 			'interval' => WEEK_IN_SECONDS,
@@ -100,8 +100,6 @@ if ( ! function_exists( 'ald_more_reccurences' ) ) :
 		);
 		return $schedules;
 	}
-	add_filter( 'cron_schedules', 'ald_more_reccurences' );
+	add_filter( 'cron_schedules', 'wz_more_recurrences' );
 
 endif;
-
-
