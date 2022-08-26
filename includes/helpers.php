@@ -14,15 +14,22 @@
 function tptn_trunc_count( $daily = true ) {
 	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
+	if ( is_multisite() ) {
+		tptn_delete_counts(
+			array(
+				'daily' => $daily,
+			)
+		);
+	} else {
+		$table_name = $wpdb->base_prefix . 'top_ten';
+		if ( $daily ) {
+			$table_name .= '_daily';
+		}
+
+		$sql = "TRUNCATE TABLE $table_name";
+		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 	}
-
-	$sql = "TRUNCATE TABLE $table_name";
-	$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 }
-
 
 /**
  * Retrieve the from date for the query
