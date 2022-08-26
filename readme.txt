@@ -138,6 +138,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 = 3.2.0 =
 
 * Enhancements/Modifications:
+	* In Multisite, Restting the Popular Posts or Daily Popular Posts will only apply to the current site
 	* Use moment.js bundled with WordPress
 
 = 3.1.3 =

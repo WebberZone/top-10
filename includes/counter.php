@@ -231,6 +231,64 @@ function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = fal
 
 
 /**
+ * Delete the counts from the selected table.
+ *
+ * @since 3.2.0
+ *
+ * @param string|array $args {
+ *     Optional. Array or string of Query parameters.
+ *
+ *     @type bool          $daily    Set to true for daily table. False for overall.
+ *     @type array|string  $post_id  An array or comma-separated string of post IDs. Empty string or array for all IDs. Default is blank.
+ *     @type array|string  $blog_id  An array or comma-separated string of blog IDs. Empty string or array for all IDs. Default is current blog ID.
+ *     @type string        $db_date  The date before which to delete data. Default is empty string which means all dates. Applies to daily table only.
+ * }
+ * @return int|false The number of rows updated, or false on error.
+ */
+function tptn_delete_counts( $args = array() ) {
+	global $wpdb;
+
+	$where = '';
+
+	$defaults = array(
+		'daily'   => true,
+		'post_id' => '',
+		'blog_id' => get_current_blog_id(),
+		'dp_date' => '',
+	);
+	$args     = wp_parse_args( $args, $defaults );
+
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	if ( $args['daily'] ) {
+		$table_name .= '_daily';
+	}
+
+	// Parse which post_ids data should be deleted.
+	$post_ids = wp_parse_id_list( $args['post_id'] );
+	if ( ! empty( $post_ids ) ) {
+		$where .= " AND {$table_name}.postnumber IN ('" . join( "', '", $post_ids ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	// Parse which blog_ids data should be deleted.
+	$blog_ids = wp_parse_id_list( $args['blog_id'] );
+	if ( ! empty( $blog_ids ) ) {
+		$where .= " AND {$table_name}.blog_id IN ('" . join( "', '", $blog_ids ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	// How old data should we delete?
+	if ( $args['daily'] && ! empty( $args['dp_date'] ) ) {
+		$from_date = tptn_get_from_date( $args['dp_date'], 0, 0 );
+
+		$where .= $wpdb->prepare( " AND {$table_name}.dp_date <= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	$result = $wpdb->query( "DELETE FROM {$table_name} WHERE 1=1 $where " ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+	return $result;
+}
+
+
+/**
  * Delete post count.
  *
  * @since 2.9.0
@@ -250,16 +308,11 @@ function tptn_delete_count( $post_id, $blog_id, $daily = false ) {
 		return false;
 	}
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
-	}
-
-	$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->prepare(
-			"DELETE FROM {$table_name} WHERE postnumber = %d AND blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$post_id,
-			$blog_id
+	$results = tptn_delete_counts(
+		array(
+			'post_id' => $post_id,
+			'blog_id' => $blog_id,
+			'daily'   => $daily,
 		)
 	);
 
@@ -335,4 +388,3 @@ function tptn_edit_count( $post_id, $blog_id, $total_count ) {
 
 	return $results;
 }
-

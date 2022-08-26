@@ -36,16 +36,16 @@ function tptn_tools_page() {
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'error' );
 	}
 
-	/* Recreate tables */
-	if ( ( isset( $_POST['tptn_recreate_tables'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
-		tptn_recreate_tables();
-		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
-	}
-
 	/* Truncate daily posts table */
 	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 		tptn_trunc_count( true );
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
+	}
+
+	/* Recreate tables */
+	if ( ( isset( $_POST['tptn_recreate_tables'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		tptn_recreate_tables();
+		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
 	}
 
 	/* Delete old settings */
@@ -105,8 +105,8 @@ function tptn_tools_page() {
 					<?php esc_html_e( 'This will reset the Top 10 tables. If you are running Top 10 on multisite then it will delete the popular posts across the entire network. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts Network-wide', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
-					<input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php esc_attr_e( 'Reset Daily Popular Posts Network-wide', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the daily popular posts?', 'top-10' ); ?>')) return false;" />
+					<input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
+					<input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php esc_attr_e( 'Reset Daily Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the daily popular posts?', 'top-10' ); ?>')) return false;" />
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></h2>
