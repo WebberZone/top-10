@@ -454,11 +454,7 @@ class Top_Ten_Dashboard {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
-		if ( $args['daily'] ) {
-			$table_name = $wpdb->base_prefix . 'top_ten_daily';
-		} else {
-			$table_name = $wpdb->base_prefix . 'top_ten';
-		}
+		$table_name = get_tptn_table( $args['daily'] );
 
 		// Fields to return.
 		$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";

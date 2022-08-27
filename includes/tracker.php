@@ -248,9 +248,9 @@ function tptn_update_count( $id, $blog_id, $activate_counter ) {
 
 	global $wpdb;
 
-	$table_name    = $wpdb->base_prefix . 'top_ten';
-	$top_ten_daily = $wpdb->base_prefix . 'top_ten_daily';
-	$str           = '';
+	$table_name       = get_tptn_table( false );
+	$table_name_daily = get_tptn_table( true );
+	$str              = '';
 
 	if ( $id > 0 ) {
 
@@ -265,7 +265,7 @@ function tptn_update_count( $id, $blog_id, $activate_counter ) {
 
 			$current_date = current_time( 'Y-m-d H' );
 
-			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$top_ten_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 		}

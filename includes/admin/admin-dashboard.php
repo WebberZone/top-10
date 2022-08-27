@@ -25,12 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return  Formatted list of popular posts
  */
 function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
-	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily'; // If we're viewing daily posts, set this to true.
-	}
 	if ( ! $limit ) {
 		$limit = tptn_get_option( 'limit' );
 	}

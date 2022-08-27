@@ -171,10 +171,7 @@ function tptn_tools_page() {
 function tptn_clean_duplicates( $daily = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
-	}
+	$table_name = get_tptn_table( $daily );
 
 	$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
 	$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -192,10 +189,7 @@ function tptn_clean_duplicates( $daily = false ) {
 function tptn_merge_blogids( $daily = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
-	}
+	$table_name = get_tptn_table( $daily );
 
 	if ( $daily ) {
 		$sql = "
@@ -239,8 +233,8 @@ function tptn_merge_blogids( $daily = false ) {
 function tptn_recreate_primary_key() {
 	global $wpdb;
 
-	$table_name       = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$table_name       = get_tptn_table( false );
+	$table_name_daily = get_tptn_table( true );
 
 	$wpdb->hide_errors();
 
@@ -263,10 +257,9 @@ function tptn_recreate_primary_key() {
  * @since   2.5.7
  */
 function tptn_recreate_primary_key_html() {
-	global $wpdb;
 
-	$table_name       = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$table_name       = get_tptn_table( false );
+	$table_name_daily = get_tptn_table( true );
 
 	$sql  = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY; ';
 	$sql .= '<br />';
@@ -293,8 +286,8 @@ function tptn_recreate_primary_key_html() {
 function tptn_recreate_tables() {
 	global $wpdb;
 
-	$table_name            = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily      = $wpdb->base_prefix . 'top_ten_daily';
+	$table_name            = get_tptn_table( false );
+	$table_name_daily      = get_tptn_table( true );
 	$table_name_temp       = $table_name . '_temp';
 	$table_name_daily_temp = $table_name_daily . '_temp';
 

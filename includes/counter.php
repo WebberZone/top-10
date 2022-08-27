@@ -187,8 +187,8 @@ function get_tptn_post_count( $id = false, $blog_id = false ) {
 function get_tptn_post_count_only( $id = false, $count = 'total', $blog_id = false ) {
 	global $wpdb;
 
-	$table_name       = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$table_name       = get_tptn_table( false );
+	$table_name_daily = get_tptn_table( true );
 
 	if ( empty( $blog_id ) ) {
 		$blog_id = get_current_blog_id();
@@ -258,10 +258,7 @@ function tptn_delete_counts( $args = array() ) {
 	);
 	$args     = wp_parse_args( $args, $defaults );
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $args['daily'] ) {
-		$table_name .= '_daily';
-	}
+	$table_name = get_tptn_table( $args['daily'] );
 
 	// Parse which post_ids data should be deleted.
 	$post_ids = wp_parse_id_list( $args['post_id'] );
@@ -374,7 +371,7 @@ function tptn_edit_count( $post_id, $blog_id, $total_count ) {
 		return false;
 	}
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name = get_tptn_table( false );
 
 	$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->prepare(

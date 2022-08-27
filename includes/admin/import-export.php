@@ -174,10 +174,7 @@ function tptn_export_tables() {
 		return;
 	}
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
-	if ( $daily ) {
-		$table_name .= '_daily';
-	}
+	$table_name = get_tptn_table( $daily );
 
 	$filename = 'top-ten' . ( $daily ? '-daily' : '' ) . '-table-' . current_time( 'Y_m_d_Hi' ) . '.csv';
 
@@ -259,7 +256,7 @@ function tptn_import_tables() {
 		return;
 	}
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name = get_tptn_table( false );
 	$filename   = 'import_file';
 	if ( $daily ) {
 		$table_name .= '_daily';
