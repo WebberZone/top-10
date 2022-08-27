@@ -48,7 +48,7 @@ function tptn_value( $column_name, $id ) {
 
 	// Add Total count.
 	if ( ( 'tptn_total' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
-		$table_name = $wpdb->base_prefix . 'top_ten';
+		$table_name = get_tptn_table( false );
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$cntaccess    = tptn_number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
@@ -57,7 +57,7 @@ function tptn_value( $column_name, $id ) {
 
 	// Now process daily count.
 	if ( ( 'tptn_daily' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
-		$table_name = $wpdb->base_prefix . 'top_ten_daily';
+		$table_name = get_tptn_table( true );
 
 		$from_date = tptn_get_from_date();
 
@@ -68,12 +68,12 @@ function tptn_value( $column_name, $id ) {
 
 	// Now process both.
 	if ( ( 'tptn_both' === $column_name ) && ( tptn_get_option( 'pv_in_admin' ) ) ) {
-		$table_name = $wpdb->base_prefix . 'top_ten';
+		$table_name = get_tptn_table( false );
 
 		$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$cntaccess    = tptn_number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
 
-		$table_name = $wpdb->base_prefix . 'top_ten_daily';
+		$table_name = get_tptn_table( true );
 
 		$from_date = tptn_get_from_date();
 
@@ -122,7 +122,8 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' === $wp_query->query['orderby'] ) {
 
-		$table_name          = $wpdb->base_prefix . 'top_ten';
+		$table_name = get_tptn_table( false );
+
 		$clauses['join']    .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
 		$clauses['orderby']  = 'cntaccess ';
 		$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
@@ -130,7 +131,7 @@ function tptn_column_clauses( $clauses, $wp_query ) {
 
 	if ( isset( $wp_query->query['orderby'] ) && 'tptn_daily' === $wp_query->query['orderby'] ) {
 
-		$table_name = $wpdb->base_prefix . 'top_ten_daily';
+		$table_name = get_tptn_table( true );
 
 		$from_date = tptn_get_from_date();
 
@@ -159,4 +160,3 @@ function tptn_admin_css() {
 	<?php
 }
 add_action( 'admin_head', 'tptn_admin_css' );
-

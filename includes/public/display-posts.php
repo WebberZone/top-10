@@ -252,11 +252,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Parse incomming $args into an array and merge it with $defaults.
 	$args = wp_parse_args( $args, $defaults );
 
-	if ( $args['daily'] ) {
-		$table_name = $wpdb->base_prefix . 'top_ten_daily';
-	} else {
-		$table_name = $wpdb->base_prefix . 'top_ten';
-	}
+	$table_name = get_tptn_table( $args['daily'] );
 
 	$limit  = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
 	$offset = isset( $args['offset'] ) ? $args['offset'] : 0;

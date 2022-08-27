@@ -140,13 +140,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Store query args before we manipulate them.
 			$this->input_query_args = $args;
 
-			if ( $args['daily'] ) {
-				$this->table_name = $wpdb->base_prefix . 'top_ten_daily';
-				$this->is_daily   = true;
-			} else {
-				$this->table_name = $wpdb->base_prefix . 'top_ten';
-				$this->is_daily   = false;
-			}
+			$this->table_name = get_tptn_table( $args['daily'] );
+			$this->is_daily   = $args['daily'];
 
 			// Set the number of posts to be retrieved.
 			$args['posts_per_page'] = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 3 );

@@ -81,7 +81,7 @@ add_action( 'add_meta_boxes', 'tptn_add_meta_box' );
 function tptn_call_meta_box() {
 	global $wpdb, $post;
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name = get_tptn_table( false );
 
 	// Add an nonce field so we can check for it later.
 	wp_nonce_field( 'tptn_meta_box', 'tptn_meta_box_nonce' );
@@ -177,7 +177,7 @@ function tptn_save_meta_box( $post_id ) {
 
 	$tptn_post_meta = array();
 
-	$table_name = $wpdb->base_prefix . 'top_ten';
+	$table_name = get_tptn_table( false );
 
 	// Bail if we're doing an auto save.
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -276,4 +276,3 @@ function tptn_save_meta_box( $post_id ) {
 }
 add_action( 'save_post', 'tptn_save_meta_box' );
 add_action( 'edit_attachment', 'tptn_save_meta_box' );
-

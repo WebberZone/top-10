@@ -13,7 +13,7 @@
 function tptn_cron() {
 	global $wpdb;
 
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$table_name_daily = get_tptn_table( true );
 
 	$delete_from = TOP_TEN_STORE_DATA;
 

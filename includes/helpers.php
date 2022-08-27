@@ -8,8 +8,27 @@
 /**
  * Function to delete all rows in the posts table.
  *
- * @since   1.3
- * @param   bool $daily  Daily flag.
+ * @since 3.2.0
+ *
+ * @param bool $daily  Daily flag.
+ */
+function get_tptn_table( $daily = false ) {
+	global $wpdb;
+
+	$table_name = $wpdb->base_prefix . 'top_ten';
+	if ( $daily ) {
+		$table_name .= '_daily';
+	}
+	return $table_name;
+}
+
+
+/**
+ * Function to delete all rows in the posts table.
+ *
+ * @since 1.3
+ *
+ * @param bool $daily  Daily flag.
  */
 function tptn_trunc_count( $daily = true ) {
 	global $wpdb;
@@ -21,10 +40,7 @@ function tptn_trunc_count( $daily = true ) {
 			)
 		);
 	} else {
-		$table_name = $wpdb->base_prefix . 'top_ten';
-		if ( $daily ) {
-			$table_name .= '_daily';
-		}
+		$table_name = get_tptn_table( $daily );
 
 		$sql = "TRUNCATE TABLE $table_name";
 		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
