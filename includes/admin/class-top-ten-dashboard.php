@@ -196,9 +196,23 @@ class Top_Ten_Dashboard {
 	 * @since 3.0.0
 	 */
 	public function admin_menu() {
-		$this->parent_id = add_menu_page( esc_html__( 'Top 10 Dashboard', 'top-10' ), esc_html__( 'Top 10', 'top-10' ), 'manage_options', 'tptn_dashboard', array( $this, 'plugin_settings_page' ), 'dashicons-editor-ol' );
+		$this->parent_id = add_menu_page(
+			esc_html__( 'Top 10 Dashboard', 'top-10' ),
+			esc_html__( 'Top 10', 'top-10' ),
+			'manage_options',
+			'tptn_dashboard',
+			array( $this, 'plugin_settings_page' ),
+			'dashicons-editor-ol'
+		);
 
-		add_submenu_page( 'tptn_dashboard', esc_html__( 'Top 10 Dashboard', 'top-10' ), esc_html__( 'Dashboard', 'top-10' ), 'manage_options', 'tptn_dashboard', array( $this, 'plugin_settings_page' ) );
+		add_submenu_page(
+			'tptn_dashboard',
+			esc_html__( 'Top 10 Dashboard', 'top-10' ),
+			esc_html__( 'Dashboard', 'top-10' ),
+			'manage_options',
+			'tptn_dashboard',
+			array( $this, 'plugin_settings_page' )
+		);
 
 		add_action( 'load-' . $this->parent_id, array( $this, 'help_tabs' ) );
 
