@@ -28,22 +28,23 @@ function get_tptn_table( $daily = false ) {
  *
  * @since 1.3
  *
- * @param bool $daily  Daily flag.
+ * @param bool $daily        Daily flag.
+ * @param bool $network_wide Network wide flag.
  */
-function tptn_trunc_count( $daily = true ) {
+function tptn_trunc_count( $daily = true, $network_wide = false ) {
 	global $wpdb;
 
-	if ( is_multisite() ) {
+	if ( ! is_multisite() || $network_wide ) {
+		$table_name = get_tptn_table( $daily );
+
+		$sql = "TRUNCATE TABLE $table_name";
+		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+	} else {
 		tptn_delete_counts(
 			array(
 				'daily' => $daily,
 			)
 		);
-	} else {
-		$table_name = get_tptn_table( $daily );
-
-		$sql = "TRUNCATE TABLE $table_name";
-		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 	}
 }
 
