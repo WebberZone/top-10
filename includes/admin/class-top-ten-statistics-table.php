@@ -31,9 +31,18 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	public $all_post_type;
 
 	/**
-	 * Class constructor.
+	 * Network wide popular posts flag.
+	 *
+	 * @var bool
 	 */
-	public function __construct() {
+	public $network_wide;
+
+	/**
+	 * Class constructor.
+	 *
+	 * @param bool $network_wide Network wide popular posts.
+	 */
+	public function __construct( $network_wide = false ) {
 		parent::__construct(
 			array(
 				'singular' => __( 'popular_post', 'top-10' ), // Singular name of the listed records.
@@ -43,6 +52,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$this->all_post_type = array(
 			'all' => __( 'All post types', 'top-10' ),
 		);
+		$this->network_wide  = $network_wide;
 	}
 
 	/**
@@ -58,6 +68,15 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		global $wpdb;
 
+		// Initialise some variables.
+		$fields  = array();
+		$where   = '';
+		$join    = '';
+		$groupby = '';
+		$orderby = '';
+		$limits  = '';
+		$sql     = '';
+
 		$blog_id = get_current_blog_id();
 
 		$from_date = isset( $args['post-date-filter-from'] ) ? $args['post-date-filter-from'] : current_time( 'd M Y' );
@@ -70,18 +89,18 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
 
 		// Fields to return.
-		$fields[] = 'ID';
-		$fields[] = 'post_title as title';
-		$fields[] = 'post_type';
-		$fields[] = 'post_date';
-		$fields[] = 'post_author';
+		$fields[] = 'ttt.postnumber as ID';
 		$fields[] = 'ttt.cntaccess as total_count';
 		$fields[] = 'SUM(ttd.cntaccess) as daily_count';
+		$fields[] = 'ttt.blog_id as blog_id';
 
 		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause.
-		$join  = " INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID ";
+		// Create the base WHERE clause.
+		if ( ! $this->network_wide ) {
+			$join .= " LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID ";
+		}
 		$join .= $wpdb->prepare(
 			" LEFT JOIN (
 			SELECT * FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -94,50 +113,42 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		);
 
 		// Create the base WHERE clause.
-		$where  = $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
-		$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
-
 		/* If search argument is set, do a search for it. */
 		if ( ! empty( $args['search'] ) ) {
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
-		/* If post filter argument is set, do a search for it. */
-		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
-			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
+		if ( ! $this->network_wide ) {
+			$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
+
+			/* If post filter argument is set, do a search for it. */
+			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
+				$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
+			}
 		}
 
 		// Create the base GROUP BY clause.
-		$groupby = ' ID ';
+		$groupby = ' ttt.postnumber, ttt.blog_id ';
 
 		// Create the ORDER BY clause.
-		$orderby = '';
+		$orderby = ' total_count DESC ';
+
 		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		} elseif ( ! empty( $args['orderby'] ) ) {
-			$orderby = $args['orderby'];
-		}
 
-		if ( $orderby ) {
 			if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				$orderby = ' total_count ';
 			}
 
-			$order = '';
 			if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			} elseif ( ! empty( $args['order'] ) ) {
-				$order = $args['order'];
-			}
 
-			if ( $order && in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ), true ) ) {
-				$orderby .= " {$order}";
-			} else {
-				$orderby .= ' DESC';
+				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+					$orderby .= ' ' . $order;
+				} else {
+					$orderby .= ' DESC';
+				}
 			}
-		} else {
-			$orderby = ' total_count DESC ';
 		}
 
 		// Create the base LIMITS clause.
@@ -162,25 +173,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	/**
 	 * Delete the post count for this post.
 	 *
-	 * @param int $id post ID.
+	 * @param int $id      Post ID.
+	 * @param int $blog_id Blog ID.
 	 */
-	public static function delete_post_count( $id ) {
-		global $wpdb;
-
-		$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			"{$wpdb->base_prefix}top_ten",
-			array(
-				'postnumber' => $id,
-			),
-			array( '%d' )
-		);
-		$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			"{$wpdb->base_prefix}top_ten_daily",
-			array(
-				'postnumber' => $id,
-			),
-			array( '%d' )
-		);
+	public static function delete_post_count( $id, $blog_id ) {
+		tptn_delete_count( $id, $blog_id, false );
+		tptn_delete_count( $id, $blog_id, true );
 	}
 
 	/**
@@ -203,7 +201,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			get_current_blog_id()
 		);
 
-		if ( isset( $args['search'] ) ) {
+		if ( ! empty( $args['search'] ) ) {
 			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
 		}
 
@@ -232,8 +230,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-			case 'post_type':
-				return $item[ $column_name ];
 			case 'daily_count':
 				return tptn_number_format_i18n( absint( $item[ $column_name ] ) );
 			default:
@@ -250,9 +246,10 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_cb( $item ) {
 		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			'<input type="checkbox" name="%1$s[]" value="%2$s-%3$s" />',
 			'bulk-delete',
-			$item['ID']
+			$item['ID'],
+			$item['blog_id']
 		);
 	}
 
@@ -266,20 +263,32 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$delete_nonce = wp_create_nonce( 'tptn_delete_entry' );
 		$page         = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post         = $this->network_wide ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
+
+		if ( null === $post ) {
+			return __( 'Invalid post ID. This post might have been deleted.', 'top-10' );
+		}
 
 		$actions = array(
 			'view'   => sprintf( '<a href="%s" target="_blank">' . __( 'View', 'top-10' ) . '</a>', get_permalink( $item['ID'] ) ),
 			'edit'   => sprintf( '<a href="%s">' . __( 'Edit', 'top-10' ) . '</a>', get_edit_post_link( $item['ID'] ) ),
-			'delete' => sprintf( '<a href="?page=%s&action=%s&post=%s&_wpnonce=%s">' . __( 'Delete', 'top-10' ) . '</a>', esc_attr( $page ), 'delete', absint( $item['ID'] ), $delete_nonce ),
+			'delete' => sprintf(
+				'<a href="?page=%1$s&action=%2$s&post=%3$s&blog_id=%4$s&_wpnonce=%5$s">' . __( 'Delete', 'top-10' ) . '</a>',
+				esc_attr( $page ),
+				'delete',
+				absint( $item['ID'] ),
+				absint( $item['blog_id'] ),
+				$delete_nonce
+			),
 		);
 
 		// Return the title contents.
 		return sprintf(
-			'<a href="%4$s">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
-			$item['title'],
+			'<a href="%4$s" target="_blank">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
+			$post->post_title,
 			$item['ID'],
-			$this->row_actions( $actions ),
-			get_edit_post_link( $item['ID'] )
+			$this->network_wide ? '' : $this->row_actions( $actions ),
+			get_blog_permalink( $item['blog_id'], $item['ID'] )
 		);
 
 	}
@@ -289,44 +298,64 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 * Handles the post date column output.
 	 *
 	 * @param array $item Current item.
-	 * @return void
+	 * @return string Post date.
 	 */
 	public function column_date( $item ) {
 
-		$m_time = $item['post_date'];
-		$time   = get_post_time( 'G', true, $item['ID'] );
+		$post = get_blog_post( $item['blog_id'], $item['ID'] );
 
-		$time_diff = time() - $time;
+		if ( $post ) {
+			$m_time = strtotime( $post->post_date );
+			$h_time = wp_date( get_option( 'date_format' ), $m_time );
 
-		if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS ) {
-			/* translators: 1. Human time difference. */
-			$h_time = sprintf( __( '%s ago' ), human_time_diff( $time ) );
-		} else {
-			$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
+			return sprintf(
+				'<abbr title="%1$s">%1$s</abbr>',
+				esc_attr( $h_time )
+			);
 		}
+	}
 
-		echo '<abbr title="' . esc_attr( $h_time ) . '">' . esc_attr( $h_time ) . '</abbr>';
+	/**
+	 * Handles the post_type column output.
+	 *
+	 * @param array $item Current item.
+	 * @return string Post Type.
+	 */
+	public function column_post_type( $item ) {
+
+		$post = get_blog_post( $item['blog_id'], $item['ID'] );
+
+		if ( $post ) {
+			$pt = get_post_type_object( $post->post_type );
+			return $pt->labels->singular_name;
+		}
 	}
 
 	/**
 	 * Handles the post author column output.
 	 *
 	 * @param array $item Current item.
-	 * @return void
+	 * @return string Post Author.
 	 */
 	public function column_author( $item ) {
-		$author_info = get_userdata( $item['post_author'] );
+
+		$post = get_blog_post( $item['blog_id'], $item['ID'] );
+		if ( ! $post ) {
+			return;
+		}
+
+		$author_info = get_userdata( $post->post_author );
 		$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ) ) );
 
-		printf(
+		return sprintf(
 			'<a href="%s">%s</a>',
 			esc_url(
 				add_query_arg(
 					array(
-						'post_type' => $item['post_type'],
+						'post_type' => $post->post_type,
 						'author'    => ( false === $author_info ) ? 0 : $author_info->ID,
 					),
-					'edit.php'
+					get_admin_url( $item['blog_id'], 'edit.php' )
 				)
 			),
 			esc_html( $author_name )
@@ -349,6 +378,30 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Handles the blog id column output.
+	 *
+	 * @param array $item Current item.
+	 * @return void
+	 */
+	public function column_blog_id( $item ) {
+
+		$blog_details = get_blog_details( $item['blog_id'] );
+
+		printf(
+			'<a href="%s" target="_blank">%s</a>',
+			esc_url(
+				add_query_arg(
+					array(
+						'page' => 'tptn_popular_posts',
+					),
+					get_admin_url( $item['blog_id'] ) . 'admin.php'
+				)
+			),
+			esc_html( $blog_details->blogname )
+		);
+	}
+
+	/**
 	 * Associative array of columns
 	 *
 	 * @return array
@@ -363,6 +416,10 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'author'      => __( 'Author', 'top-10' ),
 			'date'        => __( 'Date', 'top-10' ),
 		);
+
+		if ( $this->network_wide ) {
+			$columns['blog_id'] = __( 'Blog', 'top-10' );
+		}
 
 		/**
 		 * Filter the columns displayed in the Posts list table.
@@ -382,8 +439,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	public function get_sortable_columns() {
 		$sortable_columns = array(
 			'title'       => array( 'title', false ),
-			'total_count' => array( 'total_count', false ),
-			'daily_count' => array( 'daily_count', false ),
+			'total_count' => array( 'total_count', true ),
+			'daily_count' => array( 'daily_count', true ),
 		);
 		return $sortable_columns;
 	}
@@ -402,10 +459,8 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 	/**
 	 * Handles data query and filter, sorting, and pagination.
-	 *
-	 * @param array $args Array of arguments.
 	 */
-	public function prepare_items( $args = null ) {
+	public function prepare_items() {
 
 		$this->_column_headers = $this->get_column_info();
 
@@ -416,6 +471,26 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		$current_page = $this->get_pagenum();
 
+		$args = array();
+
+		// If this is a search?
+		if ( isset( $_REQUEST['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+		// If this is a post type filter?
+		if ( isset( $_REQUEST['post-type-filter'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$args['post-type-filter'] = sanitize_text_field( wp_unslash( $_REQUEST['post-type-filter'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		// If this is a post date filter?
+		if ( isset( $_REQUEST['post-date-filter-to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$args['post-date-filter-to'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+		if ( isset( $_REQUEST['post-date-filter-from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$args['post-date-filter-from'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$this->items = self::get_popular_posts( $per_page, $current_page, $args );
 		$total_items = self::record_count( $args );
 
 		$this->set_pagination_args(
@@ -426,7 +501,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			)
 		);
 
-		$this->items = self::get_popular_posts( $per_page, $current_page, $args );
 	}
 
 	/**
@@ -437,10 +511,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Detect when a bulk action is being triggered...
 		if ( 'delete' === $this->current_action() ) {
 			// In our file that handles the request, verify the nonce.
-			$postid = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+			$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+			$blog_id = isset( $_GET['blog_id'] ) ? absint( $_GET['blog_id'] ) : get_current_blog_id();
 
-			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( wp_unslash( $_GET['_wpnonce'] ), 'tptn_delete_entry' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-				self::delete_post_count( $postid );
+			if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'tptn_delete_entry' ) ) {
+				self::delete_post_count( $post_id, $blog_id );
 			} else {
 				die( esc_html__( 'Are you sure you want to do this', 'top-10' ) );
 			}
@@ -450,12 +525,30 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		if ( ( isset( $_REQUEST['action'] ) && 'bulk-delete' === $_REQUEST['action'] )
 			|| ( isset( $_REQUEST['action2'] ) && 'bulk-delete' === $_REQUEST['action2'] )
 		) {
-			$delete_ids = isset( $_REQUEST['bulk-delete'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['bulk-delete'] ) ) : array();
+			$delete_ids = isset( $_REQUEST['bulk-delete'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_REQUEST['bulk-delete'] ) ) : array();
 
 			// Loop over the array of record IDs and delete them.
+			$post_ids = array();
+			$blog_ids = array();
 			foreach ( $delete_ids as $id ) {
-				self::delete_post_count( $id );
+				$pieces     = explode( '-', $id );
+				$post_ids[] = absint( $pieces[0] );
+				$blog_ids[] = absint( $pieces[1] );
 			}
+			tptn_delete_counts(
+				array(
+					'post_id' => $post_ids,
+					'blog_id' => $blog_ids,
+					'daily'   => true,
+				)
+			);
+			tptn_delete_counts(
+				array(
+					'post_id' => $post_ids,
+					'blog_id' => $blog_ids,
+					'daily'   => false,
+				)
+			);
 		}
 	}
 
@@ -480,29 +573,31 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$post_date_to = isset( $_REQUEST['post-date-filter-to'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ) : $current_date; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			echo '<input type="text" id="datepicker-to" name="post-date-filter-to" value="' . esc_attr( $post_date_to ) . '" size="11" />';
 
-			$post_types = get_post_types(
-				array(
-					'public' => true,
-				)
-			);
-			$post_types = $this->all_post_type + $post_types;
+			if ( ! $this->network_wide ) {
+				$post_types = get_post_types(
+					array(
+						'public' => true,
+					)
+				);
+				$post_types = $this->all_post_type + $post_types;
 
-			if ( $post_types ) {
+				if ( $post_types ) {
 
-				echo '<select name="post-type-filter">';
+					echo '<select name="post-type-filter">';
 
-				foreach ( $post_types as $post_type ) {
-					$selected = '';
-					if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] === $post_type ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-						$selected = ' selected = "selected"';
+					foreach ( $post_types as $post_type ) {
+						$selected = '';
+						if ( isset( $_REQUEST['post-type-filter'] ) && $_REQUEST['post-type-filter'] === $post_type ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+							$selected = ' selected = "selected"';
+						}
+						?>
+						<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
+						<?php
 					}
-					?>
-				<option value="<?php echo esc_attr( $post_type ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_attr( $post_type ); ?></option>
-					<?php
+
+					echo '</select>';
+
 				}
-
-				echo '</select>';
-
 			}
 
 			$output = ob_get_clean();

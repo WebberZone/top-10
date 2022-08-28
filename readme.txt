@@ -140,6 +140,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Enhancements/Modifications:
 	* In Multisite, Restting the Popular Posts or Daily Popular Posts will only apply to the current site
 	* New function: `get_tptn_table()`; Code has been refactored to use this function
+	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
 	* Use moment.js bundled with WordPress
 
 * Bug fix:
