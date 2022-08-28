@@ -97,7 +97,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause.
-		// Create the base WHERE clause.
 		if ( ! $this->network_wide ) {
 			$join .= " LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID ";
 		}
@@ -113,15 +112,15 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		);
 
 		// Create the base WHERE clause.
-		/* If search argument is set, do a search for it. */
-		if ( ! empty( $args['search'] ) ) {
-			$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
-		}
-
 		if ( ! $this->network_wide ) {
 			$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
 
-			/* If post filter argument is set, do a search for it. */
+			// If search argument is set, do a search for it.
+			if ( ! empty( $args['search'] ) ) {
+				$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+			}
+
+			// If post filter argument is set, do a search for it.
 			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
 				$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 			}
@@ -169,18 +168,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 	}
 
-
-	/**
-	 * Delete the post count for this post.
-	 *
-	 * @param int $id      Post ID.
-	 * @param int $blog_id Blog ID.
-	 */
-	public static function delete_post_count( $id, $blog_id ) {
-		tptn_delete_count( $id, $blog_id, false );
-		tptn_delete_count( $id, $blog_id, true );
-	}
-
 	/**
 	 * Returns the count of records in the database.
 	 *
@@ -191,25 +178,33 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		global $wpdb;
 
-		$sql = $wpdb->prepare(
-			"
-			SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt
-			INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID
-			WHERE blog_id=%d
-			AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit')
-		",
-			get_current_blog_id()
-		);
+		$where = '';
 
-		if ( ! empty( $args['search'] ) ) {
-			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+		$sql = "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt";
+
+		if ( ! $this->network_wide ) {
+			$where .= $wpdb->prepare( ' AND blog_id = %d ', get_current_blog_id() );
+
+			if ( ! empty( $args['search'] ) ) {
+				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+			}
+
+			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
+				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_type = %s ", $args['post-type-filter'] );
+			}
 		}
+		return $wpdb->get_var( "$sql WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
 
-		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
-			$sql .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
-		}
-
-		return $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+	/**
+	 * Delete the post count for this post.
+	 *
+	 * @param int $id      Post ID.
+	 * @param int $blog_id Blog ID.
+	 */
+	public static function delete_post_count( $id, $blog_id ) {
+		tptn_delete_count( $id, $blog_id, false );
+		tptn_delete_count( $id, $blog_id, true );
 	}
 
 	/**
