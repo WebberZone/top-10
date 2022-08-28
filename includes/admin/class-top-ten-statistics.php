@@ -61,7 +61,7 @@ class Top_Ten_Statistics {
 	 * Plugin settings page
 	 */
 	public function plugin_settings_page() {
-		$args = null;
+
 		if ( isset( $_REQUEST['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$page = sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
@@ -76,28 +76,8 @@ class Top_Ten_Statistics {
 							<form method="get">
 								<input type="hidden" name="page" value="<?php echo esc_attr( $page ); ?>" />
 								<?php
-								// If this is a search?
-								if ( isset( $_REQUEST['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-								// If this is a post type filter?
-								if ( isset( $_REQUEST['post-type-filter'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-type-filter'] = sanitize_text_field( wp_unslash( $_REQUEST['post-type-filter'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-
-								// If this is a post date filter?
-								if ( isset( $_REQUEST['post-date-filter-to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-date-filter-to'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-
-								if ( isset( $_REQUEST['post-date-filter-from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-date-filter-from'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-
-								$this->pop_posts_obj->prepare_items( $args );
-
-								$this->pop_posts_obj->search_box( __( 'Search Table', 'top-10' ), 'top-10' );
-
+								$this->pop_posts_obj->prepare_items();
+								$this->pop_posts_obj->search_box( __( 'Search Popular Posts', 'top-10' ), 'top-10' );
 								$this->pop_posts_obj->display();
 								?>
 							</form>

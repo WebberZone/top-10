@@ -61,7 +61,7 @@ class Top_Ten_Network_Statistics {
 	 * Plugin settings page
 	 */
 	public function plugin_settings_page() {
-		$args = null;
+
 		if ( isset( $_REQUEST['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$page = sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
@@ -76,18 +76,8 @@ class Top_Ten_Network_Statistics {
 							<form method="get">
 								<input type="hidden" name="page" value="<?php echo esc_attr( $page ); ?>" />
 								<?php
-
-								// If this is a post date filter?
-								if ( isset( $_REQUEST['post-date-filter-to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-date-filter-to'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-
-								if ( isset( $_REQUEST['post-date-filter-from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-									$args['post-date-filter-from'] = sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-								}
-
-								$this->pop_posts_obj->prepare_items( $args );
-
+								$this->pop_posts_obj->prepare_items();
+								$this->hidden_inputs();
 								$this->pop_posts_obj->display();
 								?>
 							</form>
@@ -116,8 +106,21 @@ class Top_Ten_Network_Statistics {
 			'option'  => 'pop_posts_per_page',
 		);
 		add_screen_option( $option, $args );
-		$this->pop_posts_obj = new Top_Ten_Network_Statistics_Table();
+		$this->pop_posts_obj = new Top_Ten_Statistics_Table( true );
 	}
+
+	/**
+	 * Displays the hidden inputs.
+	 */
+	public function hidden_inputs() {
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+		if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+	}
+
 
 	/** Singleton instance */
 	public static function get_instance() {
