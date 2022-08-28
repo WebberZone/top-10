@@ -142,6 +142,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* New function: `get_tptn_table()`; Code has been refactored to use this function
 	* Use moment.js bundled with WordPress
 
+* Bug fix:
+	* Scripts/styles didn't load in Network posts page
+
 = 3.1.3 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)

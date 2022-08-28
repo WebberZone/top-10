@@ -240,7 +240,7 @@ function tptn_load_admin_scripts( $hook ) {
 		TOP_TEN_VERSION
 	);
 
-	if ( in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page . '-network' ), true ) ) {
+	if ( in_array( $hook, array( $tptn_settings_page, $tptn_settings_tools_help, $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_settings_exim_help, $tptn_network_pop_posts_page ), true ) ) {
 
 		wp_enqueue_script( 'top-ten-admin-js' );
 		wp_enqueue_script( 'top-ten-suggest-js' );
@@ -260,7 +260,7 @@ function tptn_load_admin_scripts( $hook ) {
 	}
 
 	// Only enqueue the styles if this is a popular posts page.
-	if ( in_array( $hook, array( $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page . '-network' ), true ) ) {
+	if ( in_array( $hook, array( $tptn_settings_popular_posts, $tptn_settings_popular_posts_daily, $tptn_network_pop_posts_page ), true ) ) {
 		wp_enqueue_style(
 			'tptn-admin-ui-css',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
