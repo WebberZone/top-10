@@ -23,6 +23,14 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function tptn_tools_page() {
+	global $tptn_network_tools_page;
+
+	$screen       = get_current_screen();
+	$network_wide = false;
+
+	if ( $screen->id === $tptn_network_tools_page . '-network' ) {
+		$network_wide = true;
+	}
 
 	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_recreate_primary_key'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
@@ -32,13 +40,13 @@ function tptn_tools_page() {
 
 	/* Truncate overall posts table */
 	if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
-		tptn_trunc_count( false );
+		tptn_trunc_count( false, $network_wide );
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'error' );
 	}
 
 	/* Truncate daily posts table */
 	if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
-		tptn_trunc_count( true );
+		tptn_trunc_count( true, $network_wide );
 		add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
 	}
 
