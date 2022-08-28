@@ -50,7 +50,6 @@ register_activation_hook( TOP_TEN_PLUGIN_FILE, 'tptn_activation_hook' );
 function tptn_single_activate() {
 	global $wpdb, $tptn_db_version;
 
-	$tptn_settings   = tptn_get_settings();
 	$charset_collate = $wpdb->get_charset_collate();
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
