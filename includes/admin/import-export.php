@@ -29,7 +29,7 @@ function tptn_exim_page() {
 		if ( 'success' === $_GET['file_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Data has been imported into the table', 'top-10' ), 'success' );
 		} elseif ( 'fail' === $_GET['file_import'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Data import failure. Check the number of columns for the file being imported and if you are uploading it in the right section below', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Data import failure. Check the number of columns for the file being imported, if you are uploading it in the right section below and that the data is correct', 'top-10' ), 'error' );
 		}
 	}
 
@@ -49,6 +49,7 @@ function tptn_exim_page() {
 		<div id="post-body" class="metabox-holder columns-2">
 		<div id="post-body-content">
 
+			<?php if ( ! is_network_admin() ) : ?>
 			<form method="post">
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Export/Import settings', 'top-10' ); ?></h2>
@@ -78,6 +79,7 @@ function tptn_exim_page() {
 				<input type="hidden" name="tptn_action" value="import_settings" />
 				<?php wp_nonce_field( 'tptn_import_settings_nonce', 'tptn_import_settings_nonce' ); ?>
 			</form>
+			<?php endif; ?>
 
 			<form method="post">
 
@@ -86,7 +88,10 @@ function tptn_exim_page() {
 					<?php esc_html_e( 'Click the buttons below to export the overall and the daily tables. The file is downloaded as an CSV file which you should be able to edit in Excel or any other compatible software.', 'top-10' ); ?>
 					<?php esc_html_e( 'If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts.', 'top-10' ); ?>
 				</p>
-				<p><input type="hidden" name="tptn_action" value="export_tables" /></p>
+				<p>
+					<input type="hidden" name="tptn_action" value="export_tables" />
+					<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
+				</p>
 				<p>
 					<?php submit_button( esc_html__( 'Export overall tables', 'top-10' ), 'primary', 'tptn_export_total', false ); ?>
 					<?php submit_button( esc_html__( 'Export daily tables', 'top-10' ), 'primary', 'tptn_export_daily', false ); ?>
@@ -123,6 +128,8 @@ function tptn_exim_page() {
 				</p>
 
 				<input type="hidden" name="tptn_action" value="import_tables" />
+				<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
+
 				<?php wp_nonce_field( 'tptn_import_nonce', 'tptn_import_nonce' ); ?>
 			</form>
 
@@ -162,7 +169,11 @@ function tptn_export_tables() {
 		return;
 	}
 
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( is_network_admin() && ! current_user_can( 'manage_network_options' ) ) {
+		return;
+	}
+
+	if ( is_admin() && ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
@@ -174,9 +185,24 @@ function tptn_export_tables() {
 		return;
 	}
 
+	if ( isset( $_POST['network_wide'] ) ) {
+		$network_wide = intval( $_POST['network_wide'] );
+	} else {
+		return;
+	}
+
 	$table_name = get_tptn_table( $daily );
 
-	$filename = 'top-ten' . ( $daily ? '-daily' : '' ) . '-table-' . current_time( 'Y_m_d_Hi' ) . '.csv';
+	$filename = array(
+		'top-ten',
+		( $daily ? 'daily' : '' ),
+		'table',
+		( is_network_admin() ? '' : 'blog' . get_current_blog_id() ),
+		current_time( 'Y_m_d_Hi' ),
+	);
+	$filename = array_filter( $filename );
+	$filename = implode( '-', $filename );
+	$filename = $filename . '.csv';
 
 	$header_row = array(
 		esc_html__( 'Post ID', 'top-10' ),
@@ -190,6 +216,9 @@ function tptn_export_tables() {
 	$data_rows = array();
 
 	$sql = 'SELECT * FROM ' . $table_name;
+	if ( ! $network_wide ) {
+		$sql .= $wpdb->prepare( ' WHERE blog_id=%d ', get_current_blog_id() );
+	}
 
 	$results = $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
@@ -242,7 +271,11 @@ function tptn_import_tables() {
 		return;
 	}
 
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( is_network_admin() && ! current_user_can( 'manage_network_options' ) ) {
+		return;
+	}
+
+	if ( is_admin() && ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
@@ -256,14 +289,20 @@ function tptn_import_tables() {
 		return;
 	}
 
-	$table_name = get_tptn_table( false );
-	$filename   = 'import_file';
-	if ( $daily ) {
-		$table_name .= '_daily';
-		$filename   .= '_daily';
+	if ( isset( $_POST['network_wide'] ) ) {
+		$network_wide = intval( $_POST['network_wide'] );
+	} else {
+		return;
 	}
 
-	$extension = isset( $_FILES[ $filename ]['name'] ) ? end( explode( '.', sanitize_file_name( wp_unslash( $_FILES[ $filename ]['name'] ) ) ) ) : '';
+	$table_name = get_tptn_table( $daily );
+	$filename   = 'import_file';
+	if ( $daily ) {
+		$filename .= '_daily';
+	}
+
+	$tmp       = isset( $_FILES[ $filename ]['name'] ) ? explode( '.', sanitize_file_name( wp_unslash( $_FILES[ $filename ]['name'] ) ) ) : array();
+	$extension = end( $tmp );
 
 	if ( 'csv' !== $extension ) {
 		wp_die( esc_html__( 'Please upload a valid .csv file', 'top-10' ) );
@@ -276,7 +315,7 @@ function tptn_import_tables() {
 	}
 
 	$data        = array();
-	$file_import = 'success';
+	$file_import = '';
 
 	// Open uploaded CSV file with read-only mode.
 	$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
@@ -292,11 +331,20 @@ function tptn_import_tables() {
 		}
 
 		if ( $daily ) {
+
+			if ( ! is_network_admin() && ( (int) get_current_blog_id() !== (int) $line[3] ) ) {
+				continue;
+			}
+
 			$dp_date = new DateTime( $line[2] );
 			$dp_date = $dp_date->format( 'Y-m-d H' );
 
 			$data[] = $wpdb->prepare( '( %d, %d, %s, %d )', $line[0], $line[1], $dp_date, $line[3] );
 		} else {
+			if ( ! is_network_admin() && ( (int) get_current_blog_id() !== (int) $line[2] ) ) {
+				continue;
+			}
+
 			$data[] = $wpdb->prepare( '( %d, %d, %d )', $line[0], $line[1], $line[2] );
 		}
 	}
@@ -306,14 +354,16 @@ function tptn_import_tables() {
 
 	if ( ! empty( $data ) ) {
 		// Truncate the table before import.
-		tptn_trunc_count( $daily );
+		tptn_trunc_count( $daily, $network_wide );
 
 		if ( $daily ) {
-			$wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+			$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 		} else {
-			$wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+			$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}
+
+	$file_import = $result ? 'success' : 'fail';
 
 	wp_safe_redirect(
 		add_query_arg(
@@ -321,7 +371,7 @@ function tptn_import_tables() {
 				'page'        => 'tptn_exim_page',
 				'file_import' => $file_import,
 			),
-			admin_url( 'admin.php' )
+			is_network_admin() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' )
 		)
 	);
 	exit;
