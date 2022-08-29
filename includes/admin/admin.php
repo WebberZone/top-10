@@ -247,7 +247,6 @@ function tptn_network_admin_menu_links() {
 		'tptn_network_pop_posts_page',
 		array( $tptn_stats_screen, 'plugin_settings_page' ),
 	);
-
 	add_action( "load-$tptn_network_pop_posts_page", array( $tptn_stats_screen, 'screen_option' ) );
 
 	$tptn_network_tools_page = add_submenu_page(
@@ -258,6 +257,17 @@ function tptn_network_admin_menu_links() {
 		'tptn_network_tools_page',
 		'tptn_tools_page',
 	);
+	add_action( "load-$tptn_network_tools_page", 'tptn_settings_tools_help' );
+
+	$tptn_network_exim_page = add_submenu_page(
+		'tptn_network_pop_posts_page',
+		esc_html__( 'Top 10 Import Export Tables', 'top-10' ),
+		esc_html__( 'Import/Export', 'top-10' ),
+		'manage_network_options',
+		'tptn_exim_page',
+		'tptn_exim_page'
+	);
+	add_action( "load-$tptn_network_exim_page", 'tptn_settings_exim_help' );
 }
 add_action( 'network_admin_menu', 'tptn_network_admin_menu_links' );
 

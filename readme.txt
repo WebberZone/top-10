@@ -138,7 +138,10 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 = 3.2.0 =
 
 * Enhancements/Modifications:
-	* In Multisite, Restting the Popular Posts or Daily Popular Posts will only apply to the current site
+	* Multisite improvements:
+		* New Tools page and Import/Export page in Network Admin - you can find this in the Top 10 menu
+		* Resetting the Popular Posts or Daily Popular Posts will apply to the current site in the Admin screen and across the network in the Network Admin screen
+		* Exporting/Importing tables will apply to the current site in the Admin screen and across the network in the Network Admin screen
 	* New function: `get_tptn_table()`; Code has been refactored to use this function
 	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
 	* Use moment.js bundled with WordPress

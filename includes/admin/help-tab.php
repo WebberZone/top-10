@@ -123,13 +123,7 @@ function tptn_settings_help() {
  * @since 2.5.0
  */
 function tptn_settings_tools_help() {
-	global $tptn_settings_tools_help;
-
 	$screen = get_current_screen();
-
-	if ( $screen->id !== $tptn_settings_tools_help ) {
-		return;
-	}
 
 	$screen->set_help_sidebar(
 		/* translators: 1: Support link. */
@@ -163,13 +157,7 @@ function tptn_settings_tools_help() {
  * @since 2.7.0
  */
 function tptn_settings_exim_help() {
-	global $tptn_settings_exim_help;
-
 	$screen = get_current_screen();
-
-	if ( $screen->id !== $tptn_settings_exim_help ) {
-		return;
-	}
 
 	$screen->set_help_sidebar(
 		/* translators: 1: Support link. */
