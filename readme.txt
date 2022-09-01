@@ -142,6 +142,10 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 		* New Tools page and Import/Export page in Network Admin - you can find this in the Top 10 menu
 		* Resetting the Popular Posts or Daily Popular Posts will apply to the current site in the Admin screen and across the network in the Network Admin screen
 		* Exporting/Importing tables will apply to the current site in the Admin screen and across the network in the Network Admin screen
+	* Top_Ten_Query improvements:
+		* WP_Query's arguments `posts_per_page`, `post_type` are prioritised
+		* New filters: `top_ten_query_date_query`, `top_ten_query_meta_query`, `top_ten_query_meta_query_relation`, `top_ten_query_tax_query_relation`, `top_ten_query_posts_fields`, `top_ten_query_posts_join`, `top_ten_query_posts_where`, `top_ten_query_posts_orderby`, `top_ten_query_posts_groupby`
+		* Cache key is generated from the `query_args` instead of just the `input_query_args`
 	* New function: `get_tptn_table()`; Code has been refactored to use this function
 	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
 	* Use moment.js bundled with WordPress
