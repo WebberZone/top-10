@@ -117,7 +117,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 * }
 		 */
 		public function prepare_query_args( $args = array() ) {
-			global $wpdb;
+
 			$tptn_settings = tptn_get_settings();
 
 			$defaults = array(
@@ -143,40 +143,46 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			$this->table_name = get_tptn_table( $args['daily'] );
 			$this->is_daily   = $args['daily'];
 
-			// Set the number of posts to be retrieved.
-			$args['posts_per_page'] = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 3 );
-
-			// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
-			if ( ! empty( $args['post_types'] ) && is_array( $args['post_types'] ) ) {
-				$post_types = $args['post_types'];
-			} elseif ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
-				$post_types = explode( ',', $args['post_types'] );
-			} else {
-				parse_str( $args['post_types'], $post_types );  // Save post types in $post_types variable.
-			}
-
-			// If post_types is empty or if we want all the post types.
-			if ( empty( $post_types ) || 'all' === $args['post_types'] ) {
-				$post_types = get_post_types(
-					array(
-						'public' => true,
-					)
-				);
-			}
-
-			/**
-			 * Filter the post_types passed to the query.
-			 *
-			 * @since 2.2.0
-			 * @since 3.0.0 Changed second argument from post ID to WP_Post object.
-			 *
-			 * @param array   $post_types  Array of post types to filter by.
-			 * @param array   $args        Arguments array.
-			 */
-			$args['post_type'] = apply_filters( 'tptn_posts_post_types', $post_types, $args );
-
 			// Parse the blog_id argument to get an array of IDs.
 			$this->blog_id = wp_parse_id_list( $args['blog_id'] );
+
+			// Set the number of posts to be retrieved.
+			if ( empty( $args['posts_per_page'] ) ) {
+				$args['posts_per_page'] = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 3 );
+			}
+
+			if ( empty( 'post_type' ) ) {
+
+				// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
+				if ( ! empty( $args['post_types'] ) && is_array( $args['post_types'] ) ) {
+					$post_types = $args['post_types'];
+				} elseif ( ! empty( $args['post_types'] ) && false === strpos( $args['post_types'], '=' ) ) {
+					$post_types = explode( ',', $args['post_types'] );
+				} else {
+					parse_str( $args['post_types'], $post_types );  // Save post types in $post_types variable.
+				}
+
+				// If post_types is empty or if we want all the post types.
+				if ( empty( $post_types ) || 'all' === $args['post_types'] ) {
+					$post_types = get_post_types(
+						array(
+							'public' => true,
+						)
+					);
+				}
+
+				/**
+				 * Filter the post_types passed to the query.
+				 *
+				 * @since 2.2.0
+				 * @since 3.0.0 Changed second argument from post ID to $args.
+				 *
+				 * @param array   $post_types  Array of post types to filter by.
+				 * @param array   $args        Arguments array.
+				 */
+				$args['post_type'] = apply_filters( 'tptn_posts_post_types', $post_types, $args );
+
+			}
 
 			// Tax Query.
 			if ( ! empty( $args['tax_query'] ) && is_array( $args['tax_query'] ) ) {
@@ -214,19 +220,58 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			// Add a relation key if more than one $tax_query.
 			if ( count( $tax_query ) > 1 ) {
-				$tax_query['relation'] = 'AND';
+				/**
+				 * Filter the tax_query relation parameter.
+				 *
+				 * @since 3.2.0
+				 *
+				 * @param string  $relation The logical relationship between each inner taxonomy array when there is more than one. Default is 'AND'.
+				 * @param array   $args     Arguments array.
+				 */
+				$tax_query['relation'] = apply_filters( 'top_ten_query_tax_query_relation', 'AND', $args );
 			}
 
-			$args['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-
 			// Set date_query.
-			$args['date_query'] = array(
+			$date_query = array(
 				array(
 					'after'     => $args['how_old'] ? tptn_get_from_date( null, $args['how_old'] + 1, 0 ) : '',
 					'before'    => current_time( 'mysql' ),
 					'inclusive' => true,
 				),
 			);
+
+			/**
+			 * Filter the date_query passed to WP_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param array   $date_query Array of date parameters to be passed to WP_Query.
+			 * @param array   $args       Arguments array.
+			 */
+			$args['date_query'] = apply_filters( 'top_ten_query_date_query', $date_query, $args );
+
+			/**
+			 * Filter the meta_query passed to WP_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param array   $meta_query Array of meta_query parameters.
+			 * @param array   $args       Arguments array.
+			 */
+			$meta_query = apply_filters( 'top_ten_query_meta_query', array(), $args ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+
+			// Add a relation key if more than one $meta_query.
+			if ( count( $meta_query ) > 1 ) {
+				/**
+				 * Filter the meta_query relation parameter.
+				 *
+				 * @since 3.2.0
+				 *
+				 * @param string  $relation The logical relationship between each inner meta_query array when there is more than one. Default is 'AND'.
+				 * @param array   $args     Arguments array.
+				 */
+				$meta_query['relation'] = apply_filters( 'top_ten_query_meta_query_relation', 'AND', $args );
+			}
 
 			// Set post_status.
 			$args['post_status'] = empty( $args['post_status'] ) ? array( 'publish', 'inherit' ) : $args['post_status'];
@@ -274,8 +319,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			 *
 			 * @since 3.0.0
 			 *
-			 * @param array     $args The arguments of the query.
-			 * @param Top_Ten_Query $this The Top_Ten_Query instance (passed by reference).
+			 * @param array         $args  The arguments of the query.
+			 * @param Top_Ten_Query $query The Top_Ten_Query instance (passed by reference).
 			 */
 			$this->query_args = apply_filters_ref_array( 'top_ten_query_args', array( $args, &$this ) );
 		}
@@ -302,6 +347,16 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			$fields .= ',' . $_fields;
 
+			/**
+			 * Filters the fields returned by the SELECT clause.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $fields The fields returned by the SELECT clause.
+			 * @param Top_Ten_Query $query  The Top_Ten_Query instance (passed by reference).
+			 */
+			$fields = apply_filters_ref_array( 'top_ten_query_posts_fields', array( $fields, &$this ) );
+
 			return $fields;
 		}
 
@@ -323,6 +378,16 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			}
 
 			$join .= " INNER JOIN {$this->table_name} ON {$this->table_name}.postnumber={$wpdb->posts}.ID ";
+
+			/**
+			 * Filters the JOIN clause of Top_Ten_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $join  The JOIN clause of the Query.
+			 * @param Top_Ten_Query $query The Top_Ten_Query instance (passed by reference).
+			 */
+			$join = apply_filters_ref_array( 'top_ten_query_posts_join', array( $join, &$this ) );
 
 			return $join;
 		}
@@ -360,6 +425,16 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				}
 			}
 
+			/**
+			 * Filters the WHERE clause of Top_Ten_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $where  The WHERE clause of the Query.
+			 * @param Top_Ten_Query $query  The Top_Ten_Query instance (passed by reference).
+			 */
+			$where = apply_filters_ref_array( 'top_ten_query_posts_where', array( $where, &$this ) );
+
 			return $where;
 		}
 
@@ -373,6 +448,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 * @return string  Updated ORDER BY
 		 */
 		public function posts_orderby( $orderby, $query ) {
+			global $wpdb;
 
 			// Return if it is not a Top_Ten_Query.
 			if ( true !== $query->get( 'top_ten_query' ) ) {
@@ -385,6 +461,16 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			}
 
 			$orderby = ' visits DESC ';
+
+			/**
+			 * Filters the ORDER BY clause of Top_Ten_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $orderby  The ORDER BY clause of the Query.
+			 * @param Top_Ten_Query $query    The Top_Ten_Query instance (passed by reference).
+			 */
+			$orderby = apply_filters_ref_array( 'top_ten_query_posts_orderby', array( $orderby, &$this ) );
 
 			return $orderby;
 		}
@@ -409,6 +495,16 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				$groupby = " {$this->table_name}.postnumber ";
 			}
 
+			/**
+			 * Filters the GROUP BY clause of Top_Ten_Query.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $groupby  The GROUP BY clause of the Query.
+			 * @param Top_Ten_Query $query    The Top_Ten_Query instance (passed by reference).
+			 */
+			$groupby = apply_filters_ref_array( 'top_ten_query_posts_groupby', array( $groupby, &$this ) );
+
 			return $groupby;
 		}
 
@@ -431,7 +527,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Check the cache if there are any posts saved.
 			if ( ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
 
-				$cache_name = tptn_cache_get_key( $this->input_query_args );
+				$cache_name = tptn_cache_get_key( $this->query_args );
 
 				$post_ids = get_transient( $cache_name );
 
@@ -474,7 +570,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			if ( ! empty( $this->query_args['cache_posts'] ) && ! $this->in_cache && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
 				/** This filter is defined in display-posts.php */
 				$cache_time = apply_filters( 'tptn_cache_time', $this->query_args['cache_time'], $this->query_args );
-				$cache_name = tptn_cache_get_key( $this->input_query_args );
+				$cache_name = tptn_cache_get_key( $this->query_args );
 				$post_ids   = wp_list_pluck( $query->posts, 'ID' );
 
 				set_transient( $cache_name, $post_ids, $cache_time );
