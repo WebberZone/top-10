@@ -85,13 +85,17 @@ function tptn_pop_posts( $args ) {
 
 	$counter = 0;
 
-	$tptn_style      = tptn_get_style();
-	$daily_class     = $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ';
-	$style_class     = ( ! empty( $tptn_style['name'] ) ) ? ' tptn-' . $tptn_style['name'] : '';
-	$widget_class    = $args['is_widget'] ? ' tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '';
-	$shortcode_class = $args['is_shortcode'] ? ' tptn_posts_shortcode' : '';
-
-	$post_classes = $daily_class . $style_class . $widget_class . $shortcode_class;
+	$style        = ( 'text_only' === $args['post_thumb_op'] ) ? 'text_only' : $args['tptn_styles'];
+	$style_array  = tptn_get_style( $style );
+	$post_classes = array(
+		'main'        => $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ',
+		'widget'      => $args['is_widget'] ? 'tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '',
+		'shortcode'   => $args['is_shortcode'] ? 'tptn_posts_shortcode' : '',
+		'block'       => $args['is_block'] ? 'tptn_posts_block' : '',
+		'extra_class' => $args['extra_class'],
+		'style'       => ! empty( $style_array['name'] ) ? 'tptn-' . $style_array['name'] : '',
+	);
+	$post_classes = join( ' ', $post_classes );
 
 	/**
 	 * Filter the classes added to the div wrapper of the Top 10.

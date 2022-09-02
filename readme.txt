@@ -148,6 +148,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 		* Cache key is generated from the `query_args` instead of just the `input_query_args`
 	* New function: `get_tptn_table()`; Code has been refactored to use this function
 	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
+	* Selecting "Text only" thumbnail style will force the same for the output
 	* Use moment.js bundled with WordPress
 
 * Bug fix:
