@@ -50,21 +50,24 @@ add_action( 'wp_enqueue_scripts', 'tptn_heading_styles' );
  * Get the current style for the popular posts.
  *
  * @since 3.0.0
+ * @since 3.2.0 Added parameter $style
+ *
+ * @param string $style Style parameter.
  *
  * @return array Contains two elements:
  *               'name' holding style name and 'extra_css' to be added inline.
  */
-function tptn_get_style() {
+function tptn_get_style( $style = '' ) {
 
-	$style        = array();
+	$style_array  = array();
 	$thumb_width  = tptn_get_option( 'thumb_width' );
 	$thumb_height = tptn_get_option( 'thumb_height' );
-	$tptn_style   = tptn_get_option( 'tptn_styles' );
+	$tptn_style   = ! empty( $style ) ? $style : tptn_get_option( 'tptn_styles' );
 
 	switch ( $tptn_style ) {
 		case 'left_thumbs':
-			$style['name']      = 'left-thumbs';
-			$style['extra_css'] = "
+			$style_array['name']      = 'left-thumbs';
+			$style_array['extra_css'] = "
 			.tptn-left-thumbs a {
 			  width: {$thumb_width}px;
 			  height: {$thumb_height}px;
@@ -82,10 +85,20 @@ function tptn_get_style() {
 			break;
 
 		default:
-			$style['name']      = '';
-			$style['extra_css'] = '';
+			$style_array['name']      = '';
+			$style_array['extra_css'] = '';
 			break;
 	}
 
-	return $style;
+	/**
+	 * Filter the style array which contains the name and extra_css.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param array  $style_array  Style array containing name and extra_css.
+	 * @param string $tptn_style    Style name.
+	 * @param int    $thumb_width  Thumbnail width.
+	 * @param int    $thumb_height Thumbnail height.
+	 */
+	return apply_filters( 'tptn_get_style', $style_array, $tptn_style, $thumb_width, $thumb_height );
 }
