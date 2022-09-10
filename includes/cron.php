@@ -70,36 +70,3 @@ function tptn_disable_run() {
 		wp_clear_scheduled_hook( 'tptn_cron_hook' );
 	}
 }
-
-// Let's declare this conditional function to add more schedules. It will be a generic function across all plugins that I develop.
-if ( ! function_exists( 'wz_more_recurrences' ) ) :
-
-	/**
-	 * Function to add weekly and fortnightly recurrences. Filters `cron_schedules`.
-	 *
-	 * @param   array $schedules Array of existing schedules.
-	 * @return  array Filtered array with new schedules
-	 */
-	function wz_more_recurrences( $schedules ) {
-		// Add a 'weekly' interval.
-		$schedules['weekly']      = array(
-			'interval' => WEEK_IN_SECONDS,
-			'display'  => __( 'Once Weekly', 'top-10' ),
-		);
-		$schedules['fortnightly'] = array(
-			'interval' => 2 * WEEK_IN_SECONDS,
-			'display'  => __( 'Once Fortnightly', 'top-10' ),
-		);
-		$schedules['monthly']     = array(
-			'interval' => 30 * DAY_IN_SECONDS,
-			'display'  => __( 'Once Monthly', 'top-10' ),
-		);
-		$schedules['quarterly']   = array(
-			'interval' => 90 * DAY_IN_SECONDS,
-			'display'  => __( 'Once quarterly', 'top-10' ),
-		);
-		return $schedules;
-	}
-	add_filter( 'cron_schedules', 'wz_more_recurrences' );
-
-endif;

@@ -125,6 +125,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-widget.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-count-widget.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/modules/class-top-ten-rest-api.php';
 require_once TOP_TEN_PLUGIN_DIR . 'includes/blocks/register-blocks.php';
+require_once TOP_TEN_PLUGIN_DIR . 'includes/wz-pluggables.php';
 
 
 /*
