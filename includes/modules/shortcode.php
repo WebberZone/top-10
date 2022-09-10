@@ -25,6 +25,7 @@ function tptn_shortcode( $atts, $content = null ) {
 				'is_shortcode'    => 1,
 				'offset'          => 0,
 				'include_cat_ids' => '',
+				'blog_id'         => get_current_blog_id(),
 			)
 		),
 		$atts,
@@ -59,4 +60,3 @@ function tptn_shortcode_views( $atts, $content = null ) { // phpcs:ignore Generi
 	return get_tptn_post_count_only( get_the_ID(), $count );
 }
 add_shortcode( 'tptn_views', 'tptn_shortcode_views' );
-

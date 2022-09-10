@@ -21,12 +21,20 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 	class Top_Ten_Query extends WP_Query {
 
 		/**
-		 * Query vars, before parsing.
+		 * Array of blog IDs.
 		 *
 		 * @since 3.0.2
 		 * @var int[]
 		 */
 		public $blog_id;
+
+		/**
+		 * Flag to indicate if multiple blogs are being queried.
+		 *
+		 * @since 3.2.0
+		 * @var bool
+		 */
+		public $multiple_blogs;
 
 		/**
 		 * Cache set flag.
@@ -83,8 +91,12 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
 			add_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 10, 2 );
 			add_filter( 'posts_groupby', array( $this, 'posts_groupby' ), 10, 2 );
+			add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 20, 2 );
+			add_filter( 'posts_request', array( $this, 'posts_request' ), 20, 2 );
 			add_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ), 10, 2 );
 			add_filter( 'the_posts', array( $this, 'the_posts' ), 10, 2 );
+			add_action( 'the_post', array( $this, 'switch_to_blog_in_loop' ) );
+			add_action( 'loop_end', array( $this, 'loop_end' ) );
 
 			parent::__construct( $this->query_args );
 
@@ -94,8 +106,12 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			remove_filter( 'posts_where', array( $this, 'posts_where' ) );
 			remove_filter( 'posts_orderby', array( $this, 'posts_orderby' ) );
 			remove_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
+			remove_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 20 );
+			remove_filter( 'posts_request', array( $this, 'posts_request' ), 20 );
 			remove_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ) );
 			remove_filter( 'the_posts', array( $this, 'the_posts' ) );
+			remove_action( 'the_post', array( $this, 'the_post' ) );
+			remove_action( 'loop_end', array( $this, 'loop_end' ) );
 		}
 
 		/**
@@ -145,6 +161,9 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			// Parse the blog_id argument to get an array of IDs.
 			$this->blog_id = wp_parse_id_list( $args['blog_id'] );
+			if ( count( $this->blog_id ) > 1 || ( 1 === count( $this->blog_id ) && get_current_blog_id() !== (int) $this->blog_id[0] ) ) {
+				$this->multiple_blogs = true;
+			}
 
 			// Set the number of posts to be retrieved.
 			if ( empty( $args['posts_per_page'] ) ) {
@@ -342,6 +361,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			$_fields[] = "{$this->table_name}.postnumber";
 			$_fields[] = $this->is_daily ? "SUM({$this->table_name}.cntaccess) as visits" : "{$this->table_name}.cntaccess as visits";
+			$_fields[] = "{$this->table_name}.blog_id";
 
 			$_fields = implode( ', ', $_fields );
 
@@ -409,7 +429,9 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				return $where;
 			}
 
-			$where .= " AND {$this->table_name}.blog_id IN ('" . join( "', '", $this->blog_id ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( ! $this->multiple_blogs ) {
+				$where .= " AND {$this->table_name}.blog_id IN ('" . join( "', '", $this->blog_id ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
 
 			if ( $this->is_daily ) {
 				if ( isset( $this->query_args['from_date'] ) ) {
@@ -506,6 +528,134 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			$groupby = apply_filters_ref_array( 'top_ten_query_posts_groupby', array( $groupby, &$this ) );
 
 			return $groupby;
+		}
+
+		/**
+		 * Modify the posts_groupby clause.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param string   $clauses  Query clauses.
+		 * @param WP_Query $query    The WP_Query instance.
+		 * @return string  Updated Query Clauses.
+		 */
+		public function posts_clauses( $clauses, $query ) {
+
+			// Return if it is not a Top_Ten_Query.
+			if ( true !== $query->get( 'top_ten_query' ) ) {
+				return $clauses;
+			}
+
+			$this->ms_select = array();
+
+			if ( $this->multiple_blogs ) {
+				global $wpdb;
+
+				$root_site_db_prefix = $wpdb->prefix;
+
+				foreach ( $this->blog_id as $blog_id ) {
+					switch_to_blog( $blog_id );
+
+					$ms_select  = "
+						SELECT {$clauses['fields']}
+						FROM {$root_site_db_prefix}posts {$clauses['join']}
+						WHERE 1=1 {$clauses['where']}
+					";
+					$ms_select .= $wpdb->prepare( " AND {$this->table_name}.blog_id = %d", $blog_id ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$ms_select  = str_replace( $root_site_db_prefix, $wpdb->prefix, $ms_select );
+					$ms_select  = str_replace( "{$wpdb->prefix}top_ten", "{$wpdb->base_prefix}top_ten", $ms_select );
+
+					$this->ms_select[] = $ms_select;
+
+					restore_current_blog();
+				}
+
+				// Update the clauses.
+				$clauses['fields'] = 'tables.*';
+				$clauses['where']  = '';
+				$clauses['join']   = '';
+			}
+
+			/**
+			 * Filters all query clauses at once, for convenience.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $groupby  The GROUP BY clause of the Query.
+			 * @param Top_Ten_Query $query    The Top_Ten_Query instance (passed by reference).
+			 */
+			$clauses = apply_filters_ref_array( 'top_ten_query_posts_clauses', array( $clauses, &$this ) );
+
+			return $clauses;
+		}
+
+		/**
+		 * Modify the completed SQL query before sending.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param string   $sql     The complete SQL query.
+		 * @param WP_Query $query   The WP_Query instance (passed by reference).
+		 * @return string  Updated SQL.
+		 */
+		public function posts_request( $sql, $query ) {
+
+			// Return if it is not a Top_Ten_Query.
+			if ( true !== $query->get( 'top_ten_query' ) ) {
+				return $sql;
+			}
+
+			if ( $this->multiple_blogs ) {
+				global $wpdb;
+
+				// Clean up remanescent WHERE request.
+				$sql = str_replace( 'WHERE 1=1', '', $sql );
+
+				// Multisite request.
+				$sql = str_replace( "FROM $wpdb->posts", 'FROM ( ' . implode( ' UNION ', $this->ms_select ) . ' ) tables', $sql );
+
+			}
+
+			/**
+			 * Filters the completed SQL query before sending.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param string        $sql   The complete SQL query.
+			 * @param Top_Ten_Query $query The WP_Query instance (passed by reference).
+			 */
+			$sql = apply_filters_ref_array( 'top_ten_query_posts_request', array( $sql, &$this ) );
+
+			return $sql;
+		}
+
+		/**
+		 * Update the_post while WP_Query loops through this.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param WP_Post $post  The Post object (passed by reference).
+		 */
+		public function switch_to_blog_in_loop( $post ) {
+			global $blog_id;
+			if ( ! $this->multiple_blogs ) {
+				if ( $post->blog_id && (int) $blog_id !== (int) $post->blog_id ) {
+					switch_to_blog( $post->blog_id );
+				} else {
+					restore_current_blog();
+				}
+			}
+		}
+
+		/**
+		 * Restore current blog on loop end.
+		 *
+		 * @since 3.2.0
+		 */
+		public function loop_end() {
+			if ( ! $this->multiple_blogs ) {
+				restore_current_blog();
+			}
 		}
 
 		/**
