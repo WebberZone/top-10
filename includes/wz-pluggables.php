@@ -44,6 +44,7 @@ if ( ! function_exists( 'wz_switch_site_rewrite' ) ) :
 	 * Refreshes $wp_rewrite when switching sites.
 	 *
 	 * Deal with permalinks and cat and tag base structures. Can slow down your site loading - handle with care!
+	 * Use add_action( 'switch_blog', 'wz_switch_site_rewrite' ) when needed and remove_action after processing.
 	 *
 	 * @global object $wp_rewrite
 	 */

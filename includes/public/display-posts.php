@@ -23,14 +23,16 @@ function tptn_pop_posts( $args ) {
 
 	$defaults = array(
 		'daily'        => false,
-		'is_widget'    => false,
 		'instance_id'  => 1,
+		'is_widget'    => false,
 		'is_shortcode' => false,
 		'is_manual'    => false,
+		'is_block'     => false,
 		'echo'         => false,
 		'strict_limit' => false,
 		'heading'      => 1,
 		'offset'       => 0,
+		'extra_class'  => '',
 	);
 
 	// Merge the $defaults array with the $tptn_settings array.
@@ -115,6 +117,12 @@ function tptn_pop_posts( $args ) {
 		$output .= tptn_before_list( $args );
 
 		foreach ( $results as $result ) {
+			$switched_blog = false;
+			if ( is_multisite() && ! empty( $result->blog_id ) && (int) get_current_blog_id() !== (int) $result->blog_id ) {
+				add_action( 'switch_blog', 'wz_switch_site_rewrite' );
+				switch_to_blog( $result->blog_id );
+				$switched_blog = true;
+			}
 
 			// Store the count. We'll need this later.
 			$count  = $args['daily'] ? 'daily' : 'total';
@@ -166,6 +174,11 @@ function tptn_pop_posts( $args ) {
 
 			if ( $counter === (int) $args['limit'] ) {
 				break;  // End loop when related posts limit is reached.
+			}
+
+			if ( $switched_blog ) {
+				restore_current_blog();
+				remove_action( 'switch_blog', 'wz_switch_site_rewrite' );
 			}
 		}
 		if ( $args['show_credit'] ) {

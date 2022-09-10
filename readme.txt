@@ -139,6 +139,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Enhancements/Modifications:
 	* Multisite improvements:
+		* Retrieve the popular posts across multiple blogs by passing multiple blog IDs to Top_Ten_Query
 		* New Tools page and Import/Export page in Network Admin - you can find this in the Top 10 menu
 		* Resetting the Popular Posts or Daily Popular Posts will apply to the current site in the Admin screen and across the network in the Network Admin screen
 		* Exporting/Importing tables will apply to the current site in the Admin screen and across the network in the Network Admin screen
