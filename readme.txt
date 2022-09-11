@@ -156,6 +156,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
 	* Selecting "Text only" thumbnail setting or style will not display a thumbnail
 	* Use moment.js bundled with WordPress
+	* Updated ChartJS and ChartJS Data Labels plugin scripts to latest versions
 
 * Bug fix:
 	* Scripts/styles didn't load in Network posts page
