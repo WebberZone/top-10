@@ -84,6 +84,11 @@ function tptn_get_style( $style = '' ) {
 			";
 			break;
 
+		case 'text_only':
+			$style_array['name']      = 'text-only';
+			$style_array['extra_css'] = '';
+			break;
+
 		default:
 			$style_array['name']      = '';
 			$style_array['extra_css'] = '';

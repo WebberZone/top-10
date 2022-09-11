@@ -87,8 +87,10 @@ function tptn_pop_posts( $args ) {
 
 	$counter = 0;
 
-	$style        = ( 'text_only' === $args['post_thumb_op'] ) ? 'text_only' : $args['tptn_styles'];
-	$style_array  = tptn_get_style( $style );
+	// Override tptn_styles if post_thumb_op is text_only.
+	$args['tptn_styles'] = ( 'text_only' === $args['post_thumb_op'] ) ? 'text_only' : $args['tptn_styles'];
+	$style_array         = tptn_get_style( $args['tptn_styles'] );
+
 	$post_classes = array(
 		'main'        => $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ',
 		'widget'      => $args['is_widget'] ? 'tptn_posts_widget tptn_posts_widget' . $args['instance_id'] : '',
@@ -126,7 +128,7 @@ function tptn_pop_posts( $args ) {
 
 			// Store the count. We'll need this later.
 			$count  = $args['daily'] ? 'daily' : 'total';
-			$visits = empty( $result->visits ) ? get_tptn_post_count_only( $result->ID, $count ) : $result->visits;
+			$visits = empty( $result->visits ) ? get_tptn_post_count_only( $result->ID, $count ) : (int) $result->visits;
 
 			$result = get_post( $result );
 

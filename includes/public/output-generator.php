@@ -281,18 +281,20 @@ function tptn_list_link( $args, $result ) {
 	if ( 'inline' === $args['post_thumb_op'] || 'after' === $args['post_thumb_op'] || 'thumbs_only' === $args['post_thumb_op'] ) {
 		$output .= '<a href="' . get_permalink( $result->ID ) . '" ' . $link_attributes . ' class="tptn_link">'; // Add beginning of link.
 
-		$output .= tptn_get_the_post_thumbnail(
-			array(
-				'post'               => $result,
-				'size'               => $args['thumb_size'],
-				'thumb_meta'         => $args['thumb_meta'],
-				'thumb_html'         => $args['thumb_html'],
-				'thumb_default'      => $args['thumb_default'],
-				'thumb_default_show' => $args['thumb_default_show'],
-				'scan_images'        => $args['scan_images'],
-				'class'              => 'tptn_thumb',
-			)
-		);
+		if ( 'text_only' !== $args['tptn_styles'] ) {
+			$output .= tptn_get_the_post_thumbnail(
+				array(
+					'post'               => $result,
+					'size'               => $args['thumb_size'],
+					'thumb_meta'         => $args['thumb_meta'],
+					'thumb_html'         => $args['thumb_html'],
+					'thumb_default'      => $args['thumb_default'],
+					'thumb_default_show' => $args['thumb_default_show'],
+					'scan_images'        => $args['scan_images'],
+					'class'              => 'tptn_thumb',
+				)
+			);
+		}
 
 		$output .= '</a>'; // Close the link.
 	}
