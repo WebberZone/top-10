@@ -562,8 +562,13 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 						WHERE 1=1 {$clauses['where']}
 					";
 					$ms_select .= $wpdb->prepare( " AND {$this->table_name}.blog_id = %d", $blog_id ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					$ms_select  = str_replace( $root_site_db_prefix, $wpdb->prefix, $ms_select );
-					$ms_select  = str_replace( "{$wpdb->prefix}top_ten", "{$wpdb->base_prefix}top_ten", $ms_select );
+
+					if ( $this->is_daily ) {
+						$ms_select .= " GROUP BY {$this->table_name}.postnumber ";
+					}
+
+					$ms_select = str_replace( $root_site_db_prefix, $wpdb->prefix, $ms_select );
+					$ms_select = str_replace( "{$wpdb->prefix}top_ten", "{$wpdb->base_prefix}top_ten", $ms_select );
 
 					$this->ms_select[] = $ms_select;
 
@@ -571,9 +576,10 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				}
 
 				// Update the clauses.
-				$clauses['fields'] = 'tables.*';
-				$clauses['where']  = '';
-				$clauses['join']   = '';
+				$clauses['fields']  = 'tables.*';
+				$clauses['where']   = '';
+				$clauses['join']    = '';
+				$clauses['groupby'] = '';
 			}
 
 			/**
