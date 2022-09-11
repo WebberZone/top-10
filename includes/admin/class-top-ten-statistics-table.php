@@ -283,7 +283,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$post->post_title,
 			$item['ID'],
 			$this->network_wide ? '' : $this->row_actions( $actions ),
-			get_blog_permalink( $item['blog_id'], $item['ID'] )
+			is_multisite() ? get_blog_permalink( $item['blog_id'], $item['ID'] ) : get_permalink( $item['ID'] )
 		);
 
 	}
@@ -297,7 +297,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_date( $item ) {
 
-		$post = get_blog_post( $item['blog_id'], $item['ID'] );
+		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 
 		if ( $post ) {
 			$m_time = strtotime( $post->post_date );
@@ -318,7 +318,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_post_type( $item ) {
 
-		$post = get_blog_post( $item['blog_id'], $item['ID'] );
+		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 
 		if ( $post ) {
 			$pt = get_post_type_object( $post->post_type );
@@ -334,7 +334,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function column_author( $item ) {
 
-		$post = get_blog_post( $item['blog_id'], $item['ID'] );
+		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 		if ( ! $post ) {
 			return;
 		}
