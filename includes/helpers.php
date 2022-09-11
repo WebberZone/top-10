@@ -97,10 +97,10 @@ function tptn_get_from_date( $time = null, $daily_range = null, $hour_range = nu
  */
 function tptn_number_format_i18n( $number, $decimals = 0 ) {
 
-	$formatted = $number;
+	$formatted = (float) $number;
 
 	if ( tptn_get_option( 'number_format_count' ) ) {
-		$formatted = number_format_i18n( $number );
+		$formatted = number_format_i18n( (float) $number );
 	}
 
 	/**
