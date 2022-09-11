@@ -61,6 +61,23 @@ function render_tptn_block( $attributes ) {
 	 */
 	$arguments = apply_filters( 'tptn_block_options', $arguments, $attributes );
 
+	// Enqueue the stylesheet for the selected style for this block.
+	$style_array = tptn_get_style( $arguments['tptn_styles'] );
+
+	if ( ! empty( $style_array['name'] ) ) {
+		$style     = $style_array['name'];
+		$extra_css = $style_array['extra_css'];
+
+		wp_register_style(
+			"tptn-style-{$style}",
+			plugins_url( "css/{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
+			array(),
+			TOP_TEN_VERSION
+		);
+		wp_enqueue_style( "tptn-style-{$style}" );
+		wp_add_inline_style( "tptn-style-{$style}", $extra_css );
+	}
+
 	return tptn_pop_posts( $arguments );
 }
 
