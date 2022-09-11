@@ -56,6 +56,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"tptn_styles": {
+			"type": "string",
+			"default": "no_style"
+		},
 		"post_thumb_op": {
 			"type": "string",
 			"default": "text_only"

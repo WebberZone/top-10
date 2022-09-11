@@ -53,6 +53,7 @@ export default function Edit({ attributes, setAttributes }) {
 		show_author,
 		show_date,
 		disp_list_count,
+		tptn_styles,
 		post_thumb_op,
 		other_attributes,
 	} = attributes;
@@ -98,6 +99,9 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 	const onChangeThumbnail = (newThumbnailLoc) => {
 		setAttributes({ post_thumb_op: newThumbnailLoc });
+	};
+	const onChangePostStyle = (newPostStyle) => {
+		setAttributes({ tptn_styles: newPostStyle });
 	};
 	const onChangeOtherAttributes = (newOtherAttributes) => {
 		setAttributes({
@@ -234,6 +238,24 @@ export default function Edit({ attributes, setAttributes }) {
 								}
 								checked={disp_list_count}
 								onChange={toggleShowCount}
+							/>
+						</fieldset>
+					</PanelRow>
+					<PanelRow>
+						<fieldset>
+							<SelectControl
+								label={__('Styles', 'top-10')}
+								value={tptn_styles}
+								onChange={onChangePostStyle}
+								help={__('Select the style of the Popular Posts', 'top-10')}
+								options={[
+									{ value: 'no_style', label: __('No styles', 'top-10') },
+									{ value: 'text_only', label: __('Text only', 'top-10') },
+									{
+										value: 'left_thumbs',
+										label: __('Left thumbnails', 'top-10'),
+									},
+								]}
 							/>
 						</fieldset>
 					</PanelRow>
