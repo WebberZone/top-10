@@ -44,7 +44,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
 	if ( $results ) {
 		$output .= '<ul>';
 		foreach ( $results as $result ) {
-			if ( ! absint( $result[ $visits ] ) ) {
+			if ( ! absint( $result[ $visits ] ) || ! get_post_status( $result['ID'] ) ) {
 				continue;
 			}
 			$output .= '<li><a href="' . get_permalink( $result['ID'] ) . '">' . get_the_title( $result['ID'] ) . '</a>';
@@ -92,7 +92,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
  * @since   1.1
  */
 function tptn_pop_dashboard() {
-	echo tptn_pop_display( false, 0, 10, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo tptn_pop_display( false, 0, 20, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -102,7 +102,7 @@ function tptn_pop_dashboard() {
  * @since   1.2
  */
 function tptn_pop_daily_dashboard() {
-	echo tptn_pop_display( true, 0, 10, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo tptn_pop_display( true, 0, 20, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
