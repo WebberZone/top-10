@@ -261,7 +261,11 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$post         = $this->network_wide ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 
 		if ( null === $post ) {
-			return __( 'Invalid post ID. This post might have been deleted.', 'top-10' );
+			return sprintf(
+				'%s <span style="color:grey">(id:%2$s)</span>',
+				__( 'Invalid post ID. This post might have been deleted.', 'top-10' ),
+				$item['ID']
+			);
 		}
 
 		$actions = array(
@@ -279,7 +283,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 		// Return the title contents.
 		return sprintf(
-			'<a href="%4$s" target="_blank">%1$s</a> <span style="color:silver">(id:%2$s)</span>%3$s',
+			'<a href="%4$s" target="_blank">%1$s</a> <span style="color:grey">(id:%2$s)</span>%3$s',
 			$post->post_title,
 			$item['ID'],
 			$this->network_wide ? '' : $this->row_actions( $actions ),
