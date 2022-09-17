@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-07 15:58+0100\n"
+"POT-Creation-Date: 2022-09-17 19:09+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
@@ -10,13 +10,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
 "_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: includes/admin/admin-columns.php:25
@@ -31,27 +31,28 @@ msgstr ""
 msgid "Views"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:65
+#: includes/admin/admin-dashboard.php:60
 msgid "View all daily popular posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:67
+#: includes/admin/admin-dashboard.php:62
 #: includes/admin/class-top-ten-dashboard.php:164
 msgid "View all popular posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:75
+#: includes/admin/admin-dashboard.php:70
 #, php-format
 msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:124 includes/admin/admin.php:39
-#: includes/admin/class-top-ten-network-statistics.php:114
-#: includes/admin/class-top-ten-statistics.php:124
+#: includes/admin/admin-dashboard.php:119 includes/admin/admin.php:49
+#: includes/admin/admin.php:245
+#: includes/admin/class-top-ten-network-statistics.php:104
+#: includes/admin/class-top-ten-statistics.php:104
 msgid "Popular Posts"
 msgstr ""
 
-#: includes/admin/admin-dashboard.php:129 includes/admin/admin.php:42
+#: includes/admin/admin-dashboard.php:124 includes/admin/admin.php:59
 msgid "Daily Popular Posts"
 msgstr ""
 
@@ -107,39 +108,39 @@ msgid ""
 "will need to make the same change in the %1$s meta box on this page."
 msgstr ""
 
-#: includes/admin/admin.php:33 includes/admin/settings-page.php:32
+#: includes/admin/admin.php:35 includes/admin/settings-page.php:32
 msgid "Top 10 Settings"
 msgstr ""
 
-#: includes/admin/admin.php:33 includes/admin/admin.php:156
+#: includes/admin/admin.php:36 includes/admin/admin.php:191
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin.php:39 includes/admin/class-top-ten-statistics.php:70
+#: includes/admin/admin.php:48 includes/admin/class-top-ten-statistics.php:70
 msgid "Top 10 Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:42
+#: includes/admin/admin.php:58
 msgid "Top 10 Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:46 includes/admin/tools.php:74
+#: includes/admin/admin.php:69 includes/admin/tools.php:82
 msgid "Top 10 Tools"
 msgstr ""
 
-#: includes/admin/admin.php:46
+#: includes/admin/admin.php:70 includes/admin/admin.php:255
 msgid "Tools"
 msgstr ""
 
-#: includes/admin/admin.php:49
+#: includes/admin/admin.php:79 includes/admin/admin.php:264
 msgid "Top 10 Import Export Tables"
 msgstr ""
 
-#: includes/admin/admin.php:49
+#: includes/admin/admin.php:80 includes/admin/admin.php:265
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/admin.php:110
+#: includes/admin/admin.php:145
 #, php-format
 msgid ""
 "Thank you for using <a href=\"%1$s\" target=\"_blank\">Top 10</a>! Please <a "
@@ -147,24 +148,28 @@ msgid ""
 "\"_blank\">WordPress.org</a>"
 msgstr ""
 
-#: includes/admin/admin.php:178 includes/admin/sidebar.php:55
+#: includes/admin/admin.php:213 includes/admin/sidebar.php:55
 msgid "Support"
 msgstr ""
 
-#: includes/admin/admin.php:179
+#: includes/admin/admin.php:214
 msgid "Donate"
 msgstr ""
 
-#: includes/admin/admin.php:180
+#: includes/admin/admin.php:215
 msgid "Contribute"
 msgstr ""
 
-#: includes/admin/admin.php:199
+#: includes/admin/admin.php:234 includes/admin/admin.php:244
 msgid "Top 10 - Network Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:200 includes/admin/class-top-ten-dashboard.php:199
+#: includes/admin/admin.php:235 includes/admin/class-top-ten-dashboard.php:201
 msgid "Top 10"
+msgstr ""
+
+#: includes/admin/admin.php:254
+msgid "Top 10 - Tools"
 msgstr ""
 
 #: includes/admin/cache.php:22
@@ -175,8 +180,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-top-ten-dashboard.php:83
-#: includes/admin/class-top-ten-dashboard.php:199
-#: includes/admin/class-top-ten-dashboard.php:201
+#: includes/admin/class-top-ten-dashboard.php:200
+#: includes/admin/class-top-ten-dashboard.php:210
 msgid "Top 10 Dashboard"
 msgstr ""
 
@@ -192,80 +197,80 @@ msgstr ""
 msgid "Historical visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:201
+#: includes/admin/class-top-ten-dashboard.php:211
 msgid "Dashboard"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:242
-#: includes/admin/import-export.php:186
+#: includes/admin/class-top-ten-dashboard.php:284
+#: includes/admin/import-export.php:209
 msgid "Visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:243
+#: includes/admin/class-top-ten-dashboard.php:285
 msgid "Daily Visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:305
+#: includes/admin/class-top-ten-dashboard.php:347
 msgid "Today"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:310
+#: includes/admin/class-top-ten-dashboard.php:352
 msgid "Yesterday"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:315
+#: includes/admin/class-top-ten-dashboard.php:357
 msgid "Last 7 days"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:320
+#: includes/admin/class-top-ten-dashboard.php:362
 msgid "Last 30 days"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:325
+#: includes/admin/class-top-ten-dashboard.php:367
 msgid "All time"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:381
+#: includes/admin/class-top-ten-dashboard.php:423
 msgid "Sorry, no popular posts found."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:495
-#: includes/admin/help-tab.php:35 includes/admin/help-tab.php:136
-#: includes/admin/help-tab.php:176
+#: includes/admin/class-top-ten-dashboard.php:533
+#: includes/admin/help-tab.php:35 includes/admin/help-tab.php:130
+#: includes/admin/help-tab.php:164
 #, php-format
 msgid ""
 "For more information or how to get support visit the <a href=\"%1$s"
 "\">WebberZone support site</a>."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:497
-#: includes/admin/help-tab.php:37 includes/admin/help-tab.php:138
-#: includes/admin/help-tab.php:178
+#: includes/admin/class-top-ten-dashboard.php:535
+#: includes/admin/help-tab.php:37 includes/admin/help-tab.php:132
+#: includes/admin/help-tab.php:166
 #, php-format
 msgid ""
 "Support queries should be posted in the <a href=\"%1$s\">WordPress.org "
 "support forums</a>."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:500
-#: includes/admin/help-tab.php:40 includes/admin/help-tab.php:141
+#: includes/admin/class-top-ten-dashboard.php:538
+#: includes/admin/help-tab.php:40 includes/admin/help-tab.php:135
 #, php-format
 msgid ""
 "<a href=\"%1$s\">Post an issue</a> on <a href=\"%2$s\">GitHub</a> (bug "
 "reports only)."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:509
-#: includes/admin/help-tab.php:49 includes/admin/help-tab.php:150
-#: includes/admin/help-tab.php:189 includes/admin/settings-page.php:125
+#: includes/admin/class-top-ten-dashboard.php:547
+#: includes/admin/help-tab.php:49 includes/admin/help-tab.php:144
+#: includes/admin/help-tab.php:177 includes/admin/settings-page.php:125
 msgid "General"
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:511
+#: includes/admin/class-top-ten-dashboard.php:549
 msgid "This screen displays the historical traffic on your site."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:513
+#: includes/admin/class-top-ten-dashboard.php:551
 #, php-format
 msgid ""
 "The data is pulled from the daily tables in the database. If you have "
@@ -273,113 +278,93 @@ msgid ""
 "will be limited to %d days."
 msgstr ""
 
-#: includes/admin/class-top-ten-dashboard.php:514
+#: includes/admin/class-top-ten-dashboard.php:552
 msgid ""
 "You can change this by setting the constant TOP_TEN_STORE_DATA to the number "
 "of days of your choice in your wp-config.php."
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:32
-#: includes/admin/class-top-ten-statistics-table.php:39
-msgid "popular_post"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:33
-#: includes/admin/class-top-ten-statistics-table.php:40
-msgid "popular_posts"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:183
-#: includes/admin/class-top-ten-statistics-table.php:221
-msgid "No popular posts available."
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:231
-msgid "Invalid post ID. This post might have been deleted."
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:256
-#: includes/admin/class-top-ten-statistics-table.php:305
-msgid "Y/m/d"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:294
-#: includes/admin/class-top-ten-statistics-table.php:359
-#: includes/modules/class-top-ten-count-widget.php:49
-#: includes/modules/class-top-ten-widget.php:79
-msgid "Title"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:295
-msgid "Blog"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:296
-#: includes/admin/class-top-ten-statistics-table.php:364
-#: includes/admin/import-export.php:189
-msgid "Date"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:297
-#: includes/admin/class-top-ten-statistics-table.php:360
-msgid "Total visits"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:298
-#: includes/admin/class-top-ten-statistics-table.php:361
-msgid "Daily visits"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:331
-#: includes/admin/class-top-ten-statistics-table.php:398
-msgid "Delete Count"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:378
-#: includes/admin/class-top-ten-statistics-table.php:445
-msgid "Are you sure you want to do this"
-msgstr ""
-
-#: includes/admin/class-top-ten-network-statistics-table.php:420
-#: includes/admin/class-top-ten-statistics-table.php:512
-msgid "Filter"
 msgstr ""
 
 #: includes/admin/class-top-ten-network-statistics.php:70
 msgid "Top 10 - Network Wide Popular Posts"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:44
+#: includes/admin/class-top-ten-statistics-table.php:48
+msgid "popular_post"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:49
+msgid "popular_posts"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:53
 msgid "All post types"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:271
-msgid "View"
+#: includes/admin/class-top-ten-statistics-table.php:214
+msgid "No popular posts available."
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:266
+msgid "Invalid post ID. This post might have been deleted."
 msgstr ""
 
 #: includes/admin/class-top-ten-statistics-table.php:272
-msgid "Edit"
+msgid "View"
 msgstr ""
 
 #: includes/admin/class-top-ten-statistics-table.php:273
+msgid "Edit"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:275
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:303
-#, php-format
-msgid "%s ago"
+#: includes/admin/class-top-ten-statistics-table.php:411
+#: includes/modules/class-top-ten-count-widget.php:49
+#: includes/modules/class-top-ten-widget.php:79
+msgid "Title"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:362
+#: includes/admin/class-top-ten-statistics-table.php:412
+msgid "Total visits"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:413
+msgid "Daily visits"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:414
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:363
+#: includes/admin/class-top-ten-statistics-table.php:415
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics.php:99
-msgid "Search Table"
+#: includes/admin/class-top-ten-statistics-table.php:416
+#: includes/admin/import-export.php:212
+msgid "Date"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:420
+msgid "Blog"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:454
+msgid "Delete Count"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:519
+msgid "Are you sure you want to do this"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics-table.php:606
+msgid "Filter"
+msgstr ""
+
+#: includes/admin/class-top-ten-statistics.php:80
+msgid "Search Popular Posts"
 msgstr ""
 
 #: includes/admin/default-settings.php:63
@@ -822,13 +807,13 @@ msgid "Length of excerpt (in words)"
 msgstr ""
 
 #: includes/admin/default-settings.php:451
-#: includes/blocks/popular-posts/src/edit.js:214
+#: includes/blocks/popular-posts/src/edit.js:219
 #: includes/modules/class-top-ten-widget.php:118
 msgid "Show date"
 msgstr ""
 
 #: includes/admin/default-settings.php:458
-#: includes/blocks/popular-posts/src/edit.js:200
+#: includes/blocks/popular-posts/src/edit.js:205
 #: includes/modules/class-top-ten-widget.php:114
 msgid "Show author"
 msgstr ""
@@ -870,7 +855,7 @@ msgid "After each list item"
 msgstr ""
 
 #: includes/admin/default-settings.php:551
-#: includes/blocks/popular-posts/src/edit.js:245
+#: includes/blocks/popular-posts/src/edit.js:268
 msgid "Location of the post thumbnail"
 msgstr ""
 
@@ -1091,6 +1076,7 @@ msgid "Custom period in day(s)"
 msgstr ""
 
 #: includes/admin/default-settings.php:910
+#: includes/blocks/popular-posts/src/edit.js:252
 msgid "No styles"
 msgstr ""
 
@@ -1099,6 +1085,7 @@ msgid "Select this option if you plan to add your own styles"
 msgstr ""
 
 #: includes/admin/default-settings.php:915
+#: includes/blocks/popular-posts/src/edit.js:253
 msgid "Text only"
 msgstr ""
 
@@ -1109,6 +1096,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:920
+#: includes/blocks/popular-posts/src/edit.js:256
 msgid "Left thumbnails"
 msgstr ""
 
@@ -1177,6 +1165,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/help-tab.php:89 includes/admin/settings-page.php:129
+#: includes/blocks/popular-posts/src/edit.js:247
 msgid "Styles"
 msgstr ""
 
@@ -1222,28 +1211,28 @@ msgid ""
 "settings page twice."
 msgstr ""
 
-#: includes/admin/help-tab.php:152
+#: includes/admin/help-tab.php:146
 msgid ""
 "This screen provides some tools that help maintain certain features of Top "
 "10."
 msgstr ""
 
-#: includes/admin/help-tab.php:153
+#: includes/admin/help-tab.php:147
 msgid ""
 "Clear the cache, reset the popular posts tables plus some miscellaneous "
 "fixes for older versions of Top 10."
 msgstr ""
 
-#: includes/admin/help-tab.php:181
+#: includes/admin/help-tab.php:169
 #, php-format
 msgid "<a href=\"%1$s\">Top 10 Knowledge base</a>"
 msgstr ""
 
-#: includes/admin/help-tab.php:191
+#: includes/admin/help-tab.php:179
 msgid "This screen allows you to import and export the database tables."
 msgstr ""
 
-#: includes/admin/help-tab.php:192
+#: includes/admin/help-tab.php:180
 msgid "Refer to the knowledge base to learn how to use this in detail."
 msgstr ""
 
@@ -1253,8 +1242,9 @@ msgstr ""
 
 #: includes/admin/import-export.php:32
 msgid ""
-"Data import failure. Check the number of columns for the file being imported "
-"and if you are uploading it in the right section below"
+"Data import failure. Check the number of columns for the file being "
+"imported, if you are uploading it in the right section below and that the "
+"data is correct"
 msgstr ""
 
 #: includes/admin/import-export.php:38
@@ -1265,60 +1255,60 @@ msgstr ""
 msgid "Top 10 - Import/Export tables"
 msgstr ""
 
-#: includes/admin/import-export.php:54
+#: includes/admin/import-export.php:55
 msgid "Export/Import settings"
 msgstr ""
 
-#: includes/admin/import-export.php:56
+#: includes/admin/import-export.php:57
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
 msgstr ""
 
-#: includes/admin/import-export.php:60
+#: includes/admin/import-export.php:61
 msgid "Export Settings"
 msgstr ""
 
-#: includes/admin/import-export.php:69
+#: includes/admin/import-export.php:70
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on this/another site using the form above."
 msgstr ""
 
-#: includes/admin/import-export.php:75
+#: includes/admin/import-export.php:76
 msgid "Import Settings"
 msgstr ""
 
-#: includes/admin/import-export.php:84
+#: includes/admin/import-export.php:86
 msgid "Export tables"
 msgstr ""
 
-#: includes/admin/import-export.php:86
+#: includes/admin/import-export.php:88
 msgid ""
 "Click the buttons below to export the overall and the daily tables. The file "
 "is downloaded as an CSV file which you should be able to edit in Excel or "
 "any other compatible software."
 msgstr ""
 
-#: includes/admin/import-export.php:87
+#: includes/admin/import-export.php:89
 msgid ""
 "If you are using WordPress Multisite then this will include the counts "
 "across all sites as the plugin uses a single table to store counts."
 msgstr ""
 
-#: includes/admin/import-export.php:91
+#: includes/admin/import-export.php:96
 msgid "Export overall tables"
 msgstr ""
 
-#: includes/admin/import-export.php:92
+#: includes/admin/import-export.php:97
 msgid "Export daily tables"
 msgstr ""
 
-#: includes/admin/import-export.php:100
+#: includes/admin/import-export.php:105
 msgid "Import tables"
 msgstr ""
 
-#: includes/admin/import-export.php:102
+#: includes/admin/import-export.php:107
 msgid ""
 "This action will replace the data in the table being import. Best practice "
 "would be to first export the data using the buttons above. Following this, "
@@ -1326,51 +1316,51 @@ msgid ""
 "maintain the export format of the data to avoid corruption."
 msgstr ""
 
-#: includes/admin/import-export.php:104
+#: includes/admin/import-export.php:109
 msgid ""
 "Be careful when opening the file in Excel as it tends to change the date "
 "format. Recommended date-time format is YYYY-MM-DD H."
 msgstr ""
 
-#: includes/admin/import-export.php:107
+#: includes/admin/import-export.php:112
 msgid ""
 "Backup your database before proceeding so you will be able to restore it in "
 "case anything goes wrong."
 msgstr ""
 
-#: includes/admin/import-export.php:109
+#: includes/admin/import-export.php:114
 msgid "Import Overall Table"
 msgstr ""
 
-#: includes/admin/import-export.php:114
+#: includes/admin/import-export.php:119
 msgid "Import Overall CSV"
 msgstr ""
 
-#: includes/admin/import-export.php:117
+#: includes/admin/import-export.php:122
 msgid "Import Daily Table"
 msgstr ""
 
-#: includes/admin/import-export.php:122
+#: includes/admin/import-export.php:127
 msgid "Import Daily CSV"
 msgstr ""
 
-#: includes/admin/import-export.php:185
+#: includes/admin/import-export.php:208
 msgid "Post ID"
 msgstr ""
 
-#: includes/admin/import-export.php:191
+#: includes/admin/import-export.php:214
 msgid "Blog ID"
 msgstr ""
 
-#: includes/admin/import-export.php:272
+#: includes/admin/import-export.php:308
 msgid "Please upload a valid .csv file"
 msgstr ""
 
-#: includes/admin/import-export.php:278 includes/admin/import-export.php:397
+#: includes/admin/import-export.php:314 includes/admin/import-export.php:444
 msgid "Please upload a file to import"
 msgstr ""
 
-#: includes/admin/import-export.php:391
+#: includes/admin/import-export.php:438
 msgid "Please upload a valid .json file"
 msgstr ""
 
@@ -1459,60 +1449,60 @@ msgstr ""
 msgid "Follow me"
 msgstr ""
 
-#: includes/admin/tools.php:30
+#: includes/admin/tools.php:38
 msgid "Primary Key has been recreated"
 msgstr ""
 
-#: includes/admin/tools.php:36
+#: includes/admin/tools.php:44
 msgid "Top 10 popular posts reset"
 msgstr ""
 
-#: includes/admin/tools.php:42
-msgid "Top 10 tables have been recreated"
-msgstr ""
-
-#: includes/admin/tools.php:48
+#: includes/admin/tools.php:50
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: includes/admin/tools.php:54
+#: includes/admin/tools.php:56
+msgid "Top 10 tables have been recreated"
+msgstr ""
+
+#: includes/admin/tools.php:62
 msgid "Old settings key has been deleted"
 msgstr ""
 
-#: includes/admin/tools.php:61
+#: includes/admin/tools.php:69
 msgid "Duplicate rows cleaned from the tables"
 msgstr ""
 
-#: includes/admin/tools.php:68
+#: includes/admin/tools.php:76
 msgid "Post counts across blog IDs 0 and 1 have been merged"
 msgstr ""
 
-#: includes/admin/tools.php:84 includes/admin/tools.php:86
+#: includes/admin/tools.php:92 includes/admin/tools.php:94
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/tools.php:89
+#: includes/admin/tools.php:97
 msgid ""
 "Clear the Top 10 cache. This will also be cleared automatically when you "
 "save the settings page."
 msgstr ""
 
-#: includes/admin/tools.php:92 includes/admin/tools.php:94
+#: includes/admin/tools.php:100 includes/admin/tools.php:102
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/tools.php:97
+#: includes/admin/tools.php:105
 msgid ""
 "Deletes and reinitializes the primary key in the database tables. If the "
 "above function gives an error, then you can run the below code in phpMyAdmin "
 "or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/tools.php:103
+#: includes/admin/tools.php:111
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/tools.php:105
+#: includes/admin/tools.php:113
 msgid ""
 "This will reset the Top 10 tables. If you are running Top 10 on multisite "
 "then it will delete the popular posts across the entire network. This cannot "
@@ -1520,27 +1510,27 @@ msgid ""
 "proceeding"
 msgstr ""
 
-#: includes/admin/tools.php:108
-msgid "Reset Popular Posts Network-wide"
+#: includes/admin/tools.php:116
+msgid "Reset Popular Posts"
 msgstr ""
 
-#: includes/admin/tools.php:108
+#: includes/admin/tools.php:116
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:109
-msgid "Reset Daily Popular Posts Network-wide"
+#: includes/admin/tools.php:117
+msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/tools.php:109
+#: includes/admin/tools.php:117
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:112 includes/admin/tools.php:117
+#: includes/admin/tools.php:120 includes/admin/tools.php:125
 msgid "Recreate Database Tables"
 msgstr ""
 
-#: includes/admin/tools.php:114
+#: includes/admin/tools.php:122
 msgid ""
 "Only click the button below after performing a full backup of the database. "
 "You can use any of the popular backup plugins or phpMyAdmin to achieve this. "
@@ -1549,15 +1539,15 @@ msgid ""
 "comfortable, please do not proceed."
 msgstr ""
 
-#: includes/admin/tools.php:117
+#: includes/admin/tools.php:125
 msgid "Hit Cancel if you have not backed up your database"
 msgstr ""
 
-#: includes/admin/tools.php:120
+#: includes/admin/tools.php:128
 msgid "Other tools"
 msgstr ""
 
-#: includes/admin/tools.php:122
+#: includes/admin/tools.php:130
 msgid ""
 "From v2.5.x, Top 10 stores the settings in a new key in the database. This "
 "will delete the old settings for the current blog. It is recommended that "
@@ -1565,188 +1555,176 @@ msgid ""
 "if you are comfortable with the new settings."
 msgstr ""
 
-#: includes/admin/tools.php:125
+#: includes/admin/tools.php:133
 msgid "Delete old settings"
 msgstr ""
 
-#: includes/admin/tools.php:125
+#: includes/admin/tools.php:133
 msgid "This will delete the settings before v2.5.x. Proceed?"
 msgstr ""
 
-#: includes/admin/tools.php:129
+#: includes/admin/tools.php:137
 msgid "This will merge post counts for posts with table entries of 0 and 1"
 msgstr ""
 
-#: includes/admin/tools.php:132
+#: includes/admin/tools.php:140
 msgid "Merge blog ID 0 and 1 post counts"
 msgstr ""
 
-#: includes/admin/tools.php:132
+#: includes/admin/tools.php:140
 msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
 msgstr ""
 
-#: includes/admin/tools.php:136
+#: includes/admin/tools.php:144
 msgid ""
 "In older versions, the plugin created entries with duplicate post IDs. "
 "Clicking the button below will merge these duplicate IDs"
 msgstr ""
 
-#: includes/admin/tools.php:139
+#: includes/admin/tools.php:147
 msgid "Merge duplicates across blog IDs"
 msgstr ""
 
-#: includes/admin/tools.php:139
+#: includes/admin/tools.php:147
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:112
+#: includes/blocks/popular-posts/src/edit.js:117
 msgid "Popular Posts Settings"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:118
+#: includes/blocks/popular-posts/src/edit.js:123
 msgid "Show heading"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:121
+#: includes/blocks/popular-posts/src/edit.js:126
 msgid "Heading displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:122
+#: includes/blocks/popular-posts/src/edit.js:127
 msgid "No Heading displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:132
+#: includes/blocks/popular-posts/src/edit.js:137
 msgid "Custom period?"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:135
+#: includes/blocks/popular-posts/src/edit.js:140
 msgid "Set range below"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:136
+#: includes/blocks/popular-posts/src/edit.js:141
 msgid "Overall popular posts will be shown"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:146
+#: includes/blocks/popular-posts/src/edit.js:151
 msgid "Daily range"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:149
+#: includes/blocks/popular-posts/src/edit.js:154
 msgid "Number of days"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:156
+#: includes/blocks/popular-posts/src/edit.js:161
 msgid "Hour range"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:159
+#: includes/blocks/popular-posts/src/edit.js:164
 msgid "Number of hours"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:166
+#: includes/blocks/popular-posts/src/edit.js:171
 #: includes/modules/class-top-ten-rest-api.php:212
 msgid "Number of posts"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:169
+#: includes/blocks/popular-posts/src/edit.js:174
 msgid "Maximum number of posts to display"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:176
+#: includes/blocks/popular-posts/src/edit.js:181
 #: includes/modules/class-top-ten-widget.php:87
 msgid "Offset"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:179
+#: includes/blocks/popular-posts/src/edit.js:184
 msgid "Number of posts to skip from the top"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:186
+#: includes/blocks/popular-posts/src/edit.js:191
 #: includes/modules/class-top-ten-widget.php:110
 msgid "Show excerpt"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:189
+#: includes/blocks/popular-posts/src/edit.js:194
 msgid "Excerpt displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:190
+#: includes/blocks/popular-posts/src/edit.js:195
 msgid "No excerpt"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:203
+#: includes/blocks/popular-posts/src/edit.js:208
 msgid "\"by Author Name\" displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:204
+#: includes/blocks/popular-posts/src/edit.js:209
 msgid "No author displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:217
+#: includes/blocks/popular-posts/src/edit.js:222
 msgid "Date of post displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:218
+#: includes/blocks/popular-posts/src/edit.js:223
 msgid "Date of post not displayed"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:228
+#: includes/blocks/popular-posts/src/edit.js:233
 #: includes/modules/class-top-ten-widget.php:106
 msgid "Show count"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:231
+#: includes/blocks/popular-posts/src/edit.js:236
 msgid "Display number of visits"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:232
+#: includes/blocks/popular-posts/src/edit.js:237
 msgid "Number of visits hidden"
 msgstr ""
 
-#: includes/blocks/popular-posts/src/edit.js:242
-msgid "Thumbnail option"
-msgstr ""
-
-#: includes/blocks/popular-posts/src/edit.js:247
-msgid "Before title"
-msgstr ""
-
-#: includes/blocks/popular-posts/src/edit.js:248
-msgid "After title"
-msgstr ""
-
-#: includes/blocks/popular-posts/src/edit.js:251
-msgid "Only thumbnail"
-msgstr ""
-
-#: includes/blocks/popular-posts/src/edit.js:253
-msgid "Only text"
-msgstr ""
-
-#: includes/blocks/popular-posts/src/edit.js:261
-msgid "Other attributes"
+#: includes/blocks/popular-posts/src/edit.js:250
+msgid "Select the style of the Popular Posts"
 msgstr ""
 
 #: includes/blocks/popular-posts/src/edit.js:265
+msgid "Thumbnail option"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:270
+msgid "Before title"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:271
+msgid "After title"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:274
+msgid "Only thumbnail"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:276
+msgid "Only text"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:284
+msgid "Other attributes"
+msgstr ""
+
+#: includes/blocks/popular-posts/src/edit.js:288
 msgid ""
 "Enter other attributes in a URL-style string-query. e.g. post_types=post,"
 "page&link_nofollow=1&exclude_post_ids=5,6"
-msgstr ""
-
-#: includes/cron.php:87
-msgid "Once Weekly"
-msgstr ""
-
-#: includes/cron.php:91
-msgid "Once Fortnightly"
-msgstr ""
-
-#: includes/cron.php:95
-msgid "Once Monthly"
-msgstr ""
-
-#: includes/cron.php:99
-msgid "Once quarterly"
 msgstr ""
 
 #: includes/deprecated.php:178
@@ -1849,16 +1827,11 @@ msgstr ""
 msgid "Only from categories"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:141
-msgid ""
-"Enter a comma separated list of category, tag or other term taxonomy IDs"
-msgstr ""
-
 #: includes/modules/class-top-ten-widget.php:144
-msgid "Include post IDs"
+msgid "Include IDs"
 msgstr ""
 
-#: includes/public/display-posts.php:173
+#: includes/public/display-posts.php:192
 #, php-format
 msgid ""
 "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
@@ -1868,27 +1841,43 @@ msgstr ""
 msgid " by "
 msgstr ""
 
-#: includes/tracker.php:293
+#: includes/tracker.php:299
 msgid "REST API based"
 msgstr ""
 
-#: includes/tracker.php:294
+#: includes/tracker.php:300
 msgid "Uses the REST API to record visits"
 msgstr ""
 
-#: includes/tracker.php:298
+#: includes/tracker.php:304
 msgid "Query variable based"
 msgstr ""
 
-#: includes/tracker.php:299
+#: includes/tracker.php:305
 msgid "Uses query variables to record visits"
 msgstr ""
 
-#: includes/tracker.php:303
+#: includes/tracker.php:309
 msgid "Ajaxurl based"
 msgstr ""
 
-#: includes/tracker.php:304
+#: includes/tracker.php:310
 msgid ""
 "Uses admin-ajax.php which is inbuilt within WordPress to process the tracker"
+msgstr ""
+
+#: includes/wz-pluggables.php:20
+msgid "Once Weekly"
+msgstr ""
+
+#: includes/wz-pluggables.php:24
+msgid "Once Fortnightly"
+msgstr ""
+
+#: includes/wz-pluggables.php:28
+msgid "Once Monthly"
+msgstr ""
+
+#: includes/wz-pluggables.php:32
+msgid "Once quarterly"
 msgstr ""
