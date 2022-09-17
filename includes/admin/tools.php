@@ -1,6 +1,6 @@
 <?php
 /**
- * The admin-specific functionality of the plugin.
+ * Generates the Tools page.
  *
  * @link  https://webberzone.com
  * @since 2.5.0
@@ -58,8 +58,12 @@ function tptn_tools_page() {
 
 	/* Delete old settings */
 	if ( ( isset( $_POST['tptn_delete_old_settings'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
-		delete_option( 'ald_tptn_settings' );
-		add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'error' );
+		$deleted = delete_option( 'ald_tptn_settings' );
+		if ( $deleted ) {
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'error' );
+		} else {
+			add_settings_error( 'crp-notices', '', esc_html__( 'Old settings key does not exist', 'autoclose' ), 'error' );
+		}
 	}
 
 	/* Clean duplicates */
@@ -110,7 +114,7 @@ function tptn_tools_page() {
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
 				<p class="description">
-					<?php esc_html_e( 'This will reset the Top 10 tables. If you are running Top 10 on multisite then it will delete the popular posts across the entire network. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
+					<?php esc_html_e( 'This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
 				</p>
 				<p>
 					<input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
