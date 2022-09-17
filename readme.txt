@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.1.3
+Stable tag: 3.2.0
 Requires at least: 5.6
 Tested up to: 6.0
 Requires PHP: 7.1
@@ -84,17 +84,15 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 3. Find the plugin in the list (usually the first result) and click "Install Now"
 
 = Manual install =
-1. Download the plugin
-
-2. Extract the contents of top-10.zip to wp-content/plugins/ folder. You should get a folder called top-10.
-
-3. Activate the Plugin in WP-Admin.
-
-4. Go to **Top 10 &raquo; Settings** to configure
-
-5. Go to **Appearance &raquo; Widgets** to add the Popular Posts sidebar widget to your theme
-
-6. Go to **Top 10 &raquo; View Popular Posts** to view the list of popular posts
+1. Download the __top-10.zip__ file from this release post
+2. Visit __Plugins__ in your Admin Area
+3. Hit the __Add New__ button next to the Plugins heading
+4. Hit the __Upload__ button next to the Add Plugins heading
+5. Select the __top-10.zip__ file that you downloaded and hit Install Now
+6. Activate the Plugin in WP-Admin.
+7. Go to __Top 10 &raquo; Settings__ to configure
+8. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
+9. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
 
 
 == Frequently Asked Questions ==
@@ -136,6 +134,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 == Changelog ==
 
 = 3.2.0 =
+
+Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
 
 * Features:
 	* New setting in the Popular Posts block to select the style by block type
@@ -217,6 +217,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.1.3 =
+= 3.2.0 =
 Major release; Please check the plugin settings; Read all details in the release post
 

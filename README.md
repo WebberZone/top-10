@@ -10,7 +10,7 @@
 
 __Requires:__ 5.6
 
-__Tested up to:__ 5.9
+__Tested up to:__ 6.0
 
 __Requires PHP:__ 7.1
 
@@ -80,17 +80,15 @@ For more screenshots visit the [WordPress plugin page](http://wordpress.org/plug
 
 ### Manual install
 
-1. Download the plugin
-
-2. Extract the contents of top-10.zip to wp-content/plugins/ folder. You should get a folder called top-10.
-
-3. Activate the Plugin in WP-Admin.
-
-4. Go to __Top 10 &raquo; Settings__ to configure
-
-5. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
-
-6. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
+1. Download the __top-10.zip__ file from this release post
+2. Visit __Plugins__ in your Admin Area
+3. Hit the __Add New__ button next to the Plugins heading
+4. Hit the __Upload__ button next to the Add Plugins heading
+5. Select the __top-10.zip__ file that you downloaded and hit Install Now
+6. Activate the Plugin in WP-Admin.
+7. Go to __Top 10 &raquo; Settings__ to configure
+8. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
+9. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
 
 ## Frequently Asked Questions
 
