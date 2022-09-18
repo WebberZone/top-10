@@ -437,7 +437,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'title'       => array( 'title', false ),
 			'total_count' => array( 'total_count', true ),
 			'daily_count' => array( 'daily_count', true ),
 		);
