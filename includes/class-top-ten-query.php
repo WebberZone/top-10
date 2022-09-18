@@ -34,7 +34,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 * @since 3.2.0
 		 * @var bool
 		 */
-		public $multiple_blogs;
+		public $multiple_blogs = false;
 
 		/**
 		 * Cache set flag.
@@ -161,8 +161,10 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			// Parse the blog_id argument to get an array of IDs.
 			$this->blog_id = wp_parse_id_list( $args['blog_id'] );
-			if ( count( $this->blog_id ) > 1 || ( 1 === count( $this->blog_id ) && get_current_blog_id() !== (int) $this->blog_id[0] ) ) {
-				$this->multiple_blogs = true;
+			if ( is_multisite() ) {
+				if ( count( $this->blog_id ) > 1 || ( 1 === count( $this->blog_id ) && get_current_blog_id() !== (int) $this->blog_id[0] ) ) {
+					$this->multiple_blogs = true;
+				}
 			}
 
 			// Set the number of posts to be retrieved.
@@ -644,7 +646,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 */
 		public function switch_to_blog_in_loop( $post ) {
 			global $blog_id;
-			if ( ! $this->multiple_blogs ) {
+			if ( $this->multiple_blogs ) {
 				if ( $post->blog_id && (int) $blog_id !== (int) $post->blog_id ) {
 					switch_to_blog( $post->blog_id );
 				} else {
@@ -659,7 +661,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 * @since 3.2.0
 		 */
 		public function loop_end() {
-			if ( ! $this->multiple_blogs ) {
+			if ( $this->multiple_blogs ) {
 				restore_current_blog();
 			}
 		}
