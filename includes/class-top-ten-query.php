@@ -251,6 +251,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				 */
 				$tax_query['relation'] = apply_filters( 'top_ten_query_tax_query_relation', 'AND', $args );
 			}
+			
+			$args['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 
 			// Set date_query.
 			$date_query = array(
