@@ -133,9 +133,17 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.0 =
+= 3.2.1 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
+
+* Other Enhancements/Modifications:
+	* Modified behaviour of Popular Posts page and Admin Dashboard widgets to limit to public post types
+
+* Bug fixes:
+	* Fixed: `Fatal error: Uncaught Error: Call to undefined function restore_current_blog()`
+
+= 3.2.0 =
 
 * Features:
 	* New setting in the Popular Posts block to select the style by block type
