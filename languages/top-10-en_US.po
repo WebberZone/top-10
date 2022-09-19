@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-17 19:09+0100\n"
+"POT-Creation-Date: 2022-09-19 15:40+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Top 10 Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/admin.php:69 includes/admin/tools.php:82
+#: includes/admin/admin.php:69 includes/admin/tools.php:86
 msgid "Top 10 Tools"
 msgstr ""
 
@@ -300,66 +300,66 @@ msgstr ""
 msgid "All post types"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:214
+#: includes/admin/class-top-ten-statistics-table.php:246
 msgid "No popular posts available."
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:266
+#: includes/admin/class-top-ten-statistics-table.php:298
 msgid "Invalid post ID. This post might have been deleted."
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:272
+#: includes/admin/class-top-ten-statistics-table.php:304
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:273
+#: includes/admin/class-top-ten-statistics-table.php:305
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:275
+#: includes/admin/class-top-ten-statistics-table.php:307
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:411
+#: includes/admin/class-top-ten-statistics-table.php:443
 #: includes/modules/class-top-ten-count-widget.php:49
 #: includes/modules/class-top-ten-widget.php:79
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:412
+#: includes/admin/class-top-ten-statistics-table.php:444
 msgid "Total visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:413
+#: includes/admin/class-top-ten-statistics-table.php:445
 msgid "Daily visits"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:414
+#: includes/admin/class-top-ten-statistics-table.php:446
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:415
+#: includes/admin/class-top-ten-statistics-table.php:447
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:416
+#: includes/admin/class-top-ten-statistics-table.php:448
 #: includes/admin/import-export.php:212
 msgid "Date"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:420
+#: includes/admin/class-top-ten-statistics-table.php:452
 msgid "Blog"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:454
+#: includes/admin/class-top-ten-statistics-table.php:488
 msgid "Delete Count"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:519
+#: includes/admin/class-top-ten-statistics-table.php:553
 msgid "Are you sure you want to do this"
 msgstr ""
 
-#: includes/admin/class-top-ten-statistics-table.php:606
+#: includes/admin/class-top-ten-statistics-table.php:640
 msgid "Filter"
 msgstr ""
 
@@ -1465,72 +1465,77 @@ msgstr ""
 msgid "Top 10 tables have been recreated"
 msgstr ""
 
-#: includes/admin/tools.php:62
+#: includes/admin/tools.php:63
 msgid "Old settings key has been deleted"
 msgstr ""
 
-#: includes/admin/tools.php:69
+#: includes/admin/tools.php:65
+msgid "Old settings key does not exist"
+msgstr ""
+
+#: includes/admin/tools.php:73
 msgid "Duplicate rows cleaned from the tables"
 msgstr ""
 
-#: includes/admin/tools.php:76
+#: includes/admin/tools.php:80
 msgid "Post counts across blog IDs 0 and 1 have been merged"
 msgstr ""
 
-#: includes/admin/tools.php:92 includes/admin/tools.php:94
+#: includes/admin/tools.php:96 includes/admin/tools.php:98
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/tools.php:97
+#: includes/admin/tools.php:101
 msgid ""
 "Clear the Top 10 cache. This will also be cleared automatically when you "
 "save the settings page."
 msgstr ""
 
-#: includes/admin/tools.php:100 includes/admin/tools.php:102
+#: includes/admin/tools.php:104 includes/admin/tools.php:106
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/tools.php:105
+#: includes/admin/tools.php:109
 msgid ""
 "Deletes and reinitializes the primary key in the database tables. If the "
 "above function gives an error, then you can run the below code in phpMyAdmin "
 "or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/tools.php:111
+#: includes/admin/tools.php:115
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/tools.php:113
+#: includes/admin/tools.php:117
 msgid ""
-"This will reset the Top 10 tables. If you are running Top 10 on multisite "
-"then it will delete the popular posts across the entire network. This cannot "
+"This will reset the Top 10 tables. If this is a multisite install, this will "
+"reset the popular posts for the current site. If this is the Network Admin "
+"screen, then it will reset the popular posts across all sites. This cannot "
 "be reversed. Make sure that your database has been backed up before "
 "proceeding"
 msgstr ""
 
-#: includes/admin/tools.php:116
+#: includes/admin/tools.php:120
 msgid "Reset Popular Posts"
 msgstr ""
 
-#: includes/admin/tools.php:116
+#: includes/admin/tools.php:120
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:117
+#: includes/admin/tools.php:121
 msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/tools.php:117
+#: includes/admin/tools.php:121
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/tools.php:120 includes/admin/tools.php:125
+#: includes/admin/tools.php:124 includes/admin/tools.php:129
 msgid "Recreate Database Tables"
 msgstr ""
 
-#: includes/admin/tools.php:122
+#: includes/admin/tools.php:126
 msgid ""
 "Only click the button below after performing a full backup of the database. "
 "You can use any of the popular backup plugins or phpMyAdmin to achieve this. "
@@ -1539,15 +1544,15 @@ msgid ""
 "comfortable, please do not proceed."
 msgstr ""
 
-#: includes/admin/tools.php:125
+#: includes/admin/tools.php:129
 msgid "Hit Cancel if you have not backed up your database"
 msgstr ""
 
-#: includes/admin/tools.php:128
+#: includes/admin/tools.php:132
 msgid "Other tools"
 msgstr ""
 
-#: includes/admin/tools.php:130
+#: includes/admin/tools.php:134
 msgid ""
 "From v2.5.x, Top 10 stores the settings in a new key in the database. This "
 "will delete the old settings for the current blog. It is recommended that "
@@ -1555,37 +1560,37 @@ msgid ""
 "if you are comfortable with the new settings."
 msgstr ""
 
-#: includes/admin/tools.php:133
+#: includes/admin/tools.php:137
 msgid "Delete old settings"
 msgstr ""
 
-#: includes/admin/tools.php:133
+#: includes/admin/tools.php:137
 msgid "This will delete the settings before v2.5.x. Proceed?"
 msgstr ""
 
-#: includes/admin/tools.php:137
+#: includes/admin/tools.php:141
 msgid "This will merge post counts for posts with table entries of 0 and 1"
 msgstr ""
 
-#: includes/admin/tools.php:140
+#: includes/admin/tools.php:144
 msgid "Merge blog ID 0 and 1 post counts"
 msgstr ""
 
-#: includes/admin/tools.php:140
+#: includes/admin/tools.php:144
 msgid "This will merge post counts for blog IDs 0 and 1. Proceed?"
 msgstr ""
 
-#: includes/admin/tools.php:144
+#: includes/admin/tools.php:148
 msgid ""
 "In older versions, the plugin created entries with duplicate post IDs. "
 "Clicking the button below will merge these duplicate IDs"
 msgstr ""
 
-#: includes/admin/tools.php:147
+#: includes/admin/tools.php:151
 msgid "Merge duplicates across blog IDs"
 msgstr ""
 
-#: includes/admin/tools.php:147
+#: includes/admin/tools.php:151
 msgid "This will delete the duplicate entries in the tables. Proceed?"
 msgstr ""
 
