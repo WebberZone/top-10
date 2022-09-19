@@ -89,6 +89,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
 
 		// Fields to return.
+		if ( ! $this->network_wide ) {
+			$fields[] = "{$wpdb->posts}.post_title as title";
+			$fields[] = "{$wpdb->posts}.post_type";
+			$fields[] = "{$wpdb->posts}.post_date";
+			$fields[] = "{$wpdb->posts}.post_author";
+		}
+
 		$fields[] = 'ttt.postnumber as ID';
 		$fields[] = 'ttt.cntaccess as total_count';
 		$fields[] = 'SUM(ttd.cntaccess) as daily_count';
@@ -114,6 +121,7 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		// Create the base WHERE clause.
 		if ( ! $this->network_wide ) {
 			$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
+			$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
 
 			// If search argument is set, do a search for it.
 			if ( ! empty( $args['search'] ) ) {
@@ -123,6 +131,13 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			// If post filter argument is set, do a search for it.
 			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
 				$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
+			} else {
+				$post_types = get_post_types(
+					array(
+						'public' => true,
+					)
+				);
+				$where     .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";
 			}
 		}
 
@@ -130,24 +145,32 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$groupby = ' ttt.postnumber, ttt.blog_id ';
 
 		// Create the ORDER BY clause.
-		$orderby = ' total_count DESC ';
-
+		$orderby = '';
 		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		} elseif ( ! empty( $args['orderby'] ) ) {
+			$orderby = $args['orderby'];
+		}
 
+		if ( $orderby ) {
 			if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				$orderby = ' total_count ';
 			}
 
+			$order = '';
 			if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-				if ( in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-					$orderby .= ' ' . $order;
-				} else {
-					$orderby .= ' DESC';
-				}
+			} elseif ( ! empty( $args['order'] ) ) {
+				$order = $args['order'];
 			}
+
+			if ( $order && in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ), true ) ) {
+				$orderby .= " {$order}";
+			} else {
+				$orderby .= ' DESC';
+			}
+		} else {
+			$orderby = ' total_count DESC ';
 		}
 
 		// Create the base LIMITS clause.
@@ -179,10 +202,12 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		global $wpdb;
 
 		$where = '';
+		$join  = '';
 
 		$sql = "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt";
 
 		if ( ! $this->network_wide ) {
+			$join   = "INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID";
 			$where .= $wpdb->prepare( ' AND blog_id = %d ', get_current_blog_id() );
 
 			if ( ! empty( $args['search'] ) ) {
@@ -191,9 +216,16 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 
 			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
 				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_type = %s ", $args['post-type-filter'] );
+			} else {
+				$post_types = get_post_types(
+					array(
+						'public' => true,
+					)
+				);
+				$where     .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";
 			}
 		}
-		return $wpdb->get_var( "$sql WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->get_var( "$sql $join WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -440,6 +472,9 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			'total_count' => array( 'total_count', true ),
 			'daily_count' => array( 'daily_count', true ),
 		);
+		if ( ! $this->network_wide ) {
+			$sortable_columns['title'] = array( 'title', false );
+		}
 		return $sortable_columns;
 	}
 
