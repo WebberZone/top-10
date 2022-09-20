@@ -63,9 +63,11 @@ class Top_Ten_Widget extends WP_Widget {
 
 		// Parse the Post types.
 		$post_types = array();
-		if ( ! empty( $instance['post_types'] ) ) {
-			$post_types = $instance['post_types'];
-			parse_str( $post_types, $post_types ); // Save post types in $post_types variable.
+		// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
+		if ( ! empty( $instance['post_types'] ) && false === strpos( $instance['post_types'], '=' ) ) {
+			$post_types = explode( ',', $instance['post_types'] );
+		} elseif ( ! empty( $instance['post_types'] ) ) {
+			parse_str( $instance['post_types'], $post_types );  // Save post types in $post_types variable.
 		}
 		$wp_post_types   = get_post_types(
 			array(
@@ -210,9 +212,9 @@ class Top_Ten_Widget extends WP_Widget {
 				'public' => true,
 			)
 		);
-		$post_types             = isset( $new_instance['post_types'] ) ? (array) $new_instance['post_types'] : array();
-		$post_types             = array_intersect( $wp_post_types, $post_types );
-		$instance['post_types'] = http_build_query( $post_types, '', '&' );
+		$post_types             = isset( $new_instance['post_types'] ) ? $new_instance['post_types'] : array();
+		$post_types             = array_intersect( $wp_post_types, (array) $post_types );
+		$instance['post_types'] = implode( ',', $post_types );
 
 		// Save include_categories.
 		$include_categories = array_unique( str_getcsv( $new_instance['include_categories'] ) );
@@ -368,4 +370,3 @@ function tptn_register_widget() {
 	register_widget( 'Top_Ten_Widget' );
 }
 add_action( 'widgets_init', 'tptn_register_widget', 1 );
-
