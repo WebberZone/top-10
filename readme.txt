@@ -141,7 +141,8 @@ Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.co
 	* Dashboard widget will display the number of posts set in the Top 10 Settings page
 
 * Bug fixes:
-	* Tax query argument was not set in `Top_Ten_Query`
+	* Tax query parameter was not set in `Top_Ten_Query`
+	* `post_type` parameter was not set in `Top_Ten_Query`
 	* Parse error in some PHP installs prevented the plugin from being activated
 
 = 3.2.1 =

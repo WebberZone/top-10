@@ -172,7 +172,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 				$args['posts_per_page'] = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 3 );
 			}
 
-			if ( empty( 'post_type' ) ) {
+			if ( empty( $args['post_type'] ) ) {
 
 				// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
 				if ( ! empty( $args['post_types'] ) && is_array( $args['post_types'] ) ) {
