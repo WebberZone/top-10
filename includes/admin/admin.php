@@ -245,7 +245,7 @@ function tptn_network_admin_menu_links() {
 		esc_html__( 'Popular Posts', 'top-10' ),
 		'manage_network_options',
 		'tptn_network_pop_posts_page',
-		array( $tptn_stats_screen, 'plugin_settings_page' ),
+		array( $tptn_stats_screen, 'plugin_settings_page' )
 	);
 	add_action( "load-$tptn_network_pop_posts_page", array( $tptn_stats_screen, 'screen_option' ) );
 
@@ -255,7 +255,7 @@ function tptn_network_admin_menu_links() {
 		esc_html__( 'Tools', 'top-10' ),
 		'manage_network_options',
 		'tptn_network_tools_page',
-		'tptn_tools_page',
+		'tptn_tools_page'
 	);
 	add_action( "load-$tptn_network_tools_page", 'tptn_settings_tools_help' );
 
