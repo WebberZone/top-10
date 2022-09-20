@@ -133,11 +133,20 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.1 =
+= 3.2.2 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
 
-* Other Enhancements/Modifications:
+* Enhancements/Modifications:
+	* Dashboard widget will display the number of posts set in the Top 10 Settings page
+
+* Bug fixes:
+	* Tax query argument was not set in `Top_Ten_Query`
+	* Parse error in some PHP installs prevented the plugin from being activated
+
+= 3.2.1 =
+
+* Enhancements/Modifications:
 	* Modified behaviour of Popular Posts page and Admin Dashboard widgets to limit to public post types
 
 * Bug fixes:
