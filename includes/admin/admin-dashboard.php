@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @param   bool $widget Is this a WordPress widget.
  * @return  Formatted list of popular posts
  */
-function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = false ) {
+function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = true ) {
 
 	if ( ! $limit ) {
 		$limit = tptn_get_option( 'limit' );
@@ -92,7 +92,7 @@ function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = 
  * @since   1.1
  */
 function tptn_pop_dashboard() {
-	echo tptn_pop_display( false, 0, 20, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo tptn_pop_display( false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
@@ -102,7 +102,7 @@ function tptn_pop_dashboard() {
  * @since   1.2
  */
 function tptn_pop_daily_dashboard() {
-	echo tptn_pop_display( true, 0, 20, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo tptn_pop_display( true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 
