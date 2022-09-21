@@ -144,6 +144,7 @@ Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.co
 	* Tax query parameter was not set in `Top_Ten_Query`
 	* `post_type` parameter was not set in `Top_Ten_Query`
 	* Parse error in some PHP installs prevented the plugin from being activated
+	* Fixed missing stylesheet error when text_only style is selected
 
 = 3.2.1 =
 
