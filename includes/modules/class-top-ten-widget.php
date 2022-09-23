@@ -44,22 +44,21 @@ class Top_Ten_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$instance['title']              = isset( $instance['title'] ) ? $instance['title'] : '';
-		$instance['limit']              = isset( $instance['limit'] ) ? $instance['limit'] : '';
-		$instance['offset']             = isset( $instance['offset'] ) ? $instance['offset'] : '';
-		$instance['disp_list_count']    = isset( $instance['disp_list_count'] ) ? $instance['disp_list_count'] : '';
-		$instance['show_excerpt']       = isset( $instance['show_excerpt'] ) ? $instance['show_excerpt'] : '';
-		$instance['show_author']        = isset( $instance['show_author'] ) ? $instance['show_author'] : '';
-		$instance['show_date']          = isset( $instance['show_date'] ) ? $instance['show_date'] : '';
-		$instance['post_thumb_op']      = isset( $instance['post_thumb_op'] ) ? $instance['post_thumb_op'] : 'text_only';
-		$instance['thumb_height']       = isset( $instance['thumb_height'] ) ? $instance['thumb_height'] : '';
-		$instance['thumb_width']        = isset( $instance['thumb_width'] ) ? $instance['thumb_width'] : '';
-		$instance['daily']              = isset( $instance['daily'] ) ? $instance['daily'] : 'overall';
-		$instance['daily_range']        = isset( $instance['daily_range'] ) ? $instance['daily_range'] : '';
-		$instance['hour_range']         = isset( $instance['hour_range'] ) ? $instance['hour_range'] : '';
-		$instance['include_categories'] = isset( $instance['include_categories'] ) ? $instance['include_categories'] : '';
-		$instance['include_cat_ids']    = isset( $instance['include_cat_ids'] ) ? $instance['include_cat_ids'] : '';
-		$instance['include_post_ids']   = isset( $instance['include_post_ids'] ) ? $instance['include_post_ids'] : '';
+		$instance['title']            = isset( $instance['title'] ) ? $instance['title'] : '';
+		$instance['limit']            = isset( $instance['limit'] ) ? $instance['limit'] : '';
+		$instance['offset']           = isset( $instance['offset'] ) ? $instance['offset'] : '';
+		$instance['disp_list_count']  = isset( $instance['disp_list_count'] ) ? $instance['disp_list_count'] : '';
+		$instance['show_excerpt']     = isset( $instance['show_excerpt'] ) ? $instance['show_excerpt'] : '';
+		$instance['show_author']      = isset( $instance['show_author'] ) ? $instance['show_author'] : '';
+		$instance['show_date']        = isset( $instance['show_date'] ) ? $instance['show_date'] : '';
+		$instance['post_thumb_op']    = isset( $instance['post_thumb_op'] ) ? $instance['post_thumb_op'] : 'text_only';
+		$instance['thumb_height']     = isset( $instance['thumb_height'] ) ? $instance['thumb_height'] : '';
+		$instance['thumb_width']      = isset( $instance['thumb_width'] ) ? $instance['thumb_width'] : '';
+		$instance['daily']            = isset( $instance['daily'] ) ? $instance['daily'] : 'overall';
+		$instance['daily_range']      = isset( $instance['daily_range'] ) ? $instance['daily_range'] : '';
+		$instance['hour_range']       = isset( $instance['hour_range'] ) ? $instance['hour_range'] : '';
+		$instance['include_cat_ids']  = isset( $instance['include_cat_ids'] ) ? $instance['include_cat_ids'] : '';
+		$instance['include_post_ids'] = isset( $instance['include_post_ids'] ) ? $instance['include_post_ids'] : '';
 
 		// Parse the Post types.
 		$post_types = array();
@@ -138,9 +137,10 @@ class Top_Ten_Widget extends WP_Widget {
 			<input id="<?php echo esc_attr( $this->get_field_id( 'thumb_width' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'thumb_width' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['thumb_width'] ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'include_categories' ) ); ?>"><?php esc_html_e( 'Only from categories', 'top-10' ); ?>:</label>
-			<input class="widefat category_autocomplete" id="<?php echo esc_attr( $this->get_field_id( 'include_categories' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'include_categories' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['include_categories'] ); ?>" />
-			<input type="hidden" id="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" name="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" value="<?php echo esc_attr( $instance['include_cat_ids'] ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>">
+				<?php esc_html_e( 'Only from categories (comma-separated list of term taxonomy IDs)', 'top-10' ); ?>:
+				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'include_cat_ids' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'include_cat_ids' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['include_cat_ids'] ); ?>" />
+			</label>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'include_post_ids' ) ); ?>"><?php esc_html_e( 'Include IDs', 'top-10' ); ?></label>
@@ -217,10 +217,10 @@ class Top_Ten_Widget extends WP_Widget {
 		$instance['post_types'] = implode( ',', $post_types );
 
 		// Save include_categories.
-		$include_categories = array_unique( str_getcsv( $new_instance['include_categories'] ) );
+		$include_categories = wp_parse_id_list( $new_instance['include_cat_ids'] );
 
 		foreach ( $include_categories as $cat_name ) {
-			$cat = get_term_by( 'name', $cat_name, 'category' );
+			$cat = get_term_by( 'term_taxonomy_id', $cat_name );
 
 			if ( isset( $cat->term_taxonomy_id ) ) {
 				$include_cat_ids[]   = $cat->term_taxonomy_id;
