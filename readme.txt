@@ -145,6 +145,7 @@ Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.co
 	* `post_type` parameter was not set in `Top_Ten_Query`
 	* Parse error in some PHP installs prevented the plugin from being activated
 	* Fixed missing stylesheet error when text_only style is selected
+	* Only from categories option in the Widget now takes a comma-separated ID list only as the autocomplete was not compatible with the new widget interface
 
 = 3.2.1 =
 
