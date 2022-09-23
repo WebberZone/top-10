@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-19 15:40+0100\n"
+"POT-Creation-Date: 2022-09-23 19:38+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
@@ -322,7 +322,7 @@ msgstr ""
 
 #: includes/admin/class-top-ten-statistics-table.php:443
 #: includes/modules/class-top-ten-count-widget.php:49
-#: includes/modules/class-top-ten-widget.php:79
+#: includes/modules/class-top-ten-widget.php:80
 msgid "Title"
 msgstr ""
 
@@ -372,7 +372,7 @@ msgid "Enable trackers"
 msgstr ""
 
 #: includes/admin/default-settings.php:72
-#: includes/modules/class-top-ten-widget.php:93
+#: includes/modules/class-top-ten-widget.php:94
 msgid "Overall"
 msgstr ""
 
@@ -676,7 +676,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/default-settings.php:335
-#: includes/modules/class-top-ten-widget.php:148
+#: includes/modules/class-top-ten-widget.php:150
 msgid "Post types to include"
 msgstr ""
 
@@ -808,13 +808,13 @@ msgstr ""
 
 #: includes/admin/default-settings.php:451
 #: includes/blocks/popular-posts/src/edit.js:219
-#: includes/modules/class-top-ten-widget.php:118
+#: includes/modules/class-top-ten-widget.php:119
 msgid "Show date"
 msgstr ""
 
 #: includes/admin/default-settings.php:458
 #: includes/blocks/popular-posts/src/edit.js:205
-#: includes/modules/class-top-ten-widget.php:114
+#: includes/modules/class-top-ten-widget.php:115
 msgid "Show author"
 msgstr ""
 
@@ -893,12 +893,12 @@ msgid "I recommend using %1$s to regenerate all image sizes."
 msgstr ""
 
 #: includes/admin/default-settings.php:576
-#: includes/modules/class-top-ten-widget.php:135
+#: includes/modules/class-top-ten-widget.php:136
 msgid "Thumbnail width"
 msgstr ""
 
 #: includes/admin/default-settings.php:584
-#: includes/modules/class-top-ten-widget.php:131
+#: includes/modules/class-top-ten-widget.php:132
 msgid "Thumbnail height"
 msgstr ""
 
@@ -1648,7 +1648,7 @@ msgid "Maximum number of posts to display"
 msgstr ""
 
 #: includes/blocks/popular-posts/src/edit.js:181
-#: includes/modules/class-top-ten-widget.php:87
+#: includes/modules/class-top-ten-widget.php:88
 msgid "Offset"
 msgstr ""
 
@@ -1657,7 +1657,7 @@ msgid "Number of posts to skip from the top"
 msgstr ""
 
 #: includes/blocks/popular-posts/src/edit.js:191
-#: includes/modules/class-top-ten-widget.php:110
+#: includes/modules/class-top-ten-widget.php:111
 msgid "Show excerpt"
 msgstr ""
 
@@ -1686,7 +1686,7 @@ msgid "Date of post not displayed"
 msgstr ""
 
 #: includes/blocks/popular-posts/src/edit.js:233
-#: includes/modules/class-top-ten-widget.php:106
+#: includes/modules/class-top-ten-widget.php:107
 msgid "Show count"
 msgstr ""
 
@@ -1788,51 +1788,51 @@ msgstr ""
 msgid "Display popular posts"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:83
+#: includes/modules/class-top-ten-widget.php:84
 msgid "No. of posts"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:91
+#: includes/modules/class-top-ten-widget.php:92
 msgid "Select period"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:94
+#: includes/modules/class-top-ten-widget.php:95
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:98
+#: includes/modules/class-top-ten-widget.php:99
 msgid "Days"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:101
+#: includes/modules/class-top-ten-widget.php:102
 msgid "Hours"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:122
+#: includes/modules/class-top-ten-widget.php:123
 msgid "Thumbnail options"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:124
+#: includes/modules/class-top-ten-widget.php:125
 msgid "Thumbnails inline, before title"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:125
+#: includes/modules/class-top-ten-widget.php:126
 msgid "Thumbnails inline, after title"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:126
+#: includes/modules/class-top-ten-widget.php:127
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:127
+#: includes/modules/class-top-ten-widget.php:128
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:139
-msgid "Only from categories"
+#: includes/modules/class-top-ten-widget.php:141
+msgid "Only from categories (comma-separated list of term taxonomy IDs)"
 msgstr ""
 
-#: includes/modules/class-top-ten-widget.php:144
+#: includes/modules/class-top-ten-widget.php:146
 msgid "Include IDs"
 msgstr ""
 
