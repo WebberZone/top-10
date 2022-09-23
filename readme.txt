@@ -2,10 +2,10 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 Requires at least: 5.6
 Tested up to: 6.0
-Requires PHP: 7.1
+Requires PHP: 7.2
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
@@ -237,6 +237,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.2.1 =
+= 3.2.2 =
 Major release; Please check the plugin settings; Read all details in the release post
 

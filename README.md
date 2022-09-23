@@ -12,7 +12,7 @@ __Requires:__ 5.6
 
 __Tested up to:__ 6.0
 
-__Requires PHP:__ 7.1
+__Requires PHP:__ 7.2
 
 __License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
