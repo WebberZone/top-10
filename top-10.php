@@ -8,13 +8,13 @@
  * @author    Ajay D'Souza <me@ajaydsouza.com>
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2022 Ajay D'Souza
+ * @copyright 2008-2023 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name: Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     3.2.2
+ * Version:     3.2.3-beta1
  * Author:      Ajay D'Souza
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @var string Top 10 Version.
  */
 if ( ! defined( 'TOP_TEN_VERSION' ) ) {
-	define( 'TOP_TEN_VERSION', '3.2.1' );
+	define( 'TOP_TEN_VERSION', '3.2.3' );
 }
 
 

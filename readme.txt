@@ -133,6 +133,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.2.3 =
+
+Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
+
+* Security fix in block
+
 = 3.2.2 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
