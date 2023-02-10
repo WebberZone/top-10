@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @param   int  $page   Which page of the lists are we on.
  * @param   int  $limit  Maximum number of posts per page.
  * @param   bool $widget Is this a WordPress widget.
- * @return  Formatted list of popular posts
+ * @return  string Formatted list of popular posts
  */
 function tptn_pop_display( $daily = false, $page = 0, $limit = false, $widget = true ) {
 
