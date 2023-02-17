@@ -12,6 +12,11 @@
  */
 function tptn_ajax_clearcache() {
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( 0 );
+	}
+	check_ajax_referer( 'tptn-admin', 'security' );
+
 	$count = tptn_cache_delete();
 
 	exit(

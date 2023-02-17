@@ -319,7 +319,13 @@ function tptn_load_admin_scripts( $hook ) {
 				),
 			)
 		);
-
+		wp_localize_script(
+			'top-ten-admin-js',
+			'tptn_admin_data',
+			array(
+				'security' => wp_create_nonce( 'tptn-admin' ),
+			)
+		);
 	}
 
 	// Only enqueue the styles if this is a popular posts page.
