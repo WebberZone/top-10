@@ -2,9 +2,9 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.2.3
+Stable tag: 3.2.4
 Requires at least: 5.6
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2
 License: GPLv2 or later
 
@@ -133,15 +133,17 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.3 =
+= 3.2.4 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
+
+* Security fix when clearing the cache
+
+= 3.2.3 =
 
 * Security fix in block
 
 = 3.2.2 =
-
-Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
 
 * Enhancements/Modifications:
 	* Dashboard widget will display the number of posts set in the Top 10 Settings page
