@@ -245,6 +245,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.2.3 =
+= 3.2.4 =
 Security fix
 
