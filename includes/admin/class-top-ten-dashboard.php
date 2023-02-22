@@ -297,6 +297,9 @@ class Top_Ten_Dashboard {
 	public function get_chart_data() {
 		global $wpdb;
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 0 );
+		}
 		check_ajax_referer( 'tptn-dashboard', 'security' );
 
 		$blog_id = get_current_blog_id();

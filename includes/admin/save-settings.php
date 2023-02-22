@@ -145,7 +145,7 @@ function tptn_settings_sanitize( $input = array() ) {
  * @return string  $value  Sanitized value
  */
 function tptn_sanitize_text_field( $value ) {
-	return tptn_sanitize_textarea_field( $value );
+	return wp_kses_post( wp_unslash( $value ) );
 }
 add_filter( 'tptn_settings_sanitize_text', 'tptn_sanitize_text_field' );
 
