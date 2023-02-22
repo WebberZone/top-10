@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.2.4
+Stable tag: 3.2.5
 Requires at least: 5.6
 Tested up to: 6.2
 Requires PHP: 7.2
@@ -133,9 +133,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.4 =
+= 3.2.5 =
 
 Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
+
+* Two minor security fixes
+
+= 3.2.4 =
 
 * Security fix when clearing the cache
 
@@ -245,6 +249,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.2.4 =
+= 3.2.5 =
 Security fix
 
