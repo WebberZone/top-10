@@ -15,7 +15,7 @@ function tptn_header() {
 	$tptn_custom_css = stripslashes( tptn_get_option( 'custom_css' ) );
 
 	// Add CSS to header.
-	if ( '' != $tptn_custom_css ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $tptn_custom_css ) {
 		echo '<style type="text/css">' . $tptn_custom_css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

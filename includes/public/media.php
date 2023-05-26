@@ -271,7 +271,7 @@ function tptn_get_the_post_thumbnail( $args = array() ) {
 function tptn_get_image_html( $attachment_url, $attr = array() ) {
 
 	// If there is no url, return.
-	if ( '' == $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( ! $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return;
 	}
 
@@ -437,7 +437,7 @@ function tptn_get_attachment_id_from_url( $attachment_url = '' ) {
 	$attachment_id = false;
 
 	// If there is no url, return.
-	if ( '' == $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( ! $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return;
 	}
 

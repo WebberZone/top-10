@@ -57,34 +57,34 @@ function tptn_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
  *
  * @since 2.5.4
  *
- * @param  string $string String to truncate.
+ * @param  string $input String to truncate.
  * @param  int    $count Maximum number of characters to take.
- * @param  string $more What to append if $string needs to be trimmed.
+ * @param  string $more What to append if $input needs to be trimmed.
  * @param  bool   $break_words Optionally choose to break words.
  * @return string Truncated string.
  */
-function tptn_trim_char( $string, $count = 60, $more = '&hellip;', $break_words = false ) {
-	$string = wp_strip_all_tags( $string, true );
+function tptn_trim_char( $input, $count = 60, $more = '&hellip;', $break_words = false ) {
+	$input = wp_strip_all_tags( $input, true );
 	if ( 0 === $count ) {
 		return '';
 	}
-	if ( mb_strlen( $string ) > $count && $count > 0 ) {
+	if ( mb_strlen( $input ) > $count && $count > 0 ) {
 		$count -= min( $count, mb_strlen( $more ) );
 		if ( ! $break_words ) {
-			$string = preg_replace( '/\s+?(\S+)?$/u', '', mb_substr( $string, 0, $count + 1 ) );
+			$input = preg_replace( '/\s+?(\S+)?$/u', '', mb_substr( $input, 0, $count + 1 ) );
 		}
-		$string = mb_substr( $string, 0, $count ) . $more;
+		$input = mb_substr( $input, 0, $count ) . $more;
 	}
 	/**
 	 * Filters truncated string.
 	 *
 	 * @since 2.4.0
 	 *
-	 * @param string $string String to truncate.
+	 * @param string $input String to truncate.
 	 * @param int $count Maximum number of characters to take.
-	 * @param string $more What to append if $string needs to be trimmed.
+	 * @param string $more What to append if $input needs to be trimmed.
 	 * @param bool $break_words Optionally choose to break words.
 	 */
-	return apply_filters( 'tptn_trim_char', $string, $count, $more, $break_words );
+	return apply_filters( 'tptn_trim_char', $input, $count, $more, $break_words );
 }
 

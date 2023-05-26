@@ -318,12 +318,12 @@ function tptn_import_tables() {
 	$file_import = '';
 
 	// Open uploaded CSV file with read-only mode.
-	$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+	$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 
 	// Skip first line.
 	fgetcsv( $csv_file );
 
-	while ( ( $line = fgetcsv( $csv_file, 100, ',' ) ) !== false ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+	while ( ( $line = fgetcsv( $csv_file, 100, ',' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
 		if ( count( $line ) !== $column_count ) {
 			$file_import = 'fail';

@@ -331,7 +331,7 @@ function get_tptn_pop_posts( $args = array() ) {
 	// Convert it back to string.
 	$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
 
-	if ( '' != $exclude_post_ids ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $exclude_post_ids ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 	}
 	$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types.
