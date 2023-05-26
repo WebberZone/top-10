@@ -120,23 +120,23 @@ function tptn_number_format_i18n( $number, $decimals = 0 ) {
  *
  * @since 2.9.0
  *
- * @param array  $array Input string.
+ * @param array  $input Input string.
  * @param string $delimiter Delimiter.
  * @param string $enclosure Enclosure.
  * @param string $terminator Terminating string.
  * @return string CSV string.
  */
-function tptn_str_putcsv( $array, $delimiter = ',', $enclosure = '"', $terminator = "\n" ) {
+function tptn_str_putcsv( $input, $delimiter = ',', $enclosure = '"', $terminator = "\n" ) {
 	// First convert associative array to numeric indexed array.
 	$work_array = array();
-	foreach ( $array as $key => $value ) {
+	foreach ( $input as $key => $value ) {
 		$work_array[] = $value;
 	}
 
 	$string     = '';
-	$array_size = count( $work_array );
+	$input_size = count( $work_array );
 
-	for ( $i = 0; $i < $array_size; $i++ ) {
+	for ( $i = 0; $i < $input_size; $i++ ) {
 		// Nested array, process nest item.
 		if ( is_array( $work_array[ $i ] ) ) {
 			$string .= tptn_str_putcsv( $work_array[ $i ], $delimiter, $enclosure, $terminator );
@@ -168,7 +168,7 @@ function tptn_str_putcsv( $array, $delimiter = ',', $enclosure = '"', $terminato
 					break;
 			}
 			$string .= sprintf( '%2$s' . $sp_format . '%2$s', $work_array[ $i ], $enclosure );
-			$string .= ( $i < ( $array_size - 1 ) ) ? $delimiter : $terminator;
+			$string .= ( $i < ( $input_size - 1 ) ) ? $delimiter : $terminator;
 		}
 	}
 

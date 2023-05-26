@@ -311,7 +311,7 @@ function tptn_checkbox_callback( $args ) {
 
 	$html  = sprintf( '<input type="hidden" name="tptn_settings[%1$s]" value="-1" />', sanitize_key( $args['id'] ) );
 	$html .= sprintf( '<input type="checkbox" id="tptn_settings[%1$s]" name="tptn_settings[%1$s]" value="1" %2$s />', sanitize_key( $args['id'] ), $checked );
-	$html .= ( $set <> $default ) ? '<em style="color:orange"> ' . esc_html__( 'Modified from default setting', 'top-10' ) . '</em>' : ''; // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	$html .= ( $set <> $default ) ? '<em style="color:orange"> ' . esc_html__( 'Modified from default setting', 'top-10' ) . '</em>' : ''; // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	/** This filter has been defined in settings-page.php */

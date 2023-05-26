@@ -17,7 +17,7 @@ $topposts = wp_list_pluck( (array) $topposts, 'postnumber' );
 $args = array(
 	'post__in'       => $topposts,
 	'orderby'        => 'post__in',
-	'posts_per_page' => count( $topposts ),
+	'posts_per_page' => count( $topposts ), // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
 );
 
 query_posts( $args ); // phpcs:ignore WordPress.WP.DiscouragedFunctions.query_posts_query_posts

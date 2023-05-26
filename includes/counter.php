@@ -72,10 +72,10 @@ add_filter( 'the_content_feed', 'tptn_rss_filter' );
  * Function to manually display count.
  *
  * @since   1.0
- * @param   int|boolean $echo Flag to echo the output.
- * @return  string  Formatted string if $echo is set to 0|false
+ * @param   int|boolean $echo_output Flag to echo the output.
+ * @return  string  Formatted string if $echo_output is set to 0|false
  */
-function echo_tptn_post_count( $echo = 1 ) {
+function echo_tptn_post_count( $echo_output = 1 ) {
 	global $post;
 
 	$home_url = home_url( '/' );
@@ -110,7 +110,7 @@ function echo_tptn_post_count( $echo = 1 ) {
 	 */
 	$output = apply_filters( 'tptn_view_post_count', $output );
 
-	if ( $echo ) {
+	if ( $echo_output ) {
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		return $output;

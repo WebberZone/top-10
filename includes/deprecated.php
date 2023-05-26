@@ -80,7 +80,7 @@ function tptn_add_viewed_count( $content = '' ) {
 		$current_user = wp_get_current_user();
 
 		// Is the current user the post author?
-		$post_author = ( $current_user->ID == $post->post_author ) ? true : false;  // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		$post_author = ( (int) $current_user->ID === (int) $post->post_author ) ? true : false;  // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 
 		// Is the current user an admin?
 		$current_user_admin = ( current_user_can( 'manage_options' ) ) ? true : false;
@@ -147,14 +147,14 @@ function tptn_add_viewed_count( $content = '' ) {
  *
  * @deprecated 2.4.0
  *
- * @param bool $echo Echo the code or return it.
+ * @param bool $echo_output Echo the code or return it.
  * @return string|void
  */
-function tptn_add_tracker( $echo = true ) {
+function tptn_add_tracker( $echo_output = true ) {
 
 	_deprecated_function( __FUNCTION__, '2.4.0' );
 
-	if ( $echo ) {
+	if ( $echo_output ) {
 		echo tptn_add_viewed_count( '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		return tptn_add_viewed_count( '' );

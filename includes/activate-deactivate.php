@@ -56,7 +56,7 @@ function tptn_single_activate() {
 	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
-	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		$sql = 'CREATE TABLE ' . $table_name . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 			" (
@@ -70,7 +70,7 @@ function tptn_single_activate() {
 
 	}
 
-	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+	if ( $wpdb->get_var( "show tables like '$table_name_daily'" ) != $table_name_daily ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		$sql = 'CREATE TABLE ' . $table_name_daily . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 			" (
@@ -90,7 +90,7 @@ function tptn_single_activate() {
 	// Upgrade table code.
 	$installed_ver = get_site_option( 'tptn_db_version' );
 
-	if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 
 		$sql = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY ';
 		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -173,7 +173,7 @@ add_filter( 'wpmu_drop_tables', 'tptn_on_delete_blog' );
 function tptn_update_db_check() {
 	global $tptn_db_version, $network_wide;
 
-	if ( get_site_option( 'tptn_db_version' ) != $tptn_db_version ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( get_site_option( 'tptn_db_version' ) != $tptn_db_version ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 		tptn_activation_hook( $network_wide );
 	}
 }

@@ -25,11 +25,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 2.5.0
  *
- * @param string $key     Key of the option to fetch.
- * @param mixed  $default Default value to fetch if option is missing.
+ * @param string $key           Key of the option to fetch.
+ * @param mixed  $default_value Default value to fetch if option is missing.
  * @return mixed
  */
-function tptn_get_option( $key = '', $default = null ) {
+function tptn_get_option( $key = '', $default_value = null ) {
 
 	global $tptn_settings;
 
@@ -37,11 +37,11 @@ function tptn_get_option( $key = '', $default = null ) {
 		$tptn_settings = tptn_get_settings();
 	}
 
-	if ( is_null( $default ) ) {
-		$default = tptn_get_default_option( $key );
+	if ( is_null( $default_value ) ) {
+		$default_value = tptn_get_default_option( $key );
 	}
 
-	$value = isset( $tptn_settings[ $key ] ) ? $tptn_settings[ $key ] : $default;
+	$value = isset( $tptn_settings[ $key ] ) ? $tptn_settings[ $key ] : $default_value;
 
 	/**
 	 * Filter the value for the option being fetched.
@@ -50,20 +50,20 @@ function tptn_get_option( $key = '', $default = null ) {
 	 *
 	 * @param mixed   $value   Value of the option
 	 * @param mixed   $key     Name of the option
-	 * @param mixed   $default Default value
+	 * @param mixed   $default_value Default value
 	 */
-	$value = apply_filters( 'tptn_get_option', $value, $key, $default );
+	$value = apply_filters( 'tptn_get_option', $value, $key, $default_value );
 
 	/**
 	 * Key specific filter for the value of the option being fetched.
 	 *
 	 * @since 2.5.0
 	 *
-	 * @param mixed   $value   Value of the option
-	 * @param mixed   $key     Name of the option
-	 * @param mixed   $default Default value
+	 * @param mixed   $value            Value of the option
+	 * @param mixed   $key              Name of the option
+	 * @param mixed   $default_value    Default value
 	 */
-	return apply_filters( 'tptn_get_option_' . $key, $value, $key, $default );
+	return apply_filters( 'tptn_get_option_' . $key, $value, $key, $default_value );
 }
 
 
@@ -301,10 +301,10 @@ function tptn_settings_defaults() {
  */
 function tptn_get_default_option( $key = '' ) {
 
-	$default_settings = tptn_settings_defaults();
+	$default_value_settings = tptn_settings_defaults();
 
-	if ( array_key_exists( $key, $default_settings ) ) {
-		return $default_settings[ $key ];
+	if ( array_key_exists( $key, $default_value_settings ) ) {
+		return $default_value_settings[ $key ];
 	} else {
 		return false;
 	}
