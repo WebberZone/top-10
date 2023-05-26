@@ -36,7 +36,6 @@ function tptn_cron() {
 			$from_date
 		)
 	);
-
 }
 add_action( 'tptn_cron_hook', 'tptn_cron' );
 

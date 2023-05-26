@@ -172,7 +172,7 @@ function tptn_pop_posts( $args ) {
 
 			$output .= tptn_after_list_item( $args, $result );
 
-			$counter++;
+			++$counter;
 
 			if ( $counter === (int) $args['limit'] ) {
 				break;  // End loop when related posts limit is reached.
@@ -492,7 +492,6 @@ function tptn_pop_posts_feed() {
 	if ( ! empty( $popular_posts_daily ) ) {
 		add_feed( $popular_posts_daily, 'tptn_pop_posts_feed_daily' );
 	}
-
 }
 add_action( 'init', 'tptn_pop_posts_feed' );
 
@@ -541,7 +540,6 @@ function tptn_pop_posts_feed_callback( $daily = false ) {
 	if ( $template ) {
 		load_template( $template );
 	}
-
 }
 
 

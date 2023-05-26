@@ -37,7 +37,6 @@ function tptn_exclude_categories_where( $where ) {
 
 		return $sql;
 	}
-
 }
 add_filter( 'tptn_posts_where', 'tptn_exclude_categories_where' );
 

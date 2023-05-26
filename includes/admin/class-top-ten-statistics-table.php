@@ -188,7 +188,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 		$result = $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 		return $result;
-
 	}
 
 	/**
@@ -321,7 +320,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 			$this->network_wide ? '' : $this->row_actions( $actions ),
 			is_multisite() ? get_blog_permalink( $item['blog_id'], $item['ID'] ) : get_permalink( $item['ID'] )
 		);
-
 	}
 
 
@@ -533,7 +531,6 @@ class Top_Ten_Statistics_Table extends WP_List_Table {
 				'total_pages' => ceil( $total_items / $per_page ), // WE have to calculate the total number of pages.
 			)
 		);
-
 	}
 
 	/**

@@ -110,7 +110,6 @@ function tptn_enqueue_scripts() {
 
 		}
 	}
-
 }
 add_action( 'wp_enqueue_scripts', 'tptn_enqueue_scripts' );
 

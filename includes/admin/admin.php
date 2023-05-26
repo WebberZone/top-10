@@ -192,7 +192,6 @@ function tptn_plugin_actions_links( $links ) {
 		),
 		$links
 	);
-
 }
 add_filter( 'plugin_action_links_' . plugin_basename( TOP_TEN_PLUGIN_FILE ), 'tptn_plugin_actions_links' );
 
@@ -351,7 +350,6 @@ function tptn_customize_controls_enqueue_scripts() {
 	wp_enqueue_script( 'top-ten-suggest-js' );
 
 	wp_enqueue_style( 'tptn-admin-customizer-css' );
-
 }
 add_action( 'customize_controls_enqueue_scripts', 'tptn_customize_controls_enqueue_scripts', 99 );
 

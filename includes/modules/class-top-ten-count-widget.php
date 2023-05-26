@@ -30,7 +30,6 @@ class Top_Ten_Count_Widget extends WP_Widget {
 				'classname'                   => 'tptn_posts_count_widget',
 			)
 		);
-
 	}
 
 	/**
@@ -108,7 +107,6 @@ class Top_Ten_Count_Widget extends WP_Widget {
 		$output .= $args['after_widget'];
 
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	} //ending function widget
 
 }

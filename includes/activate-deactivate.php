@@ -116,7 +116,6 @@ function tptn_single_activate() {
 
 		update_site_option( 'tptn_db_version', $tptn_db_version );
 	}
-
 }
 
 

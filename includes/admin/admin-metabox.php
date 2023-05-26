@@ -161,7 +161,6 @@ function tptn_call_meta_box() {
 	if ( $results ) {
 		echo '<img src="' . esc_url( $value ) . '" style="max-width:100%" />';
 	}
-
 }
 
 
@@ -272,7 +271,6 @@ function tptn_save_meta_box( $post_id ) {
 	 * @param int $post_id Post ID
 	 */
 	do_action( 'tptn_save_meta_box', $post_id );
-
 }
 add_action( 'save_post', 'tptn_save_meta_box' );
 add_action( 'edit_attachment', 'tptn_save_meta_box' );

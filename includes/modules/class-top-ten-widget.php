@@ -33,7 +33,6 @@ class Top_Ten_Widget extends WP_Widget {
 		);
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_end_styles' ) );
-
 	}
 
 	/**
@@ -316,7 +315,6 @@ class Top_Ten_Widget extends WP_Widget {
 		$output .= $args['after_widget'];
 
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	}
 
 
@@ -358,7 +356,6 @@ class Top_Ten_Widget extends WP_Widget {
 			wp_add_inline_style( 'tptn-style-left-thumbs', $custom_css );
 
 		}
-
 	}
 }
 

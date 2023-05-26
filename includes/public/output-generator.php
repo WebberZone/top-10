@@ -48,7 +48,6 @@ function tptn_link_attributes( $args, $result ) {
 	$link_attributes = implode( ' ', $link_attributes );
 
 	return $link_attributes;
-
 }
 
 
@@ -101,7 +100,6 @@ function tptn_before_list( $args ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_before_list', $before_list, $args );
-
 }
 
 
@@ -126,7 +124,6 @@ function tptn_after_list( $args ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_after_list', $after_list, $args );
-
 }
 
 
@@ -153,7 +150,6 @@ function tptn_before_list_item( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_before_list_item', $before_list_item, $result, $args );
-
 }
 
 
@@ -180,7 +176,6 @@ function tptn_after_list_item( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_after_list_item', $after_list_item, $result, $args );   // Pass the post object to the filter.
-
 }
 
 
@@ -207,7 +202,6 @@ function tptn_post_title( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_post_title', $title, $result, $args );
-
 }
 
 
@@ -253,7 +247,6 @@ function tptn_author( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_author', $tptn_author, $author_info, $result, $args );
-
 }
 
 
@@ -316,7 +309,6 @@ function tptn_list_link( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_list_link', $output, $result, $args );
-
 }
 
 
@@ -343,7 +335,6 @@ function tptn_date( $args, $result ) {
 	 * @param   array   $args   Array of arguments
 	 */
 	return apply_filters( 'tptn_date', $date, $result, $args );
-
 }
 
 
@@ -373,5 +364,4 @@ function tptn_list_count( $args, $result, $visits ) {
 	 * @param   int    $visits          Number of visits.
 	 */
 	return apply_filters( 'tptn_list_count', $tptn_list_count, $visits, $result, $args, $visits );
-
 }

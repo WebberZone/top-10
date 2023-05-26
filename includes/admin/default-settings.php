@@ -44,7 +44,6 @@ function tptn_get_registered_settings() {
 	 * @param array   $tptn_settings Settings array
 	 */
 	return apply_filters( 'tptn_registered_settings', $tptn_settings );
-
 }
 
 
@@ -892,7 +891,6 @@ function tptn_upgrade_settings() {
 	$settings['custom_css'] = $old_settings['custom_CSS'];
 
 	return $settings;
-
 }
 
 
