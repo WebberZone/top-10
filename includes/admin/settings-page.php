@@ -139,7 +139,6 @@ function tptn_get_settings_sections() {
 	 * @param array $tptn_settings_sections Settings array
 	 */
 	return apply_filters( 'tptn_settings_sections', $tptn_settings_sections );
-
 }
 
 
@@ -730,7 +729,6 @@ function tptn_tags_search() {
 
 	echo wp_json_encode( $results );
 	wp_die();
-
 }
 add_action( 'wp_ajax_tptn_tag_search', 'tptn_tags_search' );
 

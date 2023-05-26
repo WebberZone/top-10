@@ -509,7 +509,6 @@ function tptn_get_thumb_size( $size = 'thumbnail' ) {
 	 * @param   array   $thumb_size Array with width and height of thumbnail
 	 */
 	return apply_filters( 'tptn_get_thumb_size', $thumb_size );
-
 }
 
 

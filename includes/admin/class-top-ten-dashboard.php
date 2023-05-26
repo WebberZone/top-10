@@ -215,7 +215,6 @@ class Top_Ten_Dashboard {
 		);
 
 		add_action( 'load-' . $this->parent_id, array( $this, 'help_tabs' ) );
-
 	}
 
 	/**
@@ -286,7 +285,6 @@ class Top_Ten_Dashboard {
 				)
 			);
 		}
-
 	}
 
 	/**
@@ -555,7 +553,6 @@ class Top_Ten_Dashboard {
 					'<p>' . __( 'You can change this by setting the constant TOP_TEN_STORE_DATA to the number of days of your choice in your wp-config.php.', 'top-10' ) . '</p>',
 			)
 		);
-
 	}
 }
 

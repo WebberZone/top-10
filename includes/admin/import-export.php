@@ -375,7 +375,6 @@ function tptn_import_tables() {
 		)
 	);
 	exit;
-
 }
 add_action( 'admin_init', 'tptn_import_tables', 9 );
 
@@ -459,6 +458,5 @@ function tptn_process_settings_import() {
 		)
 	);
 	exit;
-
 }
 add_action( 'admin_init', 'tptn_process_settings_import', 9 );

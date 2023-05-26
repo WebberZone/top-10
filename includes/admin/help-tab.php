@@ -114,7 +114,6 @@ function tptn_settings_help() {
 	);
 
 	do_action( 'tptn_settings_help', $screen );
-
 }
 
 /**

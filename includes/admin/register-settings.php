@@ -308,7 +308,6 @@ function tptn_get_default_option( $key = '' ) {
 	} else {
 		return false;
 	}
-
 }
 
 
