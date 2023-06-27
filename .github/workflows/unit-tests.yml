@@ -122,8 +122,11 @@ jobs:
 
       - name: Run the unit tests - single site
         run: vendor/bin/phpunit
+        env:
+          SCRIPT_DEBUG: 0
 
       - name: Run the unit tests - multisite
         run: vendor/bin/phpunit
         env:
           WP_MULTISITE: 1
+          SCRIPT_DEBUG: 0
