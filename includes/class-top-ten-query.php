@@ -77,6 +77,22 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		public $table_name;
 
 		/**
+		 * Stores the SELECT clauses in WordPress multisite.
+		 *
+		 * @since 3.0.0
+		 * @var array
+		 */
+		public $ms_select;
+
+		/**
+		 * Random order flag.
+		 *
+		 * @since 3.3.0
+		 * @var bool
+		 */
+		public $random_order = false;
+
+		/**
 		 * Main constructor.
 		 *
 		 * @since 3.0.0
@@ -156,7 +172,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Store query args before we manipulate them.
 			$this->input_query_args = $args;
 
-			$this->table_name = get_tptn_table( $args['daily'] );
+			$this->table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $args['daily'] );
 			$this->is_daily   = $args['daily'];
 
 			// Parse the blog_id argument to get an array of IDs.
@@ -257,7 +273,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Set date_query.
 			$date_query = array(
 				array(
-					'after'     => $args['how_old'] ? tptn_get_from_date( null, $args['how_old'] + 1, 0 ) : '',
+					'after'     => $args['how_old'] ? \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $args['how_old'] + 1, 0 ) : '',
 					'before'    => current_time( 'mysql' ),
 					'inclusive' => true,
 				),
@@ -439,14 +455,14 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			if ( $this->is_daily ) {
 				if ( isset( $this->query_args['from_date'] ) ) {
-					$from_date = tptn_get_from_date( $this->query_args['from_date'], 0, 0 );
+					$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( $this->query_args['from_date'], 0, 0 );
 				} else {
-					$from_date = tptn_get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
+					$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
 				}
 				$where .= $wpdb->prepare( " AND {$this->table_name}.dp_date >= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 				if ( isset( $this->query_args['to_date'] ) ) {
-					$to_date = tptn_get_from_date( $this->query_args['to_date'], 0, 0 );
+					$to_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( $this->query_args['to_date'], 0, 0 );
 					$where  .= $wpdb->prepare( " AND {$this->table_name}.dp_date <= %s ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				}
 			}
@@ -539,9 +555,9 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 *
 		 * @since 3.2.0
 		 *
-		 * @param string   $clauses  Query clauses.
-		 * @param WP_Query $query    The WP_Query instance.
-		 * @return string  Updated Query Clauses.
+		 * @param array     $clauses  Query clauses.
+		 * @param \WP_Query $query    The WP_Query instance.
+		 * @return array  Updated Query Clauses.
 		 */
 		public function posts_clauses( $clauses, $query ) {
 
@@ -591,8 +607,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			 *
 			 * @since 3.2.0
 			 *
-			 * @param string        $groupby  The GROUP BY clause of the Query.
-			 * @param Top_Ten_Query $query    The Top_Ten_Query instance (passed by reference).
+			 * @param array          $clauses  The GROUP BY clause of the Query.
+			 * @param \Top_Ten_Query $query    The Top_Ten_Query instance (passed by reference).
 			 */
 			$clauses = apply_filters_ref_array( 'top_ten_query_posts_clauses', array( $clauses, &$this ) );
 
@@ -644,12 +660,12 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 *
 		 * @since 3.2.0
 		 *
-		 * @param WP_Post $post  The Post object (passed by reference).
+		 * @param \WP_Post $post  The Post object (passed by reference).
 		 */
 		public function switch_to_blog_in_loop( $post ) {
 			global $blog_id;
 			if ( $this->multiple_blogs ) {
-				if ( $post->blog_id && (int) $blog_id !== (int) $post->blog_id ) {
+				if ( isset( $post->blog_id ) && (int) $blog_id !== (int) $post->blog_id ) {
 					switch_to_blog( $post->blog_id );
 				} else {
 					restore_current_blog();
@@ -673,8 +689,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string   $posts Array of post data.
-		 * @param WP_Query $query The WP_Query instance.
+		 * @param string    $posts Array of post data.
+		 * @param \WP_Query $query The WP_Query instance.
 		 * @return string  Updated Array of post objects.
 		 */
 		public function posts_pre_query( $posts, $query ) {
@@ -687,7 +703,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Check the cache if there are any posts saved.
 			if ( ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
 
-				$cache_name = tptn_cache_get_key( $this->query_args );
+				$cache_name = \WebberZone\Top_Ten\Frontend\Display::cache_get_key( $this->query_args );
 
 				$post_ids = get_transient( $cache_name );
 
@@ -702,7 +718,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 						)
 					);
 					$query->found_posts   = count( $posts );
-					$query->max_num_pages = ceil( $query->found_posts / $query->get( 'posts_per_page' ) );
+					$query->max_num_pages = (int) ceil( $query->found_posts / $query->get( 'posts_per_page' ) );
 					$this->in_cache       = true;
 				}
 			}
@@ -715,9 +731,9 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param WP_Post[] $posts Array of post objects.
-		 * @param WP_Query  $query The WP_Query instance (passed by reference).
-		 * @return string  Updated Array of post objects.
+		 * @param \WP_Post[] $posts Array of post objects.
+		 * @param \WP_Query  $query The WP_Query instance (passed by reference).
+		 * @return \WP_Post[] Updated Array of post objects.
 		 */
 		public function the_posts( $posts, $query ) {
 
@@ -730,7 +746,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			if ( ! empty( $this->query_args['cache_posts'] ) && ! $this->in_cache && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
 				/** This filter is defined in display-posts.php */
 				$cache_time = apply_filters( 'tptn_cache_time', $this->query_args['cache_time'], $this->query_args );
-				$cache_name = tptn_cache_get_key( $this->query_args );
+				$cache_name = \WebberZone\Top_Ten\Frontend\Display::cache_get_key( $this->query_args );
 				$post_ids   = wp_list_pluck( $query->posts, 'ID' );
 
 				set_transient( $cache_name, $post_ids, $cache_time );

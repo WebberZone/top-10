@@ -82,51 +82,6 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
-	// Initialise CodeMirror.
-	$(".codemirror_html").each(function (index, element) {
-		if ($(element).length && typeof wp.codeEditor === 'object') {
-			var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
-			editorSettings.codemirror = _.extend(
-				{},
-				editorSettings.codemirror,
-				{
-				}
-			);
-			var editor = wp.codeEditor.initialize($(element), editorSettings);
-			editor.codemirror.on('change', confirmFormChange);
-		}
-	});
-
-	$(".codemirror_js").each(function (index, element) {
-		if ($(element).length && typeof wp.codeEditor === 'object') {
-			var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
-			editorSettings.codemirror = _.extend(
-				{},
-				editorSettings.codemirror,
-				{
-					mode: 'javascript',
-				}
-			);
-			var editor = wp.codeEditor.initialize($(element), editorSettings);
-			editor.codemirror.on('change', confirmFormChange);
-		}
-	});
-
-	$(".codemirror_css").each(function (index, element) {
-		if ($(element).length && typeof wp.codeEditor === 'object') {
-			var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
-			editorSettings.codemirror = _.extend(
-				{},
-				editorSettings.codemirror,
-				{
-					mode: 'css',
-				}
-			);
-			var editor = wp.codeEditor.initialize($(element), editorSettings);
-			editor.codemirror.on('change', confirmFormChange);
-		}
-	});
-
 	// Editable table code.
 	$('.live_edit').click(function () {
 		$(this).addClass('live_edit_mode');
@@ -137,6 +92,9 @@ jQuery(document).ready(function ($) {
 	$(".live_edit").on('focusout keypress', function (e) {
 		if (e.type !== "focusout" && e.which !== 13) {
 			return;
+		}
+		if (e.which == 13) {
+			e.preventDefault();
 		}
 		var $element = $(this);
 		var post_id = $element.attr('data-wp-post-id');
