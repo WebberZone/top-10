@@ -1,6 +1,6 @@
 {
     "name": "webberzone/top-10",
-    "description": "Add popular posts to your WordPress site with inbuilt caching. Supports thumbnails, shortcodes, widgets and custom post types!",
+    "description": "Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.",
     "type": "wordpress-plugin",
     "keywords": [
         "popular posts",
@@ -9,15 +9,25 @@
         "tracking",
         "popular"
     ],
-    "license": "gpl-2.0-or-later",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "WebberZone",
-            "email": "plugins@webberzone.com",
             "role": "Developer"
         }
     ],
     "requires": {
         "php": ">=7.1"
+    },
+    "require-dev": {
+        "szepeviktor/phpstan-wordpress": "^1.3",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "php-stubs/wordpress-stubs": "^6.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }

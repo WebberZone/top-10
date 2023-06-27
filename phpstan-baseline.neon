@@ -1,0 +1,61 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
+			count: 1
+			path: includes/admin/class-admin.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
+			count: 6
+			path: includes/admin/class-admin.php
+
+		-
+			message: "#^Variable \\$menu_page might not be defined\\.$#"
+			count: 1
+			path: includes/admin/settings/class-settings-api.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
+			count: 1
+			path: includes/admin/settings/class-settings.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
+			count: 2
+			path: includes/admin/settings/sidebar.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
+			count: 1
+			path: includes/autoloader.php
+
+		-
+			message: "#^Variable \\$wp in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: includes/class-tracker.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
+			count: 2
+			path: includes/frontend/blocks/class-blocks.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
+			count: 1
+			path: includes/frontend/class-display.php
+
+		-
+			message: "#^Variable \\$cache_name might not be defined\\.$#"
+			count: 1
+			path: includes/frontend/class-display.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
+			count: 1
+			path: includes/frontend/class-feed.php
+
+		-
+			message: "#^Variable \\$daily might not be defined\\.$#"
+			count: 1
+			path: includes/frontend/feed-rss2-popular-posts.php

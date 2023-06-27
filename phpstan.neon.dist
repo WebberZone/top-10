@@ -1,0 +1,14 @@
+includes:
+	- phpstan-baseline.neon
+parameters:
+    level: 5
+    scanFiles:
+        - top-10.php
+    scanDirectories:
+        - includes
+    paths:
+        - top-10.php
+        - uninstall.php
+        - includes/
+    ignoreErrors:
+        - '#Method [a-zA-Z0-9\\_]+::form\(\) should return string but return statement is missing#'
