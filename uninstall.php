@@ -14,7 +14,7 @@ global $wpdb;
 
 $tptn_settings = get_option( 'tptn_settings' );
 
-if ( $tptn_settings['uninstall_clean_tables'] ) {
+if ( ! empty( $tptn_settings['uninstall_clean_tables'] ) ) {
 
 	$table_name       = $wpdb->base_prefix . 'top_ten';
 	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
