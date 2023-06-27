@@ -88,9 +88,9 @@ jobs:
         id: set_phpunit
         run: |
           if [[ "${{ matrix.php }}" > "8.0" ]]; then
-            echo 'name=PHPUNIT::9.*' >> $GITHUB_OUTPUT
+            echo '::set-output name=PHPUNIT::9.*'
           else
-            echo 'name=PHPUNIT::5.7.*||6.*||7.5.*' >> $GITHUB_OUTPUT
+            echo '::set-output name=PHPUNIT::5.7.*||6.*||7.5.*'
           fi
 
       - name: 'Composer: set up PHPUnit'
