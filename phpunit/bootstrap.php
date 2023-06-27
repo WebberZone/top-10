@@ -38,8 +38,9 @@ activate_plugin( 'top-10/top-10.php' );
 
 echo "Installing Top 10...\n";
 
-global $crp_settings, $current_user;
+global $tptn_settings, $current_user;
 
-tptn_activation_hook( true );
+$activator = new \WebberZone\Top_Ten\Admin\Activator();
+$activator::activation_hook( false );
 
-$crp_settings = tptn_get_settings();
+$tptn_settings = tptn_get_settings();
