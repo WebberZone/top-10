@@ -59,3 +59,13 @@ parameters:
 			message: "#^Variable \\$daily might not be defined\\.$#"
 			count: 1
 			path: includes/frontend/feed-rss2-popular-posts.php
+
+		-
+			message: "#^Method WebberZone\\\\Top_Ten\\\\Frontend\\\\Widgets\\\\Count_Widget\\:\\:form\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: includes/frontend/widgets/class-count-widget.php
+
+		-
+			message: "#^Method WebberZone\\\\Top_Ten\\\\Frontend\\\\Widgets\\\\Posts_Widget\\:\\:form\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: includes/frontend/widgets/class-posts-widget.php
