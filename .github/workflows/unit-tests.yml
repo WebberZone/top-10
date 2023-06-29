@@ -39,7 +39,6 @@ jobs:
             experimental: true
           - php: '7.4'
             wp: '5.5'
-            phpunit: '7'
             experimental: true
           - php: '7.4'
             wp: 'nightly'
@@ -80,10 +79,19 @@ jobs:
       - name: Set up WordPress
         run: phpunit/install.sh wordpress_test root '' 127.0.0.1:3306 ${{ matrix.wp }}
 
-      # Install polyfills.
-      - name: Install PHPUnit and Polyfills for WP < 5.9
-        if: ${{ matrix.wp < 5.9 }}
-        run: composer require --dev --no-update phpunit/phpunit:^7.*
+      # On WP 5.2, PHPUnit 5.x, 6.x and 7.x are supported.
+      # On PHP >= 8.0, PHPUnit 7.5+ is needed, no matter what.
+      - name: Determine supported PHPUnit version
+        id: set_phpunit
+        run: |
+          if [[ "${{ matrix.php }}" > "8.0" ]]; then
+            echo '::set-output name=PHPUNIT::9.*||10.*'
+          else
+            echo '::set-output name=PHPUNIT::5.7.*||6.*||7.5.*'
+          fi
+
+      - name: 'Composer: set up PHPUnit'
+        run: composer require --no-update phpunit/phpunit:"${{ steps.set_phpunit.outputs.PHPUNIT }}"
 
       # Install dependencies and handle caching in one go.
       - name: Install Composer dependencies for PHP < 8.0
@@ -105,19 +113,16 @@ jobs:
         run: |
           php --version
           composer --version
-          ./vendor/bin/phpunit --version
-
-      - name: Migrate configuration for php > 7.2 because this install phpunit 9 and above
-        if: ${{ matrix.phpunit >= 8 }}
-        run: ./vendor/bin/phpunit --migrate-configuration
+          phpunit --version
+          which phpunit
 
       - name: Run the unit tests - single site
-        run: ./vendor/bin/phpunit
+        run: vendor/bin/phpunit
         env:
-          WP_SCRIPT_DEBUG: 0
+          SCRIPT_DEBUG: 0
 
       - name: Run the unit tests - multisite
-        run: ./vendor/bin/phpunit
+        run: vendor/bin/phpunit
         env:
           WP_MULTISITE: 1
-          WP_SCRIPT_DEBUG: 0
+          SCRIPT_DEBUG: 0
