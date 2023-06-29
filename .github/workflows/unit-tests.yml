@@ -71,7 +71,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: phpunit-polyfills
           coverage: none
           # The PHP 5.6 and 7.0 images don't include mysql[i] by default.
           extensions: mysqli
@@ -91,7 +90,7 @@ jobs:
           fi
 
       - name: 'Composer: set up PHPUnit'
-        run: composer require --no-update phpunit/phpunit:"${{ steps.set_phpunit.outputs.PHPUNIT }}"
+        run: composer require yoast/phpunit-polyfills phpunit/phpunit:"${{ steps.set_phpunit.outputs.PHPUNIT }}"
 
       # Install dependencies and handle caching in one go.
       - name: Install Composer dependencies for PHP < 8.0
