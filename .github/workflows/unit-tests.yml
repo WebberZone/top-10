@@ -74,13 +74,18 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: phpunit-polyfills
           coverage: none
           # The PHP 5.6 and 7.0 images don't include mysql[i] by default.
           extensions: mysqli
 
       - name: Set up WordPress
         run: phpunit/install.sh wordpress_test root '' 127.0.0.1:3306 ${{ matrix.wp }}
+
+      # Install phpunit and polyfills.
+      - name: Install PHPUnit and Polyfills
+        run: composer require --dev yoast/phpunit-polyfills
+        if: ${{ matrix.wp <= 5.6 }}
+        run: composer require --dev phpunit/phpunit:7
 
       # Install dependencies and handle caching in one go.
       - name: Install Composer dependencies for PHP < 8.0
@@ -103,7 +108,9 @@ jobs:
           php --version
           composer --version
           phpunit --version
-          which phpunit
+
+      - name: Migrate configuration
+        run: phpunit --migrate-configuration
 
       - name: Run the unit tests - single site
         run: phpunit
