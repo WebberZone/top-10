@@ -110,18 +110,18 @@ jobs:
         run: |
           php --version
           composer --version
-          phpunit --version
+          ./vendor/bin/phpunit --version
 
       - name: Migrate configuration
-        run: phpunit --migrate-configuration
+        run: ./vendor/bin/phpunit --migrate-configuration
 
       - name: Run the unit tests - single site
-        run: phpunit
+        run: ./vendor/bin/phpunit
         env:
           SCRIPT_DEBUG: 0
 
       - name: Run the unit tests - multisite
-        run: phpunit
+        run: ./vendor/bin/phpunit
         env:
           WP_MULTISITE: 1
           SCRIPT_DEBUG: 0
