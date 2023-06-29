@@ -112,8 +112,8 @@ jobs:
         run: |
           php --version
           composer --version
-          phpunit --version
           which phpunit
+          vendor/bin/phpunit --version
 
       - name: Run the unit tests - single site
         run: vendor/bin/phpunit
