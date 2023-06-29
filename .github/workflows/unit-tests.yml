@@ -96,7 +96,7 @@ jobs:
 
       - name: 'Run Composer Update'
         run: |
-          composer update --ignore-platform-reqs
+          composer update -W
 
       - name: Tool versions
         run: |
