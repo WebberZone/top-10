@@ -90,7 +90,7 @@ jobs:
           fi
 
       - name: 'Composer: set up PHPUnit'
-        run: composer require yoast/phpunit-polyfills phpunit/phpunit:"${{ steps.set_phpunit.outputs.PHPUNIT }}"
+        run: composer require yoast/phpunit-polyfills phpunit/phpunit:*
 
       # Install dependencies and handle caching in one go.
       - name: Install Composer dependencies for PHP < 8.0
