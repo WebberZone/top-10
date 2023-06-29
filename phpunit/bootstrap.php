@@ -1,10 +1,25 @@
 <?php
 /**
  * PHPUnit bootstrap file.
- *
- * @package Better_Search_Plugin
  */
-require_once dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/.composer/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+if ( class_exists( '\Yoast\PHPUnitPolyfills\Autoload' ) === false ) {
+    require_once 'vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+}
+
+$versionRequirement = '1.0.1';
+if ( defined( '\Yoast\PHPUnitPolyfills\Autoload::VERSION' ) === false
+    || version_compare( \Yoast\PHPUnitPolyfills\Autoload::VERSION, $versionRequirement, '<' )
+) {
+    echo 'Error: Version mismatch detected for the PHPUnit Polyfills.',
+        ' Please ensure that PHPUnit Polyfills ', $versionRequirement,
+        ' or higher is loaded.', PHP_EOL;
+    exit(1);
+} else {
+    echo 'Error: Please run `composer update -W` before running the tests.' . PHP_EOL;
+    echo 'You can still use a PHPUnit phar to run them,',
+        ' but the dependencies do need to be installed.', PHP_EOL;
+    exit(1);
+}
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
