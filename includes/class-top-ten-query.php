@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use WebberZone\Top_Ten\Util\Helpers;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -162,6 +164,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			);
 			$defaults = array_merge( $defaults, $tptn_settings );
 			$args     = wp_parse_args( $args, $defaults );
+			$args     = Helpers::parse_wp_query_arguments( $args );
 
 			// Set necessary variables.
 			$args['top_ten_query']       = true;
@@ -172,7 +175,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Store query args before we manipulate them.
 			$this->input_query_args = $args;
 
-			$this->table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $args['daily'] );
+			$this->table_name = Helpers::get_tptn_table( $args['daily'] );
 			$this->is_daily   = $args['daily'];
 
 			// Parse the blog_id argument to get an array of IDs.
@@ -273,7 +276,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			// Set date_query.
 			$date_query = array(
 				array(
-					'after'     => $args['how_old'] ? \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $args['how_old'] + 1, 0 ) : '',
+					'after'     => $args['how_old'] ? Helpers::get_from_date( null, $args['how_old'] + 1, 0 ) : '',
 					'before'    => current_time( 'mysql' ),
 					'inclusive' => true,
 				),
@@ -455,14 +458,14 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 
 			if ( $this->is_daily ) {
 				if ( isset( $this->query_args['from_date'] ) ) {
-					$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( $this->query_args['from_date'], 0, 0 );
+					$from_date = Helpers::get_from_date( $this->query_args['from_date'], 0, 0 );
 				} else {
-					$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
+					$from_date = Helpers::get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
 				}
 				$where .= $wpdb->prepare( " AND {$this->table_name}.dp_date >= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 				if ( isset( $this->query_args['to_date'] ) ) {
-					$to_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( $this->query_args['to_date'], 0, 0 );
+					$to_date = Helpers::get_from_date( $this->query_args['to_date'], 0, 0 );
 					$where  .= $wpdb->prepare( " AND {$this->table_name}.dp_date <= %s ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				}
 			}

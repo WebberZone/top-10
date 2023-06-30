@@ -38,6 +38,8 @@ class Shortcodes {
 	public static function tptn_list( $atts, $content = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		global $tptn_settings;
 
+		$wp_query_args = \WebberZone\Top_Ten\Util\Helpers::get_wp_query_arguments();
+
 		$default_atts = array(
 			'heading'         => 1,
 			'daily'           => 0,
@@ -50,6 +52,7 @@ class Shortcodes {
 		$atts = shortcode_atts(
 			array_merge(
 				$tptn_settings,
+				$wp_query_args,
 				$default_atts
 			),
 			$atts,

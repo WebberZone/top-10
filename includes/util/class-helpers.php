@@ -295,4 +295,123 @@ class Helpers {
 		return apply_filters( 'tptn_trim_char', $input, $count, $more, $break_words );
 	}
 
+	/**
+	 * Get the WP_Query arguments.
+	 *
+	 * @return array WP_Query arguments.
+	 */
+	public static function get_wp_query_arguments() {
+		$arguments = array(
+			// Author Parameters.
+			'author'              => '',
+			'author_name'         => '',
+			'author__in'          => array(),
+			'author__not_in'      => array(),
+
+			// Category Parameters.
+			'cat'                 => '',
+			'category_name'       => '',
+			'category__and'       => array(),
+			'category__in'        => array(),
+			'category__not_in'    => array(),
+
+			// Tag Parameters.
+			'tag'                 => '',
+			'tag_id'              => '',
+			'tag__and'            => array(),
+			'tag__in'             => array(),
+			'tag__not_in'         => array(),
+			'tag_slug__and'       => array(),
+			'tag_slug__in'        => array(),
+
+			// Search Parameters.
+			's'                   => '',
+			'search_columns'      => array(),
+			'exact'               => false,
+			'sentence'            => false,
+
+			// Post & Page Parameters.
+			'p'                   => '',
+			'name'                => '',
+			'page_id'             => '',
+			'pagename'            => '',
+			'post__in'            => array(),
+			'post__not_in'        => array(),
+			'post_parent'         => '',
+			'post_parent__in'     => array(),
+			'post_parent__not_in' => array(),
+			'post_name__in'       => array(),
+
+			// Password Parameters.
+			'has_password'        => false,
+			'post_password'       => null,
+
+			// Post Type Parameters.
+			'post_type'           => '',
+
+			// Status Parameters.
+			'post_status'         => '',
+
+			// Comment Parameters.
+			'comment_count'       => '',
+
+			// Pagination Parameters.
+			'posts_per_page'      => '',
+
+			// Order & Orderby Parameters.
+			'orderby'             => '',
+			'order'               => '',
+
+			// Date Parameters.
+			'year'                => '',
+			'monthnum'            => '',
+			'day'                 => '',
+			'hour'                => '',
+			'minute'              => '',
+			'second'              => '',
+
+			// Custom Field (post meta) Parameters.
+			'meta_key'            => '', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value'          => '', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			'meta_value_num'      => '',
+			'meta_compare'        => '',
+		);
+
+		return $arguments;
+	}
+
+	/**
+	 * Parse WP_Query variables to parse comma separated list of IDs and convert them to arrays as needed by WP_Query.
+	 *
+	 * @param array $query_vars Defined query variables.
+	 * @return array Complete query variables with undefined ones filled in empty.
+	 */
+	public static function parse_wp_query_arguments( $query_vars ) {
+
+		$array_keys = array(
+			'category__in',
+			'category__not_in',
+			'category__and',
+			'post__in',
+			'post__not_in',
+			'post_name__in',
+			'tag__in',
+			'tag__not_in',
+			'tag__and',
+			'tag_slug__in',
+			'tag_slug__and',
+			'post_parent__in',
+			'post_parent__not_in',
+			'author__in',
+			'author__not_in',
+		);
+
+		foreach ( $array_keys as $key ) {
+			if ( isset( $query_vars[ $key ] ) ) {
+				$query_vars[ $key ] = wp_parse_list( $query_vars[ $key ] );
+			}
+		}
+
+		return $query_vars;
+	}
 }
