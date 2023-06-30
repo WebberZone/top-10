@@ -40,6 +40,14 @@ class Counter {
 	public static function the_content( $content ) {
 		global $post;
 
+		$in_the_loop           = in_the_loop();
+		$is_main_query         = is_main_query();
+		$get_queried_object_id = get_queried_object_id();
+
+		if ( ! ( in_the_loop() && is_main_query() && (int) get_queried_object_id() === (int) $post->ID ) ) {
+			return $content;
+		}
+
 		$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
 		$add_to              = tptn_get_option( 'add_to', false );
 
