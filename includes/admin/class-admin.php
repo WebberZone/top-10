@@ -104,6 +104,15 @@ class Admin {
 	public $cron;
 
 	/**
+	 * Dashboard widgets.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var object Dashboard widgets.
+	 */
+	public $dashboard_widgets;
+
+	/**
 	 * Settings Page in Admin area.
 	 *
 	 * @since 3.3.0
@@ -148,15 +157,16 @@ class Admin {
 		$this->hooks();
 
 		// Initialise admin classes.
-		$this->admin_dashboard = new Dashboard();
-		$this->settings        = new Settings\Settings();
-		$this->statistics      = new Statistics();
-		$this->activator       = new Activator();
-		$this->admin_columns   = new Columns();
-		$this->metabox         = new Metabox();
-		$this->import_export   = new Import_Export();
-		$this->tools_page      = new Tools_Page();
-		$this->cron            = new Cron();
+		$this->admin_dashboard   = new Dashboard();
+		$this->settings          = new Settings\Settings();
+		$this->statistics        = new Statistics();
+		$this->activator         = new Activator();
+		$this->admin_columns     = new Columns();
+		$this->metabox           = new Metabox();
+		$this->import_export     = new Import_Export();
+		$this->tools_page        = new Tools_Page();
+		$this->cron              = new Cron();
+		$this->dashboard_widgets = new Dashboard_Widgets();
 	}
 
 	/**
