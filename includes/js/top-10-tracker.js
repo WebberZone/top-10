@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch(ajax_tptn_tracker.ajax_url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Cache-Control': 'no-cache'
         },
         body: new URLSearchParams({
             action: 'tptn_tracker',
