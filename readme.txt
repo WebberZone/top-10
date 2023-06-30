@@ -133,116 +133,14 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.2.5 =
-
-Release post: [https://webberzone.com/blog/top-10-v3-2-0/](https://webberzone.com/blog/top-10-v3-2-0/)
-
-* Two minor security fixes
-
-= 3.2.4 =
-
-* Security fix when clearing the cache
-
-= 3.2.3 =
-
-* Security fix in block
-
-= 3.2.2 =
+= 3.3.0 =
 
 * Enhancements/Modifications:
-	* Dashboard widget will display the number of posts set in the Top 10 Settings page
+	* Complete rewrite of Top 10 plugin to use Classes and autoloading
 
 * Bug fixes:
-	* Tax query parameter was not set in `Top_Ten_Query`
-	* `post_type` parameter was not set in `Top_Ten_Query`
-	* Parse error in some PHP installs prevented the plugin from being activated
-	* Fixed missing stylesheet error when text_only style is selected
-	* Only from categories option in the Widget now takes a comma-separated ID list only as the autocomplete was not compatible with the new widget interface
-
-= 3.2.1 =
-
-* Enhancements/Modifications:
-	* Modified behaviour of Popular Posts page and Admin Dashboard widgets to limit to public post types
-
-* Bug fixes:
-	* Fixed: `Fatal error: Uncaught Error: Call to undefined function restore_current_blog()`
-
-= 3.2.0 =
-
-* Features:
-	* New setting in the Popular Posts block to select the style by block type
-
-* Multisite improvements:
-	* Retrieve the popular posts across multiple blogs by passing multiple blog IDs to Top_Ten_Query
-	* New Tools page and Import/Export page in Network Admin - you can find this in the Top 10 menu
-	* Resetting the Popular Posts or Daily Popular Posts will apply to the current site in the Admin screen and across the network in the Network Admin screen
-	* Exporting/Importing tables will apply to the current site in the Admin screen and across the network in the Network Admin screen
-
-* Top_Ten_Query improvements:
-	* WP_Query's arguments `posts_per_page`, `post_type` are prioritised
-	* New filters: `top_ten_query_date_query`, `top_ten_query_meta_query`, `top_ten_query_meta_query_relation`, `top_ten_query_tax_query_relation`, `top_ten_query_posts_fields`, `top_ten_query_posts_join`, `top_ten_query_posts_where`, `top_ten_query_posts_orderby`, `top_ten_query_posts_groupby`
-	* Cache key is generated from the `query_args` instead of just the `input_query_args`
-
-* Other Enhancements/Modifications:
-	* New function: `get_tptn_table()`; Code has been refactored to use this function
-	* Popular Posts page in Admin or Network Admin use the same class `Top_Ten_Statistics_Table`. Deleted `Top_Ten_Network_Statistics_Table`
-	* Selecting "Text only" thumbnail setting or style will not display a thumbnail
-	* Use moment.js bundled with WordPress
-	* Updated ChartJS and ChartJS Data Labels plugin scripts to latest versions
-
-* Bug fix:
-	* Scripts/styles didn't load in Network posts page
-
-= 3.1.3 =
-
-Release post: [https://webberzone.com/blog/top-10-v3-1-0/](https://webberzone.com/blog/top-10-v3-1-0/)
-
-* Bug fixes:
-	* Updated moment.min.js
-	* Fixed PHP errors when editing a post in Gutenberg
-
-= 3.1.2 =
-
-* Features:
-	* New filter `tptn_show_meta_box` that can be set to false to disable the Top 10 meta box on Edit screens
-	* New option to exclude the current post from the list
-	* New option "Exclude on Categories" to disable the display of the popular posts on selected categories
-
-* Enhancements/Modifications:
-	* Optimised import of tables particularly for larger imports
-	* Added wpml-config.xml file that will allow settings to be translated with WPML and PolyLang
-	* Upgraded block to the latest API
-	* Upgraded thumbnail display. If default image is disabled, then the site icon will be displayed if available
-	* Admin dashboard counts match with the Popular posts listings
-	* Updated chartjs to the latest version
-
-* Bug fixes:
-	* Fixed PHP notice on widgets.php page due to the block
-	* Widget checkboxes are not saved in WordPress 5.8
-	* `post__in` argument will now remove any false/0 values
-	* Disabling/enabling author tracking didn't always work
-	* WP Multisite: Creating a new blog with automatically configure the plugin
-	* Widget incorrectly included all post types when no post types were selected instead of using the global settings
-	* Current post was incorrectly excluded when translation functions were run
-
-= 3.0.0 =
-
-Release post: [https://webberzone.com/blog/top-10-v3-0-0/](https://webberzone.com/blog/top-10-v3-0-0/)
-
-* Features:
-    * New Top_Ten_Query class for fetching popular posts. Adds the function `get_tptn_posts()` which replaces `get_tptn_pop_posts()` which will be deprecated in a future version
-	* New option to exclude the Front page and Posts page if these are set in Settings > Reading or via Customizer
-	* New option in the Widget to include specific post IDs in the top lists. You can also use them in the shortcode using `include_post_ids`
-	* New block for Gutenberg aka the block editor. The block is called **Popular Posts [Top 10]** and you can find it under the widgets category
-	* Top 10 now supports the WP REST API. The plugin adds a new tracker type called *REST API based* which you can find under Counter/Tracker settings. Additionally, you can now receive the popular posts via a REST Request to `top-10/v1/popular-posts`
-
-* Enhancements/Modifications:
-	* No popular posts feed will be added if the corresponding slug is set to blank
-	* Changed `sum_count` to `visits`
-
-* Bug fixes:
-	* PHP notices when displaying Network Wide Popular Posts in WordPress Multisite
-	* Query based tracker gave an ajax error
+	* Post count should only display once within the content within the main loop
+	* Fixed labels in the Dashboard
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
