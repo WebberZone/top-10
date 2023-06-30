@@ -130,7 +130,7 @@ class Tracker {
 				wp_enqueue_script(
 					'tptn_tracker',
 					plugins_url( 'includes/js/top-10-tracker.min.js', TOP_TEN_PLUGIN_FILE ),
-					array( 'jquery' ),
+					array(),
 					TOP_TEN_VERSION,
 					true
 				);
