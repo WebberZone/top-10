@@ -121,7 +121,7 @@ class Helpers {
 		$formatted = (float) $number;
 
 		if ( \tptn_get_option( 'number_format_count' ) ) {
-			$formatted = number_format_i18n( (float) $number );
+			$formatted = number_format_i18n( (float) $formatted );
 		}
 
 		/**

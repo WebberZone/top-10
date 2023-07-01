@@ -139,6 +139,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
 
 * Enhancements/Modifications:
+	* `get_post_count_only()` can also take a WP_Post object and returns an integer only without the count being number formatted
 	* Complete rewrite of Top 10 plugin to use Classes and autoloading
 	* `tptn_list` shortcode now accepts `WP_Query` parameters. You can also pass typical array only parameters as a comma-separated list
 	* Tracker script no longer require jQuery

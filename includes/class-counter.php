@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Util\Helpers;
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -55,8 +57,8 @@ class Counter {
 			return $content;
 		}
 
-		$exclude_on_post_ids = explode( ',', tptn_get_option( 'exclude_on_post_ids' ) );
-		$add_to              = tptn_get_option( 'add_to', false );
+		$exclude_on_post_ids = explode( ',', \tptn_get_option( 'exclude_on_post_ids' ) );
+		$add_to              = \tptn_get_option( 'add_to', false );
 
 		if ( isset( $post ) ) {
 			if ( in_array( $post->ID, $exclude_on_post_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
@@ -94,7 +96,7 @@ class Counter {
 
 		$id = intval( $post->ID );
 
-		$add_to = tptn_get_option( 'add_to', false );
+		$add_to = \tptn_get_option( 'add_to', false );
 
 		if ( ! empty( $add_to['feed'] ) ) {
 			return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . self::get_post_count( $id ) . '</div>';
@@ -130,7 +132,7 @@ class Counter {
 		$nonce_action = 'tptn-nonce-' . $id;
 		$nonce        = wp_create_nonce( $nonce_action );
 
-		if ( tptn_get_option( 'dynamic_post_count' ) ) {
+		if ( \tptn_get_option( 'dynamic_post_count' ) ) {
 			$output = sprintf(
 				'<div class="tptn_counter" id="tptn_counter_%1$d"><script type="text/javascript" data-cfasync="false" src="%2$s?top_ten_id=%1$d&view_counter=1&_wpnonce=%3$s"></script></div>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 				$id,
@@ -167,68 +169,74 @@ class Counter {
 	 * @return  int|string  Formatted post count
 	 */
 	public static function get_post_count( $id = 0, $blog_id = 0 ) {
-
-		$count_disp_form      = stripslashes( tptn_get_option( 'count_disp_form' ) );
-		$count_disp_form_zero = stripslashes( tptn_get_option( 'count_disp_form_zero' ) );
-		$totalcntaccess       = self::get_post_count_only( $id, 'total', $blog_id );
-
-		if ( $id > 0 ) {
-
-			// Total count per post.
-			if ( ( false !== strpos( $count_disp_form, '%totalcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%totalcount%' ) ) ) {
-				if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
-					$count_disp_form_zero = str_replace( '%totalcount%', (string) $totalcntaccess, $count_disp_form_zero );
-				} else {
-					$count_disp_form = str_replace( '%totalcount%', strval( 0 === (int) $totalcntaccess ? $totalcntaccess + 1 : $totalcntaccess ), $count_disp_form );
-				}
-			}
-
-			// Now process daily count.
-			if ( ( false !== strpos( $count_disp_form, '%dailycount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%dailycount%' ) ) ) {
-				$cntaccess = self::get_post_count_only( $id, 'daily' );
-				if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
-					$count_disp_form_zero = str_replace( '%dailycount%', (string) $cntaccess, $count_disp_form_zero );
-				} else {
-					$count_disp_form = str_replace( '%dailycount%', strval( 0 === (int) $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
-				}
-			}
-
-			// Now process overall count.
-			if ( ( false !== strpos( $count_disp_form, '%overallcount%' ) ) || ( false !== strpos( $count_disp_form_zero, '%overallcount%' ) ) ) {
-				$cntaccess = self::get_post_count_only( $id, 'overall' );
-				if ( ( 0 === (int) $cntaccess ) && ( ! is_singular() ) ) {
-					$count_disp_form_zero = str_replace( '%overallcount%', (string) $cntaccess, $count_disp_form_zero );
-				} else {
-					$count_disp_form = str_replace( '%overallcount%', strval( 0 === (int) $cntaccess ? $cntaccess + 1 : $cntaccess ), $count_disp_form );
-				}
-			}
-
-			if ( ( 0 === (int) $totalcntaccess ) && ( ! is_singular() ) ) {
-				return apply_filters( 'tptn_post_count', $count_disp_form_zero );
-			} else {
-				return apply_filters( 'tptn_post_count', $count_disp_form );
-			}
-		} else {
+		if ( $id <= 0 ) {
 			return 0;
 		}
-	}
 
+		$count_disp_form      = stripslashes( \tptn_get_option( 'count_disp_form' ) );
+		$count_disp_form_zero = stripslashes( \tptn_get_option( 'count_disp_form_zero' ) );
+		$total_count          = self::get_post_count_only( $id, 'total', $blog_id );
+		$is_singular          = is_singular();
+		$is_zero_total_count  = ( 0 === (int) $total_count );
+
+		if ( $is_zero_total_count && ! $is_singular ) {
+			$count_disp_form_zero = str_replace(
+				'%totalcount%',
+				(string) $total_count,
+				$count_disp_form_zero
+			);
+		} else {
+			$count_disp_form = str_replace(
+				'%totalcount%',
+				Helpers::number_format_i18n( $is_zero_total_count ? $total_count + 1 : $total_count ),
+				$count_disp_form
+			);
+		}
+
+		foreach ( array( 'daily', 'overall' ) as $type ) {
+			if ( false !== strpos( $count_disp_form, "%{$type}count%" ) || false !== strpos( $count_disp_form_zero, "%{$type}count%" ) ) {
+				$count = self::get_post_count_only( $id, $type );
+				if ( $is_zero_total_count && ! $is_singular ) {
+					$count_disp_form_zero = str_replace(
+						"%{$type}count%",
+						(string) $count,
+						$count_disp_form_zero
+					);
+				} else {
+					$is_zero_cntaccess = ( 0 === (int) $count );
+					$count_disp_form   = str_replace(
+						"%{$type}count%",
+						Helpers::number_format_i18n( $is_zero_cntaccess ? $count + 1 : $count ),
+						$count_disp_form
+					);
+				}
+			}
+		}
+
+		return apply_filters( 'tptn_post_count', ( $is_zero_total_count && ! $is_singular ) ? $count_disp_form_zero : $count_disp_form );
+	}
 
 	/**
 	 * Returns the post count.
 	 *
 	 * @since   1.9.8.5
 	 *
-	 * @param   int    $id     Post ID.
-	 * @param   string $counter Which count to return? total, daily or overall.
-	 * @param   int    $blog_id Blog ID.
+	 * @param   int|\WP_Post $post    Post ID or WP_Post object.
+	 * @param   string       $counter Which count to return? total, daily or overall.
+	 * @param   int          $blog_id Blog ID.
 	 * @return  int Post count
 	 */
-	public static function get_post_count_only( $id = 0, $counter = 'total', $blog_id = 0 ) {
+	public static function get_post_count_only( $post = 0, $counter = 'total', $blog_id = 0 ) {
 		global $wpdb;
 
-		$table_name       = Util\Helpers::get_tptn_table( false );
-		$table_name_daily = Util\Helpers::get_tptn_table( true );
+		if ( $post instanceof \WP_Post ) {
+			$id = $post->ID;
+		} else {
+			$id = absint( $post );
+		}
+
+		$table_name       = Helpers::get_tptn_table( false );
+		$table_name_daily = Helpers::get_tptn_table( true );
 
 		if ( empty( $blog_id ) ) {
 			$blog_id = get_current_blog_id();
@@ -241,7 +249,7 @@ class Counter {
 					$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess as visits FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					break;
 				case 'daily':
-					$from_date = Util\Helpers::get_from_date();
+					$from_date = Helpers::get_from_date();
 
 					$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as visits FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					break;
@@ -250,9 +258,7 @@ class Counter {
 					break;
 			}
 
-			$visits = $resultscount ? $resultscount->visits : 0;
-
-			$post_count = (int) \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits );
+			$post_count = $resultscount ? $resultscount->visits : 0;
 
 			/**
 			 * Returns the post count.
@@ -264,7 +270,7 @@ class Counter {
 			 * @param   string $counter    Which count to return? total, daily or overall.
 			 * @param   int    $blog_id    Blog ID.
 			 */
-			return apply_filters( 'tptn_post_count_only', $post_count, $id, $counter, $blog_id );
+			return apply_filters( 'tptn_post_count_only', (int) $post_count, $id, $counter, $blog_id );
 		} else {
 			return 0;
 		}
@@ -299,7 +305,7 @@ class Counter {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
-		$table_name = Util\Helpers::get_tptn_table( $args['daily'] );
+		$table_name = Helpers::get_tptn_table( $args['daily'] );
 
 		// Parse which post_ids data should be deleted.
 		$post_ids = wp_parse_id_list( $args['post_id'] );
@@ -315,7 +321,7 @@ class Counter {
 
 		// How old data should we delete?
 		if ( $args['daily'] && ! empty( $args['dp_date'] ) ) {
-			$from_date = Util\Helpers::get_from_date( $args['dp_date'], 0, 0 );
+			$from_date = Helpers::get_from_date( $args['dp_date'], 0, 0 );
 
 			$where .= $wpdb->prepare( " AND {$table_name}.dp_date <= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
@@ -411,7 +417,7 @@ class Counter {
 			return false;
 		}
 
-		$table_name = Util\Helpers::get_tptn_table( false );
+		$table_name = Helpers::get_tptn_table( false );
 
 		$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
