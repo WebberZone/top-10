@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Util\Helpers;
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -56,6 +58,7 @@ class Tracker {
 			$post_author         = ( (int) $current_user->ID === (int) $post->post_author ) ? true : false; // Is the current user the post author?
 			$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 			$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
+			$is_bot              = Helpers::is_bot();
 
 			$include_code = true;
 			if ( ( $post_author ) && ( empty( $track_users['authors'] ) ) ) {
@@ -68,6 +71,9 @@ class Tracker {
 				$include_code = false;
 			}
 			if ( ( $current_user->exists() ) && ( ! \tptn_get_option( 'logged_in' ) ) ) {
+				$include_code = false;
+			}
+			if ( $is_bot && \tptn_get_option( 'no_bots' ) ) {
 				$include_code = false;
 			}
 

@@ -406,6 +406,12 @@ class Settings {
 	 */
 	public static function settings_counter() {
 		$settings = array(
+			'counter_header'        => array(
+				'id'   => 'counter_header',
+				'name' => '<h3>' . esc_html__( 'Counter settings', 'top-10' ) . '</h3>',
+				'desc' => '',
+				'type' => 'header',
+			),
 			'add_to'                => array(
 				'id'      => 'add_to',
 				'name'    => esc_html__( 'Display number of views on', 'top-10' ) . ':',
@@ -456,6 +462,33 @@ class Settings {
 				'type'    => 'checkbox',
 				'options' => false,
 			),
+			'exclude_on_post_ids'   => array(
+				'id'      => 'exclude_on_post_ids',
+				'name'    => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
+				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
+				'type'    => 'numbercsv',
+				'options' => '',
+			),
+			'pv_in_admin'           => array(
+				'id'      => 'pv_in_admin',
+				'name'    => esc_html__( 'Page views in admin', 'top-10' ),
+				'desc'    => esc_html__( "Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.", 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => true,
+			),
+			'show_count_non_admins' => array(
+				'id'      => 'show_count_non_admins',
+				'name'    => esc_html__( 'Show views to non-admins', 'top-10' ),
+				'desc'    => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => true,
+			),
+			'tracker_header'        => array(
+				'id'   => 'tracker_header',
+				'name' => '<h3>' . esc_html__( 'Tracker settings', 'top-10' ) . '</h3>',
+				'desc' => '',
+				'type' => 'header',
+			),
 			'tracker_type'          => array(
 				'id'      => 'tracker_type',
 				'name'    => esc_html__( 'Tracker type', 'top-10' ),
@@ -493,26 +526,12 @@ class Settings {
 				'type'    => 'checkbox',
 				'options' => true,
 			),
-			'exclude_on_post_ids'   => array(
-				'id'      => 'exclude_on_post_ids',
-				'name'    => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
-				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
-				'type'    => 'numbercsv',
-				'options' => '',
-			),
-			'pv_in_admin'           => array(
-				'id'      => 'pv_in_admin',
-				'name'    => esc_html__( 'Page views in admin', 'top-10' ),
-				'desc'    => esc_html__( "Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.", 'top-10' ),
+			'no_bots'               => array(
+				'id'      => 'no_bots',
+				'name'    => esc_html__( 'Do not track bots', 'top-10' ),
+				'desc'    => esc_html__( 'Enable this if you want Top 10 to attempt to stop tracking bots. The plugin includes a comprehensive set of known bot user agents but in some cases this might not be enough to stop tracking bots.', 'top-10' ),
 				'type'    => 'checkbox',
-				'options' => true,
-			),
-			'show_count_non_admins' => array(
-				'id'      => 'show_count_non_admins',
-				'name'    => esc_html__( 'Show views to non-admins', 'top-10' ),
-				'desc'    => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
-				'type'    => 'checkbox',
-				'options' => true,
+				'options' => false,
 			),
 			'debug_mode'            => array(
 				'id'      => 'debug_mode',
