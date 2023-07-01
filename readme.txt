@@ -135,6 +135,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 3.3.0 =
 
+* Features:
+	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
+
 * Enhancements/Modifications:
 	* Complete rewrite of Top 10 plugin to use Classes and autoloading
 	* `tptn_list` shortcode now accepts `WP_Query` parameters. You can also pass typical array only parameters as a comma-separated list
