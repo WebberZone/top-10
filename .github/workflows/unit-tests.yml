@@ -122,6 +122,7 @@ jobs:
           composer update -W
 
       - name: Tool versions
+        continue-on-error: true
         run: |
           php --version
           composer --version
