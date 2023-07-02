@@ -38,7 +38,7 @@ jobs:
             wp: "5.6"
             experimental: true
           - php: "7.4"
-            wp: "5.4"
+            wp: "5.5"
             experimental: true
           - php: "7.4"
             wp: "latest"
@@ -116,10 +116,6 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-req=php
-
-      - name: "Run Composer Update"
-        run: |
-          composer update -W
 
       - name: Tool versions
         continue-on-error: true
