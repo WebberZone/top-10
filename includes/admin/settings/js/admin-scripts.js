@@ -66,4 +66,8 @@ jQuery(document).ready(function($) {
 	$( '.color-field' ).each( function ( i, element ) {
 		$( element ).wpColorPicker();
 	});
+	
+	$('.reset-default-thumb').click(function(){
+		document.getElementById("tptn_settings[thumb_default]").value = tptn_admin.thumb_default;
+	});
 });

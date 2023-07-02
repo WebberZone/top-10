@@ -123,5 +123,4 @@ jQuery(document).ready(function ($) {
 			},
 		});
 	});
-
 });
