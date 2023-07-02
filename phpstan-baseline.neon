@@ -41,11 +41,6 @@ parameters:
 			path: includes/frontend/blocks/class-blocks.php
 
 		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/frontend/class-display.php
-
-		-
 			message: "#^Variable \\$cache_name might not be defined\\.$#"
 			count: 1
 			path: includes/frontend/class-display.php
