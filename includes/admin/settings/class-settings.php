@@ -145,7 +145,10 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'initialise_settings' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 11, 2 );
 		add_filter( 'plugin_action_links_' . plugin_basename( TOP_TEN_PLUGIN_FILE ), array( $this, 'plugin_actions_links' ) );
+		add_filter( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 99 );
 		add_filter( 'tptn_settings_sanitize', array( $this, 'change_settings_on_save' ), 99 );
+		add_filter( 'tptn_after_setting_output', array( $this, 'display_admin_thumbnail' ), 10, 2 );
+		add_filter( 'tptn_setting_field_description', array( $this, 'reset_default_thumb_setting' ), 10, 2 );
 	}
 
 	/**
@@ -1297,9 +1300,25 @@ class Settings {
 	}
 
 	/**
+	 * Enqueue scripts and styles.
+	 *
+	 * @since 3.3.0
+	 */
+	public function admin_enqueue_scripts() {
+
+		wp_localize_script(
+			'wz-admin-js',
+			'tptn_admin',
+			array(
+				'thumb_default' => TOP_TEN_PLUGIN_URL . 'default.png',
+			)
+		);
+	}
+
+	/**
 	 * Modify settings when they are being saved.
 	 *
-	 * @since 2.0.0
+	 * @since 3.3.0
 	 *
 	 * @param  array $settings Settings array.
 	 * @return array Sanitized settings array.
@@ -1359,5 +1378,46 @@ class Settings {
 		\WebberZone\Top_Ten\Util\Cache::delete();
 
 		return $settings;
+	}
+
+	/**
+	 * Display the default thumbnail below the setting.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param  string $html Current HTML.
+	 * @param  array  $args Argument array of the setting.
+	 * @return string
+	 */
+	public function display_admin_thumbnail( $html, $args ) {
+
+		$thumb_default = \tptn_get_option( 'thumb_default' );
+
+		if ( 'thumb_default' === $args['id'] && '' !== $thumb_default ) {
+			$html .= '<br />';
+			$html .= sprintf( '<img src="%1$s" style="max-width:200px" title="%2$s" alt="%2$s" />', esc_attr( $thumb_default ), esc_html__( 'Default thumbnail', 'top-10' ) );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Display the default thumbnail below the setting.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param  string $html Current HTML.
+	 * @param  array  $args Argument array of the setting.
+	 * @return string
+	 */
+	public function reset_default_thumb_setting( $html, $args ) {
+
+		$thumb_default = \tptn_get_option( 'thumb_default' );
+
+		if ( 'thumb_default' === $args['id'] && TOP_TEN_PLUGIN_URL . 'default.png' !== $thumb_default ) {
+			$html = '<span class="dashicons dashicons-undo reset-default-thumb" style="cursor: pointer;" title="' . __( 'Reset' ) . '"></span> <br />' . $html;
+		}
+
+		return $html;
 	}
 }
