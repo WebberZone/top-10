@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 	// Function to add auto suggest.
-	$.fn.ataTagsSuggest = function( options ) {
+	$.fn.WZTagsSuggest = function( options ) {
 		var cache;
 		var last;
 		var $element = $( this );
@@ -103,10 +103,10 @@ jQuery(document).ready(function($) {
 	};
 
 	$( '.category_autocomplete' ).each( function ( i, element ) {
-		$( element ).ataTagsSuggest();
+		$( element ).WZTagsSuggest();
 	});
 
 	$('.widget-liquid-right, #customize-controls').on( 'click', '.category_autocomplete', function() {
-		$( '.category_autocomplete' ).ataTagsSuggest();
+		$( '.category_autocomplete' ).WZTagsSuggest();
 	});
 });
