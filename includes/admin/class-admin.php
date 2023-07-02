@@ -10,6 +10,8 @@
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Util\Cache;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -113,6 +115,15 @@ class Admin {
 	public $dashboard_widgets;
 
 	/**
+	 * Cache.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var object Cache.
+	 */
+	public $cache;
+
+	/**
 	 * Settings Page in Admin area.
 	 *
 	 * @since 3.3.0
@@ -167,6 +178,7 @@ class Admin {
 		$this->tools_page        = new Tools_Page();
 		$this->cron              = new Cron();
 		$this->dashboard_widgets = new Dashboard_Widgets();
+		$this->cache             = new Cache();
 	}
 
 	/**

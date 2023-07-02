@@ -34,15 +34,6 @@ final class Main {
 	public $admin;
 
 	/**
-	 * Cache.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Cache.
-	 */
-	public $cache;
-
-	/**
 	 * Shortcodes.
 	 *
 	 * @since 3.3.0
@@ -165,7 +156,6 @@ final class Main {
 	private function init() {
 		$this->counter    = new Counter();
 		$this->tracker    = new Tracker();
-		$this->cache      = new Util\Cache();
 		$this->shortcodes = new Frontend\Shortcodes();
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->filters    = new Frontend\Filters();
