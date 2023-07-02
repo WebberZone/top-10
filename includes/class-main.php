@@ -124,6 +124,15 @@ final class Main {
 	public $feed;
 
 	/**
+	 * Styles.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var object Styles.
+	 */
+	public $styles;
+
+	/**
 	 * Gets the instance of the class.
 	 *
 	 * @since 3.3.0
@@ -161,6 +170,7 @@ final class Main {
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->filters    = new Frontend\Filters();
 		$this->feed       = new Frontend\Feed();
+		$this->styles     = new Frontend\Styles_Handler();
 
 		$this->hooks();
 
