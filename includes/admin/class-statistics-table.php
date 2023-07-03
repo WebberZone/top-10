@@ -352,7 +352,11 @@ class Statistics_Table extends \WP_List_Table {
 
 		if ( $post ) {
 			$pt = get_post_type_object( $post->post_type );
-			return $pt->labels->singular_name;
+			if ( empty( $pt ) ) {
+				return $post->post_type;
+			}
+			$name = isset( $pt->labels->singular_name ) ? $pt->labels->singular_name : $pt->labels->name;
+			return $name;
 		}
 		return '';
 	}
