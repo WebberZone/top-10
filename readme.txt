@@ -147,6 +147,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* Post count should only display once within the content within the main loop
 	* Fixed labels in the Dashboard
+	* Custom Post Type labels could cause an issue in Network view of popular posts
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
