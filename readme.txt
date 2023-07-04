@@ -143,6 +143,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Complete rewrite of Top 10 plugin to use Classes and autoloading
 	* `tptn_list` shortcode now accepts `WP_Query` parameters. You can also pass typical array only parameters as a comma-separated list
 	* Tracker script no longer require jQuery
+	* Widget styles are handled properly with the block editor
 
 * Bug fixes:
 	* Post count should only display once within the content within the main loop

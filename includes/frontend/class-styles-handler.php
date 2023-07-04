@@ -25,7 +25,7 @@ class Styles_Handler {
 	 */
 	public function __construct() {
 		add_action( 'wp_head', array( __CLASS__, 'header' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'heading_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_styles' ) );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Styles_Handler {
 	/**
 	 * Enqueue styles.
 	 */
-	public static function heading_styles() {
+	public static function register_styles() {
 
 		$style_array = self::get_style();
 

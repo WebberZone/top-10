@@ -100,6 +100,7 @@ class Media_Handler {
 		} else {
 			$args['thumb_width']  = $args['size'][0];
 			$args['thumb_height'] = $args['size'][1];
+			$args['size']         = self::get_appropriate_image_size( $args['size'][0], $args['size'][1] );
 		}
 
 		$post_title = esc_attr( $result->post_title );
@@ -531,12 +532,16 @@ class Media_Handler {
 	 *
 	 * @since   2.0.0
 	 *
-	 * @param string $size Image size.
-	 * @return array|bool If a single size is specified, then the array with width, height and crop status
-	 *                    or false if size is not found;
-	 *                    If no size is specified then an Associative array of the registered image sub-sizes.
+	 * @param string|int[] $size Image size.
+	 * @return array|bool  If a single size is specified, then the array with width, height and crop status
+	 *                     or false if size is not found;
+	 *                     If no size is specified then an Associative array of the registered image sub-sizes.
 	 */
 	public static function get_all_image_sizes( $size = '' ) {
+
+		if ( is_array( $size ) ) {
+			$size = self::get_appropriate_image_size( $size[0], $size[1] );
+		}
 
 		$sizes = wp_get_registered_image_subsizes();
 
@@ -558,4 +563,35 @@ class Media_Handler {
 		 */
 		return apply_filters( 'tptn_get_all_image_sizes', $sizes );
 	}
+
+	/**
+	 * Get the most appropriate image size based on the given thumbnail width and height.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $thumb_width  Thumbnail width.
+	 * @param int $thumb_height Thumbnail height.
+	 *
+	 * @return string|bool Image size name if found, false otherwise.
+	 */
+	public static function get_appropriate_image_size( $thumb_width, $thumb_height ) {
+		$sizes = wp_get_registered_image_subsizes();
+
+		$closest_size     = false;
+		$closest_distance = PHP_INT_MAX;
+
+		foreach ( $sizes as $size_name => $size_info ) {
+			$size_width  = $size_info['width'];
+			$size_height = $size_info['height'];
+			$distance    = sqrt( pow( $thumb_width - $size_width, 2 ) + pow( $thumb_height - $size_height, 2 ) );
+
+			if ( $distance < $closest_distance ) {
+				$closest_distance = $distance;
+				$closest_size     = $size_name;
+			}
+		}
+
+		return $closest_size;
+	}
+
 }
