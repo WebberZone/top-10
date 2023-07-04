@@ -32,8 +32,6 @@ class Posts_Widget extends \WP_Widget {
 				'show_instance_in_rest'       => true,
 			)
 		);
-
-		add_action( 'wp_enqueue_scripts', array( $this, 'front_end_styles' ) );
 	}
 
 	/**
@@ -254,6 +252,7 @@ class Posts_Widget extends \WP_Widget {
 		if ( \WebberZone\Top_Ten\Util\Helpers::exclude_on( $post, $args ) ) {
 			return;
 		}
+		$this->front_end_styles( $args, $instance );
 
 		$default_title = wp_strip_all_tags( tptn_get_option( 'title' ) );
 		$title         = ! empty( $instance['title'] ) ? $instance['title'] : $default_title;
@@ -283,7 +282,7 @@ class Posts_Widget extends \WP_Widget {
 
 		$arguments = array(
 			'is_widget'        => 1,
-			'instance_id'      => $this->number,
+			'instance_id'      => $args['widget_id'],
 			'heading'          => 0,
 			'limit'            => $limit,
 			'offset'           => $offset,
@@ -296,6 +295,7 @@ class Posts_Widget extends \WP_Widget {
 			'post_thumb_op'    => $post_thumb_op,
 			'thumb_height'     => $thumb_height,
 			'thumb_width'      => $thumb_width,
+			'thumb_size'       => array( $thumb_width, $thumb_height ),
 			'disp_list_count'  => $disp_list_count,
 			'post_types'       => $post_types,
 			'include_cat_ids'  => $include_cat_ids,
@@ -323,39 +323,38 @@ class Posts_Widget extends \WP_Widget {
 	 * Add styles to the front end if the widget is active.
 	 *
 	 * @since   2.3.0
+	 *
+	 * @param array $args     Widget arguments.
+	 * @param array $instance Saved values from database.
 	 */
-	public function front_end_styles() {
+	public function front_end_styles( $args, $instance ) {
 
-		if ( ! ( 'left_thumbs' === tptn_get_option( 'tptn_styles' ) ) ) {
-			return;
-		}
+		$style_array = \WebberZone\Top_Ten\Frontend\Styles_Handler::get_style();
 
-		// We need to process all instances because this function gets to run only once.
-		$widget_settings = get_option( $this->option_name );
+		if ( ! empty( $style_array['name'] ) ) {
+			$style     = $style_array['name'];
+			$extra_css = $style_array['extra_css'];
 
-		foreach ( (array) $widget_settings as $instance => $options ) {
+			wp_register_style(
+				"tptn-style-{$style}-{$args['widget_id']}",
+				false,
+				array( "tptn-style-{$style}" ),
+				TOP_TEN_VERSION
+			);
 
-			// Identify instance.
-			$widget_id = "{$this->id_base}-{$instance}";
-
-			// Check if it's our instance.
-			if ( ! is_active_widget( false, $widget_id, $this->id_base, true ) ) {
-				continue;   // Not active.
-			}
-
-			$thumb_height = ( isset( $options['thumb_height'] ) && '' !== $options['thumb_height'] ) ? absint( $options['thumb_height'] ) : tptn_get_option( 'thumb_height' );
-			$thumb_width  = ( isset( $options['thumb_width'] ) && '' !== $options['thumb_width'] ) ? absint( $options['thumb_width'] ) : tptn_get_option( 'thumb_width' );
+			$thumb_height = ( ! empty( $instance['thumb_height'] ) ) ? absint( $instance['thumb_height'] ) : \tptn_get_option( 'thumb_height' );
+			$thumb_width  = ( ! empty( $instance['thumb_width'] ) ) ? absint( $instance['thumb_width'] ) : \tptn_get_option( 'thumb_width' );
 
 			// Enqueue the custom css for the thumb width and height for this specific widget.
-			$custom_css = "
-			.tptn_posts_widget{$instance} img.tptn_thumb {
+			$extra_css .= "
+			.tptn_posts_widget-{$args['widget_id']} img.tptn_thumb {
 				width: {$thumb_width}px !important;
 				height: {$thumb_height}px !important;
 			}
 			";
 
-			wp_add_inline_style( 'tptn-style-left-thumbs', $custom_css );
-
+			wp_enqueue_style( "tptn-style-{$style}-{$args['widget_id']}" );
+			wp_add_inline_style( "tptn-style-{$style}-{$args['widget_id']}", $extra_css );
 		}
 	}
 }
