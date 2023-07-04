@@ -143,5 +143,4 @@ class Dashboard_Widgets {
 	public static function popular_posts_widget_daily() {
 		echo self::pop_display( true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
-
 }

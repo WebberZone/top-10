@@ -83,5 +83,4 @@ class Cron {
 			wp_clear_scheduled_hook( 'tptn_cron_hook' );
 		}
 	}
-
 }

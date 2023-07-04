@@ -199,5 +199,4 @@ class Activator {
 			self::activation_hook( $network_wide );
 		}
 	}
-
 }

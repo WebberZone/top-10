@@ -175,5 +175,4 @@ class Settings_Sanitize {
 
 		return implode( ',', $taxonomies );
 	}
-
 }

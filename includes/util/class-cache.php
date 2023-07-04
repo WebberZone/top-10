@@ -141,5 +141,4 @@ class Cache {
 
 		return apply_filters( 'tptn_cache_get_widget_keys', $keys );
 	}
-
 }

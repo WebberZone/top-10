@@ -119,6 +119,4 @@ class Blocks {
 			wp_add_inline_style( 'popular-posts-block-editor', $extra_css );
 		}
 	}
-
-
 }

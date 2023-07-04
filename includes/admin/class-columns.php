@@ -173,5 +173,4 @@ class Columns {
 </style>
 		<?php
 	}
-
 }

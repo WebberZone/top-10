@@ -522,5 +522,4 @@ class Import_Export {
 		);
 		exit;
 	}
-
 }

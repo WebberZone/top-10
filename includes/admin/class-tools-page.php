@@ -468,5 +468,4 @@ class Tools_Page {
 
 		do_action( 'tptn_settings_tools_help', $screen );
 	}
-
 }

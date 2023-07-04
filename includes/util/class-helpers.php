@@ -628,5 +628,4 @@ class Helpers {
 
 		return false;
 	}
-
 }

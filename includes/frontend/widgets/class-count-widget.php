@@ -109,5 +109,4 @@ class Count_Widget extends \WP_Widget {
 
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} //ending function widget
-
 }
