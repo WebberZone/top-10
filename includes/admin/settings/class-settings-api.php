@@ -948,5 +948,4 @@ class Settings_API {
 			$screen->add_help_tab( $tab );
 		}
 	}
-
 }

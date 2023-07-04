@@ -40,4 +40,3 @@ if ( $tptn_settings['uninstall_clean_options'] ) {
 		"
 	);
 }
-

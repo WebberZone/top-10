@@ -929,5 +929,4 @@ class Display {
 		 */
 		return apply_filters( 'tptn_excerpt', $output, $id, $excerpt_length, $use_excerpt );
 	}
-
 }

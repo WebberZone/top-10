@@ -293,5 +293,4 @@ class Metabox {
 		 */
 		do_action( 'tptn_save_meta_box', $post_id );
 	}
-
 }

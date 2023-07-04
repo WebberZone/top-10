@@ -150,5 +150,4 @@ class Statistics {
 		add_screen_option( $option, $args );
 		$this->pop_posts_table = new Statistics_Table();
 	}
-
 }

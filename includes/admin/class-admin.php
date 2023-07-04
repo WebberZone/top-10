@@ -248,5 +248,4 @@ class Admin {
 	public static function display_admin_sidebar() {
 		require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/settings/sidebar.php';
 	}
-
 }

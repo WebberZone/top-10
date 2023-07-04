@@ -91,5 +91,4 @@ class Feed {
 
 		load_template( $template );
 	}
-
 }

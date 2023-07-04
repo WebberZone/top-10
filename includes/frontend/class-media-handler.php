@@ -593,5 +593,4 @@ class Media_Handler {
 
 		return $closest_size;
 	}
-
 }
