@@ -26,12 +26,12 @@ function echo_tptn_post_count( $echo_output = 1 ) {
  * Function to manually display count.
  *
  * @since   1.9.2
- * @param   int|string $id         Post ID.
- * @param   int|string $blog_id    Blog ID.
- * @return  int|string  Formatted post count
+ * @param   int|string|\WP_Post $post       Post ID or WP_Post object.
+ * @param   int|string          $blog_id    Blog ID.
+ * @return  string  Formatted post count
  */
-function get_tptn_post_count( $id = 0, $blog_id = 0 ) {
-	return \WebberZone\Top_Ten\Counter::get_post_count( $id, $blog_id );
+function get_tptn_post_count( $post = 0, $blog_id = 0 ) {
+	return \WebberZone\Top_Ten\Counter::get_post_count( $post, $blog_id );
 }
 
 /**
@@ -39,13 +39,13 @@ function get_tptn_post_count( $id = 0, $blog_id = 0 ) {
  *
  * @since   1.9.8.5
  *
- * @param   int    $id     Post ID.
- * @param   string $count  Which count to return? total, daily or overall.
- * @param   int    $blog_id Blog ID.
+ * @param   int|\WP_Post $post    Post ID or WP_Post object.
+ * @param   string       $count  Which count to return? total, daily or overall.
+ * @param   int          $blog_id Blog ID.
  * @return  int     Post count
  */
-function get_tptn_post_count_only( $id = 0, $count = 'total', $blog_id = 0 ) {
-	return \WebberZone\Top_Ten\Counter::get_post_count_only( $id, $count, $blog_id );
+function get_tptn_post_count_only( $post = 0, $count = 'total', $blog_id = 0 ) {
+	return \WebberZone\Top_Ten\Counter::get_post_count_only( $post, $count, $blog_id );
 }
 
 /**

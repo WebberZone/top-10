@@ -164,13 +164,19 @@ class Counter {
 	 * Return the formatted post count for the supplied ID.
 	 *
 	 * @since   3.3.0
-	 * @param   int|string $id         Post ID.
-	 * @param   int|string $blog_id    Blog ID.
-	 * @return  int|string  Formatted post count
+	 * @param   int|string|\WP_Post $post       Post ID or WP_Post object.
+	 * @param   int|string          $blog_id    Blog ID.
+	 * @return  string  Formatted post count
 	 */
-	public static function get_post_count( $id = 0, $blog_id = 0 ) {
+	public static function get_post_count( $post = 0, $blog_id = 0 ) {
+		if ( $post instanceof \WP_Post ) {
+			$id = $post->ID;
+		} else {
+			$id = absint( $post );
+		}
+
 		if ( $id <= 0 ) {
-			return 0;
+			return '';
 		}
 
 		$count_disp_form      = stripslashes( \tptn_get_option( 'count_disp_form' ) );
