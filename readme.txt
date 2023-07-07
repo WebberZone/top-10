@@ -2,9 +2,9 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.2.5
-Requires at least: 5.6
-Tested up to: 6.2
+Stable tag: 3.3.0
+Requires at least: 5.8
+Tested up to: 6.3
 Requires PHP: 7.2
 License: GPLv2 or later
 
@@ -139,15 +139,15 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
 
 * Enhancements/Modifications:
-	* `get_post_count_only()` can also take a WP_Post object and returns an integer only without the count being number formatted
 	* Complete rewrite of Top 10 plugin to use Classes and autoloading
+	* `get_tptn_post_count_only()` and `get_tptn_post_count` can also take a `WP_Post` object and returns an integer only without the count being number formatted
 	* `tptn_list` shortcode now accepts `WP_Query` parameters. You can also pass typical array only parameters as a comma-separated list
 	* Tracker script no longer require jQuery
 	* Widget styles are handled properly with the block editor
 
 * Bug fixes:
 	* Post count should only display once within the content within the main loop
-	* Fixed labels in the Dashboard
+	* Fixed data labels in the Dashboard graphs
 	* Custom Post Type labels could cause an issue in Network view of popular posts
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
@@ -155,6 +155,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.2.5 =
-Security fix
+= 3.3.0 =
+Plugin code has been rewritten; New features and several enhancements; Check out the release post.
 
