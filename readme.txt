@@ -135,6 +135,8 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 3.3.0 =
 
+Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
+
 * Features:
 	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
 
