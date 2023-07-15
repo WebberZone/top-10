@@ -61,33 +61,6 @@ final class Main {
 	public $filters;
 
 	/**
-	 * Snippets.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Snippets.
-	 */
-	public $snippets;
-
-	/**
-	 * Site verification.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Site verification.
-	 */
-	public $site_verification;
-
-	/**
-	 * Third party functions.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Third party functions.
-	 */
-	public $third_party;
-
-	/**
 	 * Counter.
 	 *
 	 * @since 3.3.0
