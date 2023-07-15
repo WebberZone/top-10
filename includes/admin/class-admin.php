@@ -1,6 +1,6 @@
 <?php
 /**
- * Register Settings.
+ * Admin class.
  *
  * @link  https://webberzone.com
  * @since 3.3.0
