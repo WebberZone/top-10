@@ -269,8 +269,8 @@ class Tracker {
 
 		global $wpdb;
 
-		$table_name       = Util\Helpers::get_tptn_table( false );
-		$table_name_daily = Util\Helpers::get_tptn_table( true );
+		$table_name       = Helpers::get_tptn_table( false );
+		$table_name_daily = Helpers::get_tptn_table( true );
 		$str              = '';
 
 		if ( $id > 0 ) {
