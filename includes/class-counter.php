@@ -42,17 +42,15 @@ class Counter {
 	public static function the_content( $content ) {
 		global $post, $wp_filters;
 
-		$in_the_loop           = in_the_loop();
-		$is_main_query         = is_main_query();
-		$get_queried_object_id = get_queried_object_id();
+		// Track the number of times this function  is called.
+		static $filter_calls = 0;
+		++$filter_calls;
 
 		if ( ! ( in_the_loop() && is_main_query() && (int) get_queried_object_id() === (int) $post->ID ) ) {
 			return $content;
 		}
 
 		// Check if this is the last call of the_content.
-		static $filter_calls = 0;
-		++$filter_calls;
 		if ( doing_filter( 'the_content' ) && (int) $wp_filters['the_content'] !== $filter_calls ) {
 			return $content;
 		}
