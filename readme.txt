@@ -133,6 +133,14 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.3.1 =
+
+* Enhancements/Modifications:
+	* Orderby clause modified to not use visits to ensure compatibility if any other plugin rewrites the WP_Query fields
+
+* Bug fixes:
+	* Function `wp_img_tag_add_loading_attr` is deprecated since version 6.3.0
+
 = 3.3.0 =
 
 Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
