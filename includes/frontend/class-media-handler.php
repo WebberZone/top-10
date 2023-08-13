@@ -111,6 +111,7 @@ class Media_Handler {
 
 		// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page.
 		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );
+		$postimage = filter_var( $postimage, FILTER_VALIDATE_URL );
 		$pick      = 'meta';
 		if ( $postimage ) {
 			$attachment_id = self::get_attachment_id_from_url( $postimage );
