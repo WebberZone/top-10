@@ -506,6 +506,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			}
 
 			$orderby = ' visits DESC ';
+			$orderby = $this->is_daily ? " SUM({$this->table_name}.cntaccess) DESC " : " {$this->table_name}.cntaccess DESC";
 
 			/**
 			 * Filters the ORDER BY clause of Top_Ten_Query.
