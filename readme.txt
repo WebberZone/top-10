@@ -137,9 +137,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 * Enhancements/Modifications:
 	* Orderby clause modified to not use visits to ensure compatibility if any other plugin rewrites the WP_Query fields
+	* Media Handler will check if the meta field contains a valid URL
 
 * Bug fixes:
 	* Function `wp_img_tag_add_loading_attr` is deprecated since version 6.3.0
+	* Bug in `the_content` filter detection which sometimes caused the counter not to display
 
 = 3.3.0 =
 
