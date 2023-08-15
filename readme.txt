@@ -143,6 +143,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 * Bug fixes:
 	* Function `wp_img_tag_add_loading_attr` is deprecated since version 6.3.0
 	* Bug in `the_content` filter detection which sometimes caused the counter not to display
+	* `tptn_thumbnail` settings size disappeared from Settings page if this was deselected
 
 = 3.3.0 =
 
