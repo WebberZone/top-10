@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 Requires at least: 5.8
 Tested up to: 6.3
 Requires PHP: 7.2
@@ -98,7 +98,7 @@ So, if you've got some cool feature that you'd like to implement into the plugin
 == Frequently Asked Questions ==
 
 Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/) and the [FAQ on the WebberZone knowledgebase](https://webberzone.com/support/section/top-10/).
-It is the fastest way to get support as I monitor the forums regularly. I also provide [*paid* premium support via email](https://webberzone.com/support/).
+It is the fastest way to get support as I monitor the forums regularly.
 
 
 = How can I customise the output? =
@@ -130,6 +130,16 @@ Replace `{$cpt}` by the slug of your custom post type. E.g. to make the columns 
 add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sortable' );
 `
 
+
+== Other Notes ==
+
+Top 10 is one of the many plugins developed by WebberZone. Check out our other plugins:
+
+* [Contextual Related Posts](https://wordpress.org/plugins/contextual-related-posts/) - Display related posts on your WordPress blog and feed
+* [WebberZone Snippetz](https://wordpress.org/plugins/add-to-all/) - The ultimate snippet manager for WordPress to create and manage custom HTML, CSS or JS code snippets
+* [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
+* [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
+* [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
 
 == Changelog ==
 
@@ -170,6 +180,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.3.0 =
-Plugin code has been rewritten; New features and several enhancements; Check out the release post.
+= 3.3.1 =
+Several enhancements and bug fixes; Check out the release post.
 
