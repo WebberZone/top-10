@@ -19,6 +19,15 @@ if ( ! defined( 'WPINC' ) ) {
 class Media_Handler {
 
 	/**
+	 * Prefix.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @var string $prefix Prefix.
+	 */
+	private static $prefix = 'tptn';
+
+	/**
 	 * Constructor class.
 	 *
 	 * @since 3.3.0
@@ -105,9 +114,10 @@ class Media_Handler {
 
 		$post_title = esc_attr( $result->post_title );
 
-		$output    = '';
-		$postimage = '';
-		$pick      = '';
+		$output        = '';
+		$postimage     = '';
+		$pick          = '';
+		$attachment_id = '';
 
 		// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page.
 		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );
@@ -221,6 +231,36 @@ class Media_Handler {
 
 			$class = "{$args['class']} tptn_{$pick} {$args['size']}";
 
+			if ( empty( $attachment_id ) && ! in_array( $pick, array( 'video_thumb', 'default_thumb', 'site_icon_max', 'site_icon_min' ), true ) ) {
+				$attachment_id = self::get_attachment_id_from_url( $postimage );
+			}
+
+			/**
+			 * Flag to use the image's alt text as the thumbnail alt text.
+			 *
+			 * @since 3.3.1
+			 *
+			 * @param bool $use_image_alt Flag to use the image's alt text as the thumbnail alt text.
+			 */
+			$use_image_alt = apply_filters( 'tptn_thumb_use_image_alt', true );
+
+			/**
+			 * Flag to use the post title as the thumbnail alt text if no alt text is found.
+			 *
+			 * @since 3.3.1
+			 *
+			 * @param bool $alt_fallback Flag to use the post title as the thumbnail alt text if no alt text is found.
+			 */
+			$alt_fallback = apply_filters( 'tptn_thumb_alt_fallback_post_title', true );
+
+			if ( ! empty( $attachment_id ) && $use_image_alt ) {
+				$alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+			}
+
+			if ( empty( $alt ) ) {
+				$alt = $alt_fallback ? $post_title : '';
+			}
+
 			/**
 			 * Filters the thumbnail classes and allows a filter function to add any more classes if needed.
 			 *
@@ -235,9 +275,9 @@ class Media_Handler {
 			 *
 			 * @since 2.6.0
 			 *
-			 * @param string $post_title Thumbnail alt attribute
+			 * @param string $alt Thumbnail alt attribute
 			 */
-			$attr['alt'] = apply_filters( 'tptn_thumb_alt', $post_title );
+			$attr['alt'] = apply_filters( 'tptn_thumb_alt', $alt );
 
 			/**
 			 * Filters the thumbnail title.
@@ -254,14 +294,8 @@ class Media_Handler {
 
 			$output .= self::get_image_html( $postimage, $attr );
 
-			if ( function_exists( 'wp_img_tag_add_srcset_and_sizes_attr' ) ) {
-				if ( empty( $attachment_id ) ) {
-					$attachment_id = self::get_attachment_id_from_url( $postimage );
-				}
-
-				if ( ! empty( $attachment_id ) ) {
-					$output = wp_img_tag_add_srcset_and_sizes_attr( $output, 'tptn_thumbnail', $attachment_id );
-				}
+			if ( function_exists( 'wp_img_tag_add_srcset_and_sizes_attr' ) && ! empty( $attachment_id ) ) {
+				$output = wp_img_tag_add_srcset_and_sizes_attr( $output, 'tptn_thumbnail', $attachment_id );
 			}
 
 			if ( function_exists( 'wp_img_tag_add_loading_optimization_attrs' ) ) {
@@ -348,6 +382,9 @@ class Media_Handler {
 
 		$html = '<img ' . $hwstring;
 		foreach ( $attr as $name => $value ) {
+			if ( '' === $value ) {
+				continue;
+			}
 			$html .= " $name=" . '"' . $value . '"';
 		}
 		$html .= ' />';
