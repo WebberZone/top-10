@@ -1325,6 +1325,7 @@ class Settings {
 	 */
 	public function change_settings_on_save( $settings ) {
 
+		// Sanitize exclude_cat_slugs to save a new entry of exclude_categories.
 		if ( isset( $settings['exclude_cat_slugs'] ) ) {
 
 			$exclude_cat_slugs = array_unique( str_getcsv( $settings['exclude_cat_slugs'] ) );
@@ -1372,6 +1373,11 @@ class Settings {
 			\WebberZone\Top_Ten\Admin\Cron::enable_run( $settings['cron_hour'], $settings['cron_min'], $settings['cron_recurrence'] );
 		} else {
 			\WebberZone\Top_Ten\Admin\Cron::disable_run();
+		}
+
+		// Force thumb_width and thumb_height if either are zero.
+		if ( empty( $settings['thumb_width'] ) || empty( $settings['thumb_height'] ) ) {
+			list( $settings['thumb_width'], $settings['thumb_height'] ) = \WebberZone\Top_Ten\Frontend\Media_Handler::get_thumb_size( $settings['thumb_size'] );
 		}
 
 		// Delete the cache.
