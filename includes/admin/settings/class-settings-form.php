@@ -424,6 +424,17 @@ class Settings_Form {
 	public function callback_thumbsizes( $args ) {
 		$html = '';
 
+		$thumb_size = $this->prefix . '_thumbnail';
+
+		if ( ! isset( $args['options'][ $thumb_size ] ) ) {
+			$args['options'][ $thumb_size ] = array(
+				'name'   => $thumb_size,
+				'width'  => call_user_func_array( $this->prefix . '_get_option', array( 'thumb_width', 150 ) ),
+				'height' => call_user_func_array( $this->prefix . '_get_option', array( 'thumb_height', 150 ) ),
+				'crop'   => call_user_func_array( $this->prefix . '_get_option', array( 'thumb_crop', true ) ),
+			);
+		}
+
 		$value = isset( $args['value'] ) ? $args['value'] : $this->get_option( $args['id'], $args['default'] );
 
 		foreach ( $args['options'] as $name => $option ) {
