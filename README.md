@@ -1,6 +1,6 @@
 # Top 10  - Popular posts plugin for WordPress
 
-![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)
+[![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)](https://wordpress.org/plugins/top-10/)
 
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](https://opensource.org/licenses/GPL-2.0)
