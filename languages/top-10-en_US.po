@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 19:03+0100\n"
+"POT-Creation-Date: 2023-08-15 15:35+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
@@ -668,11 +668,11 @@ msgstr ""
 msgid "The callback function used for the %1$s setting is missing."
 msgstr ""
 
-#: includes/admin/settings/class-settings-form.php:444
+#: includes/admin/settings/class-settings-form.php:455
 msgid "cropped"
 msgstr ""
 
-#: includes/admin/settings/class-settings-form.php:660
+#: includes/admin/settings/class-settings-form.php:671
 msgid "Choose File"
 msgstr ""
 
@@ -1339,7 +1339,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/settings/class-settings.php:890
-#: includes/admin/settings/class-settings.php:1398
+#: includes/admin/settings/class-settings.php:1404
 msgid "Default thumbnail"
 msgstr ""
 
@@ -1627,7 +1627,7 @@ msgid ""
 "%3$sWordPress.org%2$s"
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:1418
+#: includes/admin/settings/class-settings.php:1424
 msgid "Reset"
 msgstr ""
 
