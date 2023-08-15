@@ -41,22 +41,25 @@ class Media_Handler {
 	 * @since 2.0.0
 	 */
 	public static function add_image_sizes() {
-		if ( ! tptn_get_option( 'thumb_create_sizes' ) ) {
+		$get_option_callback = self::$prefix . '_get_option';
+
+		if ( ! call_user_func( $get_option_callback, 'thumb_create_sizes' ) ) {
 			return;
 		}
-		$thumb_size = tptn_get_option( 'thumb_size' );
+		$thumb_size      = call_user_func( $get_option_callback, 'thumb_size' );
+		$thumb_size_name = self::$prefix . '_thumbnail';
 
 		if ( ! in_array( $thumb_size, get_intermediate_image_sizes() ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-			$thumb_size = 'tptn_thumbnail';
+			$thumb_size = $thumb_size_name;
 		}
 
-		// Add image sizes if 'tptn_thumbnail' is selected or the selected thumbnail size is no longer valid.
-		if ( 'tptn_thumbnail' === $thumb_size ) {
-			$width  = tptn_get_option( 'thumb_width', 150 );
-			$height = tptn_get_option( 'thumb_height', 150 );
-			$crop   = tptn_get_option( 'thumb_crop', true );
+		// Add image sizes if $thumb_size_name is selected or the selected thumbnail size is no longer valid.
+		if ( $thumb_size_name === $thumb_size ) {
+			$width  = call_user_func_array( $get_option_callback, array( 'thumb_width', 150 ) );
+			$height = call_user_func_array( $get_option_callback, array( 'thumb_height', 150 ) );
+			$crop   = call_user_func_array( $get_option_callback, array( 'thumb_crop', true ) );
 
-			add_image_size( 'tptn_thumbnail', $width, $height, $crop );
+			add_image_size( $thumb_size_name, $width, $height, $crop );
 		}
 	}
 
@@ -92,7 +95,7 @@ class Media_Handler {
 			'thumb_default'      => '',
 			'thumb_default_show' => true,
 			'scan_images'        => false,
-			'class'              => 'tptn_thumb',
+			'class'              => self::$prefix . '_thumb',
 		);
 
 		// Parse incomming $args into an array and merge it with $defaults.
@@ -160,7 +163,7 @@ class Media_Handler {
 			 * @param string   $post_content Post content
 			 * @param \WP_Post $result       Post Object
 			 */
-			$post_content = apply_filters( 'tptn_thumb_post_content', $result->post_content, $result );
+			$post_content = apply_filters( self::$prefix . '_thumb_post_content', $result->post_content, $result );
 
 			preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post_content, $matches );
 			if ( isset( $matches[1][0] ) && $matches[1][0] ) {          // any image there?
@@ -223,13 +226,13 @@ class Media_Handler {
 			 * @param array    $args      Arguments array.
 			 * @param \WP_Post $result    Post Object
 			 */
-			$postimage = apply_filters( 'tptn_thumb_url', $postimage, $args, $result );
+			$postimage = apply_filters( self::$prefix . '_thumb_url', $postimage, $args, $result );
 
 			if ( is_ssl() ) {
 				$postimage = preg_replace( '~http://~', 'https://', $postimage );
 			}
 
-			$class = "{$args['class']} tptn_{$pick} {$args['size']}";
+			$class = self::$prefix . "_{$pick} {$args['class']} {$args['size']}";
 
 			if ( empty( $attachment_id ) && ! in_array( $pick, array( 'video_thumb', 'default_thumb', 'site_icon_max', 'site_icon_min' ), true ) ) {
 				$attachment_id = self::get_attachment_id_from_url( $postimage );
@@ -242,7 +245,7 @@ class Media_Handler {
 			 *
 			 * @param bool $use_image_alt Flag to use the image's alt text as the thumbnail alt text.
 			 */
-			$use_image_alt = apply_filters( 'tptn_thumb_use_image_alt', true );
+			$use_image_alt = apply_filters( self::$prefix . '_thumb_use_image_alt', true );
 
 			/**
 			 * Flag to use the post title as the thumbnail alt text if no alt text is found.
@@ -251,7 +254,7 @@ class Media_Handler {
 			 *
 			 * @param bool $alt_fallback Flag to use the post title as the thumbnail alt text if no alt text is found.
 			 */
-			$alt_fallback = apply_filters( 'tptn_thumb_alt_fallback_post_title', true );
+			$alt_fallback = apply_filters( self::$prefix . '_thumb_alt_fallback_post_title', true );
 
 			if ( ! empty( $attachment_id ) && $use_image_alt ) {
 				$alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
@@ -268,7 +271,7 @@ class Media_Handler {
 			 *
 			 * @param string $class Thumbnail Class
 			 */
-			$attr['class'] = apply_filters( 'tptn_thumb_class', $class );
+			$attr['class'] = apply_filters( self::$prefix . '_thumb_class', $class );
 
 			/**
 			 * Filters the thumbnail alt.
@@ -277,7 +280,7 @@ class Media_Handler {
 			 *
 			 * @param string $alt Thumbnail alt attribute
 			 */
-			$attr['alt'] = apply_filters( 'tptn_thumb_alt', $alt );
+			$attr['alt'] = apply_filters( self::$prefix . '_thumb_alt', $alt );
 
 			/**
 			 * Filters the thumbnail title.
@@ -286,7 +289,7 @@ class Media_Handler {
 			 *
 			 * @param string $post_title Thumbnail title attribute
 			 */
-			$attr['title'] = apply_filters( 'tptn_thumb_title', $post_title );
+			$attr['title'] = apply_filters( self::$prefix . '_thumb_title', $post_title );
 
 			$attr['thumb_html']   = $args['thumb_html'];
 			$attr['thumb_width']  = $args['thumb_width'];
@@ -295,11 +298,11 @@ class Media_Handler {
 			$output .= self::get_image_html( $postimage, $attr );
 
 			if ( function_exists( 'wp_img_tag_add_srcset_and_sizes_attr' ) && ! empty( $attachment_id ) ) {
-				$output = wp_img_tag_add_srcset_and_sizes_attr( $output, 'tptn_thumbnail', $attachment_id );
+				$output = wp_img_tag_add_srcset_and_sizes_attr( $output, self::$prefix . '_thumbnail', $attachment_id );
 			}
 
 			if ( function_exists( 'wp_img_tag_add_loading_optimization_attrs' ) ) {
-				$output = wp_img_tag_add_loading_optimization_attrs( $output, 'crp_thumbnail' );
+				$output = wp_img_tag_add_loading_optimization_attrs( $output, self::$prefix . '_thumbnail' );
 			} elseif ( function_exists( 'wp_img_tag_add_loading_attr' ) ) {
 				$output = wp_img_tag_add_loading_attr( $output, 'crp_thumbnail' );
 			}
@@ -314,7 +317,7 @@ class Media_Handler {
 		 * @param   array   $args   Argument list
 		 * @param   string  $postimage Thumbnail URL
 		 */
-		return apply_filters( 'tptn_get_the_post_thumbnail', $output, $args, $postimage );
+		return apply_filters( self::$prefix . '_get_the_post_thumbnail', $output, $args, $postimage );
 	}
 
 	/**
@@ -327,6 +330,7 @@ class Media_Handler {
 	 * @return string HTML img element or empty string on failure.
 	 */
 	public static function get_image_html( $attachment_url, $attr = array() ) {
+		$get_option_callback = self::$prefix . '_get_option';
 
 		// If there is no url, return.
 		if ( ! $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
@@ -335,9 +339,9 @@ class Media_Handler {
 
 		$default_attr = array(
 			'src'          => $attachment_url,
-			'thumb_html'   => tptn_get_option( 'thumb_html', 'html' ),
-			'thumb_width'  => tptn_get_option( 'thumb_width', 150 ),
-			'thumb_height' => tptn_get_option( 'thumb_height', 150 ),
+			'thumb_html'   => call_user_func( $get_option_callback, 'thumb_html', 'html' ),
+			'thumb_width'  => call_user_func( $get_option_callback, 'thumb_width', 150 ),
+			'thumb_height' => call_user_func( $get_option_callback, 'thumb_height', 150 ),
 		);
 
 		$attr = wp_parse_args( $attr, $default_attr );
@@ -377,7 +381,7 @@ class Media_Handler {
 		 * @param array  $attr Attributes for the image markup.
 		 * @param string $attachment_url Image URL.
 		 */
-		$attr = apply_filters( 'tptn_get_image_attributes', $attr, $attachment_url );
+		$attr = apply_filters( self::$prefix . '_get_image_attributes', $attr, $attachment_url );
 		$attr = array_map( 'esc_attr', $attr );
 
 		$html = '<img ' . $hwstring;
@@ -398,7 +402,7 @@ class Media_Handler {
 		 * @param string $attachment_url Image URL.
 		 * @param array  $attr           Attributes for the image markup.
 		 */
-		return apply_filters( 'tptn_get_image_html', $html, $attachment_url, $attr );
+		return apply_filters( self::$prefix . '_get_image_html', $html, $attachment_url, $attr );
 	}
 
 
@@ -412,11 +416,12 @@ class Media_Handler {
 	 * @return string Height-width string.
 	 */
 	public static function get_image_hwstring( $args = array() ) {
+		$get_option_callback = self::$prefix . '_get_option';
 
 		$default_args = array(
-			'thumb_html'   => tptn_get_option( 'thumb_html', 'html' ),
-			'thumb_width'  => tptn_get_option( 'thumb_width', 150 ),
-			'thumb_height' => tptn_get_option( 'thumb_height', 150 ),
+			'thumb_html'   => call_user_func( $get_option_callback, 'thumb_html', 'html' ),
+			'thumb_width'  => call_user_func( $get_option_callback, 'thumb_width', 150 ),
+			'thumb_height' => call_user_func( $get_option_callback, 'thumb_height', 150 ),
 		);
 
 		$args = wp_parse_args( $args, $default_args );
@@ -437,7 +442,7 @@ class Media_Handler {
 		 * @param string $thumb_html Thumbnail HTML.
 		 * @param array  $args       Argument array.
 		 */
-		return apply_filters( 'tptn_thumb_html', $thumb_html, $args );
+		return apply_filters( self::$prefix . '_thumb_html', $thumb_html, $args );
 	}
 
 
@@ -476,7 +481,7 @@ class Media_Handler {
 				 * @param int    $thumb_width         Thumb width
 				 * @param int    $thumb_height        Thumb height
 				 */
-				return apply_filters( 'tptn_get_first_image', $image_attributes[0], $postid, $thumb_width, $thumb_height );
+				return apply_filters( self::$prefix . '_get_first_image', $image_attributes[0], $postid, $thumb_width, $thumb_height );
 			}
 		} else {
 			return '';
@@ -527,7 +532,7 @@ class Media_Handler {
 		 * @param   int     $attachment_id  Attachment ID
 		 * @param   string  $attachment_url Attachment URL
 		 */
-		return apply_filters( 'tptn_get_attachment_id_from_url', $attachment_id, $attachment_url );
+		return apply_filters( self::$prefix . '_get_attachment_id_from_url', $attachment_id, $attachment_url );
 	}
 
 
@@ -563,7 +568,7 @@ class Media_Handler {
 		 *
 		 * @param   array   $thumb_size Array with width and height of thumbnail
 		 */
-		return apply_filters( 'tptn_get_thumb_size', $thumb_size );
+		return apply_filters( self::$prefix . '_get_thumb_size', $thumb_size );
 	}
 
 
@@ -601,7 +606,7 @@ class Media_Handler {
 		 *
 		 * @param array   $sizes  Image sizes
 		 */
-		return apply_filters( 'tptn_get_all_image_sizes', $sizes );
+		return apply_filters( self::$prefix . '_get_all_image_sizes', $sizes );
 	}
 
 	/**
