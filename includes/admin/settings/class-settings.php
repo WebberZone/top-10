@@ -513,6 +513,7 @@ class Settings {
 				'desc'    => esc_html__( 'Uncheck above to disable tracking if the current user falls into any one of these groups.', 'top-10' ),
 				'type'    => 'multicheck',
 				'default' => array(
+					'authors' => 'authors',
 					'editors' => 'editors',
 					'admins'  => 'admins',
 				),

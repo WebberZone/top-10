@@ -24,8 +24,6 @@ class Activator {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		register_activation_hook( TOP_TEN_PLUGIN_FILE, array( __CLASS__, 'activation_hook' ) );
-
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'on_delete_blog' ) );
 		add_action( 'plugins_loaded', array( __CLASS__, 'update_db_check' ) );
 
