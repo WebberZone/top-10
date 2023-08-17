@@ -1,4 +1,4 @@
-=== Top 10  - Popular posts plugin for WordPress ===
+=== Top 10  - WordPress Popular posts by WebberZone ===
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
@@ -142,6 +142,10 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
 * [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
 
 == Changelog ==
+
+= 3.3.2 =
+
+* Fix: Plugin activator function didn't run on activation - Top 10's database tables were not created
 
 = 3.3.1 =
 

@@ -5,7 +5,7 @@
  * Count daily and total visits per post and display the most popular posts based on the number of views.
  *
  * @package   Top_Ten
- * @author    Ajay D'Souza <me@ajaydsouza.com>
+ * @author    Ajay D'Souza
  * @license   GPL-2.0+
  * @link      https://webberzone.com
  * @copyright 2008-2023 Ajay D'Souza
@@ -14,8 +14,8 @@
  * Plugin Name: Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     3.3.1
- * Author:      Ajay D'Souza
+ * Version:     3.3.2-beta1
+ * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -89,8 +89,23 @@ $tptn_db_version = '6.0';
 // Load the autoloader.
 require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';
 
+
+/**
+ * The code that runs during plugin activation.
+ *
+ * @since 3.3.2
+ *
+ * @param bool $network_wide Whether the plugin is being activated network-wide.
+ */
+function activate_tptn( $network_wide ) {
+	\WebberZone\Top_Ten\Admin\Activator::activation_hook( $network_wide );
+}
+register_activation_hook( __FILE__, __NAMESPACE__ . '\activate_tptn' );
+
 /**
  * The main function responsible for returning the one true WebberZone Snippetz instance to functions everywhere.
+ *
+ * @since 3.3.0
  */
 function load_tptn() {
 	\WebberZone\Top_Ten\Main::get_instance();
