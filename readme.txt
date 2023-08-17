@@ -155,6 +155,7 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
 	* Function `wp_img_tag_add_loading_attr` is deprecated since version 6.3.0
 	* Bug in `the_content` filter detection which sometimes caused the counter not to display
 	* `tptn_thumbnail` settings size disappeared from Settings page if this was deselected
+    * `meta_query` argument was ignored
 
 = 3.3.0 =
 
