@@ -65,15 +65,17 @@ class Shortcodes {
 	/**
 	 * Creates a shortcode [tptn_views daily="0"].
 	 *
-	 * @param   array  $atts       Shortcode attributes.
-	 * @param   string $content    Content.
+	 * @param   array  $atts           Shortcode attributes.
+	 * @param   string $content        Content.
 	 * @return  int  Views of the post
 	 */
 	public static function tptn_views( $atts, $content = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$a = shortcode_atts(
 			array(
-				'daily' => '0',
-				'count' => 'total',
+				'daily'         => '0',
+				'count'         => 'total',
+				'format_number' => true,
+				'post_id'       => get_the_ID(),
 			),
 			$atts
 		);
@@ -81,6 +83,6 @@ class Shortcodes {
 		// If daily is explicitly set to 1, then pass daily, else pass count.
 		$count = $a['daily'] ? 'daily' : $a['count'];
 
-		return \WebberZone\Top_Ten\Counter::get_post_count_only( get_the_ID(), $count );
+		return \WebberZone\Top_Ten\Counter::get_post_count_only( $a['post_id'], $count, 0, array( 'format_number' => $a['format_number'] ) );
 	}
 }

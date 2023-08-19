@@ -228,9 +228,10 @@ class Counter {
 	 * @param   int|\WP_Post $post    Post ID or WP_Post object.
 	 * @param   string       $counter Which count to return? total, daily or overall.
 	 * @param   int          $blog_id Blog ID.
-	 * @return  int Post count
+	 * @param   array        $args    Additional arguments.
+	 * @return  int|string Post count
 	 */
-	public static function get_post_count_only( $post = 0, $counter = 'total', $blog_id = 0 ) {
+	public static function get_post_count_only( $post = 0, $counter = 'total', $blog_id = 0, $args = array() ) {
 		global $wpdb;
 
 		if ( $post instanceof \WP_Post ) {
@@ -238,6 +239,11 @@ class Counter {
 		} else {
 			$id = absint( $post );
 		}
+
+		$defaults = array(
+			'format_number' => false,
+		);
+		$args     = wp_parse_args( $args, $defaults );
 
 		$table_name       = Helpers::get_tptn_table( false );
 		$table_name_daily = Helpers::get_tptn_table( true );
@@ -263,18 +269,21 @@ class Counter {
 			}
 
 			$post_count = $resultscount ? $resultscount->visits : 0;
+			if ( $args['format_number'] ) {
+				$post_count = number_format_i18n( $post_count );
+			}
 
 			/**
 			 * Returns the post count.
 			 *
 			 * @since   2.6.0
 			 *
-			 * @param   int    $post_count Formatted post count.
-			 * @param   mixed  $id         Post ID.
-			 * @param   string $counter    Which count to return? total, daily or overall.
-			 * @param   int    $blog_id    Blog ID.
+			 * @param   int|string  $post_count Post count.
+			 * @param   mixed       $id         Post ID.
+			 * @param   string      $counter    Which count to return? total, daily or overall.
+			 * @param   int         $blog_id    Blog ID.
 			 */
-			return apply_filters( 'tptn_post_count_only', (int) $post_count, $id, $counter, $blog_id );
+			return apply_filters( 'tptn_post_count_only', $post_count, $id, $counter, $blog_id );
 		} else {
 			return 0;
 		}
