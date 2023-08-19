@@ -145,7 +145,13 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
 
 = 3.3.2 =
 
-* Fix: Plugin activator function didn't run on activation - Top 10's database tables were not created
+Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
+
+* Enhancements:
+	* Shortcode `tptn_views` takes two new parameters: `format_number` to apply `number_format_i18n` and `post_id` which takes a post ID. Default is the post being viewed
+
+* Bug fixes:
+	* Plugin activator function didn't run on activation - Top 10's database tables were not created
 
 = 3.3.1 =
 
@@ -162,8 +168,6 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
     * `meta_query` argument was ignored
 
 = 3.3.0 =
-
-Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
 
 * Features:
 	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
