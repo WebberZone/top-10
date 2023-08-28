@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 Requires at least: 5.8
 Tested up to: 6.3
 Requires PHP: 7.2
@@ -189,6 +189,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.3.1 =
+= 3.3.2 =
 Several enhancements and bug fixes; Check out the release post.
 
