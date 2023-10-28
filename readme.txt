@@ -2,15 +2,17 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, Ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.3.2
-Requires at least: 5.8
-Tested up to: 6.3
-Requires PHP: 7.2
+Stable tag: 3.3.3
+Requires at least: 5.9
+Tested up to: 6.4
+Requires PHP: 7.3
 License: GPLv2 or later
 
 Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.
 
 == Description ==
+
+**This plugin can be downloaded for free without any paid subscription from [the official WordPress repository](https://wordpress.org/plugins/top-10/).**
 
 WordPress doesn't have an in-built system to track page views or displaying popular posts. [Top 10](https://webberzone.com/plugins/top-10/) is an easy to use, yet, powerful WordPress plugin that will count the number of page views of your posts, pages and any custom post types. You can then display the page view counts as well as display your most popular posts.
 
@@ -55,6 +57,16 @@ Top 10 is available for [translation directly on WordPress.org](https://translat
 
 Top 10 is also available on [Github](https://github.com/ajaydsouza/top-10)
 So, if you've got some cool feature that you'd like to implement into the plugin or a bug you've been able to fix, consider forking the project and sending me a pull request. Please don't use that for support requests.
+
+== Other plugins from WebberZone ==
+
+Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check out our other plugins:
+
+* [Contextual Related Posts](https://wordpress.org/plugins/contextual-related-posts/) - Display related posts on your WordPress blog and feed
+* [WebberZone Snippetz](https://wordpress.org/plugins/add-to-all/) - The ultimate snippet manager for WordPress to create and manage custom HTML, CSS or JS code snippets
+* [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
+* [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
+* [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
 
 
 == Screenshots ==
@@ -143,9 +155,11 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
 
 == Changelog ==
 
-= 3.3.2 =
+= 3.3.3 =
 
 Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
+
+= 3.3.2 =
 
 * Enhancements:
 	* Shortcode `tptn_views` takes two new parameters: `format_number` to apply `number_format_i18n` and `post_id` which takes a post ID. Default is the post being viewed
@@ -190,5 +204,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 == Upgrade Notice ==
 
 = 3.3.2 =
-Several enhancements and bug fixes; Check out the release post.
+Bug fix release; Check out the release post.
 
