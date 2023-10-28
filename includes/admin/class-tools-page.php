@@ -148,7 +148,7 @@ class Tools_Page {
 			if ( $deleted ) {
 				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'error' );
 			} else {
-				add_settings_error( 'crp-notices', '', esc_html__( 'Old settings key does not exist', 'autoclose' ), 'error' );
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key does not exist', 'autoclose' ), 'error' );
 			}
 		}
 
