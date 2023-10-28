@@ -185,13 +185,13 @@ class Settings {
 	 */
 	public function get_translation_strings() {
 		$strings = array(
-			'page_header'          => esc_html__( 'Top 10 Settings', 'add-to-all' ),
-			'reset_message'        => esc_html__( 'Settings have been reset to their default values. Reload this page to view the updated settings.', 'add-to-all' ),
-			'success_message'      => esc_html__( 'Settings updated.', 'add-to-all' ),
-			'save_changes'         => esc_html__( 'Save Changes', 'add-to-all' ),
-			'reset_settings'       => esc_html__( 'Reset all settings', 'add-to-all' ),
-			'reset_button_confirm' => esc_html__( 'Do you really want to reset all these settings to their default values?', 'add-to-all' ),
-			'checkbox_modified'    => esc_html__( 'Modified from default setting', 'add-to-all' ),
+			'page_header'          => esc_html__( 'Top 10 Settings', 'top-10' ),
+			'reset_message'        => esc_html__( 'Settings have been reset to their default values. Reload this page to view the updated settings.', 'top-10' ),
+			'success_message'      => esc_html__( 'Settings updated.', 'top-10' ),
+			'save_changes'         => esc_html__( 'Save Changes', 'top-10' ),
+			'reset_settings'       => esc_html__( 'Reset all settings', 'top-10' ),
+			'reset_button_confirm' => esc_html__( 'Do you really want to reset all these settings to their default values?', 'top-10' ),
+			'checkbox_modified'    => esc_html__( 'Modified from default setting', 'top-10' ),
 		);
 
 		/**
@@ -217,8 +217,8 @@ class Settings {
 			'settings_page' => true,
 			'type'          => 'submenu',
 			'parent_slug'   => 'tptn_dashboard',
-			'page_title'    => esc_html__( 'Top 10 Settings', 'add-to-all' ),
-			'menu_title'    => esc_html__( 'Settings', 'add-to-all' ),
+			'page_title'    => esc_html__( 'Top 10 Settings', 'top-10' ),
+			'menu_title'    => esc_html__( 'Settings', 'top-10' ),
 			'menu_slug'     => $this->menu_slug,
 		);
 
@@ -1118,7 +1118,7 @@ class Settings {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'admin.php?page=' . $this->menu_slug ) . '">' . esc_html__( 'Settings', 'add-to-all' ) . '</a>',
+				'settings' => '<a href="' . admin_url( 'admin.php?page=' . $this->menu_slug ) . '">' . esc_html__( 'Settings', 'top-10' ) . '</a>',
 			),
 			$links
 		);
@@ -1135,11 +1135,11 @@ class Settings {
 	 */
 	public function plugin_row_meta( $links, $file ) {
 
-		if ( false !== strpos( $file, 'add-to-all.php' ) ) {
+		if ( false !== strpos( $file, 'top-10.php' ) ) {
 			$new_links = array(
-				'support'    => '<a href = "https://wordpress.org/support/plugin/add-to-all">' . esc_html__( 'Support', 'add-to-all' ) . '</a>',
-				'donate'     => '<a href = "https://ajaydsouza.com/donate/">' . esc_html__( 'Donate', 'add-to-all' ) . '</a>',
-				'contribute' => '<a href = "https://github.com/WebberZone/add-to-all">' . esc_html__( 'Contribute', 'add-to-all' ) . '</a>',
+				'support'    => '<a href = "https://wordpress.org/support/plugin/top-10">' . esc_html__( 'Support', 'top-10' ) . '</a>',
+				'donate'     => '<a href = "https://ajaydsouza.com/donate/">' . esc_html__( 'Donate', 'top-10' ) . '</a>',
+				'contribute' => '<a href = "https://github.com/WebberZone/top-10">' . esc_html__( 'Contribute', 'top-10' ) . '</a>',
 			);
 
 			$links = array_merge( $links, $new_links );
@@ -1155,14 +1155,14 @@ class Settings {
 	public function get_help_sidebar() {
 		$help_sidebar =
 			/* translators: 1: Plugin support site link. */
-			'<p>' . sprintf( __( 'For more information or how to get support visit the <a href="%s">support site</a>.', 'add-to-all' ), esc_url( 'https://webberzone.com/support/' ) ) . '</p>' .
+			'<p>' . sprintf( __( 'For more information or how to get support visit the <a href="%s">support site</a>.', 'top-10' ), esc_url( 'https://webberzone.com/support/' ) ) . '</p>' .
 			/* translators: 1: WordPress.org support forums link. */
-			'<p>' . sprintf( __( 'Support queries should be posted in the <a href="%s">WordPress.org support forums</a>.', 'add-to-all' ), esc_url( 'https://wordpress.org/support/plugin/add-to-all' ) ) . '</p>' .
+			'<p>' . sprintf( __( 'Support queries should be posted in the <a href="%s">WordPress.org support forums</a>.', 'top-10' ), esc_url( 'https://wordpress.org/support/plugin/top-10' ) ) . '</p>' .
 			'<p>' . sprintf(
 				/* translators: 1: Github issues link, 2: Github plugin page link. */
-				__( '<a href="%1$s">Post an issue</a> on <a href="%2$s">GitHub</a> (bug reports only).', 'add-to-all' ),
-				esc_url( 'https://github.com/ajaydsouza/add-to-all/issues' ),
-				esc_url( 'https://github.com/ajaydsouza/add-to-all' )
+				__( '<a href="%1$s">Post an issue</a> on <a href="%2$s">GitHub</a> (bug reports only).', 'top-10' ),
+				esc_url( 'https://github.com/ajaydsouza/top-10/issues' ),
+				esc_url( 'https://github.com/ajaydsouza/top-10' )
 			) . '</p>';
 
 		/**
@@ -1184,55 +1184,55 @@ class Settings {
 		$help_tabs = array(
 			array(
 				'id'      => 'tptn-settings-general-help',
-				'title'   => esc_html__( 'General', 'add-to-all' ),
+				'title'   => esc_html__( 'General', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen provides general settings. Enable/disable the Snippets Manager and set the global priority of snippets.', 'add-to-all' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+				'<p><strong>' . esc_html__( 'This screen provides general settings. Enable/disable the Snippets Manager and set the global priority of snippets.', 'top-10' ) . '</strong></p>' .
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-third-party-help',
-				'title'   => esc_html__( 'Third Party', 'add-to-all' ),
+				'title'   => esc_html__( 'Third Party', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen provides the settings for configuring the integration with third party scripts.', 'add-to-all' ) . '</strong></p>' .
+				'<p><strong>' . esc_html__( 'This screen provides the settings for configuring the integration with third party scripts.', 'top-10' ) . '</strong></p>' .
 					'<p>' . sprintf(
 						/* translators: 1: Google Analystics help article. */
-						esc_html__( 'Google Analytics tracking can be found by visiting this %s', 'add-to-all' ),
-						'<a href="https://support.google.com/analytics/topic/9303319" target="_blank">' . esc_html__( 'article', 'add-to-all' ) . '</a>.'
+						esc_html__( 'Google Analytics tracking can be found by visiting this %s', 'top-10' ),
+						'<a href="https://support.google.com/analytics/topic/9303319" target="_blank">' . esc_html__( 'article', 'top-10' ) . '</a>.'
 					) .
 					'</p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-header-help',
-				'title'   => esc_html__( 'Header', 'add-to-all' ),
+				'title'   => esc_html__( 'Header', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the header of your site.', 'add-to-all' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'You can add custom CSS or HTML code. Useful for adding meta tags for site verification, etc.', 'add-to-all' ) . '</p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the header of your site.', 'top-10' ) . '</strong></p>' .
+					'<p>' . esc_html__( 'You can add custom CSS or HTML code. Useful for adding meta tags for site verification, etc.', 'top-10' ) . '</p>' .
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-body-help',
-				'title'   => esc_html__( 'Body', 'add-to-all' ),
+				'title'   => esc_html__( 'Body', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the content of posts, pages and custom post types.', 'add-to-all' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'You can set the priority of the filter and choose if you want this to be displayed on either all content (including archives) or just single posts/pages.', 'add-to-all' ) . '</p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the content of posts, pages and custom post types.', 'top-10' ) . '</strong></p>' .
+					'<p>' . esc_html__( 'You can set the priority of the filter and choose if you want this to be displayed on either all content (including archives) or just single posts/pages.', 'top-10' ) . '</p>' .
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-footer-help',
-				'title'   => esc_html__( 'Footer', 'add-to-all' ),
+				'title'   => esc_html__( 'Footer', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the footer of your site.', 'add-to-all' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'You can add custom HTML code. Useful for adding tracking code for analytics, etc.', 'add-to-all' ) . '</p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the footer of your site.', 'top-10' ) . '</strong></p>' .
+					'<p>' . esc_html__( 'You can add custom HTML code. Useful for adding tracking code for analytics, etc.', 'top-10' ) . '</p>' .
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-feed-help',
-				'title'   => esc_html__( 'Feed', 'add-to-all' ),
+				'title'   => esc_html__( 'Feed', 'top-10' ),
 				'content' =>
-				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the feed of your site.', 'add-to-all' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'You can add copyright text, a link to the title and date of the post, and HTML before and after the content', 'add-to-all' ) . '</p>' .
-					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'add-to-all' ) . '</p>',
+				'<p><strong>' . esc_html__( 'This screen allows you to control what content is added to the feed of your site.', 'top-10' ) . '</strong></p>' .
+					'<p>' . esc_html__( 'You can add copyright text, a link to the title and date of the post, and HTML before and after the content', 'top-10' ) . '</p>' .
+					'<p>' . esc_html__( 'You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 		);
 
@@ -1294,9 +1294,9 @@ class Settings {
 		return sprintf(
 			/* translators: 1: Opening achor tag with Plugin page link, 2: Closing anchor tag, 3: Opening anchor tag with review link. */
 			__( 'Thank you for using %1$sWebberZone Top_Ten%2$s! Please %3$srate us%2$s on %3$sWordPress.org%2$s', 'knowledgebase' ),
-			'<a href="https://webberzone.com/plugins/add-to-all/" target="_blank">',
+			'<a href="https://webberzone.com/plugins/top-10/" target="_blank">',
 			'</a>',
-			'<a href="https://wordpress.org/support/plugin/add-to-all/reviews/#new-post" target="_blank">'
+			'<a href="https://wordpress.org/support/plugin/top-10/reviews/#new-post" target="_blank">'
 		);
 	}
 
