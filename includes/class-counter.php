@@ -51,7 +51,7 @@ class Counter {
 		}
 
 		// Check if this is the last call of the_content.
-		if ( doing_filter( 'the_content' ) && (int) $wp_filters['the_content'] !== $filter_calls ) {
+		if ( doing_filter( 'the_content' ) && isset( $wp_filters['the_content'] ) && (int) $wp_filters['the_content'] !== $filter_calls ) {
 			return $content;
 		}
 
