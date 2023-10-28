@@ -143,16 +143,6 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 `
 
 
-== Other Notes ==
-
-Top 10 is one of the many plugins developed by WebberZone. Check out our other plugins:
-
-* [Contextual Related Posts](https://wordpress.org/plugins/contextual-related-posts/) - Display related posts on your WordPress blog and feed
-* [WebberZone Snippetz](https://wordpress.org/plugins/add-to-all/) - The ultimate snippet manager for WordPress to create and manage custom HTML, CSS or JS code snippets
-* [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
-* [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
-* [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
-
 == Changelog ==
 
 = 3.3.3 =
