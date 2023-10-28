@@ -37,10 +37,10 @@ class Import_Export {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'admin_init', array( __CLASS__, 'process_settings_import' ), 9 );
-		add_filter( 'admin_init', array( __CLASS__, 'process_settings_export' ) );
-		add_filter( 'admin_init', array( __CLASS__, 'export_tables' ) );
-		add_filter( 'admin_init', array( __CLASS__, 'import_tables' ), 9 );
+		add_filter( 'admin_init', array( $this, 'process_settings_import' ), 9 );
+		add_filter( 'admin_init', array( $this, 'process_settings_export' ) );
+		add_filter( 'admin_init', array( $this, 'export_tables' ) );
+		add_filter( 'admin_init', array( $this, 'import_tables' ), 9 );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
 	}
@@ -51,8 +51,6 @@ class Import_Export {
 	 * @since 3.3.0
 	 */
 	public function admin_menu() {
-
-		$is_network_admin = ( 'network_admin_menu' === current_filter() );
 
 		$this->parent_id = add_submenu_page(
 			'tptn_dashboard',
@@ -302,13 +300,13 @@ class Import_Export {
 
 		ignore_user_abort( true );
 
-		$fh = fopen( 'php://output', 'w' );
-		fprintf( $fh, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
-
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( "Content-Disposition: attachment; filename={$filename}" );
 		header( 'Expires: 0' );
+
+		$fh = fopen( 'php://output', 'w' );
+		fprintf( $fh, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
 
 		fputcsv( $fh, $header_row );
 		foreach ( $data_rows as $data_row ) {

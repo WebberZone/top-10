@@ -161,6 +161,7 @@ Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webb
 
 * Bug fixes:
 	* Check if `$wp_filters['the_content']` is set. Fixes a PHP warning for users running WordPress before 6.1
+	* `Import_Export` Class: Fix unnecessary check for `network_admin_menu` filter; Minor code fixes to set headers before outputting data
 
 = 3.3.2 =
 
