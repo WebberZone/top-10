@@ -159,6 +159,9 @@ Top 10 is one of the many plugins developed by WebberZone. Check out our other p
 
 Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
 
+* Bug fixes:
+	* Check if `$wp_filters['the_content']` is set. Fixes a PHP warning for users running WordPress before 6.1
+
 = 3.3.2 =
 
 * Enhancements:
