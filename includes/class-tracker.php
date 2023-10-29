@@ -26,11 +26,11 @@ class Tracker {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'parse_request', array( __CLASS__, 'parse_request' ) );
-		add_filter( 'query_vars', array( __CLASS__, 'query_vars' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
-		add_action( 'wp_ajax_nopriv_tptn_tracker', array( __CLASS__, 'tracker_parser' ) );
-		add_action( 'wp_ajax_tptn_tracker', array( __CLASS__, 'tracker_parser' ) );
+		add_action( 'parse_request', array( $this, 'parse_request' ) );
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_ajax_nopriv_tptn_tracker', array( $this, 'tracker_parser' ) );
+		add_action( 'wp_ajax_tptn_tracker', array( $this, 'tracker_parser' ) );
 	}
 
 	/**
