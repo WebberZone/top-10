@@ -97,6 +97,15 @@ final class Main {
 	public $styles;
 
 	/**
+	 * Language Handler.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var object Language Handler.
+	 */
+	public $language;
+
+	/**
 	 * Gets the instance of the class.
 	 *
 	 * @since 3.3.0
@@ -127,13 +136,14 @@ final class Main {
 	 * @since 3.3.0
 	 */
 	private function init() {
+		$this->language   = new Frontend\Language_Handler();
+		$this->styles     = new Frontend\Styles_Handler();
 		$this->counter    = new Counter();
 		$this->tracker    = new Tracker();
 		$this->shortcodes = new Frontend\Shortcodes();
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->filters    = new Frontend\Filters();
 		$this->feed       = new Frontend\Feed();
-		$this->styles     = new Frontend\Styles_Handler();
 
 		$this->hooks();
 
@@ -162,8 +172,6 @@ final class Main {
 	 * @since 3.3.0
 	 */
 	public function initiate_plugin() {
-		load_plugin_textdomain( 'top-10', false, dirname( plugin_basename( TOP_TEN_PLUGIN_FILE ) ) . '/languages/' );
-
 		Frontend\Media_Handler::add_image_sizes();
 	}
 
