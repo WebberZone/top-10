@@ -232,6 +232,13 @@ class Admin {
 			TOP_TEN_VERSION,
 			true
 		);
+		wp_localize_script(
+			'top-ten-admin-js',
+			'top_ten_admin',
+			array(
+				'nonce' => wp_create_nonce( 'top_ten_admin_nonce' ),
+			)
+		);
 		wp_register_style(
 			'tptn-admin-ui-css',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
