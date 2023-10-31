@@ -383,6 +383,8 @@ class Counter {
 	 * @since 2.9.0
 	 */
 	public static function edit_count_ajax() {
+		// Security check.
+		check_ajax_referer( 'top_ten_admin_nonce', 'top_ten_admin_nonce' );
 
 		if ( ! isset( $_REQUEST['total_count'] ) || ! isset( $_REQUEST['post_id'] ) || ! isset( $_REQUEST['total_count_original'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_die();

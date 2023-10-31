@@ -111,7 +111,8 @@ jQuery(document).ready(function ($) {
 				action: 'tptn_edit_count_ajax',
 				post_id: post_id,
 				total_count: value,
-				total_count_original: count
+				total_count_original: count,
+				top_ten_admin_nonce: top_ten_admin.nonce
 			},
 			success: function (response) {
 				if (response === false) {
