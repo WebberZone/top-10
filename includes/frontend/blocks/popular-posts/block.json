@@ -6,7 +6,7 @@
 	"title": "Top 10 Popular Posts",
 	"category": "widgets",
 	"icon": "editor-ol",
-	"keywords": ["top 10", "popular posts", "popular"],
+	"keywords": [ "top 10", "popular posts", "popular" ],
 	"description": "Display the Popular Posts",
 	"supports": {
 		"html": false
@@ -18,26 +18,26 @@
 		},
 		"heading": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"daily": {
 			"type": "boolean",
 			"default": false
 		},
 		"daily_range": {
-			"type": "number",
+			"type": "string",
 			"default": 1
 		},
 		"hour_range": {
-			"type": "number",
+			"type": "string",
 			"default": 0
 		},
 		"limit": {
-			"type": "number",
+			"type": "string",
 			"default": 6
 		},
 		"offset": {
-			"type": "number",
+			"type": "string",
 			"default": 0
 		},
 		"show_excerpt": {
