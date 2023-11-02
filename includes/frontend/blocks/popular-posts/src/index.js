@@ -15,7 +15,7 @@ import Edit from './edit';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType('top-10/popular-posts', {
+registerBlockType( 'top-10/popular-posts', {
 	/**
 	 * @see ./edit.js
 	 */
@@ -24,4 +24,4 @@ registerBlockType('top-10/popular-posts', {
 	save() {
 		return null;
 	},
-});
+} );
