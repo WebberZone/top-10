@@ -1,6 +1,6 @@
 === Top 10  - WordPress Popular posts by WebberZone ===
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
-Contributors: webberzone, Ajay
+Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.3.3
 Requires at least: 5.9
@@ -155,6 +155,7 @@ Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webb
 * Bug fixes:
 	* Check if `$wp_filters['the_content']` is set. Fixes a PHP warning for users running WordPress before 6.1
 	* `Import_Export` Class: Fix unnecessary check for `network_admin_menu` filter; Minor code fixes to set headers before outputting data
+	* Number fields in the block were not saved.
 
 * Security fix:
 	* Check nonce before editing post counts in the Admin area
