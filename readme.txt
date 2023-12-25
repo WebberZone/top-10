@@ -145,6 +145,11 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
+= 3.4.0 =
+
+* Enhancements:
+	* Exporting and importing the post tables now supports post URLs. This will allow you to import the post tables into a different site and have the correct counts. Note: This will only work if the URLs are the same on both sites. If you have changed the URL structure, you will need to manually update the URLs in the exported CSV file
+
 = 3.3.3 =
 
 Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
