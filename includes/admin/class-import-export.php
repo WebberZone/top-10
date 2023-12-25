@@ -11,6 +11,8 @@
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Util\Helpers;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -152,6 +154,7 @@ class Import_Export {
 					<?php esc_html_e( 'If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts.', 'top-10' ); ?>
 				</p>
 				<p>
+					<label><input type="checkbox" name="export_urls" id="export_urls" value="1" /> <?php esc_html_e( 'Include URLs in export', 'top-10' ); ?></label>
 					<input type="hidden" name="tptn_action" value="export_tables" />
 					<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
 				</p>
@@ -173,6 +176,12 @@ class Import_Export {
 				</p>
 				<p class="description">
 					<strong><?php esc_html_e( 'Backup your database before proceeding so you will be able to restore it in case anything goes wrong.', 'top-10' ); ?></strong>
+				</p>
+				<p>
+					<label><input type="checkbox" name="import_urls" id="import_urls" value="1" /> <?php esc_html_e( 'Use URLs instead of Post IDs in import', 'top-10' ); ?></label>
+				</p>
+				<p>
+					<label><input type="checkbox" name="reset_tables" id="reset_tables" value="1" checked="checked" /> <?php esc_html_e( 'Truncate tables on import. Unchecking this will keep existing counts and overwrite any counts which have the same post ID.', 'top-10' ); ?></label>
 				</p>
 				<h4 style="padding-left:0px"><?php esc_html_e( 'Import Overall Table', 'top-10' ); ?></h4>
 				<p>
@@ -254,7 +263,13 @@ class Import_Export {
 			return;
 		}
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $daily );
+		if ( isset( $_POST['export_urls'] ) ) {
+			$export_urls = intval( $_POST['export_urls'] );
+		} else {
+			$export_urls = 0;
+		}
+
+		$table_name = Helpers::get_tptn_table( $daily );
 
 		$filename = array(
 			'top-ten',
@@ -276,6 +291,10 @@ class Import_Export {
 		}
 		$header_row[] = esc_html__( 'Blog ID', 'top-10' );
 
+		if ( $export_urls ) {
+			$header_row[] = esc_html__( 'URL', 'top-10' );
+		}
+
 		$data_rows = array();
 
 		$sql = 'SELECT * FROM ' . $table_name;
@@ -294,6 +313,10 @@ class Import_Export {
 				$row[] = $result['dp_date'];
 			}
 			$row[] = $result['blog_id'];
+
+			if ( $export_urls ) {
+				$row[] = ( is_multisite() && $network_wide ) ? get_blog_permalink( $result['blog_id'], $result['postnumber'] ) : get_permalink( $result['postnumber'] );
+			}
 
 			$data_rows[] = $row;
 		}
@@ -350,14 +373,24 @@ class Import_Export {
 		} else {
 			return;
 		}
-
 		if ( isset( $_POST['network_wide'] ) ) {
 			$network_wide = intval( $_POST['network_wide'] );
 		} else {
 			return;
 		}
+		if ( isset( $_POST['import_urls'] ) ) {
+			$import_urls = intval( $_POST['import_urls'] );
+			++$column_count;
+		} else {
+			$import_urls = 0;
+		}
+		if ( isset( $_POST['reset_tables'] ) ) {
+			$reset_tables = intval( $_POST['reset_tables'] );
+		} else {
+			$reset_tables = 0;
+		}
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $daily );
+		$table_name = Helpers::get_tptn_table( $daily );
 		$filename   = 'import_file';
 		if ( $daily ) {
 			$filename .= '_daily';
@@ -377,6 +410,7 @@ class Import_Export {
 		}
 
 		$data        = array();
+		$url_list    = array();
 		$file_import = '';
 
 		// Open uploaded CSV file with read-only mode.
@@ -385,11 +419,29 @@ class Import_Export {
 		// Skip first line.
 		fgetcsv( $csv_file );
 
-		while ( ( $line = fgetcsv( $csv_file, 100, ',' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( ( $line = fgetcsv( $csv_file, 1000, ',' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
 			if ( count( $line ) !== $column_count ) {
 				$file_import = 'fail';
 				break;
+			}
+
+			if ( $import_urls ) {
+				$url = $daily ? $line[4] : $line[3];
+				$url = trim( $url );
+				$url = esc_url_raw( $url );
+
+				// Check if $url is found in $url_list array. $url_list is an associative array with $url as key and post ID as value.
+				if ( isset( $url_list[ $url ] ) ) {
+					$line[0] = $url_list[ $url ];
+				} else {
+					// If $url is not found in $url_list array, get post ID from $url and add it to $url_list array.
+					$line[0] = url_to_postid( $url );
+					if ( 0 === $line[0] ) {
+						continue;
+					}
+					$url_list[ $url ] = $line[0];
+				}
 			}
 
 			if ( $daily ) {
@@ -416,13 +468,15 @@ class Import_Export {
 
 		$result = false;
 		if ( ! empty( $data ) ) {
-			// Truncate the table before import.
-			\WebberZone\Top_Ten\Util\Helpers::trunc_count( $daily, (bool) $network_wide );
+			if ( $reset_tables ) {
+				// Truncate the table before import.
+				Helpers::trunc_count( $daily, (bool) $network_wide );
+			}
 
 			if ( $daily ) {
-				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 			} else {
-				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 			}
 		}
 
