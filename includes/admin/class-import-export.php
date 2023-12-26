@@ -296,6 +296,7 @@ class Import_Export {
 		}
 
 		$data_rows = array();
+		$url_list  = array();
 
 		$sql = 'SELECT * FROM ' . $table_name;
 		if ( ! $network_wide ) {
@@ -315,7 +316,15 @@ class Import_Export {
 			$row[] = $result['blog_id'];
 
 			if ( $export_urls ) {
-				$row[] = ( is_multisite() && $network_wide ) ? get_blog_permalink( $result['blog_id'], $result['postnumber'] ) : get_permalink( $result['postnumber'] );
+				// Check if $result['postnumber'] is found in $url_list array. $url_list is an associative array with post ID as key and URL as value.
+				if ( isset( $url_list[ $result['postnumber'] ] ) ) {
+					$row[] = $url_list[ $result['postnumber'] ];
+				} else {
+					// If $result['postnumber'] is not found in $url_list array, get URL from $result['postnumber'] and add it to $url_list array.
+					$row[] = ( is_multisite() && $network_wide ) ? get_blog_permalink( $result['blog_id'], $result['postnumber'] ) : get_permalink( $result['postnumber'] );
+
+					$url_list[ $result['postnumber'] ] = $row[4];
+				}
 			}
 
 			$data_rows[] = $row;
