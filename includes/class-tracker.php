@@ -273,7 +273,19 @@ class Tracker {
 		$table_name_daily = Helpers::get_tptn_table( true );
 		$str              = '';
 
-		if ( $id > 0 ) {
+		/**
+		 * Filter the flag to confirm that counts should be updated in the database.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param bool $flag Flag to confirm that counts should be updated in the database.
+		 * @param int $id      Post ID.
+		 * @param int $blog_id Blog ID.
+		 * @param int $activate_counter Activate counter flag.
+		 */
+		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter );
+
+		if ( $id > 0 && $before_update_count ) {
 
 			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
