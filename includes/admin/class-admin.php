@@ -97,15 +97,6 @@ class Admin {
 	public $tools_page;
 
 	/**
-	 * Cron class.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Cron class.
-	 */
-	public $cron;
-
-	/**
 	 * Dashboard widgets.
 	 *
 	 * @since 3.3.0
@@ -176,7 +167,6 @@ class Admin {
 		$this->metabox           = new Metabox();
 		$this->import_export     = new Import_Export();
 		$this->tools_page        = new Tools_Page();
-		$this->cron              = new Cron();
 		$this->dashboard_widgets = new Dashboard_Widgets();
 		$this->cache             = new Cache();
 	}

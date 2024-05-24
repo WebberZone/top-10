@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Admin\Cron;
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -106,6 +108,15 @@ final class Main {
 	public $language;
 
 	/**
+	 * Cron class.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var object Cron class.
+	 */
+	public $cron;
+
+	/**
 	 * Gets the instance of the class.
 	 *
 	 * @since 3.3.0
@@ -144,6 +155,7 @@ final class Main {
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->filters    = new Frontend\Filters();
 		$this->feed       = new Frontend\Feed();
+		$this->cron       = new Cron();
 
 		$this->hooks();
 
