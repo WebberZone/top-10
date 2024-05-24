@@ -24,14 +24,9 @@ class Activator {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'on_delete_blog' ) );
-		add_action( 'plugins_loaded', array( __CLASS__, 'update_db_check' ) );
-
-		if ( version_compare( get_bloginfo( 'version' ), '5.1', '>=' ) ) {
-			add_action( 'wp_initialize_site', array( __CLASS__, 'activate_new_site' ) );
-		} else {
-			add_action( 'wpmu_new_blog', array( __CLASS__, 'activate_new_site' ) );
-		}
+		add_filter( 'wpmu_drop_tables', array( $this, 'on_delete_blog' ) );
+		add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
+		add_action( 'wp_initialize_site', array( $this, 'activate_new_site' ) );
 	}
 
 	/**
@@ -111,7 +106,7 @@ class Activator {
 
 		}
 
-		add_site_option( 'tptn_db_version', $tptn_db_version );
+		update_site_option( 'tptn_db_version', $tptn_db_version );
 
 		// Upgrade table code.
 		$installed_ver = get_site_option( 'tptn_db_version' );
