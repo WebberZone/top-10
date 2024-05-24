@@ -2,9 +2,9 @@
 Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.3.3
-Requires at least: 5.9
-Tested up to: 6.4
+Stable tag: 3.3.4
+Requires at least: 6.0
+Tested up to: 6.5
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -145,10 +145,13 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.4.0 =
+= 3.3.4 =
 
 * Enhancements:
 	* Exporting and importing the post tables now supports post URLs. This will allow you to import the post tables into a different site and have the correct counts. Note: This will only work if the URLs are the same on both sites. If you have changed the URL structure, you will need to manually update the URLs in the exported CSV file
+
+* Bug fixes:
+	* Fixed a bug where the cron job would not run
 
 = 3.3.3 =
 
@@ -209,6 +212,6 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.3.3 =
-Bug fix release; Check out the release post.
+= 3.3.4 =
+Check out the release post for further information on this release
 
