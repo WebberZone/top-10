@@ -311,7 +311,7 @@ class Settings {
 				'name'    => esc_html__( 'Enable cache', 'top-10' ),
 				'desc'    => esc_html__( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'top-10' ),
 				'type'    => 'checkbox',
-				'options' => false,
+				'options' => true,
 			),
 			'cache_time'              => array(
 				'id'      => 'cache_time',
