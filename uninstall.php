@@ -21,8 +21,7 @@ if ( ! empty( $tptn_settings['uninstall_clean_tables'] ) ) {
 
 	$wpdb->query( "DROP TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 	$wpdb->query( "DROP TABLE $table_name_daily" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-	delete_option( 'tptn_db_version' );
-
+	delete_site_option( 'tptn_db_version' );
 }
 
 if ( $tptn_settings['uninstall_clean_options'] ) {
