@@ -21,8 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Settings API wrapper class
  *
- * @version 2.3.0
+ * @version 2.5.0
  */
+#[\AllowDynamicProperties]
 class Settings_API {
 
 	/**
@@ -30,7 +31,7 @@ class Settings_API {
 	 *
 	 * @var   string
 	 */
-	const VERSION = '2.3.0';
+	const VERSION = '2.5.0';
 
 	/**
 	 * Settings Key.
@@ -527,6 +528,7 @@ class Settings_API {
 						'field_class'      => '',
 						'field_attributes' => '',
 						'placeholder'      => '',
+						'pro'              => false,
 					)
 				);
 
@@ -787,7 +789,7 @@ class Settings_API {
 		?>
 			<div class="wrap">
 				<h1><?php echo esc_html( $this->translation_strings['page_header'] ); ?></h1>
-			<?php do_action( $this->prefix . '_settings_page_header' ); ?>
+				<?php do_action( $this->prefix . '_settings_page_header' ); ?>
 
 				<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
