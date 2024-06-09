@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-03 18:46+0000\n"
+"POT-Creation-Date: 2024-06-09 21:10+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
@@ -16,7 +16,7 @@ msgstr ""
 "esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
 "_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: vendor/*\n"
@@ -87,7 +87,7 @@ msgid "Dashboard"
 msgstr ""
 
 #: includes/admin/class-dashboard.php:221
-#: includes/admin/class-import-export.php:272
+#: includes/admin/class-import-export.php:287
 msgid "Visits"
 msgstr ""
 
@@ -173,89 +173,93 @@ msgid ""
 "of days of your choice in your wp-config.php."
 msgstr ""
 
-#: includes/admin/class-import-export.php:57
-#: includes/admin/class-import-export.php:74
+#: includes/admin/class-import-export.php:59
+#: includes/admin/class-import-export.php:76
 msgid "Top 10 Import Export Tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:58
-#: includes/admin/class-import-export.php:75
+#: includes/admin/class-import-export.php:60
+#: includes/admin/class-import-export.php:77
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/class-import-export.php:93
+#: includes/admin/class-import-export.php:95
 msgid "Data has been imported into the table"
 msgstr ""
 
-#: includes/admin/class-import-export.php:95
+#: includes/admin/class-import-export.php:97
 msgid ""
 "Data import failure. Check the number of columns for the file being "
 "imported, if you are uploading it in the right section below and that the "
 "data is correct"
 msgstr ""
 
-#: includes/admin/class-import-export.php:101
+#: includes/admin/class-import-export.php:103
 msgid "Settings have been imported successfully"
 msgstr ""
 
-#: includes/admin/class-import-export.php:107
+#: includes/admin/class-import-export.php:109
 msgid "Top 10 - Import/Export tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:118
+#: includes/admin/class-import-export.php:120
 msgid "Export/Import settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:120
+#: includes/admin/class-import-export.php:122
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
 msgstr ""
 
-#: includes/admin/class-import-export.php:124
+#: includes/admin/class-import-export.php:126
 msgid "Export Settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:133
+#: includes/admin/class-import-export.php:135
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on this/another site using the form above."
 msgstr ""
 
-#: includes/admin/class-import-export.php:139
+#: includes/admin/class-import-export.php:141
 msgid "Import Settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:149
+#: includes/admin/class-import-export.php:151
 msgid "Export tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:151
+#: includes/admin/class-import-export.php:153
 msgid ""
 "Click the buttons below to export the overall and the daily tables. The file "
 "is downloaded as an CSV file which you should be able to edit in Excel or "
 "any other compatible software."
 msgstr ""
 
-#: includes/admin/class-import-export.php:152
+#: includes/admin/class-import-export.php:154
 msgid ""
 "If you are using WordPress Multisite then this will include the counts "
 "across all sites as the plugin uses a single table to store counts."
 msgstr ""
 
-#: includes/admin/class-import-export.php:159
+#: includes/admin/class-import-export.php:157
+msgid "Include URLs in export"
+msgstr ""
+
+#: includes/admin/class-import-export.php:162
 msgid "Export overall tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:160
+#: includes/admin/class-import-export.php:163
 msgid "Export daily tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:168
+#: includes/admin/class-import-export.php:171
 msgid "Import tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:170
+#: includes/admin/class-import-export.php:173
 msgid ""
 "This action will replace the data in the table being import. Best practice "
 "would be to first export the data using the buttons above. Following this, "
@@ -263,57 +267,71 @@ msgid ""
 "maintain the export format of the data to avoid corruption."
 msgstr ""
 
-#: includes/admin/class-import-export.php:172
+#: includes/admin/class-import-export.php:175
 msgid ""
 "Be careful when opening the file in Excel as it tends to change the date "
 "format. Recommended date-time format is YYYY-MM-DD H."
 msgstr ""
 
-#: includes/admin/class-import-export.php:175
+#: includes/admin/class-import-export.php:178
 msgid ""
 "Backup your database before proceeding so you will be able to restore it in "
 "case anything goes wrong."
 msgstr ""
 
-#: includes/admin/class-import-export.php:177
+#: includes/admin/class-import-export.php:181
+msgid "Use URLs instead of Post IDs in import"
+msgstr ""
+
+#: includes/admin/class-import-export.php:184
+msgid ""
+"Truncate tables on import. Unchecking this will keep existing counts and "
+"overwrite any counts which have the same post ID."
+msgstr ""
+
+#: includes/admin/class-import-export.php:186
 msgid "Import Overall Table"
 msgstr ""
 
-#: includes/admin/class-import-export.php:182
+#: includes/admin/class-import-export.php:191
 msgid "Import Overall CSV"
 msgstr ""
 
-#: includes/admin/class-import-export.php:185
+#: includes/admin/class-import-export.php:194
 msgid "Import Daily Table"
 msgstr ""
 
-#: includes/admin/class-import-export.php:190
+#: includes/admin/class-import-export.php:199
 msgid "Import Daily CSV"
 msgstr ""
 
-#: includes/admin/class-import-export.php:271
+#: includes/admin/class-import-export.php:286
 msgid "Post ID"
 msgstr ""
 
-#: includes/admin/class-import-export.php:275
+#: includes/admin/class-import-export.php:290
 #: includes/admin/class-statistics-table.php:447
 msgid "Date"
 msgstr ""
 
-#: includes/admin/class-import-export.php:277
+#: includes/admin/class-import-export.php:292
 msgid "Blog ID"
 msgstr ""
 
-#: includes/admin/class-import-export.php:370
+#: includes/admin/class-import-export.php:295
+msgid "URL"
+msgstr ""
+
+#: includes/admin/class-import-export.php:412
 msgid "Please upload a valid .csv file"
 msgstr ""
 
-#: includes/admin/class-import-export.php:376
-#: includes/admin/class-import-export.php:504
+#: includes/admin/class-import-export.php:418
+#: includes/admin/class-import-export.php:567
 msgid "Please upload a file to import"
 msgstr ""
 
-#: includes/admin/class-import-export.php:498
+#: includes/admin/class-import-export.php:561
 msgid "Please upload a valid .json file"
 msgstr ""
 
@@ -632,48 +650,48 @@ msgstr ""
 msgid "Top 10 - Network Wide Popular Posts"
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:241
+#: includes/admin/settings/class-settings-api.php:242
 #: includes/admin/settings/class-settings.php:189
 msgid ""
 "Settings have been reset to their default values. Reload this page to view "
 "the updated settings."
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:242
+#: includes/admin/settings/class-settings-api.php:243
 #: includes/admin/settings/class-settings.php:190
 msgid "Settings updated."
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:243
+#: includes/admin/settings/class-settings-api.php:244
 #: includes/admin/settings/class-settings.php:191
 msgid "Save Changes"
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:244
+#: includes/admin/settings/class-settings-api.php:245
 #: includes/admin/settings/class-settings.php:192
 msgid "Reset all settings"
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:245
+#: includes/admin/settings/class-settings-api.php:246
 #: includes/admin/settings/class-settings.php:193
 msgid "Do you really want to reset all these settings to their default values?"
 msgstr ""
 
-#: includes/admin/settings/class-settings-api.php:246
+#: includes/admin/settings/class-settings-api.php:247
 #: includes/admin/settings/class-settings.php:194
 msgid "Modified from default setting"
 msgstr ""
 
-#: includes/admin/settings/class-settings-form.php:116
+#: includes/admin/settings/class-settings-form.php:118
 #, php-format
 msgid "The callback function used for the %1$s setting is missing."
 msgstr ""
 
-#: includes/admin/settings/class-settings-form.php:455
+#: includes/admin/settings/class-settings-form.php:474
 msgid "cropped"
 msgstr ""
 
-#: includes/admin/settings/class-settings-form.php:671
+#: includes/admin/settings/class-settings-form.php:692
 msgid "Choose File"
 msgstr ""
 
@@ -1473,7 +1491,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/settings/class-settings.php:1140
-#: includes/admin/settings/sidebar.php:49
+#: includes/admin/settings/sidebar.php:56
 msgid "Support"
 msgstr ""
 
@@ -1632,51 +1650,84 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:14
+#: includes/admin/settings/sidebar.php:15
+msgid "Top 10 Pro - Coming soon!"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:20
 msgid "Support the development"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:22
+#: includes/admin/settings/sidebar.php:28
 msgid "Donation for Top 10"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:24
+#: includes/admin/settings/sidebar.php:30
 msgid "Enter amount in USD"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:28
+#: includes/admin/settings/sidebar.php:34
 msgid "Send your donation to the author of"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:35
+#: includes/admin/settings/sidebar.php:41
 msgid "Quick links"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:41
+#: includes/admin/settings/sidebar.php:47
 msgid "Top 10 plugin homepage"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:45
-msgid "FAQ"
+#: includes/admin/settings/sidebar.php:50
+#: includes/admin/settings/sidebar.php:79
+msgid "Knowledge Base"
 msgstr ""
 
 #: includes/admin/settings/sidebar.php:53
+msgid "FAQ"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:59
 msgid "Reviews"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:57
+#: includes/admin/settings/sidebar.php:62
 msgid "Github repository"
-msgstr ""
-
-#: includes/admin/settings/sidebar.php:61
-msgid "Other plugins"
 msgstr ""
 
 #: includes/admin/settings/sidebar.php:65
 msgid "Ajay's blog"
 msgstr ""
 
-#: includes/admin/settings/sidebar.php:75
+#: includes/admin/settings/sidebar.php:72
+msgid "WebberZone plugins"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:77
+msgid "Contextual Related Posts"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:78
+msgid "Better Search"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:80
+msgid "Snippetz"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:81
+msgid "Followed Posts"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:82
+msgid "Popular Authors"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:83
+msgid "Auto Close"
+msgstr ""
+
+#: includes/admin/settings/sidebar.php:94
 msgid "Follow me"
 msgstr ""
 
