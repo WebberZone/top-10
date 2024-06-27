@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Frontend;
 
+use WebberZone\Top_Ten\Util\Helpers;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -29,7 +31,7 @@ class Display {
 	/**
 	 * Function to return formatted list of popular posts.
 	 *
-	 * @since 1.5
+	 * @since 3.3.0
 	 *
 	 * @param  mixed $args   Arguments array.
 	 * @return string  HTML output of the popular posts.
@@ -173,7 +175,7 @@ class Display {
 				/**
 				 * Filter to add content to the end of each item in the list.
 				 *
-				 * @since   2.2.0
+				 * @since 3.3.0
 				 *
 				 * @param   string  $tptn_list Empty string at the end of each list item.
 				 * @param   object  $result Object of the current post result
@@ -220,7 +222,7 @@ class Display {
 			/**
 			 * Filter the clearfix div tag. This is included after the closing tag to clear any miscellaneous floating elements;
 			 *
-			 * @since   2.2.0
+			 * @since 3.3.0
 			 *
 			 * @param   string  $clearfix   Contains: <div style="clear:both"></div>
 			 */
@@ -236,7 +238,7 @@ class Display {
 			/**
 			 * Filter the cache time which allows a function to override this
 			 *
-			 * @since   2.2.0
+			 * @since 3.3.0
 			 *
 			 * @param   int     $cache_time  Cache time in seconds
 			 * @param   array   $args        Array of all the arguments
@@ -258,7 +260,7 @@ class Display {
 	/**
 	 * Function to retrieve the popular posts.
 	 *
-	 * @since   2.1.0
+	 * @since 3.3.0
 	 *
 	 * @param   mixed $args   Arguments list.
 	 */
@@ -457,7 +459,7 @@ class Display {
 	/**
 	 * Function to echo popular posts.
 	 *
-	 * @since   1.0
+	 * @since 3.3.0
 	 *
 	 * @param   mixed $args   Arguments list.
 	 */
@@ -475,7 +477,7 @@ class Display {
 	/**
 	 * Function to show daily popular posts.
 	 *
-	 * @since   1.2
+	 * @since 3.3.0
 	 *
 	 * @param   mixed $args   Arguments list.
 	 */
@@ -492,7 +494,7 @@ class Display {
 	/**
 	 * Get the key based on a list of parameters.
 	 *
-	 * @since 2.9.3
+	 * @since 3.3.0
 	 *
 	 * @param array $attr   Array of attributes.
 	 * @return string Cache key
@@ -509,7 +511,7 @@ class Display {
 	 *
 	 * The defaults are as follows:
 	 *
-	 * @since 3.0.0
+	 * @since 3.3.0
 	 *
 	 * @see Top_Ten_Query::prepare_query_args()
 	 *
@@ -534,7 +536,7 @@ class Display {
 	/**
 	 * Returns the link attributes.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args Array of arguments.
 	 * @param   \WP_Post $result Result object.
@@ -554,7 +556,7 @@ class Display {
 		/**
 		 * Filter the title of the popular posts list
 		 *
-		 * @since   2.2.0
+		 * @since 3.3.0
 		 *
 		 * @param   array    $link_attributes    Array of link attributes
 		 * @param   array    $args               Array of arguments
@@ -572,7 +574,7 @@ class Display {
 	/**
 	 * Returns the heading of the popular posts.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array $args   Array of arguments.
 	 * @return  string  Space separated list of link attributes
@@ -600,7 +602,7 @@ class Display {
 	/**
 	 * Returns the opening tag of the popular posts list.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array $args   Array of arguments.
 	 * @return  string  Space separated list of link attributes
@@ -624,7 +626,7 @@ class Display {
 	/**
 	 * Returns the closing tag of the popular posts list.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array $args   Array of arguments.
 	 * @return  string  Space separated list of link attributes
@@ -648,7 +650,7 @@ class Display {
 	/**
 	 * Returns the opening tag of each list item.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -674,7 +676,7 @@ class Display {
 	/**
 	 * Returns the closing tag of each list item.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -700,7 +702,7 @@ class Display {
 	/**
 	 * Returns the title of each list item.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -726,7 +728,7 @@ class Display {
 	/**
 	 * Returns the author of each list item.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -771,7 +773,7 @@ class Display {
 	/**
 	 * Returns the formatted list item with link and and thumbnail for each list item.
 	 *
-	 * @since   2.2.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -820,7 +822,7 @@ class Display {
 		/**
 		 * Filter Formatted list item with link and and thumbnail.
 		 *
-		 * @since   2.2.0
+		 * @since 3.3.0
 		 *
 		 * @param   string  $output Formatted list item with link and and thumbnail
 		 * @param   object  $result Object of the current post result
@@ -833,7 +835,7 @@ class Display {
 	/**
 	 * Returns the title of each list item.
 	 *
-	 * @since   2.6.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -859,7 +861,7 @@ class Display {
 	/**
 	 * Returns the title of each list item.
 	 *
-	 * @since   2.6.0
+	 * @since 3.3.0
 	 *
 	 * @param   array    $args   Array of arguments.
 	 * @param   \WP_Post $result Object of the current post result.
@@ -887,16 +889,19 @@ class Display {
 	/**
 	 * Function to create an excerpt for the post.
 	 *
-	 * @since   1.6
-	 * @param   int        $id             Post ID.
-	 * @param   int|string $excerpt_length Length of the excerpt in words.
-	 * @param   bool       $use_excerpt Use Excerpt.
-	 * @return  string     Excerpt
+	 * @since 3.3.0
+	 * @since 3.4.0 Added $more_link_text parameter. $post parameter can now be a WP_Post instance.
+	 *
+	 * @param int|\WP_Post $post            Post ID or WP_Post instance.
+	 * @param int|string   $excerpt_length  Length of the excerpt in words.
+	 * @param bool         $use_excerpt     Use excerpt instead of content.
+	 * @param string       $more_link_text  Content for when there is more text. Default is null.
+	 * @return string Post Excerpt
 	 */
-	public static function get_the_excerpt( $id, $excerpt_length = 0, $use_excerpt = true ) {
+	public static function get_the_excerpt( $post, $excerpt_length = 0, $use_excerpt = true, $more_link_text = '' ) {
 		$content = '';
 
-		$post = get_post( $id );
+		$post = get_post( $post );
 		if ( empty( $post ) ) {
 			return '';
 		}
@@ -907,10 +912,70 @@ class Display {
 			$content = $post->post_content;
 		}
 
-		$output = wp_strip_all_tags( strip_shortcodes( $content ) );
+		$output = strip_shortcodes( $content );
+		$output = wp_strip_all_tags( $output, true );
+
+		/**
+		 * Filters excerpt generated by CRP before it is trimmed.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param string    $output         Formatted excerpt.
+		 * @param \WP_Post  $post           Source Post instance.
+		 * @param int       $excerpt_length Length of the excerpt.
+		 * @param boolean   $use_excerpt    Use the excerpt?
+		 * @param string    $content        Content that is used to create the excerpt.
+		 */
+		$output = apply_filters( 'tptn_excerpt_pre_trim', $output, $post, $excerpt_length, $use_excerpt, $content );
+
+		/**
+		 * Filters the Read More text of the CRP excerpt.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string   $more_link_text    Read More text.
+		 * @param \WP_Post $post              Source Post instance.
+		 */
+		$more_link_text = apply_filters( 'tptn_excerpt_more_link_text', $more_link_text, $post );
+
+		if ( null === $more_link_text ) {
+			$more_link_text = sprintf(
+				'<span aria-label="%1$s">%2$s</span>',
+				sprintf(
+				/* translators: %s: Post title. */
+					__( 'Continue reading %s', 'top-10' ),
+					the_title_attribute(
+						array(
+							'echo' => false,
+							'post' => $post,
+						)
+					)
+				),
+				__( '(more&hellip;)', 'top-10' )
+			);
+		}
+
+		if ( ! empty( $more_link_text ) ) {
+			$more_link_element = ' <a href="' . get_permalink( $post ) . "#more-{$post->ID}\" class=\"tptn_read_more_link\">$more_link_text</a>";
+		} else {
+			$more_link_element = '';
+		}
+
+		/**
+		 * Filters the Read More link text of the CRP excerpt.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param string   $more_link_element Read More link element.
+		 * @param string   $more_link_text    Read More text.
+		 * @param \WP_Post $post              Source Post instance.
+		 */
+		$more_link_element = apply_filters( 'tptn_excerpt_more_link', $more_link_element, $more_link_text, $post );
 
 		if ( $excerpt_length > 0 ) {
-			$output = wp_trim_words( $output, $excerpt_length );
+			$more_link_element = empty( $more_link_element ) ? null : $more_link_element;
+
+			$output = wp_trim_words( $output, $excerpt_length, $more_link_element );
 		}
 
 		if ( post_password_required( $post ) ) {
@@ -918,15 +983,16 @@ class Display {
 		}
 
 		/**
-		 * Filters excerpt generated by tptn.
+		 * Filters excerpt generated by CRP.
 		 *
-		 * @since   1.9.10.1
+		 * @since 1.9.10.1
+		 * @since 3.4.0 Changed second parameter to WP_Post instance instead of ID.
 		 *
-		 * @param   string  $output         Formatted excerpt
-		 * @param   int     $id             Post ID
-		 * @param   int     $excerpt_length Length of the excerpt
-		 * @param   boolean $use_excerpt    Use the excerpt?
+		 * @param string   $output         Formatted excerpt.
+		 * @param \WP_Post $post           Source Post instance.
+		 * @param int      $excerpt_length Length of the excerpt.
+		 * @param boolean  $use_excerpt    Use the excerpt?
 		 */
-		return apply_filters( 'tptn_excerpt', $output, $id, $excerpt_length, $use_excerpt );
+		return apply_filters( 'tptn_excerpt', $output, $post, $excerpt_length, $use_excerpt );
 	}
 }
