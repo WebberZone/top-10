@@ -36,8 +36,8 @@ class Blocks {
 	 */
 	public function register_blocks() {
 		// Register Popular Posts block.
-		register_block_type_from_metadata(
-			TOP_TEN_PLUGIN_DIR . 'includes/frontend/blocks/popular-posts/',
+		register_block_type(
+			__DIR__ . '/build/popular-posts/',
 			array(
 				'render_callback' => array( __CLASS__, 'render_block' ),
 			)
