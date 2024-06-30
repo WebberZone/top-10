@@ -11,11 +11,16 @@ import { registerBlockType } from '@wordpress/blocks';
 import Edit from './edit';
 
 /**
+ * Import metadata
+ */
+import metadata from './block.json';
+
+/**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'top-10/popular-posts', {
+registerBlockType( metadata.name , {
 	/**
 	 * @see ./edit.js
 	 */
