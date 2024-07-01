@@ -54,15 +54,6 @@ final class Main {
 	public $blocks;
 
 	/**
-	 * Filters.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Filters.
-	 */
-	public $filters;
-
-	/**
 	 * Counter.
 	 *
 	 * @since 3.3.0
@@ -153,7 +144,6 @@ final class Main {
 		$this->tracker    = new Tracker();
 		$this->shortcodes = new Frontend\Shortcodes();
 		$this->blocks     = new Frontend\Blocks\Blocks();
-		$this->filters    = new Frontend\Filters();
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
 
