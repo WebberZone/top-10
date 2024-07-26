@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Media Handler class.
  *
  * @since 3.3.0
  */
@@ -66,10 +66,7 @@ class Media_Handler {
 	/**
 	 * Function to get the post thumbnail.
 	 *
-	 * @since   1.8
-	 * @since 3.1.0 `postid` argument renamed to `post`.
-	 *              New `size` attribute added which can be a registered image size name or array of width and height.
-	 *              `thumb_width` and `thumb_height` attributes removed. These are extracted based on size.
+	 * @since 3.3.0
 	 *
 	 * @param string|array $args {
 	 *     Optional. Array or string of Query parameters.
@@ -86,16 +83,19 @@ class Media_Handler {
 	 * @return string  Image tag
 	 */
 	public static function get_the_post_thumbnail( $args = array() ) {
+		$get_option_callback = self::$prefix . '_get_option';
 
 		$defaults = array(
 			'post'               => '',
 			'size'               => 'thumbnail',
 			'thumb_meta'         => 'post-image',
 			'thumb_html'         => 'html',
-			'thumb_default'      => '',
+			'thumb_default'      => call_user_func( $get_option_callback, 'thumb_default', '' ),
 			'thumb_default_show' => true,
-			'scan_images'        => false,
+			'scan_images'        => true,
+			'use_site_icon'      => true,
 			'class'              => self::$prefix . '_thumb',
+			'style'              => '',
 		);
 
 		// Parse incomming $args into an array and merge it with $defaults.
@@ -120,7 +120,7 @@ class Media_Handler {
 		$output        = '';
 		$postimage     = '';
 		$pick          = '';
-		$attachment_id = '';
+		$attachment_id = 0;
 
 		// Let's start fetching the thumbnail. First place to look is in the post meta defined in the Settings page.
 		$postimage = get_post_meta( $result->ID, $args['thumb_meta'], true );
@@ -131,8 +131,8 @@ class Media_Handler {
 
 			$postthumb = wp_get_attachment_image_src( $attachment_id, $args['size'] );
 			if ( false !== $postthumb ) {
-				list( $postimage, $args['thumb_width'], $args['thumb_height'] ) = $postthumb;
-				$pick .= 'correct';
+				$postimage = $postthumb[0];
+				$pick     .= 'correct';
 			}
 		}
 
@@ -143,8 +143,8 @@ class Media_Handler {
 
 				$postthumb = wp_get_attachment_image_src( $attachment_id, $args['size'] );
 				if ( false !== $postthumb ) {
-					list( $postimage, $args['thumb_width'], $args['thumb_height'] ) = $postthumb;
-					$pick = 'featured';
+					$postimage = $postthumb[0];
+					$pick      = 'featured';
 				}
 			}
 			$pick = 'featured';
@@ -175,8 +175,8 @@ class Media_Handler {
 
 				$postthumb = wp_get_attachment_image_src( $attachment_id, $args['size'] );
 				if ( false !== $postthumb ) {
-					list( $postimage, $args['thumb_width'], $args['thumb_height'] ) = $postthumb;
-					$pick .= 'correct';
+					$postimage = $postthumb[0];
+					$pick     .= 'correct';
 				}
 			}
 		}
@@ -194,18 +194,18 @@ class Media_Handler {
 		}
 
 		// If no thumb found and settings permit, use default thumb.
-		if ( ! $postimage && $args['thumb_default_show'] ) {
+		if ( ! $postimage && $args['thumb_default_show'] && $args['thumb_default'] ) {
 			$postimage = $args['thumb_default'];
 			$pick      = 'default_thumb';
 		}
 
 		// If no thumb found, use site icon.
-		if ( ! $postimage ) {
+		if ( ! $postimage && $args['use_site_icon'] ) {
 			$postimage = get_site_icon_url( max( $args['thumb_width'], $args['thumb_height'] ) );
 			$pick      = 'site_icon_max';
 		}
 
-		if ( ! $postimage ) {
+		if ( ! $postimage && $args['use_site_icon'] ) {
 			$postimage = get_site_icon_url( min( $args['thumb_width'], $args['thumb_height'] ) );
 			$pick      = 'site_icon_min';
 		}
@@ -232,7 +232,7 @@ class Media_Handler {
 				$postimage = preg_replace( '~http://~', 'https://', $postimage );
 			}
 
-			$class = self::$prefix . "_{$pick} {$args['class']} {$args['size']}";
+			$class = self::$prefix . "_{$pick} {$args['class']} size-{$args['size']}";
 
 			if ( empty( $attachment_id ) && ! in_array( $pick, array( 'video_thumb', 'default_thumb', 'site_icon_max', 'site_icon_min' ), true ) ) {
 				$attachment_id = self::get_attachment_id_from_url( $postimage );
@@ -270,6 +270,15 @@ class Media_Handler {
 			}
 
 			/**
+			 * Filters the thumbnail styles attribute.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param string $styles Thumbnail styles
+			 */
+			$attr['style'] = apply_filters( self::$prefix . '_thumb_styles', $args['style'] );
+
+			/**
 			 * Filters the thumbnail classes and allows a filter function to add any more classes if needed.
 			 *
 			 * @since 2.2.0
@@ -300,27 +309,25 @@ class Media_Handler {
 			$attr['thumb_width']  = $args['thumb_width'];
 			$attr['thumb_height'] = $args['thumb_height'];
 
-			$output .= self::get_image_html( $postimage, $attr );
+			$output .= self::get_image_html( $postimage, $attr, $attachment_id, $args['size'] );
 
 			if ( function_exists( 'wp_img_tag_add_srcset_and_sizes_attr' ) && ! empty( $attachment_id ) ) {
-				$output = wp_img_tag_add_srcset_and_sizes_attr( $output, self::$prefix . '_thumbnail', $attachment_id );
+				$output = \wp_img_tag_add_srcset_and_sizes_attr( $output, self::$prefix . '_thumbnail', $attachment_id );
 			}
 
 			if ( function_exists( 'wp_img_tag_add_loading_optimization_attrs' ) ) {
-				$output = wp_img_tag_add_loading_optimization_attrs( $output, self::$prefix . '_thumbnail' );
-			} elseif ( function_exists( 'wp_img_tag_add_loading_attr' ) ) {
-				$output = wp_img_tag_add_loading_attr( $output, 'crp_thumbnail' );
+				$output = \wp_img_tag_add_loading_optimization_attrs( $output, self::$prefix . '_thumbnail' );
 			}
 		}
 
 		/**
-		 * Filters post thumbnail created for Top 10.
+		 * Filters post thumbnail HTML.
 		 *
 		 * @since   1.9.10.1
 		 *
-		 * @param   string  $output Formatted output
-		 * @param   array   $args   Argument list
-		 * @param   string  $postimage Thumbnail URL
+		 * @param   string  $output     HTML output.
+		 * @param   array   $args       Argument list
+		 * @param   string  $postimage  Thumbnail URL
 		 */
 		return apply_filters( self::$prefix . '_get_the_post_thumbnail', $output, $args, $postimage );
 	}
@@ -328,35 +335,66 @@ class Media_Handler {
 	/**
 	 * Get an HTML img element
 	 *
-	 * @since 2.6.0
+	 * @since 3.3.0
 	 *
-	 * @param string $attachment_url Image URL.
-	 * @param array  $attr Attributes for the image markup.
+	 * @see wp_get_attachment_image()
+	 *
+	 * @param string       $attachment_url    Image URL.
+	 * @param array        $attr              Attributes for the image markup.
+	 * @param int          $attachment_id     Attachment ID.
+	 * @param string|int[] $size              Image size.
 	 * @return string HTML img element or empty string on failure.
 	 */
-	public static function get_image_html( $attachment_url, $attr = array() ) {
-		$get_option_callback = self::$prefix . '_get_option';
+	public static function get_image_html( $attachment_url, $attr = array(), $attachment_id = 0, $size = '' ) {
+		// If there is an attachment ID, use wp_get_attachment_image().
+		if ( $attachment_id ) {
+			unset( $attr['thumb_html'], $attr['thumb_width'], $attr['thumb_height'] );
+			return wp_get_attachment_image( $attachment_id, $size, false, $attr );
+		}
 
-		// If there is no url, return.
-		if ( ! $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		// If there is no URL, return an empty string.
+		if ( empty( $attachment_url ) ) {
 			return '';
 		}
 
+		$get_option_callback = self::$prefix . '_get_option';
+
+		// Define default attributes.
 		$default_attr = array(
 			'src'          => $attachment_url,
 			'thumb_html'   => call_user_func( $get_option_callback, 'thumb_html', 'html' ),
 			'thumb_width'  => call_user_func( $get_option_callback, 'thumb_width', 150 ),
 			'thumb_height' => call_user_func( $get_option_callback, 'thumb_height', 150 ),
+			'class'        => "attachment-$size size-$size",
 		);
 
+		// Merge default attributes with provided attributes.
 		$attr = wp_parse_args( $attr, $default_attr );
 
+		// Generate width and height string.
 		$hwstring = self::get_image_hwstring( $attr );
+
+		// Omit the `decoding` attribute if the value is invalid according to the spec.
+		if ( empty( $attr['decoding'] ) || ! in_array( $attr['decoding'], array( 'async', 'sync', 'auto' ), true ) ) {
+			unset( $attr['decoding'] );
+		}
+
+		/*
+		 * If the default value of `lazy` for the `loading` attribute is overridden
+		 * to omit the attribute for this image, ensure it is not included.
+		 */
+		if ( isset( $attr['loading'] ) && ! $attr['loading'] ) {
+			unset( $attr['loading'] );
+		}
+
+		// If the `fetchpriority` attribute is overridden and set to false or an empty string.
+		if ( isset( $attr['fetchpriority'] ) && ! $attr['fetchpriority'] ) {
+			unset( $attr['fetchpriority'] );
+		}
 
 		// Generate 'srcset' and 'sizes' if not already present.
 		if ( empty( $attr['srcset'] ) ) {
-			$attachment_id = self::get_attachment_id_from_url( $attachment_url );
-			$image_meta    = wp_get_attachment_metadata( $attachment_id );
+			$image_meta = wp_get_attachment_metadata( $attachment_id );
 
 			if ( is_array( $image_meta ) ) {
 				$size_array = array( absint( $attr['thumb_width'] ), absint( $attr['thumb_height'] ) );
@@ -373,10 +411,8 @@ class Media_Handler {
 			}
 		}
 
-		// Unset attributes we don't want to display.
-		unset( $attr['thumb_html'] );
-		unset( $attr['thumb_width'] );
-		unset( $attr['thumb_height'] );
+		// Unset attributes not needed in the final img tag.
+		unset( $attr['thumb_html'], $attr['thumb_width'], $attr['thumb_height'] );
 
 		/**
 		 * Filters the list of attachment image attributes.
@@ -389,12 +425,12 @@ class Media_Handler {
 		$attr = apply_filters( self::$prefix . '_get_image_attributes', $attr, $attachment_url );
 		$attr = array_map( 'esc_attr', $attr );
 
+		// Construct the HTML img tag.
 		$html = '<img ' . $hwstring;
 		foreach ( $attr as $name => $value ) {
-			if ( '' === $value ) {
-				continue;
+			if ( '' !== $value ) {
+				$html .= " $name=\"$value\"";
 			}
-			$html .= " $name=" . '"' . $value . '"';
 		}
 		$html .= ' />';
 
@@ -414,7 +450,7 @@ class Media_Handler {
 	/**
 	 * Retrieve width and height attributes using given width and height values.
 	 *
-	 * @since 2.6.0
+	 * @since 3.3.0
 	 *
 	 * @param array $args Argument array.
 	 *
@@ -454,7 +490,7 @@ class Media_Handler {
 	/**
 	 * Get the first child image in the post.
 	 *
-	 * @since   1.9.8
+	 * @since   3.3.0
 	 * @param   mixed $postid Post ID.
 	 * @param   int   $thumb_width Thumb width.
 	 * @param   int   $thumb_height Thumb height.
@@ -493,59 +529,41 @@ class Media_Handler {
 		}
 	}
 
-
 	/**
 	 * Function to get the attachment ID from the attachment URL.
 	 *
-	 * @since 2.1
+	 * @since 3.3.0
 	 *
 	 * @param   string $attachment_url Attachment URL.
 	 * @return  int     Attachment ID
 	 */
 	public static function get_attachment_id_from_url( $attachment_url = '' ) {
-
-		global $wpdb;
-		$attachment_id = false;
-
-		// If there is no url, return.
-		if ( ! $attachment_url ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		// If there is no URL, return 0.
+		if ( ! $attachment_url ) {
 			return 0;
 		}
 
-		// Get the upload directory paths.
-		$upload_dir_paths = wp_upload_dir();
+		// Remove the image size suffix and extension.
+		$attachment_url = preg_replace( '/-\d+x\d+(?=\.[a-zA-Z]{2,5}$)/', '', $attachment_url );
 
-		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image.
-		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
-
-			// If this is the URL of an auto-generated thumbnail, get the URL of the original image.
-			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-
-			// Remove the upload path base directory from the attachment URL.
-			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-
-			// Finally, run a custom database query to get the attachment ID from the modified attachment URL.
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = %s AND wposts.post_type = 'attachment'", $attachment_url ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-		}
+		// Attempt to retrieve the attachment ID from the modified URL.
+		$attachment_id = attachment_url_to_postid( $attachment_url );
 
 		/**
 		 * Filter the attachment ID from the attachment URL.
 		 *
-		 * @since 2.1
+		 * @since 2.1.0
 		 *
-		 * @param   int     $attachment_id  Attachment ID
-		 * @param   string  $attachment_url Attachment URL
+		 * @param int $attachment_id Attachment ID.
+		 * @param string $attachment_url Attachment URL.
 		 */
 		return apply_filters( self::$prefix . '_get_attachment_id_from_url', $attachment_id, $attachment_url );
 	}
 
-
 	/**
 	 * Function to get the correct height and width of the thumbnail.
 	 *
-	 * @since   2.2.0
-	 * @since 3.1.0 First argument is a string.
+	 * @since 3.3.0
 	 *
 	 * @param  string $size Image size.
 	 * @return array Width and height. If no width and height is found, then 150 is returned for each.
@@ -569,9 +587,9 @@ class Media_Handler {
 		/**
 		 * Filter array of thumbnail size.
 		 *
-		 * @since   2.2.0
+		 * @since 2.2.0
 		 *
-		 * @param   array   $thumb_size Array with width and height of thumbnail
+		 * @param array   $thumb_size Array with width and height of thumbnail
 		 */
 		return apply_filters( self::$prefix . '_get_thumb_size', $thumb_size );
 	}
@@ -580,7 +598,7 @@ class Media_Handler {
 	/**
 	 * Get all image sizes.
 	 *
-	 * @since   2.0.0
+	 * @since 3.3.0
 	 *
 	 * @param string|int[] $size Image size.
 	 * @return array|bool  If a single size is specified, then the array with width, height and crop status

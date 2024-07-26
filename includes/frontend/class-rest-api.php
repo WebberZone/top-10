@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Frontend;
 
+use WebberZone\Top_Ten\Counter;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -37,6 +39,15 @@ class REST_API extends \WP_REST_Controller {
 	public $tracker_route;
 
 	/**
+	 * Counter Route.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @var string Counter Route.
+	 */
+	public $counter_route;
+
+	/**
 	 * Main constructor.
 	 *
 	 * @since 3.0.0
@@ -45,6 +56,7 @@ class REST_API extends \WP_REST_Controller {
 		$this->namespace     = 'top-10/v1';
 		$this->posts_route   = 'popular-posts';
 		$this->tracker_route = 'tracker';
+		$this->counter_route = 'counter';
 	}
 
 	/**
@@ -86,6 +98,16 @@ class REST_API extends \WP_REST_Controller {
 				'callback'            => array( $this, 'update_post_count' ),
 				'permission_callback' => array( $this, 'permissions_check' ),
 				'args'                => $this->get_tracker_params(),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->counter_route . '/(?P<id>[\d]+)',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_counter' ),
+				'permission_callback' => array( $this, 'permissions_check' ),
+				'args'                => $this->get_counter_params(),
 			)
 		);
 	}
@@ -186,7 +208,7 @@ class REST_API extends \WP_REST_Controller {
 		$data             = $posts_controller->prepare_item_for_response( $popular_post, $request );
 
 		// Add pageviews from popular_post object to response.
-		$visits               = isset( $popular_post->visits ) ? $popular_post->visits : \WebberZone\Top_Ten\Counter::get_post_count_only( $popular_post->ID );
+		$visits               = isset( $popular_post->visits ) ? $popular_post->visits : Counter::get_post_count_only( $popular_post->ID );
 		$data->data['visits'] = absint( $visits );
 
 		return $this->prepare_response_for_collection( $data );
@@ -216,6 +238,47 @@ class REST_API extends \WP_REST_Controller {
 			$response->header( 'Cache-Control', 'max-age=15, s-maxage=0' );
 			return $response;
 		}
+	}
+
+	/**
+	 * Get the counter.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param \WP_REST_Request $request WP Rest request.
+	 * @return mixed|\WP_REST_Response Array of post objects or post IDs.
+	 */
+	public function get_counter( $request ) {
+		$id = absint( $request->get_param( 'id' ) );
+
+		$error = new \WP_Error(
+			'rest_post_invalid_id',
+			__( 'Invalid post ID.', 'top-10' ),
+			array( 'status' => 404 )
+		);
+
+		if ( (int) $id <= 0 ) {
+			return $error;
+		}
+
+		$args = array();
+
+		$counter = sanitize_text_field( $request->get_param( 'counter' ) ) ? sanitize_text_field( $request->get_param( 'counter' ) ) : 'total';
+		$blog_id = absint( $request->get_param( 'blog_id' ) ) ? absint( $request->get_param( 'blog_id' ) ) : get_current_blog_id();
+
+		$from_date = sanitize_text_field( $request->get_param( 'from_date' ) );
+		$to_date   = sanitize_text_field( $request->get_param( 'to_date' ) );
+
+		if ( ! empty( $from_date ) ) {
+			$args['from_date'] = $from_date;
+		}
+		if ( ! empty( $to_date ) ) {
+			$args['to_date'] = $to_date;
+		}
+
+		$counter = absint( Counter::get_post_count_only( (int) $id, $counter, $blog_id, $args ) );
+
+		return rest_ensure_response( $counter );
 	}
 
 	/**
@@ -273,6 +336,45 @@ class REST_API extends \WP_REST_Controller {
 		);
 
 		return apply_filters( 'top_ten_rest_api_get_tracker_params', $args );
+	}
+
+	/**
+	 * Get counter params.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return array Top 10 REST API counter arguments.
+	 */
+	public function get_counter_params() {
+		$args = array(
+			'id'        => array(
+				'description'       => esc_html__( 'ID of the post.', 'top-10' ),
+				'type'              => 'integer',
+				'sanitize_callback' => 'absint',
+			),
+			'counter'   => array(
+				'description'       => esc_html__( 'Counter type.', 'top-10' ),
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'blog_id'   => array(
+				'description'       => esc_html__( 'Blog ID.', 'top-10' ),
+				'type'              => 'integer',
+				'sanitize_callback' => 'absint',
+			),
+			'from_date' => array(
+				'description'       => esc_html__( 'From date.', 'top-10' ),
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'to_date'   => array(
+				'description'       => esc_html__( 'To date.', 'top-10' ),
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+		);
+
+		return apply_filters( 'top_ten_rest_api_get_counter_params', $args );
 	}
 
 	/**
