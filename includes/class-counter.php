@@ -7,6 +7,7 @@
 
 namespace WebberZone\Top_Ten;
 
+use PHP_CodeSniffer\Util\Help;
 use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -223,7 +224,7 @@ class Counter {
 	/**
 	 * Returns the post count.
 	 *
-	 * @since   1.9.8.5
+	 * @since 3.3.0
 	 *
 	 * @param   int|\WP_Post $post    Post ID or WP_Post object.
 	 * @param   string       $counter Which count to return? total, daily or overall.
@@ -242,6 +243,8 @@ class Counter {
 
 		$defaults = array(
 			'format_number' => false,
+			'from_date'     => '',
+			'to_date'       => '',
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
@@ -256,19 +259,45 @@ class Counter {
 			$resultscount = false;
 			switch ( $counter ) {
 				case 'total':
-					$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess as visits FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$resultscount = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+						$wpdb->prepare(
+							"SELECT postnumber, cntaccess as visits FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+							$id,
+							$blog_id
+						)
+					);
 					break;
 				case 'daily':
-					$from_date = Helpers::get_from_date();
+					$from_date = ! empty( $args['from_date'] ) ? Helpers::get_from_date( $args['from_date'], 0, 0 ) : Helpers::get_from_date();
+					$to_date   = ! empty( $args['to_date'] ) ? Helpers::get_from_date( $args['to_date'], 0, 0 ) : null;
 
-					$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as visits FROM {$table_name_daily} WHERE postnumber = %d AND blog_id = %d AND dp_date >= %s GROUP BY postnumber ", array( $id, $blog_id, $from_date ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$base_query = "SELECT postnumber, SUM(cntaccess) as visits
+						FROM {$table_name_daily}
+						WHERE postnumber = %d
+						AND blog_id = %d
+						AND dp_date >= %s";
+
+					$query_params = array( $id, $blog_id, $from_date );
+
+					if ( $to_date ) {
+						$base_query    .= ' AND dp_date <= %s';
+						$query_params[] = $to_date;
+					}
+
+					$base_query .= ' GROUP BY postnumber';
+
+					$prepared_query = $wpdb->prepare( $base_query, $query_params ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+					$sql = $prepared_query;
+
+					$resultscount = $wpdb->get_row( $prepared_query );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 					break;
 				case 'overall':
 					$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as visits FROM ' . $table_name ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 					break;
 			}
 
-			$post_count = $resultscount ? $resultscount->visits : 0;
+			$post_count = $resultscount ? absint( $resultscount->visits ) : 0;
 			if ( $args['format_number'] ) {
 				$post_count = number_format_i18n( $post_count );
 			}
@@ -293,7 +322,7 @@ class Counter {
 	/**
 	 * Delete the counts from the selected table.
 	 *
-	 * @since 3.2.0
+	 * @since 3.3.0
 	 *
 	 * @param string|array $args {
 	 *     Optional. Array or string of Query parameters.
@@ -348,7 +377,7 @@ class Counter {
 	/**
 	 * Delete post count.
 	 *
-	 * @since 2.9.0
+	 * @since 3.3.0
 	 *
 	 * @param int  $post_id Post ID.
 	 * @param int  $blog_id Blog ID.
@@ -380,7 +409,7 @@ class Counter {
 	/**
 	 * Function to update the Top 10 count with ajax.
 	 *
-	 * @since 2.9.0
+	 * @since 3.3.0
 	 */
 	public static function edit_count_ajax() {
 		// Security check.
@@ -413,7 +442,7 @@ class Counter {
 	/**
 	 * Function to edit the count.
 	 *
-	 * @since 2.9.0
+	 * @since 3.3.0
 	 *
 	 * @param int $post_id Post ID.
 	 * @param int $blog_id Blog ID.
