@@ -162,12 +162,15 @@ class Counter {
 	/**
 	 * Return the formatted post count for the supplied ID.
 	 *
-	 * @since   3.3.0
+	 * @since  3.3.0
+	 * @since  3.4.0 Added $args parameter.
+	 *
 	 * @param   int|string|\WP_Post $post       Post ID or WP_Post object.
 	 * @param   int|string          $blog_id    Blog ID.
+	 * @param   array               $args       Additional arguments.
 	 * @return  string  Formatted post count
 	 */
-	public static function get_post_count( $post = 0, $blog_id = 0 ) {
+	public static function get_post_count( $post = 0, $blog_id = 0, $args = array() ) {
 		if ( $post instanceof \WP_Post ) {
 			$id = $post->ID;
 		} else {
@@ -178,8 +181,8 @@ class Counter {
 			return '';
 		}
 
-		$count_disp_form      = stripslashes( \tptn_get_option( 'count_disp_form' ) );
-		$count_disp_form_zero = stripslashes( \tptn_get_option( 'count_disp_form_zero' ) );
+		$count_disp_form      = isset( $args['count_disp_form'] ) ? $args['count_disp_form'] : stripslashes( \tptn_get_option( 'count_disp_form' ) );
+		$count_disp_form_zero = isset( $args['count_disp_form_zero'] ) ? $args['count_disp_form_zero'] : stripslashes( \tptn_get_option( 'count_disp_form_zero' ) );
 		$total_count          = self::get_post_count_only( $id, 'total', $blog_id );
 		$is_singular          = is_singular();
 		$is_zero_total_count  = ( 0 === (int) $total_count );

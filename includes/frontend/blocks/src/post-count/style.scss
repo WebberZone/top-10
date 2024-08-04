@@ -1,0 +1,39 @@
+.wp-block-tptn-post-count {
+	display: flex;
+	align-items: center;
+	column-gap: 0.2em;
+}
+
+.tptn-post-count-icon svg {
+	width: 1em;
+	height: 1em;
+}
+
+.tptn-post-count-icon {
+	display: flex;
+	align-items: center;
+}
+
+.wp-block-tptn-post-count.has-text-align-left {
+	text-align: left;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	/* Optional for vertical alignment */
+}
+
+.wp-block-tptn-post-count.has-text-align-center {
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* Optional for vertical alignment */
+}
+
+.wp-block-tptn-post-count.has-text-align-right {
+	text-align: right;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	/* Optional for vertical alignment */
+}
