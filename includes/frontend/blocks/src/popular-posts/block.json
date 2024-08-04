@@ -6,7 +6,7 @@
 	"title": "Top 10 Popular Posts",
 	"category": "widgets",
 	"icon": "editor-ol",
-	"keywords": [ "top 10", "popular posts", "popular" ],
+	"keywords": ["top 10", "popular posts", "popular"],
 	"description": "Display the Popular Posts",
 	"supports": {
 		"html": false
