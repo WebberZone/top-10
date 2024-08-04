@@ -1,0 +1,138 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "top-10/post-count",
+  "version": "1.0.0",
+  "title": "Top 10 Post Count",
+  "category": "text",
+  "description": "Display the number of visits for a post.",
+  "attributes": {
+    "className": {
+      "type": "string",
+      "default": ""
+    },
+    "textAlign": {
+      "type": "string"
+    },
+    "counter": {
+      "type": "string",
+      "default": "total"
+    },
+    "fromDate": {
+      "type": "string",
+      "default": ""
+    },
+    "toDate": {
+      "type": "string",
+      "default": ""
+    },
+    "textBefore": {
+      "type": "string",
+      "default": ""
+    },
+    "textAfter": {
+      "type": "string",
+      "default": ""
+    },
+    "advancedMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "textAdvanced": {
+      "type": "string",
+      "default": ""
+    },
+    "numberFormat": {
+      "type": "boolean",
+      "default": false
+    },
+    "svgCode": {
+      "type": "string",
+      "default": ""
+    },
+    "svgIconLocation": {
+      "type": "string",
+      "default": "before"
+    },
+    "svgPaddingValues": {
+      "type": "array",
+      "default": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "items": {
+        "type": "number"
+      }
+    },
+    "svgPaddingUnits": {
+      "type": "array",
+      "default": [
+        "px",
+        "px",
+        "px",
+        "px"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "svgIconSize": {
+      "type": "string",
+      "default": "1"
+    },
+    "svgIconSizeUnit": {
+      "type": "string",
+      "default": "em"
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId"
+  ],
+  "example": {
+    "viewportWidth": 350
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "color": {
+      "gradients": true,
+      "link": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true,
+        "link": true
+      }
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalTextTransform": true,
+      "__experimentalTextDecoration": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    },
+    "interactivity": {
+      "clientNavigation": true
+    }
+  },
+  "textdomain": "top-10",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewStyle": "file:./style-index.css"
+}
