@@ -42,7 +42,7 @@ import {
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit({ attributes, setAttributes }) {
 	const {
 		heading,
 		daily,
@@ -61,293 +61,287 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const blockProps = useBlockProps();
 	const toggleHeading = () => {
-		setAttributes( { heading: ! heading } );
+		setAttributes({ heading: !heading });
 	};
 	const toggleDaily = () => {
-		setAttributes( { daily: ! daily } );
+		setAttributes({ daily: !daily });
 	};
-	const onChangeDailyRange = ( newDailyRange ) => {
-		setAttributes( {
+	const onChangeDailyRange = (newDailyRange) => {
+		setAttributes({
 			daily_range: undefined === newDailyRange ? '' : newDailyRange,
-		} );
+		});
 	};
-	const onChangeHourRange = ( newHourRange ) => {
-		setAttributes( {
+	const onChangeHourRange = (newHourRange) => {
+		setAttributes({
 			hour_range: undefined === newHourRange ? '' : newHourRange,
-		} );
+		});
 	};
-	const onChangeLimit = ( newLimit ) => {
-		setAttributes( {
+	const onChangeLimit = (newLimit) => {
+		setAttributes({
 			limit: undefined === newLimit ? '' : newLimit,
-		} );
+		});
 	};
-	const onChangeOffset = ( newOffset ) => {
-		setAttributes( {
+	const onChangeOffset = (newOffset) => {
+		setAttributes({
 			offset: undefined === newOffset ? '' : newOffset,
-		} );
+		});
 	};
 	const toggleShowExcerpt = () => {
-		setAttributes( { show_excerpt: ! show_excerpt } );
+		setAttributes({ show_excerpt: !show_excerpt });
 	};
 	const toggleShowAuthor = () => {
-		setAttributes( { show_author: ! show_author } );
+		setAttributes({ show_author: !show_author });
 	};
 	const toggleShowDate = () => {
-		setAttributes( { show_date: ! show_date } );
+		setAttributes({ show_date: !show_date });
 	};
 	const toggleShowCount = () => {
-		setAttributes( { disp_list_count: ! disp_list_count } );
+		setAttributes({ disp_list_count: !disp_list_count });
 	};
-	const onChangeThumbnail = ( newThumbnailLoc ) => {
-		setAttributes( { post_thumb_op: newThumbnailLoc } );
+	const onChangeThumbnail = (newThumbnailLoc) => {
+		setAttributes({ post_thumb_op: newThumbnailLoc });
 	};
-	const onChangePostStyle = ( newPostStyle ) => {
-		setAttributes( { tptn_styles: newPostStyle } );
+	const onChangePostStyle = (newPostStyle) => {
+		setAttributes({ tptn_styles: newPostStyle });
 	};
-	const onChangeOtherAttributes = ( newOtherAttributes ) => {
-		setAttributes( {
+	const onChangeOtherAttributes = (newOtherAttributes) => {
+		setAttributes({
 			other_attributes:
 				undefined === newOtherAttributes ? '' : newOtherAttributes,
-		} );
+		});
 	};
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Popular Posts Settings', 'top-10' ) }
-					initialOpen={ true }
+					title={__('Popular Posts Settings', 'top-10')}
+					initialOpen={true}
 				>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Show heading', 'top-10' ) }
+								label={__('Show heading', 'top-10')}
 								help={
 									heading
-										? __( 'Heading displayed', 'top-10' )
-										: __( 'No Heading displayed', 'top-10' )
+										? __('Heading displayed', 'top-10')
+										: __('No Heading displayed', 'top-10')
 								}
-								checked={ heading }
-								onChange={ toggleHeading }
+								checked={heading}
+								onChange={toggleHeading}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Custom period?', 'top-10' ) }
+								label={__('Custom period?', 'top-10')}
 								help={
 									daily
-										? __( 'Set range below', 'top-10' )
+										? __('Set range below', 'top-10')
 										: __(
 												'Overall popular posts will be shown',
 												'top-10'
-										  )
+											)
 								}
-								checked={ daily }
-								onChange={ toggleDaily }
+								checked={daily}
+								onChange={toggleDaily}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<TextControl
-								label={ __( 'Daily range', 'top-10' ) }
-								value={ daily_range }
-								onChange={ onChangeDailyRange }
-								help={ __( 'Number of days', 'top-10' ) }
+								label={__('Daily range', 'top-10')}
+								value={daily_range}
+								onChange={onChangeDailyRange}
+								help={__('Number of days', 'top-10')}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<TextControl
-								label={ __( 'Hour range', 'top-10' ) }
-								value={ hour_range }
-								onChange={ onChangeHourRange }
-								help={ __( 'Number of hours', 'top-10' ) }
+								label={__('Hour range', 'top-10')}
+								value={hour_range}
+								onChange={onChangeHourRange}
+								help={__('Number of hours', 'top-10')}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<TextControl
-								label={ __( 'Number of posts', 'top-10' ) }
-								value={ limit }
-								onChange={ onChangeLimit }
-								help={ __(
+								label={__('Number of posts', 'top-10')}
+								value={limit}
+								onChange={onChangeLimit}
+								help={__(
 									'Maximum number of posts to display',
 									'top-10'
-								) }
+								)}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<TextControl
-								label={ __( 'Offset', 'top-10' ) }
-								value={ offset }
-								onChange={ onChangeOffset }
-								help={ __(
+								label={__('Offset', 'top-10')}
+								value={offset}
+								onChange={onChangeOffset}
+								help={__(
 									'Number of posts to skip from the top',
 									'top-10'
-								) }
+								)}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Show excerpt', 'top-10' ) }
+								label={__('Show excerpt', 'top-10')}
 								help={
 									show_excerpt
-										? __( 'Excerpt displayed', 'top-10' )
-										: __( 'No excerpt', 'top-10' )
+										? __('Excerpt displayed', 'top-10')
+										: __('No excerpt', 'top-10')
 								}
-								checked={ show_excerpt }
-								onChange={ toggleShowExcerpt }
+								checked={show_excerpt}
+								onChange={toggleShowExcerpt}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Show author', 'top-10' ) }
+								label={__('Show author', 'top-10')}
 								help={
 									show_author
 										? __(
 												'"by Author Name" displayed',
 												'top-10'
-										  )
-										: __( 'No author displayed', 'top-10' )
+											)
+										: __('No author displayed', 'top-10')
 								}
-								checked={ show_author }
-								onChange={ toggleShowAuthor }
+								checked={show_author}
+								onChange={toggleShowAuthor}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Show date', 'top-10' ) }
+								label={__('Show date', 'top-10')}
 								help={
 									show_date
-										? __(
-												'Date of post displayed',
-												'top-10'
-										  )
+										? __('Date of post displayed', 'top-10')
 										: __(
 												'Date of post not displayed',
 												'top-10'
-										  )
+											)
 								}
-								checked={ show_date }
-								onChange={ toggleShowDate }
+								checked={show_date}
+								onChange={toggleShowDate}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<ToggleControl
-								label={ __( 'Show count', 'top-10' ) }
+								label={__('Show count', 'top-10')}
 								help={
 									disp_list_count
 										? __(
 												'Display number of visits',
 												'top-10'
-										  )
+											)
 										: __(
 												'Number of visits hidden',
 												'top-10'
-										  )
+											)
 								}
-								checked={ disp_list_count }
-								onChange={ toggleShowCount }
+								checked={disp_list_count}
+								onChange={toggleShowCount}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<SelectControl
-								label={ __( 'Styles', 'top-10' ) }
-								value={ tptn_styles }
-								onChange={ onChangePostStyle }
-								help={ __(
+								label={__('Styles', 'top-10')}
+								value={tptn_styles}
+								onChange={onChangePostStyle}
+								help={__(
 									'Select the style of the Popular Posts',
 									'top-10'
-								) }
-								options={ [
+								)}
+								options={[
 									{
 										value: 'no_style',
-										label: __( 'No styles', 'top-10' ),
+										label: __('No styles', 'top-10'),
 									},
 									{
 										value: 'text_only',
-										label: __( 'Text only', 'top-10' ),
+										label: __('Text only', 'top-10'),
 									},
 									{
 										value: 'left_thumbs',
-										label: __(
-											'Left thumbnails',
-											'top-10'
-										),
+										label: __('Left thumbnails', 'top-10'),
 									},
-								] }
+								]}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<SelectControl
-								label={ __( 'Thumbnail option', 'top-10' ) }
-								value={ post_thumb_op }
-								onChange={ onChangeThumbnail }
-								help={ __(
+								label={__('Thumbnail option', 'top-10')}
+								value={post_thumb_op}
+								onChange={onChangeThumbnail}
+								help={__(
 									'Location of the post thumbnail',
 									'top-10'
-								) }
-								options={ [
+								)}
+								options={[
 									{
 										value: 'inline',
-										label: __( 'Before title', 'top-10' ),
+										label: __('Before title', 'top-10'),
 									},
 									{
 										value: 'after',
-										label: __( 'After title', 'top-10' ),
+										label: __('After title', 'top-10'),
 									},
 									{
 										value: 'thumbs_only',
-										label: __( 'Only thumbnail', 'top-10' ),
+										label: __('Only thumbnail', 'top-10'),
 									},
 									{
 										value: 'text_only',
-										label: __( 'Only text', 'top-10' ),
+										label: __('Only text', 'top-10'),
 									},
-								] }
+								]}
 							/>
 						</fieldset>
 					</PanelRow>
 					<PanelRow>
 						<fieldset>
 							<TextareaControl
-								label={ __( 'Other attributes', 'top-10' ) }
-								value={ other_attributes }
-								onChange={ onChangeOtherAttributes }
-								help={ __(
+								label={__('Other attributes', 'top-10')}
+								value={other_attributes}
+								onChange={onChangeOtherAttributes}
+								help={__(
 									'Enter other attributes in a URL-style string-query. e.g. post_types=post,page&link_nofollow=1&exclude_post_ids=5,6',
 									'top-10'
-								) }
+								)}
 							/>
 						</fieldset>
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
 
-			<div { ...blockProps }>
+			<div {...blockProps}>
 				<Disabled>
 					<ServerSideRender
 						block="top-10/popular-posts"
-						attributes={ attributes }
+						attributes={attributes}
 						urlQueryArgs={{ _locale: 'site' }}
 					/>
 				</Disabled>
