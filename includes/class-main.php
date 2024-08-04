@@ -156,8 +156,6 @@ final class Main {
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
 
-		$this->pro = new Pro\Pro();
-
 		$this->hooks();
 
 		if ( is_admin() ) {
