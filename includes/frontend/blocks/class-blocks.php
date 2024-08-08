@@ -242,7 +242,7 @@ class Blocks {
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => implode( ' ', $classes ) ) );
 
 		return sprintf(
-			'<div %1$s>%2$s</div>',
+			'<span %1$s>%2$s</span>',
 			$wrapper_attributes,
 			wp_kses( $output, self::get_allowed_svg_tags() )
 		);
