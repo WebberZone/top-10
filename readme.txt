@@ -1,10 +1,10 @@
 === Top 10  - WordPress Popular posts by WebberZone ===
-Tags: popular posts, top 10, counter, top posts, daily popular, page views, statistics, tracker
+Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 3.3.4
-Requires at least: 6.0
-Tested up to: 6.5
+Requires at least: 6.3
+Tested up to: 6.6
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -65,6 +65,8 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 * [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
 * [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
 * [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
+* [Popular Authors](https://wordpress.org/plugins/popular-authors/) - Display popular authors in your WordPress widget
+* [Followed Posts](https://wordpress.org/plugins/where-did-they-go-from-here/) - Show a list of related posts based on what your users have read
 
 
 == Screenshots ==
@@ -143,68 +145,28 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.3.4 =
+= 3.4.0 =
+
+* Feature:
+	* New REST API route (counter) to get the post count for a post.
+	* New block: Top 10 Post Count Block that allows you to display the post count for a post.
+	* [Pro] New Top 10 Query Block that allows you to query related posts using a block in the block or site editor.
+	* [Pro] New Top 10 Featured Image Block that is an advanced version of the featured image block that supports multiple different image sources.
+	* [Pro] Pro version adds additional features to the Popular Posts block:
+		* New buttons to save default block settings and clear them.
+		* Inserting the block will also insert the attributes for the default and global settings automatically. This can be disabled in the settings page under the **Posts List** tab.
 
 * Enhancements:
-	* Exporting and importing the post tables now supports post URLs. This will allow you to import the post tables into a different site and have the correct counts. Note: This will only work if the URLs are the same on both sites. If you have changed the URL structure, you will need to manually update the URLs in the exported CSV file
-	* Cache is enabled by default
-
-* Bug fixes:
-	* Fixed a bug where the cron job would not run
-
-= 3.3.3 =
-
-Release post: [https://webberzone.com/announcements/top-10-v3-3-0/](https://webberzone.com/announcements/top-10-v3-3-0/)
-
-* Enhancements:
-	* Media Handler checks the title of the image if the alt tag is empty
-
-* Bug fixes:
-	* Check if `$wp_filters['the_content']` is set. Fixes a PHP warning for users running WordPress before 6.1
-	* `Import_Export` Class: Fix unnecessary check for `network_admin_menu` filter; Minor code fixes to set headers before outputting data
-	* Number fields in the block were not saved.
-
-* Security fix:
-	* Check nonce before editing post counts in the Admin area
-
-= 3.3.2 =
-
-* Enhancements:
-	* Shortcode `tptn_views` takes two new parameters: `format_number` to apply `number_format_i18n` and `post_id` which takes a post ID. Default is the post being viewed
-
-* Bug fixes:
-	* Plugin activator function didn't run on activation - Top 10's database tables were not created
-
-= 3.3.1 =
-
-* Enhancements/Modifications:
-	* When displaying the post thumbnail, the Media Handler will first use the image's alt tag set in the Media editor. If alt tag is empty, then it will use the post title as a fallback. Filter `tptn_thumb_use_image_alt` and set it to false to not use the alt tag. Filter `tptn_thumb_alt_fallback_post_title` and set it to false to disable the alt tag
-	* Orderby clause modified to ensure compatibility if any other plugin rewrites the WP_Query fields
-	* Media Handler will check if the meta field contains a valid URL
-	* When saving settings, the thumbnail width and height is forced if either the width or height of the thumbnail setting is set to 0
-
-* Bug fixes:
-	* Function `wp_img_tag_add_loading_attr` is deprecated since version 6.3.0
-	* Bug in `the_content` filter detection which sometimes caused the counter not to display
-	* `tptn_thumbnail` settings size disappeared from Settings page if this was deselected
-    * `meta_query` argument was ignored
-
-= 3.3.0 =
-
-* Features:
-	* Added new setting to stop tracking bots. Top 10 now includes a comprehensive set of bot user agents via https://github.com/janusman/robot-user-agents
-
-* Enhancements/Modifications:
-	* Complete rewrite of Top 10 plugin to use Classes and autoloading
-	* `get_tptn_post_count_only()` and `get_tptn_post_count` can also take a `WP_Post` object and returns an integer only without the count being number formatted
-	* `tptn_list` shortcode now accepts `WP_Query` parameters. You can also pass typical array only parameters as a comma-separated list
-	* Tracker script no longer require jQuery
-	* Widget styles are handled properly with the block editor
-
-* Bug fixes:
-	* Post count should only display once within the content within the main loop
-	* Fixed data labels in the Dashboard graphs
-	* Custom Post Type labels could cause an issue in Network view of popular posts
+	* The plugin supports `WP_Query` directly if `top_ten_query` is set in the query arguments.
+	* Optimized media handler to reduce the number of queries.
+	* New filter: `tptn_shortcode_defaults` to filter the default shortcode arguments.
+	* Media Handler changes:
+		* New parameters `use_site_icon` and `style`.
+		* Method `get_image_html()` will use `wp_get_attachment_image()` if a valid attachment ID is passed.
+		* Support for `decoding`, `loading` and `fetchpriority` attributes.
+		* `get_attachment_id_from_url()` will strip size suffixes from the URL before attempting to find the attachment ID.
+	* Updated top-10/popular-posts block to API version 3.
+	* New parameter $more_link_text for get_the_excerpt().
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
