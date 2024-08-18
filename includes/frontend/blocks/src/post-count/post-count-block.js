@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
 import apiFetch from '@wordpress/api-fetch';
@@ -127,7 +127,9 @@ const PostCountBlock = ({ attributes, context }) => {
 		}
 	};
 	const renderIcon = () => {
-		if (!svgCode) return null;
+		if (!svgCode) {
+			return null;
+		}
 
 		const paddingStyle = `padding:${svgPaddingValues.map((val, index) => `${val}${svgPaddingUnits[index]}`).join(' ')};`;
 		const svgStyle = `width: ${svgIconSize}${svgIconSizeUnit}; height: ${svgIconSize}${svgIconSizeUnit}; ${paddingStyle}`;

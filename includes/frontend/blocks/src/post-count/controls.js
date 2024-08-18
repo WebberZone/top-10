@@ -47,7 +47,9 @@ const Controls = ({ attributes, setAttributes }) => {
 	const [isSvgModalOpen, setIsSvgModalOpen] = useState(false);
 
 	const formatDate = (date) => {
-		if (!date) return '';
+		if (!date) {
+			return '';
+		}
 		const d = new Date(date);
 		return d.toISOString().split('T')[0];
 	};
