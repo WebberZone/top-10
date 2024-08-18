@@ -102,14 +102,14 @@ const PaddingControl = ({ attributes, setAttributes }) => {
 					}}
 				>
 					{[
-						{ index: 0, label: 'Top' },
-						{ index: 1, label: 'Right' },
-						{ index: 2, label: 'Bottom' },
-						{ index: 3, label: 'Left' },
+						{ index: 0, label: __('Top', 'top-10') },
+						{ index: 1, label: __('Right', 'top-10') },
+						{ index: 2, label: __('Bottom', 'top-10') },
+						{ index: 3, label: __('Left', 'top-10') },
 					].map(({ index, label }) => (
 						<UnitControl
 							key={index}
-							label={__(label, 'top-10')}
+							label={label}
 							value={svgPaddingValues[index]}
 							unit={svgPaddingUnits[index]}
 							onValueChange={(value) =>
