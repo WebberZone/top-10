@@ -82,8 +82,8 @@ class Helpers {
 	public static function get_from_date( $time = null, $daily_range = null, $hour_range = null ) {
 
 		$current_time = isset( $time ) ? strtotime( $time ) : strtotime( current_time( 'mysql' ) );
-		$daily_range  = isset( $daily_range ) ? $daily_range : \tptn_get_option( 'daily_range' );
-		$hour_range   = isset( $hour_range ) ? $hour_range : \tptn_get_option( 'hour_range' );
+		$daily_range  = isset( $daily_range ) ? absint( $daily_range ) : (int) \tptn_get_option( 'daily_range' );
+		$hour_range   = isset( $hour_range ) ? absint( $hour_range ) : (int) \tptn_get_option( 'hour_range' );
 
 		if ( \tptn_get_option( 'daily_midnight' ) ) {
 			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
