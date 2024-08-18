@@ -8,9 +8,9 @@
 [![Required PHP](https://img.shields.io/wordpress/plugin/required-php/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Active installs](https://img.shields.io/wordpress/plugin/installs/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
 
-__Requires:__ 5.9
+__Requires:__ 6.3
 
-__Tested up to:__ 6.4
+__Tested up to:__ 6.6
 
 __Requires PHP:__ 7.4
 
