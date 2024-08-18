@@ -9,6 +9,7 @@
 namespace WebberZone\Top_Ten\Frontend\Blocks;
 
 use WebberZone\Top_Ten\Counter;
+use WebberZone\Top_Ten\Frontend\Styles_Handler;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -38,23 +39,39 @@ class Blocks {
 	 * @since 3.1.0
 	 */
 	public function register_blocks() {
-		// Register Popular Posts block.
-		register_block_type(
-			__DIR__ . '/build/popular-posts/',
-			array(
+		// Define an array of blocks with their paths and optional render callbacks.
+		$blocks = array(
+			'popular-posts' => array(
+				'path'            => __DIR__ . '/build/popular-posts/',
 				'render_callback' => array( $this, 'render_block_popular_posts' ),
-			)
-		);
-
-		// Register Post Count block.
-		register_block_type(
-			__DIR__ . '/build/post-count/',
-			array(
+			),
+			'post-count'    => array(
+				'path'            => __DIR__ . '/build/post-count/',
 				'render_callback' => array( $this, 'render_block_post_count' ),
-			)
+			),
 		);
-	}
 
+		/**
+		 * Filters the blocks registered by the plugin.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array $blocks Array of blocks registered by the plugin.
+		 */
+		$blocks = apply_filters( 'tptn_register_blocks', $blocks );
+
+		// Loop through each block and register it.
+		foreach ( $blocks as $block_name => $block_data ) {
+			$args = array();
+
+			// If a render callback is provided, add it to the args.
+			if ( isset( $block_data['render_callback'] ) ) {
+				$args['render_callback'] = $block_data['render_callback'];
+			}
+
+			register_block_type( $block_data['path'], $args );
+		}
+	}
 
 	/**
 	 * Renders the `top-10/popular-posts` block on server.
@@ -66,16 +83,21 @@ class Blocks {
 	 */
 	public static function render_block_popular_posts( $attributes ) {
 
-		$attributes['extra_class'] = esc_attr( $attributes['className'] );
+		$attributes['extra_class'] = isset( $attributes['className'] ) ? esc_attr( $attributes['className'] ) : '';
 
-		$arguments = array_merge(
-			$attributes,
+		$defaults = array_merge(
+			\tptn_settings_defaults(),
+			\tptn_get_settings(),
 			array(
 				'is_block' => 1,
 			)
 		);
 
-		$arguments = wp_parse_args( $attributes['other_attributes'], $arguments );
+		$arguments = wp_parse_args( $attributes, $defaults );
+
+		if ( isset( $attributes['other_attributes'] ) ) {
+			$arguments = wp_parse_args( $attributes['other_attributes'], $arguments );
+		}
 
 		/**
 		 * Filters arguments passed to get_tptn for the block.
@@ -88,7 +110,7 @@ class Blocks {
 		$arguments = apply_filters( 'tptn_block_options', $arguments, $attributes );
 
 		// Enqueue the stylesheet for the selected style for this block.
-		$style_array = \WebberZone\Top_Ten\Frontend\Styles_Handler::get_style( $arguments['tptn_styles'] );
+		$style_array = Styles_Handler::get_style( $arguments['tptn_styles'] );
 
 		if ( ! empty( $style_array['name'] ) ) {
 			$style     = $style_array['name'];
@@ -411,7 +433,7 @@ class Blocks {
 	 */
 	public static function enqueue_block_editor_assets() {
 
-		$style_array = \WebberZone\Top_Ten\Frontend\Styles_Handler::get_style();
+		$style_array = Styles_Handler::get_style();
 		$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		if ( ! empty( $style_array['name'] ) ) {

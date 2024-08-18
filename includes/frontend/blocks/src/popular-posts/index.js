@@ -1,18 +1,7 @@
-/**
- * Registers a new block provided a unique name and an object defining its behavior.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 import { registerBlockType } from '@wordpress/blocks';
 
-/**
- * Internal dependencies
- */
+import { postIcon } from './components/icons';
 import Edit from './edit';
-
-/**
- * Import metadata
- */
 import metadata from './block.json';
 
 /**
@@ -21,12 +10,7 @@ import metadata from './block.json';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType(metadata.name, {
-	/**
-	 * @see ./edit.js
-	 */
+	...metadata,
+	icon: postIcon,
 	edit: Edit,
-
-	save() {
-		return null;
-	},
 });
