@@ -17,60 +17,46 @@
   },
   "attributes": {
     "className": {
-      "type": "string",
-      "default": ""
+      "type": "string"
     },
     "heading": {
-      "type": "boolean",
-      "default": true
+      "type": "boolean"
     },
     "daily": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "daily_range": {
-      "type": "string",
-      "default": 1
+      "type": "string"
     },
     "hour_range": {
-      "type": "string",
-      "default": 0
+      "type": "string"
     },
     "limit": {
-      "type": "string",
-      "default": 6
+      "type": "string"
     },
     "offset": {
-      "type": "string",
-      "default": 0
+      "type": "string"
     },
     "show_excerpt": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "show_author": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "show_date": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "disp_list_count": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "tptn_styles": {
-      "type": "string",
-      "default": "no_style"
+      "type": "string"
     },
     "post_thumb_op": {
-      "type": "string",
-      "default": "text_only"
+      "type": "string"
     },
     "other_attributes": {
-      "type": "string",
-      "default": ""
+      "type": "string"
     }
   },
   "textdomain": "top-10",
