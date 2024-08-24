@@ -249,17 +249,45 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		if ( ! empty( $args['include_cat_ids'] ) ) {
+
+			/**
+			 * Filter to include the parent terms when including terms.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param bool|string   $include_terms_include_parents    False to exclude only the categories specified,
+			 *                                                        'parent' to include the parent categories and
+			 *                                                        'all' to include all the ancestors. Default is false.
+			 */
+			$include_terms_include_parents = apply_filters( 'top_ten_query_include_terms_include_parents', false );
+
+			$include_terms_include_parents = $include_terms_include_parents ? wz_get_all_parent_ids( wp_parse_id_list( $args['include_cat_ids'] ), $include_terms_include_parents ) : wp_parse_id_list( $args['include_cat_ids'] );
+
 			$tax_query[] = array(
 				'field'            => 'term_taxonomy_id',
-				'terms'            => wp_parse_id_list( $args['include_cat_ids'] ),
+				'terms'            => $include_terms_include_parents,
 				'include_children' => false,
 			);
 		}
 
 		if ( ! empty( $args['exclude_categories'] ) ) {
+
+			/**
+			 * Filter to include the parent categories when excluding categories.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param bool|string   $exclude_terms_include_parents    False to exclude only the categories specified,
+			 *                                                        'parent' to include the parent categories and
+			 *                                                        'all' to include all the ancestors. Default is false.
+			 */
+			$exclude_terms_include_parents = apply_filters( 'top_ten_query_exclude_terms_include_parents', false );
+
+			$exclude_categories = $exclude_terms_include_parents ? wz_get_all_parent_ids( wp_parse_id_list( $args['exclude_categories'] ), $exclude_terms_include_parents ) : wp_parse_id_list( $args['exclude_categories'] );
+
 			$tax_query[] = array(
 				'field'            => 'term_taxonomy_id',
-				'terms'            => wp_parse_id_list( $args['exclude_categories'] ),
+				'terms'            => $exclude_categories,
 				'operator'         => 'NOT IN',
 				'include_children' => false,
 			);
