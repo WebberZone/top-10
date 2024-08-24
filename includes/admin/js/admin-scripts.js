@@ -1,14 +1,28 @@
-// Function to clear the cache.
-function clearCache() {
-	jQuery.post(ajaxurl, {
-		action: 'tptn_clear_cache',
-		security: tptn_admin_data.security
-	}, function (response, textStatus, jqXHR) {
-		alert(response.message);
-	}, 'json');
-}
-
 jQuery(document).ready(function ($) {
+
+	$('button[name="tptn_cache_clear"]').on('click', function () {
+		if (confirm(top_ten_admin_data.confirm_message)) {
+			clearCache();
+		}
+	});
+
+	// Function to clear the cache.
+	function clearCache() {
+		$.post(top_ten_admin_data.ajax_url, {
+			action: 'tptn_clear_cache',
+			security: top_ten_admin_data.security
+		}, function (response) {
+			if (response.success) {
+				alert(response.data.message);
+			} else {
+				alert(top_ten_admin_data.fail_message);
+			}
+		}).fail(function (jqXHR, textStatus) {
+			alert(top_ten_admin_data.request_fail_message + textStatus);
+		});
+	}
+
+
 	// Prompt the user when they leave the page without saving the form.
 	var formmodified = 0;
 
@@ -26,15 +40,11 @@ jQuery(document).ready(function ($) {
 		formmodified = 0;
 	}
 
-	$('form *').change(confirmFormChange);
+	$('form').on('change', 'input, textarea, select', confirmFormChange);
 
 	window.onbeforeunload = confirmExit;
 
-	$("input[name='submit']").click(formNotModified);
-	$("input[id='search-submit']").click(formNotModified);
-	$("input[id='doaction']").click(formNotModified);
-	$("input[id='doaction2']").click(formNotModified);
-	$("input[name='filter_action']").click(formNotModified);
+	$('input[name="submit"], input#search-submit, input#doaction, input#doaction2, input[name="filter_action"]').on('click', formNotModified);
 
 	$(function () {
 		$("#post-body-content").tabs({
@@ -83,10 +93,10 @@ jQuery(document).ready(function ($) {
 	});
 
 	// Editable table code.
-	$('.live_edit').click(function () {
-		$(this).addClass('live_edit_mode');
-		$(this).removeClass("live_edit_mode_success");
-		$(this).removeClass("live_edit_mode_error");
+	$('.live_edit').on('click', function () {
+		$(this)
+			.addClass('live_edit_mode')
+			.removeClass('live_edit_mode_success live_edit_mode_error');
 	});
 
 	$(".live_edit").on('focusout keypress', function (e) {

@@ -146,9 +146,10 @@ class Settings {
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 11, 2 );
 		add_filter( 'plugin_action_links_' . plugin_basename( TOP_TEN_PLUGIN_FILE ), array( $this, 'plugin_actions_links' ) );
 		add_filter( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 99 );
-		add_filter( 'tptn_settings_sanitize', array( $this, 'change_settings_on_save' ), 99 );
-		add_filter( 'tptn_after_setting_output', array( $this, 'display_admin_thumbnail' ), 10, 2 );
-		add_filter( 'tptn_setting_field_description', array( $this, 'reset_default_thumb_setting' ), 10, 2 );
+		add_filter( self::$prefix . '_settings_sanitize', array( $this, 'change_settings_on_save' ), 99 );
+		add_filter( self::$prefix . '_after_setting_output', array( $this, 'display_admin_thumbnail' ), 10, 2 );
+		add_filter( self::$prefix . '_setting_field_description', array( $this, 'reset_default_thumb_setting' ), 10, 2 );
+		add_filter( self::$prefix . '_after_setting_output', array( $this, 'after_setting_output' ), 10, 2 );
 	}
 
 	/**
@@ -566,7 +567,15 @@ class Settings {
 	 */
 	public static function settings_list() {
 		$settings = array(
-			'limit'                   => array(
+			'use_global_settings'           => array(
+				'id'      => 'use_global_settings',
+				'name'    => esc_html__( 'Use global settings in block', 'top-10' ),
+				'desc'    => esc_html__( 'If activated, the settings from this page are automatically inserted in the Popular Posts block. This also applies to existing blocks which do not have any attributes set if the post is edited.', 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => false,
+				'pro'     => true,
+			),
+			'limit'                         => array(
 				'id'      => 'limit',
 				'name'    => esc_html__( 'Number of posts to display', 'top-10' ),
 				'desc'    => esc_html__( 'Maximum number of posts that will be displayed in the list. This option is used if you do not specify the number of posts in the widget or shortcodes', 'top-10' ),
@@ -574,42 +583,42 @@ class Settings {
 				'options' => '10',
 				'size'    => 'small',
 			),
-			'how_old'                 => array(
+			'how_old'                       => array(
 				'id'      => 'how_old',
 				'name'    => esc_html__( 'Published age of posts', 'top-10' ),
 				'desc'    => esc_html__( 'This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists. e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction.', 'top-10' ),
 				'type'    => 'number',
 				'options' => '0',
 			),
-			'post_types'              => array(
+			'post_types'                    => array(
 				'id'      => 'post_types',
 				'name'    => esc_html__( 'Post types to include', 'top-10' ),
 				'desc'    => esc_html__( 'At least one option should be selected above. Select which post types you want to include in the list of posts. This field can be overridden using a comma separated list of post types when using the manual display.', 'top-10' ),
 				'type'    => 'posttypes',
 				'options' => 'post',
 			),
-			'exclude_front'           => array(
+			'exclude_front'                 => array(
 				'id'      => 'exclude_front',
 				'name'    => esc_html__( 'Exclude Front page and Posts page', 'top-10' ),
 				'desc'    => esc_html__( 'If you have set your Front page and Posts page to be specific pages via Settings > Reading, then these will be tracked similar to other pages. Enable this option to exclude them from showing up in the popular posts lists. The tracking will not be disabled.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'exclude_current_post'    => array(
+			'exclude_current_post'          => array(
 				'id'      => 'exclude_current_post',
 				'name'    => esc_html__( 'Exclude current post', 'top-10' ),
 				'desc'    => esc_html__( 'Enabling this will exclude the current post being browsed from being displayed in the popular posts list.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'exclude_post_ids'        => array(
+			'exclude_post_ids'              => array(
 				'id'      => 'exclude_post_ids',
 				'name'    => esc_html__( 'Post/page IDs to exclude', 'top-10' ),
 				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude from the list. e.g. 188,320,500', 'top-10' ),
 				'type'    => 'numbercsv',
 				'options' => '',
 			),
-			'exclude_cat_slugs'       => array(
+			'exclude_cat_slugs'             => array(
 				'id'               => 'exclude_cat_slugs',
 				'name'             => esc_html__( 'Exclude Categories', 'top-10' ),
 				'desc'             => esc_html__( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.', 'top-10' ),
@@ -621,7 +630,20 @@ class Settings {
 					'data-wp-taxonomy' => 'category',
 				),
 			),
-			'exclude_categories'      => array(
+			'exclude_terms_include_parents' => array(
+				'id'      => 'exclude_terms_include_parents',
+				'name'    => esc_html__( 'Include parent categories', 'top-10' ),
+				'desc'    => esc_html__( 'Exclude popular posts from parent categories or all ancestors for nested categories.', 'top-10' ),
+				'type'    => 'radio',
+				'default' => 'none',
+				'options' => array(
+					'none'   => esc_html__( 'None', 'top-10' ),
+					'parent' => esc_html__( 'Only parent categories', 'top-10' ),
+					'all'    => esc_html__( 'All ancestors', 'top-10' ),
+				),
+				'pro'     => true,
+			),
+			'exclude_categories'            => array(
 				'id'       => 'exclude_categories',
 				'name'     => esc_html__( 'Exclude category IDs', 'top-10' ),
 				'desc'     => esc_html__( 'This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy.', 'top-10' ),
@@ -629,7 +651,7 @@ class Settings {
 				'options'  => '',
 				'readonly' => true,
 			),
-			'exclude_on_cat_slugs'    => array(
+			'exclude_on_cat_slugs'          => array(
 				'id'               => 'exclude_on_cat_slugs',
 				'name'             => esc_html__( 'Exclude on Categories', 'top-10' ),
 				'desc'             => esc_html__( 'Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.', 'top-10' ),
@@ -641,13 +663,13 @@ class Settings {
 					'data-wp-taxonomy' => 'category',
 				),
 			),
-			'customize_output_header' => array(
+			'customize_output_header'       => array(
 				'id'   => 'customize_output_header',
 				'name' => '<h3>' . esc_html__( 'Customize the output', 'top-10' ) . '</h3>',
 				'desc' => '',
 				'type' => 'header',
 			),
-			'title'                   => array(
+			'title'                         => array(
 				'id'      => 'title',
 				'name'    => esc_html__( 'Heading of posts', 'top-10' ),
 				'desc'    => esc_html__( 'Displayed before the list of the posts as a the master heading', 'top-10' ),
@@ -655,7 +677,7 @@ class Settings {
 				'options' => '<h3>' . esc_html__( 'Popular posts:', 'top-10' ) . '</h3>',
 				'size'    => 'large',
 			),
-			'title_daily'             => array(
+			'title_daily'                   => array(
 				'id'      => 'title_daily',
 				'name'    => esc_html__( 'Heading of posts for daily/custom period lists', 'top-10' ),
 				'desc'    => esc_html__( 'Displayed before the list of the posts as a the master heading', 'top-10' ),
@@ -663,7 +685,7 @@ class Settings {
 				'options' => '<h3>' . esc_html__( 'Currently trending:', 'top-10' ) . '</h3>',
 				'size'    => 'large',
 			),
-			'blank_output'            => array(
+			'blank_output'                  => array(
 				'id'      => 'blank_output',
 				'name'    => esc_html__( 'Show when no posts are found', 'top-10' ),
 				/* translators: 1: Code. */
@@ -675,21 +697,21 @@ class Settings {
 					'custom_text' => esc_html__( 'Display custom text', 'top-10' ),
 				),
 			),
-			'blank_output_text'       => array(
+			'blank_output_text'             => array(
 				'id'      => 'blank_output_text',
 				'name'    => esc_html__( 'Custom text', 'top-10' ),
 				'desc'    => esc_html__( 'Enter the custom text that will be displayed if the second option is selected above', 'top-10' ),
 				'type'    => 'textarea',
 				'options' => esc_html__( 'No top posts yet', 'top-10' ),
 			),
-			'show_excerpt'            => array(
+			'show_excerpt'                  => array(
 				'id'      => 'show_excerpt',
 				'name'    => esc_html__( 'Show post excerpt', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'excerpt_length'          => array(
+			'excerpt_length'                => array(
 				'id'      => 'excerpt_length',
 				'name'    => esc_html__( 'Length of excerpt (in words)', 'top-10' ),
 				'desc'    => '',
@@ -697,28 +719,28 @@ class Settings {
 				'options' => '10',
 				'size'    => 'small',
 			),
-			'show_date'               => array(
+			'show_date'                     => array(
 				'id'      => 'show_date',
 				'name'    => esc_html__( 'Show date', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'show_author'             => array(
+			'show_author'                   => array(
 				'id'      => 'show_author',
 				'name'    => esc_html__( 'Show author', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'disp_list_count'         => array(
+			'disp_list_count'               => array(
 				'id'      => 'disp_list_count',
 				'name'    => esc_html__( 'Show number of views', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'title_length'            => array(
+			'title_length'                  => array(
 				'id'      => 'title_length',
 				'name'    => esc_html__( 'Limit post title length (in characters)', 'top-10' ),
 				'desc'    => '',
@@ -726,48 +748,48 @@ class Settings {
 				'options' => '60',
 				'size'    => 'small',
 			),
-			'link_new_window'         => array(
+			'link_new_window'               => array(
 				'id'      => 'link_new_window',
 				'name'    => esc_html__( 'Open links in new window', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'link_nofollow'           => array(
+			'link_nofollow'                 => array(
 				'id'      => 'link_nofollow',
 				'name'    => esc_html__( 'Add nofollow to links', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'html_wrapper_header'     => array(
+			'html_wrapper_header'           => array(
 				'id'   => 'html_wrapper_header',
 				'name' => '<h3>' . esc_html__( 'HTML to display', 'top-10' ) . '</h3>',
 				'desc' => '',
 				'type' => 'header',
 			),
-			'before_list'             => array(
+			'before_list'                   => array(
 				'id'      => 'before_list',
 				'name'    => esc_html__( 'Before the list of posts', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '<ul>',
 			),
-			'after_list'              => array(
+			'after_list'                    => array(
 				'id'      => 'after_list',
 				'name'    => esc_html__( 'After the list of posts', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '</ul>',
 			),
-			'before_list_item'        => array(
+			'before_list_item'              => array(
 				'id'      => 'before_list_item',
 				'name'    => esc_html__( 'Before each list item', 'top-10' ),
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '<li>',
 			),
-			'after_list_item'         => array(
+			'after_list_item'               => array(
 				'id'      => 'after_list_item',
 				'name'    => esc_html__( 'After each list item', 'top-10' ),
 				'desc'    => '',
@@ -1304,14 +1326,34 @@ class Settings {
 	 * Enqueue scripts and styles.
 	 *
 	 * @since 3.3.0
+	 *
+	 * @param string $hook Current hook.
 	 */
-	public function admin_enqueue_scripts() {
+	public function admin_enqueue_scripts( $hook ) {
+
+		if ( $hook !== $this->settings_api->settings_page ) {
+			return;
+		}
 
 		wp_localize_script(
 			'wz-admin-js',
 			'tptn_admin',
 			array(
 				'thumb_default' => TOP_TEN_PLUGIN_URL . 'default.png',
+			)
+		);
+		wp_enqueue_script( 'top-ten-admin-js' );
+		wp_enqueue_style( 'top-ten-admin-css' );
+		wp_localize_script(
+			'top-ten-admin-js',
+			'top_ten_admin_data',
+			array(
+				'ajax_url'             => admin_url( 'admin-ajax.php' ),
+				'security'             => wp_create_nonce( 'tptn-admin' ),
+				'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+				'success_message'      => esc_html__( 'Cache cleared successfully!', 'top-10' ),
+				'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
+				'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
 			)
 		);
 	}
@@ -1426,5 +1468,20 @@ class Settings {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Updated the settings fields to display a pro version link.
+	 *
+	 * @param string $output Settings field HTML.
+	 * @param array  $args   Settings field arguments.
+	 * @return string Updated HTML.
+	 */
+	public static function after_setting_output( $output, $args ) {
+		if ( isset( $args['pro'] ) && $args['pro'] ) {
+			$output .= '<a class="tptn_button tptn_button_gold" target="_blank" href="https://webberzone.com/plugins/top-10/pro/" title="' . esc_attr__( 'Upgrade to Pro', 'top-10' ) . '">' . esc_html__( 'Upgrade to Pro', 'top-10' ) . '</a>';
+		}
+
+		return $output;
 	}
 }

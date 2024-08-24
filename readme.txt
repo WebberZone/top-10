@@ -155,6 +155,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* [Pro] Pro version adds additional features to the Popular Posts block:
 		* New buttons to save default block settings and clear them.
 		* Inserting the block will also insert the attributes for the default and global settings automatically. This can be disabled in the settings page under the **Posts List** tab.
+	* New filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms when querying posts. In the Pro version, you can turn this on in the settings page.
 
 * Enhancements:
 	* The plugin supports `WP_Query` directly if `top_ten_query` is set in the query arguments.

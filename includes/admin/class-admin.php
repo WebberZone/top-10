@@ -230,8 +230,8 @@ class Admin {
 			)
 		);
 		wp_register_style(
-			'tptn-admin-ui-css',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/css/top-10-admin.min.css',
+			'top-ten-admin-css',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/css/admin-styles.min.css',
 			array(),
 			TOP_TEN_VERSION
 		);

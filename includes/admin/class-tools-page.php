@@ -92,12 +92,16 @@ class Tools_Page {
 	public function admin_enqueue_scripts( $hook ) {
 		if ( $hook === $this->parent_id ) {
 			wp_enqueue_script( 'top-ten-admin-js' );
-			wp_enqueue_style( 'tptn-admin-ui-css', );
+			wp_enqueue_style( 'top-ten-admin-css' );
 			wp_localize_script(
 				'top-ten-admin-js',
-				'tptn_admin_data',
+				'top_ten_admin_data',
 				array(
-					'security' => wp_create_nonce( 'tptn-admin' ),
+					'ajax_url'             => admin_url( 'admin-ajax.php' ),
+					'security'             => wp_create_nonce( 'tptn-admin' ),
+					'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
+					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
 				)
 			);
 		}
@@ -181,7 +185,12 @@ class Tools_Page {
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Clear cache', 'top-10' ); ?></h2>
 				<p>
-					<input type="button" name="cache_clear" id="cache_clear"  value="<?php esc_attr_e( 'Clear cache', 'top-10' ); ?>" class="button button-secondary" onclick="return clearCache();" />
+					<?php
+						printf(
+							'<button type="button" name="tptn_cache_clear" class="button button-secondary tptn_cache_clear" aria-label="%1$s">%1$s</button>',
+							esc_html__( 'Clear cache', 'top-10' )
+						);
+					?>
 				</p>
 				<p class="description">
 					<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
