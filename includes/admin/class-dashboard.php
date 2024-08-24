@@ -222,7 +222,7 @@ class Dashboard {
 					'charttitle'   => __( 'Daily Visits', 'top-10' ),
 				)
 			);
-			wp_enqueue_style( 'tptn-admin-ui-css', );
+			wp_enqueue_style( 'top-ten-admin-css' );
 		}
 	}
 

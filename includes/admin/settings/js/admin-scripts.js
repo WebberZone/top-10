@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 	// File browser.
 	$('.file-browser').on('click', function (event) {
 		event.preventDefault();
@@ -24,14 +24,14 @@ jQuery(document).ready(function($) {
 	});
 
 	// Prompt the user when they leave the page without saving the form.
-	var formmodified=0;
+	var formmodified = 0;
 
 	function confirmFormChange() {
-		formmodified=1;
+		formmodified = 1;
 	}
 
 	function confirmExit() {
-		if ( formmodified == 1 ) {
+		if (formmodified == 1) {
 			return true;
 		}
 	}
@@ -40,34 +40,31 @@ jQuery(document).ready(function($) {
 		formmodified = 0;
 	}
 
-	$('form *').change( confirmFormChange );
+	$('form').on('change', 'input, textarea, select', confirmFormChange);
 
 	window.onbeforeunload = confirmExit;
 
-	$( "input[name='submit']" ).click(formNotModified);
-	$( "input[id='search-submit']" ).click(formNotModified);
-	$( "input[id='doaction']" ).click(formNotModified);
-	$( "input[id='doaction2']" ).click(formNotModified);
-	$( "input[name='filter_action']" ).click(formNotModified);
+	$('input[name="submit"], input#search-submit, input#doaction, input#doaction2, input[name="filter_action"]').on('click', formNotModified);
 
-	$( function() {
-		$( "#post-body-content" ).tabs({
-			create: function( event, ui ) {
-				$( ui.tab.find("a") ).addClass( "nav-tab-active" );
+	$(function () {
+		$("#post-body-content").tabs({
+			create: function (event, ui) {
+				$(ui.tab.find("a")).addClass("nav-tab-active");
 			},
-			activate: function( event, ui ) {
-				$( ui.oldTab.find("a") ).removeClass( "nav-tab-active" );
-				$( ui.newTab.find("a") ).addClass( "nav-tab-active" );
+			activate: function (event, ui) {
+				$(ui.oldTab.find("a")).removeClass("nav-tab-active");
+				$(ui.newTab.find("a")).addClass("nav-tab-active");
 			}
 		});
 	});
 
 	// Initialise ColorPicker.
-	$( '.color-field' ).each( function ( i, element ) {
-		$( element ).wpColorPicker();
+	$('.color-field').each(function (i, element) {
+		$(element).wpColorPicker();
 	});
-	
-	$('.reset-default-thumb').click(function(){
-		document.getElementById("tptn_settings[thumb_default]").value = tptn_admin.thumb_default;
+
+	$('.reset-default-thumb').on('click', function () {
+		$('#tptn_settings\\[thumb_default\\]').val(tptn_admin.thumb_default);
 	});
+
 });

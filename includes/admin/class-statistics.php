@@ -55,7 +55,7 @@ class Statistics {
 	public function admin_enqueue_scripts( $hook ) {
 		if ( $hook === $this->parent_id ) {
 			wp_enqueue_script( 'top-ten-admin-js' );
-			wp_enqueue_style( 'tptn-admin-ui-css', );
+			wp_enqueue_style( 'top-ten-admin-css' );
 		}
 	}
 
