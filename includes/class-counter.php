@@ -258,7 +258,7 @@ class Counter {
 			$blog_id = get_current_blog_id();
 		}
 
-		if ( $id > 0 ) {
+		if ( $id > 0 || 'overall' === $counter ) {
 			$resultscount = false;
 			switch ( $counter ) {
 				case 'total':
