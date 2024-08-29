@@ -10,6 +10,9 @@
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Counter;
+use WebberZone\Top_Ten\Util\Helpers;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -27,14 +30,33 @@ class Columns {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'manage_posts_columns', array( __CLASS__, 'add_columns' ) );
-		add_filter( 'manage_pages_columns', array( __CLASS__, 'add_columns' ) );
-		add_action( 'manage_posts_custom_column', array( __CLASS__, 'tptn_value' ), 10, 2 );
-		add_action( 'manage_pages_custom_column', array( __CLASS__, 'tptn_value' ), 10, 2 );
-		add_filter( 'manage_edit-post_sortable_columns', array( __CLASS__, 'add_columns_register_sortable' ) );
-		add_filter( 'manage_edit-page_sortable_columns', array( __CLASS__, 'add_columns_register_sortable' ) );
-		add_filter( 'posts_clauses', array( __CLASS__, 'add_columns_clauses' ), 10, 2 );
-		add_action( 'admin_head', array( __CLASS__, 'admin_css' ) );
+		$this->init();
+	}
+
+	/**
+	 * Initialize hooks and filters.
+	 *
+	 * @since 3.4.0
+	 */
+	private function init() {
+
+		/**
+		 * Filter the post types to add the columns to.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array $post_types Array of post types.
+		 */
+		$post_types = apply_filters( 'tptn_admin_column_post_types', array( 'post', 'page' ) );
+
+		foreach ( $post_types as $post_type ) {
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_columns' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'get_value' ), 10, 2 );
+			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'add_columns_register_sortable' ) );
+		}
+
+		add_filter( 'posts_clauses', array( $this, 'add_columns_clauses' ), 10, 2 );
+		add_action( 'admin_head', array( $this, 'admin_css' ) );
 	}
 
 	/**
@@ -58,52 +80,77 @@ class Columns {
 	/**
 	 * Display page views for each column.
 	 *
-	 * @since   1.2
+	 * @since 3.4.0
 	 *
-	 * @param   string     $column_name    Name of the column.
-	 * @param   int|string $id             Post ID.
+	 * @param string     $column_name    Name of the column.
+	 * @param int|string $id             Post ID.
 	 */
-	public static function tptn_value( $column_name, $id ) {
-		global $wpdb;
+	public static function get_value( $column_name, $id ) {
+		if ( ! \tptn_get_option( 'pv_in_admin' ) ) {
+			return;
+		}
 
+		global $wpdb;
 		$blog_id = get_current_blog_id();
 
-		// Add Total count.
-		if ( ( 'tptn_total' === $column_name ) && ( \tptn_get_option( 'pv_in_admin' ) ) ) {
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
+		$counts = array();
 
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$cntaccess    = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
-			echo esc_html( $cntaccess );
+		if ( in_array( $column_name, array( 'tptn_total', 'tptn_both' ), true ) ) {
+			$counts['total'] = self::get_total_count( $id, $blog_id );
 		}
 
-		// Now process daily count.
-		if ( ( 'tptn_daily' === $column_name ) && ( \tptn_get_option( 'pv_in_admin' ) ) ) {
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
-
-			$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date();
-
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as visits FROM {$table_name} WHERE postnumber = %d AND dp_date >= %s AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$cntaccess    = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( ( ( $resultscount ) ? $resultscount->visits : 0 ) );
-			echo esc_html( $cntaccess );
+		if ( in_array( $column_name, array( 'tptn_daily', 'tptn_both' ), true ) ) {
+			$counts['daily'] = self::get_daily_count( $id, $blog_id );
 		}
 
-		// Now process both.
-		if ( ( 'tptn_both' === $column_name ) && ( \tptn_get_option( 'pv_in_admin' ) ) ) {
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
+		echo esc_html( self::format_output( $counts, $column_name ) );
+	}
 
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, cntaccess FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$cntaccess    = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( ( ( $resultscount ) ? $resultscount->cntaccess : 0 ) );
+	/**
+	 * Get total view count.
+	 *
+	 * @param int $id      Post ID.
+	 * @param int $blog_id Blog ID.
+	 * @return int
+	 */
+	private static function get_total_count( $id, $blog_id ) {
+		return Counter::get_post_count_only( $id, 'total', $blog_id );
+	}
 
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
+	/**
+	 * Get daily view count.
+	 *
+	 * @param int $id      Post ID.
+	 * @param int $blog_id Blog ID.
+	 * @return int
+	 */
+	private static function get_daily_count( $id, $blog_id ) {
+		return Counter::get_post_count_only( $id, 'daily', $blog_id );
+	}
 
-			$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date();
-
-			$resultscount = $wpdb->get_row( $wpdb->prepare( "SELECT postnumber, SUM(cntaccess) as visits FROM {$table_name} WHERE postnumber = %d AND dp_date >= %s AND blog_id = %d GROUP BY postnumber ", $id, $from_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$cntaccess   .= ' / ' . \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( ( ( $resultscount ) ? $resultscount->visits : 0 ) );
-
-			echo esc_html( $cntaccess );
+	/**
+	 * Format output based on column name.
+	 *
+	 * @param array  $counts      Array of count values.
+	 * @param string $column_name Name of the column.
+	 * @return string
+	 */
+	private static function format_output( $counts, $column_name ) {
+		switch ( $column_name ) {
+			case 'tptn_total':
+				$output = Helpers::number_format_i18n( $counts['total'] );
+				break;
+			case 'tptn_daily':
+				$output = Helpers::number_format_i18n( $counts['daily'] );
+				break;
+			case 'tptn_both':
+				$output = Helpers::number_format_i18n( $counts['total'] ) . ' / ' . Helpers::number_format_i18n( $counts['daily'] );
+				break;
+			default:
+				$output = '';
+				break;
 		}
+		return $output;
 	}
 
 	/**
@@ -127,7 +174,7 @@ class Columns {
 	/**
 	 * Add custom post clauses to sort the columns.
 	 *
-	 * @since   1.9.8.2
+	 * @since 3.3.0
 	 *
 	 * @param   array     $clauses    Lookup clauses.
 	 * @param   \WP_Query $wp_query   WP Query object.
@@ -136,29 +183,28 @@ class Columns {
 	public static function add_columns_clauses( $clauses, $wp_query ) {
 		global $wpdb;
 
-		if ( isset( $wp_query->query['orderby'] ) && 'tptn_total' === $wp_query->query['orderby'] ) {
-
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
-
-			$clauses['join']    .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
-			$clauses['orderby']  = 'cntaccess ';
-			$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+		$orderby = $wp_query->get( 'orderby' );
+		if ( ! in_array( $orderby, array( 'tptn_total', 'tptn_daily' ), true ) ) {
+			return $clauses;
 		}
 
-		if ( isset( $wp_query->query['orderby'] ) && 'tptn_daily' === $wp_query->query['orderby'] ) {
+		$is_daily   = ( 'tptn_daily' === $orderby );
+		$table_name = Helpers::get_tptn_table( $is_daily );
 
-			$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
+		$clauses['join'] .= " LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID = {$table_name}.postnumber";
 
-			$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date();
-
-			$clauses['join']    .= "LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID={$table_name}.postnumber";
-			$clauses['where']   .= " AND {$table_name}.dp_date >= '$from_date' ";
-			$clauses['groupby']  = "{$table_name}.postnumber";
-			$clauses['orderby']  = "SUM({$table_name}.cntaccess) ";
-			$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+		if ( $is_daily ) {
+			$from_date          = Helpers::get_from_date();
+			$clauses['where']  .= $wpdb->prepare( " AND {$table_name}.dp_date >= %s", $from_date ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$clauses['groupby'] = "{$table_name}.postnumber";
+			$clauses['orderby'] = "SUM({$table_name}.cntaccess)";
+		} else {
+			$clauses['orderby'] = "{$table_name}.cntaccess";
 		}
 
-		return $clauses;
+		$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
+
+		return apply_filters( 'tptn_posts_clauses', $clauses, $wp_query );
 	}
 
 	/**
