@@ -115,15 +115,6 @@ class Admin {
 	public $cache;
 
 	/**
-	 * Settings Page in Admin area.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var string Settings Page.
-	 */
-	public $settings_page;
-
-	/**
 	 * Prefix which is used for creating the unique filters and actions.
 	 *
 	 * @since 3.3.0

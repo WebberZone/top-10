@@ -6,7 +6,7 @@
  * Portions of this code have been inspired by Easy Digital Downloads, WordPress Settings Sandbox, WordPress Settings API class, etc.
  *
  * @link  https://webberzone.com
- * @since 1.7.0
+ * @since 3.3.0
  *
  * @package WebberZone\Top_Ten
  */
