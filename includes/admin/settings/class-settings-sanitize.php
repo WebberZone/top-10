@@ -3,7 +3,7 @@
  * Functions to sanitize settings.
  *
  * @link  https://webberzone.com
- * @since 2.0.0
+ * @since 3.3.0
  *
  * @package WebberZone\Top_Ten
  */

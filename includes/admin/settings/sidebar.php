@@ -3,7 +3,7 @@
  * Sidebar
  *
  * @link  https://webberzone.com
- * @since 1.2.0
+ * @since 3.3.0
  *
  * @package WebberZone\Top_Ten
  */

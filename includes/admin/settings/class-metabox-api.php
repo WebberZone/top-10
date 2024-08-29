@@ -2,8 +2,7 @@
 /**
  * Class to display and save a Metabox.
  *
- * @link  https://webberzone.com
- * @since 2.0.0
+ * @since 3.3.0
  *
  * @package WebberZone\Top_Ten
  */
@@ -18,8 +17,9 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * ATA Metabox class to register the metabox for ata_snippets post type.
  *
- * @since 2.0.0
+ * @since 3.5.0
  */
+#[\AllowDynamicProperties]
 class Metabox_API {
 
 	/**
@@ -27,7 +27,7 @@ class Metabox_API {
 	 *
 	 * @var   string
 	 */
-	const VERSION = '2.2.0';
+	const VERSION = '2.3.0';
 
 	/**
 	 * Settings Key.

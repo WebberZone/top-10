@@ -10,6 +10,9 @@
 
 namespace WebberZone\Top_Ten\Admin\Settings;
 
+use WebberZone\Top_Ten\Frontend\Display;
+use WebberZone\Top_Ten\Frontend\Media_Handler;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -22,16 +25,6 @@ if ( ! defined( 'WPINC' ) ) {
  * @since   3.3.0
  */
 class Settings {
-
-
-	/**
-	 * Admin Dashboard.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Admin Dashboard.
-	 */
-	public $admin_dashboard;
 
 	/**
 	 * Settings API.
@@ -50,60 +43,6 @@ class Settings {
 	 * @var object Statistics table.
 	 */
 	public $statistics;
-
-	/**
-	 * Activator class.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Activator class.
-	 */
-	public $activator;
-
-	/**
-	 * Admin Columns.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Admin Columns.
-	 */
-	public $admin_columns;
-
-	/**
-	 * Metabox functions.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Metabox functions.
-	 */
-	public $metabox;
-
-	/**
-	 * Import Export functions.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Import Export functions.
-	 */
-	public $import_export;
-
-	/**
-	 * Tools page.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var object Tools page.
-	 */
-	public $tools_page;
-
-	/**
-	 * Settings Page in Admin area.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @var string Settings Page.
-	 */
-	public $settings_page;
 
 	/**
 	 * Prefix which is used for creating the unique filters and actions.
@@ -292,25 +231,10 @@ class Settings {
 	 */
 	public static function settings_general() {
 		$settings = array(
-			'trackers'                => array(
-				'id'      => 'trackers',
-				'name'    => esc_html__( 'Enable trackers', 'top-10' ),
-				/* translators: 1: Code. */
-				'desc'    => '',
-				'type'    => 'multicheck',
-				'default' => array(
-					'overall' => 'overall',
-					'daily'   => 'daily',
-				),
-				'options' => array(
-					'overall' => esc_html__( 'Overall', 'top-10' ),
-					'daily'   => esc_html__( 'Daily', 'top-10' ),
-				),
-			),
 			'cache'                   => array(
 				'id'      => 'cache',
 				'name'    => esc_html__( 'Enable cache', 'top-10' ),
-				'desc'    => esc_html__( 'If activated, Top 10 will use the Transients API to cache the popular posts output for 1 hour.', 'top-10' ),
+				'desc'    => esc_html__( 'If activated, Top 10 will use the Transients API to cache the popular posts output for the time specified below.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
@@ -320,38 +244,6 @@ class Settings {
 				'desc'    => esc_html__( 'Enter the number of seconds to cache the output.', 'top-10' ),
 				'type'    => 'text',
 				'options' => HOUR_IN_SECONDS,
-			),
-			'daily_midnight'          => array(
-				'id'      => 'daily_midnight',
-				'name'    => esc_html__( 'Start daily counts from midnight', 'top-10' ),
-				'desc'    => esc_html__( 'Daily counter will display number of visits from midnight. This option is checked by default and mimics the way most normal counters work. Turning this off will allow you to use the hourly setting in the next option.', 'top-10' ),
-				'type'    => 'checkbox',
-				'options' => true,
-			),
-			'range_desc'              => array(
-				'id'   => 'range_desc',
-				'name' => '<strong>' . esc_html__( 'Default custom period range', 'top-10' ) . '</strong>',
-				'desc' => esc_html__( 'The next two options allow you to set the default range for the custom period. This was previously called the daily range. This can be overridden in the widget.', 'top-10' ),
-				'type' => 'descriptive_text',
-			),
-			'daily_range'             => array(
-				'id'      => 'daily_range',
-				'name'    => esc_html__( 'Day(s)', 'top-10' ),
-				'desc'    => '',
-				'type'    => 'number',
-				'options' => '1',
-				'min'     => '0',
-				'size'    => 'small',
-			),
-			'hour_range'              => array(
-				'id'      => 'hour_range',
-				'name'    => esc_html__( 'Hour(s)', 'top-10' ),
-				'desc'    => '',
-				'type'    => 'number',
-				'options' => '0',
-				'min'     => '0',
-				'max'     => '23',
-				'size'    => 'small',
 			),
 			'uninstall_clean_options' => array(
 				'id'      => 'uninstall_clean_options',
@@ -367,6 +259,19 @@ class Settings {
 				'type'    => 'checkbox',
 				'options' => false,
 			),
+			'show_credit'             => array(
+				'id'      => 'show_credit',
+				'name'    => esc_html__( 'Link to Top 10 plugin page', 'top-10' ),
+				'desc'    => esc_html__( 'A no-follow link to the plugin homepage will be added as the last item of the popular posts.', 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => false,
+			),
+			'admin_header'            => array(
+				'id'   => 'admin_header',
+				'name' => '<h3>' . esc_html__( 'Admin settings', 'top-10' ) . '</h3>',
+				'desc' => '',
+				'type' => 'header',
+			),
 			'show_metabox'            => array(
 				'id'      => 'show_metabox',
 				'name'    => esc_html__( 'Show metabox', 'top-10' ),
@@ -381,12 +286,27 @@ class Settings {
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'show_credit'             => array(
-				'id'      => 'show_credit',
-				'name'    => esc_html__( 'Link to Top 10 plugin page', 'top-10' ),
-				'desc'    => esc_html__( 'A no-follow link to the plugin homepage will be added as the last item of the popular posts.', 'top-10' ),
+			'pv_in_admin'             => array(
+				'id'      => 'pv_in_admin',
+				'name'    => esc_html__( 'Display admin columns', 'top-10' ),
+				'desc'    => esc_html__( "Adds three columns called Total Views, Today's Views and Views. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.", 'top-10' ),
 				'type'    => 'checkbox',
-				'options' => false,
+				'options' => true,
+			),
+			'admin_column_post_types' => array(
+				'id'      => 'admin_column_post_types',
+				'name'    => esc_html__( 'Display columns on post types', 'top-10' ),
+				'desc'    => esc_html__( 'Select which post types to display the admin columns. Unselect the above option if you would like to disable the columns.', 'top-10' ),
+				'type'    => 'posttypes',
+				'options' => 'post,page',
+				'pro'     => true,
+			),
+			'show_count_non_admins'   => array(
+				'id'      => 'show_count_non_admins',
+				'name'    => esc_html__( 'Show views to non-admins', 'top-10' ),
+				'desc'    => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => true,
 			),
 		);
 
@@ -410,17 +330,17 @@ class Settings {
 	 */
 	public static function settings_counter() {
 		$settings = array(
-			'counter_header'        => array(
+			'counter_header'       => array(
 				'id'   => 'counter_header',
 				'name' => '<h3>' . esc_html__( 'Counter settings', 'top-10' ) . '</h3>',
 				'desc' => '',
 				'type' => 'header',
 			),
-			'add_to'                => array(
+			'add_to'               => array(
 				'id'      => 'add_to',
 				'name'    => esc_html__( 'Display number of views on', 'top-10' ) . ':',
 				/* translators: 1: Code. */
-				'desc'    => sprintf( esc_html__( 'If you choose to disable this, please add %1$s to your template file where you want it displayed', 'top-10' ), "<code>&lt;?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?&gt;</code>" ),
+				'desc'    => sprintf( esc_html__( 'If you choose to disable this, please add the following code to your template file where you want it displayed: %1$s', 'top-10' ), "<code>&lt;?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?&gt;</code>" ),
 				'type'    => 'multicheck',
 				'default' => array(
 					'single' => 'single',
@@ -436,7 +356,7 @@ class Settings {
 					'other_archives'    => esc_html__( 'Other archives', 'top-10' ),
 				),
 			),
-			'count_disp_form'       => array(
+			'count_disp_form'      => array(
 				'id'      => 'count_disp_form',
 				'name'    => esc_html__( 'Format to display the post views', 'top-10' ),
 				/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
@@ -444,56 +364,88 @@ class Settings {
 				'type'    => 'textarea',
 				'options' => 'Visited %totalcount% times, %dailycount% visit(s) today',
 			),
-			'count_disp_form_zero'  => array(
+			'count_disp_form_zero' => array(
 				'id'      => 'count_disp_form_zero',
-				'name'    => esc_html__( 'What to display when there are no visits?', 'top-10' ),
-				/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
-				'desc'    => esc_html__( "This text applies only when there are 0 hits for the post and it isn't a single page. e.g. if you display post views on the homepage or archives then this text will be used. To override this, just enter the same text as above option.", 'top-10' ),
+				'name'    => esc_html__( 'No visits text', 'top-10' ),
+				'desc'    => esc_html__( "This text is displayed when there are no hits for the post and it isn't a single page. For example, if you display post views on the Homepage or Archives, this text will be used. To override this, simply enter the same text as the above option.", 'top-10' ),
 				'type'    => 'textarea',
 				'options' => 'No visits yet',
 			),
-			'number_format_count'   => array(
+			'number_format_count'  => array(
 				'id'      => 'number_format_count',
 				'name'    => esc_html__( 'Number format post count', 'top-10' ),
 				'desc'    => esc_html__( 'Activating this option will convert the post counts into a number format based on the locale', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
-			'dynamic_post_count'    => array(
+			'daily_midnight'       => array(
+				'id'      => 'daily_midnight',
+				'name'    => esc_html__( 'Start daily counts at midnight', 'top-10' ),
+				'desc'    => esc_html__( 'The daily counter displays visits starting at midnight. This option is enabled by default, similar to most standard counters. If you disable this option, you can use the hourly setting in the next option.', 'top-10' ),
+				'type'    => 'checkbox',
+				'options' => true,
+			),
+			'range_desc'           => array(
+				'id'   => 'range_desc',
+				'name' => '<strong>' . esc_html__( 'Default custom period range', 'top-10' ) . '</strong>',
+				'desc' => esc_html__( 'The following two options let you set the default range for the custom period. This can be overridden in the widget settings.', 'top-10' ),
+				'type' => 'descriptive_text',
+			),
+			'daily_range'          => array(
+				'id'      => 'daily_range',
+				'name'    => esc_html__( 'Day(s)', 'top-10' ),
+				'desc'    => '',
+				'type'    => 'number',
+				'options' => '1',
+				'min'     => '0',
+				'size'    => 'small',
+			),
+			'hour_range'           => array(
+				'id'      => 'hour_range',
+				'name'    => esc_html__( 'Hour(s)', 'top-10' ),
+				'desc'    => '',
+				'type'    => 'number',
+				'options' => '0',
+				'min'     => '0',
+				'max'     => '23',
+				'size'    => 'small',
+			),
+			'dynamic_post_count'   => array(
 				'id'      => 'dynamic_post_count',
 				'name'    => esc_html__( 'Always display latest post count', 'top-10' ),
 				'desc'    => esc_html__( 'This option uses JavaScript and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'exclude_on_post_ids'   => array(
+			'exclude_on_post_ids'  => array(
 				'id'      => 'exclude_on_post_ids',
 				'name'    => esc_html__( 'Exclude display on these post IDs', 'top-10' ),
 				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
 				'type'    => 'numbercsv',
 				'options' => '',
 			),
-			'pv_in_admin'           => array(
-				'id'      => 'pv_in_admin',
-				'name'    => esc_html__( 'Page views in admin', 'top-10' ),
-				'desc'    => esc_html__( "Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.", 'top-10' ),
-				'type'    => 'checkbox',
-				'options' => true,
-			),
-			'show_count_non_admins' => array(
-				'id'      => 'show_count_non_admins',
-				'name'    => esc_html__( 'Show views to non-admins', 'top-10' ),
-				'desc'    => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
-				'type'    => 'checkbox',
-				'options' => true,
-			),
-			'tracker_header'        => array(
+			'tracker_header'       => array(
 				'id'   => 'tracker_header',
 				'name' => '<h3>' . esc_html__( 'Tracker settings', 'top-10' ) . '</h3>',
 				'desc' => '',
 				'type' => 'header',
 			),
-			'tracker_type'          => array(
+			'trackers'             => array(
+				'id'      => 'trackers',
+				'name'    => esc_html__( 'Enable trackers', 'top-10' ),
+				/* translators: 1: Code. */
+				'desc'    => '',
+				'type'    => 'multicheck',
+				'default' => array(
+					'overall' => 'overall',
+					'daily'   => 'daily',
+				),
+				'options' => array(
+					'overall' => esc_html__( 'Overall', 'top-10' ),
+					'daily'   => esc_html__( 'Daily range', 'top-10' ),
+				),
+			),
+			'tracker_type'         => array(
 				'id'      => 'tracker_type',
 				'name'    => esc_html__( 'Tracker type', 'top-10' ),
 				'desc'    => '',
@@ -501,14 +453,14 @@ class Settings {
 				'default' => 'query_based',
 				'options' => self::get_tracker_types(),
 			),
-			'tracker_all_pages'     => array(
+			'tracker_all_pages'    => array(
 				'id'      => 'tracker_all_pages',
 				'name'    => esc_html__( 'Load tracker on all pages', 'top-10' ),
 				'desc'    => esc_html__( 'This will load the tracker js on all pages. Helpful if you are running minification/concatenation plugins.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'track_users'           => array(
+			'track_users'          => array(
 				'id'      => 'track_users',
 				'name'    => esc_html__( 'Track user groups', 'top-10' ) . ':',
 				'desc'    => esc_html__( 'Uncheck above to disable tracking if the current user falls into any one of these groups.', 'top-10' ),
@@ -524,21 +476,21 @@ class Settings {
 					'admins'  => esc_html__( 'Admins', 'top-10' ),
 				),
 			),
-			'logged_in'             => array(
+			'logged_in'            => array(
 				'id'      => 'logged_in',
 				'name'    => esc_html__( 'Track logged-in users', 'top-10' ),
 				'desc'    => esc_html__( 'Uncheck to stop tracking logged in users. Only logged out visitors will be tracked if this is disabled. Unchecking this will override the above setting.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
-			'no_bots'               => array(
+			'no_bots'              => array(
 				'id'      => 'no_bots',
 				'name'    => esc_html__( 'Do not track bots', 'top-10' ),
 				'desc'    => esc_html__( 'Enable this if you want Top 10 to attempt to stop tracking bots. The plugin includes a comprehensive set of known bot user agents but in some cases this might not be enough to stop tracking bots.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
-			'debug_mode'            => array(
+			'debug_mode'           => array(
 				'id'      => 'debug_mode',
 				'name'    => esc_html__( 'Debug mode', 'top-10' ),
 				'desc'    => esc_html__( 'Setting this to true will force the tracker to display an output in the browser. This is useful if you are having issues and are seeking support.', 'top-10' ),
@@ -589,6 +541,7 @@ class Settings {
 				'desc'    => esc_html__( 'This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists. e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction.', 'top-10' ),
 				'type'    => 'number',
 				'options' => '0',
+				'size'    => 'small',
 			),
 			'post_types'                    => array(
 				'id'      => 'post_types',
@@ -597,10 +550,16 @@ class Settings {
 				'type'    => 'posttypes',
 				'options' => 'post',
 			),
+			'exclusion_header'              => array(
+				'id'   => 'exclusion_header',
+				'name' => '<h3>' . esc_html__( 'Exclusion settings', 'top-10' ) . '</h3>',
+				'desc' => '',
+				'type' => 'header',
+			),
 			'exclude_front'                 => array(
 				'id'      => 'exclude_front',
 				'name'    => esc_html__( 'Exclude Front page and Posts page', 'top-10' ),
-				'desc'    => esc_html__( 'If you have set your Front page and Posts page to be specific pages via Settings > Reading, then these will be tracked similar to other pages. Enable this option to exclude them from showing up in the popular posts lists. The tracking will not be disabled.', 'top-10' ),
+				'desc'    => esc_html__( 'If you have designated specific pages for your Front page and Posts page via Settings > Reading, they will be tracked like any other page. Enable this option to exclude them from appearing in the popular posts lists. Note that tracking will still occur.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
@@ -617,6 +576,7 @@ class Settings {
 				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude from the list. e.g. 188,320,500', 'top-10' ),
 				'type'    => 'numbercsv',
 				'options' => '',
+				'size'    => 'large',
 			),
 			'exclude_cat_slugs'             => array(
 				'id'               => 'exclude_cat_slugs',
@@ -649,6 +609,7 @@ class Settings {
 				'desc'     => esc_html__( 'This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy.', 'top-10' ),
 				'type'     => 'text',
 				'options'  => '',
+				'size'     => 'large',
 				'readonly' => true,
 			),
 			'exclude_on_cat_slugs'          => array(
@@ -774,6 +735,7 @@ class Settings {
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '<ul>',
+				'size'    => 'large',
 			),
 			'after_list'                    => array(
 				'id'      => 'after_list',
@@ -781,6 +743,7 @@ class Settings {
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '</ul>',
+				'size'    => 'large',
 			),
 			'before_list_item'              => array(
 				'id'      => 'before_list_item',
@@ -788,6 +751,7 @@ class Settings {
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '<li>',
+				'size'    => 'large',
 			),
 			'after_list_item'               => array(
 				'id'      => 'after_list_item',
@@ -795,6 +759,7 @@ class Settings {
 				'desc'    => '',
 				'type'    => 'text',
 				'options' => '</li>',
+				'size'    => 'large',
 			),
 		);
 
@@ -834,14 +799,10 @@ class Settings {
 			'thumb_size'         => array(
 				'id'      => 'thumb_size',
 				'name'    => esc_html__( 'Thumbnail size', 'top-10' ),
-				'desc'    => esc_html__( 'You can choose from existing image sizes above or create a custom size. If you have chosen Custom size above, then enter the width, height and crop settings below. For best results, use a cropped image. If you change the width and/or height below, existing images will not be automatically resized.' ) . '<br />' . sprintf(
-					/* translators: 1: Force regenerate plugin link. */
-					esc_html__( 'I recommend using %1$s to regenerate all image sizes.', 'top-10' ),
-					'<a href="' . esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=regenerate-thumbnails&amp;TB_iframe=true&amp;width=600&amp;height=550' ) ) . '" class="thickbox">Regenerate Thumbnails</a>'
-				),
+				'desc'    => esc_html__( 'You can choose from existing image sizes above or create a custom size (tptn_thumbnail). If you select a custom size, enter the width, height, and crop settings below. For best results, use a cropped image. Note that changing the width and/or height below will not automatically resize existing images. You will need to regenerate the images using a plugin or WP CLI: wp media regenerate.', 'top-10' ),
 				'type'    => 'thumbsizes',
 				'default' => 'tptn_thumbnail',
-				'options' => \WebberZone\Top_Ten\Frontend\Media_Handler::get_all_image_sizes(),
+				'options' => Media_Handler::get_all_image_sizes(),
 			),
 			'thumb_width'        => array(
 				'id'      => 'thumb_width',
@@ -869,7 +830,7 @@ class Settings {
 			'thumb_create_sizes' => array(
 				'id'      => 'thumb_create_sizes',
 				'name'    => esc_html__( 'Generate thumbnail sizes', 'top-10' ),
-				'desc'    => esc_html__( 'If you select this option and Custom size is selected above, the plugin will register the image size with WordPress to create new thumbnails. Does not update old images as explained above.', 'top-10' ),
+				'desc'    => esc_html__( 'If you select this option and tptn_thumbnail is chosen above, the plugin will register the image size with WordPress to create new thumbnails. Note that this does not update old images, as explained above.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
@@ -897,14 +858,14 @@ class Settings {
 			'scan_images'        => array(
 				'id'      => 'scan_images',
 				'name'    => esc_html__( 'Get first image', 'top-10' ),
-				'desc'    => esc_html__( 'The plugin will fetch the first image in the post content if this is enabled. This can slow down the loading of your page if the first image in the followed posts is large in file-size.', 'top-10' ),
+				'desc'    => esc_html__( 'If enabled, the plugin will fetch the first image in the post content. Note that this might slow down your page loading time if the first image in the posts is large in file size.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
 			'thumb_default_show' => array(
 				'id'      => 'thumb_default_show',
-				'name'    => esc_html__( 'Use default thumbnail?', 'top-10' ),
-				'desc'    => esc_html__( 'If checked, when no thumbnail is found, show a default one from the URL below. If not checked and no thumbnail is found, no image will be shown.', 'top-10' ),
+				'name'    => esc_html__( 'Use default thumbnail', 'top-10' ),
+				'desc'    => esc_html__( 'Check this box to show the default thumbnail from the next option if no thumbnail is found from the post.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
 			),
@@ -913,7 +874,7 @@ class Settings {
 				'name'    => esc_html__( 'Default thumbnail', 'top-10' ),
 				'desc'    => esc_html__( 'Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below.', 'top-10' ),
 				'type'    => 'file',
-				'options' => TOP_TEN_PLUGIN_URL . 'default.png',
+				'options' => Display::get_default_thumbnail(),
 				'size'    => 'large',
 			),
 		);
@@ -950,7 +911,13 @@ class Settings {
 				'id'          => 'custom_css',
 				'name'        => esc_html__( 'Custom CSS', 'top-10' ),
 				/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
-				'desc'        => sprintf( esc_html__( 'Do not include %3$sstyle%4$s tags. Check out the %1$sFAQ%2$s for available CSS classes to style.', 'top-10' ), '<a href="' . esc_url( 'https://wordpress.org/plugins/top-10/faq/' ) . '" target="_blank">', '</a>', '<code>', '</code>' ),
+				'desc'        => sprintf(
+					esc_html__( 'Do not include %3$sstyle%4$s tags. Check out %1$sthis article%2$s for available CSS classes to style.', 'top-10' ),
+					'<a href="' . esc_url( 'https://webberzone.com/support/knowledgebase/using-and-customising-top-10/' ) . '" target="_blank">',
+					'</a>',
+					'<code>',
+					'</code>'
+				),
 				'type'        => 'css',
 				'options'     => '',
 				'field_class' => 'codemirror_css',
@@ -981,7 +948,7 @@ class Settings {
 				'id'      => 'cron_on',
 				'name'    => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
 				/* translators: 1: Constant holding number of days data is stored. */
-				'desc'    => sprintf( esc_html__( 'Cleaning the database at regular intervals could improve performance, especially on high traffic blogs. Enabling maintenance will automatically delete entries older than %d days in the daily tables.', 'top-10' ), TOP_TEN_STORE_DATA ),
+				'desc'    => sprintf( esc_html__( 'Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %d days from the daily tables.', 'top-10' ), TOP_TEN_STORE_DATA ),
 				'type'    => 'checkbox',
 				'options' => false,
 			),
@@ -1334,12 +1301,11 @@ class Settings {
 		if ( $hook !== $this->settings_api->settings_page ) {
 			return;
 		}
-
 		wp_localize_script(
 			'wz-admin-js',
 			'tptn_admin',
 			array(
-				'thumb_default' => TOP_TEN_PLUGIN_URL . 'default.png',
+				'thumb_default' => Display::get_default_thumbnail(),
 			)
 		);
 		wp_enqueue_script( 'top-ten-admin-js' );
@@ -1420,7 +1386,7 @@ class Settings {
 
 		// Force thumb_width and thumb_height if either are zero.
 		if ( empty( $settings['thumb_width'] ) || empty( $settings['thumb_height'] ) ) {
-			list( $settings['thumb_width'], $settings['thumb_height'] ) = \WebberZone\Top_Ten\Frontend\Media_Handler::get_thumb_size( $settings['thumb_size'] );
+			list( $settings['thumb_width'], $settings['thumb_height'] ) = Media_Handler::get_thumb_size( $settings['thumb_size'] );
 		}
 
 		// Delete the cache.
@@ -1463,7 +1429,7 @@ class Settings {
 
 		$thumb_default = \tptn_get_option( 'thumb_default' );
 
-		if ( 'thumb_default' === $args['id'] && TOP_TEN_PLUGIN_URL . 'default.png' !== $thumb_default ) {
+		if ( 'thumb_default' === $args['id'] && Display::get_default_thumbnail() !== $thumb_default ) {
 			$html = '<span class="dashicons dashicons-undo reset-default-thumb" style="cursor: pointer;" title="' . __( 'Reset' ) . '"></span> <br />' . $html;
 		}
 
