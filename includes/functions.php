@@ -49,6 +49,41 @@ function get_tptn_post_count_only( $post = 0, $count = 'total', $blog_id = 0 ) {
 }
 
 /**
+ * Returns the total post count.
+ *
+ * @since 3.4.0
+ * @param int|\WP_Post $post    Post ID or WP_Post object.
+ * @param int          $blog_id Blog ID.
+ * @return int     Post count
+ */
+function get_tptn_total_count( $post = 0, $blog_id = 0 ) {
+	return get_tptn_post_count_only( $post, 'total', $blog_id );
+}
+
+/**
+ * Returns the daily post count.
+ *
+ * @since 3.4.0
+ * @param int|\WP_Post $post    Post ID or WP_Post object.
+ * @param int          $blog_id Blog ID.
+ * @return int     Post count
+ */
+function get_tptn_daily_count( $post = 0, $blog_id = 0 ) {
+	return get_tptn_post_count_only( $post, 'daily', $blog_id );
+}
+
+/**
+ * Returns the overall post count.
+ *
+ * @since 3.4.0
+ * @param int $blog_id Blog ID.
+ * @return int     Post count
+ */
+function get_tptn_overall_count( $blog_id = 0 ) {
+	return get_tptn_post_count_only( 0, 'overall', $blog_id );
+}
+
+/**
  * Retrieves an array of the related posts.
  *
  * The defaults are as follows:
