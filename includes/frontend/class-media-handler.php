@@ -197,6 +197,15 @@ class Media_Handler {
 		if ( ! $postimage && $args['thumb_default_show'] && $args['thumb_default'] ) {
 			$postimage = $args['thumb_default'];
 			$pick      = 'default_thumb';
+
+			if ( Display::get_default_thumbnail() !== $postimage ) {
+				$attachment_id = self::get_attachment_id_from_url( $postimage );
+				$postthumb     = wp_get_attachment_image_src( $attachment_id, $args['size'] );
+				if ( false !== $postthumb ) {
+					$postimage = $postthumb[0];
+					$pick     .= 'correct';
+				}
+			}
 		}
 
 		// If no thumb found, use site icon.

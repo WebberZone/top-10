@@ -54,9 +54,14 @@ class Styles_Handler {
 			$style     = $style_array['name'];
 			$extra_css = $style_array['extra_css'];
 
+			$pro = '';
+			if ( false !== strpos( $style, '-pro' ) ) {
+				$pro = 'pro/';
+			}
+
 			wp_register_style(
 				"tptn-style-{$style}",
-				plugins_url( "css/{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
+				plugins_url( "css/{$pro}{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
 				array(),
 				TOP_TEN_VERSION
 			);
@@ -120,7 +125,7 @@ class Styles_Handler {
 		 * @since 3.2.0
 		 *
 		 * @param array  $style_array  Style array containing name and extra_css.
-		 * @param string $tptn_style    Style name.
+		 * @param string $tptn_style   Style name.
 		 * @param int    $thumb_width  Thumbnail width.
 		 * @param int    $thumb_height Thumbnail height.
 		 */

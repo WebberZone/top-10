@@ -440,11 +440,16 @@ class Blocks {
 			$style     = $style_array['name'];
 			$extra_css = $style_array['extra_css'];
 
+			$pro = '';
+			if ( false !== strpos( $style, '-pro' ) ) {
+				$pro = 'pro/';
+			}
+
 			wp_enqueue_style(
 				'popular-posts-block-editor',
-				plugins_url( "css/{$style}{$file_prefix}.css", TOP_TEN_PLUGIN_FILE ),
+				plugins_url( "css/{$pro}{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
 				array( 'wp-edit-blocks' ),
-				filemtime( TOP_TEN_PLUGIN_DIR . "css/{$style}{$file_prefix}.css" )
+				TOP_TEN_VERSION
 			);
 			wp_add_inline_style( 'popular-posts-block-editor', $extra_css );
 		}
