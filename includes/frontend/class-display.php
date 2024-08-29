@@ -59,6 +59,24 @@ class Display {
 		// Parse incomming $args into an array and merge it with $defaults.
 		$args = wp_parse_args( $args, $defaults );
 
+		// Short circuit flag.
+		$short_circuit = false;
+
+		/**
+		 * Allow a short circuit flag to be set to exit at this stage. Set to true to exit.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param bool     $short_circuit Short circuit filter.
+		 * @param array    $args          Arguments array.
+		 * @param \WP_Post $post          Current Post object.
+		 */
+		$short_circuit = apply_filters( 'get_tptn_short_circuit', $short_circuit, $args, $post );
+
+		if ( $short_circuit ) {
+			return ''; // Exit without adding popular posts.
+		}
+
 		$output = '';
 
 		/**
@@ -73,7 +91,7 @@ class Display {
 		do_action( 'pre_tptn_pop_posts', $output, $args, $post );
 
 		// Check exclusions.
-		if ( \WebberZone\Top_Ten\Util\Helpers::exclude_on( $post, $args ) ) {
+		if ( self::exclude_on( $post, $args ) ) {
 			return '';
 		}
 
@@ -115,7 +133,7 @@ class Display {
 			'shortcode'   => $args['is_shortcode'] ? 'tptn_posts_shortcode' : '',
 			'block'       => $args['is_block'] ? 'tptn_posts_block' : '',
 			'extra_class' => $args['extra_class'],
-			'style'       => ! empty( $style_array['name'] ) ? 'tptn-' . $style_array['name'] : '',
+			'style'       => ! empty( $style_array['name'] ) ? str_replace( '-pro', '', 'tptn-' . $style_array['name'] ) : '',
 		);
 		$post_classes = join( ' ', $post_classes );
 
@@ -193,7 +211,7 @@ class Display {
 				++$counter;
 
 				if ( $counter === (int) $args['limit'] ) {
-					break;  // End loop when related posts limit is reached.
+					break;  // End loop when popular posts limit is reached.
 				}
 
 				if ( $switched_blog ) {
@@ -288,7 +306,7 @@ class Display {
 		// Parse incomming $args into an array and merge it with $defaults.
 		$args = wp_parse_args( $args, $defaults );
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $args['daily'] );
+		$table_name = Helpers::get_tptn_table( $args['daily'] );
 
 		$limit  = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
 		$offset = isset( $args['offset'] ) ? $args['offset'] : 0;
@@ -313,7 +331,7 @@ class Display {
 
 		$blog_id = get_current_blog_id();
 
-		$from_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $args['daily_range'], $args['hour_range'] );
+		$from_date = Helpers::get_from_date( null, $args['daily_range'], $args['hour_range'] );
 
 		/**
 		 *
@@ -355,7 +373,7 @@ class Display {
 
 		// How old should the posts be?
 		if ( $args['how_old'] ) {
-			$how_old_date = \WebberZone\Top_Ten\Util\Helpers::get_from_date( null, $args['how_old'] + 1, 0 );
+			$how_old_date = Helpers::get_from_date( null, $args['how_old'] + 1, 0 );
 
 			$where .= $wpdb->prepare( " AND $wpdb->posts.post_date > %s ", $how_old_date );
 		}
@@ -507,7 +525,7 @@ class Display {
 	}
 
 	/**
-	 * Retrieves an array of the related posts.
+	 * Retrieves an array of the popular posts.
 	 *
 	 * The defaults are as follows:
 	 *
@@ -710,7 +728,7 @@ class Display {
 	 */
 	public static function get_the_title( $args, $result ) {
 
-		$title = \WebberZone\Top_Ten\Util\Helpers::trim_char( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed.
+		$title = Helpers::trim_char( get_the_title( $result->ID ), $args['title_length'] ); // Get the post title and crop it if needed.
 
 		/**
 		 * Filter the post title of each list item.
@@ -870,7 +888,7 @@ class Display {
 	 */
 	public static function get_list_count( $args, $result, $visits ) {
 
-		$tptn_list_count = '(' . \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits ) . ')';
+		$tptn_list_count = '(' . Helpers::number_format_i18n( $visits ) . ')';
 
 		/**
 		 * Filter the formatted list count text.
@@ -994,5 +1012,79 @@ class Display {
 		 * @param boolean  $use_excerpt    Use the excerpt?
 		 */
 		return apply_filters( 'tptn_excerpt', $output, $post, $excerpt_length, $use_excerpt );
+	}
+
+	/**
+	 * Get the default thumbnail.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return string Default thumbnail.
+	 */
+	public static function get_default_thumbnail() {
+		return TOP_TEN_PLUGIN_URL . 'default.png';
+	}
+
+	/**
+	 * Processes exclusion settings to return if the popular posts should not be displayed on the current post.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int|\WP_Post|null $post Post ID or post object. Defaults to global $post. Default null.
+	 * @param array             $args Parameters in a query string format.
+	 * @return bool True if any exclusion setting is matched.
+	 */
+	public static function exclude_on( $post = null, $args = array() ) {
+		$post = get_post( $post );
+		if ( ! $post ) {
+			return false;
+		}
+
+		// If this post ID is in the DO NOT DISPLAY list.
+		$exclude_on_post_ids_list = isset( $args['exclude_on_post_ids_list'] ) ? $args['exclude_on_post_ids_list'] : \tptn_get_option( 'exclude_on_post_ids_list' );
+		$exclude_on_post_ids_list = explode( ',', $exclude_on_post_ids_list );
+		if ( in_array( $post->ID, $exclude_on_post_ids_list ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			return true;
+		}
+
+		// If this post type is in the DO NOT DISPLAY list.
+		// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
+		$exclude_on_post_types = isset( $args['exclude_on_post_types'] ) ? $args['exclude_on_post_types'] : \tptn_get_option( 'exclude_on_post_types' );
+		$exclude_on_post_types = $exclude_on_post_types ? explode( ',', $exclude_on_post_types ) : array();
+
+		if ( in_array( $post->post_type, $exclude_on_post_types, true ) ) {
+			return true;
+		}
+
+		// If this post's category is in the DO NOT DISPLAY list.
+		$exclude_on_categories = isset( $args['exclude_on_categories'] ) ? $args['exclude_on_categories'] : \tptn_get_option( 'exclude_on_categories' );
+		$exclude_on_categories = explode( ',', $exclude_on_categories );
+		$post_categories       = get_the_terms( $post->ID, 'category' );
+		$categories            = array();
+		if ( ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ) {
+			$categories = wp_list_pluck( $post_categories, 'term_taxonomy_id' );
+		}
+		if ( ! empty( array_intersect( $exclude_on_categories, $categories ) ) ) {
+			return true;
+		}
+
+		// If the DO NOT DISPLAY meta field is set.
+		if ( ( isset( $args['is_shortcode'] ) && ! $args['is_shortcode'] ) &&
+		( isset( $args['is_manual'] ) && ! $args['is_manual'] ) &&
+		( isset( $args['is_block'] ) && ! $args['is_block'] ) ) {
+			$tptn_post_meta = get_post_meta( $post->ID, 'tptn_post_meta', true );
+
+			if ( isset( $tptn_post_meta['disable_here'] ) ) {
+				$disable_here = $tptn_post_meta['disable_here'];
+			} else {
+				$disable_here = 0;
+			}
+
+			if ( $disable_here ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

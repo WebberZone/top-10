@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Frontend\Widgets;
 
+use WebberZone\Top_Ten\Frontend\Display;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -249,7 +251,7 @@ class Posts_Widget extends \WP_Widget {
 	public function widget( $args, $instance ) {
 		global $post;
 
-		if ( \WebberZone\Top_Ten\Util\Helpers::exclude_on( $post, $args ) ) {
+		if ( Display::exclude_on( $post, $args ) ) {
 			return;
 		}
 		$this->front_end_styles( $args, $instance );
@@ -311,7 +313,7 @@ class Posts_Widget extends \WP_Widget {
 		 */
 		$arguments = apply_filters( 'tptn_widget_options', $arguments );
 
-		$output .= \WebberZone\Top_Ten\Frontend\Display::pop_posts( $arguments );
+		$output .= Display::pop_posts( $arguments );
 
 		$output .= $args['after_widget'];
 
