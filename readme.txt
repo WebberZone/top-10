@@ -147,7 +147,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 3.4.0 =
 
-* Feature:
+* Features:
 	* New REST API route (counter) to get the post count for a post.
 	* New block: Top 10 Post Count Block that allows you to display the post count for a post.
 	* [Pro] New Top 10 Query Block that allows you to query related posts using a block in the block or site editor.
@@ -155,7 +155,12 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* [Pro] Pro version adds additional features to the Popular Posts block:
 		* New buttons to save default block settings and clear them.
 		* Inserting the block will also insert the attributes for the default and global settings automatically. This can be disabled in the settings page under the **Posts List** tab.
+	* [Pro] New menu item in the admin bar to display the daily, total and overal post counts as well as link to the Top 10 admin pages and clear the Top 10 cache.
+	* [Pro] New parameter `display_only_on_tax_ids` to display related posts only on specific taxonomy terms
 	* New filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms when querying posts. In the Pro version, you can turn this on in the settings page.
+	* New `get_tptn_short_circuit` filter to short-circuit the plugin's output.
+	* [Pro] New setting "Display columns on post types" to select the post types screens on which the admin columns should be displayed.
+	* [Pro] New setting "Also show dashboard to" to select the user roles that should see the dashboard screen.
 
 * Enhancements:
 	* The plugin supports `WP_Query` directly if `top_ten_query` is set in the query arguments.
