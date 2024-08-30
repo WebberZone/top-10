@@ -281,7 +281,7 @@ class Settings {
 			),
 			'show_metabox_admins'     => array(
 				'id'      => 'show_metabox_admins',
-				'name'    => esc_html__( 'Limit meta box to Admins only', 'top-10' ),
+				'name'    => esc_html__( 'Limit meta box to Admins', 'top-10' ),
 				'desc'    => esc_html__( 'If selected, the meta box will be hidden from anyone who is not an Admin. By default, Contributors and above will be able to see the meta box. Applies only if the above option is selected.', 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => false,
@@ -307,6 +307,15 @@ class Settings {
 				'desc'    => esc_html__( "If you disable this then non-admins won't see the above columns or view the independent pages with the top posts.", 'top-10' ),
 				'type'    => 'checkbox',
 				'options' => true,
+			),
+			'show_dashboard_to_roles' => array(
+				'id'      => 'show_dashboard_to_roles',
+				'name'    => esc_html__( 'Also show dashboard to', 'top-10' ),
+				'desc'    => esc_html__( 'Choose the user roles that should have access to the Top 10 dashboard, which showcases popular posts over time. These roles are linked to specific capabilities, and selecting a lower role will automatically grant access to higher roles.', 'top-10' ),
+				'type'    => 'multicheck',
+				'default' => 'administrator',
+				'options' => self::get_user_roles( array( 'administrator' ) ),
+				'pro'     => true,
 			),
 		);
 
@@ -342,10 +351,7 @@ class Settings {
 				/* translators: 1: Code. */
 				'desc'    => sprintf( esc_html__( 'If you choose to disable this, please add the following code to your template file where you want it displayed: %1$s', 'top-10' ), "<code>&lt;?php if ( function_exists( 'echo_tptn_post_count' ) ) { echo_tptn_post_count(); } ?&gt;</code>" ),
 				'type'    => 'multicheck',
-				'default' => array(
-					'single' => 'single',
-					'page'   => 'page',
-				),
+				'default' => 'single,page',
 				'options' => array(
 					'single'            => esc_html__( 'Posts', 'top-10' ),
 					'page'              => esc_html__( 'Pages', 'top-10' ),
@@ -434,12 +440,9 @@ class Settings {
 				'id'      => 'trackers',
 				'name'    => esc_html__( 'Enable trackers', 'top-10' ),
 				/* translators: 1: Code. */
-				'desc'    => '',
+				'desc'    => esc_html__( 'Top 10 tracks hits in two tables in the database. The overall table only tracks the total hits per post. The daily table tracks hits per post on an hourly basis.', 'top-10' ),
 				'type'    => 'multicheck',
-				'default' => array(
-					'overall' => 'overall',
-					'daily'   => 'daily',
-				),
+				'default' => 'overall,daily',
 				'options' => array(
 					'overall' => esc_html__( 'Overall', 'top-10' ),
 					'daily'   => esc_html__( 'Daily range', 'top-10' ),
@@ -465,11 +468,7 @@ class Settings {
 				'name'    => esc_html__( 'Track user groups', 'top-10' ) . ':',
 				'desc'    => esc_html__( 'Uncheck above to disable tracking if the current user falls into any one of these groups.', 'top-10' ),
 				'type'    => 'multicheck',
-				'default' => array(
-					'authors' => 'authors',
-					'editors' => 'editors',
-					'admins'  => 'admins',
-				),
+				'default' => 'authors,editors,admins',
 				'options' => array(
 					'authors' => esc_html__( 'Authors', 'top-10' ),
 					'editors' => esc_html__( 'Editors', 'top-10' ),
@@ -1093,6 +1092,31 @@ class Settings {
 		 * @param array $styles Different styles.
 		 */
 		return apply_filters( self::$prefix . '_get_styles', $styles );
+	}
+
+	/**
+	 * Get User Roles.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param array $remove_roles Roles to remove.
+	 * @return array User roles in the format 'role' => 'name'.
+	 */
+	public static function get_user_roles( $remove_roles = array() ) {
+		global $wp_roles;
+
+		// Initialize the array to store roles in the desired format.
+		$roles_array = array();
+
+		// Loop through all roles and store them in 'role' => 'name' format.
+		foreach ( $wp_roles->roles as $role_key => $role_details ) {
+			if ( in_array( $role_key, $remove_roles, true ) ) {
+				continue;
+			}
+			$roles_array[ $role_key ] = esc_html( $role_details['name'] );
+		}
+
+		return $roles_array;
 	}
 
 	/**

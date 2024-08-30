@@ -31,7 +31,7 @@ class Settings_API {
 	 *
 	 * @var   string
 	 */
-	const VERSION = '2.5.1';
+	const VERSION = '2.5.2';
 
 	/**
 	 * Settings Key.
@@ -333,7 +333,7 @@ class Settings_API {
 			'parent_slug' => 'options-general.php',
 			'page_title'  => '',
 			'menu_title'  => '',
-			'capability'  => 'manage_options',
+			'capability'  => $this->get_capability_for_menu(),
 			'menu_slug'   => '',
 			'function'    => array( $this, 'plugin_settings' ),
 
@@ -414,6 +414,42 @@ class Settings_API {
 
 		// Load the settings contextual help.
 		add_action( 'load-' . $this->settings_page, array( $this, 'settings_help' ) );
+	}
+
+	/**
+	 * Get the appropriate capability for the menu based on the user's roles and settings.
+	 *
+	 * @param array    $roles Array of roles to check.
+	 * @param string   $base_capability The default capability.
+	 * @param \WP_User $current_user The current user object.
+	 * @param array    $role_capabilities Array of role capabilities.
+	 * @return string The capability to use for the menu.
+	 */
+	public static function get_capability_for_menu( $roles = array(), $base_capability = 'manage_options', $current_user = null, $role_capabilities = array() ) {
+		if ( ! $current_user ) {
+			$current_user = wp_get_current_user();
+		}
+
+		if ( empty( $roles ) || in_array( 'administrator', $current_user->roles, true ) ) {
+			return $base_capability;
+		}
+
+		if ( empty( $role_capabilities ) ) {
+			$role_capabilities = array(
+				'editor'      => 'edit_others_posts',
+				'author'      => 'publish_posts',
+				'contributor' => 'edit_posts',
+				'subscriber'  => 'read',
+			);
+		}
+
+		foreach ( $current_user->roles as $role ) {
+			if ( in_array( $role, $roles, true ) && isset( $role_capabilities[ $role ] ) ) {
+				return $role_capabilities[ $role ];
+			}
+		}
+
+		return $base_capability;
 	}
 
 	/**
