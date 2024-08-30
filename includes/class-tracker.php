@@ -49,8 +49,8 @@ class Tracker {
 			return;
 		}
 
-		$track_users = \tptn_get_option( 'track_users' );
-		$trackers    = \tptn_get_option( 'trackers' );
+		$track_users = wp_parse_list( \tptn_get_option( 'track_users' ) );
+		$trackers    = wp_parse_list( \tptn_get_option( 'trackers' ) );
 
 		if ( is_singular() || \tptn_get_option( 'tracker_all_pages' ) ) {
 
@@ -61,13 +61,13 @@ class Tracker {
 			$is_bot              = Helpers::is_bot();
 
 			$include_code = true;
-			if ( ( $post_author ) && ( empty( $track_users['authors'] ) ) ) {
+			if ( ( $post_author ) && ( ! in_array( 'authors', $track_users, true ) ) ) {
 				$include_code = false;
 			}
-			if ( ( $current_user_admin ) && ( empty( $track_users['admins'] ) ) ) {
+			if ( ( $current_user_admin ) && ( ! in_array( 'admins', $track_users, true ) ) ) {
 				$include_code = false;
 			}
-			if ( ( $current_user_editor ) && ( empty( $track_users['editors'] ) ) ) {
+			if ( ( $current_user_editor ) && ( ! in_array( 'editors', $track_users, true ) ) ) {
 				$include_code = false;
 			}
 			if ( ( $current_user->exists() ) && ( ! \tptn_get_option( 'logged_in' ) ) ) {
@@ -81,8 +81,8 @@ class Tracker {
 
 				$id               = is_singular() ? absint( $post->ID ) : 0;
 				$blog_id          = get_current_blog_id();
-				$activate_counter = ! empty( $trackers['overall'] ) ? 1 : 0;     // It's 1 if we're updating the overall count.
-				$activate_counter = $activate_counter + ( ! empty( $trackers['daily'] ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
+				$activate_counter = in_array( 'overall', $trackers, true ) ? 1 : 0;     // It's 1 if we're updating the overall count.
+				$activate_counter = $activate_counter + ( in_array( 'daily', $trackers, true ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
 				$top_ten_debug    = absint( \tptn_get_option( 'debug_mode' ) );
 				$tracker_type     = \tptn_get_option( 'tracker_type' );
 
