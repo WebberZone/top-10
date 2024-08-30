@@ -11,10 +11,10 @@
  * @copyright 2008-2024 Ajay D'Souza
  *
  * @wordpress-plugin
- * Plugin Name: Top 10
+ * Plugin Name: Top 10 Pro
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     3.4.0-RC1
+ * Version:     3.4.0-RC2
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -98,7 +98,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';
  * @param bool $network_wide Whether the plugin is being activated network-wide.
  */
 function activate_tptn( $network_wide ) {
-	\WebberZone\Top_Ten\Admin\Activator::activation_hook( $network_wide );
+	Admin\Activator::activation_hook( $network_wide );
 }
 register_activation_hook( __FILE__, __NAMESPACE__ . '\activate_tptn' );
 
@@ -108,7 +108,7 @@ register_activation_hook( __FILE__, __NAMESPACE__ . '\activate_tptn' );
  * @since 3.3.0
  */
 function load_tptn() {
-	\WebberZone\Top_Ten\Main::get_instance();
+	Main::get_instance();
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\load_tptn' );
 
