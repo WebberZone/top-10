@@ -148,32 +148,32 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 = 3.4.0 =
 
 * Features:
-	* New REST API route (counter) to get the post count for a post.
-	* New block: Top 10 Post Count Block that allows you to display the post count for a post.
-	* [Pro] New Top 10 Query Block that allows you to query popular posts using a block in the block or site editor.
-	* [Pro] New Top 10 Featured Image Block that is an advanced version of the featured image block that supports multiple different image sources.
-	* [Pro] Pro version adds additional features to the Popular Posts block:
-		* New buttons to save default block settings and clear them.
-		* Inserting the block will also insert the attributes for the default and global settings automatically. This can be disabled in the settings page under the **Posts List** tab.
-	* [Pro] New menu item in the admin bar to display the daily, total and overal post counts as well as link to the Top 10 admin pages and clear the Top 10 cache.
-	* [Pro] New parameter `display_only_on_tax_ids` to display popular posts only on specific taxonomy terms.
-	* [Pro] New Fast Tracker that significantly speeds up the tracking of post views vs the other trackers. Select this from your settings page.
-	* New filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms when querying posts. In the Pro version, you can turn this on in the settings page.
-	* New `get_tptn_short_circuit` filter to short-circuit the plugin's output.
-	* [Pro] New setting "Display columns on post types" to select the post types screens on which the admin columns should be displayed.
-	* [Pro] New setting "Also show dashboard to" to select the user roles that should see the dashboard screen.
+	* Added a new REST API route (`counter`) to fetch the post count for individual posts.
+	* Introduced the Top 10 Post Count Block for displaying post counts.
+	* [Pro] New Top 10 Query Block for querying popular posts directly from the block or site editor.
+	* [Pro] Enhanced Top 10 Featured Image Block now supports multiple image sources.
+	* [Pro] Popular Posts block now includes:
+		* Buttons to save and clear default block settings.
+		* Auto-insertion of default and global settings attributes, with an option to disable this in the **Posts List** settings.
+	* [Pro] Added a new admin bar menu item to view daily, total, and overall post counts, access Top 10 admin pages, and clear the Top 10 cache.
+	* [Pro] Added `display_only_on_tax_ids` parameter to restrict popular posts display to specific taxonomy terms.
+	* [Pro] New Fast Tracker improves post view tracking speed. Select it from your settings page.
+	* Added filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms in post queries. Pro users can enable this in settings.
+	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
+	* [Pro] "Display columns on post types" setting to choose which post type screens display admin columns.
+	* [Pro] "Also show dashboard to" setting to select user roles that can view the dashboard screen.
 
 * Enhancements:
-	* The plugin supports `WP_Query` directly if `top_ten_query` is set in the query arguments.
-	* Optimized media handler to reduce the number of queries.
-	* New filter: `tptn_shortcode_defaults` to filter the default shortcode arguments.
-	* Media Handler changes:
-		* New parameters `use_site_icon` and `style`.
-		* Method `get_image_html()` will use `wp_get_attachment_image()` if a valid attachment ID is passed.
-		* Support for `decoding`, `loading` and `fetchpriority` attributes.
-		* `get_attachment_id_from_url()` will strip size suffixes from the URL before attempting to find the attachment ID.
+	* Direct support for `WP_Query` if `top_ten_query` is used in query arguments.
+	* Optimised media handler to reduce queries.
+	* New filter: `tptn_shortcode_defaults` for default shortcode arguments.
+	* Media Handler improvements:
+		* Added `use_site_icon` and `style` parameters.
+		* `get_image_html()` now uses `wp_get_attachment_image()` with a valid attachment ID.
+		* Support for `decoding`, `loading`, and `fetchpriority` attributes.
+		* `get_attachment_id_from_url()` now strips size suffixes before locating the attachment ID.
 	* Updated top-10/popular-posts block to API version 3.
-	* New parameter $more_link_text for get_the_excerpt().
+	* Added `$more_link_text` parameter for `get_the_excerpt()`.
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 
