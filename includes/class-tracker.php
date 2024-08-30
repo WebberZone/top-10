@@ -111,6 +111,8 @@ class Tracker {
 				 * The corresponding tracker can use the below variables or append their own to $ajax_tptn_tracker
 				 *
 				 * @since   2.0
+				 *
+				 * @param string $home_url URL of the tracker.
 				 */
 				$home_url = apply_filters( 'tptn_add_counter_script_url', $home_url );
 
