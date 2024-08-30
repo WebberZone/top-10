@@ -34,53 +34,52 @@ class Counter {
 	}
 
 	/**
-	 * Function to add the viewed count to the post content. Filters `the_content`.
+	 * Adds the viewed count to the post content. Filters `the_content`.
 	 *
-	 * @since   1.0
+	 * @since 3.3.0
+	 *
 	 * @param   string $content Post content.
-	 * @return  string  Filtered post content
+	 * @return  string Filtered post content.
 	 */
 	public static function the_content( $content ) {
 		global $post, $wp_filters;
 
-		// Track the number of times this function  is called.
+		// Track the number of times this function is called.
 		static $filter_calls = 0;
 		++$filter_calls;
 
-		if ( ! ( in_the_loop() && is_main_query() && (int) get_queried_object_id() === (int) $post->ID ) ) {
+		// Check if this is the last call of 'the_content' and only process for the main query.
+		if ( ! ( in_the_loop() && is_main_query() && (int) get_queried_object_id() === (int) $post->ID ) || ( doing_filter( 'the_content' ) && isset( $wp_filters['the_content'] ) && (int) $wp_filters['the_content'] !== $filter_calls ) ) {
 			return $content;
 		}
 
-		// Check if this is the last call of the_content.
-		if ( doing_filter( 'the_content' ) && isset( $wp_filters['the_content'] ) && (int) $wp_filters['the_content'] !== $filter_calls ) {
-			return $content;
-		}
-
+		// Exclude posts that should not display the viewed count.
 		$exclude_on_post_ids = explode( ',', \tptn_get_option( 'exclude_on_post_ids' ) );
-		$add_to              = \tptn_get_option( 'add_to', false );
+		if ( isset( $post ) && in_array( $post->ID, $exclude_on_post_ids, true ) ) {
+			return $content;
+		}
 
-		if ( isset( $post ) ) {
-			if ( in_array( $post->ID, $exclude_on_post_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-				return $content;    // Exit without adding related posts.
+		// Determine where to add the viewed count.
+		$add_to = wp_parse_list( \tptn_get_option( 'add_to', array() ) );
+
+		$conditions = array(
+			'single'            => is_single(),
+			'page'              => is_page(),
+			'home'              => is_home(),
+			'category_archives' => is_category(),
+			'tag_archives'      => is_tag(),
+			'other_archives'    => is_tax() || is_author() || is_date(),
+		);
+
+		foreach ( $conditions as $key => $condition ) {
+			if ( $condition && in_array( $key, $add_to, true ) ) {
+				return $content . self::echo_post_count( 0 );
 			}
 		}
 
-		if ( ( is_single() ) && ! empty( $add_to['single'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} elseif ( ( is_page() ) && ! empty( $add_to['page'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} elseif ( ( is_home() ) && ! empty( $add_to['home'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} elseif ( ( is_category() ) && ! empty( $add_to['category_archives'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} elseif ( ( is_tag() ) && ! empty( $add_to['tag_archives'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} elseif ( ( ( is_tax() ) || ( is_author() ) || ( is_date() ) ) && ! empty( $add_to['other_archives'] ) ) {
-			return $content . self::echo_post_count( 0 );
-		} else {
-			return $content;
-		}
+		return $content;
 	}
+
 
 	/**
 	 * Filter to display the post count when viewing feeds.

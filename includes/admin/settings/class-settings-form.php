@@ -322,25 +322,28 @@ class Settings_Form {
 	public function callback_multicheck( $args ) {
 		$html = '';
 
-		$value = isset( $args['value'] ) ? $args['value'] : $this->get_option( $args['id'], $args['options'] );
+		$value       = isset( $args['value'] ) ? $args['value'] : $this->get_option( $args['id'], $args['default'] );
+		$value_array = wp_parse_list( $value );
+		$disabled    = ( ! empty( $args['disabled'] ) || $args['pro'] ) ? ' disabled="disabled"' : '';
 
 		if ( ! empty( $args['options'] ) ) {
 			$html .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="-1" />', $this->settings_key, sanitize_key( $args['id'] ) );
 
 			foreach ( $args['options'] as $key => $option ) {
-				if ( isset( $value[ $key ] ) ) {
+				if ( in_array( $key, $value_array, true ) ) {
 					$enabled = $key;
 				} else {
 					$enabled = null;
 				}
 
 				$html .= sprintf(
-					'<input name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]" type="checkbox" value="%4$s" %5$s /> ',
+					'<input name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]" type="checkbox" value="%4$s" %5$s %6$s /> ',
 					$this->settings_key,
 					sanitize_key( $args['id'] ),
 					sanitize_key( $key ),
 					esc_attr( $key ),
-					checked( $key, $enabled, false )
+					checked( $key, $enabled, false ),
+					$disabled
 				);
 				$html .= sprintf(
 					'<label for="%1$s[%2$s][%3$s]">%4$s</label> <br />',
