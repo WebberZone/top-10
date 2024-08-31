@@ -45,6 +45,21 @@ class Import_Export {
 		add_filter( 'admin_init', array( $this, 'import_tables' ), 9 );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue scripts in admin area.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param string $hook The current admin page.
+	 */
+	public function admin_enqueue_scripts( $hook ) {
+		if ( $hook === $this->parent_id ) {
+			wp_enqueue_script( 'top-ten-admin-js' );
+			wp_enqueue_style( 'top-ten-admin-css' );
+		}
 	}
 
 	/**
@@ -107,6 +122,7 @@ class Import_Export {
 		?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Top 10 - Import/Export tables', 'top-10' ); ?></h1>
+		<?php do_action( 'tptn_settings_page_header' ); ?>
 
 		<?php settings_errors(); ?>
 

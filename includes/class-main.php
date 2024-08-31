@@ -164,6 +164,12 @@ final class Main {
 				$this->admin = new Admin\Network\Admin();
 			}
 		}
+
+		if ( tptn_freemius()->is__premium_only() ) {
+			if ( tptn_freemius()->can_use_premium_code() ) {
+				$this->pro = new Pro\Pro();
+			}
+		}
 	}
 
 	/**

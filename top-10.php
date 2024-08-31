@@ -85,6 +85,8 @@ if ( ! defined( 'TOP_TEN_STORE_DATA' ) ) {
 global $tptn_db_version;
 $tptn_db_version = '6.0';
 
+// Load Freemius.
+require_once TOP_TEN_PLUGIN_DIR . 'includes/load-freemius.php';
 
 // Load the autoloader.
 require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';

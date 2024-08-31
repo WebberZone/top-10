@@ -88,6 +88,7 @@ class Settings {
 		add_filter( self::$prefix . '_settings_sanitize', array( $this, 'change_settings_on_save' ), 99 );
 		add_filter( self::$prefix . '_after_setting_output', array( $this, 'display_admin_thumbnail' ), 10, 2 );
 		add_filter( self::$prefix . '_setting_field_description', array( $this, 'reset_default_thumb_setting' ), 10, 2 );
+		add_filter( self::$prefix . '_settings_page_header', array( $this, 'settings_page_header' ) );
 		add_filter( self::$prefix . '_after_setting_output', array( $this, 'after_setting_output' ), 10, 2 );
 	}
 
@@ -589,6 +590,15 @@ class Settings {
 					'data-wp-taxonomy' => 'category',
 				),
 			),
+			'exclude_categories'            => array(
+				'id'       => 'exclude_categories',
+				'name'     => esc_html__( 'Exclude category IDs', 'top-10' ),
+				'desc'     => esc_html__( 'This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy.', 'top-10' ),
+				'type'     => 'text',
+				'options'  => '',
+				'size'     => 'large',
+				'readonly' => true,
+			),
 			'exclude_terms_include_parents' => array(
 				'id'      => 'exclude_terms_include_parents',
 				'name'    => esc_html__( 'Include parent categories', 'top-10' ),
@@ -601,15 +611,6 @@ class Settings {
 					'all'    => esc_html__( 'All ancestors', 'top-10' ),
 				),
 				'pro'     => true,
-			),
-			'exclude_categories'            => array(
-				'id'       => 'exclude_categories',
-				'name'     => esc_html__( 'Exclude category IDs', 'top-10' ),
-				'desc'     => esc_html__( 'This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy.', 'top-10' ),
-				'type'     => 'text',
-				'options'  => '',
-				'size'     => 'large',
-				'readonly' => true,
 			),
 			'exclude_on_cat_slugs'          => array(
 				'id'               => 'exclude_on_cat_slugs',
@@ -1358,45 +1359,8 @@ class Settings {
 	 */
 	public function change_settings_on_save( $settings ) {
 
-		// Sanitize exclude_cat_slugs to save a new entry of exclude_categories.
-		if ( isset( $settings['exclude_cat_slugs'] ) ) {
-
-			$exclude_cat_slugs = array_unique( str_getcsv( $settings['exclude_cat_slugs'] ) );
-
-			foreach ( $exclude_cat_slugs as $cat_name ) {
-				$cat = get_term_by( 'name', $cat_name, 'category' );
-
-				// Fall back to slugs since that was the default format before v2.4.0.
-				if ( false === $cat ) {
-					$cat = get_term_by( 'slug', $cat_name, 'category' );
-				}
-				if ( isset( $cat->term_taxonomy_id ) ) {
-					$exclude_categories[]       = $cat->term_taxonomy_id;
-					$exclude_categories_slugs[] = $cat->name;
-				}
-			}
-			$settings['exclude_categories'] = isset( $exclude_categories ) ? join( ',', $exclude_categories ) : '';
-			$settings['exclude_cat_slugs']  = isset( $exclude_categories_slugs ) ? \WebberZone\Top_Ten\Util\Helpers::str_putcsv( $exclude_categories_slugs ) : '';
-
-		}
-
-		// Sanitize exclude_on_cat_slugs to save a new entry of exclude_on_categories.
-		if ( isset( $settings['exclude_on_cat_slugs'] ) ) {
-
-			$exclude_on_cat_slugs = array_unique( str_getcsv( $settings['exclude_on_cat_slugs'] ) );
-
-			foreach ( $exclude_on_cat_slugs as $cat_name ) {
-				$cat = get_term_by( 'name', $cat_name, 'category' );
-
-				if ( isset( $cat->term_taxonomy_id ) ) {
-					$exclude_on_categories[]       = $cat->term_taxonomy_id;
-					$exclude_on_categories_slugs[] = $cat->name;
-				}
-			}
-			$settings['exclude_on_categories'] = isset( $exclude_on_categories ) ? join( ',', $exclude_on_categories ) : '';
-			$settings['exclude_on_cat_slugs']  = isset( $exclude_on_categories_slugs ) ? \WebberZone\Top_Ten\Util\Helpers::str_putcsv( $exclude_on_categories_slugs ) : '';
-
-		}
+		Settings_Sanitize::sanitize_tax_slugs( $settings, 'exclude_cat_slugs', 'exclude_categories' );
+		Settings_Sanitize::sanitize_tax_slugs( $settings, 'exclude_on_cat_slugs', 'exclude_on_categories' );
 
 		// Save cron settings.
 		$settings['cron_hour'] = min( 23, absint( $settings['cron_hour'] ) );
@@ -1458,6 +1422,25 @@ class Settings {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Add a link to the Tools page from the settings page.
+	 *
+	 * @since 3.5.0
+	 */
+	public static function settings_page_header() {
+		global $tptn_freemius;
+		?>
+		<p>
+			<?php if ( ! $tptn_freemius->is_paying() ) { ?>
+			<a class="tptn_button tptn_button_gold" href="<?php echo esc_url( $tptn_freemius->get_upgrade_url() ); ?>">
+				<?php esc_html_e( 'Upgrade to Pro', 'top-10' ); ?>
+			</a>
+			<?php } ?>
+		</p>
+
+		<?php
 	}
 
 	/**

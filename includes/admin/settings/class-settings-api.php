@@ -459,6 +459,38 @@ class Settings_API {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
+		$minimize = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		// Settings API scripts.
+		wp_register_script(
+			'wz-admin-js',
+			plugins_url( 'js/settings-admin-scripts' . $minimize . '.js', __FILE__ ),
+			array( 'jquery' ),
+			self::VERSION,
+			true
+		);
+		wp_register_script(
+			'wz-codemirror-js',
+			plugins_url( 'js/apply-codemirror' . $minimize . '.js', __FILE__ ),
+			array( 'jquery' ),
+			self::VERSION,
+			true
+		);
+		wp_register_script(
+			'wz-taxonomy-suggest-js',
+			plugins_url( 'js/taxonomy-suggest' . $minimize . '.js', __FILE__ ),
+			array( 'jquery' ),
+			self::VERSION,
+			true
+		);
+		wp_register_script(
+			'wz-media-selector-js',
+			plugins_url( 'js/media-selector' . $minimize . '.js', __FILE__ ),
+			array( 'jquery' ),
+			self::VERSION,
+			true
+		);
+
 		if ( $hook === $this->settings_page ) {
 			self::enqueue_scripts_styles();
 		}
@@ -468,8 +500,6 @@ class Settings_API {
 	 * Enqueues all scripts, styles, settings, and templates necessary to use the Settings API.
 	 */
 	public static function enqueue_scripts_styles() {
-
-		$minimize = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_style( 'wp-color-picker' );
 
@@ -489,27 +519,9 @@ class Settings_API {
 			)
 		);
 
-		wp_enqueue_script(
-			'wz-admin-js',
-			plugins_url( 'js/admin-scripts' . $minimize . '.js', __FILE__ ),
-			array( 'jquery' ),
-			self::VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'wz-codemirror-js',
-			plugins_url( 'js/apply-codemirror' . $minimize . '.js', __FILE__ ),
-			array( 'jquery' ),
-			self::VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'wz-taxonomy-suggest-js',
-			plugins_url( 'js/taxonomy-suggest' . $minimize . '.js', __FILE__ ),
-			array( 'jquery' ),
-			self::VERSION,
-			true
-		);
+		wp_enqueue_script( 'wz-admin-js' );
+		wp_enqueue_script( 'wz-codemirror-js' );
+		wp_enqueue_script( 'wz-taxonomy-suggest-js' );
 	}
 
 	/**

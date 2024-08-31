@@ -174,6 +174,7 @@ class Tools_Page {
 		?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Top 10 Tools', 'top-10' ); ?></h1>
+		<?php do_action( 'tptn_settings_page_header' ); ?>
 
 		<?php settings_errors(); ?>
 
