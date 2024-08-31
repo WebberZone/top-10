@@ -244,7 +244,7 @@ function tptn_settings_reset() {
  *
  * @return void
  */
-function tptn_tag_search() {
+function tptn_tags_search() {
 
 	if ( ! isset( $_REQUEST['tax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		wp_die();
@@ -252,12 +252,15 @@ function tptn_tag_search() {
 
 	$taxonomy = sanitize_key( $_REQUEST['tax'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$tax      = get_taxonomy( $taxonomy );
-	if ( ! $tax ) {
-		wp_die();
-	}
+	if ( ! empty( $taxonomy ) ) {
+		$tax = get_taxonomy( $taxonomy );
+		if ( ! $tax ) {
+			wp_die();
+		}
 
-	if ( ! current_user_can( $tax->cap->assign_terms ) ) {
-		wp_die();
+		if ( ! current_user_can( $tax->cap->assign_terms ) ) {
+			wp_die();
+		}
 	}
 
 	$s = isset( $_REQUEST['q'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -295,4 +298,4 @@ function tptn_tag_search() {
 	echo wp_json_encode( $results );
 	wp_die();
 }
-add_action( 'wp_ajax_tptn_tag_search', 'tptn_tag_search' );
+add_action( 'wp_ajax_tptn_tags_search', 'tptn_tags_search' );

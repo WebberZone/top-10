@@ -8,6 +8,6 @@ parameters:
         - includes
     paths:
         - top-10.php
-        - uninstall.php
+        - uninstaller.php
         - includes/
     ignoreErrors:

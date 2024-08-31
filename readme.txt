@@ -162,6 +162,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
 	* [Pro] "Display columns on post types" setting to choose which post type screens display admin columns.
 	* [Pro] "Also show dashboard to" setting to select user roles that can view the dashboard screen.
+    * [Pro] New option added to the Edit Post meta box mapped to `include_cat_ids` to include popular posts from specific categories only.	
 
 * Enhancements:
 	* Direct support for `WP_Query` if `top_ten_query` is used in query arguments.

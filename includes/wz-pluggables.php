@@ -139,3 +139,80 @@ if ( ! function_exists( 'wz_get_all_parent_ids' ) ) :
 	}
 
 endif;
+
+if ( ! function_exists( 'wz_tags_search' ) ) :
+
+	/**
+	 * Function to add an action to search for tags using Ajax.
+	 *
+	 * @return void
+	 */
+	function wz_tags_search() {
+		if ( ! isset( $_REQUEST['tax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			wp_die();
+		}
+
+		$requested_tax = sanitize_text_field( wp_unslash( $_REQUEST['tax'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		// Check if 'all' is requested.
+		if ( 'all' === $requested_tax ) {
+			$all_taxonomies = get_taxonomies( array( 'public' => true ), 'names' );
+			$taxonomies     = array_keys( $all_taxonomies );
+		} else {
+			$taxonomies = wp_parse_list( $requested_tax );
+		}
+
+		// Validate taxonomies and check capabilities.
+		foreach ( $taxonomies as $key => $taxonomy ) {
+			$tax = get_taxonomy( $taxonomy );
+			if ( ! $tax || ! current_user_can( $tax->cap->assign_terms ) ) {
+				unset( $taxonomies[ $key ] );
+			}
+		}
+
+		if ( empty( $taxonomies ) ) {
+			wp_die();
+		}
+
+		$s = isset( $_REQUEST['q'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		$comma = _x( ',', 'tag delimiter' );
+		if ( ',' !== $comma ) {
+			$s = str_replace( $comma, ',', $s );
+		}
+		if ( false !== strpos( $s, ',' ) ) {
+			$s = explode( ',', $s );
+			$s = $s[ count( $s ) - 1 ];
+		}
+		$s = trim( $s );
+
+		/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
+		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $taxonomies, $s );
+
+		/*
+		 * Require $term_search_min_chars chars for matching (default: 2)
+		 * ensure it's a non-negative, non-zero integer.
+		 */
+		if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
+			wp_die();
+		}
+
+		$terms = get_terms(
+			array(
+				'taxonomy'   => $taxonomies,
+				'name__like' => $s,
+				'hide_empty' => false,
+			)
+		);
+
+		$results = array();
+		foreach ( (array) $terms as $term ) {
+			$results[] = "{$term->name} ({$term->taxonomy}:{$term->term_taxonomy_id})";
+		}
+
+		echo wp_json_encode( $results );
+		wp_die();
+	}
+	add_action( 'wp_ajax_wz_tags_search', 'wz_tags_search' );
+	add_action( 'wp_ajax_nopriv_wz_tags_search', 'wz_tags_search' );
+endif;
