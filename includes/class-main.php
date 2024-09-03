@@ -8,11 +8,9 @@
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Admin\Cron;
-
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
-
 /**
  * Main plugin class.
  *
@@ -128,7 +126,6 @@ final class Main {
 			self::$instance = new self();
 			self::$instance->init();
 		}
-
 		return self::$instance;
 	}
 
@@ -155,19 +152,11 @@ final class Main {
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
-
 		$this->hooks();
-
 		if ( is_admin() ) {
 			$this->admin = new Admin\Admin();
 			if ( is_multisite() ) {
 				$this->admin = new Admin\Network\Admin();
-			}
-		}
-
-		if ( tptn_freemius()->is__premium_only() ) {
-			if ( tptn_freemius()->can_use_premium_code() ) {
-				$this->pro = new Pro\Pro();
 			}
 		}
 	}
@@ -199,9 +188,10 @@ final class Main {
 	 * @since 3.3.0
 	 */
 	public function register_widgets() {
-		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Posts_Widget' );
-		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Count_Widget' );
+		register_widget( '\\WebberZone\\Top_Ten\\Frontend\\Widgets\\Posts_Widget' );
+		register_widget( '\\WebberZone\\Top_Ten\\Frontend\\Widgets\\Count_Widget' );
 	}
+
 	/**
 	 * Function to register our new routes from the controller.
 	 *
