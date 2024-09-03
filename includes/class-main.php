@@ -110,7 +110,7 @@ final class Main {
 	/**
 	 * Pro class.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @var object Pro class.
 	 */

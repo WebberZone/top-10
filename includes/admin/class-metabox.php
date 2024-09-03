@@ -169,7 +169,7 @@ class Metabox {
 		/**
 		 * Action triggered when displaying Top 10 meta box
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param object  $post   Post object
 		 */
@@ -263,7 +263,7 @@ class Metabox {
 	/**
 	 * Enqueue scripts and styles for the meta box.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 */
 	public function admin_enqueue_scripts() {
 

@@ -36,14 +36,14 @@ class Columns {
 	/**
 	 * Initialize hooks and filters.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 */
 	private function init() {
 
 		/**
 		 * Filter the post types to add the columns to.
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param array $post_types Array of post types.
 		 */
@@ -80,7 +80,7 @@ class Columns {
 	/**
 	 * Display page views for each column.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param string     $column_name    Name of the column.
 	 * @param int|string $id             Post ID.

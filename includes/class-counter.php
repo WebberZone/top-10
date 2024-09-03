@@ -162,7 +162,7 @@ class Counter {
 	 * Return the formatted post count for the supplied ID.
 	 *
 	 * @since  3.3.0
-	 * @since  3.4.0 Added $args parameter.
+	 * @since  4.0.0 Added $args parameter.
 	 *
 	 * @param   int|string|\WP_Post $post       Post ID or WP_Post object.
 	 * @param   int|string          $blog_id    Blog ID.

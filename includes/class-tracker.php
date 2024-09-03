@@ -278,7 +278,7 @@ class Tracker {
 		/**
 		 * Filter the flag to confirm that counts should be updated in the database.
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param bool $flag Flag to confirm that counts should be updated in the database.
 		 * @param int $id      Post ID.

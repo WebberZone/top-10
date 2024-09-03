@@ -48,7 +48,7 @@ if ( is_multisite() ) {
 /**
  * Function to delete data when the plugin is uninstalled.
  *
- * @since 3.4.0
+ * @since 4.0.0
  */
 function tptn_delete_data() {
 	global $wpdb;

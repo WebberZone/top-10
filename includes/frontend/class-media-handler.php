@@ -281,7 +281,7 @@ class Media_Handler {
 			/**
 			 * Filters the thumbnail styles attribute.
 			 *
-			 * @since 3.4.0
+			 * @since 4.0.0
 			 *
 			 * @param string $styles Thumbnail styles
 			 */
