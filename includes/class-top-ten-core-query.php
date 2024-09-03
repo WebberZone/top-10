@@ -3,7 +3,7 @@
  * Query API: Top_Ten_Core_Query class
  *
  * @package Top_Ten
- * @since 3.4.0
+ * @since 4.0.0
  */
 
 namespace WebberZone\Top_Ten;
@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Query API: Top_Ten_Core_Query class.
  *
- * @since 3.4.0
+ * @since 4.0.0
  */
 class Top_Ten_Core_Query extends \WP_Query {
 
@@ -73,7 +73,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Flag to indicate if this is a Top Ten query.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 * @var bool
 	 */
 	public $is_top_ten_query = true;
@@ -120,7 +120,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Set up hooks.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 */
 	public function hooks() {
 		add_filter( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10 );
@@ -189,7 +189,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 *
 		 * This function allows developers to modify the query arguments before the query is executed.
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param array     $args         The query arguments.
 		 * @param \WP_Post  $source_post  The source post.
@@ -253,7 +253,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 			/**
 			 * Filter to include the parent terms when including terms.
 			 *
-			 * @since 3.4.0
+			 * @since 4.0.0
 			 *
 			 * @param bool|string   $include_terms_include_parents    False to exclude only the categories specified,
 			 *                                                        'parent' to include the parent categories and
@@ -275,7 +275,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 			/**
 			 * Filter to include the parent categories when excluding categories.
 			 *
-			 * @since 3.4.0
+			 * @since 4.0.0
 			 *
 			 * @param bool|string   $exclude_terms_include_parents    False to exclude only the categories specified,
 			 *                                                        'parent' to include the parent categories and
@@ -410,7 +410,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Modify the pre_get_posts clause.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param \WP_Query $query The WP_Query instance.
 	 */
@@ -837,7 +837,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		/**
 		 * Filters the posts_pre_query of Top_Ten_Query after processing and before returning.
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param \WP_Post[] $posts Array of post data.
 		 * @param \WP_Query  $query The WP_Query instance.
@@ -914,7 +914,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Exclude Post IDs. Allows other plugins/functions to hook onto this and extend the list.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param array $args Array of arguments for CRP_Query.
 	 * @return array Array of post IDs to exclude.

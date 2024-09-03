@@ -51,7 +51,7 @@ class Import_Export {
 	/**
 	 * Enqueue scripts in admin area.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param string $hook The current admin page.
 	 */

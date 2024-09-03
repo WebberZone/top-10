@@ -54,7 +54,7 @@ class Blocks {
 		/**
 		 * Filters the blocks registered by the plugin.
 		 *
-		 * @since 3.4.0
+		 * @since 4.0.0
 		 *
 		 * @param array $blocks Array of blocks registered by the plugin.
 		 */
@@ -132,7 +132,7 @@ class Blocks {
 	/**
 	 * Renders the `core/post-title` block on the server.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param array     $attributes Block attributes.
 	 * @param string    $content    Block default content.
@@ -273,7 +273,7 @@ class Blocks {
 	/**
 	 * Get allowed SVG tags for wp_kses.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @return array Allowed SVG tags and attributes.
 	 */
@@ -458,7 +458,7 @@ class Blocks {
 	/**
 	 * Add custom preload paths for the REST API.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param array $preload_paths Existing preload paths.
 	 * @return array Modified preload paths.

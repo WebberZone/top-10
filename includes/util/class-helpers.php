@@ -569,7 +569,7 @@ class Helpers {
 	/**
 	 * Get all terms of a post.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param int|\WP_Post $post Post ID or WP_Post object.
 	 * @return array Array of taxonomies.

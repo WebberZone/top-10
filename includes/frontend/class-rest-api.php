@@ -41,7 +41,7 @@ class REST_API extends \WP_REST_Controller {
 	/**
 	 * Counter Route.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @var string Counter Route.
 	 */
@@ -243,7 +243,7 @@ class REST_API extends \WP_REST_Controller {
 	/**
 	 * Get the counter.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param \WP_REST_Request $request WP Rest request.
 	 * @return mixed|\WP_REST_Response Array of post objects or post IDs.
@@ -341,7 +341,7 @@ class REST_API extends \WP_REST_Controller {
 	/**
 	 * Get counter params.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @return array Top 10 REST API counter arguments.
 	 */

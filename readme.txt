@@ -1,4 +1,4 @@
-=== Top 10  - WordPress Popular posts by WebberZone ===
+=== Top 10 - WordPress Popular posts by WebberZone ===
 Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
@@ -38,14 +38,36 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Works with caching plugins** like WP-Super-Cache, W3 Total Cache or Quick Cache
 * **Extendable code**: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 
+= Features in Top 10 Pro =
+
+* **Advanced Blocks and Widgets**
+  - **Top 10 Query Block**: Query and display popular posts directly from the block or site editor.
+  - **Enhanced Top 10 Featured Image Block**: Supports multiple image sources for more flexibility.
+  - **Popular Posts Block Enhancements**: 
+    - Save and clear default block settings with a single click.
+    - Auto-insert default and global settings attributes with an option to disable.
+
+* **Improved Admin Tools**
+  - **Admin Bar Integration**: New admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear the cache quickly.
+  - **Dashboard Access Control**: Control which user roles can view the Top 10 dashboard.
+  - **Display Settings**: Choose which post type screens display admin columns.
+
+* **Custom Display Options**
+  - **Taxonomy-Specific Displays**: Use the `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms.
+  - **Category Inclusion**: Include popular posts from specific categories using a new option in the Edit Post meta box.
+
+* **Enhanced Tracking and Performance**
+  - **Fast Tracker**: A new, faster tracking method to improve post view speed.
+  - **Query Filters**: Enable parent term inclusion in post queries for more accurate filtering.
+
+* **Developer-Friendly Features**
+  - **Filters and Hooks**: New filters like `top_ten_query_exclude_terms_include_parents`, `top_ten_query_include_terms_include_parents`, and `get_tptn_short_circuit` for greater customisation.
+  - **Custom Post Type Sortable Columns**: Display columns on post types and make them sortable.
+
 = GDPR =
 Top 10 is GDPR compliant as it doesn't collect any personal data about your visitors when installed out of the box. You can see the data the plugin stores in the `wp_top_ten` and `wp_top_ten_daily` tables in the database. Note: the prefix `wp` might be different if you have changed it from the default.
 
 YOU ARE RESPONSIBLE FOR ENSURING THAT ALL GDPR REQUIREMENTS ARE MET ON YOUR WEBSITE.
-
-= Donations =
-
-I spend a significant amount of my free time maintaining, updating and more importantly supporting this plugin. If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
 
 = Translations =
 Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/) to contribute.
@@ -67,7 +89,6 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 * [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
 * [Popular Authors](https://wordpress.org/plugins/popular-authors/) - Display popular authors in your WordPress widget
 * [Followed Posts](https://wordpress.org/plugins/where-did-they-go-from-here/) - Show a list of related posts based on what your users have read
-
 
 == Screenshots ==
 
@@ -103,9 +124,11 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 5. Select the __top-10.zip__ file that you downloaded and hit Install Now
 6. Activate the Plugin in WP-Admin.
 7. Go to __Top 10 &raquo; Settings__ to configure
-8. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
-9. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
+8. Go to __Appearance &raquo; Widgets__ and add __Top 10 Popular Posts__ to your sidebar to display the popular posts in the sidebar
 
+= For help and support =
+1. Visit [Top 10 documentation](https://webberzone.com/support/section/top-10/) for extensive information and examples of how to use the plugin
+2. Visit the [Support forum](https://wordpress.org/support/plugin/top-10) on WordPress.org
 
 == Frequently Asked Questions ==
 
@@ -145,7 +168,7 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 == Changelog ==
 
-= 3.4.0 =
+= 4.0.0 =
 
 * Features:
 	* Added a new REST API route (`counter`) to fetch the post count for individual posts.
@@ -181,6 +204,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 3.3.4 =
-Check out the release post for further information on this release
-
+= 4.0.0 =
+Major release. Check out the release post or changelog for further information.

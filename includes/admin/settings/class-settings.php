@@ -1098,7 +1098,7 @@ class Settings {
 	/**
 	 * Get User Roles.
 	 *
-	 * @since 3.4.0
+	 * @since 4.0.0
 	 *
 	 * @param array $remove_roles Roles to remove.
 	 * @return array User roles in the format 'role' => 'name'.

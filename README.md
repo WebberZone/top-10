@@ -47,19 +47,53 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * __Works with caching plugins__ like WP-Super-Cache, W3 Total Cache or Quick Cache
 * __Extendable code__: Top 10 has tonnes of filters and actions that allow any developer to easily add features, edit outputs, etc.
 
+### Features in Top 10 Pro
+
+* __Advanced Blocks and Widgets__
+  * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor.
+  * __Enhanced Top 10 Featured Image Block__: Supports multiple image sources for more flexibility.
+  * __Popular Posts Block Enhancements__:
+    * Save and clear default block settings with a single click.
+    * Auto-insert default and global settings attributes with an option to disable.
+
+* __Improved Admin Tools__
+  * __Admin Bar Integration__: New admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear the cache quickly.
+  * __Dashboard Access Control__: Control which user roles can view the Top 10 dashboard.
+  * __Display Settings__: Choose which post type screens display admin columns.
+
+* __Custom Display Options__
+  * __Taxonomy-Specific Displays__: Use the `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms.
+  * __Category Inclusion__: Include popular posts from specific categories using a new option in the Edit Post meta box.
+
+* __Enhanced Tracking and Performance__
+  * __Fast Tracker__: A new, faster tracking method to improve post view speed.
+  * __Query Filters__: Enable parent term inclusion in post queries for more accurate filtering.
+
+* __Developer-Friendly Features__
+  * __Filters and Hooks__: New filters like `top_ten_query_exclude_terms_include_parents`, `top_ten_query_include_terms_include_parents`, and `get_tptn_short_circuit` for greater customisation.
+  * __Custom Post Type Sortable Columns__: Display columns on post types and make them sortable.
+
 ### GDPR
 
 Top 10 is GDPR compliant as it doesn't collect any personal data about your visitors when installed out of the box. You can see the data the plugin stores in the `wp_top_ten` and `wp_top_ten_daily` tables in the database. Note: the prefix `wp` might be different if you have changed it from the default.
 
 YOU ARE RESPONSIBLE FOR ENSURING THAT ALL GDPR REQUIREMENTS ARE MET ON YOUR WEBSITE.
 
-### Donations
-
-I spend a significant amount of my free time maintaining, updating and more importantly supporting this plugin. If you have been using this plugin and find this useful, do consider making a donation. This helps me pay for my hosting and domains.
-
 ### Translations
 
 Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/) to contribute.
+
+### Other plugins from WebberZone
+
+Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check out our other plugins:
+
+* [Contextual Related Posts](https://wordpress.org/plugins/contextual-related-posts/) - Display related posts on your WordPress blog and feed
+* [WebberZone Snippetz](https://wordpress.org/plugins/add-to-all/) - The ultimate snippet manager for WordPress to create and manage custom HTML, CSS or JS code snippets
+* [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
+* [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
+* [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
+* [Popular Authors](https://wordpress.org/plugins/popular-authors/) - Display popular authors in your WordPress widget
+* [Followed Posts](https://wordpress.org/plugins/where-did-they-go-from-here/) - Show a list of related posts based on what your users have read
 
 ## Screenshots
 
