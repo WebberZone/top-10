@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 3.3.4
+Stable tag: 4.0.0
 Requires at least: 6.3
 Tested up to: 6.6
 Requires PHP: 7.4
@@ -92,20 +92,8 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 
 == Screenshots ==
 
-1. Top 10 options - General options
-2. Top 10 options - Counter and Tracker options
-3. Top 10 options - Popular post list options
-4. Top 10 options - Thumbnail options
-5. Top 10 options - Styles
-6. Top 10 options - Maintenance
-7. Top 10 options - Feed
-8. Top 10 widget options
-9. Top 10 Meta box on the Edit Post screen
-10. Top 10 Tools page
-11. Top 10 - Popular posts view in Admin
-12. Top 10 Export/Import interface
-13. Top 10 - Popular posts view in Network Admin
-14. Top 10 Gutenberg block
+1. Top 10 - Popular posts view in Admin
+2. Top 10 - Left thumbnails style
 
 == Installation ==
 
@@ -170,9 +158,14 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 
 = 4.0.0 =
 
+Release post: [https://webberzone.com/announcements/top-10-v4-0-0/](https://webberzone.com/announcements/top-10-v4-0-0/)
+
 * Features:
 	* Added a new REST API route (`counter`) to fetch the post count for individual posts.
 	* Introduced the Top 10 Post Count Block for displaying post counts.
+	* Added filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms in post queries. Pro users can enable this in settings.
+	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
+	* New filter `tptn_dashboard_setup` to disable Top 10 widgets being displayed on the admin dashboard.
 	* [Pro] New Top 10 Query Block for querying popular posts directly from the block or site editor.
 	* [Pro] Enhanced Top 10 Featured Image Block now supports multiple image sources.
 	* [Pro] Popular Posts block now includes:
@@ -181,11 +174,9 @@ add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sorta
 	* [Pro] Added a new admin bar menu item to view daily, total, and overall post counts, access Top 10 admin pages, and clear the Top 10 cache.
 	* [Pro] Added `display_only_on_tax_ids` parameter to restrict popular posts display to specific taxonomy terms.
 	* [Pro] New Fast Tracker improves post view tracking speed. Select it from your settings page.
-	* Added filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms in post queries. Pro users can enable this in settings.
-	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
 	* [Pro] "Display columns on post types" setting to choose which post type screens display admin columns.
 	* [Pro] "Also show dashboard to" setting to select user roles that can view the dashboard screen.
-    * [Pro] New option added to the Edit Post meta box mapped to `include_cat_ids` to include popular posts from specific categories only.	
+    * [Pro] New option added to the Edit Post meta box mapped to `include_cat_ids` to include popular posts from specific categories only.
 
 * Enhancements:
 	* Direct support for `WP_Query` if `top_ten_query` is used in query arguments.
@@ -205,4 +196,4 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 == Upgrade Notice ==
 
 = 4.0.0 =
-Major release. Check out the release post or changelog for further information.
+Major release. Top 10 Pro is here. Check out the release post or changelog for further information.
