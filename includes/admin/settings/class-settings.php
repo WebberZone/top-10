@@ -910,8 +910,8 @@ class Settings {
 			'custom_css'  => array(
 				'id'          => 'custom_css',
 				'name'        => esc_html__( 'Custom CSS', 'top-10' ),
-				/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
 				'desc'        => sprintf(
+					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
 					esc_html__( 'Do not include %3$sstyle%4$s tags. Check out %1$sthis article%2$s for available CSS classes to style.', 'top-10' ),
 					'<a href="' . esc_url( 'https://webberzone.com/support/knowledgebase/using-and-customising-top-10/' ) . '" target="_blank">',
 					'</a>',
@@ -1104,17 +1104,35 @@ class Settings {
 	 * @return array User roles in the format 'role' => 'name'.
 	 */
 	public static function get_user_roles( $remove_roles = array() ) {
-		global $wp_roles;
+		// Get the global $wp_roles object using the wp_roles() function.
+		$wp_roles = wp_roles();
 
 		// Initialize the array to store roles in the desired format.
 		$roles_array = array();
 
-		// Loop through all roles and store them in 'role' => 'name' format.
-		foreach ( $wp_roles->roles as $role_key => $role_details ) {
-			if ( in_array( $role_key, $remove_roles, true ) ) {
-				continue;
+		if ( ! empty( $wp_roles->roles ) ) {
+			// Loop through all roles and store them in 'role' => 'name' format.
+			foreach ( $wp_roles->roles as $role_key => $role_details ) {
+				if ( in_array( $role_key, $remove_roles, true ) ) {
+					continue;
+				}
+				$roles_array[ $role_key ] = esc_html( $role_details['name'] );
 			}
-			$roles_array[ $role_key ] = esc_html( $role_details['name'] );
+		} else {
+			// Fallback to default WordPress roles.
+			$default_roles = array(
+				'administrator' => esc_html__( 'Administrator' ),
+				'editor'        => esc_html__( 'Editor' ),
+				'author'        => esc_html__( 'Author' ),
+				'contributor'   => esc_html__( 'Contributor' ),
+				'subscriber'    => esc_html__( 'Subscriber' ),
+			);
+
+			foreach ( $default_roles as $role_key => $role_name ) {
+				if ( ! in_array( $role_key, $remove_roles, true ) ) {
+					$roles_array[ $role_key ] = $role_name;
+				}
+			}
 		}
 
 		return $roles_array;
@@ -1323,7 +1341,7 @@ class Settings {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( $hook !== $this->settings_api->settings_page ) {
+		if ( ! isset( $this->settings_api->settings_page ) || $hook !== $this->settings_api->settings_page ) {
 			return;
 		}
 		wp_localize_script(
