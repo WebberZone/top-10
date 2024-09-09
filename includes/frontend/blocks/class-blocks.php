@@ -8,6 +8,7 @@
 
 namespace WebberZone\Top_Ten\Frontend\Blocks;
 
+use WebberZone\Top_Ten\Admin\Settings\Settings;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Frontend\Styles_Handler;
 
@@ -433,25 +434,30 @@ class Blocks {
 	 */
 	public static function enqueue_block_editor_assets() {
 
-		$style_array = Styles_Handler::get_style();
-		$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$styles = Settings::get_styles();
 
-		if ( ! empty( $style_array['name'] ) ) {
-			$style     = $style_array['name'];
-			$extra_css = $style_array['extra_css'];
+		foreach ( $styles as $style ) {
 
-			$pro = '';
-			if ( false !== strpos( $style, '-pro' ) ) {
-				$pro = 'pro/';
+			$style_array = Styles_Handler::get_style( $style['id'] );
+			$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+			if ( ! empty( $style_array['name'] ) ) {
+				$style     = $style_array['name'];
+				$extra_css = $style_array['extra_css'];
+
+				$pro = '';
+				if ( false !== strpos( $style, '-pro' ) ) {
+					$pro = 'pro/';
+				}
+
+				wp_enqueue_style(
+					"popular-posts-block-editor-{$style}",
+					plugins_url( "css/{$pro}{$style}{$file_prefix}.css", TOP_TEN_PLUGIN_FILE ),
+					array( 'wp-edit-blocks' ),
+					TOP_TEN_VERSION
+				);
+				wp_add_inline_style( "popular-posts-block-editor-{$style}", $extra_css );
 			}
-
-			wp_enqueue_style(
-				'popular-posts-block-editor',
-				plugins_url( "css/{$pro}{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
-				array( 'wp-edit-blocks' ),
-				TOP_TEN_VERSION
-			);
-			wp_add_inline_style( 'popular-posts-block-editor', $extra_css );
 		}
 	}
 
