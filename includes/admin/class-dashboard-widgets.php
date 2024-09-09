@@ -28,7 +28,7 @@ class Dashboard_Widgets {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'wp_dashboard_setup', array( __CLASS__, 'wp_dashboard_setup' ) );
+		add_filter( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 	}
 
 	/**
@@ -38,7 +38,16 @@ class Dashboard_Widgets {
 	 */
 	public static function wp_dashboard_setup() {
 
-		if ( ( current_user_can( 'manage_options' ) ) || ( \tptn_get_option( 'show_count_non_admins' ) ) ) {
+		/**
+		 * Filter to disable the dashboard widgets
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param bool $dashboard_setup Whether to setup the dashboard widgets or not.
+		 */
+		$dashboard_setup = apply_filters( 'tptn_dashboard_setup', true );
+
+		if ( $dashboard_setup && ( current_user_can( 'manage_options' ) || \tptn_get_option( 'show_count_non_admins' ) ) ) {
 			wp_add_dashboard_widget(
 				'tptn_pop_dashboard',
 				__( 'Popular Posts', 'top-10' ),
