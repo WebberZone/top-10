@@ -199,7 +199,7 @@ class Tools_Page {
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></h2>
 				<p>
-					<input name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" value="<?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?>" class="button button-secondary" />
+					<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
 				</p>
 				<p class="description">
 					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
@@ -213,8 +213,22 @@ class Tools_Page {
 					<?php esc_html_e( 'This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_trunc_all" type="submit" id="tptn_trunc_all" value="<?php esc_attr_e( 'Reset Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the popular posts?', 'top-10' ); ?>')) return false;" />
-					<input name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" value="<?php esc_attr_e( 'Reset Daily Popular Posts', 'top-10' ); ?>" class="button button-secondary" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Are you sure you want to reset the daily popular posts?', 'top-10' ); ?>')) return false;" />
+					<?php
+					printf(
+						'<button name="tptn_trunc_all" type="submit" id="tptn_trunc_all" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
+						esc_attr__( 'Are you sure you want to reset the popular posts?', 'top-10' ),
+						esc_attr__( 'Reset Popular Posts', 'top-10' )
+					);
+					?>
+				</p>
+				<p>
+					<?php
+					printf(
+						'<button name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
+						esc_attr__( 'Are you sure you want to reset the daily popular posts?', 'top-10' ),
+						esc_attr__( 'Reset Daily Popular Posts', 'top-10' )
+					);
+					?>
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></h2>
@@ -222,7 +236,9 @@ class Tools_Page {
 					<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" value="<?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?>" style="color:#f00" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary" />
+					<p>
+						<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
+					</p>
 				</p>
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Other tools', 'top-10' ); ?></h2>
@@ -230,21 +246,21 @@ class Tools_Page {
 					<?php esc_html_e( 'From v2.5.x, Top 10 stores the settings in a new key in the database. This will delete the old settings for the current blog. It is recommended that you do this at the earliest after upgrade. However, you should do this only if you are comfortable with the new settings.', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" value="<?php esc_attr_e( 'Delete old settings', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;" />
+					<button name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Delete old settings', 'top-10' ); ?></button>
 				</p>
 
 				<p class="description">
 					<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" value="<?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;" />
+					<button name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?></button>
 				</p>
 
 				<p class="description">
 					<?php esc_html_e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', 'top-10' ); ?>
 				</p>
 				<p>
-					<input name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" value="<?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?>" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;" />
+					<button name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?></button>
 				</p>
 
 				<?php wp_nonce_field( 'tptn-tools-settings' ); ?>
