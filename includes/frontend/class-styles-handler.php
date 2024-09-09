@@ -24,8 +24,8 @@ class Styles_Handler {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'wp_head', array( __CLASS__, 'header' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_styles' ) );
+		add_action( 'wp_head', array( $this, 'header' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 	}
 
 	/**
