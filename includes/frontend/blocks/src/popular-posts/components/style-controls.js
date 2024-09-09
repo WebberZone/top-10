@@ -32,6 +32,22 @@ export const StyleControls = ({ attributes, onChange }) => {
 		}
 	};
 
+	const styles =
+		typeof top10ProBlockSettings !== 'undefined' &&
+		Array.isArray(top10ProBlockSettings.styles)
+			? top10ProBlockSettings.styles
+			: [
+					{ value: 'no_style', label: __('No styles', 'top-10') },
+					{
+						value: 'text_only',
+						label: __('Text only', 'top-10'),
+					},
+					{
+						value: 'left_thumbs',
+						label: __('Left thumbnails', 'top-10'),
+					},
+				];
+
 	return (
 		<>
 			<PanelRow>
@@ -48,15 +64,7 @@ export const StyleControls = ({ attributes, onChange }) => {
 							value: 'select',
 							label: __('- Select a style -', 'top-10'),
 						},
-						{ value: 'no_style', label: __('No styles', 'top-10') },
-						{
-							value: 'text_only',
-							label: __('Text only', 'top-10'),
-						},
-						{
-							value: 'left_thumbs',
-							label: __('Left thumbnails', 'top-10'),
-						},
+						...styles,
 					]}
 				/>
 			</PanelRow>
