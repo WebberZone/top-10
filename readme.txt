@@ -115,22 +115,28 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 8. Go to __Appearance &raquo; Widgets__ and add __Top 10 Popular Posts__ to your sidebar to display the popular posts in the sidebar
 
 = For help and support =
-1. Visit [Top 10 documentation](https://webberzone.com/support/section/top-10/) for extensive information and examples of how to use the plugin
+1. Visit [Top 10 documentation](https://webberzone.com/support/product/top-10/) for extensive information and examples of how to use the plugin
 2. Visit the [Support forum](https://wordpress.org/support/plugin/top-10) on WordPress.org
 
 == Frequently Asked Questions ==
 
-Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/) and the [FAQ on the WebberZone knowledgebase](https://webberzone.com/support/section/top-10/).
-It is the fastest way to get support as I monitor the forums regularly.
+Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/) and the [FAQ on the WebberZone knowledgebase](https://webberzone.com/support/product/top-10/). It is the fastest way to get support as I monitor the forums regularly.
 
+If your question isn't listed there, please create a new post at the [WordPress.org support forum](https://wordpress.org/support/plugin/top-10/). It is the fastest way to get support as I monitor the forums regularly.
+
+Support for products sold and distributed by WebberZone is only available for those who have an active, paid extension license. You can [access our support form here](https://webberzone.com/request-support/).
 
 = How can I customise the output? =
 
-Details on how to use and customize the output is in this [knowledge base article](https://webberzone.com/support/knowledgebase/using-and-customising-top-10/)
+ Top 10 is highly customizable. There are several configurable options in the Settings page and you can use CSS to customize the outputs. Learn more by reading [knowledge base article](https://webberzone.com/support/knowledgebase/using-and-customising-top-10/)
 
 = Shortcodes =
 
 You can find details of the shortcodes in this [knowledge base article](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
+
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/top-10)
 
 = Can this plugin replace Google Analytics? =
 
@@ -140,19 +146,6 @@ No. Top 10 has been designed to only track the number of page-views on your blog
 
 When you enabled the scheduled maintenance, Top 10 will create a cron job that will run at a predefined interval and clean up old entries from the `wp_top_ten_daily` table.
 *Note: If you enable this option, WordPress will execute this job when it is scheduled the first time*
-
-= How to make the columns on the Custom Post Type admin pages sortable? =
-Add the following code to your functions.php file of your theme.
-
-`
-add_filter( 'manage_edit-{$cpt}_sortable_columns', 'tptn_column_register_sortable' );
-`
-
-Replace `{$cpt}` by the slug of your custom post type. E.g. to make the columns on your 'projects' post type sortable, you will need to add:
-`
-add_filter( 'manage_edit-projects_sortable_columns', 'tptn_column_register_sortable' );
-`
-
 
 == Changelog ==
 
