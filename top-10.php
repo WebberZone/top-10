@@ -91,28 +91,17 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/load-freemius.php';
 // Load the autoloader.
 require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';
 
-
-/**
- * The code that runs during plugin activation.
- *
- * @since 3.3.2
- *
- * @param bool $network_wide Whether the plugin is being activated network-wide.
- */
-function activate_tptn( $network_wide ) {
-	Admin\Activator::activation_hook( $network_wide );
+if ( ! function_exists( __NAMESPACE__ . '\load_tptn' ) ) {
+	/**
+	 * The main function responsible for returning the one true WebberZone Snippetz instance to functions everywhere.
+	 *
+	 * @since 3.3.0
+	 */
+	function load_tptn() {
+		Main::get_instance();
+	}
+	add_action( 'plugins_loaded', __NAMESPACE__ . '\load_tptn' );
 }
-register_activation_hook( __FILE__, __NAMESPACE__ . '\activate_tptn' );
-
-/**
- * The main function responsible for returning the one true WebberZone Snippetz instance to functions everywhere.
- *
- * @since 3.3.0
- */
-function load_tptn() {
-	Main::get_instance();
-}
-add_action( 'plugins_loaded', __NAMESPACE__ . '\load_tptn' );
 
 /*
  *----------------------------------------------------------------------------
