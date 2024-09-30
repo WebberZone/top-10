@@ -191,10 +191,10 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 *
 		 * @since 4.0.0
 		 *
-		 * @param array     $args         The query arguments.
-		 * @param \WP_Post  $source_post  The source post.
+		 * @param array                                         $args           The query arguments.
+		 * @param \WP_Term|\WP_Post_Type|\WP_Post|\WP_User|null $queried_object The queried object.
 		 */
-		$args = apply_filters( 'tptn_query_args_before', $args, get_post() );
+		$args = apply_filters( 'tptn_query_args_before', $args, get_queried_object() );
 
 		// Parse the blog_id argument to get an array of IDs.
 		$this->blog_id = wp_parse_id_list( $args['blog_id'] );
@@ -238,7 +238,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 			 * @param array   $post_types  Array of post types to filter by.
 			 * @param array   $args        Arguments array.
 			 */
-			$args['post_type'] = apply_filters( 'tptn_posts_post_types', $post_types, $args );
+			$args['post_type'] = apply_filters( 'top_ten_posts_post_types', $post_types, $args );
 		}
 
 		// Tax Query.
@@ -372,6 +372,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 			$meta_query['relation'] = apply_filters( 'top_ten_query_meta_query_relation', 'AND', $args );
 		}
 
+		$args['meta_query'] = $meta_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+
 		// Set post_status.
 		$args['post_status'] = empty( $args['post_status'] ) ? array( 'publish', 'inherit' ) : $args['post_status'];
 
@@ -417,29 +419,21 @@ class Top_Ten_Core_Query extends \WP_Query {
 	public function pre_get_posts( $query ) {
 
 		if ( true === $query->get( 'top_ten_query' ) ) {
-			if ( ! empty( $this->query_args['date_query'] ) ) {
-				$query->set( 'date_query', $this->query_args['date_query'] );
-			}
-			if ( ! empty( $this->query_args['tax_query'] ) ) {
-				$query->set( 'tax_query', $this->query_args['tax_query'] );
-			}
-			if ( ! empty( $this->query_args['meta_query'] ) ) {
-				$query->set( 'meta_query', $this->query_args['meta_query'] );
-			}
-			if ( ! empty( $this->query_args['post_type'] ) ) {
-				$query->set( 'post_type', $this->query_args['post_type'] );
-			}
-			if ( ! empty( $this->query_args['post__not_in'] ) ) {
-				$query->set( 'post__not_in', $this->query_args['post__not_in'] );
-			}
-			if ( ! empty( $this->query_args['post_status'] ) ) {
-				$query->set( 'post_status', $this->query_args['post_status'] );
-			}
-			if ( ! empty( $this->query_args['posts_per_page'] ) ) {
-				$query->set( 'posts_per_page', $this->query_args['posts_per_page'] );
-			}
-			if ( ! empty( $this->query_args['author'] ) ) {
-				$query->set( 'author', $this->query_args['author'] );
+			$query_args_keys = array(
+				'date_query',
+				'tax_query',
+				'meta_query',
+				'post_type',
+				'post__not_in',
+				'post_status',
+				'posts_per_page',
+				'author',
+			);
+
+			foreach ( $query_args_keys as $key ) {
+				if ( ! empty( $this->query_args[ $key ] ) ) {
+					$query->set( $key, $this->query_args[ $key ] );
+				}
 			}
 
 			$query->set( 'suppress_filters', false );

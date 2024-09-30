@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 Requires at least: 6.3
 Tested up to: 6.6
 Requires PHP: 7.4
@@ -149,6 +149,16 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.0.1 =
+
+* Modifications:
+	* Renamed filter to: `top_ten_posts_post_types`.
+	* Updated filter `tptn_query_args_before` to be the queried object instead of just the post.
+
+* Bug fix:
+	* Fixed issue where admin columns setting didn't work.
+	* Fixed: meta_query was not set.
+
 = 4.0.0 =
 
 Release post: [https://webberzone.com/announcements/top-10-v4-0-0/](https://webberzone.com/announcements/top-10-v4-0-0/)
@@ -188,5 +198,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 4.0.0 =
+= 4.0.1 =
 Major release. Top 10 Pro is here. Check out the release post or changelog for further information.
