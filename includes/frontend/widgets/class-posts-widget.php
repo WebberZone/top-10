@@ -254,7 +254,7 @@ class Posts_Widget extends \WP_Widget {
 		if ( ! isset( $args['widget_id'] ) ) {
 			$args['widget_id'] = (int) $this->id;
 		}
-		
+
 		if ( Display::exclude_on( $post, $args ) ) {
 			return;
 		}
