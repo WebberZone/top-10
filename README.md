@@ -97,8 +97,8 @@ Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check
 
 ## Screenshots
 
-![Style Options](https://raw.github.com/WebberZone/top-10/master/wporg-assets/screenshot-5.png)
-*Top 10 settings page - Styles Options*
+![Top 10 Popular Posts](https://raw.github.com/WebberZone/top-10/master/wporg-assets/screenshot-1.png)
+*Top 10 Popular Posts*
 
 For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
 

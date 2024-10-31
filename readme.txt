@@ -2,9 +2,9 @@
 Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 Requires at least: 6.3
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -149,6 +149,11 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.0.2 =
+
+* Updated Freemius SDK to 2.9.0.
+* Fixed: Set `widget_id` if it is not set in the widget instance.
+
 = 4.0.1 =
 
 * Modifications:
@@ -198,5 +203,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 4.0.1 =
-Major release. Top 10 Pro is here. Check out the release post or changelog for further information.
+= 4.0.2 =
+Freemius SDK Updated. Check out the release post or changelog for further information.
