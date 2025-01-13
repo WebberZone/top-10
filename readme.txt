@@ -149,6 +149,13 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.0.3 =
+
+* Modifications:
+	* Support plugin dependencies tag.
+	* Updated Freemius SDK to v2.10.1.
+	* Optimized Numbered List format.
+
 = 4.0.2 =
 
 * Updated Freemius SDK to 2.9.0.
