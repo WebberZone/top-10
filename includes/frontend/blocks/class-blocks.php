@@ -434,12 +434,12 @@ class Blocks {
 	 */
 	public static function enqueue_block_editor_assets() {
 
-		$styles = Settings::get_styles();
+		$styles      = Settings::get_styles();
+		$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		foreach ( $styles as $style ) {
 
 			$style_array = Styles_Handler::get_style( $style['id'] );
-			$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 			if ( ! empty( $style_array['name'] ) ) {
 				$style     = $style_array['name'];
