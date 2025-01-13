@@ -159,16 +159,20 @@ final class Main {
 
 		$this->hooks();
 
-		if ( is_admin() ) {
-			$this->admin = new Admin\Admin();
-			if ( is_multisite() ) {
-				$this->admin = new Admin\Network\Admin();
-			}
+		if ( ! function_exists( 'tptn_freemius' ) ) {
+			require_once __DIR__ . '/load-freemius.php';
 		}
 
 		if ( tptn_freemius()->is__premium_only() ) {
 			if ( tptn_freemius()->can_use_premium_code() ) {
 				$this->pro = new Pro\Pro();
+			}
+		}
+
+		if ( is_admin() ) {
+			$this->admin = new Admin\Admin();
+			if ( is_multisite() ) {
+				$this->admin = new Admin\Network\Admin();
 			}
 		}
 	}

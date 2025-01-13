@@ -33,9 +33,9 @@ export const StyleControls = ({ attributes, onChange }) => {
 	};
 
 	const styles =
-		typeof top10ProBlockSettings !== 'undefined' &&
-		Array.isArray(top10ProBlockSettings.styles)
-			? top10ProBlockSettings.styles
+		typeof window.top10ProBlockSettings !== 'undefined' &&
+		Array.isArray(window.top10ProBlockSettings.styles)
+			? window.top10ProBlockSettings.styles
 			: [
 					{ value: 'no_style', label: __('No styles', 'top-10') },
 					{
