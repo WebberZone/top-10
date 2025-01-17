@@ -1470,7 +1470,12 @@ class Settings {
 	 */
 	public static function after_setting_output( $output, $args ) {
 		if ( isset( $args['pro'] ) && $args['pro'] ) {
-			$output .= '<a class="tptn_button tptn_button_gold" target="_blank" href="https://webberzone.com/plugins/top-10/pro/" title="' . esc_attr__( 'Upgrade to Pro', 'top-10' ) . '">' . esc_html__( 'Upgrade to Pro', 'top-10' ) . '</a>';
+			$output .= sprintf(
+				'<a class="tptn_button tptn_button_gold" target="_blank" href="%s" title="%s">%s</a>',
+				esc_url( \WebberZone\Top_Ten\tptn_freemius()->get_upgrade_url() ),
+				esc_attr__( 'Upgrade to Pro', 'top-10' ),
+				esc_html__( 'Upgrade to Pro', 'top-10' )
+			);
 		}
 
 		return $output;
