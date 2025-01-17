@@ -8,13 +8,13 @@
  * @author    Ajay D'Souza
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2024 Ajay D'Souza
+ * @copyright 2008-2025 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name: Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     4.0.2
+ * Version:     4.0.3
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 3.1.0
  */
 if ( ! defined( 'TOP_TEN_VERSION' ) ) {
-	define( 'TOP_TEN_VERSION', '4.0.2' );
+	define( 'TOP_TEN_VERSION', '4.0.3' );
 }
 
 /**
@@ -93,7 +93,7 @@ require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';
 
 if ( ! function_exists( __NAMESPACE__ . '\load_tptn' ) ) {
 	/**
-	 * The main function responsible for returning the one true WebberZone Snippetz instance to functions everywhere.
+	 * The main function responsible for returning the one true Top 10 instance to functions everywhere.
 	 *
 	 * @since 3.3.0
 	 */
