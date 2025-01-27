@@ -31,7 +31,7 @@ class Settings {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Settings API.
+	 * @var Settings_API Settings API.
 	 */
 	public $settings_api;
 
