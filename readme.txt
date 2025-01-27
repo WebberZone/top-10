@@ -149,6 +149,14 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.0.4 =
+
+* Modifications:
+	* Updated Freemius SDK to v2.11.0.
+
+* Bug fixes:
+	* Set correct type for `$settings_api` variable to `Settings_API`.
+
 = 4.0.3 =
 
 * Modifications:
@@ -210,5 +218,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 4.0.3 =
+= 4.0.4 =
 Freemius SDK Updated. Minor other changes. Check out the release post or changelog for further information.
