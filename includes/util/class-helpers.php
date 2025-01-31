@@ -262,7 +262,6 @@ class Helpers {
 			'tag_slug__in'        => array(),
 
 			// Search Parameters.
-			's'                   => '',
 			'search_columns'      => array(),
 			'exact'               => false,
 			'sentence'            => false,
