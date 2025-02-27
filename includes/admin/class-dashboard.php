@@ -215,7 +215,7 @@ class Dashboard {
 			wp_enqueue_script( 'moment' );
 			wp_enqueue_script( 'top-ten-chart-js' );
 			wp_enqueue_script( 'top-ten-chart-datalabels-js' );
-			wp_enqueue_script( 'top-ten-chartjs-adapter-moment-js' );
+			wp_enqueue_script( 'top-ten-chartjs-adapter-luxon-js' );
 			wp_enqueue_script( 'top-ten-chart-data-js' );
 			wp_enqueue_script( 'top-ten-admin-js' );
 			wp_localize_script(

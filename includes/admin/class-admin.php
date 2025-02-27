@@ -186,9 +186,16 @@ class Admin {
 			true
 		);
 		wp_register_script(
-			'top-ten-chartjs-adapter-moment-js',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-adapter-moment.min.js',
-			array( 'moment', 'top-ten-chart-js' ),
+			'top-ten-luxon',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/luxon.min.js',
+			array(),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-chartjs-adapter-luxon-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-adapter-luxon.min.js',
+			array( 'top-ten-luxon', 'top-ten-chart-js' ),
 			TOP_TEN_VERSION,
 			true
 		);
@@ -202,7 +209,7 @@ class Admin {
 		wp_register_script(
 			'top-ten-chart-data-js',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart-data.min.js',
-			array( 'jquery', 'top-ten-chart-js', 'top-ten-chart-datalabels-js', 'moment', 'top-ten-chartjs-adapter-moment-js' ),
+			array( 'jquery', 'top-ten-chart-js', 'top-ten-chart-datalabels-js', 'top-ten-luxon', 'top-ten-chartjs-adapter-luxon-js' ),
 			TOP_TEN_VERSION,
 			true
 		);

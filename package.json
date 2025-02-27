@@ -32,7 +32,6 @@
         "includes",
         "languages",
         "README.md",
-        "composer.json",
         "top-10.php",
         "index.php",
         "uninstaller.php",
@@ -43,12 +42,12 @@
         "wpml-config.xml"
     ],
     "devDependencies": {
-        "@wordpress/prettier-config": "^4.5.0",
+        "@wordpress/prettier-config": "^4.18.0",
         "@wordpress/scripts": "^27"
     },
     "dependencies": {
-        "@wordpress/icons": "^10.5.0",
+        "@wordpress/icons": "^10.18.0",
         "clsx": "^2.1.1",
-        "uuid": "^10.0.0"
+        "uuid": "^11.1.0"
     }
 }
