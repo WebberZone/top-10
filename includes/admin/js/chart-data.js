@@ -83,10 +83,10 @@ jQuery(document).ready(function ($) {
 						x: {
 							type: "time",
 							time: {
-								tooltipFormat: "DD MMM YY",
+								tooltipFormat: "DD",
 								unit: "day",
 								displayFormats: {
-									day: "DD MMM YY",
+									day: "DD",
 								},
 							},
 							title: {

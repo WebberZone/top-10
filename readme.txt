@@ -149,6 +149,11 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.1.0 =
+
+* Modifications:
+	* Updated ChartJS and replaced Moment adapter with Luxon.
+
 = 4.0.4 =
 
 * Modifications:
