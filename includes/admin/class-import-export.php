@@ -162,7 +162,9 @@ class Import_Export {
 			</form>
 			<?php endif; ?>
 
-			<form method="post">
+			<hr />
+
+<form method="post">
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Export tables', 'top-10' ); ?></h2>
 				<p class="description">
@@ -182,6 +184,8 @@ class Import_Export {
 				<?php wp_nonce_field( 'tptn_export_nonce', 'tptn_export_nonce' ); ?>
 			</form>
 
+			<hr />
+
 			<form method="post" enctype="multipart/form-data">
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Import tables', 'top-10' ); ?></h2>
@@ -199,6 +203,9 @@ class Import_Export {
 				<p>
 					<label><input type="checkbox" name="reset_tables" id="reset_tables" value="1" checked="checked" /> <?php esc_html_e( 'Truncate tables on import. Unchecking this will keep existing counts and overwrite any counts which have the same post ID.', 'top-10' ); ?></label>
 				</p>
+
+				<hr />
+
 				<h4 style="padding-left:0px"><?php esc_html_e( 'Import Overall Table', 'top-10' ); ?></h4>
 				<p>
 					<input type="file" name="import_file" />
@@ -206,6 +213,8 @@ class Import_Export {
 				<p>
 					<?php submit_button( esc_html__( 'Import Overall CSV', 'top-10' ), 'primary', 'tptn_import_total', false ); ?>
 				</p>
+
+				<hr />
 
 				<h4 style="padding-left:0px"><?php esc_html_e( 'Import Daily Table', 'top-10' ); ?></h4>
 				<p>

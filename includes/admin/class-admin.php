@@ -115,6 +115,15 @@ class Admin {
 	public $cache;
 
 	/**
+	 * Admin notices.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @var object Admin notices.
+	 */
+	public $admin_notices;
+
+	/**
 	 * Prefix which is used for creating the unique filters and actions.
 	 *
 	 * @since 3.3.0
@@ -160,6 +169,7 @@ class Admin {
 		$this->tools_page        = new Tools_Page();
 		$this->dashboard_widgets = new Dashboard_Widgets();
 		$this->cache             = new Cache();
+		$this->admin_notices     = new Admin_Notices();
 	}
 
 	/**

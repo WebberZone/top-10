@@ -153,6 +153,10 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 * Modifications:
 	* Updated ChartJS and replaced Moment adapter with Luxon.
+	* An admin notice is now displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
+
+* Bug fixes:
+	* Resolved issue where tables were not automatically created during plugin activation.
 
 = 4.0.4 =
 
