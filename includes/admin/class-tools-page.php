@@ -125,19 +125,19 @@ class Tools_Page {
 		/* Truncate overall posts table */
 		if ( ( isset( $_POST['tptn_recreate_primary_key'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			self::recreate_primary_key();
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Primary Key has been recreated', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Primary Key has been recreated', 'top-10' ), 'updated' );
 		}
 
 		/* Truncate overall posts table */
 		if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			\WebberZone\Top_Ten\Util\Helpers::trunc_count( false, $network_wide );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'updated' );
 		}
 
 		/* Truncate daily posts table */
 		if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			\WebberZone\Top_Ten\Util\Helpers::trunc_count( true, $network_wide );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'updated' );
 		}
 
 		/* Recreate tables */
@@ -150,9 +150,9 @@ class Tools_Page {
 		if ( ( isset( $_POST['tptn_delete_old_settings'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			$deleted = delete_option( 'ald_tptn_settings' );
 			if ( $deleted ) {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'error' );
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'updated' );
 			} else {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key does not exist', 'autoclose' ), 'error' );
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key does not exist', 'top-10' ), 'error' );
 			}
 		}
 
@@ -160,14 +160,14 @@ class Tools_Page {
 		if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			self::clean_duplicates( true );
 			self::clean_duplicates( false );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Duplicate rows cleaned from the tables', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Duplicate rows cleaned from the tables', 'top-10' ), 'updated' );
 		}
 
 		/* Merge blog IDs */
 		if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
 			self::merge_blogids( true );
 			self::merge_blogids( false );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'error' );
+			add_settings_error( 'tptn-notices', '', esc_html__( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'updated' );
 		}
 
 		ob_start();
@@ -184,6 +184,13 @@ class Tools_Page {
 
 			<form method="post" >
 
+				<h2 style="padding-left:0px"><?php esc_html_e( 'Database Status', 'top-10' ); ?></h2>
+				<div class="tptn-db-status">
+					<?php echo \WebberZone\Top_Ten\Admin\Activator::get_db_status_report(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</div>
+
+				<hr />
+
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Clear cache', 'top-10' ); ?></h2>
 				<p>
 					<?php
@@ -197,6 +204,8 @@ class Tools_Page {
 					<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
 				</p>
 
+				<hr />
+
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></h2>
 				<p>
 					<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
@@ -207,6 +216,8 @@ class Tools_Page {
 				<p>
 					<code style="display:block;"><?php echo self::recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
 				</p>
+
+				<hr />
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
 				<p class="description">
@@ -231,6 +242,8 @@ class Tools_Page {
 					?>
 				</p>
 
+				<hr />
+
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></h2>
 				<p class="description">
 					<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
@@ -240,6 +253,8 @@ class Tools_Page {
 						<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
 					</p>
 				</p>
+
+				<hr />
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Other tools', 'top-10' ); ?></h2>
 				<p class="description">
