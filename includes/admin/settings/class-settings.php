@@ -1341,7 +1341,7 @@ class Settings {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( ! isset( $this->settings_api->settings_page ) || $hook !== $this->settings_api->settings_page ) {
+		if ( empty( $this->settings_api->settings_page ) || $hook !== $this->settings_api->settings_page ) {
 			return;
 		}
 		wp_localize_script(
