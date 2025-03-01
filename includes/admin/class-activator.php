@@ -251,7 +251,7 @@ class Activator {
 		$backup = true,
 		$fields = array( 'postnumber', 'cntaccess', 'blog_id' ),
 		$group_by_fields = array( 'postnumber', 'blog_id' )
-	): bool|\WP_Error {
+	) {
 		global $wpdb;
 
 		$backup_table_name = ( $backup ) ? $table_name . '_backup' : $table_name . '_temp';
