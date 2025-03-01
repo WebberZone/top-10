@@ -157,6 +157,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 * Bug fixes:
 	* Resolved issue where tables were not automatically created during plugin activation.
+	* Fixed issue where the popular posts feed always displayed the full content of the post even when Excerpt was selected under Reading settings.
 
 = 4.0.4 =
 
