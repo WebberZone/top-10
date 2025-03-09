@@ -84,9 +84,9 @@ class Display {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string  $output Formatted list of top posts.
-		 * @param array   $args   Array of arguments.
-		 * @param WP_Post $post   Current Post object.
+		 * @param string   $output Formatted list of top posts.
+		 * @param array    $args   Array of arguments.
+		 * @param \WP_Post $post   Current Post object.
 		 */
 		do_action( 'pre_tptn_pop_posts', $output, $args, $post );
 

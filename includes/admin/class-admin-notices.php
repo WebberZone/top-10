@@ -39,8 +39,8 @@ class Admin_Notices {
 
 		global $wpdb;
 
-		$table_name       = $wpdb->prefix . 'top_ten';
-		$table_name_daily = $wpdb->prefix . 'top_ten_daily';
+		$table_name       = $wpdb->base_prefix . 'top_ten';
+		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 
 		if ( ! Activator::is_table_installed( $table_name ) || ! Activator::is_table_installed( $table_name_daily ) ) {
 			?>

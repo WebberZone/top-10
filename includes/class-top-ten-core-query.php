@@ -8,6 +8,7 @@
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Frontend\Display;
 use WebberZone\Top_Ten\Util\Helpers;
 
 // If this file is called directly, abort.
@@ -101,6 +102,14 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 * @var bool
 	 */
 	public $random_order = false;
+
+	/**
+	 * Cache name.
+	 *
+	 * @since 4.1.0
+	 * @var string
+	 */
+	protected $cache_name = '';
 
 	/**
 	 * Main constructor.
@@ -407,6 +416,10 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 * @param Top_Ten_Core_Query $query The Top_Ten_Core_Query instance (passed by reference).
 		 */
 		$this->query_args = apply_filters_ref_array( 'top_ten_query_args', array( $args, &$this ) );
+
+		if ( $this->should_cache() && ! $this->in_cache ) {
+			$this->cache_name = Display::cache_get_key( $this->query_args );
+		}
 	}
 
 	/**
@@ -710,7 +723,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 * @since 3.2.0
 		 *
 		 * @param array          $clauses  The GROUP BY clause of the Query.
-		 * @param \Top_Ten_Core_Query $query    The Top_Ten_Core_Query instance (passed by reference).
+		 * @param Top_Ten_Core_Query $query    The Top_Ten_Core_Query instance (passed by reference).
 		 */
 		$clauses = apply_filters_ref_array( 'top_ten_query_posts_clauses', array( $clauses, &$this ) );
 
@@ -805,9 +818,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		// Check the cache if there are any posts saved.
-		if ( ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
+		if ( $this->should_cache() ) {
 
-			$cache_name = \WebberZone\Top_Ten\Frontend\Display::cache_get_key( $this->query_args );
+			$cache_name = $this->cache_name;
 
 			$post_ids = get_transient( $cache_name );
 
@@ -860,10 +873,10 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		// Support caching to speed up retrieval.
-		if ( ! empty( $this->query_args['cache_posts'] ) && ! $this->in_cache && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) ) {
+		if ( $this->should_cache() && ! $this->in_cache ) {
 			/** This filter is defined in display-posts.php */
 			$cache_time = apply_filters( 'tptn_cache_time', $this->query_args['cache_time'], $this->query_args );
-			$cache_name = \WebberZone\Top_Ten\Frontend\Display::cache_get_key( $this->query_args );
+			$cache_name = $this->cache_name;
 			$post_ids   = wp_list_pluck( $query->posts, 'ID' );
 
 			set_transient( $cache_name, $post_ids, $cache_time );
@@ -963,5 +976,16 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids, $args );
 
 		return $exclude_post_ids;
+	}
+
+	/**
+	 * Determines if caching should be enabled for the current query.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @return bool Whether caching should be enabled.
+	 */
+	protected function should_cache() {
+		return ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
 	}
 }

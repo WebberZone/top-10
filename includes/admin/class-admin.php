@@ -188,10 +188,19 @@ class Admin {
 	 */
 	public function admin_enqueue_scripts() {
 
+		$minimize = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
 		wp_register_script(
 			'top-ten-chart-js',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart.min.js',
 			array(),
+			TOP_TEN_VERSION,
+			true
+		);
+		wp_register_script(
+			'top-ten-chart-datalabels-js',
+			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-plugin-datalabels.min.js',
+			array( 'top-ten-chart-js' ),
 			TOP_TEN_VERSION,
 			true
 		);
@@ -210,22 +219,15 @@ class Admin {
 			true
 		);
 		wp_register_script(
-			'top-ten-chart-datalabels-js',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-plugin-datalabels.min.js',
-			array( 'top-ten-chart-js' ),
-			TOP_TEN_VERSION,
-			true
-		);
-		wp_register_script(
 			'top-ten-chart-data-js',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart-data.min.js',
+			TOP_TEN_PLUGIN_URL . "includes/admin/js/chart-data{$minimize}.js",
 			array( 'jquery', 'top-ten-chart-js', 'top-ten-chart-datalabels-js', 'top-ten-luxon', 'top-ten-chartjs-adapter-luxon-js' ),
 			TOP_TEN_VERSION,
 			true
 		);
 		wp_register_script(
 			'top-ten-admin-js',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/js/admin-scripts.min.js',
+			TOP_TEN_PLUGIN_URL . "includes/admin/js/admin-scripts{$minimize}.js",
 			array( 'jquery', 'jquery-ui-tabs', 'jquery-ui-datepicker' ),
 			TOP_TEN_VERSION,
 			true
@@ -239,9 +241,16 @@ class Admin {
 		);
 		wp_register_style(
 			'top-ten-admin-css',
-			TOP_TEN_PLUGIN_URL . 'includes/admin/css/admin-styles.min.css',
+			TOP_TEN_PLUGIN_URL . "includes/admin/css/admin-styles{$minimize}.css",
 			array(),
 			TOP_TEN_VERSION
+		);
+		wp_register_script(
+			'top-ten-wpp-importer-js',
+			TOP_TEN_PLUGIN_URL . "includes/admin/js/wpp-importer{$minimize}.js",
+			array( 'jquery' ),
+			TOP_TEN_VERSION,
+			true
 		);
 	}
 
