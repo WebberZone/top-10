@@ -27,6 +27,7 @@ class Language_Handler {
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 		add_filter( 'top_ten_query_the_posts', array( $this, 'translate_ids' ), 999 );
+		add_filter( 'top_ten_query_posts_pre_query', array( $this, 'translate_ids' ), 999 );
 	}
 
 	/**
@@ -98,20 +99,18 @@ class Language_Handler {
 		}
 
 		// WPML implementation.
-		if ( class_exists( 'SitePress' ) ) {
-			/**
-			 * Filter to modify if the original language ID is returned.
-			 *
-			 * @since 2.2.3
-			 *
-			 * @param bool $return_original_if_missing Flag to return original post ID if translated post ID is missing.
-			 * @param int  $id                         Post ID
-			 */
-			$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', $return_original_if_missing, $post->ID );
+		/**
+		 * Filter to modify if the original language ID is returned.
+		 *
+		 * @since 2.2.3
+		 *
+		 * @param bool $return_original_if_missing Flag to return original post ID if translated post ID is missing.
+		 * @param int  $id                         Post ID
+		 */
+		$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', $return_original_if_missing, $post->ID );
 
-			$post = apply_filters( 'wpml_object_id', $post->ID, $post->post_type, $return_original_if_missing, $current_lang );
-			$post = get_post( $post );
-		}
+		$post = apply_filters( 'wpml_object_id', $post->ID, $post->post_type, $return_original_if_missing, $current_lang );
+		$post = get_post( $post );
 
 		/**
 		 * Filters Post object for current language.
