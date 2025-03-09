@@ -46,6 +46,8 @@ class Import_Export {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+		new WPP_Importer();
 	}
 
 	/**
@@ -59,6 +61,7 @@ class Import_Export {
 		if ( $hook === $this->parent_id ) {
 			wp_enqueue_script( 'top-ten-admin-js' );
 			wp_enqueue_style( 'top-ten-admin-css' );
+
 		}
 	}
 
@@ -164,7 +167,7 @@ class Import_Export {
 
 			<hr />
 
-<form method="post">
+			<form method="post">
 
 				<h2 style="padding-left:0px"><?php esc_html_e( 'Export tables', 'top-10' ); ?></h2>
 				<p class="description">
@@ -194,41 +197,42 @@ class Import_Export {
 					<br />
 					<?php esc_html_e( 'Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H.', 'top-10' ); ?>
 				</p>
-				<p class="description">
+				<p class="notice notice-warning">
 					<strong><?php esc_html_e( 'Backup your database before proceeding so you will be able to restore it in case anything goes wrong.', 'top-10' ); ?></strong>
 				</p>
 				<p>
 					<label><input type="checkbox" name="import_urls" id="import_urls" value="1" /> <?php esc_html_e( 'Use URLs instead of Post IDs in import', 'top-10' ); ?></label>
-				</p>
-				<p>
-					<label><input type="checkbox" name="reset_tables" id="reset_tables" value="1" checked="checked" /> <?php esc_html_e( 'Truncate tables on import. Unchecking this will keep existing counts and overwrite any counts which have the same post ID.', 'top-10' ); ?></label>
-				</p>
-
-				<hr />
-
-				<h4 style="padding-left:0px"><?php esc_html_e( 'Import Overall Table', 'top-10' ); ?></h4>
-				<p>
-					<input type="file" name="import_file" />
-				</p>
-				<p>
-					<?php submit_button( esc_html__( 'Import Overall CSV', 'top-10' ), 'primary', 'tptn_import_total', false ); ?>
+					<input type="hidden" name="tptn_action" value="import_tables" />
+					<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
 				</p>
 
-				<hr />
-
-				<h4 style="padding-left:0px"><?php esc_html_e( 'Import Daily Table', 'top-10' ); ?></h4>
+				<table class="form-table">
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Import overall tables', 'top-10' ); ?></th>
+						<td><input type="file" name="overall_table_file" /><br />
+						<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Import daily tables', 'top-10' ); ?></th>
+						<td><input type="file" name="daily_table_file" /><br />
+						<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
+					</tr>
+				</table>
 				<p>
-					<input type="file" name="import_file_daily" />
+					<?php submit_button( esc_html__( 'Import Tables', 'top-10' ), 'primary', 'tptn_import', false ); ?>
 				</p>
-				<p>
-					<?php submit_button( esc_html__( 'Import Daily CSV', 'top-10' ), 'primary', 'tptn_import_daily', false ); ?>
-				</p>
-
-				<input type="hidden" name="tptn_action" value="import_tables" />
-				<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
 
 				<?php wp_nonce_field( 'tptn_import_nonce', 'tptn_import_nonce' ); ?>
 			</form>
+
+			<?php
+			/**
+			 * Action hook to add additional import/export options.
+			 *
+			 * @since 3.3.0
+			 */
+			do_action( 'tptn_admin_import_export_tab_content' );
+			?>
 
 		</div><!-- /#post-body-content -->
 
@@ -407,17 +411,20 @@ class Import_Export {
 		} else {
 			return;
 		}
+
 		if ( isset( $_POST['network_wide'] ) ) {
 			$network_wide = intval( $_POST['network_wide'] );
 		} else {
 			return;
 		}
+
 		if ( isset( $_POST['import_urls'] ) ) {
 			$import_urls = intval( $_POST['import_urls'] );
 			++$column_count;
 		} else {
 			$import_urls = 0;
 		}
+
 		if ( isset( $_POST['reset_tables'] ) ) {
 			$reset_tables = intval( $_POST['reset_tables'] );
 		} else {
