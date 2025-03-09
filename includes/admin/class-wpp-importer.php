@@ -377,13 +377,13 @@ class WPP_Importer {
 		$params = $this->process_import_parameters( $_POST );
 
 		// Determine sites.
-		$sites = array();
-		if ( is_multisite() && is_network_admin() ) {
-			if ( isset( $_POST['sites'] ) && is_array( $_POST['sites'] ) ) {
-				$sites = array_map( 'absint', $_POST['sites'] );
-			}
-		} else {
-			$sites[] = get_current_blog_id();
+		$sites            = array();
+		$is_network_admin = is_multisite() && is_network_admin();
+
+		if ( isset( $_POST['sites'] ) && is_array( $_POST['sites'] ) ) {
+			$sites = array_map( 'absint', $_POST['sites'] );
+		} elseif ( ! $is_network_admin ) {
+			$sites[] = $params['blog_id'];
 		}
 
 		if ( empty( $sites ) ) {
@@ -430,9 +430,9 @@ class WPP_Importer {
 				__( 'Site %1$s (ID: %2$d): Total Counts Processed: %3$d, Daily Records Processed: %4$d%5$s', 'top-ten' ),
 				esc_html( $blog_name ),
 				$blog_id,
-				isset( $result['total_counts'] ) ? $result['total_counts'] : 0,
-				isset( $result['daily_counts'] ) ? $result['daily_counts'] : 0,
-				$params['dry_run'] ? ' (Dry Run)' : ''
+				$result['total_counts'] ?? 0,
+				$result['daily_counts'] ?? 0,
+				$params['dry_run'] ? ' (' . esc_html__( 'Dry Run', 'top-10' ) . ')' : ''
 			) . '<br>';
 		}
 
