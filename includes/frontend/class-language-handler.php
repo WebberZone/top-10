@@ -50,7 +50,10 @@ class Language_Handler {
 	 * @return \WP_Post[] Updated array of WP_Post objects.
 	 */
 	public static function translate_ids( $results ) {
-		global $post;
+
+		if ( empty( $results ) ) {
+			return $results;
+		}
 
 		$processed_ids     = array();
 		$processed_results = array();
