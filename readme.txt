@@ -153,7 +153,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 = 4.1.0 =
 
 * Features:
-	* Import data from WordPress Popular Posts plugin.
+	* Import data from the WordPress Popular Posts plugin.
 	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
 	* Admin Dashboard:
 		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
@@ -161,11 +161,11 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 * Modifications:
 	* Updated ChartJS and replaced Moment adapter with Luxon.
-	* An admin notice is now displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
+	* An admin notice is displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
 
 * Bug fixes:
 	* Resolved issue where tables were not automatically created during plugin activation.
-	* Fixed issue where the popular posts feed always displayed the full content of the post even when Excerpt was selected under Reading settings.
+	* Fixed issue where the popular posts feed always displayed the post's full content even when Excerpt was selected under Reading settings.
 
 = 4.0.4 =
 
