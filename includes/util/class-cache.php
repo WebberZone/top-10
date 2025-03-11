@@ -4,7 +4,7 @@
  *
  * @since 3.3.0
  *
- * @package Top 10
+ * @package Top_Ten
  * @subpackage Util\Cache
  */
 
