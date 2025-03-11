@@ -318,6 +318,22 @@ class Settings {
 				'options' => self::get_user_roles( array( 'administrator' ) ),
 				'pro'     => true,
 			),
+			'query_optimization'      => array(
+				'id'   => 'query_optimization',
+				'name' => '<h3>' . esc_html__( 'Query Optimization', 'top-10' ) . '</h3>',
+				'desc' => esc_html__( 'Settings for optimizing database queries', 'top-10' ),
+				'type' => 'header',
+			),
+			'max_execution_time'      => array(
+				'id'      => 'max_execution_time',
+				'name'    => esc_html__( 'Max Execution Time', 'top-10' ),
+				'desc'    => esc_html__( 'Maximum execution time for MySQL queries in milliseconds. Set to 0 to disable. Default is 3000 (3 seconds).', 'top-10' ),
+				'type'    => 'number',
+				'options' => 3000,
+				'min'     => 0,
+				'step'    => 100,
+				'pro'     => true,
+			),
 		);
 
 		/**
