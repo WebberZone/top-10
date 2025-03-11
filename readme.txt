@@ -59,6 +59,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Enhanced Tracking and Performance**
   - **Fast Tracker**: A new, faster tracking method to improve post view speed.
   - **Query Filters**: Enable parent term inclusion in post queries for more accurate filtering.
+  - **Query Optimization**: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
 
 * **Developer-Friendly Features**
   - **Filters and Hooks**: New filters like `top_ten_query_exclude_terms_include_parents`, `top_ten_query_include_terms_include_parents`, and `get_tptn_short_circuit` for greater customisation.
@@ -153,6 +154,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 * Features:
 	* Import data from WordPress Popular Posts plugin.
+	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
 	* Admin Dashboard:
 		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
 		* [Pro] Clicking on a column in the Popular Posts chart will display the most popular posts for the selected day.
