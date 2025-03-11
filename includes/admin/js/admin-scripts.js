@@ -56,6 +56,28 @@ jQuery(document).ready(function ($) {
 				$(ui.newTab.find("a")).addClass("nav-tab-active");
 			}
 		});
+		
+		// Wait for the tabs to be fully initialized
+		setTimeout(function() {
+			// Select Today tab (second tab) by default and add the nav-tab-active class
+			var $tabs = $("#post-body-content").tabs();
+			
+			// First find the Today tab index (usually 1)
+			var tabIndex = 0;
+			$(".nav-tab-wrapper li a").each(function(index) {
+				if ($(this).text().indexOf('Today') >= 0) {
+					tabIndex = index;
+					return false; // Break the loop
+				}
+			});
+			
+			// Set the active tab
+			$tabs.tabs("option", "active", tabIndex);
+			
+			// Manually add the active class to the Today tab
+			$(".nav-tab-wrapper li a").removeClass("nav-tab-active");
+			$(".nav-tab-wrapper li").eq(tabIndex).find("a").addClass("nav-tab-active");
+		}, 200);
 	});
 
 	// Datepicker.

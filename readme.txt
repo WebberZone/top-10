@@ -151,6 +151,12 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 = 4.1.0 =
 
+* Features:
+	* Import data from WordPress Popular Posts plugin.
+	* Admin Dashboard:
+		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
+		* [Pro] Clicking on a column in the Popular Posts chart will display the most popular posts for the selected day.
+
 * Modifications:
 	* Updated ChartJS and replaced Moment adapter with Luxon.
 	* An admin notice is now displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
