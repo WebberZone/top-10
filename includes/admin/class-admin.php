@@ -194,28 +194,28 @@ class Admin {
 			'top-ten-chart-js',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chart.min.js',
 			array(),
-			TOP_TEN_VERSION,
+			'4.4.8',
 			true
 		);
 		wp_register_script(
 			'top-ten-chart-datalabels-js',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-plugin-datalabels.min.js',
 			array( 'top-ten-chart-js' ),
-			TOP_TEN_VERSION,
+			'2.2.0',
 			true
 		);
 		wp_register_script(
 			'top-ten-luxon',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/luxon.min.js',
 			array(),
-			TOP_TEN_VERSION,
+			'3.5.0',
 			true
 		);
 		wp_register_script(
 			'top-ten-chartjs-adapter-luxon-js',
 			TOP_TEN_PLUGIN_URL . 'includes/admin/js/chartjs-adapter-luxon.min.js',
 			array( 'top-ten-luxon', 'top-ten-chart-js' ),
-			TOP_TEN_VERSION,
+			'1.3.1',
 			true
 		);
 		wp_register_script(
