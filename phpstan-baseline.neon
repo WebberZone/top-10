@@ -7,7 +7,7 @@ parameters:
 
 		-
 			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 7
+			count: 8
 			path: includes/admin/class-admin.php
 
 		-
@@ -74,6 +74,11 @@ parameters:
 			message: "#^Function fs_dynamic_init not found\\.$#"
 			count: 1
 			path: includes/load-freemius.php
+
+		-
+			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
+			count: 1
+			path: includes/pro/admin/class-pro-admin.php
 
 		-
 			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
