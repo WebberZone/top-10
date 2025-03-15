@@ -25,7 +25,7 @@ function tptn_freemius() {
 				'premium_slug'   => 'top-10-pro',
 				'type'           => 'plugin',
 				'public_key'     => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
-				'is_premium'     => false,
+				'is_premium'     => true,
 				'premium_suffix' => 'Pro',
 				'has_addons'     => false,
 				'has_paid_plans' => true,
@@ -58,6 +58,9 @@ function tptn_freemius_get_plugin_icon() {
  */
 function tptn_freemius_uninstall() {
 	require_once dirname( __DIR__ ) . '/uninstaller.php';
+	if ( tptn_freemius()->can_use_premium_code__premium_only() ) {
+		\WebberZone\Top_Ten\Pro\Pro::uninstall_pro();
+	}
 }
 
 // Init Freemius.
