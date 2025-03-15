@@ -2,7 +2,7 @@
 Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
-Stable tag: 4.0.3
+Stable tag: 4.1.0
 Requires at least: 6.3
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -153,6 +153,8 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 = 4.1.0 =
 
+Release post: [https://webberzone.com/announcements/top-10-v4-1-0/](https://webberzone.com/announcements/top-10-v4-1-0/)
+
 * Features:
 	* Import data from the WordPress Popular Posts plugin.
 	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
@@ -164,10 +166,12 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 * Modifications:
 	* Updated ChartJS and replaced Moment adapter with Luxon.
 	* An admin notice is displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
+	* Introduced `wz_top_ten()` function to return the main instance of Top 10.
 
 * Bug fixes:
 	* Resolved issue where tables were not automatically created during plugin activation.
 	* Fixed issue where the popular posts feed always displayed the post's full content even when Excerpt was selected under Reading settings.
+	* Fixed "Not found" error when accessing the Daily Popular Posts feed.
 
 = 4.0.4 =
 
@@ -238,5 +242,5 @@ For previous changelog entries, please refer to the separate changelog.txt file 
 
 == Upgrade Notice ==
 
-= 4.0.4 =
-Freemius SDK Updated. Minor other changes. Check out the release post or changelog for further information.
+= 4.1.0 =
+Enhancements: Improved performance optimizations. Updated Freemius SDK to the latest version. Added support for plugin dependencies. Enhanced the format of numbered lists. Renamed certain filters for clarity. Bug fixes: Resolved issues with admin column settings. Fixed meta_query parameter issues.
