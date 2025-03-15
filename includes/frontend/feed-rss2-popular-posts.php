@@ -10,17 +10,18 @@ $settings = array(
 	'daily_range' => tptn_get_option( 'feed_daily_range' ),
 	'limit'       => tptn_get_option( 'feed_limit' ),
 );
-$topposts = get_tptn_posts( $settings );
 
-$topposts = wp_list_pluck( (array) $topposts, 'postnumber' );
+/**
+ * Filter the RSS feed settings.
+ *
+ * @since 4.1.0
+ *
+ * @param array $settings Array of RSS feed settings.
+ */
+$settings = apply_filters( 'tptn_rss_feed_settings', $settings );
 
-$args = array(
-	'post__in'       => $topposts,
-	'orderby'        => 'post__in',
-	'posts_per_page' => count( $topposts ), // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
-);
-
-query_posts( $args ); // phpcs:ignore WordPress.WP.DiscouragedFunctions.query_posts_query_posts
+// Initialize Top_Ten_Query with our settings.
+$query = new Top_Ten_Query( $settings );
 
 header( 'Content-Type: ' . feed_content_type( 'rss2' ) . '; charset=' . get_option( 'blog_charset' ), true );
 $more = 1; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
@@ -55,7 +56,7 @@ do_action( 'rss_tag_pre', 'rss2' );
 >
 
 <channel>
-	<title><?php wp_title_rss(); ?></title>
+	<title><?php wp_title_rss(); ?> <?php esc_html_e( 'Popular Posts', 'top-10' ); ?> - <?php echo esc_html( $settings['daily'] ? sprintf( _n( 'Last %d day', 'Last %d days', $settings['daily_range'], 'top-10' ), $settings['daily_range'] ) : __( 'Overall', 'top-10' ) ); // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment ?></title>
 	<atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
 	<link><?php bloginfo_rss( 'url' ); ?></link>
 	<description><?php bloginfo_rss( 'description' ); ?></description>
@@ -99,8 +100,8 @@ do_action( 'rss_tag_pre', 'rss2' );
 	 */
 	do_action( 'rss2_head' );
 
-	while ( have_posts() ) :
-		the_post();
+	while ( $query->have_posts() ) :
+		$query->the_post();
 		?>
 	<item>
 		<title><?php the_title_rss(); ?></title>
@@ -139,5 +140,6 @@ do_action( 'rss_tag_pre', 'rss2' );
 		?>
 	</item>
 	<?php endwhile; ?>
+	<?php wp_reset_postdata(); ?>
 </channel>
 </rss>
