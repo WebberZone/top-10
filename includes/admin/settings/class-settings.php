@@ -1064,6 +1064,19 @@ class Settings {
 				'min'     => '0',
 				'size'    => 'small',
 			),
+			'feed_category_slugs'    => array(
+				'id'               => 'feed_category_slugs',
+				'name'             => esc_html__( 'Filter Categories', 'top-10' ),
+				'desc'             => esc_html__( 'Comma separated list of category slugs to include in the feed. The field has an autocomplete so simply start typing the starting letters and it will prompt you with options. Leave blank to include all categories.', 'top-10' ),
+				'type'             => 'csv',
+				'options'          => '',
+				'size'             => 'large',
+				'field_class'      => 'category_autocomplete',
+				'field_attributes' => array(
+					'data-wp-taxonomy' => 'category',
+				),
+				'pro'              => true,
+			),
 		);
 
 		/**
@@ -1395,6 +1408,7 @@ class Settings {
 
 		Settings_Sanitize::sanitize_tax_slugs( $settings, 'exclude_cat_slugs', 'exclude_categories' );
 		Settings_Sanitize::sanitize_tax_slugs( $settings, 'exclude_on_cat_slugs', 'exclude_on_categories' );
+		Settings_Sanitize::sanitize_tax_slugs( $settings, 'feed_category_slugs', 'feed_categories' );
 
 		// Save cron settings.
 		$settings['cron_hour'] = min( 23, absint( $settings['cron_hour'] ) );

@@ -55,6 +55,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
 * **Custom Display Options**
   - **Taxonomy-Specific Displays**: Use the `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms.
   - **Category Inclusion**: Include popular posts from specific categories using a new option in the Edit Post meta box.
+  - **RSS Feed Filtering**: Enhanced RSS feeds with category and post type filtering, available via URL parameters (?category=news, ?post_type=product) and dedicated settings.
 
 * **Enhanced Tracking and Performance**
   - **Fast Tracker**: A new, faster tracking method to improve post view speed.
@@ -155,6 +156,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 * Features:
 	* Import data from the WordPress Popular Posts plugin.
 	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
+    * [Pro] Enhanced Popular Posts RSS feeds with category and post type filtering, available via URL parameters and configurable via dedicated settings.
 	* Admin Dashboard:
 		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
 		* [Pro] Clicking on a column in the Popular Posts chart will display the most popular posts for the selected day.
