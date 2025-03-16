@@ -1,6 +1,6 @@
 <?php
 /**
- * Autoloads classes from the WebberZone\Snippetz namespace.
+ * Autoloads classes from the WebberZone\Top_Ten namespace.
  *
  * @package WebberZone\Top_Ten
  */
@@ -16,6 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 function tptn_freemius() {
 	global $tptn_freemius;
 	if ( ! isset( $tptn_freemius ) ) {
+		// Activate multisite network integration.
+		if ( ! defined( 'WP_FS__PRODUCT_16384_MULTISITE' ) ) {
+			define( 'WP_FS__PRODUCT_16384_MULTISITE', true );
+		}
 		// Include Freemius SDK.
 		require_once TOP_TEN_PLUGIN_DIR . 'freemius/start.php';
 		$tptn_freemius = \fs_dynamic_init(
@@ -25,7 +29,7 @@ function tptn_freemius() {
 				'premium_slug'   => 'top-10-pro',
 				'type'           => 'plugin',
 				'public_key'     => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
-				'is_premium'     => true,
+				'is_premium'     => false,
 				'premium_suffix' => 'Pro',
 				'has_addons'     => false,
 				'has_paid_plans' => true,
@@ -58,9 +62,6 @@ function tptn_freemius_get_plugin_icon() {
  */
 function tptn_freemius_uninstall() {
 	require_once dirname( __DIR__ ) . '/uninstaller.php';
-	if ( tptn_freemius()->can_use_premium_code__premium_only() ) {
-		\WebberZone\Top_Ten\Pro\Pro::uninstall_pro();
-	}
 }
 
 // Init Freemius.

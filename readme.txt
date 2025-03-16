@@ -165,8 +165,8 @@ Release post: [https://webberzone.com/announcements/top-10-v4-1-0/](https://webb
 
 * Modifications:
 	* Updated ChartJS and replaced Moment adapter with Luxon.
-	* An admin notice is displayed when any Top 10 table is missing. The plugin will also automatically recreate the missing tables.
-	* Introduced `wz_top_ten()` function to return the main instance of Top 10.
+	* When any of the Top 10 tables is missing, an admin notice is displayed. The plugin also automatically recreates the missing tables.
+	* Introduced the `wz_top_ten()` function to return the Main instance of Top 10.
 
 * Bug fixes:
 	* Resolved issue where tables were not automatically created during plugin activation.
