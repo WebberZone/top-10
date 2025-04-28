@@ -34,7 +34,7 @@ function tptn_freemius() {
 				'has_addons'     => false,
 				'has_paid_plans' => true,
 				'menu'           => array(
-					'slug'    => 'tptn_dashboard',
+					'slug'    => is_multisite() ? 'tptn_network_pop_posts_page' : 'tptn_dashboard',
 					'contact' => false,
 					'support' => false,
 					'network' => true,
