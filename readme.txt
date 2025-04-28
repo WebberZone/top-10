@@ -151,6 +151,11 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.1.1 =
+
+* Bug fixes:
+    * Fixed an issue where shortcode attributes were not properly sanitized.
+
 = 4.1.0 =
 
 Release post: [https://webberzone.com/announcements/top-10-v4-1-0/](https://webberzone.com/announcements/top-10-v4-1-0/)

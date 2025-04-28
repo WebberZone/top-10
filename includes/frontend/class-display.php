@@ -59,6 +59,9 @@ class Display {
 		// Parse incomming $args into an array and merge it with $defaults.
 		$args = wp_parse_args( $args, $defaults );
 
+		// Sanitize the attributes.
+		$args = Helpers::sanitize_args( $args );
+
 		// Short circuit flag.
 		$short_circuit = false;
 
