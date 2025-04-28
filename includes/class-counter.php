@@ -250,6 +250,9 @@ class Counter {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
+		// Sanitize the attributes.
+		$args = Helpers::sanitize_args( $args );
+
 		$table_name       = Helpers::get_tptn_table( false );
 		$table_name_daily = Helpers::get_tptn_table( true );
 
