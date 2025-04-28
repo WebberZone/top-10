@@ -462,7 +462,7 @@ class Activator {
 	 * @return string Formatted HTML report of database status.
 	 */
 	public static function get_db_status_report() {
-		global $wpdb, $tptn_db_version;
+		global $tptn_db_version;
 
 		// Get table statuses.
 		$statuses = self::check_table_status();
