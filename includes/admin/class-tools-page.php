@@ -49,8 +49,6 @@ class Tools_Page {
 	 */
 	public function admin_menu() {
 
-		$is_network_admin = ( 'network_admin_menu' === current_filter() );
-
 		$this->parent_id = add_submenu_page(
 			'tptn_dashboard',
 			esc_html__( 'Top 10 Tools', 'top-10' ),
@@ -123,31 +121,31 @@ class Tools_Page {
 		}
 
 		/* Truncate overall posts table */
-		if ( ( isset( $_POST['tptn_recreate_primary_key'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_recreate_primary_key'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			self::recreate_primary_key();
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Primary Key has been recreated', 'top-10' ), 'updated' );
 		}
 
 		/* Truncate overall posts table */
-		if ( ( isset( $_POST['tptn_trunc_all'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_trunc_all'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			\WebberZone\Top_Ten\Util\Helpers::trunc_count( false, $network_wide );
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'updated' );
 		}
 
 		/* Truncate daily posts table */
-		if ( ( isset( $_POST['tptn_trunc_daily'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_trunc_daily'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			\WebberZone\Top_Ten\Util\Helpers::trunc_count( true, $network_wide );
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'updated' );
 		}
 
 		/* Recreate tables */
-		if ( ( isset( $_POST['tptn_recreate_tables'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_recreate_tables'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			self::recreate_tables();
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
 		}
 
 		/* Delete old settings */
-		if ( ( isset( $_POST['tptn_delete_old_settings'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_delete_old_settings'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			$deleted = delete_option( 'ald_tptn_settings' );
 			if ( $deleted ) {
 				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'updated' );
@@ -157,14 +155,14 @@ class Tools_Page {
 		}
 
 		/* Clean duplicates */
-		if ( ( isset( $_POST['tptn_clean_duplicates'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_clean_duplicates'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			self::clean_duplicates( true );
 			self::clean_duplicates( false );
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Duplicate rows cleaned from the tables', 'top-10' ), 'updated' );
 		}
 
 		/* Merge blog IDs */
-		if ( ( isset( $_POST['tptn_merge_blogids'] ) ) && ( check_admin_referer( 'tptn-tools-settings' ) ) ) {
+		if ( isset( $_POST['tptn_merge_blogids'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			self::merge_blogids( true );
 			self::merge_blogids( false );
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'updated' );
