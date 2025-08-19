@@ -151,6 +151,11 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 == Changelog ==
 
+= 4.2.0 =
+
+* Bug fixes:
+	* Correctly redirect the Admin user when activating the plugin on a single site install of a Multisite network.
+
 = 4.1.1 =
 
 * Bug fixes:
