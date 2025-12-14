@@ -1,13 +1,8 @@
 <?php
 /**
- * Top 10 Meta box functions.
+ * Metabox class.
  *
- * Accessible on Edit Posts, Pages and other custom post type screens
- *
- * @link https://webberzone.com
- * @since 3.3.0
- *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;

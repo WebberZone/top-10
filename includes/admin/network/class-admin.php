@@ -1,11 +1,8 @@
 <?php
 /**
- * Register Settings.
+ * Network Admin class.
  *
- * @link  https://webberzone.com
- * @since 3.3.0
- *
- * @package WebberZone\Top_Ten\Admin
+ * @package WebberZone\Top_Ten\Admin\Network
  */
 
 namespace WebberZone\Top_Ten\Admin\Network;

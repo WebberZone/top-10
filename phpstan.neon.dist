@@ -2,12 +2,15 @@ includes:
 	- phpstan-baseline.neon
 parameters:
     level: 5
+    paths:
+        - top-10.php
+        - uninstaller.php
+        - load-freemius.php
+        - includes/
     scanFiles:
         - top-10.php
     scanDirectories:
         - includes
-    paths:
-        - top-10.php
-        - uninstaller.php
-        - includes/
+    bootstrapFiles:
+        - phpstan-bootstrap.php
     ignoreErrors:

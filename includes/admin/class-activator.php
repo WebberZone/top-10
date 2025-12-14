@@ -1,11 +1,13 @@
 <?php
 /**
- * Functions run on activation / deactivation.
+ * Activator class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
+
+use WebberZone\Top_Ten\Database;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -102,8 +104,8 @@ class Activator {
 
 		if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			// Recreate tables with the new structure.
-			$result_overall = self::recreate_overall_table();
-			$result_daily   = self::recreate_daily_table();
+			$result_overall = self::recreate_overall_table( false );
+			$result_daily   = self::recreate_daily_table( false );
 
 			// Check for errors.
 			if ( is_wp_error( $result_overall ) ) {
@@ -137,13 +139,7 @@ class Activator {
 	 * @return bool True if the table exists, false otherwise.
 	 */
 	public static function is_table_installed( $table_name ) {
-		global $wpdb;
-
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) === $table_name ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-			return true;
-		}
-
-		return false;
+		return Database::is_table_installed( $table_name );
 	}
 
 	/**
@@ -188,20 +184,7 @@ class Activator {
 	 * @return string SQL to create the full table.
 	 */
 	public static function create_full_table_sql() {
-		global $wpdb;
-
-		$charset_collate = $wpdb->get_charset_collate();
-		$table_name      = $wpdb->base_prefix . self::$table_name;
-
-		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
-		" (
-			postnumber bigint(20) NOT NULL,
-			cntaccess bigint(20) NOT NULL,
-			blog_id bigint(20) NOT NULL DEFAULT '1',
-			PRIMARY KEY  (postnumber, blog_id)
-		) $charset_collate;";
-
-		return $sql;
+		return Database::create_full_table_sql();
 	}
 
 	/**
@@ -212,21 +195,7 @@ class Activator {
 	 * @return string SQL to create the daily table.
 	 */
 	public static function create_daily_table_sql() {
-		global $wpdb;
-
-		$charset_collate = $wpdb->get_charset_collate();
-		$table_name      = $wpdb->base_prefix . self::$table_name_daily;
-
-		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
-		" (
-			postnumber bigint(20) NOT NULL,
-			cntaccess bigint(20) NOT NULL,
-			dp_date DATETIME NOT NULL,
-			blog_id bigint(20) NOT NULL DEFAULT '1',
-			PRIMARY KEY  (postnumber, dp_date, blog_id)
-		) $charset_collate;";
-
-		return $sql;
+		return Database::create_daily_table_sql();
 	}
 
 	/**
@@ -252,45 +221,7 @@ class Activator {
 		$fields = array( 'postnumber', 'cntaccess', 'blog_id' ),
 		$group_by_fields = array( 'postnumber', 'blog_id' )
 	) {
-		global $wpdb;
-
-		$backup_table_name = ( $backup ) ? $table_name . '_backup' : $table_name . '_temp';
-		$success           = false;
-
-		$fields_sql          = implode( ', ', $fields );
-		$fields_sql_with_sum = str_replace( 'cntaccess', 'SUM(cntaccess) as cntaccess', $fields_sql );
-		$group_by_sql        = implode( ', ', $group_by_fields );
-
-		if ( $backup ) {
-			$success = $wpdb->query( "CREATE TABLE $backup_table_name LIKE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			if ( false !== $success ) {
-				$success = $wpdb->query( "INSERT INTO $backup_table_name SELECT * FROM $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			} else {
-				/* translators: 1: Site number, 2: Error message */
-				return new \WP_Error( 'tptn_database_backup_failed', sprintf( esc_html__( 'Database backup failed on site %1$s. Error message: %2$s', 'top-10' ), get_site_url(), $wpdb->last_error ) );
-			}
-		} else {
-			$success = $wpdb->query( "CREATE TEMPORARY TABLE $backup_table_name AS SELECT $fields_sql_with_sum FROM $table_name GROUP BY $group_by_sql" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-
-		if ( false !== $success ) {
-			$wpdb->query( "DROP TABLE IF EXISTS $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			self::maybe_create_table( $table_name, $create_table_sql );
-			$insert_fields_sql = 'tt.' . implode( ', tt.', $fields );
-
-			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $insert_fields_sql FROM $backup_table_name AS tt ON DUPLICATE KEY UPDATE $table_name.cntaccess = $table_name.cntaccess + VALUES(cntaccess)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-			if ( false === $success ) {
-				/* translators: 1: Site number, 2: Error message */
-				return new \WP_Error( 'tptn_database_insert_failed', sprintf( esc_html__( 'Database insert failed on site %1$s. Error message: %2$s', 'top-10' ), get_site_url(), $wpdb->last_error ) );
-			}
-		}
-
-		if ( ! $backup ) {
-			$wpdb->query( "DROP TABLE $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-
-		return $success;
+		return Database::recreate_table( $table_name, $create_table_sql, $backup, $fields, $group_by_fields );
 	}
 
 	/**
@@ -303,12 +234,7 @@ class Activator {
 	 * @return bool|\WP_Error True if recreated, error message if failed.
 	 */
 	public static function recreate_overall_table( $backup = true ) {
-		global $wpdb;
-		return self::recreate_table(
-			$wpdb->base_prefix . self::$table_name,
-			self::create_full_table_sql(),
-			$backup
-		);
+		return Database::recreate_overall_table( $backup );
 	}
 
 	/**
@@ -321,14 +247,7 @@ class Activator {
 	 * @return bool|\WP_Error True if recreated, error message if failed.
 	 */
 	public static function recreate_daily_table( $backup = true ) {
-		global $wpdb;
-		return self::recreate_table(
-			$wpdb->base_prefix . self::$table_name_daily,
-			self::create_daily_table_sql(),
-			$backup,
-			array( 'postnumber', 'cntaccess', 'dp_date', 'blog_id' ),
-			array( 'postnumber', 'dp_date', 'blog_id' )
-		);
+		return Database::recreate_daily_table( $backup );
 	}
 
 	/**
@@ -442,16 +361,7 @@ class Activator {
 	 * @return bool True if all tables are installed, false if any are missing.
 	 */
 	public static function is_all_tables_installed() {
-		global $wpdb;
-
-		$table_name       = $wpdb->base_prefix . self::$table_name;
-		$table_name_daily = $wpdb->base_prefix . self::$table_name_daily;
-
-		if ( ! self::is_table_installed( $table_name ) || ! self::is_table_installed( $table_name_daily ) ) {
-			return false;
-		}
-
-		return true;
+		return Database::are_tables_installed();
 	}
 
 	/**

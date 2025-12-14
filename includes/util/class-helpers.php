@@ -1,8 +1,8 @@
 <?php
 /**
- * Helper functions
+ * Helpers class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Util
  */
 
 namespace WebberZone\Top_Ten\Util;
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Helpers class.
  *
  * @since 3.3.0
  */
@@ -24,49 +24,6 @@ class Helpers {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-	}
-
-	/**
-	 * Function to delete all rows in the posts table.
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param bool $daily  Daily flag.
-	 */
-	public static function get_tptn_table( $daily = false ) {
-		global $wpdb;
-
-		$table_name = $wpdb->base_prefix . 'top_ten';
-		if ( $daily ) {
-			$table_name .= '_daily';
-		}
-		return $table_name;
-	}
-
-
-	/**
-	 * Function to delete all rows in the posts table.
-	 *
-	 * @since 1.3
-	 *
-	 * @param bool $daily        Daily flag.
-	 * @param bool $network_wide Network wide flag.
-	 */
-	public static function trunc_count( $daily = true, $network_wide = false ) {
-		global $wpdb;
-
-		if ( ! is_multisite() || $network_wide ) {
-			$table_name = self::get_tptn_table( $daily );
-
-			$sql = "TRUNCATE TABLE $table_name";
-			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		} else {
-			\WebberZone\Top_Ten\Counter::delete_counts(
-				array(
-					'daily' => $daily,
-				)
-			);
-		}
 	}
 
 	/**

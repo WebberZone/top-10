@@ -1,15 +1,14 @@
 <?php
 /**
- * Generates the Tools page.
+ * Tools Page class.
  *
- * @link  https://webberzone.com
- * @since 2.5.0
- *
- * @package    Top 10
- * @subpackage Admin/Tools
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
+
+use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Counter;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -69,7 +68,7 @@ class Tools_Page {
 	public function network_admin_menu() {
 
 		$this->parent_id = add_submenu_page(
-			'tptn_network_pop_posts_page',
+			'tptn_dashboard',
 			esc_html__( 'Top 10 Tools', 'top-10' ),
 			esc_html__( 'Tools', 'top-10' ),
 			'manage_network_options',
@@ -127,14 +126,22 @@ class Tools_Page {
 		}
 
 		/* Truncate overall posts table */
-		if ( isset( $_POST['tptn_trunc_all'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			\WebberZone\Top_Ten\Util\Helpers::trunc_count( false, $network_wide );
+		if ( isset( $_POST['tptn_reset_overall'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+			if ( ! is_multisite() || $network_wide ) {
+				Database::truncate_table( Database::get_table( false ) );
+			} else {
+				Counter::delete_counts( array( 'daily' => false ) );
+			}
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'updated' );
 		}
 
 		/* Truncate daily posts table */
-		if ( isset( $_POST['tptn_trunc_daily'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			\WebberZone\Top_Ten\Util\Helpers::trunc_count( true, $network_wide );
+		if ( isset( $_POST['tptn_reset_daily'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+			if ( ! is_multisite() || $network_wide ) {
+				Database::truncate_table( Database::get_table( true ) );
+			} else {
+				Counter::delete_counts( array( 'daily' => true ) );
+			}
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'updated' );
 		}
 
@@ -182,99 +189,111 @@ class Tools_Page {
 
 			<form method="post" >
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Database Status', 'top-10' ); ?></h2>
-				<div class="tptn-db-status">
-					<?php echo \WebberZone\Top_Ten\Admin\Activator::get_db_status_report(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Database Status', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<div class="tptn-db-status">
+							<?php echo \WebberZone\Top_Ten\Admin\Activator::get_db_status_report(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					</div>
 				</div>
 
-				<hr />
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Clear cache', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p>
+							<?php
+								printf(
+									'<button type="button" name="tptn_cache_clear" class="button button-secondary tptn_cache_clear" aria-label="%1$s">%1$s</button>',
+									esc_html__( 'Clear cache', 'top-10' )
+								);
+							?>
+						</p>
+						<p class="description">
+							<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
+						</p>
+					</div>
+				</div>
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Clear cache', 'top-10' ); ?></h2>
-				<p>
-					<?php
-						printf(
-							'<button type="button" name="tptn_cache_clear" class="button button-secondary tptn_cache_clear" aria-label="%1$s">%1$s</button>',
-							esc_html__( 'Clear cache', 'top-10' )
-						);
-					?>
-				</p>
-				<p class="description">
-					<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
-				</p>
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p>
+							<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
+						</p>
+						<p class="description">
+							<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
+						</p>
+						<p>
+							<code style="display:block;"><?php echo self::recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
+						</p>
+					</div>
+				</div>
 
-				<hr />
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Reset database', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p class="description">
+							<?php esc_html_e( 'This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
+						</p>
+						<p>
+							<?php
+							printf(
+								'<button name="tptn_reset_overall" type="submit" id="tptn_reset_overall" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
+								esc_attr__( 'Are you sure you want to reset the popular posts?', 'top-10' ),
+								esc_attr__( 'Reset Popular Posts', 'top-10' )
+							);
+							?>
+						</p>
+						<p>
+							<?php
+							printf(
+								'<button name="tptn_reset_daily" type="submit" id="tptn_reset_daily" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
+								esc_attr__( 'Are you sure you want to reset the daily popular posts?', 'top-10' ),
+								esc_attr__( 'Reset Daily Popular Posts', 'top-10' )
+							);
+							?>
+						</p>
+					</div>
+				</div>
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></h2>
-				<p>
-					<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
-				</p>
-				<p class="description">
-					<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
-				</p>
-				<p>
-					<code style="display:block;"><?php echo self::recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
-				</p>
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p class="description">
+							<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
+						</p>
+						<p>
+							<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
+						</p>
+					</div>
+				</div>
 
-				<hr />
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Other tools', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p class="description">
+							<?php esc_html_e( 'From v2.5.x, Top 10 stores the settings in a new key in the database. This will delete the old settings for the current blog. It is recommended that you do this at the earliest after upgrade. However, you should do this only if you are comfortable with the new settings.', 'top-10' ); ?>
+						</p>
+						<p>
+							<button name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Delete old settings', 'top-10' ); ?></button>
+						</p>
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Reset database', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
-				</p>
-				<p>
-					<?php
-					printf(
-						'<button name="tptn_trunc_all" type="submit" id="tptn_trunc_all" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
-						esc_attr__( 'Are you sure you want to reset the popular posts?', 'top-10' ),
-						esc_attr__( 'Reset Popular Posts', 'top-10' )
-					);
-					?>
-				</p>
-				<p>
-					<?php
-					printf(
-						'<button name="tptn_trunc_daily" type="submit" id="tptn_trunc_daily" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
-						esc_attr__( 'Are you sure you want to reset the daily popular posts?', 'top-10' ),
-						esc_attr__( 'Reset Daily Popular Posts', 'top-10' )
-					);
-					?>
-				</p>
+						<p class="description">
+							<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
+						</p>
+						<p>
+							<button name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?></button>
+						</p>
 
-				<hr />
-
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
-				</p>
-				<p>
-					<p>
-						<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
-					</p>
-				</p>
-
-				<hr />
-
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Other tools', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'From v2.5.x, Top 10 stores the settings in a new key in the database. This will delete the old settings for the current blog. It is recommended that you do this at the earliest after upgrade. However, you should do this only if you are comfortable with the new settings.', 'top-10' ); ?>
-				</p>
-				<p>
-					<button name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Delete old settings', 'top-10' ); ?></button>
-				</p>
-
-				<p class="description">
-					<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
-				</p>
-				<p>
-					<button name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?></button>
-				</p>
-
-				<p class="description">
-					<?php esc_html_e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', 'top-10' ); ?>
-				</p>
-				<p>
-					<button name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?></button>
-				</p>
+						<p class="description">
+							<?php esc_html_e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', 'top-10' ); ?>
+						</p>
+						<p>
+							<button name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?></button>
+						</p>
+					</div>
+				</div>
 
 				<?php wp_nonce_field( 'tptn-tools-settings' ); ?>
 			</form>
@@ -284,7 +303,7 @@ class Tools_Page {
 		<div id="postbox-container-1" class="postbox-container">
 
 			<div id="side-sortables" class="meta-box-sortables ui-sortable">
-				<?php include_once 'settings/sidebar.php'; ?>
+				<?php include_once 'sidebar.php'; ?>
 			</div><!-- /#side-sortables -->
 
 		</div><!-- /#postbox-container-1 -->
@@ -308,7 +327,7 @@ class Tools_Page {
 	public static function clean_duplicates( $daily = false ) {
 		global $wpdb;
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $daily );
+		$table_name = Database::get_table( $daily );
 
 		$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -326,7 +345,7 @@ class Tools_Page {
 	public static function merge_blogids( $daily = false ) {
 		global $wpdb;
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $daily );
+		$table_name = Database::get_table( $daily );
 
 		if ( $daily ) {
 			$sql = "
@@ -370,8 +389,8 @@ class Tools_Page {
 	public static function recreate_primary_key() {
 		global $wpdb;
 
-		$table_name       = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
-		$table_name_daily = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
+		$table_name       = Database::get_table( false );
+		$table_name_daily = Database::get_table( true );
 
 		$wpdb->hide_errors();
 
@@ -395,8 +414,8 @@ class Tools_Page {
 	 */
 	public static function recreate_primary_key_html() {
 
-		$table_name       = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
-		$table_name_daily = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
+		$table_name       = Database::get_table( false );
+		$table_name_daily = Database::get_table( true );
 
 		$sql  = 'ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY; ';
 		$sql .= '<br />';
@@ -423,8 +442,8 @@ class Tools_Page {
 	public static function recreate_tables() {
 		global $wpdb;
 
-		$table_name            = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( false );
-		$table_name_daily      = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
+		$table_name            = Database::get_table( false );
+		$table_name_daily      = Database::get_table( true );
 		$table_name_temp       = $table_name . '_temp';
 		$table_name_daily_temp = $table_name_daily . '_temp';
 

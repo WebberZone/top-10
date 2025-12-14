@@ -14,7 +14,7 @@
  * Plugin Name: Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     4.1.1
+ * Version:     4.2.0-beta1
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -67,6 +67,15 @@ if ( ! defined( 'TOP_TEN_PLUGIN_URL' ) ) {
 }
 
 /**
+ * Holds the default thumbnail URL for Top 10.
+ *
+ * @since 4.2.0
+ */
+if ( ! defined( 'TOP_TEN_DEFAULT_THUMBNAIL_URL' ) ) {
+	define( 'TOP_TEN_DEFAULT_THUMBNAIL_URL', TOP_TEN_PLUGIN_URL . 'default.png' );
+}
+
+/**
  * Number of days of data to be saved in the daily tables.
  *
  * @since 3.0.0
@@ -86,7 +95,7 @@ global $tptn_db_version;
 $tptn_db_version = '6.0';
 
 // Load Freemius.
-require_once TOP_TEN_PLUGIN_DIR . 'includes/load-freemius.php';
+require_once TOP_TEN_PLUGIN_DIR . 'load-freemius.php';
 
 // Load the autoloader.
 require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';

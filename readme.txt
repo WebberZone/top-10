@@ -3,8 +3,8 @@ Tags: popular posts, top 10, counter, statistics, tracker
 Contributors: webberzone, ajay
 Donate link: https://ajaydsouza.com/donate/
 Stable tag: 4.1.1
-Requires at least: 6.3
-Tested up to: 6.8
+Requires at least: 6.6
+Tested up to: 6.9
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -51,6 +51,7 @@ Top 10 also has powerful API and is fully extendable with WordPress actions and 
   - **Admin Bar Integration**: New admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear the cache quickly.
   - **Dashboard Access Control**: Control which user roles can view the Top 10 dashboard.
   - **Display Settings**: Choose which post type screens display admin columns.
+  - **Mini "Top 10 Views Overview" widget**: Compact views-over-time chart shown on the WordPress Dashboard.
 
 * **Custom Display Options**
   - **Taxonomy-Specific Displays**: Use the `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms.
@@ -153,99 +154,28 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 = 4.2.0 =
 
+* Features:
+	* Added new Settings Wizard to guide users through initial configuration. Existing users can also rerun the wizard to review their settings.
+	* Network-wide dashboard with aggregated statistics across all sites in a Multisite network.
+	* [Pro] High-traffic tracker mode with secure configuration to better support large sites, plus a status panel that validates the tracker configuration.
+	* [Pro] New feature to copy settings between sites in a Multisite network with source-to-destination site selection.
+	* [Pro] Added compact "Top 10 Views Overview" mini dashboard widget on the WordPress Dashboard.
+	* [Pro] Added setting to disable the Admin Bar menu. Users can now choose to hide the Top 10 admin bar menu from the General settings page.
+
+* Modifications:
+	* Updated Settings API to the latest version (2.7.1) for more consistent field handling.
+	* Refactored popular posts queries to move post exclusions from SQL `post__not_in` to PHP-side filtering with an over-fetch buffer, improving performance and WordPress VIP compatibility.
+	* Updated caching behaviour so that dynamic exclusions (for example `exclude_current_post`) are applied in PHP after cache retrieval, ensuring consistent results across shortcodes, widgets, blocks, feeds, and REST API.
+	* Improved Media Handler with recursion protection and more robust image processing.
+	* Refactored database operations to move all table-related functions from the `Activator` and `Helpers` classes to a dedicated `Database` class for better separation of concerns.
+	* Wrapped Import/Export and Tools page sections in postbox containers for a more consistent admin UI.
+	* Moved Freemius SDK to `/vendor/freemius` and updated to v2.13.0.
+
 * Bug fixes:
+	* Fixed an issue where `Top_Ten_Query` did not properly handle the `date_query` argument.
 	* Correctly redirect the Admin user when activating the plugin on a single site install of a Multisite network.
-
-= 4.1.1 =
-
-* Bug fixes:
-    * Fixed an issue where shortcode attributes were not properly sanitized.
-
-= 4.1.0 =
-
-Release post: [https://webberzone.com/announcements/top-10-v4-1-0/](https://webberzone.com/announcements/top-10-v4-1-0/)
-
-* Features:
-	* Import data from the WordPress Popular Posts plugin.
-	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
-    * [Pro] Enhanced Popular Posts RSS feeds with category and post type filtering, available via URL parameters and configurable via dedicated settings.
-	* Admin Dashboard:
-		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
-		* [Pro] Clicking on a column in the Popular Posts chart will display the most popular posts for the selected day.
-
-* Modifications:
-	* Updated ChartJS and replaced Moment adapter with Luxon.
-	* When any of the Top 10 tables is missing, an admin notice is displayed. The plugin also automatically recreates the missing tables.
-	* Introduced the `wz_top_ten()` function to return the Main instance of Top 10.
-
-* Bug fixes:
-	* Resolved issue where tables were not automatically created during plugin activation.
-	* Fixed issue where the popular posts feed always displayed the post's full content even when Excerpt was selected under Reading settings.
-	* Fixed "Not found" error when accessing the Daily Popular Posts feed.
-
-= 4.0.4 =
-
-* Modifications:
-	* Updated Freemius SDK to v2.11.0.
-
-* Bug fixes:
-	* Set correct type for `$settings_api` variable to `Settings_API`.
-
-= 4.0.3 =
-
-* Modifications:
-	* Support plugin dependencies tag.
-	* Updated Freemius SDK to v2.10.1.
-	* Optimized Numbered List format.
-
-= 4.0.2 =
-
-* Updated Freemius SDK to 2.9.0.
-* Fixed: Set `widget_id` if it is not set in the widget instance.
-
-= 4.0.1 =
-
-* Modifications:
-	* Renamed filter to: `top_ten_posts_post_types`.
-	* Updated filter `tptn_query_args_before` to be the queried object instead of just the post.
-
-* Bug fix:
-	* Fixed issue where admin columns setting didn't work.
-	* Fixed: meta_query was not set.
-
-= 4.0.0 =
-
-Release post: [https://webberzone.com/announcements/top-10-v4-0-0/](https://webberzone.com/announcements/top-10-v4-0-0/)
-
-* Features:
-	* Added a new REST API route (`counter`) to fetch the post count for individual posts.
-	* Introduced the Top 10 Post Count Block for displaying post counts.
-	* Added filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms in post queries. Pro users can enable this in settings.
-	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
-	* New filter `tptn_dashboard_setup` to disable Top 10 widgets being displayed on the admin dashboard.
-	* [Pro] New Top 10 Query Block for querying popular posts directly from the block or site editor.
-	* [Pro] Enhanced Top 10 Featured Image Block now supports multiple image sources.
-	* [Pro] Popular Posts block now includes:
-		* Buttons to save and clear default block settings.
-		* Auto-insertion of default and global settings attributes, with an option to disable this in the **Posts List** settings.
-	* [Pro] Added a new admin bar menu item to view daily, total, and overall post counts, access Top 10 admin pages, and clear the Top 10 cache.
-	* [Pro] Added `display_only_on_tax_ids` parameter to restrict popular posts display to specific taxonomy terms.
-	* [Pro] New Fast Tracker improves post view tracking speed. Select it from your settings page.
-	* [Pro] "Display columns on post types" setting to choose which post type screens display admin columns.
-	* [Pro] "Also show dashboard to" setting to select user roles that can view the dashboard screen.
-    * [Pro] New option added to the Edit Post meta box mapped to `include_cat_ids` to include popular posts from specific categories only.
-
-* Enhancements:
-	* Direct support for `WP_Query` if `top_ten_query` is used in query arguments.
-	* Optimised media handler to reduce queries.
-	* New filter: `tptn_shortcode_defaults` for default shortcode arguments.
-	* Media Handler improvements:
-		* Added `use_site_icon` and `style` parameters.
-		* `get_image_html()` now uses `wp_get_attachment_image()` with a valid attachment ID.
-		* Support for `decoding`, `loading`, and `fetchpriority` attributes.
-		* `get_attachment_id_from_url()` now strips size suffixes before locating the attachment ID.
-	* Updated top-10/popular-posts block to API version 3.
-	* Added `$more_link_text` parameter for `get_the_excerpt()`.
+	* Fixed an issue where `exclude_current_post` did not work correctly when caching was enabled.
+	* Fixed live-edit count feature in network statistics to properly handle blog_id and update the correct site's data.
 
 For previous changelog entries, please refer to the separate changelog.txt file or [Github Releases page](https://github.com/WebberZone/top-10/releases)
 

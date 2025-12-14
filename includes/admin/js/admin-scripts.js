@@ -22,6 +22,38 @@ jQuery(document).ready(function ($) {
 		});
 	}
 
+	// Function to generate fast config.
+	function generateFastConfig(button) {
+		var $button = $(button);
+		var originalText = $button.text();
+		$button.prop('disabled', true).text('Generating...');
+
+		$.post(top_ten_admin_data.ajax_url, {
+			action: 'tptn_generate_fast_config',
+			security: $button.data('nonce')
+		}, function (response) {
+			if (response.success) {
+				alert(response.data.message);
+				$button.data('nonce', response.data.nonce);
+			} else {
+				alert(response.data.message);
+				$button.data('nonce', response.data.nonce);
+			}
+		}).fail(function (jqXHR, textStatus) {
+			alert(top_ten_admin_data.request_fail_message + textStatus);
+		}).always(function () {
+			$button.prop('disabled', false).text(originalText);
+		});
+	}
+
+	// Handle fast config generation button click.
+	$('body').on('click', '.tptn-generate-fast-config', function () {
+		var confirmMessage = $(this).data('confirm');
+		if (confirm(confirmMessage)) {
+			generateFastConfig(this);
+		}
+	});
+
 
 	// Prompt the user when they leave the page without saving the form.
 	var formmodified = 0;
@@ -130,22 +162,30 @@ jQuery(document).ready(function ($) {
 		}
 		var $element = $(this);
 		var post_id = $element.attr('data-wp-post-id');
+		var blog_id = $element.attr('data-wp-blog-id');
 		var count = $element.attr('data-wp-count');
 		var value = $element.text();
 
 		$element.removeClass("live_edit_mode");
 
+		var ajaxData = {
+			action: 'tptn_edit_count_ajax',
+			post_id: post_id,
+			total_count: value,
+			total_count_original: count,
+			top_ten_admin_nonce: top_ten_admin.nonce
+		};
+
+		// Include blog_id if available (network mode).
+		if (blog_id) {
+			ajaxData.blog_id = blog_id;
+		}
+
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: ajaxurl,
-			data: {
-				action: 'tptn_edit_count_ajax',
-				post_id: post_id,
-				total_count: value,
-				total_count_original: count,
-				top_ten_admin_nonce: top_ten_admin.nonce
-			},
+			data: ajaxData,
 			success: function (response) {
 				if (response === false) {
 					$element.addClass("live_edit_mode_error");

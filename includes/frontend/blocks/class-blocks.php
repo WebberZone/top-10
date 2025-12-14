@@ -1,14 +1,13 @@
 <?php
 /**
- * Functions to register client-side assets (scripts and stylesheets) for the
- * Gutenberg block.
+ * Blocks class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend\Blocks
  */
 
 namespace WebberZone\Top_Ten\Frontend\Blocks;
 
-use WebberZone\Top_Ten\Admin\Settings\Settings;
+use WebberZone\Top_Ten\Admin\Settings;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Frontend\Styles_Handler;
 
@@ -17,14 +16,14 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Widget to display the overall count.
+ * Blocks class.
  *
  * @since 3.3.0
  */
 class Blocks {
 
 	/**
-	 * Register widget with WordPress.
+	 * Register blocks with WordPress.
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );

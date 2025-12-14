@@ -1,17 +1,14 @@
 <?php
 /**
- * Dashboard.
+ * Dashboard class.
  *
- * @link https://webberzone.com
- * @since 3.0.0
- *
- * @package Top_Ten
- * @subpackage Admin/Dashboard
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Admin\Settings\Settings_API;
+use WebberZone\Top_Ten\Database;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -40,6 +37,7 @@ class Dashboard {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 9 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_tptn_chart_data', array( $this, 'get_chart_data' ) );
 	}
@@ -152,7 +150,8 @@ class Dashboard {
 							} else {
 								$query_args['orderby'] = 'total_count';
 							}
-							$url = add_query_arg( $query_args, admin_url( 'admin.php?page=tptn_popular_posts' ) );
+							$base_url = is_network_admin() ? network_admin_url( 'admin.php?page=tptn_network_pop_posts_page' ) : admin_url( 'admin.php?page=tptn_popular_posts' );
+							$url      = add_query_arg( $query_args, $base_url );
 
 							?>
 
@@ -171,7 +170,7 @@ class Dashboard {
 			<div id="postbox-container-1" class="postbox-container">
 
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
-					<?php include_once 'settings/sidebar.php'; ?>
+					<?php include_once 'sidebar.php'; ?>
 				</div><!-- /#side-sortables -->
 
 			</div><!-- /#postbox-container-1 -->
@@ -215,6 +214,33 @@ class Dashboard {
 	}
 
 	/**
+	 * Network Admin Menu.
+	 *
+	 * @since 4.2.0
+	 */
+	public function network_admin_menu() {
+		$this->parent_id = add_menu_page(
+			esc_html__( 'Top 10 Dashboard', 'top-10' ),
+			esc_html__( 'Top 10', 'top-10' ),
+			'manage_network_options',
+			'tptn_dashboard',
+			array( $this, 'render_page' ),
+			'dashicons-editor-ol'
+		);
+
+		add_submenu_page(
+			'tptn_dashboard',
+			esc_html__( 'Top 10 Dashboard', 'top-10' ),
+			esc_html__( 'Dashboard', 'top-10' ),
+			'manage_network_options',
+			'tptn_dashboard',
+			array( $this, 'render_page' )
+		);
+
+		add_action( 'load-' . $this->parent_id, array( $this, 'help_tabs' ) );
+	}
+
+	/**
 	 * Enqueue scripts in admin area.
 	 *
 	 * @since 3.0.0
@@ -237,10 +263,64 @@ class Dashboard {
 					'security'     => wp_create_nonce( 'tptn-dashboard' ),
 					'datasetlabel' => __( 'Visits', 'top-10' ),
 					'charttitle'   => __( 'Daily Visits', 'top-10' ),
+					'network'      => is_network_admin() ? 1 : 0,
 				)
 			);
 			wp_enqueue_style( 'top-ten-admin-css' );
 		}
+	}
+
+	/**
+	 * Fetch chart data for visits over time.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $from_date Start date in Y-m-d format.
+	 * @param string $to_date   End date in Y-m-d format.
+	 * @param bool   $network   Whether to fetch network-wide data.
+	 * @return array Chart data with date and visits.
+	 */
+	public static function fetch_visits_by_date( $from_date, $to_date, $network = false ) {
+		global $wpdb;
+
+		if ( $network ) {
+			$sql = $wpdb->prepare(
+				" SELECT SUM(cntaccess) AS visits, DATE(dp_date) as date
+				FROM {$wpdb->base_prefix}top_ten_daily
+				WHERE DATE(dp_date) >= DATE(%s)
+				AND DATE(dp_date) <= DATE(%s)
+				GROUP BY date
+				ORDER BY date ASC
+				",
+				$from_date,
+				$to_date
+			);
+		} else {
+			$blog_id = get_current_blog_id();
+
+			$sql = $wpdb->prepare(
+				" SELECT SUM(cntaccess) AS visits, DATE(dp_date) as date
+				FROM {$wpdb->base_prefix}top_ten_daily
+				WHERE DATE(dp_date) >= DATE(%s)
+				AND DATE(dp_date) <= DATE(%s)
+				AND blog_id = %d
+				GROUP BY date
+				ORDER BY date ASC
+				",
+				$from_date,
+				$to_date,
+				$blog_id
+			);
+		}
+
+		$result = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+
+		$data = array();
+		foreach ( $result as $row ) {
+			$data[] = $row;
+		}
+
+		return $data;
 	}
 
 	/**
@@ -249,16 +329,12 @@ class Dashboard {
 	 * @since 3.0.0
 	 */
 	public function get_chart_data() {
-		global $wpdb;
-
 		$roles = wp_parse_list( \tptn_get_option( 'show_dashboard_to_roles' ) );
 
 		if ( ! current_user_can( Settings_API::get_capability_for_menu( $roles ) ) ) {
 			wp_die();
 		}
 		check_ajax_referer( 'tptn-dashboard', 'security' );
-
-		$blog_id = get_current_blog_id();
 
 		// Add date selector.
 		$to_date   = isset( $_REQUEST['to_date'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['to_date'] ) ) : current_time( 'd M Y' );
@@ -267,26 +343,9 @@ class Dashboard {
 		$post_date_from = gmdate( 'Y-m-d', strtotime( $from_date ) );
 		$post_date_to   = gmdate( 'Y-m-d', strtotime( $to_date ) );
 
-		$sql = $wpdb->prepare(
-			" SELECT SUM(cntaccess) AS visits, DATE(dp_date) as date
-			FROM {$wpdb->base_prefix}top_ten_daily
-			WHERE DATE(dp_date) >= DATE(%s)
-			AND DATE(dp_date) <= DATE(%s)
-			AND blog_id = %d
-			GROUP BY date
-			ORDER BY date ASC
-			",
-			$post_date_from,
-			$post_date_to,
-			$blog_id
-		);
+		$network_request = is_multisite() && isset( $_REQUEST['network'] ) && 1 === (int) $_REQUEST['network'];
 
-		$result = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-
-		$data = array();
-		foreach ( $result as $row ) {
-			$data[] = $row;
-		}
+		$data = self::fetch_visits_by_date( $post_date_from, $post_date_to, $network_request );
 
 		echo wp_json_encode( $data );
 		wp_die();
@@ -374,21 +433,77 @@ class Dashboard {
 		$results = $this->get_popular_posts( $args );
 
 		ob_start();
+		$explicit_network = isset( $args['network'] ) ? (bool) $args['network'] : null;
+		$is_network       = ( null !== $explicit_network ) ? $explicit_network : ( is_multisite() && is_network_admin() );
 		if ( $results ) :
 			?>
 
 			<table class="widefat striped">
+				<thead>
+				<tr>
+					<th><?php esc_html_e( 'Post', 'top-10' ); ?></th>
+					<?php if ( $is_network ) : ?>
+						<th><?php esc_html_e( 'Site', 'top-10' ); ?></th>
+					<?php endif; ?>
+					<th><?php esc_html_e( 'Visits', 'top-10' ); ?></th>
+				</tr>
+				</thead>
+				<tbody>
 			<?php
+			$total_visits = 0;
 			foreach ( $results as $result ) :
-				$visits = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $result->visits );
-				$result = get_post( $result->ID );
+				$visits_int    = (int) $result['visits'];
+				$total_visits += $visits_int;
+				$visits        = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits_int );
+				if ( $is_network && isset( $result['blog_id'] ) ) {
+					$post      = get_blog_post( (int) $result['blog_id'], (int) $result['ID'] );
+					$permalink = is_multisite() ? get_blog_permalink( (int) $result['blog_id'], (int) $result['ID'] ) : get_permalink( (int) $result['ID'] );
+				} else {
+					$post      = get_post( (int) $result['ID'] );
+					$permalink = get_permalink( (int) $result['ID'] );
+				}
+				if ( ! $post ) {
+					continue;
+				}
 				?>
 				<tr>
-					<td><a href="<?php echo esc_url( get_permalink( $result ) ); ?>" target="_blank"><?php echo esc_html( get_the_title( $result ) ); ?></td>
+					<td><a href="<?php echo esc_url( $permalink ); ?>" target="_blank"><?php echo esc_html( get_the_title( $post ) ); ?></a></td>
+					<?php if ( $is_network && isset( $result['blog_id'] ) ) : ?>
+						<td>
+							<?php
+							$blog_details = get_blog_details( (int) $result['blog_id'] );
+							if ( $blog_details ) {
+								$site_url = add_query_arg(
+									array(
+										'page' => 'tptn_popular_posts',
+									),
+									get_admin_url( (int) $result['blog_id'], 'admin.php' )
+								);
+								?>
+								<a href="<?php echo esc_url( $site_url ); ?>" target="_blank"><?php echo esc_html( $blog_details->blogname ); ?></a>
+								<?php
+							} else {
+								echo esc_html( sprintf( __( 'Blog ID: %d', 'top-10' ), (int) $result['blog_id'] ) );
+							}
+							?>
+						</td>
+					<?php endif; ?>
 					<td><?php echo esc_html( $visits ); ?></td>
 				</tr>
 
 			<?php endforeach; ?>
+				</tbody>
+				<?php
+				$colspan                = $is_network ? 2 : 1;
+				$total_visits_formatted = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $total_visits );
+				$label                  = $is_network ? __( 'Total network visits for this period', 'top-10' ) : __( 'Total visits for this period', 'top-10' );
+				?>
+				<tfoot>
+				<tr>
+					<th colspan="<?php echo esc_attr( (string) $colspan ); ?>" style="text-align:right;"><?php echo esc_html( $label ); ?></th>
+					<th><?php echo esc_html( $total_visits_formatted ); ?></th>
+				</tr>
+				</tfoot>
 			</table>
 
 		<?php else : ?>
@@ -441,51 +556,84 @@ class Dashboard {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
-		$table_name = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( $args['daily'] );
+		$explicit_network = isset( $args['network'] ) ? (bool) $args['network'] : null;
+		$is_network       = ( null !== $explicit_network ) ? $explicit_network : ( is_multisite() && is_network_admin() );
+		$table_name       = Database::get_table( $args['daily'] );
 
-		// Fields to return.
-		$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";
-		$fields[] = "{$wpdb->posts}.ID";
+		if ( $is_network ) {
+			// Network-wide: aggregate across all blogs.
+			$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";
+			$fields[] = "{$table_name}.postnumber as ID";
+			$fields[] = "{$table_name}.blog_id as blog_id";
 
-		$fields = implode( ', ', $fields );
+			$fields = implode( ', ', $fields );
 
-		// Create the JOIN clause.
-		$join = " INNER JOIN {$wpdb->posts} ON {$table_name}.postnumber={$wpdb->posts}.ID ";
+			$where = ' 1=1 ';
 
-		// Create the base WHERE clause.
-		$where  = $wpdb->prepare( " AND {$table_name}.blog_id = %d ", $args['blog_id'] ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
-		$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
+			if ( isset( $args['from_date'] ) && ! empty( $args['from_date'] ) && $args['daily'] ) {
+				$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
+				$where    .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) >= DATE(%s) ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
 
-		if ( isset( $args['from_date'] ) ) {
-			$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
-			$where    .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) >= DATE(%s) ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( isset( $args['to_date'] ) && ! empty( $args['to_date'] ) && $args['daily'] ) {
+				$to_date = gmdate( 'Y-m-d', strtotime( $args['to_date'] ) );
+				$where  .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) <= DATE(%s) ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+
+			$groupby = ' ';
+			$groupby = " GROUP BY {$table_name}.postnumber, {$table_name}.blog_id ";
+
+			$orderby = ' visits DESC ';
+			$orderby = " ORDER BY {$orderby} ";
+
+			$limits = $wpdb->prepare( ' LIMIT %d, %d ', $args['offset'], $args['numberposts'] );
+
+			$sql = "SELECT $fields FROM {$table_name} WHERE $where $groupby $orderby $limits";
+		} else {
+			// Single site: existing behaviour filtered by current blog.
+			$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";
+			$fields[] = "{$wpdb->posts}.ID";
+
+			$fields = implode( ', ', $fields );
+
+			// Create the JOIN clause.
+			$join = " INNER JOIN {$wpdb->posts} ON {$table_name}.postnumber={$wpdb->posts}.ID ";
+
+			// Create the base WHERE clause.
+			$where  = $wpdb->prepare( " AND {$table_name}.blog_id = %d ", $args['blog_id'] ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
+			$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
+
+			if ( isset( $args['from_date'] ) && ! empty( $args['from_date'] ) ) {
+				$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
+				$where    .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) >= DATE(%s) ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+
+			if ( isset( $args['to_date'] ) && ! empty( $args['to_date'] ) ) {
+				$to_date = gmdate( 'Y-m-d', strtotime( $args['to_date'] ) );
+				$where  .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) <= DATE(%s) ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+
+			// Create the base GROUP BY clause.
+			if ( $args['daily'] ) {
+				$groupby = " {$wpdb->posts}.ID";
+			}
+
+			// Create the base ORDER BY clause.
+			$orderby = ' visits DESC ';
+			$orderby = " ORDER BY {$orderby} ";
+
+			// Create the base LIMITS clause.
+			$limits = $wpdb->prepare( ' LIMIT %d, %d ', $args['offset'], $args['numberposts'] );
+
+			if ( ! empty( $groupby ) ) {
+				$groupby = " GROUP BY {$groupby} ";
+			}
+
+			$sql = "SELECT DISTINCT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 		}
 
-		if ( isset( $args['to_date'] ) ) {
-			$to_date = gmdate( 'Y-m-d', strtotime( $args['to_date'] ) );
-			$where  .= $wpdb->prepare( " AND DATE({$table_name}.dp_date) <= DATE(%s) ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-
-		// Create the base GROUP BY clause.
-		if ( $args['daily'] ) {
-			$groupby = " {$wpdb->posts}.ID";
-		}
-
-		// Create the base ORDER BY clause.
-		$orderby = ' visits DESC ';
-		$orderby = " ORDER BY {$orderby} ";
-
-		// Create the base LIMITS clause.
-		$limits = $wpdb->prepare( ' LIMIT %d, %d ', $args['offset'], $args['numberposts'] );
-
-		if ( ! empty( $groupby ) ) {
-			$groupby = " GROUP BY {$groupby} ";
-		}
-
-		$sql = "SELECT DISTINCT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
-
-		$result = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$result = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 		return $result;
 	}

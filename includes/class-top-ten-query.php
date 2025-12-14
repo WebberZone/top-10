@@ -1,9 +1,8 @@
 <?php
 /**
- * Query API: Top_Ten_Query class
+ * Top Ten Query wrapper.
  *
- * @package Top_Ten
- * @since 3.0.0
+ * @package WebberZone\Top_Ten
  */
 
 use WebberZone\Top_Ten\Top_Ten_Core_Query;

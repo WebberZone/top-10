@@ -1,11 +1,14 @@
 <?php
 /**
- * Top 10 Display statistics table.
+ * Statistics Table class.
  *
- * @package   Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
+
+use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -111,7 +114,7 @@ class Statistics_Table extends \WP_List_Table {
 			SELECT * FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			'WHERE DATE(ttd.dp_date) >= DATE(%s) AND DATE(ttd.dp_date) <= DATE(%s)
 			) AS ttd
-			ON ttt.postnumber=ttd.postnumber
+			ON ttt.postnumber=ttd.postnumber AND ttt.blog_id=ttd.blog_id
 			',
 			$from_date,
 			$to_date
@@ -400,9 +403,10 @@ class Statistics_Table extends \WP_List_Table {
 	 */
 	public function column_total_count( $item ) {
 		return sprintf(
-			'<div contentEditable="true" class="live_edit" id="total_count_%1$s" data-wp-post-id="%1$s" data-wp-count="%2$s">%3$s</div>',
+			'<div contentEditable="true" class="live_edit" id="total_count_%1$s" data-wp-post-id="%1$s" data-wp-count="%2$s"%3$s>%4$s</div>',
 			$item['ID'],
 			$item['total_count'],
+			$this->network_wide ? ' data-wp-blog-id="' . esc_attr( $item['blog_id'] ) . '"' : '',
 			\WebberZone\Top_Ten\Util\Helpers::number_format_i18n( absint( $item['total_count'] ) )
 		);
 	}

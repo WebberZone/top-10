@@ -1,15 +1,13 @@
 <?php
 /**
- * Manage columns on All Posts and All pages screens.
+ * Columns class.
  *
- * @link https://webberzone.com
- * @since 3.3.0
- *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Util\Helpers;
 
@@ -189,7 +187,7 @@ class Columns {
 		}
 
 		$is_daily   = ( 'tptn_daily' === $orderby );
-		$table_name = Helpers::get_tptn_table( $is_daily );
+		$table_name = Database::get_table( $is_daily );
 
 		$clauses['join'] .= " LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID = {$table_name}.postnumber";
 
@@ -202,7 +200,7 @@ class Columns {
 			$clauses['orderby'] = "{$table_name}.cntaccess";
 		}
 
-		$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
+		$clauses['orderby'] .= ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
 
 		return apply_filters( 'tptn_posts_clauses', $clauses, $wp_query );
 	}

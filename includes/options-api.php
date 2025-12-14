@@ -1,9 +1,6 @@
 <?php
 /**
- * Top 10 Options API.
- *
- * @link  https://webberzone.com
- * @since 3.3.0
+ * Options API functions.
  *
  * @package WebberZone\Top_Ten
  */
@@ -176,17 +173,17 @@ function tptn_settings_defaults() {
 	$options = array();
 
 	// Populate some default values.
-	foreach ( \WebberZone\Top_Ten\Admin\Settings\Settings::get_registered_settings() as $tab => $settings ) {
+	foreach ( \WebberZone\Top_Ten\Admin\Settings::get_registered_settings() as $tab => $settings ) {
 		foreach ( $settings as $option ) {
 			// When checkbox is set to true, set this to 1.
-			if ( 'checkbox' === $option['type'] && ! empty( $option['options'] ) ) {
+			if ( 'checkbox' === $option['type'] && ! empty( $option['default'] ) ) {
 				$options[ $option['id'] ] = 1;
 			} else {
 				$options[ $option['id'] ] = 0;
 			}
 			// If an option is set.
 			if ( in_array( $option['type'], array( 'textarea', 'css', 'html', 'text', 'url', 'csv', 'color', 'numbercsv', 'postids', 'posttypes', 'number', 'wysiwyg', 'file', 'password' ), true ) && isset( $option['options'] ) ) {
-				$options[ $option['id'] ] = $option['options'];
+				$options[ $option['id'] ] = $option['default'];
 			}
 			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select', 'radiodesc', 'thumbsizes' ), true ) && isset( $option['default'] ) ) {
 				$options[ $option['id'] ] = $option['default'];

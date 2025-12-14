@@ -1,8 +1,8 @@
 <?php
 /**
- * This class adds REST routes to update the count and return the list of popular posts.
+ * REST API class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend
  */
 
 namespace WebberZone\Top_Ten\Frontend;
@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Query API: Top_Ten_Query class.
+ * REST API class.
  *
  * @since 3.0.0
  */

@@ -1,13 +1,13 @@
 <?php
 /**
- * Query API: Top_Ten_Core_Query class
+ * Core Query class.
  *
- * @package Top_Ten
- * @since 4.0.0
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Frontend\Display;
 use WebberZone\Top_Ten\Util\Helpers;
 
@@ -190,7 +190,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$this->input_query_args = $args;
 		$this->is_top_ten_query = isset( $this->input_query_args['is_top_ten_query'] ) ? $this->input_query_args['is_top_ten_query'] : false;
 
-		$this->table_name = Helpers::get_tptn_table( $args['daily'] );
+		$this->table_name = Database::get_table( $args['daily'] );
 		$this->is_daily   = $args['daily'];
 
 		/**
@@ -213,9 +213,32 @@ class Top_Ten_Core_Query extends \WP_Query {
 			}
 		}
 
-		// Set the number of posts to be retrieved.
+		// Set the number of posts to be retrieved with over-fetch buffer for PHP exclusions.
+		$requested_limit = (int) $args['limit'];
 		if ( empty( $args['posts_per_page'] ) ) {
-			$args['posts_per_page'] = ( $args['strict_limit'] ) ? (int) $args['limit'] : ( (int) $args['limit'] * 3 );
+			if ( $args['strict_limit'] ) {
+				// Calculate buffer size: min(limit * 1.5, limit + 20) capped at reasonable max.
+				$buffer_limit = min( (int) ( $requested_limit * 1.5 ), $requested_limit + 20 );
+				$buffer_limit = min( $buffer_limit, 100 ); // Cap at 100 to prevent over-fetching.
+
+				/**
+				 * Filter the query buffer limit for PHP exclusions.
+				 *
+				 * Allows developers to adjust the buffer size when many posts might be excluded
+				 * by PHP-side filtering to ensure enough posts are returned after exclusions.
+				 *
+				 * @since 4.2.0
+				 *
+				 * @param int   $buffer_limit     Buffer limit for posts_per_page.
+				 * @param int   $requested_limit  Original requested limit.
+				 * @param array $args             Query arguments.
+				 */
+				$buffer_limit = apply_filters( 'tptn_query_buffer_limit', $buffer_limit, $requested_limit, $args );
+
+				$args['posts_per_page'] = $buffer_limit;
+			} else {
+				$args['posts_per_page'] = $requested_limit * 3;
+			}
 		}
 
 		if ( empty( $args['post_type'] ) ) {
@@ -328,13 +351,19 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$args['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 
 		// Set date_query.
-		$date_query = array(
-			array(
-				'after'     => $args['how_old'] ? Helpers::get_from_date( null, $args['how_old'] + 1, 0 ) : '',
-				'before'    => current_time( 'mysql' ),
-				'inclusive' => true,
-			),
-		);
+		if ( ! empty( $args['date_query'] ) && is_array( $args['date_query'] ) ) {
+			// If date_query is already provided, use it as-is.
+			$date_query = $args['date_query'];
+		} else {
+			// Create date_query from how_old parameter.
+			$date_query = array(
+				array(
+					'after'     => $args['how_old'] ? Helpers::get_from_date( null, $args['how_old'] + 1, 0 ) : '',
+					'before'    => current_time( 'mysql' ),
+					'inclusive' => true,
+				),
+			);
+		}
 
 		/**
 		 * Filter the date_query passed to \WP_Query.
@@ -386,9 +415,6 @@ class Top_Ten_Core_Query extends \WP_Query {
 		// Set post_status.
 		$args['post_status'] = empty( $args['post_status'] ) ? array( 'publish', 'inherit' ) : $args['post_status'];
 
-		// Set post__not_in for WP_Query using exclude_post_ids.
-		$args['post__not_in'] = $this->exclude_post_ids( $args );
-
 		// Unset what we don't need.
 		unset( $args['title'] );
 		unset( $args['title_daily'] );
@@ -437,7 +463,6 @@ class Top_Ten_Core_Query extends \WP_Query {
 				'tax_query',
 				'meta_query',
 				'post_type',
-				'post__not_in',
 				'post_status',
 				'posts_per_page',
 				'author',
@@ -916,66 +941,6 @@ class Top_Ten_Core_Query extends \WP_Query {
 		remove_filter( 'the_posts', array( $this, 'the_posts' ) );
 
 		return $posts;
-	}
-
-	/**
-	 * Exclude Post IDs. Allows other plugins/functions to hook onto this and extend the list.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param array $args Array of arguments for CRP_Query.
-	 * @return array Array of post IDs to exclude.
-	 */
-	public function exclude_post_ids( $args ) {
-		global $wpdb;
-
-		$exclude_post_ids = empty( $args['exclude_post_ids'] ) ? array() : wp_parse_id_list( $args['exclude_post_ids'] );
-
-		// Prepare the query to find all posts with 'exclude_this_post' set in the meta.
-		$post_metas = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$wpdb->prepare(
-				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s",
-				'tptn_post_meta'
-			),
-			ARRAY_A
-		);
-
-		foreach ( $post_metas as $post_meta ) {
-			$meta_value = maybe_unserialize( $post_meta['meta_value'] );
-
-			if ( $meta_value['exclude_this_post'] ) {
-				$exclude_post_ids[] = (int) $post_meta['post_id'];
-			}
-		}
-
-		// Exclude page_on_front and page_for_posts.
-		if ( 'page' === get_option( 'show_on_front' ) && tptn_get_option( 'exclude_front' ) ) {
-			$page_on_front  = get_option( 'page_on_front' );
-			$page_for_posts = get_option( 'page_for_posts' );
-			if ( $page_on_front > 0 ) {
-				$exclude_post_ids[] = $page_on_front;
-			}
-			if ( $page_for_posts > 0 ) {
-				$exclude_post_ids[] = $page_for_posts;
-			}
-		}
-
-		if ( ! empty( $args['exclude_current_post'] ) ) {
-			$exclude_post_ids[] = (int) get_the_ID();
-		}
-
-		/**
-		 * Filter exclude post IDs array.
-		 *
-		 * @since 2.2.0
-		 * @since 3.0.0 Added $args
-		 *
-		 * @param array   $exclude_post_ids Array of post IDs.
-		 * @param array   $args             Arguments array.
-		 */
-		$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids, $args );
-
-		return $exclude_post_ids;
 	}
 
 	/**
