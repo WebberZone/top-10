@@ -161,6 +161,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 	* [Pro] New feature to copy settings between sites in a Multisite network with source-to-destination site selection.
 	* [Pro] Added compact "Top 10 Views Overview" mini dashboard widget on the WordPress Dashboard.
 	* [Pro] Added setting to disable the Admin Bar menu. Users can now choose to hide the Top 10 admin bar menu from the General settings page.
+	* [Pro] New setting in the Maintenance tab to easily override the number of days for data retention (default is 180 days defined by `TOP_TEN_STORE_DATA`).
 
 * Improvements:
 	* Updated Settings API to the latest version (2.7.1) for more consistent field handling.
