@@ -154,7 +154,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 
 = 4.2.0 =
 
-* Features:
+* New:
 	* Added new Settings Wizard to guide users through initial configuration. Existing users can also rerun the wizard to review their settings.
 	* Network-wide dashboard with aggregated statistics across all sites in a Multisite network.
 	* [Pro] High-traffic tracker mode with secure configuration to better support large sites, plus a status panel that validates the tracker configuration.
@@ -162,17 +162,20 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 	* [Pro] Added compact "Top 10 Views Overview" mini dashboard widget on the WordPress Dashboard.
 	* [Pro] Added setting to disable the Admin Bar menu. Users can now choose to hide the Top 10 admin bar menu from the General settings page.
 
-* Modifications:
+* Improvements:
 	* Updated Settings API to the latest version (2.7.1) for more consistent field handling.
-	* Refactored popular posts queries to move post exclusions from SQL `post__not_in` to PHP-side filtering with an over-fetch buffer, improving performance and WordPress VIP compatibility.
-	* Updated caching behaviour so that dynamic exclusions (for example `exclude_current_post`) are applied in PHP after cache retrieval, ensuring consistent results across shortcodes, widgets, blocks, feeds, and REST API.
 	* Improved Media Handler with recursion protection and more robust image processing.
-	* Refactored database operations to move all table-related functions from the `Activator` and `Helpers` classes to a dedicated `Database` class for better separation of concerns.
 	* Improved Tools Page statistics display and caching.
 	* Wrapped Import/Export and Tools page sections in postbox containers for a more consistent admin UI.
+	* Deprecated Other tools from the Tools page.
+
+* Developer / Internal:
+	* Refactored popular posts queries to move post exclusions from SQL `post__not_in` to PHP-side filtering with an over-fetch buffer, improving performance and WordPress VIP compatibility.
+	* Updated caching behaviour so that dynamic exclusions (for example `exclude_current_post`) are applied in PHP after cache retrieval, ensuring consistent results across shortcodes, widgets, blocks, feeds, and REST API.
+	* Refactored database operations to move all table-related functions from the `Activator` and `Helpers` classes to a dedicated `Database` class for better separation of concerns.
 	* Moved Freemius SDK to `/vendor/freemius` and updated to v2.13.0.
 
-* Bug fixes:
+* Fixes:
 	* Fixed an issue where `Top_Ten_Query` did not properly handle the `date_query` argument.
 	* Correctly redirect the Admin user when activating the plugin on a single site install of a Multisite network.
 	* Fixed an issue where `exclude_current_post` did not work correctly when caching was enabled.
