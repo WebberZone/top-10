@@ -168,6 +168,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 	* Updated caching behaviour so that dynamic exclusions (for example `exclude_current_post`) are applied in PHP after cache retrieval, ensuring consistent results across shortcodes, widgets, blocks, feeds, and REST API.
 	* Improved Media Handler with recursion protection and more robust image processing.
 	* Refactored database operations to move all table-related functions from the `Activator` and `Helpers` classes to a dedicated `Database` class for better separation of concerns.
+	* Improved Tools Page statistics display and caching.
 	* Wrapped Import/Export and Tools page sections in postbox containers for a more consistent admin UI.
 	* Moved Freemius SDK to `/vendor/freemius` and updated to v2.13.0.
 
