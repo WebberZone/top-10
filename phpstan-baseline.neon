@@ -1,39 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/admin/class-admin.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 8
-			path: includes/admin/class-admin.php
-
-		-
-			message: "#^Variable \\$menu_page might not be defined\\.$#"
-			count: 1
-			path: includes/admin/settings/class-settings-api.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 4
-			path: includes/admin/settings/sidebar.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/autoloader.php
-
-		-
 			message: "#^Variable \\$wp in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: includes/class-tracker.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 1
-			path: includes/frontend/class-display.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
@@ -46,46 +16,6 @@ parameters:
 			path: includes/frontend/class-display.php
 
 		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/frontend/class-feed.php
-
-		-
 			message: "#^Variable \\$daily might not be defined\\.$#"
 			count: 1
 			path: includes/frontend/feed-rss2-popular-posts.php
-
-		-
-			message: "#^Method WebberZone\\\\Top_Ten\\\\Frontend\\\\Widgets\\\\Count_Widget\\:\\:form\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: includes/frontend/widgets/class-count-widget.php
-
-		-
-			message: "#^Method WebberZone\\\\Top_Ten\\\\Frontend\\\\Widgets\\\\Posts_Widget\\:\\:form\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: includes/frontend/widgets/class-posts-widget.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/load-freemius.php
-
-		-
-			message: "#^Function fs_dynamic_init not found\\.$#"
-			count: 1
-			path: includes/load-freemius.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 1
-			path: includes/pro/admin/class-pro-admin.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_DIR not found\\.$#"
-			count: 1
-			path: includes/pro/blocks/class-query.php
-
-		-
-			message: "#^Constant TOP_TEN_PLUGIN_URL not found\\.$#"
-			count: 1
-			path: includes/pro/blocks/class-query.php

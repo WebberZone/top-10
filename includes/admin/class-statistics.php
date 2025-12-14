@@ -1,9 +1,8 @@
 <?php
 /**
- * Top 10 Display statistics page.
+ * Statistics class.
  *
- * @package   Top_Ten
- * @subpackage  Top_Ten_Statistics
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;

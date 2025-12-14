@@ -1,8 +1,8 @@
 <?php
 /**
- * Functions to fetch and display the posts.
+ * Feed class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend
  */
 
 namespace WebberZone\Top_Ten\Frontend;

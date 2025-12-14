@@ -1,13 +1,13 @@
 <?php
 /**
- * Functions controlling the counter/tracker
+ * Counter class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten;
 
-use PHP_CodeSniffer\Util\Help;
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -253,56 +253,33 @@ class Counter {
 		// Sanitize the attributes.
 		$args = Helpers::sanitize_args( $args );
 
-		$table_name       = Helpers::get_tptn_table( false );
-		$table_name_daily = Helpers::get_tptn_table( true );
-
 		if ( empty( $blog_id ) ) {
 			$blog_id = get_current_blog_id();
 		}
 
 		if ( $id > 0 || 'overall' === $counter ) {
-			$resultscount = false;
+			$post_count = 0;
 			switch ( $counter ) {
 				case 'total':
-					$resultscount = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-						$wpdb->prepare(
-							"SELECT postnumber, cntaccess as visits FROM {$table_name} WHERE postnumber = %d AND blog_id = %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-							$id,
-							$blog_id
-						)
-					);
+					$post_count = Database::get_count( $id, $blog_id, false );
 					break;
 				case 'daily':
-					$from_date = ! empty( $args['from_date'] ) ? Helpers::get_from_date( $args['from_date'], 0, 0 ) : Helpers::get_from_date();
-					$to_date   = ! empty( $args['to_date'] ) ? Helpers::get_from_date( $args['to_date'], 0, 0 ) : null;
-
-					$base_query = "SELECT postnumber, SUM(cntaccess) as visits
-						FROM {$table_name_daily}
-						WHERE postnumber = %d
-						AND blog_id = %d
-						AND dp_date >= %s";
-
-					$query_params = array( $id, $blog_id, $from_date );
-
-					if ( $to_date ) {
-						$base_query    .= ' AND dp_date <= %s';
-						$query_params[] = $to_date;
+					$date_range = array();
+					if ( ! empty( $args['from_date'] ) ) {
+						$date_range['from_date'] = Helpers::get_from_date( $args['from_date'], 0, 0 );
 					}
-
-					$base_query .= ' GROUP BY postnumber';
-
-					$prepared_query = $wpdb->prepare( $base_query, $query_params ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-					$sql = $prepared_query;
-
-					$resultscount = $wpdb->get_row( $prepared_query );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+					if ( ! empty( $args['to_date'] ) ) {
+						$date_range['to_date'] = Helpers::get_from_date( $args['to_date'], 0, 0 );
+					}
+					if ( empty( $date_range ) ) {
+						$date_range['from_date'] = Helpers::get_from_date();
+					}
+					$post_count = Database::get_count( $id, $blog_id, true, $date_range );
 					break;
 				case 'overall':
-					$resultscount = $wpdb->get_row( 'SELECT SUM(cntaccess) as visits FROM ' . $table_name ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+					$post_count = Database::get_total_count( $blog_id, false );
 					break;
 			}
-
-			$post_count = $resultscount ? absint( $resultscount->visits ) : 0;
 			if ( $args['format_number'] ) {
 				$post_count = number_format_i18n( $post_count );
 			}
@@ -340,10 +317,6 @@ class Counter {
 	 * @return int|false The number of rows updated, or false on error.
 	 */
 	public static function delete_counts( $args = array() ) {
-		global $wpdb;
-
-		$where = '';
-
 		$defaults = array(
 			'daily'   => true,
 			'post_id' => '',
@@ -352,30 +325,26 @@ class Counter {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
-		$table_name = Helpers::get_tptn_table( $args['daily'] );
+		// Convert the arguments to match Database class format.
+		$db_args = array(
+			'daily'    => $args['daily'],
+			'post_ids' => wp_parse_id_list( $args['post_id'] ),
+			'to_date'  => $args['dp_date'],
+		);
 
-		// Parse which post_ids data should be deleted.
-		$post_ids = wp_parse_id_list( $args['post_id'] );
-		if ( ! empty( $post_ids ) ) {
-			$where .= " AND {$table_name}.postnumber IN ('" . join( "', '", $post_ids ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// Handle blog_id conversion.
+		if ( ! empty( $args['blog_id'] ) && is_array( $args['blog_id'] ) ) {
+			// If multiple blog IDs, we need to delete for each one.
+			$result = 0;
+			foreach ( $args['blog_id'] as $blog_id ) {
+				$db_args['blog_id'] = $blog_id;
+				$result            += Database::delete_counts( $db_args );
+			}
+			return $result;
+		} else {
+			$db_args['blog_id'] = is_array( $args['blog_id'] ) ? reset( $args['blog_id'] ) : $args['blog_id'];
+			return Database::delete_counts( $db_args );
 		}
-
-		// Parse which blog_ids data should be deleted.
-		$blog_ids = wp_parse_id_list( $args['blog_id'] );
-		if ( ! empty( $blog_ids ) ) {
-			$where .= " AND {$table_name}.blog_id IN ('" . join( "', '", $blog_ids ) . "') "; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-
-		// How old data should we delete?
-		if ( $args['daily'] && ! empty( $args['dp_date'] ) ) {
-			$from_date = Helpers::get_from_date( $args['dp_date'], 0, 0 );
-
-			$where .= $wpdb->prepare( " AND {$table_name}.dp_date <= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-
-		$result = $wpdb->query( "DELETE FROM {$table_name} WHERE 1=1 $where " ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-		return $result;
 	}
 
 
@@ -427,13 +396,34 @@ class Counter {
 		$results = 0;
 
 		$post_id              = absint( $_REQUEST['post_id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$blog_id              = get_current_blog_id();
+		$blog_id              = isset( $_REQUEST['blog_id'] ) ? absint( $_REQUEST['blog_id'] ) : get_current_blog_id(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$total_count          = absint( filter_var( $_REQUEST['total_count'], FILTER_SANITIZE_NUMBER_INT ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$total_count_original = absint( filter_var( $_REQUEST['total_count_original'], FILTER_SANITIZE_NUMBER_INT ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		// If our current user can't edit this post, bail.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_die();
+		// Check permissions.
+		if ( isset( $_REQUEST['blog_id'] ) && absint( $_REQUEST['blog_id'] ) !== get_current_blog_id() ) {
+			// In network mode (editing a different blog's data), require manage_network capability.
+			if ( ! current_user_can( 'manage_network' ) ) {
+				wp_die();
+			}
+		} else {
+			// Switch to the target blog to check edit permissions.
+			$target_blog_id = isset( $_REQUEST['blog_id'] ) ? absint( $_REQUEST['blog_id'] ) : get_current_blog_id();
+
+			if ( get_current_blog_id() !== $target_blog_id ) {
+				switch_to_blog( $target_blog_id );
+			}
+
+			$can_edit = current_user_can( 'edit_post', $post_id );
+
+			// Switch back if we switched.
+			if ( get_current_blog_id() !== $target_blog_id ) {
+				restore_current_blog();
+			}
+
+			if ( ! $can_edit ) {
+				wp_die();
+			}
 		}
 
 		if ( $total_count_original !== $total_count ) {
@@ -443,9 +433,8 @@ class Counter {
 		wp_die();
 	}
 
-
 	/**
-	 * Function to edit the count.
+	 * Edit post count.
 	 *
 	 * @since 3.3.0
 	 *
@@ -456,8 +445,6 @@ class Counter {
 	 */
 	public static function edit_count( $post_id, $blog_id, $total_count ) {
 
-		global $wpdb;
-
 		$post_id     = intval( $post_id );
 		$blog_id     = intval( $blog_id );
 		$total_count = intval( $total_count );
@@ -466,18 +453,6 @@ class Counter {
 			return false;
 		}
 
-		$table_name = Helpers::get_tptn_table( false );
-
-		$results = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->prepare(
-				"INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, %d, %d ) ON DUPLICATE KEY UPDATE cntaccess= %d ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$post_id,
-				$total_count,
-				$blog_id,
-				$total_count
-			)
-		);
-
-		return $results;
+		return Database::set_count( $post_id, $total_count, $blog_id, false );
 	}
 }

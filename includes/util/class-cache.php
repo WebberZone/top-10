@@ -1,11 +1,8 @@
 <?php
 /**
- * Top 10 Cache functions.
+ * Cache class.
  *
- * @since 3.3.0
- *
- * @package Top_Ten
- * @subpackage Util\Cache
+ * @package WebberZone\Top_Ten\Util
  */
 
 namespace WebberZone\Top_Ten\Util;
@@ -15,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Cache class.
  *
  * @since 3.3.0
  */

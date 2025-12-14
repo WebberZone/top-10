@@ -1,16 +1,13 @@
 <?php
 /**
- * Functions to import and export the Top 10 data.
+ * Import Export class.
  *
- * @link  https://webberzone.com
- * @since 2.7.0
- *
- * @package    Top 10
- * @subpackage Admin/Tools/Import_Export
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -90,7 +87,7 @@ class Import_Export {
 	public function network_admin_menu() {
 
 		$this->parent_id = add_submenu_page(
-			'tptn_network_pop_posts_page',
+			'tptn_dashboard',
 			esc_html__( 'Top 10 Import Export Tables', 'top-10' ),
 			esc_html__( 'Import/Export', 'top-10' ),
 			'manage_network_options',
@@ -134,96 +131,100 @@ class Import_Export {
 		<div id="post-body-content">
 
 			<?php if ( ! is_network_admin() ) : ?>
-			<form method="post">
+			<div class="postbox">
+				<h2><span><?php esc_html_e( 'Export/Import settings', 'top-10' ); ?></span></h2>
+				<div class="inside">
+					<form method="post">
+						<p class="description">
+							<?php esc_html_e( 'Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'top-10' ); ?>
+						</p>
+						<p><input type="hidden" name="tptn_action" value="export_settings" /></p>
+						<p>
+							<?php submit_button( esc_html__( 'Export Settings', 'top-10' ), 'primary', 'tptn_export_settings', false ); ?>
+						</p>
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Export/Import settings', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'top-10' ); ?>
-				</p>
-				<p><input type="hidden" name="tptn_action" value="export_settings" /></p>
-				<p>
-					<?php submit_button( esc_html__( 'Export Settings', 'top-10' ), 'primary', 'tptn_export_settings', false ); ?>
-				</p>
+						<?php wp_nonce_field( 'tptn_export_settings_nonce', 'tptn_export_settings_nonce' ); ?>
+					</form>
 
-				<?php wp_nonce_field( 'tptn_export_settings_nonce', 'tptn_export_settings_nonce' ); ?>
-			</form>
+					<form method="post" enctype="multipart/form-data">
+						<p class="description">
+							<?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on this/another site using the form above.', 'top-10' ); ?>
+						</p>
+						<p>
+							<input type="file" name="import_settings_file" />
+						</p>
+						<p>
+							<?php submit_button( esc_html__( 'Import Settings', 'top-10' ), 'primary', 'tptn_import_settings', false ); ?>
+						</p>
 
-			<form method="post" enctype="multipart/form-data">
-
-				<p class="description">
-					<?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on this/another site using the form above.', 'top-10' ); ?>
-				</p>
-				<p>
-					<input type="file" name="import_settings_file" />
-				</p>
-				<p>
-					<?php submit_button( esc_html__( 'Import Settings', 'top-10' ), 'primary', 'tptn_import_settings', false ); ?>
-				</p>
-
-				<input type="hidden" name="tptn_action" value="import_settings" />
-				<?php wp_nonce_field( 'tptn_import_settings_nonce', 'tptn_import_settings_nonce' ); ?>
-			</form>
+						<input type="hidden" name="tptn_action" value="import_settings" />
+						<?php wp_nonce_field( 'tptn_import_settings_nonce', 'tptn_import_settings_nonce' ); ?>
+					</form>
+				</div>
+			</div>
 			<?php endif; ?>
 
-			<hr />
+			<div class="postbox">
+				<h2><span><?php esc_html_e( 'Export tables', 'top-10' ); ?></span></h2>
+				<div class="inside">
+					<form method="post">
+						<p class="description">
+							<?php esc_html_e( 'Click the buttons below to export the overall and the daily tables. The file is downloaded as an CSV file which you should be able to edit in Excel or any other compatible software.', 'top-10' ); ?>
+							<?php esc_html_e( 'If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts.', 'top-10' ); ?>
+						</p>
+						<p>
+							<label><input type="checkbox" name="export_urls" id="export_urls" value="1" /> <?php esc_html_e( 'Include URLs in export', 'top-10' ); ?></label>
+							<input type="hidden" name="tptn_action" value="export_tables" />
+							<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
+						</p>
+						<p>
+							<?php submit_button( esc_html__( 'Export overall tables', 'top-10' ), 'primary', 'tptn_export_total', false ); ?>
+							<?php submit_button( esc_html__( 'Export daily tables', 'top-10' ), 'primary', 'tptn_export_daily', false ); ?>
+						</p>
 
-			<form method="post">
+						<?php wp_nonce_field( 'tptn_export_nonce', 'tptn_export_nonce' ); ?>
+					</form>
+				</div>
+			</div>
 
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Export tables', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'Click the buttons below to export the overall and the daily tables. The file is downloaded as an CSV file which you should be able to edit in Excel or any other compatible software.', 'top-10' ); ?>
-					<?php esc_html_e( 'If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts.', 'top-10' ); ?>
-				</p>
-				<p>
-					<label><input type="checkbox" name="export_urls" id="export_urls" value="1" /> <?php esc_html_e( 'Include URLs in export', 'top-10' ); ?></label>
-					<input type="hidden" name="tptn_action" value="export_tables" />
-					<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
-				</p>
-				<p>
-					<?php submit_button( esc_html__( 'Export overall tables', 'top-10' ), 'primary', 'tptn_export_total', false ); ?>
-					<?php submit_button( esc_html__( 'Export daily tables', 'top-10' ), 'primary', 'tptn_export_daily', false ); ?>
-				</p>
+			<div class="postbox">
+				<h2><span><?php esc_html_e( 'Import tables', 'top-10' ); ?></span></h2>
+				<div class="inside">
+					<form method="post" enctype="multipart/form-data">
+						<p class="description">
+							<?php esc_html_e( 'This action will replace the data in the table being import. Best practice would be to first export the data using the buttons above. Following this, update the file with the new data and then import it. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
+							<br />
+							<?php esc_html_e( 'Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H.', 'top-10' ); ?>
+						</p>
+						<p class="notice notice-warning">
+							<strong><?php esc_html_e( 'Backup your database before proceeding so you will be able to restore it in case anything goes wrong.', 'top-10' ); ?></strong>
+						</p>
+						<p>
+							<label><input type="checkbox" name="import_urls" id="import_urls" value="1" /> <?php esc_html_e( 'Use URLs instead of Post IDs in import', 'top-10' ); ?></label>
+							<input type="hidden" name="tptn_action" value="import_tables" />
+							<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
+						</p>
 
-				<?php wp_nonce_field( 'tptn_export_nonce', 'tptn_export_nonce' ); ?>
-			</form>
+						<table class="form-table">
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Import overall tables', 'top-10' ); ?></th>
+								<td><input type="file" name="overall_table_file" /><br />
+								<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Import daily tables', 'top-10' ); ?></th>
+								<td><input type="file" name="daily_table_file" /><br />
+								<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
+							</tr>
+						</table>
+						<p>
+							<?php submit_button( esc_html__( 'Import Tables', 'top-10' ), 'primary', 'tptn_import', false ); ?>
+						</p>
 
-			<hr />
-
-			<form method="post" enctype="multipart/form-data">
-
-				<h2 style="padding-left:0px"><?php esc_html_e( 'Import tables', 'top-10' ); ?></h2>
-				<p class="description">
-					<?php esc_html_e( 'This action will replace the data in the table being import. Best practice would be to first export the data using the buttons above. Following this, update the file with the new data and then import it. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
-					<br />
-					<?php esc_html_e( 'Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H.', 'top-10' ); ?>
-				</p>
-				<p class="notice notice-warning">
-					<strong><?php esc_html_e( 'Backup your database before proceeding so you will be able to restore it in case anything goes wrong.', 'top-10' ); ?></strong>
-				</p>
-				<p>
-					<label><input type="checkbox" name="import_urls" id="import_urls" value="1" /> <?php esc_html_e( 'Use URLs instead of Post IDs in import', 'top-10' ); ?></label>
-					<input type="hidden" name="tptn_action" value="import_tables" />
-					<input type="hidden" name="network_wide" value="<?php echo ( is_network_admin() ? 1 : 0 ); ?>" />
-				</p>
-
-				<table class="form-table">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Import overall tables', 'top-10' ); ?></th>
-						<td><input type="file" name="overall_table_file" /><br />
-						<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Import daily tables', 'top-10' ); ?></th>
-						<td><input type="file" name="daily_table_file" /><br />
-						<span class="description"><?php esc_html_e( 'CSV file', 'top-10' ); ?></span></td>
-					</tr>
-				</table>
-				<p>
-					<?php submit_button( esc_html__( 'Import Tables', 'top-10' ), 'primary', 'tptn_import', false ); ?>
-				</p>
-
-				<?php wp_nonce_field( 'tptn_import_nonce', 'tptn_import_nonce' ); ?>
-			</form>
+						<?php wp_nonce_field( 'tptn_import_nonce', 'tptn_import_nonce' ); ?>
+					</form>
+				</div>
+			</div>
 
 			<?php
 			/**
@@ -239,7 +240,7 @@ class Import_Export {
 		<div id="postbox-container-1" class="postbox-container">
 
 			<div id="side-sortables" class="meta-box-sortables ui-sortable">
-				<?php include_once 'settings/sidebar.php'; ?>
+				<?php include_once 'sidebar.php'; ?>
 			</div><!-- /#side-sortables -->
 
 		</div><!-- /#postbox-container-1 -->
@@ -298,7 +299,7 @@ class Import_Export {
 			$export_urls = 0;
 		}
 
-		$table_name = Helpers::get_tptn_table( $daily );
+		$table_name = Database::get_table( $daily );
 
 		$filename = array(
 			'top-ten',
@@ -327,12 +328,24 @@ class Import_Export {
 		$data_rows = array();
 		$url_list  = array();
 
-		$sql = 'SELECT * FROM ' . $table_name;
-		if ( ! $network_wide ) {
-			$sql .= $wpdb->prepare( ' WHERE blog_id=%d ', get_current_blog_id() );
-		}
+		global $wpdb;
 
-		$results = $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// Use the Database class to fetch data.
+		$results = array();
+		if ( $network_wide ) {
+			// For network-wide export, we need to get all blogs.
+			if ( is_multisite() ) {
+				$sites = get_sites( array( 'number' => 1000 ) );
+				foreach ( $sites as $site ) {
+					switch_to_blog( (int) $site->blog_id );
+					$blog_results = self::get_blog_results( $daily, (int) $site->blog_id );
+					$results      = array_merge( $results, $blog_results );
+					restore_current_blog();
+				}
+			}
+		} else {
+			$results = self::get_blog_results( $daily, get_current_blog_id() );
+		}
 
 		foreach ( $results as $result ) {
 			$row = array(
@@ -369,9 +382,9 @@ class Import_Export {
 		$fh = fopen( 'php://output', 'w' );
 		fprintf( $fh, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
 
-		fputcsv( $fh, $header_row );
+		fputcsv( $fh, $header_row, ',', '"', '\\' );
 		foreach ( $data_rows as $data_row ) {
-			fputcsv( $fh, $data_row );
+			fputcsv( $fh, $data_row, ',', '"', '\\' );
 		}
 		fclose( $fh ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
@@ -431,7 +444,7 @@ class Import_Export {
 			$reset_tables = 0;
 		}
 
-		$table_name = Helpers::get_tptn_table( $daily );
+		$table_name = Database::get_table( $daily );
 		$filename   = 'import_file';
 		if ( $daily ) {
 			$filename .= '_daily';
@@ -458,9 +471,9 @@ class Import_Export {
 		$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 
 		// Skip first line.
-		fgetcsv( $csv_file );
+		fgetcsv( $csv_file, 1000, ',', '"', '\\' );
 
-		while ( ( $line = fgetcsv( $csv_file, 1000, ',' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( ( $line = fgetcsv( $csv_file, 1000, ',', '"', '\\' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
 			if ( count( $line ) !== $column_count ) {
 				$file_import = 'fail';
@@ -511,14 +524,37 @@ class Import_Export {
 		if ( ! empty( $data ) ) {
 			if ( $reset_tables ) {
 				// Truncate the table before import.
-				Helpers::trunc_count( $daily, (bool) $network_wide );
+				if ( ! is_multisite() || (bool) $network_wide ) {
+					Database::truncate_table( Database::get_table( $daily ) );
+				} else {
+					\WebberZone\Top_Ten\Counter::delete_counts( array( 'daily' => $daily ) );
+				}
 			}
 
-			if ( $daily ) {
-				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $data ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
-			} else {
-				$result = $wpdb->query( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $data ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+			// Prepare data for bulk upsert.
+			$prepared_data = array();
+			foreach ( $data as $row ) {
+				$line = explode( ',', trim( $row, '()' ) );
+				$line = array_map( 'trim', $line );
+				$line = array_map( 'str_replace', array_fill( 0, count( $line ), "'" ), array_fill( 0, count( $line ), '' ), $line );
+
+				if ( $daily ) {
+					$prepared_data[] = array(
+						'postnumber' => (int) $line[0],
+						'cntaccess'  => (int) $line[1],
+						'dp_date'    => $line[2],
+						'blog_id'    => (int) $line[3],
+					);
+				} else {
+					$prepared_data[] = array(
+						'postnumber' => (int) $line[0],
+						'cntaccess'  => (int) $line[1],
+						'blog_id'    => (int) $line[2],
+					);
+				}
 			}
+
+			$result = Database::bulk_upsert( $prepared_data, $daily );
 		}
 
 		$file_import = $result ? 'success' : 'fail';
@@ -614,5 +650,22 @@ class Import_Export {
 			)
 		);
 		exit;
+	}
+
+	/**
+	 * Get results for a specific blog.
+	 *
+	 * @param bool $daily   Whether to get daily results.
+	 * @param int  $blog_id Blog ID.
+	 * @return array Results.
+	 */
+	private static function get_blog_results( $daily, $blog_id ) {
+		global $wpdb;
+
+		$table = Database::get_table( $daily );
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$sql = $wpdb->prepare( "SELECT * FROM {$table} WHERE blog_id = %d", $blog_id );
+
+		return $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 	}
 }

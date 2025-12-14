@@ -1,19 +1,17 @@
 <?php
+
 /**
  * Main plugin class.
  *
  * @package WebberZone\Top_Ten
  */
-
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Admin\Activator;
 use WebberZone\Top_Ten\Admin\Cron;
-
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
-
 /**
  * Main plugin class.
  *
@@ -129,7 +127,6 @@ final class Main {
 			self::$instance = new self();
 			self::$instance->init();
 		}
-
 		return self::$instance;
 	}
 
@@ -156,23 +153,14 @@ final class Main {
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
-
 		$this->hooks();
-
 		if ( ! function_exists( 'tptn_freemius' ) ) {
-			require_once __DIR__ . '/load-freemius.php';
+			require_once dirname( __DIR__ ) . '/load-freemius.php';
 		}
-
-		if ( tptn_freemius()->is__premium_only() ) {
-			if ( tptn_freemius()->can_use_premium_code() ) {
-				$this->pro = new Pro\Pro();
-			}
-		}
-
 		if ( is_admin() ) {
 			$this->admin = new Admin\Admin();
 			if ( is_multisite() ) {
-				$this->admin = new Admin\Network\Admin();
+				new Admin\Network\Admin();
 			}
 		}
 	}
@@ -187,8 +175,12 @@ final class Main {
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 		add_action( 'parse_query', array( $this, 'parse_query' ) );
-
-		add_action( 'activated_plugin', array( $this, 'activated_plugin' ), 10, 2 );
+		add_action(
+			'activated_plugin',
+			array( $this, 'activated_plugin' ),
+			10,
+			2
+		);
 		add_action( 'pre_current_active_plugins', array( $this, 'plugin_deactivated_notice' ) );
 	}
 
@@ -207,9 +199,10 @@ final class Main {
 	 * @since 3.3.0
 	 */
 	public function register_widgets() {
-		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Posts_Widget' );
-		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Count_Widget' );
+		register_widget( '\\WebberZone\\Top_Ten\\Frontend\\Widgets\\Posts_Widget' );
+		register_widget( '\\WebberZone\\Top_Ten\\Frontend\\Widgets\\Count_Widget' );
 	}
+
 	/**
 	 * Function to register our new routes from the controller.
 	 *
@@ -246,25 +239,20 @@ final class Main {
 		if ( ! in_array( $plugin, array( 'top-10/top-10.php', 'top-10-pro/top-10.php' ), true ) ) {
 			return;
 		}
-
 		Activator::activation_hook( $network_wide );
-
 		$plugin_to_deactivate  = 'top-10/top-10.php';
 		$deactivated_notice_id = '1';
-
 		// If we just activated the free version, deactivate the pro version.
 		if ( $plugin === $plugin_to_deactivate ) {
 			$plugin_to_deactivate  = 'top-10-pro/top-10.php';
 			$deactivated_notice_id = '2';
 		}
-
 		if ( is_multisite() && is_network_admin() ) {
 			$active_plugins = (array) get_site_option( 'active_sitewide_plugins', array() );
 			$active_plugins = array_keys( $active_plugins );
 		} else {
 			$active_plugins = (array) get_option( 'active_plugins', array() );
 		}
-
 		foreach ( $active_plugins as $plugin_basename ) {
 			if ( $plugin_to_deactivate === $plugin_basename ) {
 				set_transient( 'tptn_deactivated_notice_id', $deactivated_notice_id, 1 * HOUR_IN_SECONDS );
@@ -284,18 +272,19 @@ final class Main {
 		if ( ! in_array( $deactivated_notice_id, array( 1, 2 ), true ) ) {
 			return;
 		}
-
 		$message = __( "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10.", 'top-10' );
 		if ( 2 === $deactivated_notice_id ) {
 			$message = __( "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10 Pro.", 'top-10' );
 		}
-
 		?>
 			<div class="updated" style="border-left: 4px solid #ffba00;">
-				<p><?php echo esc_html( $message ); ?></p>
+				<p>
+				<?php
+				echo esc_html( $message );
+				?>
+		</p>
 			</div>
 			<?php
-
 			delete_transient( 'tptn_deactivated_notice_id' );
 	}
 }

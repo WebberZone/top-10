@@ -1,8 +1,8 @@
 <?php
 /**
- * Autoloads classes from the WebberZone\Snippetz namespace.
+ * Autoloader class.
  *
- * @package WebberZone\Snippetz
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten;

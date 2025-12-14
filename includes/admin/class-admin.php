@@ -2,15 +2,14 @@
 /**
  * Admin class.
  *
- * @link  https://webberzone.com
- * @since 3.3.0
- *
  * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Util\Cache;
+use WebberZone\Top_Ten\Admin\Settings_Wizard;
+use WebberZone\Top_Ten\Admin\Admin_Notices_API;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -41,6 +40,15 @@ class Admin {
 	 * @var object Settings API.
 	 */
 	public $settings;
+
+	/**
+	 * Settings Wizard.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var Settings_Wizard Settings Wizard instance.
+	 */
+	public $settings_wizard;
 
 	/**
 	 * Statistics table.
@@ -124,6 +132,15 @@ class Admin {
 	public $admin_notices;
 
 	/**
+	 * Admin notices API.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var Admin_Notices_API
+	 */
+	public $admin_notices_api;
+
+	/**
 	 * Prefix which is used for creating the unique filters and actions.
 	 *
 	 * @since 3.3.0
@@ -160,7 +177,8 @@ class Admin {
 
 		// Initialise admin classes.
 		$this->admin_dashboard   = new Dashboard();
-		$this->settings          = new Settings\Settings();
+		$this->settings          = new Settings();
+		$this->settings_wizard   = new Settings_Wizard();
 		$this->statistics        = new Statistics();
 		$this->activator         = new Activator();
 		$this->admin_columns     = new Columns();
@@ -169,6 +187,7 @@ class Admin {
 		$this->tools_page        = new Tools_Page();
 		$this->dashboard_widgets = new Dashboard_Widgets();
 		$this->cache             = new Cache();
+		$this->admin_notices_api = new Admin_Notices_API();
 		$this->admin_notices     = new Admin_Notices();
 	}
 
@@ -260,6 +279,6 @@ class Admin {
 	 * @since 3.3.0
 	 */
 	public static function display_admin_sidebar() {
-		require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/settings/sidebar.php';
+		require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/sidebar.php';
 	}
 }

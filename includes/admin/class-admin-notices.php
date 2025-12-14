@@ -1,11 +1,13 @@
 <?php
 /**
- * Controls admin notices.
+ * Admin Notices class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
+
+use WebberZone\Top_Ten\Database;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -37,12 +39,8 @@ class Admin_Notices {
 			return;
 		}
 
-		global $wpdb;
-
-		$table_name       = $wpdb->base_prefix . 'top_ten';
-		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
-
-		if ( ! Activator::is_table_installed( $table_name ) || ! Activator::is_table_installed( $table_name_daily ) ) {
+		// Use Database class directly.
+		if ( ! Database::are_tables_installed() ) {
 			?>
 			<div class="notice notice-warning">
 				<p>

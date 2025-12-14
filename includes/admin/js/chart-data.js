@@ -7,6 +7,7 @@ function updateChart() {
 			security: tptn_chart_data.security,
 			from_date: jQuery("#datepicker-from").val(),
 			to_date: jQuery("#datepicker-to").val(),
+			network: tptn_chart_data.network,
 		},
 		function (data) {
 			var date = [];
@@ -77,6 +78,7 @@ jQuery(document).ready(function ($) {
 			security: tptn_chart_data.security,
 			from_date: $("#datepicker-from").val(),
 			to_date: $("#datepicker-to").val(),
+			network: tptn_chart_data.network,
 		},
 		success: function (data) {
 			var date = [];
