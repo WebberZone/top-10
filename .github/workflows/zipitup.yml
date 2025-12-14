@@ -22,22 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Build project
-        run: |
-          mkdir build
-      - name: Create artifact
-        uses: montudor/action-zip@v1
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
         with:
-          args: zip -X -r build/top-10.zip . -x *.git* node_modules/\* .* "*/\.*" CODE_OF_CONDUCT.md CONTRIBUTING.md ISSUE_TEMPLATE.md PULL_REQUEST_TEMPLATE.md *.dist *.neon *.yml composer.* dev-helpers** build** wporg-assets** phpunit** vendor** package.json
+          php-version: '8.0'
+          coverage: none
+
+      - name: Create zip
+        run: composer run zip
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-            name: top-10
-            path: build/top-10.zip
+          name: ${{ github.event.repository.name }}
+          path: build/${{ github.event.repository.name }}.zip
       - name: Upload to release
         uses: JasonEtco/upload-to-release@master
         with:
-          args: build/top-10.zip application/zip
+          args: build/${{ github.event.repository.name }}.zip application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
