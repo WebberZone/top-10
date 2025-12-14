@@ -174,6 +174,7 @@ When you enabled the scheduled maintenance, Top 10 will create a cron job that w
 	* Updated caching behaviour so that dynamic exclusions (for example `exclude_current_post`) are applied in PHP after cache retrieval, ensuring consistent results across shortcodes, widgets, blocks, feeds, and REST API.
 	* Refactored database operations to move all table-related functions from the `Activator` and `Helpers` classes to a dedicated `Database` class for better separation of concerns.
 	* Moved Freemius SDK to `/vendor/freemius` and updated to v2.13.0.
+	* Improved the Overall count widget output: only renders the widget title markup when a title is set, and wraps the count in a container element for more consistent styling.
 
 * Fixes:
 	* Fixed an issue where `Top_Ten_Query` did not properly handle the `date_query` argument.
