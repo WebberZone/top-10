@@ -1,10 +1,10 @@
 <?php
-
 /**
  * Autoloads classes from the WebberZone\Top_Ten namespace.
  *
  * @package WebberZone\Top_Ten
  */
+
 namespace WebberZone\Top_Ten;
 
 if ( ! defined( 'ABSPATH' ) ) {
