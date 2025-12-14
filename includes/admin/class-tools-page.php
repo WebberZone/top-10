@@ -158,30 +158,6 @@ class Tools_Page {
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
 		}
 
-		/* Delete old settings */
-		if ( isset( $_POST['tptn_delete_old_settings'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			$deleted = delete_option( 'ald_tptn_settings' );
-			if ( $deleted ) {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key has been deleted', 'top-10' ), 'updated' );
-			} else {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Old settings key does not exist', 'top-10' ), 'error' );
-			}
-		}
-
-		/* Clean duplicates */
-		if ( isset( $_POST['tptn_clean_duplicates'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			self::clean_duplicates( true );
-			self::clean_duplicates( false );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Duplicate rows cleaned from the tables', 'top-10' ), 'updated' );
-		}
-
-		/* Merge blog IDs */
-		if ( isset( $_POST['tptn_merge_blogids'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			self::merge_blogids( true );
-			self::merge_blogids( false );
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Post counts across blog IDs 0 and 1 have been merged', 'top-10' ), 'updated' );
-		}
-
 		ob_start();
 		?>
 	<div class="wrap">
@@ -264,43 +240,19 @@ class Tools_Page {
 					</div>
 				</div>
 
-				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></span></h2>
-					<div class="inside">
-						<p class="description">
-							<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
-						</p>
-						<p>
-							<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
-						</p>
+				<?php if ( ! is_multisite() || is_network_admin() ) : ?>
+					<div class="postbox">
+						<h2><span><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></span></h2>
+						<div class="inside">
+							<p class="description">
+								<?php esc_html_e( 'Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed.', 'top-10' ); ?>
+							</p>
+							<p>
+								<button name="tptn_recreate_tables" type="submit" id="tptn_recreate_tables" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm('<?php esc_attr_e( 'Hit Cancel if you have not backed up your database', 'top-10' ); ?>')) return false;" class="button button-secondary"><?php esc_attr_e( 'Recreate Database Tables', 'top-10' ); ?></button>
+							</p>
+						</div>
 					</div>
-				</div>
-
-				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Other tools', 'top-10' ); ?></span></h2>
-					<div class="inside">
-						<p class="description">
-							<?php esc_html_e( 'From v2.5.x, Top 10 stores the settings in a new key in the database. This will delete the old settings for the current blog. It is recommended that you do this at the earliest after upgrade. However, you should do this only if you are comfortable with the new settings.', 'top-10' ); ?>
-						</p>
-						<p>
-							<button name="tptn_delete_old_settings" type="submit" id="tptn_delete_old_settings" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the settings before v2.5.x. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Delete old settings', 'top-10' ); ?></button>
-						</p>
-
-						<p class="description">
-							<?php esc_html_e( 'This will merge post counts for posts with table entries of 0 and 1', 'top-10' ); ?>
-						</p>
-						<p>
-							<button name="tptn_merge_blogids" type="submit" id="tptn_merge_blogids" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will merge post counts for blog IDs 0 and 1. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge blog ID 0 and 1 post counts', 'top-10' ); ?></button>
-						</p>
-
-						<p class="description">
-							<?php esc_html_e( 'In older versions, the plugin created entries with duplicate post IDs. Clicking the button below will merge these duplicate IDs', 'top-10' ); ?>
-						</p>
-						<p>
-							<button name="tptn_clean_duplicates" type="submit" id="tptn_clean_duplicates" class="button button-secondary" onclick="if (!confirm('<?php esc_attr_e( 'This will delete the duplicate entries in the tables. Proceed?', 'top-10' ); ?>')) return false;"><?php esc_attr_e( 'Merge duplicates across blog IDs', 'top-10' ); ?></button>
-						</p>
-					</div>
-				</div>
+				<?php endif; ?>
 
 				<?php wp_nonce_field( 'tptn-tools-settings' ); ?>
 			</form>
@@ -322,70 +274,6 @@ class Tools_Page {
 
 		<?php
 		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
-	 * Function to delete all duplicate rows in the posts table.
-	 *
-	 * @since   1.6.2
-	 *
-	 * @param   bool $daily  Daily flag.
-	 */
-	public static function clean_duplicates( $daily = false ) {
-		global $wpdb;
-
-		$table_name = Database::get_table( $daily );
-
-		$wpdb->query( 'CREATE TEMPORARY TABLE ' . $table_name . '_temp AS SELECT * FROM ' . $table_name . ' GROUP BY postnumber' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
-		$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( 'INSERT INTO ' . $table_name . ' SELECT * FROM ' . $table_name . '_temp' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-	}
-
-
-	/**
-	 * Function to merge counts with post numbers of blog ID 0 and 1 respectively.
-	 *
-	 * @since   2.0.4
-	 *
-	 * @param   bool $daily  Daily flag.
-	 */
-	public static function merge_blogids( $daily = false ) {
-		global $wpdb;
-
-		$table_name = Database::get_table( $daily );
-
-		if ( $daily ) {
-			$sql = "
-            INSERT INTO `$table_name` (postnumber, cntaccess, dp_date, blog_id) (
-                SELECT
-                    postnumber,
-                    SUM(cntaccess) as sumCount,
-                    dp_date,
-                    1
-                FROM `$table_name`
-                WHERE blog_ID IN (0,1)
-                GROUP BY postnumber, dp_date
-            ) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-        ";
-
-			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		} else {
-			$sql = "
-			INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
-				SELECT
-					postnumber,
-					SUM(cntaccess) as sumCount,
-					1
-				FROM `$table_name`
-				WHERE blog_ID IN (0,1)
-				GROUP BY postnumber
-			) ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess);
-		";
-
-			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		}
-
-		$wpdb->query( "DELETE FROM $table_name WHERE blog_id = 0" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
