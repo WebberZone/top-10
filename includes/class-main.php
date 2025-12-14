@@ -1,10 +1,10 @@
 <?php
-
 /**
  * Main plugin class.
  *
  * @package WebberZone\Top_Ten
  */
+
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Admin\Activator;
