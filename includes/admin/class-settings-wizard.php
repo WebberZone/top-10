@@ -241,9 +241,12 @@ class Settings_Wizard extends Settings_Wizard_API {
 				'capability'  => 'manage_options',
 				'conditions'  => array(
 					function () {
+						$page = sanitize_key( (string) filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+
 						return ! $this->is_wizard_completed() &&
 							! get_option( 'tptn_wizard_notice_dismissed', false ) &&
-							( get_transient( 'tptn_show_wizard_activation_redirect' ) || get_option( 'tptn_show_wizard', false ) );
+							( get_transient( 'tptn_show_wizard_activation_redirect' ) || get_option( 'tptn_show_wizard', false ) ) &&
+							'tptn_wizard' !== $page;
 					},
 				),
 			)
