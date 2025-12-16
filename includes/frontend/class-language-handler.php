@@ -25,20 +25,8 @@ class Language_Handler {
 	 * @since 3.3.3
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 		add_filter( 'top_ten_query_the_posts', array( $this, 'translate_ids' ), 999 );
 		add_filter( 'top_ten_query_posts_pre_query', array( $this, 'translate_ids' ), 999 );
-	}
-
-	/**
-	 * Initialises text domain for l10n.
-	 *
-	 * @since 3.3.3
-	 *
-	 * @return void
-	 */
-	public static function load_plugin_textdomain() {
-		load_plugin_textdomain( 'top-10', false, dirname( plugin_basename( TOP_TEN_PLUGIN_FILE ) ) . '/languages/' );
 	}
 
 	/**
