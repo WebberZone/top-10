@@ -1,6 +1,6 @@
 {
     "name": "@webberzone/top-10",
-    "version": "4.0.0",
+    "version": "4.2.0",
     "description": "Track daily and total visits on your blog posts. Display the count as well as popular and trending posts.",
     "author": "WebberZone",
     "license": "GPL-2.0-or-later",
