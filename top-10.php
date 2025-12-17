@@ -84,6 +84,69 @@ if ( ! defined( 'TOP_TEN_STORE_DATA' ) ) {
 	define( 'TOP_TEN_STORE_DATA', 180 );
 }
 
+if ( ! function_exists( __NAMESPACE__ . '\\tptn_deactivate_other_instances' ) ) {
+	/**
+	 * Deactivate other instances of Top 10 when this plugin is activated.
+	 *
+	 * @param string $plugin The plugin being activated.
+	 * @param bool   $network_wide Whether the plugin is being activated network-wide.
+	 */
+	function tptn_deactivate_other_instances( $plugin, $network_wide = false ) {
+		$free_plugin = 'top-10/top-10.php';
+		$pro_plugin  = 'top-10-pro/top-10.php';
+
+		// Only proceed if one of our plugins is being activated.
+		if ( ! in_array( $plugin, array( $free_plugin, $pro_plugin ), true ) ) {
+			return;
+		}
+
+		$plugins_to_deactivate = array();
+		$deactivated_plugin    = '';
+
+		// If pro is being activated, deactivate free.
+		if ( $pro_plugin === $plugin ) {
+			if ( is_plugin_active( $free_plugin ) || ( $network_wide && is_plugin_active_for_network( $free_plugin ) ) ) {
+				$plugins_to_deactivate[] = $free_plugin;
+				$deactivated_plugin      = 'Top 10';
+			}
+		}
+
+		// If free is being activated, deactivate pro.
+		if ( $free_plugin === $plugin ) {
+			if ( is_plugin_active( $pro_plugin ) || ( $network_wide && is_plugin_active_for_network( $pro_plugin ) ) ) {
+				$plugins_to_deactivate[] = $pro_plugin;
+				$deactivated_plugin      = 'Top 10 Pro';
+			}
+		}
+
+		if ( ! empty( $plugins_to_deactivate ) ) {
+			deactivate_plugins( $plugins_to_deactivate, false, $network_wide );
+			set_transient( 'tptn_deactivated_notice', $deactivated_plugin, 1 * HOUR_IN_SECONDS );
+		}
+	}
+	add_action( 'activated_plugin', __NAMESPACE__ . '\\tptn_deactivate_other_instances', 10, 2 );
+}
+
+// Show admin notice about automatic deactivation.
+if ( ! has_action( 'admin_notices', __NAMESPACE__ . '\\tptn_show_deactivation_notice' ) ) {
+	add_action(
+		'admin_notices',
+		function () {
+			$deactivated_plugin = get_transient( 'tptn_deactivated_notice' );
+			if ( $deactivated_plugin ) {
+				/* translators: %s: Name of the deactivated plugin */
+				$message = sprintf( __( "Top 10 and Top 10 PRO should not be active at the same time. We've automatically deactivated %s.", 'top-10' ), $deactivated_plugin );
+				?>
+			<div class="updated" style="border-left: 4px solid #ffba00;">
+				<p><?php echo esc_html( $message ); ?></p>
+			</div>
+				<?php
+				delete_transient( 'tptn_deactivated_notice' );
+			}
+		}
+	);
+}
+
 /**
  * Global variable holding the current database version of Top 10
  *
@@ -94,11 +157,15 @@ if ( ! defined( 'TOP_TEN_STORE_DATA' ) ) {
 global $tptn_db_version;
 $tptn_db_version = '6.0';
 
-// Load Freemius.
-require_once TOP_TEN_PLUGIN_DIR . 'load-freemius.php';
+if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
+	// Load Freemius.
+	require_once plugin_dir_path( __FILE__ ) . 'load-freemius.php';
+}
 
 // Load the autoloader.
-require_once TOP_TEN_PLUGIN_DIR . 'includes/autoloader.php';
+if ( ! function_exists( __NAMESPACE__ . '\\autoload' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/autoloader.php';
+}
 
 
 if ( ! function_exists( __NAMESPACE__ . '\wz_top_ten' ) ) {
@@ -134,10 +201,12 @@ register_activation_hook( __FILE__, __NAMESPACE__ . '\Admin\Activator::activatio
  * Include files
  *----------------------------------------------------------------------------
  */
-require_once TOP_TEN_PLUGIN_DIR . 'includes/options-api.php';
-require_once TOP_TEN_PLUGIN_DIR . 'includes/wz-pluggables.php';
-require_once TOP_TEN_PLUGIN_DIR . 'includes/class-top-ten-query.php';
-require_once TOP_TEN_PLUGIN_DIR . 'includes/functions.php';
+if ( ! function_exists( 'tptn_get_settings' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/options-api.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/wz-pluggables.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-top-ten-query.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/functions.php';
+}
 
 /**
  * Global variable holding the current settings for Top 10
