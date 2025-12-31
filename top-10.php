@@ -8,7 +8,7 @@
  * @author    Ajay D'Souza
  * @license   GPL-2.0+
  * @link      https://webberzone.com
- * @copyright 2008-2025 Ajay D'Souza
+ * @copyright 2008-2026 Ajay D'Souza
  *
  * @wordpress-plugin
  * Plugin Name: Top 10
