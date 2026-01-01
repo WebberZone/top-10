@@ -1,8 +1,8 @@
 <?php
 /**
- * Metabox API class.
+ * Class to display and save a Metabox.
  *
- * @package WebberZone\Top_Ten\Admin\Settings
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten\Admin\Settings;

@@ -200,12 +200,12 @@ jQuery(document).ready(function ($) {
         }
 
         // Debug info to help diagnose multisite issues
-        console.log('Processing batch with params:', {
+        /* console.log('Processing batch with params:', {
             currentSite: currentSite,
             isNetworkAdmin: params.is_network_admin,
             selectedSites: params.sites,
             batchNumber: params.batch_number
-        });
+        }); */
 
         // Send AJAX request for this batch
         $.ajax({

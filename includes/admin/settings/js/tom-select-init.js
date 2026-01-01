@@ -52,6 +52,15 @@
                 formattedOptions.push(...allOptions);
             }
 
+            // For non-taxonomy endpoints, add saved values as options so Tom Select can display them.
+            if (!(endpoint === 'category' || endpoint === 'post_tag' || endpoint.includes('tax')) && savedIds.length > 0) {
+                savedIds.forEach(savedValue => {
+                    if (!formattedOptions.some(opt => opt.value === savedValue)) {
+                        formattedOptions.push({ value: savedValue, text: savedValue });
+                    }
+                });
+            }
+
             // Get any custom config from data attributes
             let customConfig = {};
             const configAttr = element.getAttribute('data-ts-config');
@@ -59,7 +68,7 @@
             if (configAttr) {
                 try {
                     customConfig = JSON.parse(configAttr);
-                    console.log('Parsed custom config:', customConfig); // Debug log
+                    // console.log('Parsed custom config:', customConfig); // Debug log
                 } catch (e) {
                     console.error('Error parsing custom config:', configAttr, e);
                 }
@@ -83,11 +92,19 @@
                         if (endpoint === 'category' || endpoint === 'post_tag' || endpoint.includes('tax')) {
                             return `<div>${escape(data.value)}</div>`;
                         }
+                        // Avoid showing "value (value)" when value and text are identical.
+                        if (data.text === data.value) {
+                            return `<div>${escape(data.value)}</div>`;
+                        }
                         return `<div>${escape(data.text)} (${escape(data.value)})</div>`;
                     },
                     item: (data, escape) => {
                         // For taxonomy endpoints, display only the formatted value to avoid duplication
                         if (endpoint === 'category' || endpoint === 'post_tag' || endpoint.includes('tax')) {
+                            return `<div>${escape(data.value)}</div>`;
+                        }
+                        // Avoid showing "value (value)" when value and text are identical.
+                        if (data.text === data.value) {
                             return `<div>${escape(data.value)}</div>`;
                         }
                         return `<div>${escape(data.text)} (${escape(data.value)})</div>`;
@@ -125,7 +142,7 @@
 
             // Merge default config with custom config
             const finalConfig = { ...defaultConfig, ...customConfig };
-            console.log('Final config:', finalConfig); // Debug log
+            // console.log('Final config:', finalConfig); // Debug log
 
             // Initialize Tom Select with merged config
             try {

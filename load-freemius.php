@@ -10,7 +10,9 @@ namespace WebberZone\Top_Ten;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
+
+if ( ! function_exists( __NAMESPACE__ . '\tptn_freemius' ) ) {
+
 	/**
 	 * Initialize Freemius SDK.
 	 */
@@ -25,22 +27,24 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 			require_once __DIR__ . '/vendor/freemius/start.php';
 			$tptn_freemius = \fs_dynamic_init(
 				array(
-					'id'             => '16384',
-					'slug'           => 'top-10',
-					'premium_slug'   => 'top-10-pro',
-					'type'           => 'plugin',
-					'public_key'     => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
-					'is_premium'     => false,
-					'premium_suffix' => 'Pro',
-					'has_addons'     => false,
-					'has_paid_plans' => true,
-					'menu'           => array(
-						'slug'    => ( is_multisite() && is_network_admin() ? 'tptn_network_pop_posts_page' : 'tptn_dashboard' ),
-						'contact' => false,
-						'support' => false,
-						'network' => true,
+					'id'                => '16384',
+					'slug'              => 'top-10',
+					'premium_slug'      => 'top-10-pro',
+					'type'              => 'plugin',
+					'public_key'        => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
+					'is_premium'        => true,
+					'premium_suffix'    => 'Pro',
+					'has_addons'        => false,
+					'has_paid_plans'    => true,
+					'wp_org_gatekeeper' => 'OA7#BoRiBNqdf52FvzEf!!074aRLPs8fspif$7K1#4u4Csys1fQlCecVcUTOs2mcpeVHi#C2j9d09fOTvbC0HloPT7fFee5WdS3G',
+					'menu'              => array(
+						'slug'       => 'tptn_dashboard',
+						'first-path' => ( is_multisite() && is_network_admin() ) ? '' : 'admin.php?page=tptn_wizard',
+						'contact'    => false,
+						'support'    => false,
+						'network'    => true,
 					),
-					'is_live'        => true,
+					'is_live'           => true,
 				)
 			);
 		}
@@ -63,6 +67,9 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 	 */
 	function tptn_freemius_uninstall() {
 		require_once dirname( __DIR__ ) . '/uninstaller.php';
+		if ( tptn_freemius()->can_use_premium_code__premium_only() ) {
+			\WebberZone\Top_Ten\Pro\Pro::uninstall_pro();
+		}
 	}
 
 	// Init Freemius.

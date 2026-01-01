@@ -1,8 +1,11 @@
 <?php
 /**
- * Settings API class.
+ * Settings API.
  *
- * @package WebberZone\Top_Ten\Admin\Settings
+ * Functions to register, read, write and update settings.
+ * Portions of this code have been inspired by Easy Digital Downloads, WordPress Settings Sandbox, WordPress Settings API class, etc.
+ *
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten\Admin\Settings;
@@ -24,7 +27,7 @@ class Settings_API {
 	 *
 	 * @var   string
 	 */
-	public const VERSION = '2.7.1';
+	public const VERSION = '2.7.2';
 
 	/**
 	 * Settings Key.
@@ -542,14 +545,16 @@ class Settings_API {
 		);
 
 		if ( $hook === $this->settings_page ) {
-			$this->enqueue_scripts_styles();
+			self::enqueue_scripts_styles( $this->prefix );
 		}
 	}
 
 	/**
 	 * Enqueues all scripts, styles, settings, and templates necessary to use the Settings API.
+	 *
+	 * @param string $prefix Prefix which is used for creating the unique filters and actions.
 	 */
-	public function enqueue_scripts_styles() {
+	public static function enqueue_scripts_styles( $prefix ) {
 
 		wp_enqueue_style( 'wp-color-picker' );
 
@@ -569,28 +574,28 @@ class Settings_API {
 			)
 		);
 
-		wp_enqueue_script( 'wz-' . $this->prefix . '-admin' );
-		wp_enqueue_script( 'wz-' . $this->prefix . '-codemirror' );
-		wp_enqueue_script( 'wz-' . $this->prefix . '-taxonomy-suggest' );
-		wp_enqueue_script( 'wz-' . $this->prefix . '-media-selector' );
+		wp_enqueue_script( 'wz-' . $prefix . '-admin' );
+		wp_enqueue_script( 'wz-' . $prefix . '-codemirror' );
+		wp_enqueue_script( 'wz-' . $prefix . '-taxonomy-suggest' );
+		wp_enqueue_script( 'wz-' . $prefix . '-media-selector' );
 
 		// Enqueue Tom Select.
-		wp_enqueue_style( 'wz-' . $this->prefix . '-tom-select' );
-		wp_enqueue_script( 'wz-' . $this->prefix . '-tom-select' );
+		wp_enqueue_style( 'wz-' . $prefix . '-tom-select' );
+		wp_enqueue_script( 'wz-' . $prefix . '-tom-select' );
 
 		// Localize Tom Select settings.
 		wp_localize_script(
-			'wz-' . $this->prefix . '-tom-select-init',
+			'wz-' . $prefix . '-tom-select-init',
 			'WZTomSelectSettings',
 			array(
-				'action'   => $this->prefix . '_taxonomy_search_tom_select',
-				'nonce'    => wp_create_nonce( $this->prefix . '_taxonomy_search_tom_select' ),
+				'action'   => $prefix . '_taxonomy_search_tom_select',
+				'nonce'    => wp_create_nonce( $prefix . '_taxonomy_search_tom_select' ),
 				'endpoint' => 'forms',
 			)
 		);
-		wp_enqueue_script( 'wz-' . $this->prefix . '-tom-select-init' );
+		wp_enqueue_script( 'wz-' . $prefix . '-tom-select-init' );
 
-		wp_enqueue_style( 'wz-' . $this->prefix . '-admin' );
+		wp_enqueue_style( 'wz-' . $prefix . '-admin' );
 	}
 
 	/**
@@ -964,7 +969,7 @@ class Settings_API {
 	 * Shows all the settings section labels as tab
 	 */
 	public function show_navigation() {
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( sanitize_key( wp_unslash( $_GET['tab'] ) ), $this->settings_sections ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'general'; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+		$active_tab = isset( $_GET['tab'] ) && array_key_exists( sanitize_key( wp_unslash( $_GET['tab'] ) ), $this->settings_sections ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : $this->default_tab; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
 
 		$html = '<ul class="nav-tab-wrapper" style="padding:0">';
 
@@ -979,9 +984,13 @@ class Settings_API {
 
 			$active = $active_tab === $tab_id ? ' ' : '';
 
-			$html .= '<li style="padding:0; border:0; margin:0;"><a href="#' . esc_attr( $tab_id ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab ' . sanitize_html_class( $active ) . '">';
-			$html .= esc_html( $tab_name );
-			$html .= '</a></li>';
+			$html .= sprintf(
+				'<li style="padding:0; border:0; margin:0;"><a href="#%s" title="%s" class="nav-tab %s">%s</a></li>',
+				esc_attr( $tab_id ),
+				esc_attr( $tab_name ),
+				sanitize_html_class( $active ),
+				esc_html( $tab_name )
+			);
 
 		}
 

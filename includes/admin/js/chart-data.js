@@ -112,6 +112,7 @@ jQuery(document).ready(function ($) {
 			}
 
 			var ctx = $("#visits");
+			var enableBarClick = !!(tptn_chart_data && parseInt(tptn_chart_data.enableBarClick, 10) === 1);
 			var config = {
 				type: chartType,
 				data: {
@@ -180,10 +181,42 @@ jQuery(document).ready(function ($) {
 				},
 			};
 
+			if (enableBarClick) {
+				config.options.onClick = function (event, elements) {
+					if (elements.length > 0) {
+						var index = elements[0].index;
+						var clickedDate = date[index];
+						// Format date for URL (d+M+Y format expected by Statistics page).
+						var dateObj = new Date(clickedDate);
+						var day = String(dateObj.getDate()).padStart(2, "0");
+						var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+						var month = monthNames[dateObj.getMonth()];
+						var year = dateObj.getFullYear();
+						var formattedDate = day + "+" + month + "+" + year;
+
+						// Build URL with date filters.
+						var url = tptn_chart_data.statsUrl + "&orderby=daily_count&order=desc&post-date-filter-from=" + formattedDate + "&post-date-filter-to=" + formattedDate;
+						window.open(url, "_blank");
+					}
+				};
+
+				config.options.onHover = function (event, elements) {
+					event.native.target.style.cursor = elements.length > 0 ? "pointer" : "default";
+				};
+
+				config.options.plugins.tooltip = {
+					callbacks: {
+						afterBody: function () {
+							return tptn_chart_data.clickBarHint;
+						},
+					},
+				};
+			}
+
 			window.top10chart = new Chart(ctx, config);
 		},
 		error: function (data) {
-			console.log(data);
+			// console.log(data);
 		},
 	});
 });

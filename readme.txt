@@ -166,6 +166,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* [Pro] Maintenance setting to override data retention period
 
 * Improvements:
+	* [Pro] Improved dashboard chart bar click-through to open the Popular Posts screen filtered to that day
 	* Updated Settings API to version 2.7.1
 	* Improved media handler with recursion protection and more robust processing
 	* Improved Tools page statistics display and caching

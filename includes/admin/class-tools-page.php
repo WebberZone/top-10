@@ -97,6 +97,7 @@ class Tools_Page {
 		if ( $hook === $this->parent_id ) {
 			wp_enqueue_script( 'top-ten-admin-js' );
 			wp_enqueue_style( 'top-ten-admin-css' );
+			wp_enqueue_style( 'wp-spinner' );
 			wp_localize_script(
 				'top-ten-admin-js',
 				'top_ten_admin_data',
@@ -104,6 +105,7 @@ class Tools_Page {
 					'ajax_url'             => admin_url( 'admin-ajax.php' ),
 					'security'             => wp_create_nonce( 'tptn-admin' ),
 					'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+					'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
 					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
 					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
 				)

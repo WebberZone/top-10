@@ -258,7 +258,7 @@ class Statistics_Table extends \WP_List_Table {
 				return \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( absint( $item[ $column_name ] ) );
 			default:
 				// Show the whole array for troubleshooting purposes.
-				return print_r( $item, true );  //phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				return '';
 		}
 	}
 

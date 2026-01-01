@@ -2,12 +2,16 @@ jQuery(document).ready(function ($) {
 
 	$('button[name="tptn_cache_clear"]').on('click', function () {
 		if (confirm(top_ten_admin_data.confirm_message)) {
-			clearCache();
+			var $button = $(this);
+			var originalText = $button.text();
+			var clearingText = top_ten_admin_data.clearing_text ? top_ten_admin_data.clearing_text : 'Clearing...';
+			$button.prop('disabled', true).text(clearingText).append(' <span class="spinner is-active"></span>');
+			clearCache($button, originalText);
 		}
 	});
 
 	// Function to clear the cache.
-	function clearCache() {
+	function clearCache($button, originalText) {
 		$.post(top_ten_admin_data.ajax_url, {
 			action: 'tptn_clear_cache',
 			security: top_ten_admin_data.security
@@ -19,7 +23,46 @@ jQuery(document).ready(function ($) {
 			}
 		}).fail(function (jqXHR, textStatus) {
 			alert(top_ten_admin_data.request_fail_message + textStatus);
+		}).always(function () {
+			if ($button && $button.length) {
+				$button.prop('disabled', false).text(originalText).find('.spinner').remove();
+			}
 		});
+	}
+
+	function updateFastConfigUI($button, data) {
+		if (!data) {
+			return;
+		}
+
+		if (data.status_html) {
+			var $status = $button.closest('td').find('.tptn-fast-config-status').first();
+			if (!$status.length) {
+				$status = $('.tptn-fast-config-status').first();
+			}
+			if ($status.length) {
+				$status.replaceWith($(data.status_html));
+			}
+		}
+
+		if (data.generate_nonce) {
+			$('.tptn-generate-fast-config').data('nonce', data.generate_nonce);
+		}
+
+		if (data.delete_nonce) {
+			$('.tptn-delete-fast-config').data('nonce', data.delete_nonce);
+		}
+
+		if (typeof data.has_config !== 'undefined') {
+			var $deleteBtn = $('.tptn-delete-fast-config');
+			if ($deleteBtn.length) {
+				$deleteBtn.prop('disabled', !data.has_config);
+			}
+		}
+
+		if (data.message) {
+			alert(data.message);
+		}
 	}
 
 	// Function to generate fast config.
@@ -32,17 +75,46 @@ jQuery(document).ready(function ($) {
 			action: 'tptn_generate_fast_config',
 			security: $button.data('nonce')
 		}, function (response) {
-			if (response.success) {
-				alert(response.data.message);
-				$button.data('nonce', response.data.nonce);
-			} else {
-				alert(response.data.message);
-				$button.data('nonce', response.data.nonce);
+			if (response && response.data) {
+				if (response.data.nonce) {
+					$button.data('nonce', response.data.nonce);
+				}
+				updateFastConfigUI($button, response.data);
 			}
 		}).fail(function (jqXHR, textStatus) {
-			alert(top_ten_admin_data.request_fail_message + textStatus);
+			if (window.console && window.console.error) {
+				window.console.error(top_ten_admin_data.request_fail_message + textStatus);
+			}
 		}).always(function () {
 			$button.prop('disabled', false).text(originalText);
+		});
+	}
+
+	// Function to delete fast config.
+	function deleteFastConfig(button) {
+		var $button = $(button);
+		var originalText = $button.text();
+		$button.prop('disabled', true).text('Deleting...');
+
+		$.post(top_ten_admin_data.ajax_url, {
+			action: 'tptn_delete_fast_config',
+			security: $button.data('nonce')
+		}, function (response) {
+			if (response && response.data) {
+				if (response.data.nonce) {
+					$button.data('nonce', response.data.nonce);
+				}
+				updateFastConfigUI($button, response.data);
+			}
+		}).fail(function (jqXHR, textStatus) {
+			if (window.console && window.console.error) {
+				window.console.error(top_ten_admin_data.request_fail_message + textStatus);
+			}
+		}).always(function () {
+			$button.text(originalText);
+			if ($button.data('nonce')) {
+				$button.prop('disabled', false);
+			}
 		});
 	}
 
@@ -51,6 +123,14 @@ jQuery(document).ready(function ($) {
 		var confirmMessage = $(this).data('confirm');
 		if (confirm(confirmMessage)) {
 			generateFastConfig(this);
+		}
+	});
+
+	// Handle fast config deletion button click.
+	$('body').on('click', '.tptn-delete-fast-config', function () {
+		var confirmMessage = $(this).data('confirm');
+		if (confirm(confirmMessage)) {
+			deleteFastConfig(this);
 		}
 	});
 
@@ -79,7 +159,8 @@ jQuery(document).ready(function ($) {
 	$('input[name="submit"], input#search-submit, input#doaction, input#doaction2, input[name="filter_action"]').on('click', formNotModified);
 
 	$(function () {
-		$("#post-body-content").tabs({
+		var $tabsContainer = $("#dashboard-historical-visits");
+		$tabsContainer.tabs({
 			create: function (event, ui) {
 				$(ui.tab.find("a")).addClass("nav-tab-active");
 			},
@@ -88,28 +169,28 @@ jQuery(document).ready(function ($) {
 				$(ui.newTab.find("a")).addClass("nav-tab-active");
 			}
 		});
-		
+
 		// Wait for the tabs to be fully initialized
-		setTimeout(function() {
+		setTimeout(function () {
 			// Select Today tab (second tab) by default and add the nav-tab-active class
-			var $tabs = $("#post-body-content").tabs();
-			
+			var $tabs = $tabsContainer.tabs();
+
 			// First find the Today tab index (usually 1)
 			var tabIndex = 0;
-			$(".nav-tab-wrapper li a").each(function(index) {
+			$tabsContainer.find(".nav-tab-wrapper li a").each(function (index) {
 				if ($(this).text().indexOf('Today') >= 0) {
 					tabIndex = index;
 					return false; // Break the loop
 				}
 			});
-			
+
 			// Set the active tab
 			$tabs.tabs("option", "active", tabIndex);
-			
+
 			// Manually add the active class to the Today tab
-			$(".nav-tab-wrapper li a").removeClass("nav-tab-active");
-			$(".nav-tab-wrapper li").eq(tabIndex).find("a").addClass("nav-tab-active");
-		}, 200);
+			$tabsContainer.find(".nav-tab-wrapper li a").removeClass("nav-tab-active");
+			$tabsContainer.find(".nav-tab-wrapper li").eq(tabIndex).find("a").addClass("nav-tab-active");
+		}, 10);
 	});
 
 	// Datepicker.
