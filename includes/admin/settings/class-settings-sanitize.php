@@ -1,8 +1,10 @@
 <?php
 /**
- * Settings Sanitize class.
+ * Functions to sanitize settings.
  *
- * @package WebberZone\Top_Ten\Admin\Settings
+ * @link  https://webberzone.com
+ *
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten\Admin\Settings;
@@ -178,7 +180,7 @@ class Settings_Sanitize {
 		 *
 		 * @param array $allowedtags Allowed tags array.
 		 */
-		$allowedtags = apply_filters( 'wz_sanitize_allowed_tags', $allowedtags );
+		$allowedtags = apply_filters( $this->prefix . '_sanitize_allowed_tags', $allowedtags );
 
 		return wp_kses( wp_unslash( $value ), $allowedtags );
 	}

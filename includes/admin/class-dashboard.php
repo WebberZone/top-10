@@ -94,76 +94,78 @@ class Dashboard {
 				</form>
 
 				<h2><?php esc_html_e( 'Historical visits', 'top-10' ); ?></h2>
-				<ul class="nav-tab-wrapper" style="padding:0; border-bottom: 1px solid #ccc;">
-					<?php
-					foreach ( $this->get_tabs() as $tab_id => $tab_name ) {
-						$tab_class = 'nav-tab';
-						$tab_style = '';
-
-						// Check if this tab should be hidden initially.
-						if ( isset( $tab_name['hide'] ) && $tab_name['hide'] ) {
-							$tab_style = 'display:none;';
-						}
-
-						// Add custom class if specified.
-						if ( isset( $tab_name['class'] ) ) {
-							$tab_class .= ' ' . $tab_name['class'];
-						}
-
-						echo '<li style="padding:0; border:0; margin:0;"><a href="#' . esc_attr( $tab_id ) . '" title="' . esc_attr( $tab_name['title'] ) . '" class="' . esc_attr( $tab_class ) . '" style="' . esc_attr( $tab_style ) . '">';
-							echo esc_html( $tab_name['title'] );
-						echo '</a></li>';
-
-					}
-					?>
-				</ul>
-
-				<form method="post" action="options.php">
-
-					<?php foreach ( $this->get_tabs() as $tab_id => $tab_name ) : ?>
-
-					<div id="<?php echo esc_attr( $tab_id ); ?>">
-						<table class="form-table">
+				<div id="dashboard-historical-visits">
+					<ul class="nav-tab-wrapper" style="padding:0; border-bottom: 1px solid #ccc;">
 						<?php
-							$output = $this->display_popular_posts( $tab_name );
-							echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						?>
-						</table>
+						foreach ( $this->get_tabs() as $tab_id => $tab_name ) {
+							$tab_class = 'nav-tab';
+							$tab_style = '';
 
-						<div style="font-weight:bold;padding:5px;">
-
-							<?php
-							$query_args = array(
-								'order' => 'desc',
-							);
-							$daily      = ( isset( $tab_name['daily'] ) ) ? $tab_name['daily'] : true;
-
-							if ( $daily ) {
-								$query_args['orderby'] = 'daily_count';
-
-								if ( ! empty( $tab_name['from_date'] ) ) {
-									$query_args['post-date-filter-from'] = gmdate( 'd+M+Y', strtotime( $tab_name['from_date'] ) );
-								}
-								if ( ! empty( $tab_name['to_date'] ) ) {
-									$query_args['post-date-filter-to'] = gmdate( 'd+M+Y', strtotime( $tab_name['to_date'] ) );
-								}
-							} else {
-								$query_args['orderby'] = 'total_count';
+							// Check if this tab should be hidden initially.
+							if ( isset( $tab_name['hide'] ) && $tab_name['hide'] ) {
+								$tab_style = 'display:none;';
 							}
-							$base_url = is_network_admin() ? network_admin_url( 'admin.php?page=tptn_network_pop_posts_page' ) : admin_url( 'admin.php?page=tptn_popular_posts' );
-							$url      = add_query_arg( $query_args, $base_url );
 
+							// Add custom class if specified.
+							if ( isset( $tab_name['class'] ) ) {
+								$tab_class .= ' ' . $tab_name['class'];
+							}
+
+							echo '<li style="padding:0; border:0; margin:0;"><a href="#' . esc_attr( $tab_id ) . '" title="' . esc_attr( $tab_name['title'] ) . '" class="' . esc_attr( $tab_class ) . '" style="' . esc_attr( $tab_style ) . '">';
+								echo esc_html( $tab_name['title'] );
+							echo '</a></li>';
+
+						}
+						?>
+					</ul>
+
+					<form method="post" action="options.php">
+
+						<?php foreach ( $this->get_tabs() as $tab_id => $tab_name ) : ?>
+
+						<div id="<?php echo esc_attr( $tab_id ); ?>">
+							<table class="form-table">
+							<?php
+								$output = $this->display_popular_posts( $tab_name );
+								echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
+							</table>
 
-							<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'View all popular posts', 'top-10' ); ?> &raquo;</a>
+							<div style="font-weight:bold;padding:5px;">
 
-						</div>
+								<?php
+								$query_args = array(
+									'order' => 'desc',
+								);
+								$daily      = ( isset( $tab_name['daily'] ) ) ? $tab_name['daily'] : true;
 
-					</div><!-- /#tab_id-->
+								if ( $daily ) {
+									$query_args['orderby'] = 'daily_count';
 
-					<?php endforeach; ?>
+									if ( ! empty( $tab_name['from_date'] ) ) {
+										$query_args['post-date-filter-from'] = gmdate( 'd+M+Y', strtotime( $tab_name['from_date'] ) );
+									}
+									if ( ! empty( $tab_name['to_date'] ) ) {
+										$query_args['post-date-filter-to'] = gmdate( 'd+M+Y', strtotime( $tab_name['to_date'] ) );
+									}
+								} else {
+									$query_args['orderby'] = 'total_count';
+								}
+								$base_url = is_network_admin() ? network_admin_url( 'admin.php?page=tptn_network_pop_posts_page' ) : admin_url( 'admin.php?page=tptn_popular_posts' );
+								$url      = add_query_arg( $query_args, $base_url );
 
-				</form>
+								?>
+
+								<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'View all popular posts', 'top-10' ); ?> &raquo;</a>
+
+							</div>
+
+						</div><!-- /#tab_id-->
+
+						<?php endforeach; ?>
+
+					</form>
+				</div>
 
 			</div><!-- /#post-body-content -->
 
@@ -256,14 +258,24 @@ class Dashboard {
 			wp_enqueue_script( 'top-ten-chartjs-adapter-luxon-js' );
 			wp_enqueue_script( 'top-ten-chart-data-js' );
 			wp_enqueue_script( 'top-ten-admin-js' );
+
+			$enable_bar_click = function_exists( '\\WebberZone\\Top_Ten\\tptn_freemius' ) && \WebberZone\Top_Ten\tptn_freemius()->can_use_premium_code();
+
+			$stats_base_url = is_network_admin()
+				? network_admin_url( 'admin.php?page=tptn_network_pop_posts_page' )
+				: admin_url( 'admin.php?page=tptn_popular_posts' );
+
 			wp_localize_script(
 				'top-ten-chart-data-js',
 				'tptn_chart_data',
 				array(
-					'security'     => wp_create_nonce( 'tptn-dashboard' ),
-					'datasetlabel' => __( 'Visits', 'top-10' ),
-					'charttitle'   => __( 'Daily Visits', 'top-10' ),
-					'network'      => is_network_admin() ? 1 : 0,
+					'security'       => wp_create_nonce( 'tptn-dashboard' ),
+					'datasetlabel'   => __( 'Visits', 'top-10' ),
+					'charttitle'     => __( 'Daily Visits', 'top-10' ),
+					'network'        => is_network_admin() ? 1 : 0,
+					'enableBarClick' => $enable_bar_click ? 1 : 0,
+					'statsUrl'       => $stats_base_url,
+					'clickBarHint'   => __( 'Click to view top posts for this day', 'top-10' ),
 				)
 			);
 			wp_enqueue_style( 'top-ten-admin-css' );
@@ -483,6 +495,7 @@ class Dashboard {
 								<a href="<?php echo esc_url( $site_url ); ?>" target="_blank"><?php echo esc_html( $blog_details->blogname ); ?></a>
 								<?php
 							} else {
+								/* translators: %d is the blog ID */
 								echo esc_html( sprintf( __( 'Blog ID: %d', 'top-10' ), (int) $result['blog_id'] ) );
 							}
 							?>

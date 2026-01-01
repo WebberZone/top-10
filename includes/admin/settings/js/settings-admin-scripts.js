@@ -73,8 +73,8 @@ jQuery(document).ready(function ($) {
 	// Reset default thumbnail - uses plugin-specific localized data.
 	$('.reset-default-thumb').on('click', function () {
 		var settingsKey = WZSettingsAdmin.settings_key || '';
-		var thumbDefault = (typeof window[WZSettingsAdmin.prefix + '_admin'] !== 'undefined') 
-			? window[WZSettingsAdmin.prefix + '_admin'].thumb_default 
+		var thumbDefault = (typeof window[WZSettingsAdmin.prefix + '_admin'] !== 'undefined')
+			? window[WZSettingsAdmin.prefix + '_admin'].thumb_default
 			: '';
 		$('#' + settingsKey + '\\[thumb_default\\]').val(thumbDefault);
 	});

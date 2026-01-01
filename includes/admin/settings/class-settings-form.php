@@ -1,8 +1,10 @@
 <?php
 /**
- * Settings Form class.
+ * Generates the settings form.
  *
- * @package WebberZone\Top_Ten\Admin\Settings
+ * @link  https://webberzone.com
+ *
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten\Admin\Settings;
@@ -321,20 +323,21 @@ class Settings_Form {
 		$default  = isset( $args['default'] ) ? (int) $args['default'] : '';
 		$disabled = ( ! empty( $args['disabled'] ) || $args['pro'] ) ? ' disabled="disabled"' : '';
 
-		$html  = sprintf(
+		$html              = sprintf(
 			'<input type="hidden" name="%1$s[%2$s]" value="-1" />',
 			$this->settings_key,
 			sanitize_key( $args['id'] )
 		);
-		$html .= sprintf(
+		$html             .= sprintf(
 			'<input type="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="1" %3$s %4$s />',
 			$this->settings_key,
 			sanitize_key( $args['id'] ),
 			$checked,
 			$disabled
 		);
-		$html .= ( (bool) $value !== (bool) $default ) ? '<em style="color:#9B0800">' . $this->translation_strings['checkbox_modified'] . '</em>' : '';
-		$html .= $this->get_field_description( $args );
+		$checkbox_modified = $this->translation_strings['checkbox_modified'] ?? 'Modified from default setting';
+		$html             .= ( (bool) $value !== (bool) $default ) ? '<em style="color:#9B0800">' . $checkbox_modified . '</em>' : '';
+		$html             .= $this->get_field_description( $args );
 
 		/** This filter has been defined in class-settings-api.php */
 		echo apply_filters( $this->prefix . '_after_setting_output', $html, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

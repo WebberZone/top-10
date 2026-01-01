@@ -966,15 +966,22 @@ class Settings {
 			'cron_on'          => array(
 				'id'      => 'cron_on',
 				'name'    => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
-				/* translators: 1: Constant holding number of days data is stored. */
-				'desc'    => sprintf( esc_html__( 'Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %d days from the daily tables.', 'top-10' ), (int) apply_filters( 'tptn_maintenance_days', TOP_TEN_STORE_DATA ) ),
+				'desc'    => sprintf(
+					/* translators: 1: Constant holding number of days data is stored. */
+					esc_html__( 'Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %s days from the daily tables.', 'top-10' ),
+					'<strong>' . (int) apply_filters( 'tptn_maintenance_days', TOP_TEN_STORE_DATA ) . '</strong>'
+				),
 				'type'    => 'checkbox',
 				'default' => false,
 			),
 			'maintenance_days' => array(
 				'id'      => 'maintenance_days',
-				'name'    => esc_html__( 'Maintenance days', 'top-10' ),
-				'desc'    => esc_html__( 'Enter the number of days to retain data in the daily tables before scheduled maintenance removes older entries. Enter 0 to use the default value.', 'top-10' ),
+				'name'    => esc_html__( 'Data retention period', 'top-10' ),
+				'desc'    => sprintf(
+					/* translators: 1: Constant holding number of days data is stored. */
+					esc_html__( 'Enter the number of days to retain data in the daily tables before scheduled maintenance removes older entries. Enter 0 to use the default value of %s days.', 'top-10' ),
+					'<strong>' . TOP_TEN_STORE_DATA . '</strong>'
+				),
 				'type'    => 'number',
 				'default' => 0,
 				'min'     => 0,
@@ -1392,6 +1399,7 @@ class Settings {
 		);
 		wp_enqueue_script( 'top-ten-admin-js' );
 		wp_enqueue_style( 'top-ten-admin-css' );
+		wp_enqueue_style( 'wp-spinner' );
 		wp_localize_script(
 			'top-ten-admin-js',
 			'top_ten_admin_data',
@@ -1399,6 +1407,7 @@ class Settings {
 				'ajax_url'             => admin_url( 'admin-ajax.php' ),
 				'security'             => wp_create_nonce( 'tptn-admin' ),
 				'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+				'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
 				'success_message'      => esc_html__( 'Cache cleared successfully!', 'top-10' ),
 				'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
 				'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
