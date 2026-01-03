@@ -109,13 +109,13 @@ final class Main {
 	public $cron;
 
 	/**
-	 * Pro class.
+	 * Pro modules.
 	 *
-	 * @since 4.0.0
+	 * @since 3.3.0
 	 *
-	 * @var object Pro class.
+	 * @var Pro\Pro|null
 	 */
-	public $pro;
+	public ?Pro\Pro $pro = null;
 
 	/**
 	 * Gets the instance of the class.
@@ -158,10 +158,6 @@ final class Main {
 		$this->cron       = new Cron();
 
 		$this->hooks();
-
-		if ( ! function_exists( 'tptn_freemius' ) ) {
-			require_once dirname( __DIR__ ) . '/load-freemius.php';
-		}
 
 		if ( is_admin() ) {
 			$this->admin = new Admin\Admin();
@@ -288,8 +284,8 @@ final class Main {
 			<div class="updated" style="border-left: 4px solid #ffba00;">
 				<p><?php echo esc_html( $message ); ?></p>
 			</div>
-		<?php
+			<?php
 
-		delete_transient( 'tptn_deactivated_notice_id' );
+			delete_transient( 'tptn_deactivated_notice_id' );
 	}
 }

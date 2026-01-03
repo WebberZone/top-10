@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-01T12:40:16+00:00\n"
+"POT-Creation-Date: 2026-01-03T10:03:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: top-10\n"
@@ -47,6 +47,57 @@ msgstr ""
 
 #: includes/admin/class-admin-notices.php:49
 msgid "Click here to recreate tables."
+msgstr ""
+
+#: includes/admin/class-admin.php:319
+msgid "Top 10 quick links"
+msgstr ""
+
+#: includes/admin/class-admin.php:320
+msgid "Top 10 admin shortcuts"
+msgstr ""
+
+#: includes/admin/class-admin.php:321
+msgid "WebberZone Top 10"
+msgstr ""
+
+#: includes/admin/class-admin.php:322
+msgid "Track and display popular posts on your site."
+msgstr ""
+
+#: includes/admin/class-admin.php:323
+msgid "Jump to your most-used Top 10 tools, manage content faster, and explore more WebberZone plugins."
+msgstr ""
+
+#: includes/admin/class-admin.php:327
+#: includes/admin/class-dashboard.php:209
+#: includes/admin/class-dashboard.php:236
+msgid "Dashboard"
+msgstr ""
+
+#: includes/admin/class-admin.php:333
+#: includes/admin/class-statistics.php:70
+#: includes/admin/class-statistics.php:146
+#: includes/admin/network/class-statistics.php:71
+#: includes/admin/network/class-statistics.php:138
+#: includes/frontend/feed-rss2-popular-posts.php:59
+msgid "Popular Posts"
+msgstr ""
+
+#: includes/admin/class-admin.php:339
+#: includes/admin/class-settings.php:161
+#: includes/admin/class-settings.php:1202
+msgid "Settings"
+msgstr ""
+
+#: includes/admin/class-admin.php:345
+#: includes/admin/class-tools-page.php:61
+#: includes/admin/class-tools-page.php:80
+msgid "Tools"
+msgstr ""
+
+#: includes/admin/class-admin.php:351
+msgid "WebberZone Plugins"
 msgstr ""
 
 #: includes/admin/class-columns.php:70
@@ -138,11 +189,6 @@ msgstr ""
 
 #: includes/admin/class-dashboard.php:96
 msgid "Historical visits"
-msgstr ""
-
-#: includes/admin/class-dashboard.php:209
-#: includes/admin/class-dashboard.php:236
-msgid "Dashboard"
 msgstr ""
 
 #: includes/admin/class-dashboard.php:273
@@ -568,11 +614,6 @@ msgstr ""
 
 #: includes/admin/class-settings.php:133
 msgid "Do you really want to reset all these settings to their default values?"
-msgstr ""
-
-#: includes/admin/class-settings.php:161
-#: includes/admin/class-settings.php:1202
-msgid "Settings"
 msgstr ""
 
 #: includes/admin/class-settings.php:178
@@ -1587,14 +1628,6 @@ msgstr ""
 msgid "Top 10 Popular Posts"
 msgstr ""
 
-#: includes/admin/class-statistics.php:70
-#: includes/admin/class-statistics.php:146
-#: includes/admin/network/class-statistics.php:71
-#: includes/admin/network/class-statistics.php:138
-#: includes/frontend/feed-rss2-popular-posts.php:59
-msgid "Popular Posts"
-msgstr ""
-
 #: includes/admin/class-statistics.php:78
 msgid "Top 10 Daily Popular Posts"
 msgstr ""
@@ -1611,11 +1644,6 @@ msgstr ""
 #: includes/admin/class-tools-page.php:79
 #: includes/admin/class-tools-page.php:166
 msgid "Top 10 Tools"
-msgstr ""
-
-#: includes/admin/class-tools-page.php:61
-#: includes/admin/class-tools-page.php:80
-msgid "Tools"
 msgstr ""
 
 #: includes/admin/class-tools-page.php:134
@@ -2041,11 +2069,11 @@ msgstr ""
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
 
-#: includes/class-main.php:284
+#: includes/class-main.php:270
 msgid "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10."
 msgstr ""
 
-#: includes/class-main.php:286
+#: includes/class-main.php:272
 msgid "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10 Pro."
 msgstr ""
 
@@ -2055,21 +2083,21 @@ msgstr ""
 msgid "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
 msgstr ""
 
-#: includes/frontend/class-display.php:785
+#: includes/frontend/class-display.php:764
 msgid " by "
 msgstr ""
 
 #. translators: %s: Post title.
-#: includes/frontend/class-display.php:977
+#: includes/frontend/class-display.php:956
 #, php-format
 msgid "Continue reading %s"
 msgstr ""
 
-#: includes/frontend/class-display.php:985
+#: includes/frontend/class-display.php:964
 msgid "(more&hellip;)"
 msgstr ""
 
-#: includes/frontend/class-display.php:1013
+#: includes/frontend/class-display.php:992
 msgid "There is no excerpt because this is a protected post."
 msgstr ""
 
@@ -2271,7 +2299,7 @@ msgid "HTTP status %d"
 msgstr ""
 
 #. translators: %s: Name of the deactivated plugin
-#: top-10.php:140
+#: top-10.php:138
 #, php-format
 msgid "Top 10 and Top 10 PRO should not be active at the same time. We've automatically deactivated %s."
 msgstr ""

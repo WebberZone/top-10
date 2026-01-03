@@ -262,6 +262,34 @@ function tptn_settings_reset() {
 
 
 /**
+ * Get registered settings types for cache key generation.
+ *
+ * @since 4.2.0
+ *
+ * @return array Array of setting types keyed by setting ID.
+ */
+function tptn_get_registered_settings_types() {
+	$options = array();
+
+	// Populate some default values.
+	foreach ( \WebberZone\Top_Ten\Admin\Settings::get_registered_settings() as $tab => $settings ) {
+		foreach ( $settings as $option ) {
+			$options[ $option['id'] ] = $option['type'];
+		}
+	}
+
+	/**
+	 * Filter the settings types array for cache key generation.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $options Array of setting types keyed by setting ID.
+	 */
+	return apply_filters( 'tptn_registered_settings_types', $options );
+}
+
+
+/**
  * Function to add an action to search for tags using Ajax.
  *
  * @since 1.7.0
