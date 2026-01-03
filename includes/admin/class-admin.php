@@ -141,6 +141,15 @@ class Admin {
 	public $admin_notices_api;
 
 	/**
+	 * Admin banner helper instance.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var Admin_Banner
+	 */
+	public Admin_Banner $admin_banner;
+
+	/**
 	 * Prefix which is used for creating the unique filters and actions.
 	 *
 	 * @since 3.3.0
@@ -189,6 +198,7 @@ class Admin {
 		$this->cache             = new Cache();
 		$this->admin_notices_api = new Admin_Notices_API();
 		$this->admin_notices     = new Admin_Notices();
+		$this->admin_banner      = new Admin_Banner( $this->get_admin_banner_config() );
 	}
 
 	/**
@@ -280,5 +290,71 @@ class Admin {
 	 */
 	public static function display_admin_sidebar() {
 		require_once TOP_TEN_PLUGIN_DIR . 'includes/admin/sidebar.php';
+	}
+
+	/**
+	 * Retrieve the configuration array for the admin banner.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function get_admin_banner_config(): array {
+		return array(
+			'capability' => 'manage_options',
+			'prefix'     => 'tptn',
+			'screen_ids' => array(
+				'toplevel_page_tptn_dashboard',
+				'top-10_page_tptn_options_page',
+				'top-10_page_tptn_tools_page',
+				'top-10_page_tptn_popular_posts',
+			),
+			'page_slugs' => array(
+				'tptn_dashboard',
+				'tptn_options_page',
+				'tptn_tools_page',
+				'tptn_popular_posts',
+			),
+			'strings'    => array(
+				'region_label' => esc_html__( 'Top 10 quick links', 'top-10' ),
+				'nav_label'    => esc_html__( 'Top 10 admin shortcuts', 'top-10' ),
+				'eyebrow'      => esc_html__( 'WebberZone Top 10', 'top-10' ),
+				'title'        => esc_html__( 'Track and display popular posts on your site.', 'top-10' ),
+				'text'         => esc_html__( 'Jump to your most-used Top 10 tools, manage content faster, and explore more WebberZone plugins.', 'top-10' ),
+			),
+			'sections'   => array(
+				'dashboard' => array(
+					'label'      => esc_html__( 'Dashboard', 'top-10' ),
+					'url'        => admin_url( 'admin.php?page=tptn_dashboard' ),
+					'screen_ids' => array( 'toplevel_page_tptn_dashboard' ),
+					'page_slugs' => array( 'tptn_dashboard' ),
+				),
+				'popular'   => array(
+					'label'      => esc_html__( 'Popular Posts', 'top-10' ),
+					'url'        => admin_url( 'admin.php?page=tptn_popular_posts' ),
+					'screen_ids' => array( 'top-10_page_tptn_popular_posts' ),
+					'page_slugs' => array( 'tptn_popular_posts' ),
+				),
+				'settings'  => array(
+					'label'      => esc_html__( 'Settings', 'top-10' ),
+					'url'        => admin_url( 'admin.php?page=tptn_options_page' ),
+					'screen_ids' => array( 'top-10_page_tptn_options_page' ),
+					'page_slugs' => array( 'tptn_options_page' ),
+				),
+				'tools'     => array(
+					'label'      => esc_html__( 'Tools', 'top-10' ),
+					'url'        => admin_url( 'admin.php?page=tptn_tools_page' ),
+					'screen_ids' => array( 'top-10_page_tptn_tools_page' ),
+					'page_slugs' => array( 'tptn_tools_page' ),
+				),
+				'plugins'   => array(
+					'label'  => esc_html__( 'WebberZone Plugins', 'top-10' ),
+					'url'    => 'https://webberzone.com/plugins/',
+					'type'   => 'secondary',
+					'target' => '_blank',
+					'rel'    => 'noopener noreferrer',
+				),
+			),
+		);
 	}
 }

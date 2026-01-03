@@ -101,7 +101,7 @@ class Display {
 
 		// Check if the cache is enabled and if the output exists. If so, return the output.
 		if ( $args['cache'] ) {
-			$cache_name = self::cache_get_key( $args );
+			$cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( $args );
 
 			$output = get_transient( $cache_name );
 
@@ -511,27 +511,6 @@ class Display {
 		}
 
 		$this->show_pop_posts( $args );
-	}
-
-	/**
-	 * Get the key based on a list of parameters.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @param array $attr   Array of attributes.
-	 * @return string Cache key
-	 */
-	public static function cache_get_key( $attr ) {
-		// Create a copy of attributes for cache key generation.
-		$cache_attr = $attr;
-
-		if ( ! empty( $cache_attr['exclude_current_post'] ) ) {
-			$cache_attr['current_post_id'] = (int) get_the_ID();
-		}
-
-		$key = 'tptn_cache_' . md5( wp_json_encode( $cache_attr ) );
-
-		return $key;
 	}
 
 	/**

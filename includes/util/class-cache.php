@@ -108,6 +108,204 @@ class Cache {
 	}
 
 	/**
+	 * Get the cache key based on a list of parameters.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param mixed $attr Array of attributes typically.
+	 * @return string Cache meta key
+	 */
+	public static function get_key( $attr ): string {
+		$args = (array) $attr;
+
+		static $setting_types = null;
+		if ( null === $setting_types ) {
+			$setting_types = function_exists( 'tptn_get_registered_settings_types' ) ? tptn_get_registered_settings_types() : array();
+		}
+
+		// Remove args that don't affect query results.
+		$exclude_keys = array(
+			'after_list',
+			'after_list_item',
+			'before_list',
+			'before_list_item',
+			'blank_output',
+			'blank_output_text',
+			'cache',
+			'className',
+			'echo',
+			'excerpt_length',
+			'extra_class',
+			'heading',
+			'is_block',
+			'is_manual',
+			'is_shortcode',
+			'is_widget',
+			'link_new_window',
+			'link_nofollow',
+			'more_link_text',
+			'no_found_rows',
+			'other_attributes',
+			'post_types',
+			'post_id',
+			'postid',
+			'same_post_type',
+			'show_author',
+			'show_credit',
+			'show_date',
+			'show_excerpt',
+			'show_metabox',
+			'show_metabox_admins',
+			'suppress_filters',
+			'title',
+			'title_length',
+		);
+
+		foreach ( $exclude_keys as $key ) {
+			unset( $args[ $key ] );
+		}
+
+		// Remove any keys ending in _header or _desc, or with type 'header'.
+		foreach ( $args as $key => $value ) {
+			if ( '_header' === substr( $key, -7 ) || '_desc' === substr( $key, -5 ) ) {
+				unset( $args[ $key ] );
+				continue;
+			}
+
+			if ( isset( $setting_types[ $key ] ) && 'header' === $setting_types[ $key ] ) {
+				unset( $args[ $key ] );
+			}
+		}
+
+		// Define categories of types for normalization.
+		$id_array_types     = array( 'postids', 'numbercsv', 'taxonomies' );
+		$string_array_types = array( 'posttypes', 'csv', 'multicheck' );
+		$numeric_types      = array( 'number', 'checkbox', 'select', 'radio', 'radiodesc' );
+
+		// Process arguments based on their registered types.
+		foreach ( $args as $key => $value ) {
+			$type = $setting_types[ $key ] ?? '';
+
+			if ( in_array( $type, $numeric_types, true ) && is_numeric( $value ) ) {
+				$args[ $key ] = (int) $value;
+			} elseif ( in_array( $type, $id_array_types, true ) ) {
+				$args[ $key ] = is_array( $value ) ? $value : wp_parse_id_list( $value );
+				$args[ $key ] = array_unique( array_map( 'absint', $args[ $key ] ) );
+				$args[ $key ] = array_filter( $args[ $key ] );
+				sort( $args[ $key ] );
+				if ( empty( $args[ $key ] ) ) {
+					unset( $args[ $key ] );
+				}
+			} elseif ( in_array( $type, $string_array_types, true ) ) {
+				if ( is_string( $value ) && strpos( $value, '=' ) !== false ) {
+					parse_str( $value, $parsed );
+					$value = array_keys( $parsed );
+				} elseif ( is_string( $value ) ) {
+					$value = explode( ',', $value );
+				}
+				$args[ $key ] = is_array( $value ) ? $value : array( $value );
+				$args[ $key ] = array_unique( array_map( 'strval', $args[ $key ] ) );
+				$args[ $key ] = array_filter( $args[ $key ] );
+				sort( $args[ $key ] );
+				if ( empty( $args[ $key ] ) ) {
+					unset( $args[ $key ] );
+				}
+			}
+		}
+
+		// Fallback for known keys that might not be in $setting_types or need specific handling.
+		$id_arrays = array(
+			'author__in',
+			'author__not_in',
+			'category__and',
+			'category__in',
+			'category__not_in',
+			'cornerstone_post_ids',
+			'exclude_categories',
+			'exclude_on_categories',
+			'exclude_on_post_ids',
+			'exclude_post_ids',
+			'include_cat_ids',
+			'include_post_ids',
+			'manual_related',
+			'post__in',
+			'post__not_in',
+			'post_parent__in',
+			'post_parent__not_in',
+			'tag__and',
+			'tag__in',
+			'tag__not_in',
+			'tag_slug__and',
+			'tag_slug__in',
+		);
+
+		foreach ( $id_arrays as $key ) {
+			if ( array_key_exists( $key, $args ) && ! isset( $setting_types[ $key ] ) ) {
+				if ( null !== $args[ $key ] ) {
+					$args[ $key ] = is_array( $args[ $key ] ) ? $args[ $key ] : wp_parse_id_list( $args[ $key ] );
+					$args[ $key ] = array_unique( array_map( 'absint', $args[ $key ] ) );
+					$args[ $key ] = array_filter( $args[ $key ] );
+					sort( $args[ $key ] );
+
+					if ( empty( $args[ $key ] ) ) {
+						unset( $args[ $key ] );
+					}
+				} else {
+					unset( $args[ $key ] );
+				}
+			}
+		}
+
+		$string_arrays = array(
+			'exclude_cat_slugs',
+			'exclude_on_cat_slugs',
+			'exclude_on_post_types',
+			'post_name__in',
+			'post_status',
+			'post_type',
+			'same_taxes',
+		);
+
+		foreach ( $string_arrays as $key ) {
+			if ( array_key_exists( $key, $args ) && ! isset( $setting_types[ $key ] ) ) {
+				if ( null !== $args[ $key ] ) {
+					if ( is_string( $args[ $key ] ) && strpos( $args[ $key ], '=' ) !== false ) {
+						parse_str( $args[ $key ], $parsed );
+						$parsed_value = array_keys( $parsed );
+					} elseif ( is_string( $args[ $key ] ) ) {
+						$parsed_value = explode( ',', $args[ $key ] );
+					} else {
+						$parsed_value = $args[ $key ];
+					}
+					$args[ $key ] = is_array( $parsed_value ) ? $parsed_value : array( $parsed_value );
+					$args[ $key ] = array_unique( array_map( 'strval', $args[ $key ] ) );
+					$args[ $key ] = array_filter( $args[ $key ] );
+					sort( $args[ $key ] );
+
+					if ( empty( $args[ $key ] ) ) {
+						unset( $args[ $key ] );
+					}
+				} else {
+					unset( $args[ $key ] );
+				}
+			}
+		}
+
+		// Sort top-level arguments.
+		ksort( $args );
+
+		// Remove any remaining empty strings or null values.
+		foreach ( $args as $key => $value ) {
+			if ( '' === $value || null === $value ) {
+				unset( $args[ $key ] );
+			}
+		}
+
+		// Generate cache key.
+		return md5( wp_json_encode( $args ) );
+	}
+
+	/**
 	 * Get the transient names for the Top 10 widgets.
 	 *
 	 * @since 2.3.0

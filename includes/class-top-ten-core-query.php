@@ -444,7 +444,12 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$this->query_args = apply_filters_ref_array( 'top_ten_query_args', array( $args, &$this ) );
 
 		if ( $this->should_cache() && ! $this->in_cache ) {
-			$this->cache_name = Display::cache_get_key( $this->query_args );
+			// Handle exclude_current_post by adding current_post_id for cache key consistency.
+			$cache_args = $this->query_args;
+			if ( ! empty( $cache_args['exclude_current_post'] ) ) {
+				$cache_args['current_post_id'] = (int) get_the_ID();
+			}
+			$this->cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( $cache_args );
 		}
 	}
 
