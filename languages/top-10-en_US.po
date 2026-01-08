@@ -102,16 +102,15 @@ msgid "Today's Views"
 msgstr ""
 
 #: includes/admin/class-columns.php:72
-#: includes/pro/admin/class-dashboard-widgets.php:185
 msgid "Views"
 msgstr ""
 
+#: includes/admin/class-admin.php:333
 #: includes/admin/class-statistics.php:70
 #: includes/admin/class-statistics.php:146
 #: includes/admin/network/class-statistics.php:71
 #: includes/admin/network/class-statistics.php:138
 #: includes/frontend/feed-rss2-popular-posts.php:59
-#: includes/pro/admin/class-admin-bar.php:68
 msgid "Popular Posts"
 msgstr ""
 
@@ -154,11 +153,14 @@ msgstr ""
 msgid "Historical visits"
 msgstr ""
 
+#. Plugin Name of the plugin
+#: top-10.php
 #: includes/admin/class-dashboard.php:199
 #: includes/admin/class-dashboard.php:226
 msgid "Top 10"
 msgstr ""
 
+#: includes/admin/class-admin.php:327
 #: includes/admin/class-dashboard.php:209
 #: includes/admin/class-dashboard.php:236
 msgid "Dashboard"
@@ -167,8 +169,6 @@ msgstr ""
 #: includes/admin/class-dashboard.php:273
 #: includes/admin/class-dashboard.php:460
 #: includes/admin/class-import-export.php:317
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:18
 msgid "Visits"
 msgstr ""
 
@@ -356,16 +356,11 @@ msgid "Import Tables"
 msgstr ""
 
 #: includes/admin/class-import-export.php:316
-#: includes/pro/blocks/class-featured-image.php:226
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:54
 msgid "Post ID"
 msgstr ""
 
 #: includes/admin/class-import-export.php:320
 #: includes/admin/class-statistics-table.php:451
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:22
 msgid "Date"
 msgstr ""
 
@@ -468,8 +463,6 @@ msgstr ""
 #: includes/admin/class-statistics-table.php:446
 #: includes/frontend/widgets/class-count-widget.php:49
 #: includes/frontend/widgets/class-posts-widget.php:80
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:30
 msgid "Title"
 msgstr ""
 
@@ -486,8 +479,6 @@ msgid "Post type"
 msgstr ""
 
 #: includes/admin/class-statistics-table.php:450
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:34
 msgid "Author"
 msgstr ""
 
@@ -522,9 +513,9 @@ msgstr ""
 msgid "Top 10 Tools"
 msgstr ""
 
+#: includes/admin/class-admin.php:345
 #: includes/admin/class-tools-page.php:61
 #: includes/admin/class-tools-page.php:80
-#: includes/pro/admin/class-admin-bar.php:69
 msgid "Tools"
 msgstr ""
 
@@ -565,7 +556,6 @@ msgstr ""
 
 #: includes/admin/class-tools-page.php:187
 #: includes/admin/class-tools-page.php:193
-#: includes/pro/admin/class-pro-admin.php:120
 msgid "Clear cache"
 msgstr ""
 
@@ -854,9 +844,9 @@ msgstr ""
 msgid "Top 10 Settings"
 msgstr ""
 
+#: includes/admin/class-admin.php:339
 #: includes/admin/class-settings.php:161
 #: includes/admin/class-settings.php:1202
-#: includes/pro/admin/class-admin-bar.php:70
 msgid "Settings"
 msgstr ""
 
@@ -1756,11 +1746,11 @@ msgstr ""
 msgid "Follow me"
 msgstr ""
 
-#: includes/class-main.php:288
+#: includes/class-main.php:278
 msgid "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10."
 msgstr ""
 
-#: includes/class-main.php:290
+#: includes/class-main.php:280
 msgid "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10 Pro."
 msgstr ""
 
@@ -1788,15 +1778,11 @@ msgstr ""
 #: includes/frontend/widgets/class-posts-widget.php:88
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:16
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-offset-controls.js:13
 msgid "Offset"
 msgstr ""
 
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:19
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-offset-controls.js:24
 msgid "Number of posts to skip from the top"
 msgstr ""
 
@@ -2062,21 +2048,21 @@ msgstr ""
 msgid "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
 msgstr ""
 
-#: includes/frontend/class-display.php:785
+#: includes/frontend/class-display.php:764
 msgid " by "
 msgstr ""
 
 #. translators: %s: Post title.
-#: includes/frontend/class-display.php:977
+#: includes/frontend/class-display.php:956
 #, php-format
 msgid "Continue reading %s"
 msgstr ""
 
-#: includes/frontend/class-display.php:985
+#: includes/frontend/class-display.php:964
 msgid "(more&hellip;)"
 msgstr ""
 
-#: includes/frontend/class-display.php:1013
+#: includes/frontend/class-display.php:992
 msgid "There is no excerpt because this is a protected post."
 msgstr ""
 
@@ -2194,394 +2180,12 @@ msgctxt "tag delimiter"
 msgid ","
 msgstr ""
 
-#: includes/pro/admin/class-pro-admin.php:85
-msgid "Only from categories (comma-separated list of term taxonomy IDs):"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:262
-#: includes/pro/admin/class-pro-admin.php:304
-msgid "Selected Day"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:351
-msgid "No popular posts found for this day."
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-grid-posts.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Grid"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-grid-posts.php:10
-msgid "Display a grid of posts. The default layout includes the post title, excerpt and date"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-grid-thumb-posts.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Thumbnail Grid"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-grid-thumb-posts.php:10
-msgid "Display a grid of post thumbnails and titles."
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-image-title-excerpt.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Image, Title, Excerpt"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-image-title-excerpt.php:10
-msgid "Display a list of popular posts with image, title and excerpt in a single column."
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-left-thumbnail.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Left Thumbnails"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-left-thumbnail.php:12
-msgid "Display a small image on the left and the post title, date and excerpt of popular posts on the right in a two column format. Stacks on mobile."
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-numbered-list.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Numbered List"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-numbered-list.php:10
-msgid "Display a list of post titles in a numbered list. The list numbering is styled using CSS."
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-rounded-thumbs.php:9
-msgctxt "Block pattern title"
-msgid "Popular Posts: Rounded Thumbs"
-msgstr ""
-
-#: includes/pro/blocks/block-patterns/query-rounded-thumbs.php:10
-msgid "Display a grid of featured post rounded thumbnails."
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:235
-msgid "Use the first image in the post"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:241
-msgid "Use image from meta key"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:247
-msgid "Meta key for image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:253
-msgid "Use a custom image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:259
-msgid "URL of the custom image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:265
-msgid "Use the default image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:271
-msgid "Use the site icon"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:277
-msgid "Image size slug"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:283
-msgid "Aspect ratio"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:289
-msgid "Width of the image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:295
-msgid "Height of the image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:301
-msgid "Scale of the image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:307
-msgid "Style of the image"
-msgstr ""
-
-#: includes/pro/blocks/class-featured-image.php:331
-msgid "No post ID provided."
-msgstr ""
-
-#: includes/pro/blocks/class-popular-posts-pro.php:50
-msgid "Popular Posts Block Default Settings"
-msgstr ""
-
-#: includes/pro/blocks/class-query.php:266
-msgctxt "Block pattern category"
-msgid "Popular Posts"
-msgstr ""
-
-#: includes/pro/blocks/class-query.php:267
-msgid "Display your popular posts in lists, grids or other layouts."
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/custom-image-controls.js:23
-msgid "Use Custom Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/custom-image-controls.js:33
-msgid "The custom image will be prioritised after the featured image and before the other settings above."
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/custom-image-controls.js:41
-msgid "Change Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/custom-image-controls.js:42
-msgid "Select Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/custom-image-controls.js:52
-msgid "Remove Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/default-image-controls.js:15
-msgid "Use Default Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/default-image-controls.js:16
-msgid "You can set this in the Top 10 Settings screen."
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/first-image-controls.js:15
-msgid "Use First Image from Post"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/meta-key-image-controls.js:18
-msgid "Use Image from Meta Key"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/meta-key-image-controls.js:26
-msgid "Override Image Meta Key"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/meta-key-image-controls.js:29
-msgid "Enter the meta key name for the image. The meta key should contain the full image URL."
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/site-icon-controls.js:15
-msgid "Use Site Icon"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/components/site-icon-controls.js:16
-msgid "You can set this in Settings > General"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/controls.js:56
-msgid "Top 10 Featured Image Settings"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/index.js:19
-msgid "Top 10 Featured Image"
-msgstr ""
-
-#: includes/pro/blocks/build/featured-image/index.js:1
-#: includes/pro/blocks/src/featured-image/index.js:20
-msgid "An advanced featured image block that falls back to the first image, meta key, or a default image if no featured image is set."
-msgstr ""
-
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:83
-msgid "Settings saved."
-msgstr ""
-
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:85
-msgid "Failed to save settings."
-msgstr ""
-
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:101
-msgid "Settings cleared."
-msgstr ""
-
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:103
-msgid "Failed to clear settings."
-msgstr ""
-
 #: includes/admin/class-settings-wizard.php:145
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:110
 msgid "Pro Settings"
 msgstr ""
 
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:112
-msgid "Save as Default"
-msgstr ""
-
-#: includes/pro/blocks/build/popular-posts-pro/index.js:1
-#: includes/pro/blocks/src/popular-posts-pro/index.js:115
-msgid "Clear Default"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/include-posts-controls.js:28
-msgid "Enter Post IDs"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/include-posts-controls.js:31
-msgid "Enter a comma-separated list of post IDs."
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-count-controls.js:18
-msgid "Number of Posts"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-control.js:66
-msgid "Start typing to search for a meta key."
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-control.js:69
-msgid "Meta Key"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-control.js:97
-#: includes/pro/blocks/src/query/components/post-order-controls.js:42
-msgid "Meta Value"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-control.js:117
-msgid "Meta Compare"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-control.js:161
-msgid "Remove meta query"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-query-controls.js:63
-msgid "Post Meta Query"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-query-controls.js:67
-msgid "Query Relationship"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-query-controls.js:90
-msgid "Add a meta query to select post meta to query"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-meta-query-controls.js:146
-msgid "Add meta query"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:26
-msgid "Last Modified Date"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:38
-msgid "Random"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:46
-msgid "Meta Value Num"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:50
-msgid "Menu Order"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:62
-msgid "Order By"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:66
-msgid "Meta Value and Meta Value Num require that Meta Key is set in the Meta Query section."
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-order-controls.js:83
-msgid "Ascending Order"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-type-controls.js:25
-msgid "These post types will be queried for popular posts."
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/components/post-type-controls.js:31
-msgid "Post Types"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/controls.js:65
-msgid "Top 10 Query Settings"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/index.js:18
-msgid "Top 10 Query Loop"
-msgstr ""
-
-#: includes/pro/blocks/build/query/index.js:1
-#: includes/pro/blocks/src/query/index.js:19
-msgid "An advanced Top 10 block that allows displaying the popular posts with a fully customizable layout"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:78
 #: test-tools/class-tracker-benchmark.php:369
 msgid "Fast tracker"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:79
-msgid "Uses an external JavaScript file"
-msgstr ""
-
-#: includes/pro/class-styles.php:43
-msgid "Grid thumbnails"
-msgstr ""
-
-#: includes/pro/class-styles.php:44
-msgid "Displays the popular posts in a grid."
 msgstr ""
 
 #. translators: 1: Number of entries cleared.
@@ -2606,11 +2210,6 @@ msgstr ""
 
 #: includes/wz-pluggables.php:32
 msgid "Once quarterly"
-msgstr ""
-
-#. Plugin Name of the plugin
-#: top-10.php
-msgid "Top 10 Pro"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -2909,147 +2508,6 @@ msgstr ""
 msgid "Entries: %1$s | Size: %2$s"
 msgstr ""
 
-#: includes/pro/admin/class-dashboard-widgets.php:73
-msgid "View full Top 10 Dashboard"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:143
-msgid "Copy All Top 10 Settings Between Sites"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:146
-msgid "Select the source site to copy settings from. This action will overwrite any settings on the destination sites. Remember to backup your settings before performing this action."
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:153
-msgid "Source Site"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:166
-msgid "Destination Sites"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:171
-msgid "Select All"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:188
-msgid "Copy Settings"
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:374
-msgid "Security check failed."
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:378
-msgid "Missing required data."
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:385
-msgid "Invalid blog IDs provided."
-msgstr ""
-
-#. translators: 1: source blog ID, 2: comma-separated target blog IDs
-#: includes/pro/admin/class-pro-admin.php:436
-#, php-format
-msgid "Top 10 settings copied from site ID %1$s to %2$s."
-msgstr ""
-
-#: includes/pro/admin/class-pro-admin.php:441
-msgid "Top 10 settings copied successfully."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:84
-msgid "High-traffic Tracker"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:85
-msgid "Optimised tracker for very high traffic"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:124
-msgid "High-traffic tracker:"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:125
-msgid "This option bypasses WordPress to record views directly in the database for maximum performance."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:126
-msgid "Generate the secure config before enabling this tracker and whenever your database credentials or prefix change. The existing config file will be replaced."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:135
-msgid "Generate high-traffic config file? This will replace any existing config."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:136
-msgid "Generate High-traffic config"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:144
-msgid "Delete the high-traffic config file? This cannot be undone."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:146
-msgid "Delete High-traffic config"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:169
-msgid "You do not have permission to generate the config."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:183
-#: includes/pro/class-fast-tracker.php:239
-msgid "High-traffic config file generated successfully."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:187
-#: includes/pro/class-fast-tracker.php:241
-msgid "Failed to generate high-traffic config file."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:200
-msgid "You do not have permission to delete the config."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:214
-msgid "High-traffic config file deleted."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:218
-msgid "Failed to delete high-traffic config file."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:502
-msgid "No High-traffic config file found. Please generate one before enabling the High-traffic tracker."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:513
-#: includes/pro/class-fast-tracker.php:522
-#: includes/pro/class-fast-tracker.php:551
-#: includes/pro/class-fast-tracker.php:561
-msgid "High-traffic config file found at:"
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:515
-msgid "Error: This config file appears to be inside the document root and may be web-accessible. Please regenerate it to a safe location."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:524
-msgid "The High-traffic config file could not be read. Please regenerate it to ensure it matches the current database settings."
-msgstr ""
-
-#: includes/pro/class-fast-tracker.php:553
-msgid "The High-traffic config file appears to be out of date. Please regenerate it."
-msgstr ""
-
-#. translators: %s: localized datetime string.
-#: includes/pro/class-fast-tracker.php:591
-#, php-format
-msgid "Last generated on %s."
-msgstr ""
-
 #: test-tools/class-tracker-benchmark.php:268
 msgid "Tracker not recognised."
 msgstr ""
@@ -3087,7 +2545,7 @@ msgid "HTTP status %d"
 msgstr ""
 
 #. translators: %s: Name of the deactivated plugin
-#: top-10.php:141
+#: top-10.php:138
 #, php-format
 msgid "Top 10 and Top 10 PRO should not be active at the same time. We've automatically deactivated %s."
 msgstr ""
@@ -3132,4 +2590,28 @@ msgstr ""
 #: includes/frontend/blocks/src/post-count/block.json
 msgctxt "block description"
 msgid "Display the number of visits for a post."
+msgstr ""
+
+#: includes/admin/class-admin.php:319
+msgid "Top 10 quick links"
+msgstr ""
+
+#: includes/admin/class-admin.php:320
+msgid "Top 10 admin shortcuts"
+msgstr ""
+
+#: includes/admin/class-admin.php:321
+msgid "WebberZone Top 10"
+msgstr ""
+
+#: includes/admin/class-admin.php:322
+msgid "Track and display popular posts on your site."
+msgstr ""
+
+#: includes/admin/class-admin.php:323
+msgid "Jump to your most-used Top 10 tools, manage content faster, and explore more WebberZone plugins."
+msgstr ""
+
+#: includes/admin/class-admin.php:351
+msgid "WebberZone Plugins"
 msgstr ""
