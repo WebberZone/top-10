@@ -10,6 +10,7 @@ namespace WebberZone\Top_Ten\Admin;
 use WebberZone\Top_Ten\Util\Cache;
 use WebberZone\Top_Ten\Admin\Settings_Wizard;
 use WebberZone\Top_Ten\Admin\Admin_Notices_API;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -207,7 +208,7 @@ class Admin {
 	 * @since 3.3.0
 	 */
 	public function hooks() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**

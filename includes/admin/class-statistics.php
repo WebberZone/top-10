@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Util\Hook_Registry;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -39,9 +41,9 @@ class Statistics {
 	 * @return void
 	 */
 	public function __construct() {
-		add_filter( 'set-screen-option', array( __CLASS__, 'set_screen' ), 10, 3 );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		Hook_Registry::add_filter( 'set-screen-option', array( __CLASS__, 'set_screen' ), 10, 3 );
+		Hook_Registry::add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**

@@ -9,6 +9,7 @@ namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -36,13 +37,13 @@ class Import_Export {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'admin_init', array( $this, 'process_settings_import' ), 9 );
-		add_filter( 'admin_init', array( $this, 'process_settings_export' ) );
-		add_filter( 'admin_init', array( $this, 'export_tables' ) );
-		add_filter( 'admin_init', array( $this, 'import_tables' ), 9 );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		Hook_Registry::add_filter( 'admin_init', array( $this, 'process_settings_import' ), 9 );
+		Hook_Registry::add_filter( 'admin_init', array( $this, 'process_settings_export' ) );
+		Hook_Registry::add_filter( 'admin_init', array( $this, 'export_tables' ) );
+		Hook_Registry::add_filter( 'admin_init', array( $this, 'import_tables' ), 9 );
+		Hook_Registry::add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		Hook_Registry::add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
+		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		new WPP_Importer();
 	}

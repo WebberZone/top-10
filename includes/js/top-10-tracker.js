@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
         body: new URLSearchParams(params).toString()
     })
         .then(function (response) {
-            return response.json();
+            if (!response.ok && 204 !== response.status) {
+                throw new Error('Tracker request failed');
+            }
+
+            return response.text();
         })
         .then(function (data) {
             // handle the response data

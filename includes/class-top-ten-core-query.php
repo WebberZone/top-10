@@ -10,6 +10,7 @@ namespace WebberZone\Top_Ten;
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Frontend\Display;
 use WebberZone\Top_Ten\Util\Helpers;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -132,18 +133,18 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 * @since 4.0.0
 	 */
 	public function hooks() {
-		add_filter( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10 );
-		add_filter( 'posts_fields', array( $this, 'posts_fields' ), 10, 2 );
-		add_filter( 'posts_join', array( $this, 'posts_join' ), 10, 2 );
-		add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
-		add_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 10, 2 );
-		add_filter( 'posts_groupby', array( $this, 'posts_groupby' ), 10, 2 );
-		add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 20, 2 );
-		add_filter( 'posts_request', array( $this, 'posts_request' ), 20, 2 );
-		add_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ), 10, 2 );
-		add_filter( 'the_posts', array( $this, 'the_posts' ), 10, 2 );
-		add_action( 'the_post', array( $this, 'switch_to_blog_in_loop' ) );
-		add_action( 'loop_end', array( $this, 'loop_end' ) );
+		Hook_Registry::add_filter( 'pre_get_posts', array( $this, 'pre_get_posts' ), 10 );
+		Hook_Registry::add_filter( 'posts_fields', array( $this, 'posts_fields' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_join', array( $this, 'posts_join' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_groupby', array( $this, 'posts_groupby' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 20, 2 );
+		Hook_Registry::add_filter( 'posts_request', array( $this, 'posts_request' ), 20, 2 );
+		Hook_Registry::add_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ), 10, 2 );
+		Hook_Registry::add_filter( 'the_posts', array( $this, 'the_posts' ), 10, 2 );
+		Hook_Registry::add_action( 'the_post', array( $this, 'switch_to_blog_in_loop' ) );
+		Hook_Registry::add_action( 'loop_end', array( $this, 'loop_end' ) );
 	}
 
 	/**

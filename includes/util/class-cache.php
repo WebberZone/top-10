@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Util;
 
+use WebberZone\Top_Ten\Util\Hook_Registry;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -24,7 +26,7 @@ class Cache {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'wp_ajax_tptn_clear_cache', array( $this, 'ajax_clearcache' ) );
+		Hook_Registry::add_action( 'wp_ajax_tptn_clear_cache', array( $this, 'ajax_clearcache' ) );
 	}
 
 	/**

@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -42,9 +43,9 @@ class Activator {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'wpmu_drop_tables', array( $this, 'on_delete_blog' ) );
-		add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
-		add_action( 'wp_initialize_site', array( $this, 'activate_new_site' ) );
+		Hook_Registry::add_filter( 'wpmu_drop_tables', array( $this, 'on_delete_blog' ) );
+		Hook_Registry::add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
+		Hook_Registry::add_action( 'wp_initialize_site', array( $this, 'activate_new_site' ) );
 	}
 
 	/**
