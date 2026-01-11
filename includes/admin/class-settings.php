@@ -1526,6 +1526,17 @@ class Settings {
 			);
 		}
 
+		if ( isset( $args['id'] ) && 'tptn_styles' === $args['id'] ) {
+			$post_thumb_op = \tptn_get_option( 'post_thumb_op' );
+
+			if ( 'text_only' === $post_thumb_op ) {
+				$output .= sprintf(
+					'<p class="description" style="color:#9B0800;">%s</p>',
+					esc_html__( 'Note: Thumbnail position set to “Do not display thumbnails, only text”. The plugin will force the output style to “Text only” regardless of what you choose here.', 'top-10' )
+				);
+			}
+		}
+
 		return $output;
 	}
 
