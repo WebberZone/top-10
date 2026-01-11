@@ -134,30 +134,6 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
-
-	// Prompt the user when they leave the page without saving the form.
-	var formmodified = 0;
-
-	function confirmFormChange() {
-		formmodified = 1;
-	}
-
-	function confirmExit() {
-		if (formmodified == 1) {
-			return true;
-		}
-	}
-
-	function formNotModified() {
-		formmodified = 0;
-	}
-
-	$('form').on('change', 'input, textarea, select', confirmFormChange);
-
-	window.onbeforeunload = confirmExit;
-
-	$('input[name="submit"], input#search-submit, input#doaction, input#doaction2, input[name="filter_action"]').on('click', formNotModified);
-
 	$(function () {
 		var $tabsContainer = $("#dashboard-historical-visits");
 		$tabsContainer.tabs({

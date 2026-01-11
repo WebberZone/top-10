@@ -10,6 +10,7 @@ namespace WebberZone\Top_Ten\Admin;
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Admin\Activator;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -37,15 +38,15 @@ class Tools_Page {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_init', array( $this, 'handle_recreate_tables_action' ) );
+		Hook_Registry::add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		Hook_Registry::add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
+		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		Hook_Registry::add_action( 'admin_init', array( $this, 'handle_recreate_tables_action' ) );
 
 		// Clear table statistics cache when counts are updated.
-		add_action( 'tptn_count_updated', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
-		add_action( 'tptn_delete_counts', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
-		add_action( 'tptn_set_count', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
+		Hook_Registry::add_action( 'tptn_count_updated', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
+		Hook_Registry::add_action( 'tptn_delete_counts', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
+		Hook_Registry::add_action( 'tptn_set_count', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
 	}
 
 	/**

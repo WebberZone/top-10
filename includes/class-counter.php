@@ -9,6 +9,7 @@ namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	exit;
@@ -27,10 +28,10 @@ class Counter {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_filter( 'the_content', array( __CLASS__, 'the_content' ) );
-		add_filter( 'the_excerpt_rss', array( __CLASS__, 'rss_filter' ) );
-		add_filter( 'the_content_feed', array( __CLASS__, 'rss_filter' ) );
-		add_action( 'wp_ajax_tptn_edit_count_ajax', array( __CLASS__, 'edit_count_ajax' ) );
+		Hook_Registry::add_filter( 'the_content', array( __CLASS__, 'the_content' ) );
+		Hook_Registry::add_filter( 'the_excerpt_rss', array( __CLASS__, 'rss_filter' ) );
+		Hook_Registry::add_filter( 'the_content_feed', array( __CLASS__, 'rss_filter' ) );
+		Hook_Registry::add_action( 'wp_ajax_tptn_edit_count_ajax', array( __CLASS__, 'edit_count_ajax' ) );
 	}
 
 	/**

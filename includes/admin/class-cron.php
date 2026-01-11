@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -21,7 +22,7 @@ class Cron {
 	 * Initialize the class.
 	 */
 	public function __construct() {
-		add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
+		Hook_Registry::add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
 	}
 
 	/**

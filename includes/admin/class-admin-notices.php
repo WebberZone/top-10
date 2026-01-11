@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -26,7 +27,7 @@ class Admin_Notices {
 	 * @since 4.1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_notices', array( $this, 'missing_table_notice' ) );
+		Hook_Registry::add_action( 'admin_notices', array( $this, 'missing_table_notice' ) );
 	}
 
 	/**
