@@ -1386,30 +1386,32 @@ class Settings {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( empty( $this->settings_api->settings_page ) || $hook !== $this->settings_api->settings_page ) {
+		if ( ! isset( $this->settings_api->settings_page ) || $this->settings_api->settings_page !== $hook ) {
 			return;
 		}
-		wp_localize_script(
-			'wz-admin-js',
-			'tptn_admin',
-			array(
-				'thumb_default' => Display::get_default_thumbnail(),
-			)
-		);
+
 		wp_enqueue_script( 'top-ten-admin-js' );
 		wp_enqueue_style( 'top-ten-admin-css' );
 		wp_enqueue_style( 'wp-spinner' );
 		wp_localize_script(
 			'top-ten-admin-js',
+			'tptn_admin',
+			array(
+				'thumb_default' => Display::get_default_thumbnail(),
+			)
+		);
+		wp_localize_script(
+			'top-ten-admin-js',
 			'top_ten_admin_data',
 			array(
-				'ajax_url'             => admin_url( 'admin-ajax.php' ),
-				'security'             => wp_create_nonce( 'tptn-admin' ),
-				'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
-				'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
-				'success_message'      => esc_html__( 'Cache cleared successfully!', 'top-10' ),
-				'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
-				'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+				'security' => wp_create_nonce( 'tptn-admin' ),
+				'strings'  => array(
+					'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+					'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
+					'success_message'      => esc_html__( 'Cache cleared successfully!', 'top-10' ),
+					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
+					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+				),
 			)
 		);
 	}

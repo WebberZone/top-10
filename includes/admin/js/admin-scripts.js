@@ -1,10 +1,10 @@
 jQuery(document).ready(function ($) {
 
 	$('button[name="tptn_cache_clear"]').on('click', function () {
-		if (confirm(top_ten_admin_data.confirm_message)) {
+		if (confirm(top_ten_admin_data.strings.confirm_message)) {
 			var $button = $(this);
 			var originalText = $button.text();
-			var clearingText = top_ten_admin_data.clearing_text ? top_ten_admin_data.clearing_text : 'Clearing...';
+			var clearingText = top_ten_admin_data.strings.clearing_text ? top_ten_admin_data.strings.clearing_text : 'Clearing...';
 			$button.prop('disabled', true).text(clearingText).append(' <span class="spinner is-active"></span>');
 			clearCache($button, originalText);
 		}
@@ -12,17 +12,17 @@ jQuery(document).ready(function ($) {
 
 	// Function to clear the cache.
 	function clearCache($button, originalText) {
-		$.post(top_ten_admin_data.ajax_url, {
+		$.post(ajaxurl, {
 			action: 'tptn_clear_cache',
 			security: top_ten_admin_data.security
 		}, function (response) {
 			if (response.success) {
 				alert(response.data.message);
 			} else {
-				alert(top_ten_admin_data.fail_message);
+				alert(top_ten_admin_data.strings.fail_message);
 			}
 		}).fail(function (jqXHR, textStatus) {
-			alert(top_ten_admin_data.request_fail_message + textStatus);
+			alert(top_ten_admin_data.strings.request_fail_message + textStatus);
 		}).always(function () {
 			if ($button && $button.length) {
 				$button.prop('disabled', false).text(originalText).find('.spinner').remove();
@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
 		var originalText = $button.text();
 		$button.prop('disabled', true).text('Generating...');
 
-		$.post(top_ten_admin_data.ajax_url, {
+		$.post(ajaxurl, {
 			action: 'tptn_generate_fast_config',
 			security: $button.data('nonce')
 		}, function (response) {
@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
 			}
 		}).fail(function (jqXHR, textStatus) {
 			if (window.console && window.console.error) {
-				window.console.error(top_ten_admin_data.request_fail_message + textStatus);
+				window.console.error(top_ten_admin_data.strings.request_fail_message + textStatus);
 			}
 		}).always(function () {
 			$button.prop('disabled', false).text(originalText);
@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
 		var originalText = $button.text();
 		$button.prop('disabled', true).text('Deleting...');
 
-		$.post(top_ten_admin_data.ajax_url, {
+		$.post(ajaxurl, {
 			action: 'tptn_delete_fast_config',
 			security: $button.data('nonce')
 		}, function (response) {
@@ -108,7 +108,7 @@ jQuery(document).ready(function ($) {
 			}
 		}).fail(function (jqXHR, textStatus) {
 			if (window.console && window.console.error) {
-				window.console.error(top_ten_admin_data.request_fail_message + textStatus);
+				window.console.error(top_ten_admin_data.strings.request_fail_message + textStatus);
 			}
 		}).always(function () {
 			$button.text(originalText);
