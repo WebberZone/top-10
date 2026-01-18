@@ -1584,12 +1584,7 @@ class Settings {
 			wp_send_json_error( 'Missing endpoint' );
 		}
 
-		$taxonomy = sanitize_key( $_REQUEST['endpoint'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$tax      = get_taxonomy( $taxonomy );
-
-		if ( ! $tax || ! current_user_can( $tax->cap->assign_terms ) ) {
-			wp_send_json_error( 'Invalid taxonomy or insufficient permissions' );
-		}
+		$endpoint = sanitize_key( $_REQUEST['endpoint'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$search_term = isset( $_REQUEST['q'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
@@ -1602,6 +1597,45 @@ class Settings {
 			$search_term = $search_term[ count( $search_term ) - 1 ];
 		}
 		$search_term = trim( $search_term );
+
+		if ( 'public_taxonomies' === $endpoint ) {
+			$taxonomies = (array) get_taxonomies( array( 'public' => true ), 'objects' );
+			$taxonomy   = array();
+			$tax        = null;
+
+			foreach ( $taxonomies as $taxonomy_name => $taxonomy_object ) {
+				if ( ! is_string( $taxonomy_name ) || '' === $taxonomy_name ) {
+					continue;
+				}
+
+				if ( empty( $taxonomy_object->cap->assign_terms ) ) {
+					continue;
+				}
+
+				if ( ! current_user_can( $taxonomy_object->cap->assign_terms ) ) {
+					continue;
+				}
+
+				$taxonomy[] = $taxonomy_name;
+			}
+
+			if ( empty( $taxonomy ) ) {
+				wp_send_json_success( array() );
+			}
+
+			$tax = get_taxonomy( $taxonomy[0] );
+		} else {
+			$taxonomy = $endpoint;
+			$tax      = get_taxonomy( $taxonomy );
+
+			if ( ! $tax ) {
+				wp_send_json_error( 'Invalid taxonomy' );
+			}
+
+			if ( ! current_user_can( $tax->cap->assign_terms ) ) {
+				wp_send_json_error( 'Insufficient permissions' );
+			}
+		}
 
 		/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
 		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $search_term );
@@ -1649,6 +1683,29 @@ class Settings {
 			'data-wp-action'   => self::$prefix . '_taxonomy_search_tom_select',
 			'data-wp-nonce'    => wp_create_nonce( self::$prefix . '_taxonomy_search_tom_select' ),
 			'data-wp-endpoint' => $taxonomy,
+		);
+
+		if ( ! empty( $ts_config ) ) {
+			$attributes['data-ts-config'] = wp_json_encode( $ts_config );
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Get field attributes for Tom Select meta key search fields.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $ts_config Optional Tom Select configuration.
+	 * @return array Field attributes array.
+	 */
+	private static function get_meta_keys_search_field_attributes( $ts_config = array() ) {
+		$attributes = array(
+			'data-wp-prefix'   => strtoupper( (string) self::$prefix ),
+			'data-wp-action'   => self::$prefix . '_taxonomy_search_tom_select',
+			'data-wp-nonce'    => wp_create_nonce( self::$prefix . '_taxonomy_search_tom_select' ),
+			'data-wp-endpoint' => 'meta_keys',
 		);
 
 		if ( ! empty( $ts_config ) ) {
