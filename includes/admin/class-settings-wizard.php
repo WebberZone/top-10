@@ -186,18 +186,21 @@ class Settings_Wizard extends Settings_Wizard_API {
 	 */
 	public function get_translation_strings() {
 		return array(
-			'page_title'        => __( 'Top 10 Setup Wizard', 'top-10' ),
-			'menu_title'        => __( 'Setup Wizard', 'top-10' ),
-			'next_step'         => __( 'Next Step', 'top-10' ),
-			'previous_step'     => __( 'Previous Step', 'top-10' ),
-			'finish_setup'      => __( 'Finish Setup', 'top-10' ),
-			'skip_wizard'       => __( 'Skip Wizard', 'top-10' ),
+			'page_title'            => __( 'Top 10 Setup Wizard', 'top-10' ),
+			'menu_title'            => __( 'Setup Wizard', 'top-10' ),
+			'next_step'             => __( 'Next Step', 'top-10' ),
+			'previous_step'         => __( 'Previous Step', 'top-10' ),
+			'finish_setup'          => __( 'Finish Setup', 'top-10' ),
+			'skip_wizard'           => __( 'Skip Wizard', 'top-10' ),
+			/* translators: %s: Search query. */
+			'tom_select_no_results' => __( 'No results found for "%s"', 'top-10' ),
+			'steps_nav_aria_label'  => __( 'Setup Wizard Steps', 'top-10' ),
 			/* translators: %1$d: Current step number, %2$d: Total number of steps */
-			'step_of'           => __( 'Step %1$d of %2$d', 'top-10' ),
-			'wizard_complete'   => __( 'Setup Complete!', 'top-10' ),
-			'setup_complete'    => __( 'Your Top 10 plugin has been configured successfully. You can now start displaying popular posts on your site!', 'top-10' ),
-			'go_to_settings'    => __( 'Go to Settings', 'top-10' ),
-			'checkbox_modified' => __( 'Modified from default setting', 'top-10' ),
+			'step_of'               => __( 'Step %1$d of %2$d', 'top-10' ),
+			'wizard_complete'       => __( 'Setup Complete!', 'top-10' ),
+			'setup_complete'        => __( 'Your Top 10 plugin has been configured successfully. You can now start displaying popular posts on your site!', 'top-10' ),
+			'go_to_settings'        => __( 'Go to Settings', 'top-10' ),
+			'checkbox_modified'     => __( 'Modified from default setting', 'top-10' ),
 		);
 	}
 
