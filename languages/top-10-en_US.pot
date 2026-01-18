@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-18T07:25:03+00:00\n"
+"POT-Creation-Date: 2026-01-18T11:31:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: top-10\n"
@@ -165,9 +165,9 @@ msgid "Upgrade to Top 10 Pro to see your views over time chart here."
 msgstr ""
 
 #: includes/admin/class-dashboard-widgets.php:280
-#: includes/admin/class-settings.php:1504
-#: includes/admin/class-settings.php:1524
-#: includes/admin/class-settings.php:1525
+#: includes/admin/class-settings.php:1506
+#: includes/admin/class-settings.php:1526
+#: includes/admin/class-settings.php:1527
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -1271,7 +1271,7 @@ msgid "Check this box to show the default thumbnail from the next option if no t
 msgstr ""
 
 #: includes/admin/class-settings.php:894
-#: includes/admin/class-settings.php:1467
+#: includes/admin/class-settings.php:1469
 msgid "Default thumbnail"
 msgstr ""
 
@@ -1532,41 +1532,41 @@ msgstr ""
 msgid "Thank you for using %1$sWebberZone Top 10%2$s! Please %3$srate us%2$s on WordPress.org"
 msgstr ""
 
-#: includes/admin/class-settings.php:1408
+#: includes/admin/class-settings.php:1409
 #: includes/admin/class-tools-page.php:108
 msgid "Are you sure you want to clear the cache?"
 msgstr ""
 
-#: includes/admin/class-settings.php:1409
+#: includes/admin/class-settings.php:1410
 #: includes/admin/class-tools-page.php:109
 msgid "Clearing..."
 msgstr ""
 
-#: includes/admin/class-settings.php:1410
+#: includes/admin/class-settings.php:1411
 msgid "Cache cleared successfully!"
 msgstr ""
 
-#: includes/admin/class-settings.php:1411
+#: includes/admin/class-settings.php:1412
 #: includes/admin/class-tools-page.php:110
 msgid "Failed to clear cache. Please try again."
 msgstr ""
 
-#: includes/admin/class-settings.php:1412
+#: includes/admin/class-settings.php:1413
 #: includes/admin/class-tools-page.php:111
 msgid "Request failed: "
 msgstr ""
 
-#: includes/admin/class-settings.php:1535
+#: includes/admin/class-settings.php:1537
 msgid "Note: Thumbnail position set to “Do not display thumbnails, only text”. The plugin will force the output style to “Text only” regardless of what you choose here."
 msgstr ""
 
-#: includes/admin/class-settings.php:1551
 #: includes/admin/class-settings.php:1553
-#: includes/admin/class-settings.php:1554
+#: includes/admin/class-settings.php:1555
+#: includes/admin/class-settings.php:1556
 msgid "Start Settings Wizard"
 msgstr ""
 
-#: includes/admin/class-settings.php:1591
+#: includes/admin/class-settings.php:1593
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""
