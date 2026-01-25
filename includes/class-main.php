@@ -24,97 +24,106 @@ final class Main {
 	 *
 	 * @var Main
 	 */
-	private static $instance;
+	private static ?self $instance = null;
 
 	/**
 	 * Admin.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Admin.
+	 * @var Admin\Admin
 	 */
-	public $admin;
+	public ?Admin\Admin $admin = null;
+
+	/**
+	 * Network Admin.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var Admin\Network\Admin
+	 */
+	public ?Admin\Network\Admin $network_admin = null;
 
 	/**
 	 * Shortcodes.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Shortcodes.
+	 * @var Frontend\Shortcodes
 	 */
-	public $shortcodes;
+	public Frontend\Shortcodes $shortcodes;
 
 	/**
 	 * Blocks.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Blocks.
+	 * @var Frontend\Blocks\Blocks
 	 */
-	public $blocks;
+	public Frontend\Blocks\Blocks $blocks;
 
 	/**
 	 * Counter.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Counter.
+	 * @var Counter
 	 */
-	public $counter;
+	public Counter $counter;
 
 	/**
 	 * Tracker.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Tracker.
+	 * @var Tracker
 	 */
-	public $tracker;
+	public Tracker $tracker;
 
 	/**
 	 * Feed.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Feed.
+	 * @var Frontend\Feed
 	 */
-	public $feed;
+	public Frontend\Feed $feed;
 
 	/**
 	 * Styles.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Styles.
+	 * @var Frontend\Styles_Handler
 	 */
-	public $styles;
+	public Frontend\Styles_Handler $styles;
 
 	/**
 	 * Language Handler.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Language Handler.
+	 * @var Frontend\Language_Handler
 	 */
-	public $language;
+	public Frontend\Language_Handler $language;
 
 	/**
 	 * Cron class.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var object Cron class.
+	 * @var Cron
 	 */
-	public $cron;
+	public Cron $cron;
 
 	/**
 	 * Pro class.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var object Pro class.
+	 * @var Pro\Pro
 	 */
-	public $pro;
+	public ?Pro\Pro $pro = null;
 
 	/**
 	 * Gets the instance of the class.
@@ -158,10 +167,20 @@ final class Main {
 
 		new Hook_Loader();
 
+		// Initialize admin on init action to ensure translations are loaded.
+		add_action( 'init', array( $this, 'init_admin' ) );
+	}
+
+	/**
+	 * Initialize admin components.
+	 *
+	 * @since 4.2.0
+	 */
+	public function init_admin(): void {
 		if ( is_admin() ) {
 			$this->admin = new Admin\Admin();
 			if ( is_multisite() ) {
-				new Admin\Network\Admin();
+				$this->network_admin = new Admin\Network\Admin();
 			}
 		}
 	}

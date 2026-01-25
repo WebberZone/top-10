@@ -21,7 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class to register the settings.
  *
- * @version 1.0
  * @since   3.3.0
  */
 class Settings {
