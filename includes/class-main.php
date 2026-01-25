@@ -158,10 +158,6 @@ final class Main {
 
 		new Hook_Loader();
 
-		if ( ! function_exists( 'tptn_freemius' ) ) {
-			require_once dirname( __DIR__ ) . '/load-freemius.php';
-		}
-
 		if ( is_admin() ) {
 			$this->admin = new Admin\Admin();
 			if ( is_multisite() ) {

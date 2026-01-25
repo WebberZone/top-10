@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-18T11:31:22+00:00\n"
+"POT-Creation-Date: 2026-01-24T19:16:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: top-10\n"
@@ -576,7 +576,7 @@ msgid "Your Top 10 plugin has been configured successfully. You can now start di
 msgstr ""
 
 #: includes/admin/class-settings-wizard.php:202
-#: includes/admin/class-settings-wizard.php:374
+#: includes/admin/class-settings-wizard.php:376
 msgid "Go to Settings"
 msgstr ""
 
@@ -593,11 +593,11 @@ msgstr ""
 msgid "Run Setup Wizard"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:377
+#: includes/admin/class-settings-wizard.php:379
 msgid "Go to Tools"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:380
+#: includes/admin/class-settings-wizard.php:382
 msgid "View Site"
 msgstr ""
 

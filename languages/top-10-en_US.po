@@ -2373,7 +2373,7 @@ msgid "Your Top 10 plugin has been configured successfully. You can now start di
 msgstr ""
 
 #: includes/admin/class-settings-wizard.php:202
-#: includes/admin/class-settings-wizard.php:374
+#: includes/admin/class-settings-wizard.php:376
 msgid "Go to Settings"
 msgstr ""
 
@@ -2385,11 +2385,11 @@ msgstr ""
 msgid "Run Setup Wizard"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:377
+#: includes/admin/class-settings-wizard.php:379
 msgid "Go to Tools"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:380
+#: includes/admin/class-settings-wizard.php:382
 msgid "View Site"
 msgstr ""
 
