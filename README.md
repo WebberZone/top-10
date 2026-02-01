@@ -1,4 +1,4 @@
-# Top 10  - Popular posts plugin for WordPress
+# WebberZone Top 10 — Popular Posts
 
 [![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)](https://wordpress.org/plugins/top-10/)
 
@@ -26,7 +26,7 @@ WordPress lacks built-in page view tracking or a popular posts feature. [Top 10]
 
 Top 10 provides blocks, widgets, shortcodes, and template functions for displaying popular posts and view counts across your site. All tracking data is stored locally in your WordPress database, with no external services involved.
 
-Despite numerous similar plugins, Top 10 stands out with comprehensive features including thumbnail support, flexible display options, custom post type support, and developer-friendly extensibility. A built-in caching layer reduces server load, while AJAX-based tracking avoids page cache interference and works with most popular caching plugins.
+Top 10 includes comprehensive features such as thumbnail support, flexible display options, custom post type support, and developer-friendly extensibility. A built-in caching layer reduces server load, while AJAX-based tracking avoids page cache interference and works with most popular caching plugins.
 
 Top 10 also exposes a powerful API with WordPress actions and filters, allowing developers to customise queries, tracking behaviour, and output rendering without modifying core plugin files.
 
