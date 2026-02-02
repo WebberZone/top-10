@@ -153,8 +153,6 @@ msgstr ""
 msgid "Historical visits"
 msgstr ""
 
-#. Plugin Name of the plugin
-#: top-10.php
 #: includes/admin/class-dashboard.php:199
 #: includes/admin/class-dashboard.php:226
 msgid "Top 10"
@@ -2628,4 +2626,9 @@ msgstr ""
 
 #: includes/admin/class-settings.php:1536
 msgid "Note: Thumbnail position set to “Do not display thumbnails, only text”. The plugin will force the output style to “Text only” regardless of what you choose here."
+msgstr ""
+
+#. Plugin Name of the plugin
+#: top-10.php
+msgid "WebberZone Top 10 — Popular Posts"
 msgstr ""
