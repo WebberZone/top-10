@@ -922,9 +922,9 @@ class Settings {
 				'id'      => 'tptn_styles',
 				'name'    => esc_html__( 'Popular posts style', 'top-10' ),
 				'desc'    => '',
-				'type'    => 'radiodesc',
+				'type'    => 'select',
 				'default' => 'no_style',
-				'options' => self::get_styles(),
+				'options' => wp_list_pluck( self::get_styles(), 'name', 'id' ),
 			),
 			'custom_css'  => array(
 				'id'          => 'custom_css',
@@ -1410,6 +1410,8 @@ class Settings {
 					'success_message'      => esc_html__( 'Cache cleared successfully!', 'top-10' ),
 					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
 					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+					'left_thumbs_message'  => esc_html__( 'Note: This setting cannot be changed as the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+					'text_only_message'    => esc_html__( 'Note: This setting cannot be changed as the Popular posts style is set to Text only. You can change the style in the Styles tab.', 'top-10' ),
 				),
 			)
 		);
@@ -1442,6 +1444,35 @@ class Settings {
 		// Force thumb_width and thumb_height if either are zero.
 		if ( empty( $settings['thumb_width'] ) || empty( $settings['thumb_height'] ) ) {
 			list( $settings['thumb_width'], $settings['thumb_height'] ) = Media_Handler::get_thumb_size( $settings['thumb_size'] );
+		}
+
+		// Overwrite settings based on selected style; guard against missing keys on reset.
+		$style = $settings['tptn_styles'] ?? '';
+
+		// Overwrite settings if left_thumbs style is selected.
+		if ( 'left_thumbs' === $style ) {
+			$post_thumb_op = $settings['post_thumb_op'] ?? '';
+			if ( 'inline' !== $post_thumb_op && 'thumbs_only' !== $post_thumb_op ) {
+				$settings['post_thumb_op'] = 'inline';
+			}
+
+			add_settings_error(
+				self::$prefix . '-notices',
+				'',
+				esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+				'warning'
+			);
+		}
+		// Overwrite settings if text_only style is selected.
+		if ( 'text_only' === $style ) {
+			$settings['post_thumb_op'] = 'text_only';
+
+			add_settings_error(
+				self::$prefix . '-notices',
+				'',
+				esc_html__( 'Note: Thumbnail location set to Text only as the Popular posts style is set to Text only. You can change the style in the Styles tab.', 'top-10' ),
+				'warning'
+			);
 		}
 
 		// Delete the cache.
@@ -1529,11 +1560,12 @@ class Settings {
 
 		if ( isset( $args['id'] ) && 'tptn_styles' === $args['id'] ) {
 			$post_thumb_op = \tptn_get_option( 'post_thumb_op' );
+			$tptn_style    = \tptn_get_option( 'tptn_styles' );
 
-			if ( 'text_only' === $post_thumb_op ) {
+			if ( 'text_only' === $post_thumb_op && 'text_only' !== $tptn_style ) {
 				$output .= sprintf(
 					'<p class="description" style="color:#9B0800;">%s</p>',
-					esc_html__( 'Note: Thumbnail position set to “Do not display thumbnails, only text”. The plugin will force the output style to “Text only” regardless of what you choose here.', 'top-10' )
+					esc_html__( 'Note: Thumbnail location is set to "Do not display thumbnails, only text". This may override the selected style.', 'top-10' )
 				);
 			}
 		}

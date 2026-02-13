@@ -30,6 +30,91 @@ jQuery(document).ready(function ($) {
 		});
 	}
 
+	/**
+	 * Handle style changes and enforce valid thumbnail location settings.
+	 */
+	function tptnHandleThumbnailStyleChange() {
+		var $styleSelect = $('select[name="tptn_settings[tptn_styles]"]');
+		if (!$styleSelect.length) {
+			return;
+		}
+
+		var $postThumbOptions = $('input[name="tptn_settings[post_thumb_op]"]');
+		if (!$postThumbOptions.length) {
+			return;
+		}
+
+		function removeMessage() {
+			var $container = $postThumbOptions.first().closest('td');
+			if (!$container.length) {
+				$container = $postThumbOptions.first().parent();
+			}
+			$container.find('.tptn-js-message').remove();
+		}
+
+		function addMessage(message) {
+			if (!message) {
+				return;
+			}
+
+			var $container = $postThumbOptions.first().closest('td');
+			if (!$container.length) {
+				$container = $postThumbOptions.first().parent();
+			}
+
+			var $existingMessage = $container.find('.tptn-js-message');
+			if ($existingMessage.length) {
+				$existingMessage.text(message);
+				return;
+			}
+
+			$container.append(
+				$('<p />', {
+					'class': 'description tptn-js-message',
+					'css': { 'color': '#9B0800' },
+					'text': message
+				})
+			);
+		}
+
+		function updateFieldStates() {
+			var selectedStyle = $styleSelect.val();
+			var strings = top_ten_admin_data.strings || {};
+			var $checked = $postThumbOptions.filter(':checked');
+
+			removeMessage();
+			$postThumbOptions.prop('disabled', false);
+
+			if ('left_thumbs' === selectedStyle) {
+				$postThumbOptions.each(function () {
+					var $option = $(this);
+					var value = $option.val();
+
+					if ('inline' !== value && 'thumbs_only' !== value) {
+						$option.prop('disabled', true);
+					}
+				});
+
+				if (!$checked.length || ('inline' !== $checked.val() && 'thumbs_only' !== $checked.val())) {
+					$postThumbOptions.filter('[value="inline"]').prop('checked', true);
+				}
+
+				addMessage(strings.left_thumbs_message);
+			}
+
+			if ('text_only' === selectedStyle) {
+				$postThumbOptions.prop('disabled', true);
+				$postThumbOptions.filter('[value="text_only"]').prop('checked', true);
+				addMessage(strings.text_only_message);
+			}
+		}
+
+		updateFieldStates();
+		$styleSelect.on('change', updateFieldStates);
+	}
+
+	tptnHandleThumbnailStyleChange();
+
 	function updateFastConfigUI($button, data) {
 		if (!data) {
 			return;
