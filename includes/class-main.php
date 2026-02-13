@@ -167,7 +167,6 @@ final class Main {
 
 		new Hook_Loader();
 
-		// Initialize admin on init action to ensure translations are loaded.
 		add_action( 'init', array( $this, 'init_admin' ) );
 	}
 
