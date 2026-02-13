@@ -169,6 +169,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* [Pro] Improved dashboard chart bar click-through to open the Popular Posts screen filtered to that day
 	* Updated Settings API to version 2.7.1
 	* Improved media handler with recursion protection and more robust processing
+	* Media Handler now supports the FIFU WordPress plugin for featured image detection.
 	* Improved Tools page statistics display and caching
 	* Wrapped Import/Export and Tools sections in postbox containers for consistent UI
 
