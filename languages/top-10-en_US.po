@@ -864,7 +864,6 @@ msgstr ""
 
 #: includes/admin/class-settings.php:181
 #: includes/admin/class-settings.php:1294
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:55
 msgid "Styles"
 msgstr ""
@@ -1115,7 +1114,6 @@ msgid "Overall"
 msgstr ""
 
 #: includes/admin/class-settings.php:472
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/range-controls.js:8
 msgid "Daily range"
 msgstr ""
@@ -1338,14 +1336,12 @@ msgstr ""
 
 #: includes/admin/class-settings.php:704
 #: includes/frontend/widgets/class-posts-widget.php:119
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:84
 msgid "Show date"
 msgstr ""
 
 #: includes/admin/class-settings.php:711
 #: includes/frontend/widgets/class-posts-widget.php:115
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:78
 msgid "Show author"
 msgstr ""
@@ -1485,7 +1481,7 @@ msgid "Check this box to show the default thumbnail from the next option if no t
 msgstr ""
 
 #: includes/admin/class-settings.php:893
-#: includes/admin/class-settings.php:1468
+#: includes/admin/class-settings.php:1499
 msgid "Default thumbnail"
 msgstr ""
 
@@ -1532,7 +1528,6 @@ msgid "Run maintenance"
 msgstr ""
 
 #: includes/admin/class-settings.php:1024
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:98
 msgid "Daily"
 msgstr ""
@@ -1586,7 +1581,6 @@ msgid "Comma separated list of category slugs to include in the feed. The field 
 msgstr ""
 
 #: includes/admin/class-settings.php:1120
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:40
 msgid "No styles"
 msgstr ""
@@ -1596,7 +1590,6 @@ msgid "Select this option if you plan to add your own styles"
 msgstr ""
 
 #: includes/admin/class-settings.php:1125
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:43
 msgid "Text only"
 msgstr ""
@@ -1606,7 +1599,6 @@ msgid "Disable thumbnails and no longer include the default style sheet included
 msgstr ""
 
 #: includes/admin/class-settings.php:1130
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:47
 msgid "Left thumbnails"
 msgstr ""
@@ -1669,9 +1661,9 @@ msgid "Cache cleared successfully!"
 msgstr ""
 
 #: includes/admin/class-dashboard-widgets.php:280
-#: includes/admin/class-settings.php:1505
-#: includes/admin/class-settings.php:1525
-#: includes/admin/class-settings.php:1526
+#: includes/admin/class-settings.php:1536
+#: includes/admin/class-settings.php:1556
+#: includes/admin/class-settings.php:1557
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -1752,290 +1744,234 @@ msgstr ""
 msgid "Top 10 and Top 10 Pro should not be active at the same time. We've automatically deactivated Top 10 Pro."
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/other-attributes-control.js:7
 msgid "Other attributes"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/other-attributes-control.js:10
 msgid "Enter other attributes in a URL-style string-query. e.g. post_types=post,page&link_nofollow=1&exclude_post_ids=5,6"
 msgstr ""
 
 #: includes/frontend/class-rest-api.php:294
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:8
 msgid "Number of posts"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:11
 msgid "Maximum number of posts to display"
 msgstr ""
 
 #: includes/frontend/widgets/class-posts-widget.php:88
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:16
 msgid "Offset"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:19
 msgid "Number of posts to skip from the top"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/range-controls.js:11
 msgid "Number of days"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/range-controls.js:16
 msgid "Hour range"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/range-controls.js:19
 msgid "Number of hours"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:58
 msgid "Select the style of the Popular Posts. Selecting \"Text only\" will change the below option for Thumbnail location to \"No Thumbnail\"."
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:65
 msgid "- Select a style -"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:73
 msgid "Thumbnail location"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:76
 msgid "Location of the post thumbnail. Selecting \"No thumbnail\" will change the above option for Styles to \"Text only\"."
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:83
 msgid "- Select a location -"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:87
 msgid "Before title"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:89
 msgid "After title"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:92
 msgid "Only thumbnail"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:96
 msgid "No thumbnail"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:37
 msgid "Popular Posts Settings"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:43
 msgid "Custom period?"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:66
 msgid "Show heading"
 msgstr ""
 
 #: includes/frontend/widgets/class-posts-widget.php:111
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:72
 msgid "Show excerpt"
 msgstr ""
 
 #: includes/frontend/widgets/class-posts-widget.php:107
-#: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:90
 msgid "Show count"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:65
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:90
 msgid "Padding"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:77
 msgid "Unlink Padding"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:78
 msgid "Link Padding"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:105
 msgid "Top"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:106
 msgid "Right"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:107
 msgid "Bottom"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/padding-control.js:108
 msgid "Left"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/components/unit-control.js:33
 msgid "Unit"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:90
 msgid "Counter Settings"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:94
 msgid "Counter Type"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:97
 msgid "Total"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:105
 msgid "From"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:115
 msgid "Select From Date"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:123
 #: includes/frontend/blocks/src/post-count/controls.js:160
 #: includes/frontend/blocks/src/post-count/controls.js:268
 msgid "Clear"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:143
 msgid "To"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:152
 msgid "Select To Date"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:181
 msgid "Number Formatting"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:190
 msgid "Text Customization"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:194
 msgid "Advanced Mode"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:204
 msgid "Text Before Count"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:211
 msgid "Text After Count"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:222
 msgid "Advanced Text"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:227
 #, js-format
 msgid "Use %totalcount% or %dailycount% as placeholders for the count value."
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:235
 msgid "Icon"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:243
 msgid "Icon SVG HTML"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:261
 msgid "Select SVG"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:290
 msgid "Icon Location"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:295
 msgid "Before Text"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:299
 msgid "After Text"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:307
 msgid "Icon will be placed after the text."
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:311
 msgid "Icon will be placed before the text."
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:318
 msgid "Icon Size"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:344
 msgid "Select an SVG"
 msgstr ""
@@ -2173,17 +2109,13 @@ msgstr ""
 msgid "Include IDs"
 msgstr ""
 
-#: includes/admin/class-settings.php:1592
+#: includes/admin/class-settings.php:1624
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""
 
 #: includes/admin/class-settings-wizard.php:145
 msgid "Pro Settings"
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:369
-msgid "Fast tracker"
 msgstr ""
 
 #. translators: 1: Number of entries cleared.
@@ -2486,9 +2418,9 @@ msgstr ""
 msgid "Clearing..."
 msgstr ""
 
-#: includes/admin/class-settings.php:1552
-#: includes/admin/class-settings.php:1554
-#: includes/admin/class-settings.php:1555
+#: includes/admin/class-settings.php:1584
+#: includes/admin/class-settings.php:1586
+#: includes/admin/class-settings.php:1587
 msgid "Start Settings Wizard"
 msgstr ""
 
@@ -2506,85 +2438,42 @@ msgstr ""
 msgid "Entries: %1$s | Size: %2$s"
 msgstr ""
 
-#: test-tools/class-tracker-benchmark.php:268
-msgid "Tracker not recognised."
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:335
-msgid "Query-based tracker"
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:346
-msgid "AJAX tracker"
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:359
-msgid "REST tracker"
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:380
-msgid "High-traffic tracker"
-msgstr ""
-
-#: test-tools/class-tracker-benchmark.php:389
-msgid "High-traffic config not found. Skipping."
-msgstr ""
-
-#. translators: %s: fallback reason header.
-#: test-tools/class-tracker-benchmark.php:441
-#, php-format
-msgid "High-traffic fallback: %s"
-msgstr ""
-
-#. translators: %d: HTTP status code.
-#: test-tools/class-tracker-benchmark.php:452
-#, php-format
-msgid "HTTP status %d"
-msgstr ""
-
 #. translators: %s: Name of the deactivated plugin
 #: top-10.php:138
 #, php-format
 msgid "Top 10 and Top 10 PRO should not be active at the same time. We've automatically deactivated %s."
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/block.json
 #: includes/frontend/blocks/src/popular-posts/block.json
 msgctxt "block title"
 msgid "Top 10 Popular Posts"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/block.json
 #: includes/frontend/blocks/src/popular-posts/block.json
 msgctxt "block keyword"
 msgid "top 10"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/block.json
 #: includes/frontend/blocks/src/popular-posts/block.json
 msgctxt "block keyword"
 msgid "popular posts"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/block.json
 #: includes/frontend/blocks/src/popular-posts/block.json
 msgctxt "block keyword"
 msgid "popular"
 msgstr ""
 
-#: includes/frontend/blocks/build/popular-posts/block.json
 #: includes/frontend/blocks/src/popular-posts/block.json
 msgctxt "block description"
 msgid "Display the Popular Posts"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/block.json
 #: includes/frontend/blocks/src/post-count/block.json
 msgctxt "block title"
 msgid "Top 10 Post Count"
 msgstr ""
 
-#: includes/frontend/blocks/build/post-count/block.json
 #: includes/frontend/blocks/src/post-count/block.json
 msgctxt "block description"
 msgid "Display the number of visits for a post."
@@ -2624,11 +2513,27 @@ msgstr ""
 msgid "Setup Wizard Steps"
 msgstr ""
 
-#: includes/admin/class-settings.php:1536
-msgid "Note: Thumbnail position set to “Do not display thumbnails, only text”. The plugin will force the output style to “Text only” regardless of what you choose here."
-msgstr ""
-
 #. Plugin Name of the plugin
 #: top-10.php
 msgid "WebberZone Top 10 — Popular Posts"
+msgstr ""
+
+#: includes/admin/class-settings.php:1413
+msgid "Note: This setting cannot be changed as the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/admin/class-settings.php:1414
+msgid "Note: This setting cannot be changed as the Popular posts style is set to Text only. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/admin/class-settings.php:1462
+msgid "Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/admin/class-settings.php:1473
+msgid "Note: Thumbnail location set to Text only as the Popular posts style is set to Text only. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/admin/class-settings.php:1568
+msgid "Note: Thumbnail location is set to \"Do not display thumbnails, only text\". This may override the selected style."
 msgstr ""
