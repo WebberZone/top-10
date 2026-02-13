@@ -55,21 +55,43 @@ class Styles_Handler {
 		if ( ! empty( $style_array['name'] ) ) {
 			$style     = $style_array['name'];
 			$extra_css = $style_array['extra_css'];
-
-			$pro = '';
-			if ( false !== strpos( $style, '-pro' ) ) {
-				$pro = 'pro/';
-			}
+			$is_rtl    = is_rtl();
 
 			wp_register_style(
 				"tptn-style-{$style}",
-				plugins_url( "css/{$pro}{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
+				plugins_url( self::get_stylesheet_path( $style, $is_rtl ), TOP_TEN_PLUGIN_FILE ),
 				array(),
 				TOP_TEN_VERSION
 			);
 			wp_enqueue_style( "tptn-style-{$style}" );
-			wp_add_inline_style( "tptn-style-{$style}", $extra_css );
+
+			if ( ! empty( $extra_css ) ) {
+				wp_add_inline_style( "tptn-style-{$style}", $extra_css );
+			}
 		}
+	}
+
+	/**
+	 * Get stylesheet path accounting for minified and pro files.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $style  Style name.
+	 * @param bool   $is_rtl Whether RTL stylesheet should be loaded.
+	 *
+	 * @return string
+	 */
+	public static function get_stylesheet_path( $style, $is_rtl = false ) {
+
+		$pro = '';
+		if ( false !== strpos( $style, '-pro' ) ) {
+			$pro = 'pro/';
+		}
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$rtl    = $is_rtl ? '-rtl' : '';
+
+		return "css/{$pro}{$style}{$rtl}{$suffix}.css";
 	}
 
 	/**
@@ -94,14 +116,14 @@ class Styles_Handler {
 			case 'left_thumbs':
 				$style_array['name']      = 'left-thumbs';
 				$style_array['extra_css'] = "
-			.tptn-left-thumbs a {
-				width: {$thumb_width}px;
-				height: {$thumb_height}px;
-				text-decoration: none;
+			.tptn-left-thumbs {
+				--tptn-thumb-width: {$thumb_width}px;
+				--tptn-thumb-height: {$thumb_height}px;
 			}
-			.tptn-left-thumbs img {
-				width: {$thumb_width}px;
-				max-height: {$thumb_height}px;
+			.tptn-left-thumbs img.tptn_thumb {
+				width: min( var(--tptn-thumb-width), 100% );
+				max-height: var(--tptn-thumb-height);
+				height: auto;
 				margin: auto;
 			}
 			.tptn-left-thumbs .tptn_title {
