@@ -1,35 +1,35 @@
 <?php
 /**
- * Functions to register client-side assets (scripts and stylesheets) for the
- * Gutenberg block.
+ * Blocks class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend\Blocks
  */
 
 namespace WebberZone\Top_Ten\Frontend\Blocks;
 
-use WebberZone\Top_Ten\Admin\Settings\Settings;
+use WebberZone\Top_Ten\Admin\Settings;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Frontend\Styles_Handler;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 /**
- * Widget to display the overall count.
+ * Blocks class.
  *
  * @since 3.3.0
  */
 class Blocks {
 
 	/**
-	 * Register widget with WordPress.
+	 * Register blocks with WordPress.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'register_blocks' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-		add_filter( 'block_editor_rest_api_preload_paths', array( $this, 'add_custom_preload_paths' ) );
+		Hook_Registry::add_action( 'init', array( $this, 'register_blocks' ) );
+		Hook_Registry::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+		Hook_Registry::add_filter( 'block_editor_rest_api_preload_paths', array( $this, 'add_custom_preload_paths' ) );
 	}
 
 	/**

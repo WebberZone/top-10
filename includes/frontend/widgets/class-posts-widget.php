@@ -1,8 +1,8 @@
 <?php
 /**
- * Widget class.
+ * Posts Widget class.
  *
- * @package   Top_Ten
+ * @package WebberZone\Top_Ten\Frontend\Widgets
  */
 
 namespace WebberZone\Top_Ten\Frontend\Widgets;

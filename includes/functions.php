@@ -1,8 +1,6 @@
 <?php
 /**
- * Top 10 Frontend functions.
- *
- * @since 3.3.0
+ * Frontend functions.
  *
  * @package WebberZone\Top_Ten
  */

@@ -1,8 +1,8 @@
 <?php
 /**
- * Widget to display the overall count.
+ * Count Widget class.
  *
- * @package   Top_Ten
+ * @package WebberZone\Top_Ten\Frontend\Widgets
  */
 
 namespace WebberZone\Top_Ten\Frontend\Widgets;
@@ -100,10 +100,14 @@ class Count_Widget extends \WP_Widget {
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'] );
 
-		$output  = $args['before_widget'];
-		$output .= $args['before_title'] . $title . $args['after_title'];
+		$output = $args['before_widget'];
+		if ( ! empty( $title ) ) {
+			$output .= $args['before_title'] . $title . $args['after_title'];
+		}
 
+		$output .= '<div class="textwidget tptn-text-only">';
 		$output .= \WebberZone\Top_Ten\Counter::get_post_count_only( 1, 'overall', 0 );
+		$output .= '</div>';
 
 		$output .= $args['after_widget'];
 

@@ -1,11 +1,14 @@
 <?php
 /**
- * Cron functions
+ * Cron class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
+
+use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -19,7 +22,7 @@ class Cron {
 	 * Initialize the class.
 	 */
 	public function __construct() {
-		add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
+		Hook_Registry::add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
 	}
 
 	/**
@@ -28,10 +31,6 @@ class Cron {
 	 * @since 3.0.0
 	 */
 	public function run_cron() {
-		global $wpdb;
-
-		$table_name_daily = \WebberZone\Top_Ten\Util\Helpers::get_tptn_table( true );
-
 		$delete_from = TOP_TEN_STORE_DATA;
 
 		/**
@@ -47,10 +46,11 @@ class Cron {
 		$from_date    = strtotime( "-{$delete_from} DAY", $current_time );
 		$from_date    = gmdate( 'Y-m-d H', $from_date );
 
-		$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->prepare(
-				"DELETE FROM {$table_name_daily} WHERE dp_date <= %s ", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$from_date
+		// Use the Database class to delete old daily entries.
+		Database::delete_counts(
+			array(
+				'daily'   => true,
+				'to_date' => $from_date,
 			)
 		);
 	}

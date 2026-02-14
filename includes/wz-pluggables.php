@@ -2,7 +2,7 @@
 /**
  * Pluggable functions.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten
  */
 
 if ( ! function_exists( 'wz_more_recurrences' ) ) :

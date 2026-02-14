@@ -1,11 +1,8 @@
 <?php
 /**
- * Functions to import data from WordPress Popular Posts to Top 10.
+ * WPP Importer class.
  *
- * @link  https://webberzone.com
- * @since 4.1.0
- *
- * @package    Top 10
+ * @package WebberZone\Top_Ten\Admin
  */
 
 declare(strict_types=1);

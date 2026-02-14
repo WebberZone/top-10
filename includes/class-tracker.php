@@ -1,13 +1,15 @@
 <?php
 /**
- * Functions controlling the tracker
+ * Tracker class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	exit;
@@ -26,11 +28,11 @@ class Tracker {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'parse_request', array( $this, 'parse_request' ) );
-		add_filter( 'query_vars', array( $this, 'query_vars' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_ajax_nopriv_tptn_tracker', array( $this, 'tracker_parser' ) );
-		add_action( 'wp_ajax_tptn_tracker', array( $this, 'tracker_parser' ) );
+		Hook_Registry::add_action( 'parse_request', array( $this, 'parse_request' ) );
+		Hook_Registry::add_filter( 'query_vars', array( $this, 'query_vars' ) );
+		Hook_Registry::add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		Hook_Registry::add_action( 'wp_ajax_nopriv_tptn_tracker', array( $this, 'tracker_parser' ) );
+		Hook_Registry::add_action( 'wp_ajax_tptn_tracker', array( $this, 'tracker_parser' ) );
 	}
 
 	/**
@@ -269,11 +271,7 @@ class Tracker {
 	 */
 	public static function update_count( $id, $blog_id, $activate_counter ) {
 
-		global $wpdb;
-
-		$table_name       = Helpers::get_tptn_table( false );
-		$table_name_daily = Helpers::get_tptn_table( true );
-		$str              = '';
+		$str = '';
 
 		/**
 		 * Filter the flag to confirm that counts should be updated in the database.
@@ -291,16 +289,14 @@ class Tracker {
 
 			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-				$tt = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name} (postnumber, cntaccess, blog_id) VALUES( %d, '1',  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$tt = Database::update_count( $id, $blog_id, false );
 
 				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
 			}
 
 			if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
 
-				$current_date = current_time( 'Y-m-d H' );
-
-				$ttd = $wpdb->query( $wpdb->prepare( "INSERT INTO {$table_name_daily} (postnumber, cntaccess, dp_date, blog_id) VALUES( %d, '1',  %s,  %d ) ON DUPLICATE KEY UPDATE cntaccess= cntaccess+1 ", $id, $current_date, $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$ttd = Database::update_count( $id, $blog_id, true );
 
 				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
 			}
