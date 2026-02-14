@@ -1,18 +1,14 @@
 <?php
 /**
- * Top 10 Meta box functions.
+ * Metabox class.
  *
- * Accessible on Edit Posts, Pages and other custom post type screens
- *
- * @link https://webberzone.com
- * @since 3.3.0
- *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Counter;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -31,10 +27,10 @@ class Metabox {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
-		add_action( 'save_post', array( $this, 'save_meta_box' ) );
-		add_action( 'edit_attachment', array( $this, 'save_meta_box' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
+		Hook_Registry::add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		Hook_Registry::add_action( 'save_post', array( $this, 'save_meta_box' ) );
+		Hook_Registry::add_action( 'edit_attachment', array( $this, 'save_meta_box' ) );
+		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
 	}
 
 	/**

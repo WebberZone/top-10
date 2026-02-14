@@ -1,12 +1,13 @@
 <?php
 /**
- * Functions to fetch and display the posts.
+ * Display class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend
  */
 
 namespace WebberZone\Top_Ten\Frontend;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -100,7 +101,7 @@ class Display {
 
 		// Check if the cache is enabled and if the output exists. If so, return the output.
 		if ( $args['cache'] ) {
-			$cache_name = self::cache_get_key( $args );
+			$cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( $args );
 
 			$output = get_transient( $cache_name );
 
@@ -309,7 +310,7 @@ class Display {
 		// Parse incomming $args into an array and merge it with $defaults.
 		$args = wp_parse_args( $args, $defaults );
 
-		$table_name = Helpers::get_tptn_table( $args['daily'] );
+		$table_name = Database::get_table( $args['daily'] );
 
 		$limit  = ( $args['strict_limit'] ) ? $args['limit'] : ( $args['limit'] * 5 );
 		$offset = isset( $args['offset'] ) ? $args['offset'] : 0;
@@ -513,21 +514,6 @@ class Display {
 	}
 
 	/**
-	 * Get the key based on a list of parameters.
-	 *
-	 * @since 3.3.0
-	 *
-	 * @param array $attr   Array of attributes.
-	 * @return string Cache key
-	 */
-	public static function cache_get_key( $attr ) {
-
-		$key = 'tptn_cache_' . md5( wp_json_encode( $attr ) );
-
-		return $key;
-	}
-
-	/**
 	 * Retrieves an array of the popular posts.
 	 *
 	 * The defaults are as follows:
@@ -543,15 +529,18 @@ class Display {
 
 		$get_posts = new \Top_Ten_Query( $args );
 
+		// Apply PHP-side exclusions and limit the results.
+		$filtered_posts = self::filter_posts_by_exclusions( $get_posts->posts, $args );
+
 		/**
 		 * Filter array of post IDs or objects.
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param \WP_Post[]|int[] $posts Array of post objects or post IDs.
-		 * @param array            $args  Arguments to retrieve posts.
+		 * @param \WP_Post[]|int[] $filtered_posts Array of post objects or post IDs after filtering.
+		 * @param array            $args           Arguments to retrieve posts.
 		 */
-		return apply_filters( 'get_tptn_posts', $get_posts->posts, $args );
+		return apply_filters( 'get_tptn_posts', $filtered_posts, $args );
 	}
 
 	/**
@@ -1025,7 +1014,7 @@ class Display {
 	 * @return string Default thumbnail.
 	 */
 	public static function get_default_thumbnail() {
-		return TOP_TEN_PLUGIN_URL . 'default.png';
+		return defined( 'TOP_TEN_DEFAULT_THUMBNAIL_URL' ) ? TOP_TEN_DEFAULT_THUMBNAIL_URL : TOP_TEN_PLUGIN_URL . 'default.png';
 	}
 
 	/**
@@ -1089,5 +1078,136 @@ class Display {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get static excluded post IDs that should affect caching.
+	 *
+	 * These are exclusions that are consistent across requests for the same configuration.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $args Arguments array.
+	 * @return array Array of post IDs to exclude statically.
+	 */
+	public static function get_static_excluded_ids( $args ) {
+		global $wpdb;
+
+		$exclude_post_ids = empty( $args['exclude_post_ids'] ) ? array() : wp_parse_id_list( $args['exclude_post_ids'] );
+
+		// Prepare the query to find all posts with 'exclude_this_post' set in the meta.
+		$post_metas = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->prepare(
+				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s",
+				'tptn_post_meta'
+			),
+			ARRAY_A
+		);
+
+		foreach ( $post_metas as $post_meta ) {
+			$meta_value = maybe_unserialize( $post_meta['meta_value'] );
+
+			if ( $meta_value['exclude_this_post'] ) {
+				$exclude_post_ids[] = (int) $post_meta['post_id'];
+			}
+		}
+
+		// Exclude page_on_front and page_for_posts.
+		if ( 'page' === get_option( 'show_on_front' ) && \tptn_get_option( 'exclude_front' ) ) {
+			$page_on_front  = get_option( 'page_on_front' );
+			$page_for_posts = get_option( 'page_for_posts' );
+			if ( $page_on_front > 0 ) {
+				$exclude_post_ids[] = $page_on_front;
+			}
+			if ( $page_for_posts > 0 ) {
+				$exclude_post_ids[] = $page_for_posts;
+			}
+		}
+
+		/**
+		 * Filter static exclude post IDs array.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param array $exclude_post_ids Array of post IDs.
+		 * @param array $args             Arguments array.
+		 */
+		$exclude_post_ids = apply_filters( 'tptn_static_exclude_post_ids', $exclude_post_ids, $args );
+
+		/**
+		 * Filter exclude post IDs array for backward compatibility.
+		 *
+		 * @since 2.2.0
+		 * @since 3.0.0 Added $args
+		 *
+		 * @param array $exclude_post_ids Array of post IDs.
+		 * @param array $args             Arguments array.
+		 */
+		$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids, $args );
+
+		return array_unique( $exclude_post_ids );
+	}
+
+	/**
+	 * Get dynamic excluded post IDs that are per-request and should not affect caching.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $args Arguments array.
+	 * @return array Array of post IDs to exclude dynamically.
+	 */
+	public static function get_dynamic_excluded_ids( $args ) {
+		$exclude_post_ids = array();
+
+		if ( ! empty( $args['exclude_current_post'] ) ) {
+			$exclude_post_ids[] = (int) get_the_ID();
+		}
+
+		/**
+		 * Filter dynamic exclude post IDs array.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param array $exclude_post_ids Array of post IDs.
+		 * @param array $args             Arguments array.
+		 */
+		$exclude_post_ids = apply_filters( 'tptn_dynamic_exclude_post_ids', $exclude_post_ids, $args );
+
+		return array_unique( $exclude_post_ids );
+	}
+
+	/**
+	 * Filter posts array by excluded IDs and return requested limit.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param \WP_Post[] $posts Array of post objects.
+	 * @param array      $args  Arguments array.
+	 * @return \WP_Post[] Filtered array of post objects.
+	 */
+	protected static function filter_posts_by_exclusions( $posts, $args ): array {
+		if ( empty( $posts ) ) {
+			return $posts;
+		}
+
+		$static_excluded_ids  = self::get_static_excluded_ids( $args );
+		$dynamic_excluded_ids = self::get_dynamic_excluded_ids( $args );
+		$all_excluded_ids     = array_unique( array_merge( $static_excluded_ids, $dynamic_excluded_ids ) );
+
+		if ( empty( $all_excluded_ids ) ) {
+			return array_slice( $posts, 0, (int) $args['limit'] );
+		}
+
+		// Filter posts by excluded IDs.
+		$filtered_posts = array_filter(
+			$posts,
+			function ( $post ) use ( $all_excluded_ids ) {
+				return ! in_array( $post->ID, $all_excluded_ids, true );
+			}
+		);
+
+		// Re-index array and slice to requested limit.
+		$filtered_posts = array_values( $filtered_posts );
+		return array_slice( $filtered_posts, 0, (int) $args['limit'] );
 	}
 }

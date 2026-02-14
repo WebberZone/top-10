@@ -1,17 +1,16 @@
 <?php
 /**
- * Manage columns on All Posts and All pages screens.
+ * Columns class.
  *
- * @link https://webberzone.com
- * @since 3.3.0
- *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Admin
  */
 
 namespace WebberZone\Top_Ten\Admin;
 
+use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Util\Helpers;
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -50,13 +49,13 @@ class Columns {
 		$post_types = apply_filters( 'tptn_admin_column_post_types', array( 'post', 'page' ) );
 
 		foreach ( $post_types as $post_type ) {
-			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_columns' ) );
-			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'get_value' ), 10, 2 );
-			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'add_columns_register_sortable' ) );
+			Hook_Registry::add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_columns' ) );
+			Hook_Registry::add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'get_value' ), 10, 2 );
+			Hook_Registry::add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'add_columns_register_sortable' ) );
 		}
 
-		add_filter( 'posts_clauses', array( $this, 'add_columns_clauses' ), 10, 2 );
-		add_action( 'admin_head', array( $this, 'admin_css' ) );
+		Hook_Registry::add_filter( 'posts_clauses', array( $this, 'add_columns_clauses' ), 10, 2 );
+		Hook_Registry::add_action( 'admin_head', array( $this, 'admin_css' ) );
 	}
 
 	/**
@@ -189,7 +188,7 @@ class Columns {
 		}
 
 		$is_daily   = ( 'tptn_daily' === $orderby );
-		$table_name = Helpers::get_tptn_table( $is_daily );
+		$table_name = Database::get_table( $is_daily );
 
 		$clauses['join'] .= " LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID = {$table_name}.postnumber";
 
@@ -202,7 +201,7 @@ class Columns {
 			$clauses['orderby'] = "{$table_name}.cntaccess";
 		}
 
-		$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
+		$clauses['orderby'] .= ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
 
 		return apply_filters( 'tptn_posts_clauses', $clauses, $wp_query );
 	}

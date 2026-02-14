@@ -1,11 +1,13 @@
 <?php
 /**
- * Functions to fetch and display the posts.
+ * Feed class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend
  */
 
 namespace WebberZone\Top_Ten\Frontend;
+
+use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -24,7 +26,7 @@ class Feed {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'pop_posts_feed' ) );
+		Hook_Registry::add_action( 'init', array( $this, 'pop_posts_feed' ) );
 	}
 
 	/**

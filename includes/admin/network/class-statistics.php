@@ -1,9 +1,8 @@
 <?php
 /**
- * Top 10 Display Network statistics page.
+ * Network Statistics class.
  *
- * @package   Top_Ten
- * @subpackage  Top_Ten_Network_Statistics
+ * @package WebberZone\Top_Ten\Admin\Network
  */
 
 namespace WebberZone\Top_Ten\Admin\Network;
@@ -66,23 +65,15 @@ class Statistics {
 	 * @since 3.0.0
 	 */
 	public function network_admin_menu() {
-		$this->parent_id = add_menu_page(
-			esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ),
-			esc_html__( 'Top 10', 'top-10' ),
-			'manage_network_options',
-			'tptn_network_pop_posts_page',
-			array( $this, 'render_page' ),
-			'dashicons-editor-ol'
-		);
-
-		add_submenu_page(
-			'tptn_network_pop_posts_page',
+		$this->parent_id = add_submenu_page(
+			'tptn_dashboard',
 			esc_html__( 'Top 10 - Network Popular Posts', 'top-10' ),
 			esc_html__( 'Popular Posts', 'top-10' ),
 			'manage_network_options',
 			'tptn_network_pop_posts_page',
 			array( $this, 'render_page' )
 		);
+
 		add_action( "load-{$this->parent_id}", array( $this, 'screen_option' ) );
 	}
 

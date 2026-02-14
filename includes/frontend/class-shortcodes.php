@@ -1,8 +1,8 @@
 <?php
 /**
- * Shortcode module
+ * Shortcodes class.
  *
- * @package Top_Ten
+ * @package WebberZone\Top_Ten\Frontend
  */
 
 namespace WebberZone\Top_Ten\Frontend;
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Shortcodes Class.
  *
  * @since 3.3.0
  */
@@ -80,9 +80,10 @@ class Shortcodes {
 	 *
 	 * @param   array  $atts           Shortcode attributes.
 	 * @param   string $content        Content.
-	 * @return  int  Views of the post
+	 * @param   string $tag            Shortcode tag.
+	 * @return  string Views of the post.
 	 */
-	public static function tptn_views( $atts, $content = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+	public static function tptn_views( $atts, $content = null, $tag = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$a = shortcode_atts(
 			array(
 				'daily'         => '0',
@@ -96,6 +97,6 @@ class Shortcodes {
 		// If daily is explicitly set to 1, then pass daily, else pass count.
 		$count = $a['daily'] ? 'daily' : $a['count'];
 
-		return \WebberZone\Top_Ten\Counter::get_post_count_only( $a['post_id'], $count, 0, array( 'format_number' => $a['format_number'] ) );
+		return (string) \WebberZone\Top_Ten\Counter::get_post_count_only( $a['post_id'], $count, 0, array( 'format_number' => $a['format_number'] ) );
 	}
 }

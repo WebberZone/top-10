@@ -1,5 +1,96 @@
 This file holds the archive of changelog entries
 
+= 4.1.1 =
+
+* Bug fixes:
+    * Fixed an issue where shortcode attributes were not properly sanitized.
+
+= 4.1.0 =
+
+Release post: [https://webberzone.com/announcements/top-10-v4-1-0/](https://webberzone.com/announcements/top-10-v4-1-0/)
+
+* Features:
+	* Import data from the WordPress Popular Posts plugin.
+	* [Pro] Query Optimization: Add MySQL MAX_EXECUTION_TIME directive to prevent long-running queries from consuming excessive server resources. Configurable via settings and the `top_ten_query_max_execution_time` filter.
+    * [Pro] Enhanced Popular Posts RSS feeds with category and post type filtering, available via URL parameters and configurable via dedicated settings.
+	* Admin Dashboard:
+		* Smart chart visualization: Automatically switches to an area chart for datasets with more than 100 data points.
+		* [Pro] Clicking on a column in the Popular Posts chart will display the most popular posts for the selected day.
+
+* Modifications:
+	* Updated ChartJS and replaced Moment adapter with Luxon.
+	* When any of the Top 10 tables is missing, an admin notice is displayed. The plugin also automatically recreates the missing tables.
+	* Introduced the `wz_top_ten()` function to return the Main instance of Top 10.
+
+* Bug fixes:
+	* Resolved issue where tables were not automatically created during plugin activation.
+	* Fixed issue where the popular posts feed always displayed the post's full content even when Excerpt was selected under Reading settings.
+	* Fixed "Not found" error when accessing the Daily Popular Posts feed.
+
+= 4.0.4 =
+
+* Modifications:
+	* Updated Freemius SDK to v2.11.0.
+
+* Bug fixes:
+	* Set correct type for `$settings_api` variable to `Settings_API`.
+
+= 4.0.3 =
+
+* Modifications:
+	* Support plugin dependencies tag.
+	* Updated Freemius SDK to v2.10.1.
+	* Optimized Numbered List format.
+
+= 4.0.2 =
+
+* Updated Freemius SDK to 2.9.0.
+* Fixed: Set `widget_id` if it is not set in the widget instance.
+
+= 4.0.1 =
+
+* Modifications:
+	* Renamed filter to: `top_ten_posts_post_types`.
+	* Updated filter `tptn_query_args_before` to be the queried object instead of just the post.
+
+* Bug fix:
+	* Fixed issue where admin columns setting didn't work.
+	* Fixed: meta_query was not set.
+
+= 4.0.0 =
+
+Release post: [https://webberzone.com/announcements/top-10-v4-0-0/](https://webberzone.com/announcements/top-10-v4-0-0/)
+
+* Features:
+	* Added a new REST API route (`counter`) to fetch the post count for individual posts.
+	* Introduced the Top 10 Post Count Block for displaying post counts.
+	* Added filters `top_ten_query_exclude_terms_include_parents` and `top_ten_query_include_terms_include_parents` to include parent terms in post queries. Pro users can enable this in settings.
+	* New `get_tptn_short_circuit` filter to bypass the plugin’s output.
+	* New filter `tptn_dashboard_setup` to disable Top 10 widgets being displayed on the admin dashboard.
+	* [Pro] New Top 10 Query Block for querying popular posts directly from the block or site editor.
+	* [Pro] Enhanced Top 10 Featured Image Block now supports multiple image sources.
+	* [Pro] Popular Posts block now includes:
+		* Buttons to save and clear default block settings.
+		* Auto-insertion of default and global settings attributes, with an option to disable this in the **Posts List** settings.
+	* [Pro] Added a new admin bar menu item to view daily, total, and overall post counts, access Top 10 admin pages, and clear the Top 10 cache.
+	* [Pro] Added `display_only_on_tax_ids` parameter to restrict popular posts display to specific taxonomy terms.
+	* [Pro] New Fast Tracker improves post view tracking speed. Select it from your settings page.
+	* [Pro] "Display columns on post types" setting to choose which post type screens display admin columns.
+	* [Pro] "Also show dashboard to" setting to select user roles that can view the dashboard screen.
+    * [Pro] New option added to the Edit Post meta box mapped to `include_cat_ids` to include popular posts from specific categories only.
+
+* Enhancements:
+	* Direct support for `WP_Query` if `top_ten_query` is used in query arguments.
+	* Optimised media handler to reduce queries.
+	* New filter: `tptn_shortcode_defaults` for default shortcode arguments.
+	* Media Handler improvements:
+		* Added `use_site_icon` and `style` parameters.
+		* `get_image_html()` now uses `wp_get_attachment_image()` with a valid attachment ID.
+		* Support for `decoding`, `loading`, and `fetchpriority` attributes.
+		* `get_attachment_id_from_url()` now strips size suffixes before locating the attachment ID.
+	* Updated top-10/popular-posts block to API version 3.
+	* Added `$more_link_text` parameter for `get_the_excerpt()`.
+	
 = 3.3.4 =
 
 * Enhancements:

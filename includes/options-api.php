@@ -1,9 +1,6 @@
 <?php
 /**
- * Top 10 Options API.
- *
- * @link  https://webberzone.com
- * @since 3.3.0
+ * Options API functions.
  *
  * @package WebberZone\Top_Ten
  */
@@ -173,24 +170,51 @@ function tptn_delete_option( $key = '' ) {
  */
 function tptn_settings_defaults() {
 
-	$options = array();
+	$options       = array();
+	$default_types = array(
+		'color',
+		'css',
+		'csv',
+		'file',
+		'html',
+		'multicheck',
+		'number',
+		'numbercsv',
+		'password',
+		'postids',
+		'posttypes',
+		'radio',
+		'radiodesc',
+		'repeater',
+		'select',
+		'sensitive',
+		'taxonomies',
+		'text',
+		'textarea',
+		'thumbsizes',
+		'url',
+		'wysiwyg',
+	);
 
 	// Populate some default values.
-	foreach ( \WebberZone\Top_Ten\Admin\Settings\Settings::get_registered_settings() as $tab => $settings ) {
+	foreach ( \WebberZone\Top_Ten\Admin\Settings::get_registered_settings() as $tab => $settings ) {
 		foreach ( $settings as $option ) {
+			if ( ! isset( $option['id'] ) ) {
+				continue;
+			}
+
+			$setting_id    = $option['id'];
+			$setting_type  = $option['type'] ?? '';
+			$default_value = '';
+
 			// When checkbox is set to true, set this to 1.
-			if ( 'checkbox' === $option['type'] && ! empty( $option['options'] ) ) {
-				$options[ $option['id'] ] = 1;
-			} else {
-				$options[ $option['id'] ] = 0;
+			if ( 'checkbox' === $setting_type ) {
+				$default_value = isset( $option['default'] ) ? (int) (bool) $option['default'] : 0;
+			} elseif ( isset( $option['default'] ) && in_array( $setting_type, $default_types, true ) ) {
+				$default_value = $option['default'];
 			}
-			// If an option is set.
-			if ( in_array( $option['type'], array( 'textarea', 'css', 'html', 'text', 'url', 'csv', 'color', 'numbercsv', 'postids', 'posttypes', 'number', 'wysiwyg', 'file', 'password' ), true ) && isset( $option['options'] ) ) {
-				$options[ $option['id'] ] = $option['options'];
-			}
-			if ( in_array( $option['type'], array( 'multicheck', 'radio', 'select', 'radiodesc', 'thumbsizes' ), true ) && isset( $option['default'] ) ) {
-				$options[ $option['id'] ] = $option['default'];
-			}
+
+			$options[ $setting_id ] = $default_value;
 		}
 	}
 
@@ -234,6 +258,34 @@ function tptn_get_default_option( $key = '' ) {
  */
 function tptn_settings_reset() {
 	delete_option( 'tptn_settings' );
+}
+
+
+/**
+ * Get registered settings types for cache key generation.
+ *
+ * @since 4.2.0
+ *
+ * @return array Array of setting types keyed by setting ID.
+ */
+function tptn_get_registered_settings_types() {
+	$options = array();
+
+	// Populate some default values.
+	foreach ( \WebberZone\Top_Ten\Admin\Settings::get_registered_settings() as $tab => $settings ) {
+		foreach ( $settings as $option ) {
+			$options[ $option['id'] ] = $option['type'];
+		}
+	}
+
+	/**
+	 * Filter the settings types array for cache key generation.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $options Array of setting types keyed by setting ID.
+	 */
+	return apply_filters( 'tptn_registered_settings_types', $options );
 }
 
 
