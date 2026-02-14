@@ -1217,7 +1217,7 @@ class Settings {
 		if ( false !== strpos( $file, 'top-10.php' ) ) {
 			$new_links = array(
 				'support'    => '<a href = "https://wordpress.org/support/plugin/top-10">' . esc_html__( 'Support', 'top-10' ) . '</a>',
-				'donate'     => '<a href = "https://ajaydsouza.com/donate/">' . esc_html__( 'Donate', 'top-10' ) . '</a>',
+				'donate'     => '<a href = "https://wzn.io/donate-wz">' . esc_html__( 'Donate', 'top-10' ) . '</a>',
 				'contribute' => '<a href = "https://github.com/WebberZone/top-10">' . esc_html__( 'Contribute', 'top-10' ) . '</a>',
 			);
 
