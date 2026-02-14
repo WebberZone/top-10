@@ -162,9 +162,6 @@ final class Main {
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
 		new Hook_Loader();
-		if ( ! function_exists( 'tptn_freemius' ) ) {
-			require_once dirname( __DIR__ ) . '/load-freemius.php';
-		}
 		// Initialize admin on init action to ensure translations are loaded.
 		add_action( 'init', array( $this, 'init_admin' ) );
 	}
