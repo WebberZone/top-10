@@ -1,7 +1,7 @@
 === WebberZone Top 10 — Popular Posts ===
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
-Donate link: https://ajaydsouza.com/donate/
+Donate link: https://wzn.io/donate-wz
 Stable tag: 4.2.0
 Requires at least: 6.6
 Tested up to: 6.9
