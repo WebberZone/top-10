@@ -11,10 +11,10 @@
  * @copyright 2008-2026 Ajay D'Souza
  *
  * @wordpress-plugin
- * Plugin Name: WebberZone Top 10 — Popular Posts
+ * Plugin Name: WebberZone Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     4.2.0-RC1
+ * Version:     4.2.0
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
