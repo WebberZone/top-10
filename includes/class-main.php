@@ -8,11 +8,9 @@
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Admin\Cron;
-
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
-
 /**
  * Main plugin class.
  *
@@ -137,7 +135,6 @@ final class Main {
 			self::$instance = new self();
 			self::$instance->init();
 		}
-
 		return self::$instance;
 	}
 
@@ -164,9 +161,11 @@ final class Main {
 		$this->blocks     = new Frontend\Blocks\Blocks();
 		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
-
 		new Hook_Loader();
-
+		if ( ! function_exists( 'tptn_freemius' ) ) {
+			require_once dirname( __DIR__ ) . '/load-freemius.php';
+		}
+		// Initialize admin on init action to ensure translations are loaded.
 		add_action( 'init', array( $this, 'init_admin' ) );
 	}
 

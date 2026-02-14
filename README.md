@@ -52,34 +52,32 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 ### Features in Top 10 Pro
 
 * __Enhanced Tracking and Performance__
-  * __Fast Tracker__: Faster tracking method for improved performance on busy sites
-  * __High-Traffic Mode__: Secure configuration for large sites with a status validation panel
-  * __Query Optimisation__: Optional MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
-  * __Data Retention Override__: Customise data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
+  * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
+  * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
+  * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
 
 * __Advanced Blocks and Widgets__
-  * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor.
-  * __Enhanced Top 10 Featured Image Block__: Supports multiple image sources for more flexibility.
+  * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor
+  * __Enhanced Top 10 Featured Image Block__: Support for multiple image sources with fallbacks
   * __Popular Posts Block Enhancements__:
-    * Save and clear default block settings with a single click.
-    * Auto-insert default and global settings attributes with an option to disable.
+    * Save and clear default block settings with a single click
+    * Auto-insert default and global settings attributes with an option to disable
 
 * __Enhanced Admin Tools__
-  * __Admin Bar Integration__: New admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear the cache quickly.
-  * __Disable Admin Bar menu__: Option to disable the Admin Bar menu.
-  * __Dashboard Access Control__: Control which user roles can view the Top 10 dashboard.
-  * __Display Settings__: Choose which post type screens display admin columns.
-  * __Mini "Top 10 Views Overview" widget__: Compact views-over-time chart shown on the WordPress Dashboard.
-  * __Multisite Settings Copy__: Copy settings between sites in a multisite network.
+  * __Admin Bar Integration__: Admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear cache
+  * __Disable Admin Bar menu__: Setting to disable the Admin Bar menu
+  * __Dashboard Access Control__: Setting to control which user roles can view the Top 10 dashboard
+  * __Display Settings__: Setting to choose which post type screens display admin columns
+  * __Mini "Top 10 Views Overview" widget__: Compact views-over-time chart on the WordPress Dashboard
+  * __Multisite Settings Copy__: Tool to copy settings between sites in a multisite network
 
 * __Custom Display Options__
-  * __Taxonomy-Specific Displays__: Use the `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms.
-  * __Category Inclusion__: Include popular posts from specific categories using a new option in the Edit Post meta box.
-  * __RSS Feed Filtering__: Enhanced RSS feeds with category and post type filtering.
+  * __Taxonomy-Specific Displays__: `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms
+  * __Category Inclusion__: Edit Post meta box option to include popular posts from specific categories
+  * __RSS Feed Filtering__: Filter RSS feeds by category or post type via settings or URL parameters
 
 * __Developer-Friendly Features__
-  * __Filters and Hooks__: New filters like `top_ten_query_exclude_terms_include_parents`, `top_ten_query_include_terms_include_parents`, and `get_tptn_short_circuit` for greater customisation.
-  * __Custom Post Type Sortable Columns__: Display columns on post types and make them sortable.
+  * __Custom Post Type Sortable Columns__: Admin columns on supported custom post types with sortable functionality
 
 ### GDPR
 

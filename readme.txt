@@ -41,32 +41,33 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 
 = Features in Top 10 Pro =
 
-* **Enhanced Tracking and Performance**
-	* **Fast Tracker**: Faster tracking method for improved performance on busy sites
-	* **High-Traffic Mode**: Secure configuration for large sites with a status validation panel
-	* **Query Optimisation**: Optional MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
-	* **Data Retention Override**: Customise data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
+* __Enhanced Tracking and Performance__
+  * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
+  * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
+  * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
 
-* **Advanced Blocks and Widgets**
-	* **Top 10 Query Block**: Query and display popular posts directly from the block or site editor
-	* **Enhanced Featured Image Block**: Support for multiple image sources
-	* **Popular Posts Block Enhancements**: Save and clear default attributes, and auto-insert global settings
+* __Advanced Blocks and Widgets__
+  * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor
+  * __Enhanced Top 10 Featured Image Block__: Support for multiple image sources with fallbacks
+  * __Popular Posts Block Enhancements__:
+    * Save and clear default block settings with a single click
+    * Auto-insert default and global settings attributes with an option to disable
 
-* **Enhanced Admin Tools**
-	* **Admin Bar Menu**: View daily, total, and overall post counts, access admin pages, and clear cache
-	* **Dashboard Access Control**: Control which user roles can view the Top 10 dashboard
-	* **Display Settings**: Choose which post types display admin columns
-	* **Mini Dashboard Widget**: Compact views-over-time chart on the WordPress Dashboard
-	* **Multisite Settings Copy**: Copy settings between sites in a multisite network
+* __Enhanced Admin Tools__
+  * __Admin Bar Integration__: Admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear cache
+  * __Disable Admin Bar menu__: Setting to disable the Admin Bar menu
+  * __Dashboard Access Control__: Setting to control which user roles can view the Top 10 dashboard
+  * __Display Settings__: Setting to choose which post type screens display admin columns
+  * __Mini "Top 10 Views Overview" widget__: Compact views-over-time chart on the WordPress Dashboard
+  * __Multisite Settings Copy__: Tool to copy settings between sites in a multisite network
 
-* **Custom Display Options**
-	* **Taxonomy Filtering**: Restrict displays to specific taxonomy terms using `display_only_on_tax_ids`
-	* **Category Inclusion**: Include posts from selected categories via the Edit Post meta box
-	* **RSS Feed Filtering**: Filter RSS feeds by category or post type via settings or URL parameters
+* __Custom Display Options__
+  * __Taxonomy-Specific Displays__: `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms
+  * __Category Inclusion__: Edit Post meta box option to include popular posts from specific categories
+  * __RSS Feed Filtering__: Filter RSS feeds by category or post type via settings or URL parameters
 
-* **Developer Features**
-	* **Extended Filters**: Additional filters including `top_ten_query_exclude_terms_include_parents`, `top_ten_query_include_terms_include_parents`, and `get_tptn_short_circuit`
-	* **Sortable Columns**: Sortable admin columns on supported custom post types
+* __Developer-Friendly Features__
+  * __Custom Post Type Sortable Columns__: Admin columns on supported custom post types with sortable functionality
 
 = GDPR =
 
@@ -155,6 +156,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 == Changelog ==
 
 = 4.2.0 =
+
+Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webberzone.com/announcements/top-10-v4-2-0/)
 
 * New:
 	* Settings wizard to guide initial configuration and review existing settings
