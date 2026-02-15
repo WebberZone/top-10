@@ -1411,6 +1411,7 @@ class Settings {
 					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
 					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
 					'left_thumbs_message'  => esc_html__( 'Note: This setting cannot be changed as the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+					'grid_thumbs_message'  => esc_html__( 'Note: This setting cannot be changed as the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab.', 'top-10' ),
 					'text_only_message'    => esc_html__( 'Note: This setting cannot be changed as the Popular posts style is set to Text only. You can change the style in the Styles tab.', 'top-10' ),
 				),
 			)
@@ -1449,8 +1450,12 @@ class Settings {
 		// Overwrite settings based on selected style; guard against missing keys on reset.
 		$style = $settings['tptn_styles'] ?? '';
 
-		// Overwrite settings if left_thumbs style is selected.
-		if ( 'left_thumbs' === $style ) {
+		$inline_thumb_styles = array(
+			'left_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+			'grid_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+		);
+
+		if ( array_key_exists( $style, $inline_thumb_styles ) ) {
 			$post_thumb_op = $settings['post_thumb_op'] ?? '';
 			if ( 'inline' !== $post_thumb_op && 'thumbs_only' !== $post_thumb_op ) {
 				$settings['post_thumb_op'] = 'inline';
@@ -1459,7 +1464,7 @@ class Settings {
 			add_settings_error(
 				self::$prefix . '-notices',
 				'',
-				esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+				$inline_thumb_styles[ $style ],
 				'warning'
 			);
 		}
