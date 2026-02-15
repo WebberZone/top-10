@@ -103,12 +103,14 @@ class Tools_Page {
 				'top-ten-admin-js',
 				'top_ten_admin_data',
 				array(
-					'ajax_url'             => admin_url( 'admin-ajax.php' ),
-					'security'             => wp_create_nonce( 'tptn-admin' ),
-					'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
-					'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
-					'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
-					'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'security' => wp_create_nonce( 'tptn-admin' ),
+					'strings'  => array(
+						'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+						'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
+						'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
+						'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+					),
 				)
 			);
 		}

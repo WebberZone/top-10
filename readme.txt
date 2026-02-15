@@ -155,6 +155,11 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.2.1 =
+
+* Fixes:
+	* Fixed a bug with the "Clear cache" button in the Tools page.
+
 = 4.2.0 =
 
 Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webberzone.com/announcements/top-10-v4-2-0/)
