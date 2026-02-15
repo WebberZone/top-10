@@ -159,6 +159,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Fixes:
 	* Fixed a bug with the "Clear cache" button in the Tools page.
+	* Fixed thumbnail location restrictions to properly support Grid thumbnails style in addition to Left thumbnails.
+	* Improved JavaScript logic for style-based thumbnail location validation with better error handling and fallback mechanisms.
 
 = 4.2.0 =
 

@@ -44,6 +44,25 @@ jQuery(document).ready(function ($) {
 			return;
 		}
 
+		var strings = top_ten_admin_data.strings || {};
+		var styleRules = {
+			'left_thumbs': {
+				allowed: ['inline', 'thumbs_only'],
+				fallback: 'inline',
+				message: strings.left_thumbs_message
+			},
+			'grid_thumbs': {
+				allowed: ['inline', 'thumbs_only'],
+				fallback: 'inline',
+				message: strings.grid_thumbs_message || strings.left_thumbs_message
+			},
+			'text_only': {
+				force: 'text_only',
+				disableAll: true,
+				message: strings.text_only_message
+			}
+		};
+
 		function removeMessage() {
 			var $container = $postThumbOptions.first().closest('td');
 			if (!$container.length) {
@@ -79,33 +98,41 @@ jQuery(document).ready(function ($) {
 
 		function updateFieldStates() {
 			var selectedStyle = $styleSelect.val();
-			var strings = top_ten_admin_data.strings || {};
 			var $checked = $postThumbOptions.filter(':checked');
+			var rule = styleRules[selectedStyle] || null;
 
 			removeMessage();
 			$postThumbOptions.prop('disabled', false);
 
-			if ('left_thumbs' === selectedStyle) {
+			if (!rule) {
+				return;
+			}
+
+			if (rule.disableAll) {
+				$postThumbOptions.prop('disabled', true);
+			}
+
+			if (rule.allowed && rule.allowed.length) {
 				$postThumbOptions.each(function () {
 					var $option = $(this);
 					var value = $option.val();
-
-					if ('inline' !== value && 'thumbs_only' !== value) {
+					if (-1 === rule.allowed.indexOf(value)) {
 						$option.prop('disabled', true);
 					}
 				});
 
-				if (!$checked.length || ('inline' !== $checked.val() && 'thumbs_only' !== $checked.val())) {
-					$postThumbOptions.filter('[value="inline"]').prop('checked', true);
+				if (!$checked.length || -1 === rule.allowed.indexOf($checked.val())) {
+					var fallback = rule.fallback || rule.allowed[0];
+					$postThumbOptions.filter('[value="' + fallback + '"]').prop('checked', true);
 				}
-
-				addMessage(strings.left_thumbs_message);
 			}
 
-			if ('text_only' === selectedStyle) {
-				$postThumbOptions.prop('disabled', true);
-				$postThumbOptions.filter('[value="text_only"]').prop('checked', true);
-				addMessage(strings.text_only_message);
+			if (rule.force) {
+				$postThumbOptions.filter('[value="' + rule.force + '"]').prop('checked', true);
+			}
+
+			if (rule.message) {
+				addMessage(rule.message);
 			}
 		}
 
