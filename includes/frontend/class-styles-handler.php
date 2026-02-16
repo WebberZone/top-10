@@ -110,6 +110,17 @@ class Styles_Handler {
 		$style_array  = array();
 		$thumb_width  = tptn_get_option( 'thumb_width' );
 		$thumb_height = tptn_get_option( 'thumb_height' );
+		$width_value  = absint( $thumb_width );
+		$height_value = absint( $thumb_height );
+
+		if ( ! $width_value ) {
+			$width_value = 1;
+		}
+
+		if ( ! $height_value ) {
+			$height_value = 1;
+		}
+		$aspect_ratio = sprintf( '%d / %d', $width_value, $height_value );
 		$tptn_style   = ! empty( $style ) ? $style : tptn_get_option( 'tptn_styles' );
 
 		switch ( $tptn_style ) {
@@ -119,6 +130,7 @@ class Styles_Handler {
 			.tptn-left-thumbs {
 				--tptn-thumb-width: {$thumb_width}px;
 				--tptn-thumb-height: {$thumb_height}px;
+				--tptn-thumb-aspect-ratio: {$aspect_ratio};
 			}
 			.tptn-left-thumbs img.tptn_thumb {
 				width: min( var(--tptn-thumb-width), 100% );
