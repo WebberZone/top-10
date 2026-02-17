@@ -120,9 +120,14 @@ class REST_API extends \WP_REST_Controller {
 	 * @return \WP_Error|bool
 	 */
 	public function permissions_check( \WP_REST_Request $request ) {
-		// Deny edit context for unauthenticated users to prevent exposing sensitive data like passwords.
-		if ( 'edit' === $request->get_param( 'context' ) && ! is_user_logged_in() ) {
-			return false;
+		$context = $request->get_param( 'context' );
+
+		if ( 'edit' === $context && ! current_user_can( 'edit_posts' ) ) {
+			return new \WP_Error(
+				'rest_forbidden_context',
+				__( 'Sorry, you are not allowed to view this context.', 'top-10' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
 		}
 
 		return apply_filters( 'top_ten_rest_api_permissions_check', true, $request );
