@@ -157,6 +157,9 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.2.1 =
 
+* Security:
+	* Fixed REST API permission checks to prevent unauthorized exposure of post passwords in edit context.
+
 * Fixes:
 	* Fixed a bug with the "Clear cache" button in the Tools page.
 	* Fixed thumbnail location restrictions to properly support Grid thumbnails style in addition to Left thumbnails.
