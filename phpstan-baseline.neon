@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: includes/admin/class-settings-wizard.php
+
+		-
+			message: "#^Property WebberZone\\\\Top_Ten\\\\Admin\\\\Settings\\\\Settings_API\\:\\:\\$settings_page \\(string\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: includes/admin/class-settings.php
+
+		-
 			message: "#^Variable \\$wp in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: includes/class-tracker.php
