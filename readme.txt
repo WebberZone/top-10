@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -200,5 +200,5 @@ Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webb
 
 == Upgrade Notice ==
 
-= 4.2.0 =
-Major update introducing a new settings wizard, a multisite network-wide dashboard, and multiple Pro enhancements.
+= 4.2.1 =
+Bugs squashed from the v4.2.0 release.
