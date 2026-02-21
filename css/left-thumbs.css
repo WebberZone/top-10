@@ -42,6 +42,9 @@
 	box-shadow: var(--tptn-shadow);
 	transition: transform var(--tptn-transition), box-shadow var(--tptn-transition);
 	will-change: transform;
+	width: min(var(--tptn-thumb-width, 9999px), 100%);
+	height: var(--tptn-thumb-height, auto);
+	max-width: 100%;
 }
 
 .tptn-left-thumbs ul li:hover .tptn_thumb {
@@ -50,10 +53,12 @@
 }
 
 .tptn-left-thumbs img.tptn_thumb {
-	width: 100%;
-	height: auto;
+	width: min(var(--tptn-thumb-width, 9999px), 100%) !important;
+	height: var(--tptn-thumb-height, auto) !important;
+	max-width: 100%;
 	display: block;
 	object-fit: cover;
+	aspect-ratio: var(--tptn-thumb-aspect-ratio, auto);
 	border-radius: calc(var(--tptn-border-radius) * 0.75);
 }
 

@@ -32,56 +32,56 @@ msgstr ""
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:445
-#: includes/admin/class-tools-page.php:450
-#: includes/admin/class-tools-page.php:461
-#: includes/admin/class-tools-page.php:465
+#: includes/admin/class-tools-page.php:447
+#: includes/admin/class-tools-page.php:452
+#: includes/admin/class-tools-page.php:463
+#: includes/admin/class-tools-page.php:467
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:446
-#: includes/admin/class-tools-page.php:451
-#: includes/admin/class-tools-page.php:462
-#: includes/admin/class-tools-page.php:466
+#: includes/admin/class-tools-page.php:448
+#: includes/admin/class-tools-page.php:453
+#: includes/admin/class-tools-page.php:464
+#: includes/admin/class-tools-page.php:468
 msgid "Not Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:499
+#: includes/admin/class-tools-page.php:501
 msgid "Database version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:501
+#: includes/admin/class-tools-page.php:503
 msgid "Installed version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:502
+#: includes/admin/class-tools-page.php:504
 msgid "Current version"
 msgstr ""
 
 #. translators: %s: Table name
-#: includes/admin/class-tools-page.php:507
-#: includes/admin/class-tools-page.php:536
+#: includes/admin/class-tools-page.php:509
+#: includes/admin/class-tools-page.php:538
 #, php-format
 msgid "%s table"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:566
+#: includes/admin/class-tools-page.php:568
 msgid "Repair database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:569
+#: includes/admin/class-tools-page.php:571
 msgid "Recreate tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:591
+#: includes/admin/class-tools-page.php:593
 msgid "Security check failed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:595
+#: includes/admin/class-tools-page.php:597
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:626
+#: includes/admin/class-tools-page.php:628
 msgid "Tables have been recreated successfully."
 msgstr ""
 
@@ -204,14 +204,14 @@ msgstr ""
 
 #. translators: 1: Support link.
 #: includes/admin/class-dashboard.php:665
-#: includes/admin/class-tools-page.php:404
+#: includes/admin/class-tools-page.php:406
 #, php-format
 msgid "For more information or how to get support visit the <a href=\"%1$s\">WebberZone support site</a>."
 msgstr ""
 
 #. translators: 1: Forum link.
 #: includes/admin/class-dashboard.php:667
-#: includes/admin/class-tools-page.php:406
+#: includes/admin/class-tools-page.php:408
 #, php-format
 msgid "Support queries should be posted in the <a href=\"%1$s\">WordPress.org support forums</a>."
 msgstr ""
@@ -220,7 +220,7 @@ msgstr ""
 #. translators: 1: Github issues link, 2: Github plugin page link.
 #: includes/admin/class-dashboard.php:670
 #: includes/admin/class-settings.php:1242
-#: includes/admin/class-tools-page.php:409
+#: includes/admin/class-tools-page.php:411
 #, php-format
 msgid "<a href=\"%1$s\">Post an issue</a> on <a href=\"%2$s\">GitHub</a> (bug reports only)."
 msgstr ""
@@ -228,7 +228,7 @@ msgstr ""
 #: includes/admin/class-dashboard.php:679
 #: includes/admin/class-settings.php:177
 #: includes/admin/class-settings.php:1266
-#: includes/admin/class-tools-page.php:418
+#: includes/admin/class-tools-page.php:420
 msgid "General"
 msgstr ""
 
@@ -507,7 +507,7 @@ msgstr ""
 
 #: includes/admin/class-tools-page.php:61
 #: includes/admin/class-tools-page.php:80
-#: includes/admin/class-tools-page.php:167
+#: includes/admin/class-tools-page.php:169
 msgid "Top 10 Tools"
 msgstr ""
 
@@ -518,100 +518,100 @@ msgid "Tools"
 msgstr ""
 
 #: includes/admin/class-settings.php:1408
-#: includes/admin/class-tools-page.php:108
+#: includes/admin/class-tools-page.php:109
 msgid "Are you sure you want to clear the cache?"
 msgstr ""
 
 #: includes/admin/class-settings.php:1411
-#: includes/admin/class-tools-page.php:110
+#: includes/admin/class-tools-page.php:111
 msgid "Failed to clear cache. Please try again."
 msgstr ""
 
 #: includes/admin/class-settings.php:1412
-#: includes/admin/class-tools-page.php:111
+#: includes/admin/class-tools-page.php:112
 msgid "Request failed: "
 msgstr ""
 
-#: includes/admin/class-tools-page.php:135
+#: includes/admin/class-tools-page.php:137
 msgid "Primary Key has been recreated"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:145
+#: includes/admin/class-tools-page.php:147
 msgid "Top 10 popular posts reset"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:155
+#: includes/admin/class-tools-page.php:157
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:161
+#: includes/admin/class-tools-page.php:163
 msgid "Top 10 tables have been recreated"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:179
+#: includes/admin/class-tools-page.php:181
 msgid "Database Status"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:188
-#: includes/admin/class-tools-page.php:194
+#: includes/admin/class-tools-page.php:190
+#: includes/admin/class-tools-page.php:196
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:199
+#: includes/admin/class-tools-page.php:201
 msgid "Clear the Top 10 cache. This will also be cleared automatically when you save the settings page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:205
-#: includes/admin/class-tools-page.php:208
+#: includes/admin/class-tools-page.php:207
+#: includes/admin/class-tools-page.php:210
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:211
+#: includes/admin/class-tools-page.php:213
 msgid "Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:220
+#: includes/admin/class-tools-page.php:222
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:223
+#: includes/admin/class-tools-page.php:225
 msgid "This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:229
+#: includes/admin/class-tools-page.php:231
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:230
+#: includes/admin/class-tools-page.php:232
 msgid "Reset Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:238
+#: includes/admin/class-tools-page.php:240
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:239
+#: includes/admin/class-tools-page.php:241
 msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:248
-#: includes/admin/class-tools-page.php:254
+#: includes/admin/class-tools-page.php:250
+#: includes/admin/class-tools-page.php:256
 msgid "Recreate Database Tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:251
+#: includes/admin/class-tools-page.php:253
 msgid "Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:254
+#: includes/admin/class-tools-page.php:256
 msgid "Hit Cancel if you have not backed up your database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:420
+#: includes/admin/class-tools-page.php:422
 msgid "This screen provides some tools that help maintain certain features of Top 10."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:421
+#: includes/admin/class-tools-page.php:423
 msgid "Clear the cache, reset the popular posts tables plus some miscellaneous fixes for older versions of Top 10."
 msgstr ""
 
@@ -1485,7 +1485,7 @@ msgid "Check this box to show the default thumbnail from the next option if no t
 msgstr ""
 
 #: includes/admin/class-settings.php:893
-#: includes/admin/class-settings.php:1499
+#: includes/admin/class-settings.php:1504
 msgid "Default thumbnail"
 msgstr ""
 
@@ -1669,9 +1669,9 @@ msgid "Cache cleared successfully!"
 msgstr ""
 
 #: includes/admin/class-dashboard-widgets.php:280
-#: includes/admin/class-settings.php:1536
-#: includes/admin/class-settings.php:1556
-#: includes/admin/class-settings.php:1557
+#: includes/admin/class-settings.php:1541
+#: includes/admin/class-settings.php:1561
+#: includes/admin/class-settings.php:1562
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -1762,7 +1762,7 @@ msgstr ""
 msgid "Enter other attributes in a URL-style string-query. e.g. post_types=post,page&link_nofollow=1&exclude_post_ids=5,6"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:294
+#: includes/frontend/class-rest-api.php:304
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:8
 msgid "Number of posts"
@@ -2068,45 +2068,45 @@ msgstr ""
 msgid "Post ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:177
-#: includes/frontend/class-rest-api.php:256
+#: includes/frontend/class-rest-api.php:187
+#: includes/frontend/class-rest-api.php:266
 msgid "Invalid post ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:299
+#: includes/frontend/class-rest-api.php:309
 msgid "Post types"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:317
-#: includes/frontend/class-rest-api.php:351
+#: includes/frontend/class-rest-api.php:333
+#: includes/frontend/class-rest-api.php:367
 msgid "ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:322
+#: includes/frontend/class-rest-api.php:338
 msgid "Blog ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:327
+#: includes/frontend/class-rest-api.php:343
 msgid "Activate counter flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:332
+#: includes/frontend/class-rest-api.php:348
 msgid "Debug flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:356
+#: includes/frontend/class-rest-api.php:372
 msgid "Counter type."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:361
+#: includes/frontend/class-rest-api.php:377
 msgid "Blog ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:366
+#: includes/frontend/class-rest-api.php:382
 msgid "From date."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:371
+#: includes/frontend/class-rest-api.php:387
 msgid "To date."
 msgstr ""
 
@@ -2173,7 +2173,7 @@ msgstr ""
 msgid "Include IDs"
 msgstr ""
 
-#: includes/admin/class-settings.php:1624
+#: includes/admin/class-settings.php:1629
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""
@@ -2482,26 +2482,26 @@ msgid "Thank you for using %1$sWebberZone Top 10%2$s! Please %3$srate us%2$s on 
 msgstr ""
 
 #: includes/admin/class-settings.php:1409
-#: includes/admin/class-tools-page.php:109
+#: includes/admin/class-tools-page.php:110
 msgid "Clearing..."
 msgstr ""
 
-#: includes/admin/class-settings.php:1584
-#: includes/admin/class-settings.php:1586
-#: includes/admin/class-settings.php:1587
+#: includes/admin/class-settings.php:1589
+#: includes/admin/class-settings.php:1591
+#: includes/admin/class-settings.php:1592
 msgid "Start Settings Wizard"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Estimated table size
-#: includes/admin/class-tools-page.php:517
-#: includes/admin/class-tools-page.php:546
+#: includes/admin/class-tools-page.php:519
+#: includes/admin/class-tools-page.php:548
 #, php-format
 msgid "Entries: %1$s | Est. Size: %2$s"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Table size
-#: includes/admin/class-tools-page.php:524
-#: includes/admin/class-tools-page.php:553
+#: includes/admin/class-tools-page.php:526
+#: includes/admin/class-tools-page.php:555
 #, php-format
 msgid "Entries: %1$s | Size: %2$s"
 msgstr ""
@@ -2594,19 +2594,19 @@ msgstr ""
 msgid "Note: This setting cannot be changed as the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1414
+#: includes/admin/class-settings.php:1415
 msgid "Note: This setting cannot be changed as the Popular posts style is set to Text only. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1462
+#: includes/admin/class-settings.php:1454
 msgid "Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1473
+#: includes/admin/class-settings.php:1478
 msgid "Note: Thumbnail location set to Text only as the Popular posts style is set to Text only. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1568
+#: includes/admin/class-settings.php:1573
 msgid "Note: Thumbnail location is set to \"Do not display thumbnails, only text\". This may override the selected style."
 msgstr ""
 
@@ -2644,4 +2644,20 @@ msgstr ""
 #: test-tools/class-tracker-benchmark.php:452
 #, php-format
 msgid "HTTP status %d"
+msgstr ""
+
+#: includes/admin/class-settings.php:1414
+msgid "Note: This setting cannot be changed as the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/admin/class-settings.php:1455
+msgid "Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab."
+msgstr ""
+
+#: includes/frontend/class-rest-api.php:128
+msgid "Sorry, you are not allowed to view this context."
+msgstr ""
+
+#: includes/frontend/class-rest-api.php:313
+msgid "Scope under which the request is made; determines fields present in response."
 msgstr ""
