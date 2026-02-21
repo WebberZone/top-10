@@ -120,6 +120,16 @@ class REST_API extends \WP_REST_Controller {
 	 * @return \WP_Error|bool
 	 */
 	public function permissions_check( \WP_REST_Request $request ) {
+		$context = $request->get_param( 'context' );
+
+		if ( 'edit' === $context && ! current_user_can( 'edit_posts' ) ) {
+			return new \WP_Error(
+				'rest_forbidden_context',
+				__( 'Sorry, you are not allowed to view this context.', 'top-10' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+
 		return apply_filters( 'top_ten_rest_api_permissions_check', true, $request );
 	}
 
@@ -150,7 +160,7 @@ class REST_API extends \WP_REST_Controller {
 
 		if ( is_array( $results ) && ! empty( $results ) ) {
 			foreach ( $results as $popular_post ) {
-				if ( ! $this->check_read_permission( $popular_post ) ) {
+				if ( ! $this->check_read_permission( $popular_post, $request ) ) {
 					continue;
 				}
 
@@ -183,7 +193,7 @@ class REST_API extends \WP_REST_Controller {
 		}
 
 		$post = get_post( (int) $id );
-		if ( empty( $post ) || empty( $post->ID ) || ! $this->check_read_permission( $post ) ) {
+		if ( empty( $post ) || empty( $post->ID ) || ! $this->check_read_permission( $post, $request ) ) {
 			return $error;
 		}
 
@@ -299,6 +309,12 @@ class REST_API extends \WP_REST_Controller {
 				'description' => esc_html__( 'Post types', 'top-10' ),
 				'type'        => 'string',
 			),
+			'context'    => array(
+				'description' => esc_html__( 'Scope under which the request is made; determines fields present in response.', 'top-10' ),
+				'type'        => 'string',
+				'enum'        => array( 'view', 'embed', 'edit' ),
+				'default'     => 'view',
+			),
 		);
 
 		return apply_filters( 'top_ten_rest_api_get_items_params', $args );
@@ -404,13 +420,21 @@ class REST_API extends \WP_REST_Controller {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param \WP_Post $post Post object.
+	 * @param \WP_Post         $post    Post object.
+	 * @param \WP_REST_Request $request WP Rest request.
 	 * @return bool Whether the post can be read.
 	 */
-	public function check_read_permission( $post ) {
+	public function check_read_permission( $post, $request = null ) {
 		$post_type = get_post_type_object( $post->post_type );
 		if ( ! $this->check_is_post_type_allowed( $post_type ) ) {
 			return false;
+		}
+
+		// If context is 'edit', require edit permissions to prevent exposing sensitive data like passwords.
+		if ( $request && 'edit' === $request->get_param( 'context' ) ) {
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				return false;
+			}
 		}
 
 		// Is the post readable?
@@ -427,7 +451,7 @@ class REST_API extends \WP_REST_Controller {
 		if ( 'inherit' === $post->post_status && $post->post_parent > 0 ) {
 			$parent = get_post( $post->post_parent );
 			if ( $parent ) {
-				return $this->check_read_permission( $parent );
+				return $this->check_read_permission( $parent, $request );
 			}
 		}
 
