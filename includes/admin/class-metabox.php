@@ -272,10 +272,5 @@ class Metabox {
 		if ( ! current_user_can( 'manage_options' ) && \tptn_get_option( 'show_metabox_admins' ) ) {
 			return;
 		}
-
-		$screen = get_current_screen();
-		if ( 'post' === $screen->base || 'page' === $screen->base ) {
-			wp_enqueue_script( 'wz-taxonomy-suggest-js' );
-		}
 	}
 }
