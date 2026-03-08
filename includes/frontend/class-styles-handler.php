@@ -134,9 +134,27 @@ class Styles_Handler {
 			}
 			.tptn-left-thumbs img.tptn_thumb {
 				width: min( var(--tptn-thumb-width), 100% );
+				height: var(--tptn-thumb-height);
 				max-height: var(--tptn-thumb-height);
-				height: auto;
-				margin: auto;
+				aspect-ratio: var(--tptn-thumb-aspect-ratio);
+				object-fit: cover;
+			}
+			.tptn-left-thumbs li > a.tptn_link {
+				display: block;
+				flex: 0 0 auto;
+				align-self: flex-start;
+				padding: var(--tptn-thumb-frame-padding, 0.25rem );
+				border-width: var(--tptn-thumb-frame-border-width, 1px );
+				border-style: solid;
+				border-color: var(--tptn-thumb-border, #ccc );
+				border-radius: var(--tptn-border-radius, 8px );
+				box-shadow: var(--tptn-shadow, 0 2px 4px rgba(0, 0, 0, 0.15) );
+				transition: transform var(--tptn-transition, 0.2s ease), box-shadow var(--tptn-transition, 0.2s ease);
+				will-change: transform;
+			}
+			.tptn-left-thumbs ul li:hover > a.tptn_link {
+				transform: scale(1.03);
+				box-shadow: var(--tptn-shadow-hover, 0 4px 8px rgba(0, 0, 0, 0.2) );
 			}
 			.tptn-left-thumbs .tptn_title {
 				width: 100%;
