@@ -116,15 +116,22 @@ class Blocks {
 		if ( ! empty( $style_array['name'] ) ) {
 			$style     = $style_array['name'];
 			$extra_css = $style_array['extra_css'];
+			$is_rtl    = is_rtl();
+			$handle    = "tptn-style-{$style}";
+
+			$already_enqueued = wp_style_is( $handle, 'enqueued' );
 
 			wp_register_style(
-				"tptn-style-{$style}",
-				plugins_url( "css/{$style}.min.css", TOP_TEN_PLUGIN_FILE ),
+				$handle,
+				plugins_url( Styles_Handler::get_stylesheet_path( $style, $is_rtl ), TOP_TEN_PLUGIN_FILE ),
 				array(),
 				TOP_TEN_VERSION
 			);
-			wp_enqueue_style( "tptn-style-{$style}" );
-			wp_add_inline_style( "tptn-style-{$style}", $extra_css );
+			wp_enqueue_style( $handle );
+
+			if ( ! $already_enqueued && ! empty( $extra_css ) ) {
+				wp_add_inline_style( $handle, $extra_css );
+			}
 		}
 
 		return \WebberZone\Top_Ten\Frontend\Display::pop_posts( $arguments );

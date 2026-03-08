@@ -1,4 +1,4 @@
-# WebberZone Top 10 — Popular Posts
+# WebberZone Top 10 Pro — Popular Posts
 
 [![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)](https://wordpress.org/plugins/top-10/)
 

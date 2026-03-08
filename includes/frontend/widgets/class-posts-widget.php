@@ -350,12 +350,28 @@ class Posts_Widget extends \WP_Widget {
 
 			$thumb_height = ( ! empty( $instance['thumb_height'] ) ) ? absint( $instance['thumb_height'] ) : \tptn_get_option( 'thumb_height' );
 			$thumb_width  = ( ! empty( $instance['thumb_width'] ) ) ? absint( $instance['thumb_width'] ) : \tptn_get_option( 'thumb_width' );
+			$width_value  = $thumb_width ? $thumb_width : 1;
+			$height_value = $thumb_height ? $thumb_height : 1;
+			$aspect_ratio = sprintf( '%d / %d', $width_value, $height_value );
 
-			// Enqueue the custom css for the thumb width and height for this specific widget.
+			// Scope thumbnail sizing to this widget instance so layout CSS can react to it.
 			$extra_css .= "
+			.tptn_posts_widget-{$args['widget_id']} {
+				--tptn-thumb-width: {$thumb_width}px;
+				--tptn-thumb-height: {$thumb_height}px;
+				--tptn-thumb-aspect-ratio: {$aspect_ratio};
+			}
+			.tptn_posts_widget-{$args['widget_id']} li > a.tptn_link {
+				width: min( var(--tptn-thumb-width), 100% );
+				max-width: 100%;
+			}
 			.tptn_posts_widget-{$args['widget_id']} img.tptn_thumb {
-				width: {$thumb_width}px !important;
-				height: {$thumb_height}px !important;
+				width: min( var(--tptn-thumb-width), 100% ) !important;
+				height: var(--tptn-thumb-height) !important;
+				max-width: 100%;
+				max-height: var(--tptn-thumb-height);
+				aspect-ratio: var(--tptn-thumb-aspect-ratio);
+				object-fit: cover;
 			}
 			";
 

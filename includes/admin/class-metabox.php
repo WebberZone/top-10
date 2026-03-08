@@ -272,5 +272,19 @@ class Metabox {
 		if ( ! current_user_can( 'manage_options' ) && \tptn_get_option( 'show_metabox_admins' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
+		if ( 'post' === $screen->base || 'page' === $screen->base ) {
+			// Enqueue Tom Select using Settings_API method.
+			\WebberZone\Top_Ten\Admin\Settings\Settings_API::enqueue_scripts_styles(
+				'tptn',
+				array(
+					'strings' => array(
+						/* translators: %s: search term */
+						'no_results' => esc_html__( 'No results found for "%s"', 'top-10' ),
+					),
+				)
+			);
+		}
 	}
 }
