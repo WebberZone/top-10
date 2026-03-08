@@ -25,23 +25,24 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 			require_once __DIR__ . '/vendor/freemius/start.php';
 			$tptn_freemius = \fs_dynamic_init(
 				array(
-					'id'             => '16384',
-					'slug'           => 'top-10',
-					'premium_slug'   => 'top-10-pro',
-					'type'           => 'plugin',
-					'public_key'     => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
-					'is_premium'     => false,
-					'premium_suffix' => 'Pro',
-					'has_addons'     => false,
-					'has_paid_plans' => true,
-					'menu'           => array(
+					'id'               => '16384',
+					'slug'             => 'top-10',
+					'premium_slug'     => 'top-10-pro',
+					'type'             => 'plugin',
+					'public_key'       => 'pk_bc8489856ce399cf3cc8fd49fc9d3',
+					'is_premium'       => false,
+					'premium_suffix'   => 'Pro',
+					'has_addons'       => false,
+					'has_paid_plans'   => true,
+					'menu'             => array(
 						'slug'       => 'tptn_dashboard',
 						'first-path' => ( is_multisite() && is_network_admin() ? '' : 'admin.php?page=tptn_wizard' ),
 						'contact'    => false,
 						'support'    => false,
 						'network'    => true,
 					),
-					'is_live'        => true,
+					'is_live'          => true,
+					'is_org_compliant' => true,
 				)
 			);
 		}
