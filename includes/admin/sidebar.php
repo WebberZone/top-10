@@ -61,6 +61,7 @@ use function WebberZone\Top_Ten\tptn_freemius;
 					<li><a href="https://webberzone.com/plugins/knowledgebase/" target="_blank"><?php esc_html_e( 'Knowledge Base', 'top-10' ); ?></a></li>
 					<li><a href="https://webberzone.com/plugins/add-to-all/" target="_blank"><?php esc_html_e( 'Snippetz', 'top-10' ); ?></a></li>
 					<li><a href="https://webberzone.com/webberzone-followed-posts/" target="_blank"><?php esc_html_e( 'Followed Posts', 'top-10' ); ?></a></li>
+					<li><a href="https://webberzone.com/plugins/webberzone-link-warnings/" target="_blank"><?php esc_html_e( 'Link Warnings', 'top-10' ); ?></a></li>
 					<li><a href="https://webberzone.com/plugins/popular-authors/" target="_blank"><?php esc_html_e( 'Popular Authors', 'top-10' ); ?></a></li>
 					<li><a href="https://webberzone.com/plugins/autoclose/" target="_blank"><?php esc_html_e( 'Auto Close', 'top-10' ); ?></a></li>
 				</ul>
