@@ -94,6 +94,7 @@ Fork the project and submit pull requests for bug fixes or improvements. Please 
 * [Auto-Close](https://wordpress.org/plugins/autoclose/) – Automatically close comments, pingbacks, and trackbacks
 * [Popular Authors](https://wordpress.org/plugins/popular-authors/) – Display popular authors widgets. Addon for Top 10.
 * [Followed Posts](https://wordpress.org/plugins/where-did-they-go-from-here/) – Show related posts based on reader journeys
+* [WebberZone Link Warnings](https://wordpress.org/plugins/webberzone-link-warnings/) – Add accessible warnings for external links and target="_blank" links
 
 == Screenshots ==
 
