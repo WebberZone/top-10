@@ -274,6 +274,10 @@ class Metabox {
 		}
 
 		$screen = get_current_screen();
+		if ( null === $screen ) {
+			return;
+		}
+
 		if ( 'post' === $screen->base || 'page' === $screen->base ) {
 			$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
