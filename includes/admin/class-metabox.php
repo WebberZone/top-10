@@ -275,16 +275,52 @@ class Metabox {
 
 		$screen = get_current_screen();
 		if ( 'post' === $screen->base || 'page' === $screen->base ) {
-			// Enqueue Tom Select using Settings_API method.
-			\WebberZone\Top_Ten\Admin\Settings\Settings_API::enqueue_scripts_styles(
-				'tptn',
+			$file_prefix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+			if ( ! wp_style_is( 'wz-tptn-tom-select', 'registered' ) ) {
+				wp_register_style(
+					'wz-tptn-tom-select',
+					TOP_TEN_PLUGIN_URL . 'includes/admin/settings/css/tom-select.min.css',
+					array(),
+					\WebberZone\Top_Ten\Admin\Settings\Settings_API::VERSION
+				);
+			}
+
+			if ( ! wp_script_is( 'wz-tptn-tom-select', 'registered' ) ) {
+				wp_register_script(
+					'wz-tptn-tom-select',
+					TOP_TEN_PLUGIN_URL . 'includes/admin/settings/js/tom-select.complete.min.js',
+					array( 'jquery' ),
+					\WebberZone\Top_Ten\Admin\Settings\Settings_API::VERSION,
+					true
+				);
+			}
+
+			if ( ! wp_script_is( 'wz-tptn-tom-select-init', 'registered' ) ) {
+				wp_register_script(
+					'wz-tptn-tom-select-init',
+					TOP_TEN_PLUGIN_URL . "includes/admin/settings/js/tom-select-init{$file_prefix}.js",
+					array( 'jquery', 'wz-tptn-tom-select' ),
+					\WebberZone\Top_Ten\Admin\Settings\Settings_API::VERSION,
+					true
+				);
+			}
+
+			wp_localize_script(
+				'wz-tptn-tom-select-init',
+				'WZTomSelectSettings',
 				array(
-					'strings' => array(
+					'endpoint' => 'category',
+					'strings'  => array(
 						/* translators: %s: search term */
 						'no_results' => esc_html__( 'No results found for "%s"', 'top-10' ),
 					),
 				)
 			);
+
+			wp_enqueue_style( 'wz-tptn-tom-select' );
+			wp_enqueue_script( 'wz-tptn-tom-select' );
+			wp_enqueue_script( 'wz-tptn-tom-select-init' );
 		}
 	}
 }
