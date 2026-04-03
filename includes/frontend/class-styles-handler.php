@@ -83,15 +83,15 @@ class Styles_Handler {
 	 */
 	public static function get_stylesheet_path( $style, $is_rtl = false ) {
 
-		$pro = '';
+		$base_path = 'includes/frontend/css/';
 		if ( false !== strpos( $style, '-pro' ) ) {
-			$pro = 'pro/';
+			$base_path = 'includes/pro/frontend/css/';
 		}
 
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$rtl    = $is_rtl ? '-rtl' : '';
 
-		return "css/{$pro}{$style}{$rtl}{$suffix}.css";
+		return "{$base_path}{$style}{$rtl}{$suffix}.css";
 	}
 
 	/**

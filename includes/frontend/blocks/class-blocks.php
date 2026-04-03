@@ -452,14 +452,14 @@ class Blocks {
 				$style     = $style_array['name'];
 				$extra_css = $style_array['extra_css'];
 
-				$pro = '';
+				$base_path = 'includes/frontend/css/';
 				if ( false !== strpos( $style, '-pro' ) ) {
-					$pro = 'pro/';
+					$base_path = 'includes/pro/frontend/css/';
 				}
 
 				wp_enqueue_style(
 					"popular-posts-block-editor-{$style}",
-					plugins_url( "css/{$pro}{$style}{$file_prefix}.css", TOP_TEN_PLUGIN_FILE ),
+					plugins_url( "{$base_path}{$style}{$file_prefix}.css", TOP_TEN_PLUGIN_FILE ),
 					array( 'wp-edit-blocks' ),
 					TOP_TEN_VERSION
 				);
