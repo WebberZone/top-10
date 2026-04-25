@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Top 10\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/top-10-pro\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/top-10\n"
 "Last-Translator: Ajay D'Souza\n"
 "Language-Team: Ajay D'Souza\n"
 "MIME-Version: 1.0\n"
