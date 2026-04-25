@@ -2,9 +2,9 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.2.2
+Stable tag: 4.2.3
 Requires at least: 6.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -156,6 +156,20 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.2.3 =
+
+* Security:
+	* Hardened Settings API and metabox output escaping.
+
+* Improvements:
+	* Updated Freemius SDK to version 2.13.1.
+	* Updated Settings API assets and Tom Select handling.
+	* Refreshed translations and generated assets.
+
+* Fixes:
+	* Fixed metabox screen handling when `get_current_screen()` is unavailable.
+	* Fixed admin notices package tags.
+
 = 4.2.2 =
 
 * Modifications:
@@ -208,6 +222,9 @@ Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webb
 	* Fixed live-edit count updates in multisite statistics
 
 == Upgrade Notice ==
+
+= 4.2.3 =
+Security hardening, Settings API updates, and bug fixes.
 
 = 4.2.2 =
 Bugs squashed from previous releases.
