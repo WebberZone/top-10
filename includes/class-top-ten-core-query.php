@@ -957,6 +957,6 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 * @return bool Whether caching should be enabled.
 	 */
 	protected function should_cache() {
-		return ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
+		return ! empty( $this->query_args['cache'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
 	}
 }
