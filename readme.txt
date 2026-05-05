@@ -156,6 +156,10 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.2.4 =
+
+* Fixed: Check for caching was referencing the incorrect setting resulting in posts never being cached.
+
 = 4.2.3 =
 
 * Security:
