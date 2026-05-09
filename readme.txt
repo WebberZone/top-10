@@ -162,8 +162,16 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Added Top 10 views for the current hour and today to the WordPress Dashboard At a Glance widget.
 	* Post views from RSS/Atom feed readers are now counted alongside regular web views. Enable under Counter settings > Track feed views.
 
+* Improvements:
+	* Scheduled maintenance now deletes old daily entries in batches, preventing timeouts on high-traffic sites with large databases.
+	* Added a database index on the daily table to speed up scheduled maintenance queries. Use the Recreate Primary Key tool under Tools to apply it to existing installs.
+
 * Fixed:
 	* Check for caching was referencing the incorrect setting resulting in posts never being cached.
+	* Database version was being recorded before upgrade routines ran, causing upgrades to be skipped silently on re-activation.
+	* Daily popular posts queries work on MySQL servers with ONLY_FULL_GROUP_BY mode enabled.
+	* Popular posts with identical view counts now display in a consistent order when paginated.
+	* Daily view counts now respect the site's configured timezone instead of server time.
 
 = 4.2.3 =
 

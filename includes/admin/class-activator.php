@@ -97,8 +97,6 @@ class Activator {
 		self::maybe_create_table( $table_name, self::create_full_table_sql() );
 		self::maybe_create_table( $table_name_daily, self::create_daily_table_sql() );
 
-		update_site_option( 'tptn_db_version', $tptn_db_version );
-
 		// Upgrade table code.
 		$installed_ver = get_site_option( 'tptn_db_version' );
 

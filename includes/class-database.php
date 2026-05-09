@@ -187,6 +187,7 @@ class Database {
 	 *     @type string $from_date  Delete entries from this date (daily table only).
 	 *     @type string $to_date    Delete entries until this date (daily table only).
 	 *     @type bool   $daily      Whether to delete from daily table.
+	 *     @type int    $limit      Maximum number of rows to delete per call (0 = no limit).
 	 * }
 	 * @return int|false Number of rows deleted or false on error.
 	 */
@@ -199,6 +200,7 @@ class Database {
 			'from_date' => '',
 			'to_date'   => '',
 			'daily'     => false,
+			'limit'     => 0,
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
@@ -228,6 +230,10 @@ class Database {
 			$sql .= ' WHERE ' . implode( ' AND ', $where );
 		}
 
+		if ( ! empty( $args['limit'] ) && $args['limit'] > 0 && ! empty( $where ) ) {
+			$sql .= $wpdb->prepare( ' LIMIT %d', $args['limit'] );
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $sql );
 
@@ -247,110 +253,21 @@ class Database {
 	 * @return array Array of table statistics with entry count and size.
 	 */
 	public static function get_table_statistics() {
-		global $wpdb;
-
 		$cache_key = 'tptn_table_statistics';
 		$stats     = wp_cache_get( $cache_key, 'top-10' );
 
 		if ( false === $stats ) {
-			$table_name       = $wpdb->base_prefix . 'top_ten';
-			$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
-			$stats            = array();
+			$stats = array();
 
-			// Get main table statistics.
+			$table_name       = self::get_table( false );
+			$table_name_daily = self::get_table( true );
+
 			if ( self::is_table_installed( $table_name ) ) {
-				// Get row count.
-				if ( is_network_admin() ) {
-					// In network admin, count all entries.
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
-				} else {
-					// In individual site admin, count only entries for this blog.
-					$count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->prepare(
-							"SELECT COUNT(*) FROM `{$table_name}` WHERE blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-							get_current_blog_id()
-						)
-					);
-				}
-
-				// Get table size (always shows total size across all blogs).
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$size = $wpdb->get_var(
-					$wpdb->prepare(
-						'SELECT ROUND(((data_length + index_length) / 1024 / 1024), 2) 
-						FROM information_schema.TABLES 
-						WHERE table_schema = %s AND table_name = %s',
-						defined( 'DB_NAME' ) ? DB_NAME : '', // @codingStandardsIgnoreLine - WordPress constant
-						$table_name
-					)
-				);
-
-				// Calculate size for individual sites in multisite.
-				$calculated_size = $size ? (float) $size * 1024 * 1024 : 0; // Convert MB to bytes.
-				if ( is_multisite() && ! is_network_admin() && $calculated_size > 0 ) {
-					// Get total entries to calculate ratio.
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					$total_count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
-
-					if ( $total_count > 0 && $count > 0 ) {
-						// Estimate size based on entry count ratio.
-						$calculated_size = ( $count / $total_count ) * $calculated_size;
-					}
-				}
-
-				$stats['top_ten'] = array(
-					'entries' => absint( $count ),
-					'size'    => $calculated_size,
-				);
+				$stats['top_ten'] = self::get_single_table_statistics( $table_name );
 			}
 
-			// Get daily table statistics.
 			if ( self::is_table_installed( $table_name_daily ) ) {
-				// Get row count.
-				if ( is_network_admin() ) {
-					// In network admin, count all entries.
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_daily}`" );
-				} else {
-					// In individual site admin, count only entries for this blog.
-					$count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->prepare(
-							"SELECT COUNT(*) FROM `{$table_name_daily}` WHERE blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-							get_current_blog_id()
-						)
-					);
-				}
-
-				// Get table size (always shows total size across all blogs).
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$size = $wpdb->get_var(
-					$wpdb->prepare(
-						'SELECT ROUND(((data_length + index_length) / 1024 / 1024), 2) 
-						FROM information_schema.TABLES 
-						WHERE table_schema = %s AND table_name = %s',
-						defined( 'DB_NAME' ) ? DB_NAME : '', // @codingStandardsIgnoreLine - WordPress constant
-						$table_name_daily
-					)
-				);
-
-				// Calculate size for individual sites in multisite.
-				$calculated_size = $size ? (float) $size * 1024 * 1024 : 0; // Convert MB to bytes.
-				if ( is_multisite() && ! is_network_admin() && $calculated_size > 0 ) {
-					// Get total entries to calculate ratio.
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					$total_count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name_daily}`" );
-
-					if ( $total_count > 0 && $count > 0 ) {
-						// Estimate size based on entry count ratio.
-						$calculated_size = ( $count / $total_count ) * $calculated_size;
-					}
-				}
-
-				$stats['top_ten_daily'] = array(
-					'entries' => absint( $count ),
-					'size'    => $calculated_size,
-				);
+				$stats['top_ten_daily'] = self::get_single_table_statistics( $table_name_daily );
 			}
 
 			// Cache for 5 minutes.
@@ -365,6 +282,66 @@ class Database {
 		 * @param array $stats Array of table statistics.
 		 */
 		return apply_filters( 'tptn_table_statistics', $stats );
+	}
+
+	/**
+	 * Get entry count and estimated size for a single table.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $table_name Table name.
+	 * @return array {
+	 *     @type int   $entries Number of entries.
+	 *     @type float $size    Estimated size in bytes.
+	 * }
+	 */
+	private static function get_single_table_statistics( $table_name ) {
+		global $wpdb;
+
+		// Get row count.
+		if ( is_network_admin() ) {
+			// In network admin, count all entries.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
+		} else {
+			// In individual site admin, count only entries for this blog.
+			$count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM `{$table_name}` WHERE blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					get_current_blog_id()
+				)
+			);
+		}
+
+		// Get table size (always shows total size across all blogs).
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$size = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT ROUND(((data_length + index_length) / 1024 / 1024), 2) 
+				FROM information_schema.TABLES 
+				WHERE table_schema = %s AND table_name = %s',
+				defined( 'DB_NAME' ) ? DB_NAME : '', // @codingStandardsIgnoreLine - WordPress constant
+				$table_name
+			)
+		);
+
+		// Calculate size for individual sites in multisite.
+		$calculated_size = $size ? (float) $size * 1024 * 1024 : 0; // Convert MB to bytes.
+		if ( is_multisite() && ! is_network_admin() && $calculated_size > 0 ) {
+			// Get total entries to calculate ratio.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$total_count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
+
+			if ( $total_count > 0 && $count > 0 ) {
+				// Estimate size based on entry count ratio.
+				$calculated_size = ( $count / $total_count ) * $calculated_size;
+			}
+		}
+
+		return array(
+			'entries' => absint( $count ),
+			'size'    => $calculated_size,
+		);
 	}
 
 	/**
@@ -388,7 +365,7 @@ class Database {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		$result = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
 
 		return $result === $table;
 	}
@@ -460,7 +437,7 @@ class Database {
 		$sql .= ' WHERE ' . implode( ' AND ', $where );
 
 		if ( $args['daily'] ) {
-			$sql .= ' GROUP BY t.postnumber, t.blog_id ';
+			$sql .= " GROUP BY t.postnumber, t.blog_id, {$wpdb->posts}.post_title, {$wpdb->posts}.post_date ";
 		}
 
 		// Sanitize order parameter.
@@ -581,44 +558,8 @@ class Database {
 	 * @return bool True if both tables exist, false otherwise.
 	 */
 	public static function are_tables_installed() {
-		global $wpdb;
-
-		$table_name       = $wpdb->base_prefix . 'top_ten';
-		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
-
-		// Check if main table exists.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
-
-		// Check if daily table exists.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$daily_table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$table_name_daily}'" );
-
-		return $table_exists === $table_name && $daily_table_exists === $table_name_daily;
-	}
-
-	/**
-	 * Get table statistics.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @param bool $daily Whether to get stats for daily table.
-	 * @return array Statistics including total rows and total counts.
-	 */
-	public static function get_table_stats( $daily = false ) {
-		global $wpdb;
-
-		$table = self::get_table( $daily );
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$total_rows = $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$total_views = $wpdb->get_var( "SELECT SUM(cntaccess) FROM {$table}" );
-
-		return array(
-			'total_rows'  => (int) $total_rows,
-			'total_views' => (int) $total_views,
-		);
+		return self::is_table_installed( self::get_table( false ) )
+			&& self::is_table_installed( self::get_table( true ) );
 	}
 
 	/**
@@ -664,7 +605,8 @@ class Database {
 			cntaccess bigint(20) NOT NULL,
 			dp_date DATETIME NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
-			PRIMARY KEY  (postnumber, dp_date, blog_id)
+			PRIMARY KEY  (postnumber, dp_date, blog_id),
+			KEY blog_date (blog_id, dp_date, postnumber)
 		) $charset_collate;";
 
 		return $sql;
