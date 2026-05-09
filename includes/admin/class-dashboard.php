@@ -126,7 +126,7 @@ class Dashboard {
 						<div id="<?php echo esc_attr( $tab_id ); ?>">
 							<table class="form-table">
 							<?php
-								$output = $this->display_popular_posts( $tab_name );
+								$output = empty( $tab_name['hide'] ) ? $this->display_popular_posts( $tab_name ) : '';
 								echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
 							</table>

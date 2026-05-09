@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Plugin Overview
 
-WebberZone Top 10 (free) counts daily and total post views and displays popular posts lists. Version 4.2.2. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `6.0`.
+WebberZone Top 10 (free) counts daily and total post views and displays popular posts lists. Version 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `6.0`.
 
 Constants defined in `top-10.php`: `TOP_TEN_VERSION`, `TOP_TEN_PLUGIN_FILE`, `TOP_TEN_PLUGIN_DIR`, `TOP_TEN_PLUGIN_URL`, `TOP_TEN_DEFAULT_THUMBNAIL_URL`, `TOP_TEN_STORE_DATA` (180 days default).
 

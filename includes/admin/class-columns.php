@@ -189,19 +189,39 @@ class Columns {
 
 		$is_daily   = ( 'tptn_daily' === $orderby );
 		$table_name = Database::get_table( $is_daily );
-
-		$clauses['join'] .= " LEFT OUTER JOIN {$table_name} ON {$wpdb->posts}.ID = {$table_name}.postnumber";
+		$blog_id    = get_current_blog_id();
+		$order      = ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 		if ( $is_daily ) {
-			$from_date          = Helpers::get_from_date();
-			$clauses['where']  .= $wpdb->prepare( " AND {$table_name}.dp_date >= %s", $from_date ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$clauses['groupby'] = "{$table_name}.postnumber";
-			$clauses['orderby'] = "SUM({$table_name}.cntaccess)";
+			$from_date = Helpers::get_from_date();
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
+			$clauses['join'] .= $wpdb->prepare(
+				" LEFT JOIN {$table_name} AS tptn_counts
+					ON {$wpdb->posts}.ID = tptn_counts.postnumber
+					AND tptn_counts.blog_id = %d
+					AND tptn_counts.dp_date >= %s",
+				$blog_id,
+				$from_date
+			);
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+			$clauses['fields'] .= ', COALESCE(SUM(tptn_counts.cntaccess), 0) AS tptn_visits';
+			if ( empty( $clauses['groupby'] ) ) {
+				$clauses['groupby'] = "{$wpdb->posts}.ID";
+			} elseif ( false === strpos( $clauses['groupby'], "{$wpdb->posts}.ID" ) ) {
+				$clauses['groupby'] .= ", {$wpdb->posts}.ID";
+			}
 		} else {
-			$clauses['orderby'] = "{$table_name}.cntaccess";
+			$clauses['fields'] .= ', COALESCE(tptn_counts.cntaccess, 0) AS tptn_visits';
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
+			$clauses['join'] .= $wpdb->prepare(
+				" LEFT JOIN {$table_name} AS tptn_counts ON {$wpdb->posts}.ID = tptn_counts.postnumber AND tptn_counts.blog_id = %d",
+				$blog_id
+			);
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
-		$clauses['orderby'] .= ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? ' ASC' : ' DESC';
+		$clauses['orderby'] = "tptn_visits {$order}";
 
 		return apply_filters( 'tptn_posts_clauses', $clauses, $wp_query );
 	}
