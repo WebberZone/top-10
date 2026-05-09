@@ -4,13 +4,18 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Plugin Overview
 
-WebberZone Top 10 (free) counts daily and total post views and displays popular posts lists. Version 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `6.0`.
+WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `6.0`.
+
+This is the pro version. Activating it automatically deactivates the free Top 10 plugin, and vice versa. Both plugins share the same namespace, function prefix, database tables, and settings key (`tptn_settings`).
+
+The Freemius header annotation `@fs_premium_only /includes/pro/, /css/pro/` means those directories are only shipped in the paid build.
 
 Constants defined in `top-10.php`: `TOP_TEN_VERSION`, `TOP_TEN_PLUGIN_FILE`, `TOP_TEN_PLUGIN_DIR`, `TOP_TEN_PLUGIN_URL`, `TOP_TEN_DEFAULT_THUMBNAIL_URL`, `TOP_TEN_STORE_DATA` (180 days default).
 
 ## Commands
 
 ### PHP
+
 ```bash
 composer phpcs          # Lint PHP (WordPress coding standards)
 composer phpcbf         # Auto-fix PHP code style
@@ -20,25 +25,32 @@ composer test           # Run all checks (phpcs + phpcompat + phpstan)
 ```
 
 ### JavaScript/CSS
+
 ```bash
 npm run build           # Build free blocks (popular-posts, post-count)
+npm run build:pro       # Build all three pro blocks (query, featured-image, popular-posts-pro)
+npm run build:all       # Build free + pro blocks
 npm run build:assets    # Minify CSS/JS, generate RTL CSS
 npm run start           # Watch free blocks
+npm run start:pro       # Watch all pro blocks (parallel)
+npm run start:all       # Watch free + pro blocks
 npm run lint:js         # ESLint
 npm run lint:css        # Stylelint
 ```
 
-Note: `build:pro`, `build:all`, and their `start:*` counterparts also exist in `package.json` (they target `includes/pro/` paths) but are only meaningful in `top-10-pro`.
+Pro block sources live in `includes/pro/blocks/src/{query,featured-image,popular-posts-pro}/`; each builds to its own `includes/pro/blocks/build/<name>/` directory.
 
 ## Architecture
 
 ### Entry Point & Bootstrap
+
 `top-10.php` defines constants, loads Freemius (`load-freemius.php`; Freemius accessor: `tptn_freemius()`), loads the autoloader (`includes/autoloader.php`), and then registers `load_tptn()` on `plugins_loaded` which calls `Main::get_instance()`.
 
 Four files are `require_once`'d directly (not autoloaded) because they must be available before `plugins_loaded`: `includes/options-api.php`, `includes/wz-pluggables.php`, `includes/class-top-ten-query.php`, `includes/functions.php`.
 
 ### Core Components
-- **`includes/class-main.php`** — Singleton. Instantiates `Counter`, `Tracker`, `Shortcodes`, `Blocks`, `Feed`, `Styles_Handler`, `Language_Handler`, `Cron`, `Hook_Loader`. In the free plugin the `$pro` property is always `null`.
+
+- **`includes/class-main.php`** — Singleton. Instantiates `Counter`, `Tracker`, `Shortcodes`, `Blocks`, `Feed`, `Styles_Handler`, `Language_Handler`, `Cron`, `Hook_Loader`. In the pro plugin the `$pro` property is set to a `Pro\Pro` instance when the premium code is active (see "How the Pro Layer Activates" below).
 - **`includes/class-hook-loader.php`** — Registers `init`, `widgets_init`, `rest_api_init`, and `parse_query` hooks.
 - **`includes/class-counter.php`** (`Counter`) — Hooks into `the_content` to append the viewed count; only fires in the main loop on singular pages.
 - **`includes/class-tracker.php`** (`Tracker`) — Enqueues `tptn_tracker` JS and handles `wp_ajax_tptn_tracker` / `wp_ajax_nopriv_tptn_tracker` AJAX actions that record a view. Tracker type (standard `ajaxurl` vs. pro fast/high-traffic types) is read from `tptn_get_option('tracker_type')`.
@@ -47,6 +59,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 - **`includes/class-top-ten-query.php`** — Public-facing query wrapper; required directly rather than autoloaded.
 
 ### Frontend (`includes/frontend/`)
+
 - **`class-display.php`** — Renders the popular posts HTML list.
 - **`class-media-handler.php`** — Resolves thumbnails (same priority chain as CRP: custom meta → featured image → content scan → default).
 - **`class-shortcodes.php`** — `[tptn_list]` shortcode.
@@ -56,6 +69,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 - **`widgets/class-posts-widget.php`** — Legacy widget.
 
 ### Admin (`includes/admin/`)
+
 - **`class-settings.php`** — Settings page (tabs: General, List, Counter, Thumbnail, Exclusions, Feed, Maintenance, Custom Styles). Settings stored as a single `tptn_settings` array in `wp_options`.
 - **`class-cron.php`** — Scheduled maintenance (`tptn_cron_hook`) to prune daily table rows older than `TOP_TEN_STORE_DATA` (180) days.
 - **`class-statistics.php`** / **`class-statistics-table.php`** — Admin statistics pages.
@@ -68,13 +82,49 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 - **`settings/`** — Shared settings framework (Settings_API, Settings_Form, Settings_Sanitize, Metabox_API, Settings_Wizard_API).
 
 ### Utilities (`includes/util/`)
+
 - **`class-cache.php`** — Transient-based output cache per query.
 - **`class-helpers.php`** — Shared helpers.
 - **`class-hook-registry.php`** — Static registry for all registered actions/filters.
 
+### How the Pro Layer Activates
+
+In `includes/class-main.php`, after all shared subsystems are instantiated, the pro module is conditionally loaded:
+
+```php
+if ( tptn_freemius()->is__premium_only() ) {
+    if ( tptn_freemius()->can_use_premium_code() ) {
+        $this->pro = new Pro\Pro();
+    }
+}
+```
+
+`Pro\Pro` is the single entry point for all pro features.
+
+### Pro Components (`includes/pro/`) — Pro Only
+
+- **`class-pro.php`** (`Pro\Pro`) — Registers hooks that extend the shared plugin: unlocks all `'pro' => true` settings via `tptn_registered_settings` filter, adds `display_only_on_tax_ids` shortcode attribute, supports per-post `_tptn_include_cat_ids` meta override, injects `MAX_EXECUTION_TIME` MySQL hint via `top_ten_query_posts_request` filter, adds category/post-type filtering to the RSS feed, and allows a configurable `maintenance_days` to override the default 180-day constant.
+
+- **`class-fast-tracker.php`** (`Pro\Fast_Tracker`) — Adds two additional tracker types to the settings dropdown:
+  - **Fast tracker** — a lightweight standalone PHP endpoint (`fast-tracker-js.php`) that bypasses WordPress bootstrap.
+  - **High-traffic tracker** — an even more minimal endpoint (`high-traffic-tracker-js.php`) that uses a pre-generated config file (`top-10-fast-config.php` placed in the WordPress root) with hardcoded DB credentials, requiring no WordPress load at all. The config is generated/deleted via admin AJAX actions (`tptn_generate_fast_config` / `tptn_delete_fast_config`).
+
+- **`class-styles.php`** (`Pro\Styles`) — Adds the `grid_thumbs` display style via `tptn_get_styles` filter; overrides the CSS path via `tptn_get_style` for pro-only CSS in `css/pro/`.
+
+- **`blocks/class-query.php`** — Pro Query block: a full server-side-rendered block for embedding popular posts lists with per-block settings.
+- **`blocks/class-featured-image.php`** — Pro Featured Image block.
+- **`blocks/class-popular-posts-pro.php`** — Pro Popular Posts Pro block.
+- **`blocks/block-patterns/`** — Six pre-built block patterns (grid posts, grid with thumbs, image-title-excerpt, left thumbnail, numbered list, rounded thumbs).
+
+- **`admin/class-pro-admin.php`** (`Pro\Admin\Pro_Admin`) — Pro admin layer; instantiates `Admin_Bar`.
+- **`admin/class-admin-bar.php`** (`Pro\Admin\Admin_Bar`) — Adds a Top 10 node to the WordPress admin bar for quick access to stats.
+- **`admin/class-dashboard-widgets.php`** (`Pro\Admin\Dashboard_Widgets`) — Pro dashboard widgets.
+
 ## Key Patterns
 
 - **Settings access:** Always use `tptn_get_option($key, $default)` / `tptn_get_settings()`. Settings are also available in `global $tptn_settings` (populated at plugin load).
-- **Pro-gated settings:** Several settings in `class-settings.php` carry `'pro' => true` (e.g. `admin_column_post_types`, `show_dashboard_to_roles`, `show_admin_bar`, `max_execution_time`, `use_global_settings`, `exclude_terms_include_parents`, `maintenance_days`, `feed_category_slugs`). These render as disabled with an upgrade prompt in the free plugin; `Pro::update_registered_settings()` in the pro plugin sets `'pro' => false` to enable them.
+- **Pro-gated settings:** Several settings in `class-settings.php` carry `'pro' => true` (e.g. `admin_column_post_types`, `show_dashboard_to_roles`, `show_admin_bar`, `max_execution_time`, `use_global_settings`, `exclude_terms_include_parents`, `maintenance_days`, `feed_category_slugs`). These render as disabled with an upgrade prompt in the free plugin. In the pro plugin, `Pro::update_registered_settings()` iterates all registered settings and sets `'pro' => false` on any entry marked pro-only, enabling those fields in the UI. It also removes the `match_content` setting entirely (replaced by a pro alternative).
 - **Mutual exclusion:** Activating either free or pro automatically deactivates the other (`tptn_deactivate_other_instances`).
 - **DB writes:** All count increments go through `Database::update_count()` using `INSERT … ON DUPLICATE KEY UPDATE`.
+- **High-traffic tracker config:** The generated `top-10-fast-config.php` must be regenerated whenever DB credentials or the table prefix changes. Prompt the user to regenerate after such changes.
+- **Pro gating check:** `tptn_freemius()->is__premium_only()` and `tptn_freemius()->can_use_premium_code()` are the two guards used in `Main::init()`. Individual pro hooks use `Hook_Registry` just like the free plugin.

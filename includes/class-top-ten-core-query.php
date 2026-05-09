@@ -632,9 +632,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 		// Preserve intentional orderby values except the plugin's visits alias.
 		if ( is_array( $query_orderby ) && isset( $query_orderby['visits'] ) ) {
 			$visits_order = method_exists( $query, 'parse_order' ) ? $query->parse_order( $query_orderby['visits'] ) : $order;
-			$orderby      = empty( $orderby ) ? "visits $visits_order" : "visits $visits_order, {$orderby}";
+			$orderby      = empty( $orderby ) ? "visits $visits_order, {$this->table_name}.postnumber $visits_order" : "visits $visits_order, {$orderby}";
 		} elseif ( empty( $query_orderby ) || 'visits' === $query_orderby ) {
-			$orderby = "visits $order";
+			$orderby = "visits $order, {$this->table_name}.postnumber $order";
 		}
 
 		/**

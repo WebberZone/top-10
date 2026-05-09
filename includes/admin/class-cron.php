@@ -47,12 +47,17 @@ class Cron {
 		$from_date    = gmdate( 'Y-m-d H', $from_date );
 
 		// Use the Database class to delete old daily entries.
-		Database::delete_counts(
-			array(
-				'daily'   => true,
-				'to_date' => $from_date,
-			)
+		$args = array(
+			'daily'   => true,
+			'to_date' => $from_date,
+			'limit'   => 1000,
 		);
+
+		// Batch delete in chunks to avoid long-running queries.
+		$deadline = microtime( true ) + 20;
+		do {
+			$deleted = Database::delete_counts( $args );
+		} while ( $deleted > 0 && microtime( true ) < $deadline );
 	}
 
 	/**
