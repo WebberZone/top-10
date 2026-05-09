@@ -28,6 +28,125 @@ class Dashboard_Widgets {
 	public function __construct() {
 		add_filter( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 		add_filter( 'wp_network_dashboard_setup', array( $this, 'wp_network_dashboard_setup' ) );
+		add_filter( 'dashboard_glance_items', array( $this, 'dashboard_glance_items' ) );
+		add_action( 'admin_head-index.php', array( $this, 'dashboard_glance_styles' ) );
+	}
+
+	/**
+	 * Add Top 10 views from the current hour to the At a Glance widget.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string[] $items Array of extra At a Glance items.
+	 * @return string[] Modified array of extra At a Glance items.
+	 */
+	public function dashboard_glance_items( $items ) {
+		if ( ! current_user_can( 'manage_options' ) && ! \tptn_get_option( 'show_count_non_admins' ) ) {
+			return $items;
+		}
+
+		$current_hour = current_time( 'Y-m-d H' );
+		$hour_views   = self::get_current_hour_views();
+		$day_views    = self::get_views_for_period( current_time( 'Y-m-d 00' ), $current_hour );
+
+		$items[] = self::get_glance_item(
+			$hour_views,
+			/* translators: %s: Number of views in the last hour. */
+			_n( '%s view in the last hour', '%s views in the last hour', $hour_views, 'top-10' ),
+			admin_url( 'admin.php?page=tptn_dashboard' )
+		);
+
+		$items[] = self::get_glance_item(
+			$day_views,
+			/* translators: %s: Number of views in the past day. */
+			_n( '%s view in the past day', '%s views in the past day', $day_views, 'top-10' ),
+			wp_nonce_url(
+				add_query_arg(
+					array(
+						'page'                  => 'tptn_dashboard',
+						'post-date-filter-from' => current_time( 'd M Y' ),
+						'post-date-filter-to'   => current_time( 'd M Y' ),
+					),
+					admin_url( 'admin.php' )
+				),
+				'tptn-dashboard'
+			)
+		);
+
+		return $items;
+	}
+
+	/**
+	 * Add a better icon for Top 10 At a Glance items.
+	 *
+	 * @since 4.3.0
+	 */
+	public function dashboard_glance_styles() {
+		?>
+		<style>
+			#dashboard_right_now li a.tptn-glance-views:before {
+				content: "\f239";
+				content: "\f239" / "";
+			}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Get the number of views recorded in the current hour.
+	 *
+	 * Top 10 stores daily counts in hourly buckets, so this returns the current
+	 * hour bucket rather than a rolling 60-minute window.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return int Number of views in the current hour.
+	 */
+	public static function get_current_hour_views() {
+		return self::get_views_for_period( current_time( 'Y-m-d H' ), current_time( 'Y-m-d H' ) );
+	}
+
+	/**
+	 * Get the number of views recorded in a period.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $from_hour Start hour in Y-m-d H format.
+	 * @param string $to_hour   End hour in Y-m-d H format.
+	 * @return int Number of views in the period.
+	 */
+	public static function get_views_for_period( $from_hour, $to_hour ) {
+		global $wpdb;
+
+		$table = $wpdb->base_prefix . 'top_ten_daily';
+		$sql   = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"SELECT SUM(cntaccess) FROM {$table} WHERE dp_date >= %s AND dp_date <= %s AND blog_id = %d",
+			$from_hour,
+			$to_hour,
+			get_current_blog_id()
+		);
+		$views = $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+
+		return (int) $views;
+	}
+
+	/**
+	 * Build a Top 10 At a Glance item.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param int    $views Views.
+	 * @param string $label Label with a %s placeholder for the formatted count.
+	 * @param string $url   Link URL.
+	 * @return string At a Glance item markup.
+	 */
+	public static function get_glance_item( $views, $label, $url ) {
+		return sprintf(
+			'<a class="tptn-glance-views" href="%1$s">%2$s</a>',
+			esc_url( $url ),
+			esc_html( sprintf( $label, Helpers::number_format_i18n( $views ) ) )
+		);
 	}
 
 	/**
@@ -189,7 +308,18 @@ class Dashboard_Widgets {
 			if ( $network ) {
 				$output .= '<a href="' . network_admin_url( 'admin.php?page=tptn_network_pop_posts_page&orderby=daily_count&order=desc' ) . '">' . __( 'View all network daily popular posts', 'top-10' ) . '</a>';
 			} else {
-				$output .= '<a href="' . admin_url( 'admin.php?page=tptn_popular_posts&orderby=daily_count&order=desc' ) . '">' . __( 'View all daily popular posts', 'top-10' ) . '</a>';
+				$output .= '<a href="' . esc_url(
+					add_query_arg(
+						array(
+							'page'                  => 'tptn_popular_posts',
+							'orderby'               => 'daily_count',
+							'order'                 => 'desc',
+							'post-date-filter-from' => current_time( 'd M Y' ),
+							'post-date-filter-to'   => current_time( 'd M Y' ),
+						),
+						admin_url( 'admin.php' )
+					)
+				) . '">' . __( 'View all daily popular posts', 'top-10' ) . '</a>';
 			}
 		} elseif ( $network ) {
 				$output .= '<a href="' . network_admin_url( 'admin.php?page=tptn_network_pop_posts_page&orderby=total_count&order=desc' ) . '">' . __( 'View all network popular posts', 'top-10' ) . '</a>';

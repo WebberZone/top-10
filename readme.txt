@@ -156,9 +156,14 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.2.4 =
+= 4.3.0 =
 
-* Fixed: Check for caching was referencing the incorrect setting resulting in posts never being cached.
+* New:
+	* Added Top 10 views for the current hour and today to the WordPress Dashboard At a Glance widget.
+	* Post views from RSS/Atom feed readers are now counted alongside regular web views. Enable under Counter settings > Track feed views.
+
+* Fixed:
+	* Check for caching was referencing the incorrect setting resulting in posts never being cached.
 
 = 4.2.3 =
 

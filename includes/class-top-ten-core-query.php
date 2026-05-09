@@ -611,16 +611,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 	}
 
 	/**
-	 * Modify the posts_orderby clause.
+	 * Modify the ORDER BY clause of the query.
 	 *
 	 * @since 3.0.0
-	 *
-	 * @param string    $orderby  The ORDER BY clause of the query.
-	 * @param \WP_Query $query    The \WP_Query instance.
-	 * @return string  Updated ORDER BY
-	 */
-	/**
-	 * Modify the ORDER BY clause of the query.
 	 *
 	 * @param string    $orderby The current ORDER BY clause.
 	 * @param \WP_Query $query   The current query instance.
@@ -633,18 +626,16 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		// Use WP_Query's parse_order method to get a valid order.
+		$query_orderby = $query->get( 'orderby' );
 		$order         = method_exists( $query, 'parse_order' ) ? $query->parse_order( $query->get( 'order' ) ) : 'DESC';
-		$orderby_count = $this->is_daily ? "SUM({$this->table_name}.cntaccess) $order" : "{$this->table_name}.cntaccess $order";
 
-		// If orderby is set, then this was done intentionally and we don't make any modifications.
-		if ( ! empty( $query->get( 'orderby' ) ) ) {
-			if ( 'visits' === $query->get( 'orderby' ) ) {
-				$orderby = $orderby_count;
-			}
-			return apply_filters_ref_array( 'top_ten_query_posts_orderby', array( $orderby, &$this ) );
+		// Preserve intentional orderby values except the plugin's visits alias.
+		if ( is_array( $query_orderby ) && isset( $query_orderby['visits'] ) ) {
+			$visits_order = method_exists( $query, 'parse_order' ) ? $query->parse_order( $query_orderby['visits'] ) : $order;
+			$orderby      = empty( $orderby ) ? "visits $visits_order" : "visits $visits_order, {$orderby}";
+		} elseif ( empty( $query_orderby ) || 'visits' === $query_orderby ) {
+			$orderby = "visits $order";
 		}
-
-		$orderby = $orderby_count;
 
 		/**
 		 * Filters the ORDER BY clause of Top_Ten_Core_Query.
@@ -957,6 +948,6 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 * @return bool Whether caching should be enabled.
 	 */
 	protected function should_cache() {
-		return ! empty( $this->query_args['cache'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
+		return ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
 	}
 }
