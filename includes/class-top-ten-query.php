@@ -36,7 +36,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			Hook_Registry::add_filter( 'posts_fields', array( $core_query, 'posts_fields' ), 10, 2 );
 			Hook_Registry::add_filter( 'posts_join', array( $core_query, 'posts_join' ), 10, 2 );
 			Hook_Registry::add_filter( 'posts_where', array( $core_query, 'posts_where' ), 10, 2 );
-			Hook_Registry::add_filter( 'posts_orderby', array( $core_query, 'posts_orderby' ), 10, 2 );
+			Hook_Registry::add_filter( 'posts_orderby', array( $core_query, 'posts_orderby' ), 9999, 2 );
 			Hook_Registry::add_filter( 'posts_groupby', array( $core_query, 'posts_groupby' ), 10, 2 );
 			Hook_Registry::add_filter( 'posts_clauses', array( $core_query, 'posts_clauses' ), 20, 2 );
 			Hook_Registry::add_filter( 'posts_request', array( $core_query, 'posts_request' ), 20, 2 );
@@ -52,7 +52,7 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			Hook_Registry::remove_filter( 'posts_fields', array( $core_query, 'posts_fields' ) );
 			Hook_Registry::remove_filter( 'posts_join', array( $core_query, 'posts_join' ) );
 			Hook_Registry::remove_filter( 'posts_where', array( $core_query, 'posts_where' ) );
-			Hook_Registry::remove_filter( 'posts_orderby', array( $core_query, 'posts_orderby' ) );
+			Hook_Registry::remove_filter( 'posts_orderby', array( $core_query, 'posts_orderby' ), 9999 );
 			Hook_Registry::remove_filter( 'posts_groupby', array( $core_query, 'posts_groupby' ) );
 			Hook_Registry::remove_filter( 'posts_clauses', array( $core_query, 'posts_clauses' ) );
 			Hook_Registry::remove_filter( 'posts_request', array( $core_query, 'posts_request' ) );

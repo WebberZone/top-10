@@ -174,6 +174,9 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Popular posts with identical view counts now display in a consistent order when paginated.
 	* Daily view counts now respect the site's configured timezone instead of server time.
 	* Dashboard "Total visits for this period" now matches the chart by querying raw visit totals directly, rather than summing only the top 20 displayed posts.
+	* Popular posts ordering no longer overridden by Post Types Order and similar plugins that modify the posts_orderby clause.
+	* Plugin deactivation now clears both maintenance and aggregation cron jobs, and sets the settings option to not autoload.
+	* Removed incorrect wpmu_drop_tables filter that was attempting to drop network-wide tables when a multisite site was deleted.
 
 = 4.2.3 =
 
