@@ -15,13 +15,21 @@ global $wpdb;
 
 $tptn_settings = get_option( 'tptn_settings' );
 
+wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
+
 if ( ! empty( $tptn_settings['uninstall_clean_tables'] ) ) {
 
-	$table_name       = $wpdb->base_prefix . 'top_ten';
-	$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+	$table_names = array(
+		$wpdb->base_prefix . 'top_ten',
+		$wpdb->base_prefix . 'top_ten_daily',
+		$wpdb->base_prefix . 'top_ten_visits_log',
+		$wpdb->base_prefix . 'top_ten_visits_funnel',
+	);
 
-	$wpdb->query( "DROP TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-	$wpdb->query( "DROP TABLE $table_name_daily" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+	foreach ( $table_names as $table_name ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query( "DROP TABLE $table_name" );
+	}
 	delete_site_option( 'tptn_db_version' );
 }
 
@@ -63,7 +71,8 @@ function tptn_delete_data() {
 		delete_option( 'ald_tptn_settings' );
 		delete_option( 'tptn_settings' );
 
-		$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$wpdb->query(
 			"
 			DELETE FROM {$wpdb->options}
 			WHERE option_name LIKE '%tptn%'

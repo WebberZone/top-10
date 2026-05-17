@@ -201,9 +201,12 @@ class Tracker {
 			$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] );
 			$activate_counter = absint( $wp->query_vars['activate_counter'] );
 
-			$str = self::update_count( $id, $blog_id, $activate_counter );
+			$is_feed = ! empty( $wp->query_vars['tptn_feed'] );
+			$source  = $is_feed ? 1 : 0;
 
-			if ( ! empty( $wp->query_vars['tptn_feed'] ) ) {
+			$str = self::update_count( $id, $blog_id, $activate_counter, $source );
+
+			if ( $is_feed ) {
 				self::output_tracking_pixel(); // Sends GIF and exits.
 			} else {
 				// If the debug parameter is set then we output $str else we send a No Content header.
@@ -329,7 +332,7 @@ class Tracker {
 		$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		$str = self::update_count( $id, $blog_id, $activate_counter );
+		$str = self::update_count( $id, $blog_id, $activate_counter, 0 );
 
 		// If the debug parameter is set then we output $str else we send a No Content header.
 		if ( 1 === $top_ten_debug ) {
@@ -350,10 +353,11 @@ class Tracker {
 	 * @param int $id Post ID.
 	 * @param int $blog_id Blog ID.
 	 * @param int $activate_counter Activate counter flag.
+	 * @param int $source Traffic source: 0 = web, 1 = feed.
 	 *
 	 * @return string Response on database update.
 	 */
-	public static function update_count( $id, $blog_id, $activate_counter ) {
+	public static function update_count( $id, $blog_id, $activate_counter, $source = 0 ) {
 
 		$str = '';
 
@@ -366,24 +370,13 @@ class Tracker {
 		 * @param int $id      Post ID.
 		 * @param int $blog_id Blog ID.
 		 * @param int $activate_counter Activate counter flag.
+		 * @param int $source  Traffic source: 0 = web, 1 = feed.
 		 */
-		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter );
+		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter, $source );
 
-		if ( $id > 0 && $before_update_count ) {
-
-			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$tt = Database::update_count( $id, $blog_id, false );
-
-				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
-			}
-
-			if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$ttd = Database::update_count( $id, $blog_id, true );
-
-				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
-			}
+		if ( $id > 0 && $activate_counter > 0 && $before_update_count ) {
+			$result = Database::append_to_funnel( $id, $blog_id, $activate_counter, $source );
+			$str   .= ( false === $result ) ? 'loge' : 'log' . $result;
 		}
 
 		/**
@@ -395,7 +388,8 @@ class Tracker {
 		 * @param int $id Post ID.
 		 * @param int $blog_id Blog ID.
 		 * @param int $activate_counter Activate counter flag.
+		 * @param int $source Traffic source: 0 = web, 1 = feed.
 		 */
-		return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter );
+		return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter, $source );
 	}
 }

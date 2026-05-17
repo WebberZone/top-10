@@ -155,7 +155,7 @@ if ( ! has_action( 'admin_notices', __NAMESPACE__ . '\\tptn_show_deactivation_no
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = '6.0';
+$tptn_db_version = '7.0';
 
 if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 	// Load Freemius.
@@ -195,6 +195,9 @@ if ( ! function_exists( __NAMESPACE__ . '\load_tptn' ) ) {
 
 // Register the activation hook.
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Admin\Activator::activation_hook' );
+
+// Register the deactivation hook.
+register_deactivation_hook( __FILE__, __NAMESPACE__ . '\Admin\Activator::deactivation_hook' );
 
 /*
  *----------------------------------------------------------------------------

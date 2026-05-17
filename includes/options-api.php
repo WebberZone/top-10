@@ -37,10 +37,10 @@ function tptn_get_settings() {
  *
  * Looks to see if the specified setting exists, returns default if not
  *
- * @since 2.5.0
+ * @since  2.5.0
  *
- * @param  string $key           Option to fetch.
- * @param  mixed  $default_value Default option.
+ * @param string $key Option to fetch.
+ * @param mixed  $default_value Default option.
  * @return mixed
  */
 function tptn_get_option( $key = '', $default_value = null ) {
@@ -84,12 +84,13 @@ function tptn_get_option( $key = '', $default_value = null ) {
  * Update an option
  *
  * Updates an ata setting value in both the db and the global variable.
- * Warning: Passing in a null value will remove the key from the tptn_options array.
+ * Warning: Passing a null value will remove
+ *        the key from the tptn_options array.
  *
  * @since 2.5.0
  *
- * @param  string          $key   The Key to update.
- * @param  string|bool|int $value The value to set the key to.
+ * @param  string               $key   The Key to update.
+ * @param  string|bool|int|null $value The value to set the key to.
  * @return boolean   True if updated, false if not.
  */
 function tptn_update_option( $key = '', $value = false ) {
@@ -233,7 +234,7 @@ function tptn_settings_defaults() {
  *
  * @since 1.3.0
  *
- * @param  string $key Key of the option to fetch.
+ * @param string $key Key of the option to fetch.
  * @return mixed
  */
 function tptn_get_default_option( $key = '' ) {
@@ -326,15 +327,13 @@ function tptn_tags_search() {
 	}
 	$s = trim( $s );
 
-	/**
- * This filter has been defined in /wp-admin/includes/ajax-actions.php
-*/
+	/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
 	$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
 
 	/*
-	* Require $term_search_min_chars chars for matching (default: 2)
-	* ensure it's a non-negative, non-zero integer.
-	*/
+	 * Require $term_search_min_chars chars for matching (default: 2)
+	 * ensure it's a non-negative, non-zero integer.
+	 */
 	if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
 		wp_die();
 	}

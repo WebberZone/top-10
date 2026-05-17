@@ -259,15 +259,17 @@ class Database {
 		if ( false === $stats ) {
 			$stats = array();
 
-			$table_name       = self::get_table( false );
-			$table_name_daily = self::get_table( true );
+			$tables = array(
+				'top_ten'               => self::get_table( false ),
+				'top_ten_daily'         => self::get_table( true ),
+				'top_ten_visits_funnel' => self::get_funnel_table(),
+				'top_ten_visits_log'    => self::get_log_table(),
+			);
 
-			if ( self::is_table_installed( $table_name ) ) {
-				$stats['top_ten'] = self::get_single_table_statistics( $table_name );
-			}
-
-			if ( self::is_table_installed( $table_name_daily ) ) {
-				$stats['top_ten_daily'] = self::get_single_table_statistics( $table_name_daily );
+			foreach ( $tables as $key => $table_name ) {
+				if ( self::is_table_installed( $table_name ) ) {
+					$stats[ $key ] = self::get_single_table_statistics( $table_name );
+				}
 			}
 
 			// Cache for 5 minutes.
@@ -580,7 +582,8 @@ class Database {
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
-			PRIMARY KEY  (postnumber, blog_id)
+			PRIMARY KEY  (postnumber, blog_id),
+			KEY idx_blog_id (blog_id)
 		) $charset_collate;";
 
 		return $sql;
@@ -606,10 +609,243 @@ class Database {
 			dp_date DATETIME NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, dp_date, blog_id),
-			KEY blog_date (blog_id, dp_date, postnumber)
+			KEY blog_date (blog_id, dp_date, postnumber),
+			KEY idx_dp_date (dp_date)
 		) $charset_collate;";
 
 		return $sql;
+	}
+
+	/**
+	 * Get the name of the visits funnel table (hot buffer, drained every 5 minutes).
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return string Table name.
+	 */
+	public static function get_funnel_table() {
+		global $wpdb;
+		return $wpdb->base_prefix . 'top_ten_visits_funnel';
+	}
+
+	/**
+	 * SQL to create the visits funnel table.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return string CREATE TABLE SQL.
+	 */
+	public static function create_funnel_table_sql() {
+		global $wpdb;
+
+		$charset_collate = $wpdb->get_charset_collate();
+		$table_name      = self::get_funnel_table();
+
+		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+		" (
+			id               bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			postnumber       bigint(20) UNSIGNED NOT NULL,
+			blog_id          bigint(20) UNSIGNED NOT NULL DEFAULT '1',
+			visited_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			activate_counter tinyint(2) UNSIGNED NOT NULL DEFAULT '11',
+			source           tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		return $sql;
+	}
+
+	/**
+	 * Get the name of the visits log table (cold archive, pruned by maintenance cron).
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return string Table name.
+	 */
+	public static function get_log_table() {
+		global $wpdb;
+		return $wpdb->base_prefix . 'top_ten_visits_log';
+	}
+
+	/**
+	 * SQL to create the visits log table.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return string CREATE TABLE SQL.
+	 */
+	public static function create_log_table_sql() {
+		global $wpdb;
+
+		$charset_collate = $wpdb->get_charset_collate();
+		$table_name      = self::get_log_table();
+
+		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+		" (
+			id         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			postnumber bigint(20) UNSIGNED NOT NULL,
+			blog_id    bigint(20) UNSIGNED NOT NULL DEFAULT '1',
+			visited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			source     tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+			PRIMARY KEY  (id),
+			KEY idx_visited_at (visited_at)
+		) $charset_collate;";
+
+		return $sql;
+	}
+
+	/**
+	 * Append a single visit to the funnel table.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param int $post_id          Post ID.
+	 * @param int $blog_id          Blog ID.
+	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int $source           Traffic source: 0 = web, 1 = feed.
+	 * @return int|false Rows inserted or false on error.
+	 */
+	public static function append_to_funnel( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		return $wpdb->insert(
+			self::get_funnel_table(),
+			array(
+				'postnumber'       => absint( $post_id ),
+				'blog_id'          => absint( $blog_id ),
+				'visited_at'       => current_time( 'mysql' ),
+				'activate_counter' => (int) $activate_counter,
+				'source'           => (int) $source,
+			),
+			array( '%d', '%d', '%s', '%d', '%d' )
+		);
+	}
+
+	/**
+	 * Drain the funnel into the log and count tables, then empty the funnel.
+	 *
+	 * All four operations (copy to log, aggregate to daily, aggregate to overall,
+	 * delete from funnel) run inside one transaction. A failure rolls back cleanly
+	 * and the next run retries the same rows with no double-counting risk.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param int $batch_size Maximum funnel rows to process per run.
+	 * @return bool True if rows were processed, false if none found or lock not acquired.
+	 */
+	public static function aggregate_visit_log( $batch_size = 10000 ) {
+		global $wpdb;
+
+		$lock_key = 'tptn_aggregation_lock';
+		if ( false !== get_transient( $lock_key ) ) {
+			return false;
+		}
+
+		$funnel_table = self::get_funnel_table();
+		$log_table    = self::get_log_table();
+		$daily_table  = self::get_table( true );
+		$full_table   = self::get_table( false );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+			return false;
+		}
+
+		set_transient( $lock_key, 1, 5 * MINUTE_IN_SECONDS );
+
+		try {
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table}" );
+			if ( 0 === $max_id ) {
+				$wpdb->query( 'ROLLBACK' );
+				return false;
+			}
+
+			$cap_id     = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$funnel_table} ORDER BY id ASC LIMIT %d, 1", $batch_size ) );
+			$was_capped = false;
+			if ( null !== $cap_id ) {
+				$capped_max = (int) $cap_id - 1;
+				if ( $capped_max > 0 ) {
+					$max_id     = $capped_max;
+					$was_capped = true;
+				}
+			}
+
+			$r = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$log_table} (postnumber, blog_id, visited_at, source)
+					 SELECT postnumber, blog_id, visited_at, source
+					 FROM   {$funnel_table}
+					 WHERE  id <= %d",
+					$max_id
+				)
+			);
+			if ( false === $r ) {
+				$wpdb->query( 'ROLLBACK' );
+				return false;
+			}
+
+			$r = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id)
+					 SELECT * FROM (
+					     SELECT postnumber, COUNT(*) AS cntaccess,
+					            DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id
+					     FROM   {$funnel_table}
+					     WHERE  id <= %d AND activate_counter IN (10, 11)
+					     GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
+					 ) AS new_row
+					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + new_row.cntaccess",
+					$max_id
+				)
+			);
+			if ( false === $r ) {
+				$wpdb->query( 'ROLLBACK' );
+				return false;
+			}
+
+			$r = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id)
+					 SELECT * FROM (
+					     SELECT postnumber, COUNT(*) AS cntaccess, blog_id
+					     FROM   {$funnel_table}
+					     WHERE  id <= %d AND activate_counter IN (1, 11)
+					     GROUP  BY postnumber, blog_id
+					 ) AS new_row
+					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + new_row.cntaccess",
+					$max_id
+				)
+			);
+			if ( false === $r ) {
+				$wpdb->query( 'ROLLBACK' );
+				return false;
+			}
+
+			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d", $max_id ) );
+			if ( false === $r ) {
+				$wpdb->query( 'ROLLBACK' );
+				return false;
+			}
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( false === $wpdb->query( 'COMMIT' ) ) {
+				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				return false;
+			}
+
+			do_action( 'tptn_count_updated', 0, 0, false );
+
+			if ( $was_capped && ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
+				wp_schedule_single_event( time(), 'tptn_aggregation_cron_hook' );
+			}
+
+			return true;
+		} finally {
+			delete_transient( $lock_key );
+		}
 	}
 
 	/**
