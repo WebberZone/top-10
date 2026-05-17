@@ -9,6 +9,7 @@ namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Hook_Registry;
+use WebberZone\Top_Ten\Admin\Cron;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -59,7 +60,6 @@ class Activator {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		Hook_Registry::add_filter( 'wpmu_drop_tables', array( $this, 'on_delete_blog' ) );
 		Hook_Registry::add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
 		Hook_Registry::add_action( 'wp_initialize_site', array( $this, 'activate_new_site' ) );
 	}
@@ -295,22 +295,6 @@ class Activator {
 		switch_to_blog( $blog );
 		self::single_activate();
 		restore_current_blog();
-	}
-
-	/**
-	 * Fired when a site is deleted in a WPMU environment.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param    array $tables    Tables in the blog.
-	 */
-	public static function on_delete_blog( $tables ) {
-		global $wpdb;
-
-		$tables[] = $wpdb->prefix . self::$table_name;
-		$tables[] = $wpdb->prefix . self::$table_name_daily;
-
-		return $tables;
 	}
 
 	/**
