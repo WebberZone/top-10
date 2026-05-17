@@ -40,14 +40,6 @@ msgstr ""
 msgid "https://webberzone.com"
 msgstr ""
 
-#: includes/admin/class-admin-notices.php:48
-msgid "Top 10: Some tables are missing, which will affect search results."
-msgstr ""
-
-#: includes/admin/class-admin-notices.php:50
-msgid "Click here to recreate tables."
-msgstr ""
-
 #: includes/admin/class-admin.php:320
 msgid "Top 10 quick links"
 msgstr ""
@@ -71,8 +63,8 @@ msgid "Jump to your most-used Top 10 tools, manage content faster, and explore m
 msgstr ""
 
 #: includes/admin/class-admin.php:328
-#: includes/admin/class-dashboard.php:209
-#: includes/admin/class-dashboard.php:236
+#: includes/admin/class-dashboard.php:207
+#: includes/admin/class-dashboard.php:234
 msgid "Dashboard"
 msgstr ""
 
@@ -87,13 +79,13 @@ msgstr ""
 
 #: includes/admin/class-admin.php:340
 #: includes/admin/class-settings.php:161
-#: includes/admin/class-settings.php:1200
+#: includes/admin/class-settings.php:1208
 msgid "Settings"
 msgstr ""
 
 #: includes/admin/class-admin.php:346
-#: includes/admin/class-tools-page.php:62
-#: includes/admin/class-tools-page.php:81
+#: includes/admin/class-tools-page.php:63
+#: includes/admin/class-tools-page.php:82
 msgid "Tools"
 msgstr ""
 
@@ -113,70 +105,70 @@ msgstr ""
 msgid "Views"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:54
+#: includes/admin/class-dashboard-widgets.php:173
 msgid "Top 10 - Overall Popular Posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:62
+#: includes/admin/class-dashboard-widgets.php:181
 msgid "Top 10 - Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:70
+#: includes/admin/class-dashboard-widgets.php:189
 msgid "Top 10 Views Overview"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:97
+#: includes/admin/class-dashboard-widgets.php:216
 #: includes/admin/network/class-statistics.php:70
 msgid "Top 10 - Network Popular Posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:105
+#: includes/admin/class-dashboard-widgets.php:224
 msgid "Top 10 - Network Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:113
+#: includes/admin/class-dashboard-widgets.php:232
 msgid "Top 10 Network Views Overview"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:190
+#: includes/admin/class-dashboard-widgets.php:309
 msgid "View all network daily popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:192
+#: includes/admin/class-dashboard-widgets.php:322
 msgid "View all daily popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:195
+#: includes/admin/class-dashboard-widgets.php:325
 msgid "View all network popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:197
-#: includes/admin/class-dashboard.php:159
+#: includes/admin/class-dashboard-widgets.php:327
+#: includes/admin/class-dashboard.php:157
 msgid "View all popular posts"
 msgstr ""
 
 #. translators: 1: Top 10 page link.
-#: includes/admin/class-dashboard-widgets.php:205
+#: includes/admin/class-dashboard-widgets.php:335
 #, php-format
 msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:275
+#: includes/admin/class-dashboard-widgets.php:405
 msgid "Upgrade to Top 10 Pro to see your views over time chart here."
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:280
-#: includes/admin/class-settings.php:1541
-#: includes/admin/class-settings.php:1561
-#: includes/admin/class-settings.php:1562
+#: includes/admin/class-dashboard-widgets.php:410
+#: includes/admin/class-settings.php:1549
+#: includes/admin/class-settings.php:1569
+#: includes/admin/class-settings.php:1570
 msgid "Upgrade to Pro"
 msgstr ""
 
 #: includes/admin/class-dashboard.php:63
-#: includes/admin/class-dashboard.php:198
-#: includes/admin/class-dashboard.php:208
-#: includes/admin/class-dashboard.php:225
-#: includes/admin/class-dashboard.php:235
+#: includes/admin/class-dashboard.php:196
+#: includes/admin/class-dashboard.php:206
+#: includes/admin/class-dashboard.php:223
+#: includes/admin/class-dashboard.php:233
 msgid "Top 10 Dashboard"
 msgstr ""
 
@@ -192,116 +184,116 @@ msgstr ""
 msgid "Historical visits"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:199
-#: includes/admin/class-dashboard.php:226
+#: includes/admin/class-dashboard.php:197
+#: includes/admin/class-dashboard.php:224
 msgid "Top 10"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:273
-#: includes/admin/class-dashboard.php:460
+#: includes/admin/class-dashboard.php:271
+#: includes/admin/class-dashboard.php:458
 #: includes/admin/class-import-export.php:318
 msgid "Visits"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:274
+#: includes/admin/class-dashboard.php:272
 msgid "Daily Visits"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:278
+#: includes/admin/class-dashboard.php:276
 msgid "Click to view top posts for this day"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:377
+#: includes/admin/class-dashboard.php:375
 msgid "Today"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:382
+#: includes/admin/class-dashboard.php:380
 msgid "Yesterday"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:387
+#: includes/admin/class-dashboard.php:385
 msgid "Last 7 days"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:392
+#: includes/admin/class-dashboard.php:390
 msgid "Last 14 days"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:397
+#: includes/admin/class-dashboard.php:395
 msgid "Last 30 days"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:402
+#: includes/admin/class-dashboard.php:400
 msgid "All time"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:456
+#: includes/admin/class-dashboard.php:454
 msgid "Post"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:458
+#: includes/admin/class-dashboard.php:456
 msgid "Site"
 msgstr ""
 
 #. translators: %d is the blog ID
-#: includes/admin/class-dashboard.php:499
+#: includes/admin/class-dashboard.php:495
 #, php-format
 msgid "Blog ID: %d"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:512
+#: includes/admin/class-dashboard.php:508
 msgid "Total network visits for this period"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:512
+#: includes/admin/class-dashboard.php:508
 msgid "Total visits for this period"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:524
+#: includes/admin/class-dashboard.php:520
 msgid "Sorry, no popular posts found."
 msgstr ""
 
 #. translators: 1: Support link.
-#: includes/admin/class-dashboard.php:665
-#: includes/admin/class-tools-page.php:406
+#: includes/admin/class-dashboard.php:719
+#: includes/admin/class-tools-page.php:437
 #, php-format
 msgid "For more information or how to get support visit the <a href=\"%1$s\">WebberZone support site</a>."
 msgstr ""
 
 #. translators: 1: Forum link.
-#: includes/admin/class-dashboard.php:667
-#: includes/admin/class-tools-page.php:408
+#: includes/admin/class-dashboard.php:721
+#: includes/admin/class-tools-page.php:439
 #, php-format
 msgid "Support queries should be posted in the <a href=\"%1$s\">WordPress.org support forums</a>."
 msgstr ""
 
 #. translators: 1: Github Issues link, 2: Github page.
 #. translators: 1: Github issues link, 2: Github plugin page link.
-#: includes/admin/class-dashboard.php:670
-#: includes/admin/class-settings.php:1242
-#: includes/admin/class-tools-page.php:411
+#: includes/admin/class-dashboard.php:724
+#: includes/admin/class-settings.php:1250
+#: includes/admin/class-tools-page.php:442
 #, php-format
 msgid "<a href=\"%1$s\">Post an issue</a> on <a href=\"%2$s\">GitHub</a> (bug reports only)."
 msgstr ""
 
-#: includes/admin/class-dashboard.php:679
+#: includes/admin/class-dashboard.php:733
 #: includes/admin/class-settings.php:177
-#: includes/admin/class-settings.php:1266
-#: includes/admin/class-tools-page.php:420
+#: includes/admin/class-settings.php:1274
+#: includes/admin/class-tools-page.php:451
 msgid "General"
 msgstr ""
 
-#: includes/admin/class-dashboard.php:681
+#: includes/admin/class-dashboard.php:735
 msgid "This screen displays the historical traffic on your site."
 msgstr ""
 
 #. translators: 1: Constant holding number of days data is stored.
-#: includes/admin/class-dashboard.php:683
+#: includes/admin/class-dashboard.php:737
 #, php-format
 msgid "The data is pulled from the daily tables in the database. If you have enabled maintenance then the amount of historical data that is available will be limited to %d days."
 msgstr ""
 
-#: includes/admin/class-dashboard.php:684
+#: includes/admin/class-dashboard.php:738
 msgid "You can change this by setting the constant TOP_TEN_STORE_DATA to the number of days of your choice in your wp-config.php."
 msgstr ""
 
@@ -639,29 +631,29 @@ msgid "Counter/Tracker"
 msgstr ""
 
 #: includes/admin/class-settings.php:179
-#: includes/admin/class-settings.php:1280
+#: includes/admin/class-settings.php:1288
 msgid "Posts list"
 msgstr ""
 
 #: includes/admin/class-settings.php:180
-#: includes/admin/class-settings.php:1287
+#: includes/admin/class-settings.php:1295
 msgid "Thumbnail"
 msgstr ""
 
 #: includes/admin/class-settings.php:181
-#: includes/admin/class-settings.php:1294
+#: includes/admin/class-settings.php:1302
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:55
 msgid "Styles"
 msgstr ""
 
 #: includes/admin/class-settings.php:182
-#: includes/admin/class-settings.php:1301
+#: includes/admin/class-settings.php:1309
 msgid "Maintenance"
 msgstr ""
 
 #: includes/admin/class-settings.php:183
-#: includes/admin/class-settings.php:1308
+#: includes/admin/class-settings.php:1316
 msgid "Feed"
 msgstr ""
 
@@ -926,679 +918,679 @@ msgstr ""
 msgid "This will load the tracker js on all pages. Helpful if you are running minification/concatenation plugins."
 msgstr ""
 
-#: includes/admin/class-settings.php:492
+#: includes/admin/class-settings.php:500
 msgid "Track user groups"
 msgstr ""
 
-#: includes/admin/class-settings.php:493
+#: includes/admin/class-settings.php:501
 msgid "Uncheck above to disable tracking if the current user falls into any one of these groups."
 msgstr ""
 
-#: includes/admin/class-settings.php:497
+#: includes/admin/class-settings.php:505
 msgid "Authors"
 msgstr ""
 
-#: includes/admin/class-settings.php:498
+#: includes/admin/class-settings.php:506
 msgid "Editors"
 msgstr ""
 
-#: includes/admin/class-settings.php:499
+#: includes/admin/class-settings.php:507
 msgid "Admins"
 msgstr ""
 
-#: includes/admin/class-settings.php:504
+#: includes/admin/class-settings.php:512
 msgid "Track logged-in users"
 msgstr ""
 
-#: includes/admin/class-settings.php:505
+#: includes/admin/class-settings.php:513
 msgid "Uncheck to stop tracking logged in users. Only logged out visitors will be tracked if this is disabled. Unchecking this will override the above setting."
 msgstr ""
 
-#: includes/admin/class-settings.php:511
+#: includes/admin/class-settings.php:519
 msgid "Do not track bots"
 msgstr ""
 
-#: includes/admin/class-settings.php:512
+#: includes/admin/class-settings.php:520
 msgid "Enable this if you want Top 10 to attempt to stop tracking bots. The plugin includes a comprehensive set of known bot user agents but in some cases this might not be enough to stop tracking bots."
 msgstr ""
 
-#: includes/admin/class-settings.php:518
+#: includes/admin/class-settings.php:526
 msgid "Debug mode"
 msgstr ""
 
-#: includes/admin/class-settings.php:519
+#: includes/admin/class-settings.php:527
 msgid "Setting this to true will force the tracker to display an output in the browser. This is useful if you are having issues and are seeking support."
 msgstr ""
 
-#: includes/admin/class-settings.php:547
+#: includes/admin/class-settings.php:555
 msgid "Use global settings in block"
 msgstr ""
 
-#: includes/admin/class-settings.php:548
+#: includes/admin/class-settings.php:556
 msgid "If activated, the settings from this page are automatically inserted in the Popular Posts block. This also applies to existing blocks which do not have any attributes set if the post is edited."
 msgstr ""
 
-#: includes/admin/class-settings.php:555
-#: includes/admin/class-settings.php:1072
+#: includes/admin/class-settings.php:563
+#: includes/admin/class-settings.php:1080
 msgid "Number of posts to display"
 msgstr ""
 
-#: includes/admin/class-settings.php:556
+#: includes/admin/class-settings.php:564
 msgid "Maximum number of posts that will be displayed in the list. This option is used if you do not specify the number of posts in the widget or shortcodes"
 msgstr ""
 
-#: includes/admin/class-settings.php:563
+#: includes/admin/class-settings.php:571
 msgid "Published age of posts"
 msgstr ""
 
-#: includes/admin/class-settings.php:564
+#: includes/admin/class-settings.php:572
 msgid "This options allows you to only show posts that have been published within the above day range. Applies to both overall posts and daily posts lists. e.g. 365 days will only show posts published in the last year in the popular posts lists. Enter 0 for no restriction."
 msgstr ""
 
-#: includes/admin/class-settings.php:571
+#: includes/admin/class-settings.php:579
 #: includes/frontend/widgets/class-posts-widget.php:150
 msgid "Post types to include"
 msgstr ""
 
-#: includes/admin/class-settings.php:572
+#: includes/admin/class-settings.php:580
 msgid "At least one option should be selected above. Select which post types you want to include in the list of posts. This field can be overridden using a comma separated list of post types when using the manual display."
 msgstr ""
 
-#: includes/admin/class-settings.php:578
+#: includes/admin/class-settings.php:586
 msgid "Exclusion settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:584
+#: includes/admin/class-settings.php:592
 msgid "Exclude Front page and Posts page"
 msgstr ""
 
-#: includes/admin/class-settings.php:585
+#: includes/admin/class-settings.php:593
 msgid "If you have designated specific pages for your Front page and Posts page via Settings > Reading, they will be tracked like any other page. Enable this option to exclude them from appearing in the popular posts lists. Note that tracking will still occur."
 msgstr ""
 
-#: includes/admin/class-settings.php:591
+#: includes/admin/class-settings.php:599
 msgid "Exclude current post"
 msgstr ""
 
-#: includes/admin/class-settings.php:592
+#: includes/admin/class-settings.php:600
 msgid "Enabling this will exclude the current post being browsed from being displayed in the popular posts list."
 msgstr ""
 
-#: includes/admin/class-settings.php:598
+#: includes/admin/class-settings.php:606
 msgid "Post/page IDs to exclude"
 msgstr ""
 
-#: includes/admin/class-settings.php:599
+#: includes/admin/class-settings.php:607
 msgid "Comma-separated list of post or page IDs to exclude from the list. e.g. 188,320,500"
 msgstr ""
 
-#: includes/admin/class-settings.php:606
+#: includes/admin/class-settings.php:614
 msgid "Exclude Categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:607
-#: includes/admin/class-settings.php:639
+#: includes/admin/class-settings.php:615
+#: includes/admin/class-settings.php:647
 msgid "Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies."
 msgstr ""
 
-#: includes/admin/class-settings.php:616
+#: includes/admin/class-settings.php:624
 msgid "Exclude category IDs"
 msgstr ""
 
-#: includes/admin/class-settings.php:617
+#: includes/admin/class-settings.php:625
 msgid "This is a readonly field that is automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page which use the term_id. Top 10 uses the term_taxonomy_id which is unique to this taxonomy."
 msgstr ""
 
-#: includes/admin/class-settings.php:625
+#: includes/admin/class-settings.php:633
 msgid "Include parent categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:626
+#: includes/admin/class-settings.php:634
 msgid "Exclude popular posts from parent categories or all ancestors for nested categories."
 msgstr ""
 
-#: includes/admin/class-settings.php:630
+#: includes/admin/class-settings.php:638
 msgid "None"
 msgstr ""
 
-#: includes/admin/class-settings.php:631
+#: includes/admin/class-settings.php:639
 msgid "Only parent categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:632
+#: includes/admin/class-settings.php:640
 msgid "All ancestors"
 msgstr ""
 
-#: includes/admin/class-settings.php:638
+#: includes/admin/class-settings.php:646
 msgid "Exclude on Categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:648
+#: includes/admin/class-settings.php:656
 msgid "Customize the output"
 msgstr ""
 
-#: includes/admin/class-settings.php:654
+#: includes/admin/class-settings.php:662
 msgid "Heading of posts"
 msgstr ""
 
-#: includes/admin/class-settings.php:655
 #: includes/admin/class-settings.php:663
+#: includes/admin/class-settings.php:671
 msgid "Displayed before the list of the posts as a the master heading"
 msgstr ""
 
-#: includes/admin/class-settings.php:657
+#: includes/admin/class-settings.php:665
 msgid "Popular posts:"
 msgstr ""
 
-#: includes/admin/class-settings.php:662
+#: includes/admin/class-settings.php:670
 msgid "Heading of posts for daily/custom period lists"
 msgstr ""
 
-#: includes/admin/class-settings.php:665
+#: includes/admin/class-settings.php:673
 msgid "Currently trending:"
 msgstr ""
 
-#: includes/admin/class-settings.php:670
+#: includes/admin/class-settings.php:678
 msgid "Show when no posts are found"
 msgstr ""
 
-#: includes/admin/class-settings.php:676
+#: includes/admin/class-settings.php:684
 msgid "Blank output"
 msgstr ""
 
-#: includes/admin/class-settings.php:677
+#: includes/admin/class-settings.php:685
 msgid "Display custom text"
 msgstr ""
 
-#: includes/admin/class-settings.php:682
+#: includes/admin/class-settings.php:690
 msgid "Custom text"
 msgstr ""
 
-#: includes/admin/class-settings.php:683
+#: includes/admin/class-settings.php:691
 msgid "Enter the custom text that will be displayed if the second option is selected above"
 msgstr ""
 
-#: includes/admin/class-settings.php:685
+#: includes/admin/class-settings.php:693
 msgid "No top posts yet"
 msgstr ""
 
-#: includes/admin/class-settings.php:689
+#: includes/admin/class-settings.php:697
 msgid "Show post excerpt"
 msgstr ""
 
-#: includes/admin/class-settings.php:696
+#: includes/admin/class-settings.php:704
 msgid "Length of excerpt (in words)"
 msgstr ""
 
-#: includes/admin/class-settings.php:704
+#: includes/admin/class-settings.php:712
 #: includes/frontend/widgets/class-posts-widget.php:119
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:84
 msgid "Show date"
 msgstr ""
 
-#: includes/admin/class-settings.php:711
+#: includes/admin/class-settings.php:719
 #: includes/frontend/widgets/class-posts-widget.php:115
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:78
 msgid "Show author"
 msgstr ""
 
-#: includes/admin/class-settings.php:718
+#: includes/admin/class-settings.php:726
 msgid "Show number of views"
 msgstr ""
 
-#: includes/admin/class-settings.php:725
+#: includes/admin/class-settings.php:733
 msgid "Limit post title length (in characters)"
 msgstr ""
 
-#: includes/admin/class-settings.php:733
+#: includes/admin/class-settings.php:741
 msgid "Open links in new window"
 msgstr ""
 
-#: includes/admin/class-settings.php:740
+#: includes/admin/class-settings.php:748
 msgid "Add nofollow to links"
 msgstr ""
 
-#: includes/admin/class-settings.php:747
+#: includes/admin/class-settings.php:755
 msgid "HTML to display"
 msgstr ""
 
-#: includes/admin/class-settings.php:753
+#: includes/admin/class-settings.php:761
 msgid "Before the list of posts"
 msgstr ""
 
-#: includes/admin/class-settings.php:761
+#: includes/admin/class-settings.php:769
 msgid "After the list of posts"
 msgstr ""
 
-#: includes/admin/class-settings.php:769
+#: includes/admin/class-settings.php:777
 msgid "Before each list item"
 msgstr ""
 
-#: includes/admin/class-settings.php:777
+#: includes/admin/class-settings.php:785
 msgid "After each list item"
 msgstr ""
 
-#: includes/admin/class-settings.php:807
+#: includes/admin/class-settings.php:815
 msgid "Location of the post thumbnail"
 msgstr ""
 
-#: includes/admin/class-settings.php:812
+#: includes/admin/class-settings.php:820
 msgid "Display thumbnails inline with posts, before title"
 msgstr ""
 
-#: includes/admin/class-settings.php:813
+#: includes/admin/class-settings.php:821
 msgid "Display thumbnails inline with posts, after title"
 msgstr ""
 
-#: includes/admin/class-settings.php:814
+#: includes/admin/class-settings.php:822
 msgid "Display only thumbnails, no text"
 msgstr ""
 
-#: includes/admin/class-settings.php:815
+#: includes/admin/class-settings.php:823
 msgid "Do not display thumbnails, only text"
 msgstr ""
 
-#: includes/admin/class-settings.php:820
+#: includes/admin/class-settings.php:828
 msgid "Thumbnail size"
 msgstr ""
 
-#: includes/admin/class-settings.php:821
+#: includes/admin/class-settings.php:829
 msgid "You can choose from existing image sizes above or create a custom size (tptn_thumbnail). If you select a custom size, enter the width, height, and crop settings below. For best results, use a cropped image. Note that changing the width and/or height below will not automatically resize existing images. You will need to regenerate the images using a plugin or WP CLI: wp media regenerate."
 msgstr ""
 
-#: includes/admin/class-settings.php:828
+#: includes/admin/class-settings.php:836
 #: includes/frontend/widgets/class-posts-widget.php:136
 msgid "Thumbnail width"
 msgstr ""
 
-#: includes/admin/class-settings.php:836
+#: includes/admin/class-settings.php:844
 #: includes/frontend/widgets/class-posts-widget.php:132
 msgid "Thumbnail height"
 msgstr ""
 
-#: includes/admin/class-settings.php:844
+#: includes/admin/class-settings.php:852
 msgid "Hard crop thumbnails"
 msgstr ""
 
-#: includes/admin/class-settings.php:845
+#: includes/admin/class-settings.php:853
 msgid "Check this box to hard crop the thumbnails. i.e. force the width and height above vs. maintaining proportions."
 msgstr ""
 
-#: includes/admin/class-settings.php:851
+#: includes/admin/class-settings.php:859
 msgid "Generate thumbnail sizes"
 msgstr ""
 
-#: includes/admin/class-settings.php:852
+#: includes/admin/class-settings.php:860
 msgid "If you select this option and tptn_thumbnail is chosen above, the plugin will register the image size with WordPress to create new thumbnails. Note that this does not update old images, as explained above."
 msgstr ""
 
-#: includes/admin/class-settings.php:858
+#: includes/admin/class-settings.php:866
 msgid "Thumbnail size attributes"
 msgstr ""
 
 #. translators: %s: Code.
-#: includes/admin/class-settings.php:864
+#: includes/admin/class-settings.php:872
 #, php-format
 msgid "Use CSS to set the width and height: e.g. %s"
 msgstr ""
 
 #. translators: %s: Code.
-#: includes/admin/class-settings.php:866
+#: includes/admin/class-settings.php:874
 #, php-format
 msgid "Use HTML attributes to set the width and height: e.g. %s"
 msgstr ""
 
-#: includes/admin/class-settings.php:867
+#: includes/admin/class-settings.php:875
 msgid "No width or height set. You will need to use external styles to force any width or height of your choice."
 msgstr ""
 
-#: includes/admin/class-settings.php:872
+#: includes/admin/class-settings.php:880
 msgid "Thumbnail meta field name"
 msgstr ""
 
-#: includes/admin/class-settings.php:873
+#: includes/admin/class-settings.php:881
 msgid "The value of this field should contain the URL of the image and can be set in the metabox in the Edit Post screen"
 msgstr ""
 
-#: includes/admin/class-settings.php:879
+#: includes/admin/class-settings.php:887
 msgid "Get first image"
 msgstr ""
 
-#: includes/admin/class-settings.php:880
+#: includes/admin/class-settings.php:888
 msgid "If enabled, the plugin will fetch the first image in the post content. Note that this might slow down your page loading time if the first image in the posts is large in file size."
 msgstr ""
 
-#: includes/admin/class-settings.php:886
+#: includes/admin/class-settings.php:894
 msgid "Use default thumbnail"
 msgstr ""
 
-#: includes/admin/class-settings.php:887
+#: includes/admin/class-settings.php:895
 msgid "Check this box to show the default thumbnail from the next option if no thumbnail is found from the post."
 msgstr ""
 
-#: includes/admin/class-settings.php:893
-#: includes/admin/class-settings.php:1504
+#: includes/admin/class-settings.php:901
+#: includes/admin/class-settings.php:1512
 msgid "Default thumbnail"
 msgstr ""
 
-#: includes/admin/class-settings.php:894
+#: includes/admin/class-settings.php:902
 msgid "Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below."
 msgstr ""
 
-#: includes/admin/class-settings.php:923
+#: includes/admin/class-settings.php:931
 msgid "Popular posts style"
 msgstr ""
 
-#: includes/admin/class-settings.php:931
+#: includes/admin/class-settings.php:939
 msgid "Custom CSS"
 msgstr ""
 
 #. translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag.
-#: includes/admin/class-settings.php:934
+#: includes/admin/class-settings.php:942
 #, php-format
 msgid "Do not include %3$sstyle%4$s tags. Check out %1$sthis article%2$s for available CSS classes to style."
 msgstr ""
 
-#: includes/admin/class-settings.php:968
+#: includes/admin/class-settings.php:976
 msgid "Enable scheduled maintenance"
 msgstr ""
 
 #. translators: 1: Constant holding number of days data is stored.
-#: includes/admin/class-settings.php:971
+#: includes/admin/class-settings.php:979
 #, php-format
 msgid "Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %s days from the daily tables."
 msgstr ""
 
-#: includes/admin/class-settings.php:979
+#: includes/admin/class-settings.php:987
 msgid "Data retention period"
 msgstr ""
 
 #. translators: 1: Constant holding number of days data is stored.
-#: includes/admin/class-settings.php:982
+#: includes/admin/class-settings.php:990
 #, php-format
 msgid "Enter the number of days to retain data in the daily tables before scheduled maintenance removes older entries. Enter 0 to use the default value of %s days."
 msgstr ""
 
-#: includes/admin/class-settings.php:993
+#: includes/admin/class-settings.php:1001
 msgid "Time to run maintenance"
 msgstr ""
 
-#: includes/admin/class-settings.php:994
+#: includes/admin/class-settings.php:1002
 msgid "The next two options allow you to set the time to run the cron."
 msgstr ""
 
-#: includes/admin/class-settings.php:999
+#: includes/admin/class-settings.php:1007
 msgid "Hour"
 msgstr ""
 
-#: includes/admin/class-settings.php:1009
+#: includes/admin/class-settings.php:1017
 msgid "Minute"
 msgstr ""
 
-#: includes/admin/class-settings.php:1019
+#: includes/admin/class-settings.php:1027
 msgid "Run maintenance"
 msgstr ""
 
-#: includes/admin/class-settings.php:1024
+#: includes/admin/class-settings.php:1032
 #: includes/frontend/blocks/build/post-count/index.js:1
 #: includes/frontend/blocks/src/post-count/controls.js:98
 msgid "Daily"
 msgstr ""
 
-#: includes/admin/class-settings.php:1025
+#: includes/admin/class-settings.php:1033
 msgid "Weekly"
 msgstr ""
 
-#: includes/admin/class-settings.php:1026
+#: includes/admin/class-settings.php:1034
 msgid "Fortnightly"
 msgstr ""
 
-#: includes/admin/class-settings.php:1027
+#: includes/admin/class-settings.php:1035
 msgid "Monthly"
 msgstr ""
 
-#: includes/admin/class-settings.php:1054
+#: includes/admin/class-settings.php:1062
 msgid "Permalink - Overall"
 msgstr ""
 
 #. translators: 1: Opening link tag, 2: Closing link tag.
-#: includes/admin/class-settings.php:1056
+#: includes/admin/class-settings.php:1064
 #, php-format
 msgid "This will set the path of the custom feed generated by the plugin for overall popular posts. You might need to %1$srefresh your permalinks%2$s when changing this option."
 msgstr ""
 
-#: includes/admin/class-settings.php:1063
+#: includes/admin/class-settings.php:1071
 msgid "Permalink - Daily"
 msgstr ""
 
 #. translators: 1: Opening link tag, 2: Closing link tag.
-#: includes/admin/class-settings.php:1065
+#: includes/admin/class-settings.php:1073
 #, php-format
 msgid "This will set the path of the custom feed generated by the plugin for daily/custom period popular posts. You might need to %1$srefresh your permalinks%2$s when changing this option."
 msgstr ""
 
-#: includes/admin/class-settings.php:1073
+#: includes/admin/class-settings.php:1081
 msgid "Maximum number of posts that will be displayed in the custom feed."
 msgstr ""
 
-#: includes/admin/class-settings.php:1080
+#: includes/admin/class-settings.php:1088
 msgid "Custom period in day(s)"
 msgstr ""
 
-#: includes/admin/class-settings.php:1089
+#: includes/admin/class-settings.php:1097
 msgid "Filter Categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:1090
+#: includes/admin/class-settings.php:1098
 msgid "Comma separated list of category slugs to include in the feed. The field has an autocomplete so simply start typing the starting letters and it will prompt you with options. Leave blank to include all categories."
 msgstr ""
 
-#: includes/admin/class-settings.php:1120
+#: includes/admin/class-settings.php:1128
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:40
 msgid "No styles"
 msgstr ""
 
-#: includes/admin/class-settings.php:1121
+#: includes/admin/class-settings.php:1129
 msgid "Select this option if you plan to add your own styles"
 msgstr ""
 
-#: includes/admin/class-settings.php:1125
+#: includes/admin/class-settings.php:1133
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:43
 msgid "Text only"
 msgstr ""
 
-#: includes/admin/class-settings.php:1126
+#: includes/admin/class-settings.php:1134
 msgid "Disable thumbnails and no longer include the default style sheet included in the plugin"
 msgstr ""
 
-#: includes/admin/class-settings.php:1130
+#: includes/admin/class-settings.php:1138
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/style-controls.js:47
 msgid "Left thumbnails"
 msgstr ""
 
-#: includes/admin/class-settings.php:1131
+#: includes/admin/class-settings.php:1139
 msgid "Enabling this option will set the post thumbnail to be before text. Disabling this option will not revert any settings."
 msgstr ""
 
-#: includes/admin/class-settings.php:1219
+#: includes/admin/class-settings.php:1227
 #: includes/admin/sidebar.php:38
 msgid "Support"
 msgstr ""
 
-#: includes/admin/class-settings.php:1220
+#: includes/admin/class-settings.php:1228
 msgid "Donate"
 msgstr ""
 
-#: includes/admin/class-settings.php:1221
+#: includes/admin/class-settings.php:1229
 msgid "Contribute"
 msgstr ""
 
 #. translators: 1: Plugin support site link.
-#: includes/admin/class-settings.php:1237
+#: includes/admin/class-settings.php:1245
 #, php-format
 msgid "For more information or how to get support visit the <a href=\"%s\">support site</a>."
 msgstr ""
 
 #. translators: 1: WordPress.org support forums link.
-#: includes/admin/class-settings.php:1239
+#: includes/admin/class-settings.php:1247
 #, php-format
 msgid "Support queries should be posted in the <a href=\"%s\">WordPress.org support forums</a>."
 msgstr ""
 
-#: includes/admin/class-settings.php:1268
+#: includes/admin/class-settings.php:1276
 msgid "This tab provides global settings for how Top 10 works across your site."
 msgstr ""
 
-#: includes/admin/class-settings.php:1269
+#: includes/admin/class-settings.php:1277
 msgid "Configure caching, uninstall behaviour, admin columns, the dashboard, and other high-level options. You must click the Save Changes button at the bottom of the screen for new settings to take effect."
 msgstr ""
 
-#: includes/admin/class-settings.php:1273
+#: includes/admin/class-settings.php:1281
 msgid "Counter / Tracker"
 msgstr ""
 
-#: includes/admin/class-settings.php:1275
+#: includes/admin/class-settings.php:1283
 msgid "This tab controls how Top 10 tracks and displays view counts."
 msgstr ""
 
-#: includes/admin/class-settings.php:1276
+#: includes/admin/class-settings.php:1284
 msgid "Choose where to display view counts, how they are formatted, which visits are tracked, and how the tracker works (REST API, query variables, or Ajax)."
 msgstr ""
 
-#: includes/admin/class-settings.php:1282
+#: includes/admin/class-settings.php:1290
 msgid "This tab controls the popular posts list output."
 msgstr ""
 
-#: includes/admin/class-settings.php:1283
+#: includes/admin/class-settings.php:1291
 msgid "Configure the number of posts, age of posts, post types, exclusions, and what information is shown (title, date, author, views, excerpts, and HTML wrappers)."
 msgstr ""
 
-#: includes/admin/class-settings.php:1289
+#: includes/admin/class-settings.php:1297
 msgid "This tab manages thumbnail settings for the popular posts list."
 msgstr ""
 
-#: includes/admin/class-settings.php:1290
+#: includes/admin/class-settings.php:1298
 msgid "Choose whether thumbnails are displayed, select the image size, configure custom dimensions, cropping, the default thumbnail, and fallback behaviour when no thumbnail is found."
 msgstr ""
 
-#: includes/admin/class-settings.php:1296
+#: includes/admin/class-settings.php:1304
 msgid "This tab controls how the popular posts list is styled."
 msgstr ""
 
-#: includes/admin/class-settings.php:1297
+#: includes/admin/class-settings.php:1305
 msgid "Select a built-in style or disable styles if you want to fully control the look using your own CSS."
 msgstr ""
 
-#: includes/admin/class-settings.php:1303
+#: includes/admin/class-settings.php:1311
 msgid "This tab handles tools and maintenance-related options."
 msgstr ""
 
-#: includes/admin/class-settings.php:1304
+#: includes/admin/class-settings.php:1312
 msgid "Use this screen to reset settings, clear cached popular posts, and manage database-related options such as pruning or rebuilding counts."
 msgstr ""
 
-#: includes/admin/class-settings.php:1310
+#: includes/admin/class-settings.php:1318
 msgid "This tab controls how Top 10 content appears in your site feed."
 msgstr ""
 
-#: includes/admin/class-settings.php:1311
+#: includes/admin/class-settings.php:1319
 msgid "Configure copyright text and additional HTML that is added before or after the content in your feeds."
 msgstr ""
 
-#: includes/admin/class-settings.php:1336
+#: includes/admin/class-settings.php:1344
 msgid "REST API based"
 msgstr ""
 
-#: includes/admin/class-settings.php:1337
+#: includes/admin/class-settings.php:1345
 msgid "Uses the REST API to record visits"
 msgstr ""
 
-#: includes/admin/class-settings.php:1341
+#: includes/admin/class-settings.php:1349
 msgid "Query variable based"
 msgstr ""
 
-#: includes/admin/class-settings.php:1342
+#: includes/admin/class-settings.php:1350
 msgid "Uses query variables to record visits"
 msgstr ""
 
-#: includes/admin/class-settings.php:1346
+#: includes/admin/class-settings.php:1354
 msgid "Ajaxurl based"
 msgstr ""
 
-#: includes/admin/class-settings.php:1347
+#: includes/admin/class-settings.php:1355
 msgid "Uses admin-ajax.php which is inbuilt within WordPress to process the tracker"
 msgstr ""
 
 #. translators: 1: Opening achor tag with Plugin page link, 2: Closing anchor tag, 3: Opening anchor tag with review link.
-#: includes/admin/class-settings.php:1372
+#: includes/admin/class-settings.php:1380
 #, php-format
 msgid "Thank you for using %1$sWebberZone Top 10%2$s! Please %3$srate us%2$s on WordPress.org"
 msgstr ""
 
-#: includes/admin/class-settings.php:1408
-#: includes/admin/class-tools-page.php:109
+#: includes/admin/class-settings.php:1416
+#: includes/admin/class-tools-page.php:110
 msgid "Are you sure you want to clear the cache?"
 msgstr ""
 
-#: includes/admin/class-settings.php:1409
-#: includes/admin/class-tools-page.php:110
+#: includes/admin/class-settings.php:1417
+#: includes/admin/class-tools-page.php:111
 msgid "Clearing..."
 msgstr ""
 
-#: includes/admin/class-settings.php:1410
+#: includes/admin/class-settings.php:1418
 msgid "Cache cleared successfully!"
 msgstr ""
 
-#: includes/admin/class-settings.php:1411
-#: includes/admin/class-tools-page.php:111
+#: includes/admin/class-settings.php:1419
+#: includes/admin/class-tools-page.php:112
 msgid "Failed to clear cache. Please try again."
 msgstr ""
 
-#: includes/admin/class-settings.php:1412
-#: includes/admin/class-tools-page.php:112
+#: includes/admin/class-settings.php:1420
+#: includes/admin/class-tools-page.php:113
 msgid "Request failed: "
 msgstr ""
 
-#: includes/admin/class-settings.php:1413
+#: includes/admin/class-settings.php:1421
 msgid "Note: This setting cannot be changed as the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1414
+#: includes/admin/class-settings.php:1422
 msgid "Note: This setting cannot be changed as the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1415
+#: includes/admin/class-settings.php:1423
 msgid "Note: This setting cannot be changed as the Popular posts style is set to Text only. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1454
+#: includes/admin/class-settings.php:1462
 msgid "Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1455
+#: includes/admin/class-settings.php:1463
 msgid "Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1478
+#: includes/admin/class-settings.php:1486
 msgid "Note: Thumbnail location set to Text only as the Popular posts style is set to Text only. You can change the style in the Styles tab."
 msgstr ""
 
-#: includes/admin/class-settings.php:1573
+#: includes/admin/class-settings.php:1581
 msgid "Note: Thumbnail location is set to \"Do not display thumbnails, only text\". This may override the selected style."
 msgstr ""
 
-#: includes/admin/class-settings.php:1589
-#: includes/admin/class-settings.php:1591
-#: includes/admin/class-settings.php:1592
+#: includes/admin/class-settings.php:1597
+#: includes/admin/class-settings.php:1599
+#: includes/admin/class-settings.php:1600
 msgid "Start Settings Wizard"
 msgstr ""
 
-#: includes/admin/class-settings.php:1629
+#: includes/admin/class-settings.php:1637
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""
@@ -1686,159 +1678,152 @@ msgstr ""
 msgid "Search Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:61
-#: includes/admin/class-tools-page.php:80
-#: includes/admin/class-tools-page.php:169
+#: includes/admin/class-tools-page.php:62
+#: includes/admin/class-tools-page.php:81
+#: includes/admin/class-tools-page.php:180
 msgid "Top 10 Tools"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:137
+#: includes/admin/class-tools-page.php:138
 msgid "Primary Key has been recreated"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:147
+#: includes/admin/class-tools-page.php:148
 msgid "Top 10 popular posts reset"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:157
+#: includes/admin/class-tools-page.php:158
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:163
+#: includes/admin/class-tools-page.php:164
 msgid "Top 10 tables have been recreated"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:181
+#: includes/admin/class-tools-page.php:192
 msgid "Database Status"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:190
-#: includes/admin/class-tools-page.php:196
+#: includes/admin/class-tools-page.php:201
+#: includes/admin/class-tools-page.php:207
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:201
+#: includes/admin/class-tools-page.php:212
 msgid "Clear the Top 10 cache. This will also be cleared automatically when you save the settings page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:207
-#: includes/admin/class-tools-page.php:210
+#: includes/admin/class-tools-page.php:230
+#: includes/admin/class-tools-page.php:233
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:213
+#: includes/admin/class-tools-page.php:236
 msgid "Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:222
+#: includes/admin/class-tools-page.php:245
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:225
+#: includes/admin/class-tools-page.php:248
 msgid "This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:231
+#: includes/admin/class-tools-page.php:254
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:232
+#: includes/admin/class-tools-page.php:255
 msgid "Reset Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:240
+#: includes/admin/class-tools-page.php:263
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:241
+#: includes/admin/class-tools-page.php:264
 msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:250
-#: includes/admin/class-tools-page.php:256
+#: includes/admin/class-tools-page.php:273
+#: includes/admin/class-tools-page.php:279
 msgid "Recreate Database Tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:253
+#: includes/admin/class-tools-page.php:276
 msgid "Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:256
+#: includes/admin/class-tools-page.php:279
 msgid "Hit Cancel if you have not backed up your database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:422
+#: includes/admin/class-tools-page.php:453
 msgid "This screen provides some tools that help maintain certain features of Top 10."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:423
+#: includes/admin/class-tools-page.php:454
 msgid "Clear the cache, reset the popular posts tables plus some miscellaneous fixes for older versions of Top 10."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:447
-#: includes/admin/class-tools-page.php:452
-#: includes/admin/class-tools-page.php:463
-#: includes/admin/class-tools-page.php:467
+#: includes/admin/class-tools-page.php:478
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:448
-#: includes/admin/class-tools-page.php:453
-#: includes/admin/class-tools-page.php:464
-#: includes/admin/class-tools-page.php:468
+#: includes/admin/class-tools-page.php:479
 msgid "Not Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:501
+#: includes/admin/class-tools-page.php:527
 msgid "Database version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:503
+#: includes/admin/class-tools-page.php:529
 msgid "Installed version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:504
+#: includes/admin/class-tools-page.php:530
 msgid "Current version"
 msgstr ""
 
 #. translators: %s: Table name
-#: includes/admin/class-tools-page.php:509
-#: includes/admin/class-tools-page.php:538
+#: includes/admin/class-tools-page.php:542
 #, php-format
 msgid "%s table"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Estimated table size
-#: includes/admin/class-tools-page.php:519
-#: includes/admin/class-tools-page.php:548
+#: includes/admin/class-tools-page.php:550
 #, php-format
 msgid "Entries: %1$s | Est. Size: %2$s"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Table size
-#: includes/admin/class-tools-page.php:526
-#: includes/admin/class-tools-page.php:555
+#: includes/admin/class-tools-page.php:552
 #, php-format
 msgid "Entries: %1$s | Size: %2$s"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:568
+#: includes/admin/class-tools-page.php:569
 msgid "Repair database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:571
+#: includes/admin/class-tools-page.php:572
 msgid "Recreate tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:593
+#: includes/admin/class-tools-page.php:599
+#: includes/admin/class-tools-page.php:637
 msgid "Security check failed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:597
+#: includes/admin/class-tools-page.php:603
+#: includes/admin/class-tools-page.php:641
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:628
+#: includes/admin/class-tools-page.php:672
 msgid "Tables have been recreated successfully."
 msgstr ""
 
@@ -2108,13 +2093,13 @@ msgid "Follow me"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:711
+#: includes/class-database.php:889
 #, php-format
 msgid "Database backup failed on site %1$s. Error message: %2$s"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:729
+#: includes/class-database.php:907
 #, php-format
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
@@ -2626,4 +2611,84 @@ msgstr ""
 #: includes/frontend/blocks/src/post-count/block.json
 msgctxt "block description"
 msgid "Display the number of visits for a post."
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:53
+msgid "Top 10: Missing database tables were created successfully."
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:63
+msgid "Top 10: One or more database tables could not be created. Please check your database permissions or try the Recreate tables option on the Tools page."
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:97
+msgid "Top 10 (total counts)"
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:98
+msgid "Top 10 Daily (daily counts)"
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:99
+msgid "Visits Log"
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:100
+msgid "Visits Funnel"
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:134
+msgid "Top 10: The following database tables are missing:"
+msgstr ""
+
+#: includes/admin/class-admin-notices.php:137
+msgid "Create missing tables"
+msgstr ""
+
+#. translators: %s: Number of views in the last hour.
+#: includes/admin/class-dashboard-widgets.php:55
+#, php-format
+msgid "%s view in the last hour"
+msgid_plural "%s views in the last hour"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: Number of views in the past day.
+#: includes/admin/class-dashboard-widgets.php:62
+#, php-format
+msgid "%s view in the past day"
+msgid_plural "%s views in the past day"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-settings.php:492
+msgid "Track feed views"
+msgstr ""
+
+#: includes/admin/class-settings.php:493
+msgid "Count post views from RSS/Atom feed readers via a tracking pixel. Views are added to the post's regular view count. Note: some feed readers block remote images by default; views are only counted when the reader loads images."
+msgstr ""
+
+#: includes/admin/class-tools-page.php:171
+msgid "Funnel has been synced. Buffered visits have been aggregated."
+msgstr ""
+
+#: includes/admin/class-tools-page.php:173
+msgid "Nothing to sync. The funnel is empty or another sync is in progress."
+msgstr ""
+
+#: includes/admin/class-tools-page.php:218
+msgid "Sync Funnel"
+msgstr ""
+
+#: includes/admin/class-tools-page.php:221
+msgid "Sync Funnel Now"
+msgstr ""
+
+#: includes/admin/class-tools-page.php:224
+msgid "Drain the visits funnel into the count tables immediately. This is equivalent to running the 5-minute aggregation cron job."
+msgstr ""
+
+#: includes/wz-pluggables.php:36
+msgid "Every 5 Minutes"
 msgstr ""
