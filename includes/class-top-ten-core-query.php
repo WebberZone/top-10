@@ -137,7 +137,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		Hook_Registry::add_filter( 'posts_fields', array( $this, 'posts_fields' ), 10, 2 );
 		Hook_Registry::add_filter( 'posts_join', array( $this, 'posts_join' ), 10, 2 );
 		Hook_Registry::add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
-		Hook_Registry::add_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 10, 2 );
+		Hook_Registry::add_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 9999, 2 );
 		Hook_Registry::add_filter( 'posts_groupby', array( $this, 'posts_groupby' ), 10, 2 );
 		Hook_Registry::add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 20, 2 );
 		Hook_Registry::add_filter( 'posts_request', array( $this, 'posts_request' ), 20, 2 );
@@ -647,7 +647,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 */
 		$orderby = apply_filters_ref_array( 'top_ten_query_posts_orderby', array( $orderby, &$this ) );
 
-		remove_filter( 'posts_orderby', array( $this, 'posts_orderby' ) );
+		remove_filter( 'posts_orderby', array( $this, 'posts_orderby' ), 9999 );
 
 		return $orderby;
 	}
