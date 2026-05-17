@@ -737,8 +737,9 @@ class Database {
 	public static function aggregate_visit_log( $batch_size = 10000 ) {
 		global $wpdb;
 
-		$lock_key = 'tptn_aggregation_lock';
-		if ( false !== get_transient( $lock_key ) ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$lock_acquired = $wpdb->get_var( "SELECT GET_LOCK('tptn_aggregation', 0)" );
+		if ( '1' !== (string) $lock_acquired ) {
 			return false;
 		}
 
@@ -749,16 +750,15 @@ class Database {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+			$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			return false;
 		}
-
-		set_transient( $lock_key, 1, 5 * MINUTE_IN_SECONDS );
 
 		try {
 			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table}" );
 			if ( 0 === $max_id ) {
-				$wpdb->query( 'ROLLBACK' );
+				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				return false;
 			}
 
@@ -844,7 +844,7 @@ class Database {
 
 			return true;
 		} finally {
-			delete_transient( $lock_key );
+			$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		}
 	}
 
