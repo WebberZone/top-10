@@ -84,13 +84,13 @@ function tptn_get_option( $key = '', $default_value = null ) {
  * Update an option
  *
  * Updates an ata setting value in both the db and the global variable.
- * Warning: Passing in an empty, false or null string value will remove
+ * Warning: Passing a null value will remove
  *        the key from the tptn_options array.
  *
  * @since 2.5.0
  *
- * @param  string          $key   The Key to update.
- * @param  string|bool|int $value The value to set the key to.
+ * @param  string               $key   The Key to update.
+ * @param  string|bool|int|null $value The value to set the key to.
  * @return boolean   True if updated, false if not.
  */
 function tptn_update_option( $key = '', $value = false ) {
@@ -101,7 +101,7 @@ function tptn_update_option( $key = '', $value = false ) {
 	}
 
 	// If no value, delete.
-	if ( empty( $value ) ) {
+	if ( is_null( $value ) ) {
 		$remove_option = tptn_delete_option( $key );
 		return $remove_option;
 	}

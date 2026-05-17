@@ -166,6 +166,7 @@ class Tracker {
 		$vars[] = 'activate_counter';
 		$vars[] = 'view_counter';
 		$vars[] = 'top_ten_debug';
+		$vars[] = 'tptn_feed';
 
 		/**
 		 * Function to add additional queries to query_vars.
@@ -200,20 +201,26 @@ class Tracker {
 			$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] );
 			$activate_counter = absint( $wp->query_vars['activate_counter'] );
 
-			$str = self::update_count( $id, $blog_id, $activate_counter );
+			$is_feed = ! empty( $wp->query_vars['tptn_feed'] );
+			$source  = $is_feed ? 1 : 0;
 
-			// If the debug parameter is set then we output $str else we send a No Content header.
-			if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === absint( $wp->query_vars['top_ten_debug'] ) ) {
-				header( 'content-type: application/x-javascript' );
-				wp_send_json( $str );
+			$str = self::update_count( $id, $blog_id, $activate_counter, $source );
+
+			if ( $is_feed ) {
+				self::output_tracking_pixel(); // Sends GIF and exits.
 			} else {
-				header( 'HTTP/1.0 204 No Content' );
-				header( 'Cache-Control: max-age=15, s-maxage=0' );
+				// If the debug parameter is set then we output $str else we send a No Content header.
+				if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === absint( $wp->query_vars['top_ten_debug'] ) ) {
+					header( 'content-type: application/x-javascript' );
+					wp_send_json( $str );
+				} else {
+					header( 'HTTP/1.0 204 No Content' );
+					header( 'Cache-Control: max-age=15, s-maxage=0' );
+				}
+
+				// Stop anything else from loading as it is not needed.
+				exit;
 			}
-
-			// Stop anything else from loading as it is not needed.
-			exit;
-
 		} elseif ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'view_counter', $wp->query_vars ) ) {
 
 			$id = absint( $wp->query_vars['top_ten_id'] );
@@ -234,6 +241,86 @@ class Tracker {
 	}
 
 	/**
+	 * Add a tracking pixel to feed content.
+	 *
+	 * Appends a 1×1 transparent GIF to each feed item. When a feed reader
+	 * loads the image, parse_request() intercepts the request, increments
+	 * the view count, and serves the GIF. Views are merged into the same
+	 * tables as regular web views.
+	 *
+	 * Note: feed readers that block remote images by default will not trigger
+	 * the pixel. The count only increments when the reader actually loads images.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $content Feed content.
+	 * @return string Feed content with the tracker image appended.
+	 */
+	public static function add_feed_tracker( $content ) {
+		global $post;
+
+		if (
+			! \tptn_get_option( 'track_feed_views' ) ||
+			! is_feed() ||
+			! is_object( $post ) ||
+			empty( $post->ID )
+		) {
+			return $content;
+		}
+
+		/*
+		 * In full-text mode WordPress fires both the_excerpt_rss (for <description>)
+		 * and the_content_feed (for <content:encoded>) per item. Skip the excerpt hook
+		 * in that case so we don't double-count; the_content_feed will add the pixel.
+		 * In excerpt-only mode the_content_feed never fires, so the_excerpt_rss handles it.
+		 */
+		if ( 'the_excerpt_rss' === current_filter() && ! get_option( 'rss_use_excerpt' ) ) {
+			return $content;
+		}
+
+		$trackers         = wp_parse_list( \tptn_get_option( 'trackers' ) );
+		$activate_counter = in_array( 'overall', $trackers, true ) ? 1 : 0;
+		$activate_counter = $activate_counter + ( in_array( 'daily', $trackers, true ) ? 10 : 0 );
+
+		if ( 0 === $activate_counter ) {
+			return $content;
+		}
+
+		$tracker_url = add_query_arg(
+			array(
+				'top_ten_id'       => absint( $post->ID ),
+				'top_ten_blog_id'  => get_current_blog_id(),
+				'activate_counter' => $activate_counter,
+				'tptn_feed'        => 1,
+			),
+			home_url( '/' )
+		);
+
+		$tracker = sprintf(
+			'<img src="%1$s" width="1" height="1" alt="" style="display:none" />',
+			esc_url( $tracker_url )
+		);
+
+		return $content . $tracker;
+	}
+
+	/**
+	 * Output a transparent GIF for feed view tracking requests.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return void
+	 */
+	protected static function output_tracking_pixel() {
+		$pixel = 'R0lGODlhAQABAIAAANvf7wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+		header( 'Content-Type: image/gif' );
+		header( 'Cache-Control: no-cache, no-store, must-revalidate, max-age=0' );
+		echo base64_decode( $pixel ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode, WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit;
+	}
+
+	/**
 	 * Parse the ajax response.
 	 *
 	 * @since 2.4.0
@@ -245,7 +332,7 @@ class Tracker {
 		$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		$str = self::update_count( $id, $blog_id, $activate_counter );
+		$str = self::update_count( $id, $blog_id, $activate_counter, 0 );
 
 		// If the debug parameter is set then we output $str else we send a No Content header.
 		if ( 1 === $top_ten_debug ) {
@@ -266,10 +353,11 @@ class Tracker {
 	 * @param int $id Post ID.
 	 * @param int $blog_id Blog ID.
 	 * @param int $activate_counter Activate counter flag.
+	 * @param int $source Traffic source: 0 = web, 1 = feed.
 	 *
 	 * @return string Response on database update.
 	 */
-	public static function update_count( $id, $blog_id, $activate_counter ) {
+	public static function update_count( $id, $blog_id, $activate_counter, $source = 0 ) {
 
 		$str = '';
 
@@ -282,24 +370,13 @@ class Tracker {
 		 * @param int $id      Post ID.
 		 * @param int $blog_id Blog ID.
 		 * @param int $activate_counter Activate counter flag.
+		 * @param int $source  Traffic source: 0 = web, 1 = feed.
 		 */
-		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter );
+		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter, $source );
 
-		if ( $id > 0 && $before_update_count ) {
-
-			if ( ( 1 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$tt = Database::update_count( $id, $blog_id, false );
-
-				$str .= ( false === $tt ) ? 'tte' : 'tt' . $tt;
-			}
-
-			if ( ( 10 === $activate_counter ) || ( 11 === $activate_counter ) ) {
-
-				$ttd = Database::update_count( $id, $blog_id, true );
-
-				$str .= ( false === $ttd ) ? ' ttde' : ' ttd' . $ttd;
-			}
+		if ( $id > 0 && $activate_counter > 0 && $before_update_count ) {
+			$result = Database::append_to_funnel( $id, $blog_id, $activate_counter, $source );
+			$str   .= ( false === $result ) ? 'loge' : 'log' . $result;
 		}
 
 		/**
@@ -311,7 +388,8 @@ class Tracker {
 		 * @param int $id Post ID.
 		 * @param int $blog_id Blog ID.
 		 * @param int $activate_counter Activate counter flag.
+		 * @param int $source Traffic source: 0 = web, 1 = feed.
 		 */
-		return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter );
+		return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter, $source );
 	}
 }

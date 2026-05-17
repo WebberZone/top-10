@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.2.3
+Stable tag: 4.3.0
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -156,9 +156,27 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.2.4 =
+= 4.3.0 =
 
-* Fixed: Check for caching was referencing the incorrect setting resulting in posts never being cached.
+* New:
+	* Added Top 10 views for the current hour and today to the WordPress Dashboard At a Glance widget.
+	* Post views from RSS/Atom feed readers are now counted alongside regular web views. Enable under Counter settings > Track feed views.
+	* Buffered visit tracking: every page view is now written to a lightweight funnel table and aggregated into the count tables every 5 minutes by a background cron job. This eliminates write contention on high-traffic posts and decouples the visitor's page load from the database update.
+
+* Improvements:
+	* Scheduled maintenance now deletes old daily entries in batches, preventing timeouts on high-traffic sites with large databases.
+	* Added a database index on the daily table to speed up scheduled maintenance queries. Use the Recreate Primary Key tool under Tools to apply it to existing installs.
+
+* Fixed:
+	* Check for caching was referencing the incorrect setting resulting in posts never being cached.
+	* Database version was being recorded before upgrade routines ran, causing upgrades to be skipped silently on re-activation.
+	* Daily popular posts queries work on MySQL servers with ONLY_FULL_GROUP_BY mode enabled.
+	* Popular posts with identical view counts now display in a consistent order when paginated.
+	* Daily view counts now respect the site's configured timezone instead of server time.
+	* Dashboard "Total visits for this period" now matches the chart by querying raw visit totals directly, rather than summing only the top 20 displayed posts.
+	* Popular posts ordering no longer overridden by Post Types Order and similar plugins that modify the posts_orderby clause.
+	* Plugin deactivation now clears both maintenance and aggregation cron jobs, and sets the settings option to not autoload.
+	* Removed incorrect wpmu_drop_tables filter that was attempting to drop network-wide tables when a multisite site was deleted.
 
 = 4.2.3 =
 

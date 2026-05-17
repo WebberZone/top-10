@@ -487,6 +487,14 @@ class Settings {
 				'type'    => 'checkbox',
 				'default' => false,
 			),
+			'track_feed_views'     => array(
+				'id'      => 'track_feed_views',
+				'name'    => esc_html__( 'Track feed views', 'top-10' ),
+				'desc'    => esc_html__( 'Count post views from RSS/Atom feed readers via a tracking pixel. Views are added to the post\'s regular view count. Note: some feed readers block remote images by default; views are only counted when the reader loads images.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => false,
+				'pro'     => true,
+			),
 			'track_users'          => array(
 				'id'      => 'track_users',
 				'name'    => esc_html__( 'Track user groups', 'top-10' ) . ':',
