@@ -19,11 +19,20 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class Cron {
 	/**
+	 * Whether the aggregation cron was missing and had to be rescheduled.
+	 *
+	 * @var bool
+	 */
+	private bool $aggregation_cron_was_missing = false;
+
+	/**
 	 * Initialize the class.
 	 */
 	public function __construct() {
 		Hook_Registry::add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
 		Hook_Registry::add_action( 'tptn_aggregation_cron_hook', array( $this, 'run_aggregation' ) );
+		Hook_Registry::add_action( 'admin_init', array( $this, 'check_aggregation_cron' ) );
+		Hook_Registry::add_action( 'admin_notices', array( $this, 'aggregation_cron_missing_notice' ) );
 	}
 
 	/**
@@ -127,5 +136,35 @@ class Cron {
 	 */
 	public static function disable_aggregation_run() {
 		wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
+	}
+
+	/**
+	 * Check that the aggregation cron is scheduled and reschedule it if missing.
+	 *
+	 * @since 4.3.0
+	 */
+	public function check_aggregation_cron() {
+		if ( ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
+			self::enable_aggregation_run();
+			$this->aggregation_cron_was_missing = true;
+		}
+	}
+
+	/**
+	 * Show an admin notice when the aggregation cron was found missing and rescheduled.
+	 *
+	 * @since 4.3.0
+	 */
+	public function aggregation_cron_missing_notice() {
+		if ( ! $this->aggregation_cron_was_missing ) {
+			return;
+		}
+		?>
+		<div class="notice notice-warning is-dismissible">
+			<p>
+				<?php esc_html_e( 'Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically.', 'top-10' ); ?>
+			</p>
+		</div>
+		<?php
 	}
 }
