@@ -38,6 +38,22 @@ class Activator {
 	public static $table_name_daily = 'top_ten_daily';
 
 	/**
+	 * Name of the visits log table.
+	 *
+	 * @since 4.3.0
+	 * @var string
+	 */
+	public static $table_name_log = 'top_ten_visits_log';
+
+	/**
+	 * Name of the visits funnel table.
+	 *
+	 * @since 4.3.0
+	 * @var string
+	 */
+	public static $table_name_funnel = 'top_ten_visits_funnel';
+
+	/**
 	 * Constructor class.
 	 *
 	 * @since 3.3.0
@@ -93,9 +109,14 @@ class Activator {
 		$table_name       = $wpdb->base_prefix . self::$table_name;
 		$table_name_daily = $wpdb->base_prefix . self::$table_name_daily;
 
+		$table_name_log    = $wpdb->base_prefix . self::$table_name_log;
+		$table_name_funnel = $wpdb->base_prefix . self::$table_name_funnel;
+
 		// Create tables if not exists.
 		self::maybe_create_table( $table_name, self::create_full_table_sql() );
 		self::maybe_create_table( $table_name_daily, self::create_daily_table_sql() );
+		self::maybe_create_table( $table_name_log, Database::create_log_table_sql() );
+		self::maybe_create_table( $table_name_funnel, Database::create_funnel_table_sql() );
 
 		// Upgrade table code.
 		$installed_ver = get_site_option( 'tptn_db_version' );
@@ -119,6 +140,8 @@ class Activator {
 			// Update the database version.
 			update_site_option( 'tptn_db_version', $tptn_db_version );
 		}
+
+		Cron::enable_aggregation_run();
 
 		/**
 		 * Fires after the plugin has been activated.
@@ -167,11 +190,15 @@ class Activator {
 	public static function create_tables() {
 		global $wpdb;
 
-		$table_name       = $wpdb->base_prefix . self::$table_name;
-		$table_name_daily = $wpdb->base_prefix . self::$table_name_daily;
+		$table_name        = $wpdb->base_prefix . self::$table_name;
+		$table_name_daily  = $wpdb->base_prefix . self::$table_name_daily;
+		$table_name_log    = $wpdb->base_prefix . self::$table_name_log;
+		$table_name_funnel = $wpdb->base_prefix . self::$table_name_funnel;
 
 		self::maybe_create_table( $table_name, self::create_full_table_sql() );
 		self::maybe_create_table( $table_name_daily, self::create_daily_table_sql() );
+		self::maybe_create_table( $table_name_log, Database::create_log_table_sql() );
+		self::maybe_create_table( $table_name_funnel, Database::create_funnel_table_sql() );
 	}
 
 	/**
@@ -287,6 +314,46 @@ class Activator {
 	}
 
 	/**
+	 * Fired when the plugin is deactivated.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param bool $network_wide True if WPMU superadmin uses "Network Deactivate" action, false otherwise.
+	 */
+	public static function deactivation_hook( $network_wide ) {
+		if ( is_multisite() && $network_wide ) {
+			$sites = get_sites(
+				array(
+					'archived' => 0,
+					'spam'     => 0,
+					'deleted'  => 0,
+				)
+			);
+
+			foreach ( $sites as $site ) {
+				switch_to_blog( (int) $site->blog_id );
+				self::single_deactivate();
+				restore_current_blog();
+			}
+		} else {
+			self::single_deactivate();
+		}
+	}
+
+	/**
+	 * Fired for each blog when the plugin is deactivated.
+	 *
+	 * @since 4.3.0
+	 */
+	public static function single_deactivate() {
+		Cron::disable_run();
+		Cron::disable_aggregation_run();
+
+		// Stop auto-loading the settings option while the plugin is inactive.
+		update_option( 'tptn_settings', get_option( 'tptn_settings' ), false );
+	}
+
+	/**
 	 * Check and update database version.
 	 *
 	 * @since 3.3.0
@@ -307,6 +374,8 @@ class Activator {
 	 * @return bool True if all tables are installed, false if any are missing.
 	 */
 	public static function is_all_tables_installed() {
-		return Database::are_tables_installed();
+		return Database::are_tables_installed()
+			&& Database::is_table_installed( Database::get_log_table() )
+			&& Database::is_table_installed( Database::get_funnel_table() );
 	}
 }

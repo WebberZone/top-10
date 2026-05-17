@@ -124,12 +124,10 @@ class Dashboard {
 						<?php foreach ( $this->get_tabs() as $tab_id => $tab_name ) : ?>
 
 						<div id="<?php echo esc_attr( $tab_id ); ?>">
-							<table class="form-table">
 							<?php
 								$output = empty( $tab_name['hide'] ) ? $this->display_popular_posts( $tab_name ) : '';
 								echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
-							</table>
 
 							<div style="font-weight:bold;padding:5px;">
 
@@ -457,16 +455,14 @@ class Dashboard {
 					<?php if ( $is_network ) : ?>
 						<th><?php esc_html_e( 'Site', 'top-10' ); ?></th>
 					<?php endif; ?>
-					<th><?php esc_html_e( 'Visits', 'top-10' ); ?></th>
+					<th style="text-align:center;"><?php esc_html_e( 'Visits', 'top-10' ); ?></th>
 				</tr>
 				</thead>
 				<tbody>
 			<?php
-			$total_visits = 0;
 			foreach ( $results as $result ) :
-				$visits_int    = (int) $result['visits'];
-				$total_visits += $visits_int;
-				$visits        = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits_int );
+				$visits_int = (int) $result['visits'];
+				$visits     = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits_int );
 				if ( $is_network && isset( $result['blog_id'] ) ) {
 					$post      = get_blog_post( (int) $result['blog_id'], (int) $result['ID'] );
 					$permalink = is_multisite() ? get_blog_permalink( (int) $result['blog_id'], (int) $result['ID'] ) : get_permalink( (int) $result['ID'] );
@@ -501,20 +497,20 @@ class Dashboard {
 							?>
 						</td>
 					<?php endif; ?>
-					<td><?php echo esc_html( $visits ); ?></td>
+					<td style="text-align:center;"><?php echo esc_html( $visits ); ?></td>
 				</tr>
 
 			<?php endforeach; ?>
 				</tbody>
 				<?php
 				$colspan                = $is_network ? 2 : 1;
-				$total_visits_formatted = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $total_visits );
+				$total_visits_formatted = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $this->get_period_total_visits( $args ) );
 				$label                  = $is_network ? __( 'Total network visits for this period', 'top-10' ) : __( 'Total visits for this period', 'top-10' );
 				?>
 				<tfoot>
 				<tr>
 					<th colspan="<?php echo esc_attr( (string) $colspan ); ?>" style="text-align:right;"><?php echo esc_html( $label ); ?></th>
-					<th><?php echo esc_html( $total_visits_formatted ); ?></th>
+					<th style="text-align:center;"><?php echo esc_html( $total_visits_formatted ); ?></th>
 				</tr>
 				</tfoot>
 			</table>
@@ -529,6 +525,64 @@ class Dashboard {
 
 		$output = ob_get_clean();
 		return $output;
+	}
+
+	/**
+	 * Get the raw total visits for a period, matching the chart methodology.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param array $args Query parameters (daily, from_date, to_date, blog_id, network).
+	 * @return int Total visits.
+	 */
+	public function get_period_total_visits( $args = array() ) {
+		global $wpdb;
+
+		$defaults = array(
+			'blog_id'   => get_current_blog_id(),
+			'daily'     => true,
+			'from_date' => null,
+			'to_date'   => null,
+		);
+		$args     = wp_parse_args( $args, $defaults );
+
+		$explicit_network = isset( $args['network'] ) ? (bool) $args['network'] : null;
+		$is_network       = ( null !== $explicit_network ) ? $explicit_network : ( is_multisite() && is_network_admin() );
+		$table_name       = Database::get_table( $args['daily'] );
+
+		$has_dates = ! empty( $args['from_date'] ) && ! empty( $args['to_date'] );
+
+		if ( $args['daily'] && $has_dates && $is_network ) {
+			$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
+			$to_date   = gmdate( 'Y-m-d', strtotime( $args['to_date'] ) );
+			$sql       = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT SUM(cntaccess) FROM {$table_name} WHERE DATE(dp_date) >= DATE(%s) AND DATE(dp_date) <= DATE(%s)",
+				$from_date,
+				$to_date
+			);
+		} elseif ( $args['daily'] && $has_dates ) {
+			$blog_id   = (int) $args['blog_id'];
+			$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
+			$to_date   = gmdate( 'Y-m-d', strtotime( $args['to_date'] ) );
+			$sql       = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT SUM(cntaccess) FROM {$table_name} WHERE DATE(dp_date) >= DATE(%s) AND DATE(dp_date) <= DATE(%s) AND blog_id = %d",
+				$from_date,
+				$to_date,
+				$blog_id
+			);
+		} elseif ( $is_network ) {
+			$sql = "SELECT SUM(cntaccess) FROM {$table_name}"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		} else {
+			$blog_id = (int) $args['blog_id'];
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$sql = $wpdb->prepare( "SELECT SUM(cntaccess) FROM {$table_name} WHERE blog_id = %d", $blog_id );
+		}
+
+		$total = $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+
+		return (int) $total;
 	}
 
 	/**

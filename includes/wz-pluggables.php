@@ -15,21 +15,25 @@ if ( ! function_exists( 'wz_more_recurrences' ) ) :
 	 */
 	function wz_more_recurrences( $schedules ) {
 		// Add a 'weekly' interval.
-		$schedules['weekly']      = array(
+		$schedules['weekly']       = array(
 			'interval' => WEEK_IN_SECONDS,
 			'display'  => __( 'Once Weekly', 'top-10' ),
 		);
-		$schedules['fortnightly'] = array(
+		$schedules['fortnightly']  = array(
 			'interval' => 2 * WEEK_IN_SECONDS,
 			'display'  => __( 'Once Fortnightly', 'top-10' ),
 		);
-		$schedules['monthly']     = array(
+		$schedules['monthly']      = array(
 			'interval' => 30 * DAY_IN_SECONDS,
 			'display'  => __( 'Once Monthly', 'top-10' ),
 		);
-		$schedules['quarterly']   = array(
+		$schedules['quarterly']    = array(
 			'interval' => 90 * DAY_IN_SECONDS,
 			'display'  => __( 'Once quarterly', 'top-10' ),
+		);
+		$schedules['five_minutes'] = array(
+			'interval' => 5 * MINUTE_IN_SECONDS,
+			'display'  => __( 'Every 5 Minutes', 'top-10' ),
 		);
 		return $schedules;
 	}

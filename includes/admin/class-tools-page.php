@@ -42,6 +42,7 @@ class Tools_Page {
 		Hook_Registry::add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ), 11 );
 		Hook_Registry::add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		Hook_Registry::add_action( 'admin_init', array( $this, 'handle_recreate_tables_action' ) );
+		Hook_Registry::add_action( 'admin_init', array( $this, 'handle_create_missing_tables_action' ) );
 
 		// Clear table statistics cache when counts are updated.
 		Hook_Registry::add_action( 'tptn_count_updated', array( 'WebberZone\Top_Ten\Database', 'clear_table_statistics_cache' ) );
@@ -163,6 +164,16 @@ class Tools_Page {
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
 		}
 
+		/* Sync funnel (run aggregation now) */
+		if ( isset( $_POST['tptn_sync_funnel'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+			$result = Database::aggregate_visit_log();
+			if ( $result ) {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Funnel has been synced. Buffered visits have been aggregated.', 'top-10' ), 'updated' );
+			} else {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Nothing to sync. The funnel is empty or another sync is in progress.', 'top-10' ), 'updated' );
+			}
+		}
+
 		ob_start();
 		?>
 	<div class="wrap">
@@ -199,6 +210,18 @@ class Tools_Page {
 						</p>
 						<p class="description">
 							<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
+						</p>
+					</div>
+				</div>
+
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Sync Funnel', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p>
+							<button name="tptn_sync_funnel" type="submit" id="tptn_sync_funnel" class="button button-secondary"><?php esc_attr_e( 'Sync Funnel Now', 'top-10' ); ?></button>
+						</p>
+						<p class="description">
+							<?php esc_html_e( 'Drain the visits funnel into the count tables immediately. This is equivalent to running the 5-minute aggregation cron job.', 'top-10' ); ?>
 						</p>
 					</div>
 				</div>
@@ -443,22 +466,21 @@ class Tools_Page {
 	 * @return array Array of table statuses indicating whether they are installed.
 	 */
 	public static function check_table_status() {
-		global $wpdb;
-
-		$table_name       = $wpdb->base_prefix . 'top_ten';
-		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
+		$tables = array(
+			'top_ten'               => Database::get_table( false ),
+			'top_ten_daily'         => Database::get_table( true ),
+			'top_ten_visits_funnel' => Database::get_funnel_table(),
+			'top_ten_visits_log'    => Database::get_log_table(),
+		);
 
 		$statuses = array();
 
-		// Check main table.
-		$statuses['top_ten'] = Database::is_table_installed( $table_name )
-			? '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>'
-			: '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
+		$installed_label     = '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>';
+		$not_installed_label = '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
 
-		// Check daily table.
-		$statuses['top_ten_daily'] = Database::is_table_installed( $table_name_daily )
-			? '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>'
-			: '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
+		foreach ( $tables as $key => $table_name ) {
+			$statuses[ $key ] = Database::is_table_installed( $table_name ) ? $installed_label : $not_installed_label;
+		}
 
 		// Create tables if they don't exist.
 		if ( ! Database::are_tables_installed() ) {
@@ -467,13 +489,9 @@ class Tools_Page {
 			Database::clear_table_statistics_cache();
 
 			// Refresh statuses after creating tables.
-			$statuses['top_ten'] = Database::is_table_installed( $table_name )
-				? '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>'
-				: '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
-
-			$statuses['top_ten_daily'] = Database::is_table_installed( $table_name_daily )
-				? '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>'
-				: '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
+			foreach ( $tables as $key => $table_name ) {
+				$statuses[ $key ] = Database::is_table_installed( $table_name ) ? $installed_label : $not_installed_label;
+			}
 		}
 
 		/**
@@ -513,63 +531,38 @@ class Tools_Page {
 				</td>
 			</tr>
 
-			<tr>
-				<th scope="row"><?php printf( /* translators: %s: Table name */ esc_html__( '%s table', 'top-10' ), esc_html( 'top_ten' ) ); ?></th>
-				<td>
-					<?php
-					echo $statuses['top_ten']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+			<?php
+			$table_keys = array( 'top_ten', 'top_ten_daily', 'top_ten_visits_funnel', 'top_ten_visits_log' );
+			foreach ( $table_keys as $table_key ) :
+				if ( ! isset( $statuses[ $table_key ] ) ) {
+					continue;
+				}
+				?>
+				<tr>
+					<th scope="row"><?php printf( /* translators: %s: Table name */ esc_html__( '%s table', 'top-10' ), esc_html( $table_key ) ); ?></th>
+					<td>
+						<?php
+						echo $statuses[ $table_key ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-					if ( isset( $table_stats['top_ten'] ) ) {
-						echo '<br><span class="description">';
-						if ( is_multisite() && ! is_network_admin() ) {
-							printf(
+						if ( isset( $table_stats[ $table_key ] ) ) {
+							$format = ( is_multisite() && ! is_network_admin() )
 								/* translators: 1: Number of entries, 2: Estimated table size */
-								esc_html__( 'Entries: %1$s | Est. Size: %2$s', 'top-10' ),
-								'<strong>' . esc_html( number_format_i18n( $table_stats['top_ten']['entries'] ) ) . '</strong>',
-								'<strong>' . esc_html( size_format( $table_stats['top_ten']['size'] ) ) . '</strong>'
-							);
-						} else {
-							printf(
+								? __( 'Entries: %1$s | Est. Size: %2$s', 'top-10' )
 								/* translators: 1: Number of entries, 2: Table size */
-								esc_html__( 'Entries: %1$s | Size: %2$s', 'top-10' ),
-								'<strong>' . esc_html( number_format_i18n( $table_stats['top_ten']['entries'] ) ) . '</strong>',
-								'<strong>' . esc_html( size_format( $table_stats['top_ten']['size'] ) ) . '</strong>'
-							);
-						}
-						echo '</span>';
-					}
-					?>
-				</td>
-			</tr>
+								: __( 'Entries: %1$s | Size: %2$s', 'top-10' );
 
-			<tr>
-				<th scope="row"><?php printf( /* translators: %s: Table name */ esc_html__( '%s table', 'top-10' ), esc_html( 'top_ten_daily' ) ); ?></th>
-				<td>
-					<?php
-					echo $statuses['top_ten_daily']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-
-					if ( isset( $table_stats['top_ten_daily'] ) ) {
-						echo '<br><span class="description">';
-						if ( is_multisite() && ! is_network_admin() ) {
+							echo '<br><span class="description">';
 							printf(
-								/* translators: 1: Number of entries, 2: Estimated table size */
-								esc_html__( 'Entries: %1$s | Est. Size: %2$s', 'top-10' ),
-								'<strong>' . esc_html( number_format_i18n( $table_stats['top_ten_daily']['entries'] ) ) . '</strong>',
-								'<strong>' . esc_html( size_format( $table_stats['top_ten_daily']['size'] ) ) . '</strong>'
+								esc_html( $format ),
+								'<strong>' . esc_html( number_format_i18n( $table_stats[ $table_key ]['entries'] ) ) . '</strong>',
+								'<strong>' . esc_html( size_format( $table_stats[ $table_key ]['size'] ) ) . '</strong>'
 							);
-						} else {
-							printf(
-								/* translators: 1: Number of entries, 2: Table size */
-								esc_html__( 'Entries: %1$s | Size: %2$s', 'top-10' ),
-								'<strong>' . esc_html( number_format_i18n( $table_stats['top_ten_daily']['entries'] ) ) . '</strong>',
-								'<strong>' . esc_html( size_format( $table_stats['top_ten_daily']['size'] ) ) . '</strong>'
-							);
+							echo '</span>';
 						}
-						echo '</span>';
-					}
-					?>
-				</td>
-			</tr>
+						?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
 
 			<?php if ( ! Database::are_tables_installed() ) : ?>
 			<tr>
@@ -591,6 +584,49 @@ class Tools_Page {
 	 * Handle recreate tables action from admin area.
 	 *
 	 * @since 4.2.0
+	 */
+	/**
+	 * Handle the create-missing-tables GET action triggered from the admin notice.
+	 *
+	 * @since 4.3.0
+	 */
+	public static function handle_create_missing_tables_action() {
+		if ( ! isset( $_GET['action'] ) || 'tptn_create_missing_tables' !== $_GET['action'] || ! isset( $_GET['_wpnonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'tptn-create-missing-tables' ) ) {
+			wp_die( esc_html__( 'Security check failed', 'top-10' ) );
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'top-10' ) );
+		}
+
+		Activator::create_tables();
+		Database::clear_table_statistics_cache();
+
+		$still_missing = false;
+		foreach ( array( Database::get_table( false ), Database::get_table( true ), Database::get_log_table(), Database::get_funnel_table() ) as $table ) {
+			if ( ! Database::is_table_installed( $table ) ) {
+				$still_missing = true;
+				break;
+			}
+		}
+
+		$status   = $still_missing ? 'failed' : 'created';
+		$referer  = wp_get_referer();
+		$fallback = admin_url( 'admin.php?page=' . ( is_network_admin() ? 'tptn_network_tools_page' : 'tptn_tools_page' ) );
+		$redirect = add_query_arg( 'tptn_tables_created', $status, $referer ? $referer : $fallback );
+
+		wp_safe_redirect( $redirect );
+		exit;
+	}
+
+	/**
+	 * Handle the recreate-tables GET action from the tools page.
+	 *
+	 * @since 4.1.0
 	 */
 	public static function handle_recreate_tables_action() {
 		if ( ! isset( $_GET['action'] ) || 'recreate_tables' !== $_GET['action'] || ! isset( $_GET['_wpnonce'] ) ) {
