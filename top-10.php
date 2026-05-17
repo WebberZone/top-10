@@ -14,7 +14,7 @@
  * Plugin Name: WebberZone Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     4.2.3
+ * Version:     4.3.0-beta1
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 3.1.0
  */
 if ( ! defined( 'TOP_TEN_VERSION' ) ) {
-	define( 'TOP_TEN_VERSION', '4.2.3' );
+	define( 'TOP_TEN_VERSION', '4.3.0-beta1' );
 }
 
 /**
@@ -155,7 +155,7 @@ if ( ! has_action( 'admin_notices', __NAMESPACE__ . '\\tptn_show_deactivation_no
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = '6.0';
+$tptn_db_version = '7.0';
 
 if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 	// Load Freemius.
@@ -195,6 +195,9 @@ if ( ! function_exists( __NAMESPACE__ . '\load_tptn' ) ) {
 
 // Register the activation hook.
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Admin\Activator::activation_hook' );
+
+// Register the deactivation hook.
+register_deactivation_hook( __FILE__, __NAMESPACE__ . '\Admin\Activator::deactivation_hook' );
 
 /*
  *----------------------------------------------------------------------------

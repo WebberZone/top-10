@@ -53,6 +53,7 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 
 * __Enhanced Tracking and Performance__
   * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
+  * __Buffered Visit Tracking__: Every page view is written to a lightweight funnel table first, then aggregated into the count tables by a background cron job every 5 minutes. This eliminates write contention on high-traffic posts where many simultaneous visitors would otherwise compete to update the same row
   * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
   * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
 
