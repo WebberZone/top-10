@@ -54,10 +54,22 @@ class Cron {
 		 */
 		$delete_from = apply_filters( 'tptn_maintenance_days', $delete_from );
 
+		$log_retention = TOP_TEN_LOG_STORE_DATA;
+
+		/**
+		 * Override retention period for the visits log table.
+		 *
+		 * @since 4.3.0
+		 *
+		 * @param int $log_retention Number of days to retain raw visit log rows.
+		 */
+		$log_retention = apply_filters( 'tptn_log_retention_days', $log_retention );
+
 		$current_time  = strtotime( current_time( 'mysql' ) );
 		$cutoff        = strtotime( "-{$delete_from} DAY", $current_time );
+		$cutoff_log    = strtotime( "-{$log_retention} DAY", $current_time );
 		$from_date     = gmdate( 'Y-m-d H', $cutoff );
-		$from_date_log = gmdate( 'Y-m-d H:i:s', $cutoff );
+		$from_date_log = gmdate( 'Y-m-d H:i:s', $cutoff_log );
 
 		// Delete old daily entries.
 		$args = array(

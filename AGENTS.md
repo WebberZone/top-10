@@ -2,6 +2,12 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+## Response Rules
+
+- Succinct answers ALWAYS. No explanations unless I ask!
+- Return only the changed function/section, not the full file
+- No suggestions outside the scope of what I asked
+
 ## Plugin Overview
 
 WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `6.0`.
@@ -119,6 +125,20 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **`admin/class-pro-admin.php`** (`Pro\Admin\Pro_Admin`) — Pro admin layer; instantiates `Admin_Bar`.
 - **`admin/class-admin-bar.php`** (`Pro\Admin\Admin_Bar`) — Adds a Top 10 node to the WordPress admin bar for quick access to stats.
 - **`admin/class-dashboard-widgets.php`** (`Pro\Admin\Dashboard_Widgets`) — Pro dashboard widgets.
+
+## Code Review
+
+When performing code reviews, you MUST:
+
+1. **Trace the actual execution path** - Before reporting any issue, walk through exactly what happens step-by-step in the failure scenario. Do not rely on pattern recognition or assumptions.
+
+2. **Verify the condition is reachable** - Confirm the failure can actually occur in real usage conditions. If it only fails under conditions that cannot occur in the existing codebase, do not report it.
+
+3. **Prove it's a bug** - Show concrete evidence of harm. No speculative or hypothetical bugs. A suspicious code pattern is not a bug unless you can prove it causes actual problems.
+
+4. **Check if it's intentional** - Consider whether the behavior might be a deliberate improvement or design decision before labeling it as an issue.
+
+5. **If uncertain, say so once and stop** - Do not keep revising findings across multiple messages. If you cannot prove a bug with certainty, do not report it.
 
 ## Key Patterns
 

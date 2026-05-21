@@ -161,7 +161,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 *     @type bool          $daily            Set to true to get the daily/custom period posts. False for overall.
 	 *     @type array|string  $include_cat_ids  An array or comma-separated string of category/custom taxonomy term_taxonomy_ids.
 	 *     @type array|string  $include_post_ids An array or comma-separated string of post IDs.
-	 *     @type bool          $offset           Offset the related posts returned by this number.
+	 *     @type int           $offset           Offset the related posts returned by this number.
 	 *     @type bool          $strict_limit     If this is set to false, then it will fetch 3x posts.
 	 * }
 	 */
@@ -471,6 +471,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 				'post_type',
 				'post_status',
 				'posts_per_page',
+				'offset',
 				'author',
 			);
 
