@@ -66,6 +66,16 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
   * __Category Inclusion__: Edit Post meta box option to include popular posts from specific categories
   * __RSS Feed Filtering__: Filter RSS feeds by category or post type via settings or URL parameters
 
+* __WP-CLI Integration__
+  * __`wp top10 counts`__: View, get, set, reset, export, and import post view counts from the command line
+  * __`wp top10 db`__: Manage database tables — check status, create, update, recreate, prune old rows, force aggregation, truncate, and clean up orphaned counts
+  * __`wp top10 cache`__: Flush, enable, disable, and check the status of the output cache
+  * __`wp top10 settings`__: Get, set, export, and import plugin settings as JSON
+  * __`wp top10 cron`__: View, enable, disable, and manually trigger the maintenance and aggregation cron jobs
+  * __`wp top10 popular`__: List popular posts with counts using the same query as the front end
+  * __`wp top10 status`__: Print a full plugin status overview
+  * All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`
+
 * __Developer-Friendly Features__
   * __Custom Post Type Sortable Columns__: Admin columns on supported custom post types with sortable functionality
 
@@ -159,24 +169,25 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 = 4.3.0 =
 
 * New:
-	* Added Top 10 views for the current hour and today to the WordPress Dashboard At a Glance widget.
-	* Post views from RSS/Atom feed readers are now counted alongside regular web views. Enable under Counter settings > Track feed views.
-	* Buffered visit tracking: every page view is now written to a lightweight funnel table and aggregated into the count tables every 5 minutes by a background cron job. This eliminates write contention on high-traffic posts and decouples the visitor's page load from the database update.
+	* Buffered visit tracking: page views are queued in a funnel table and aggregated every 5 minutes, reducing write contention on busy sites.
+	* RSS/Atom feed views are now counted. Enable under Counter settings > Track feed views.
+	* Dashboard At a Glance widget now shows views for the current hour and today.
+	* [Pro] Full `wp top10` WP-CLI suite: counts, database, cache, settings, cron, and popular posts commands. All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`.
 
 * Improvements:
-	* Scheduled maintenance now deletes old daily entries in batches, preventing timeouts on high-traffic sites with large databases.
-	* Added a database index on the daily table to speed up scheduled maintenance queries. Use the Recreate Primary Key tool under Tools to apply it to existing installs.
+	* Scheduled maintenance deletes old daily rows in batches to prevent timeouts on large databases.
+	* New index on the daily table speeds up maintenance queries. Apply it to existing installs via Recreate Primary Key under Tools.
 
 * Fixed:
-	* Check for caching was referencing the incorrect setting resulting in posts never being cached.
-	* Database version was being recorded before upgrade routines ran, causing upgrades to be skipped silently on re-activation.
-	* Daily popular posts queries work on MySQL servers with ONLY_FULL_GROUP_BY mode enabled.
-	* Popular posts with identical view counts now display in a consistent order when paginated.
-	* Daily view counts now respect the site's configured timezone instead of server time.
-	* Dashboard "Total visits for this period" now matches the chart by querying raw visit totals directly, rather than summing only the top 20 displayed posts.
-	* Popular posts ordering no longer overridden by Post Types Order and similar plugins that modify the posts_orderby clause.
-	* Plugin deactivation now clears both maintenance and aggregation cron jobs, and sets the settings option to not autoload.
-	* Removed incorrect wpmu_drop_tables filter that was attempting to drop network-wide tables when a multisite site was deleted.
+	* Cache setting was referencing the wrong key, preventing posts from ever being cached.
+	* Database version was recorded before upgrade routines ran, causing upgrades to be silently skipped on re-activation.
+	* Daily queries now work on MySQL servers with ONLY_FULL_GROUP_BY enabled.
+	* Posts with identical counts now display in a consistent order when paginated.
+	* Daily counts now use the site's configured timezone instead of server time.
+	* Dashboard "Total visits" now matches the chart total rather than summing only the top 20 posts.
+	* Popular posts ordering no longer overridden by Post Types Order and similar plugins.
+	* Deactivation now clears both cron jobs and sets the settings option to not autoload.
+	* Removed incorrect `wpmu_drop_tables` filter that tried to drop network-wide tables on site deletion.
 
 = 4.2.3 =
 

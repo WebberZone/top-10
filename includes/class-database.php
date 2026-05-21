@@ -315,20 +315,22 @@ class Database {
 			);
 		}
 
-		// Get table size (always shows total size across all blogs).
+		// Refresh InnoDB stats so information_schema reflects the current state.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ANALYZE TABLE `{$table_name}`" );
+
+		// Get table size in bytes (always shows total size across all blogs).
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$size = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT ROUND(((data_length + index_length) / 1024 / 1024), 2) 
-				FROM information_schema.TABLES 
-				WHERE table_schema = %s AND table_name = %s',
+				'SELECT (data_length + index_length) FROM information_schema.TABLES WHERE table_schema = %s AND table_name = %s',
 				defined( 'DB_NAME' ) ? DB_NAME : '', // @codingStandardsIgnoreLine - WordPress constant
 				$table_name
 			)
 		);
 
 		// Calculate size for individual sites in multisite.
-		$calculated_size = $size ? (float) $size * 1024 * 1024 : 0; // Convert MB to bytes.
+		$calculated_size = $size ? (int) $size : 0;
 		if ( is_multisite() && ! is_network_admin() && $calculated_size > 0 ) {
 			// Get total entries to calculate ratio.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -366,10 +368,17 @@ class Database {
 	public static function is_table_installed( $table ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+		static $cache = array();
 
-		return $result === $table;
+		if ( isset( $cache[ $table ] ) ) {
+			return $cache[ $table ];
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result          = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+		$cache[ $table ] = ( $result === $table );
+
+		return $cache[ $table ];
 	}
 
 	/**
@@ -889,6 +898,7 @@ class Database {
 				return new \WP_Error( 'tptn_database_backup_failed', sprintf( esc_html__( 'Database backup failed on site %1$s. Error message: %2$s', 'top-10' ), get_site_url(), $wpdb->last_error ) );
 			}
 		} else {
+			$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$success = $wpdb->query( "CREATE TEMPORARY TABLE $backup_table_name AS SELECT $fields_sql_with_sum FROM $table_name GROUP BY $group_by_sql" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
@@ -909,7 +919,7 @@ class Database {
 		}
 
 		if ( ! $backup ) {
-			$wpdb->query( "DROP TABLE $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		return $success;
@@ -967,5 +977,120 @@ class Database {
 		// Table names cannot be parameterized in TRUNCATE statements.
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->query( "TRUNCATE TABLE $table_name" );
+	}
+
+	/**
+	 * Count rows in the daily table that would be pruned up to a given date.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $to_date Rows with dp_date at or before this value are counted.
+	 * @return int Row count.
+	 */
+	public static function count_deletable_daily_rows( string $to_date ): int {
+		global $wpdb;
+		$table = self::get_table( true );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE dp_date <= %s", $to_date ) );
+	}
+
+	/**
+	 * Count rows in the visits log table older than a given datetime.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $before_datetime Rows with visited_at before this value are counted.
+	 * @return int Row count.
+	 */
+	public static function count_deletable_log_rows( string $before_datetime ): int {
+		global $wpdb;
+		$table = self::get_log_table();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE visited_at < %s", $before_datetime ) );
+	}
+
+	/**
+	 * Delete rows from the visits log table older than a given datetime.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $before_datetime Rows with visited_at before this value are deleted.
+	 * @param int    $batch_size      Maximum rows to delete per call.
+	 * @return int|false Rows deleted, or false on failure.
+	 */
+	public static function prune_log_table( string $before_datetime, int $batch_size = 1000 ) {
+		global $wpdb;
+		$table = self::get_log_table();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->query( $wpdb->prepare( "DELETE FROM `{$table}` WHERE visited_at < %s LIMIT %d", $before_datetime, $batch_size ) );
+	}
+
+	/**
+	 * Count rows in the visits funnel table.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return int Row count.
+	 */
+	public static function count_funnel_rows(): int {
+		global $wpdb;
+		$table = self::get_funnel_table();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" );
+	}
+
+	/**
+	 * Count orphaned rows in a count table (rows with no matching post).
+	 *
+	 * Only inspects rows belonging to the current blog so that posts on other
+	 * sites in a multisite network are not falsely reported as orphans.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $table_name Count table to inspect.
+	 * @return int Row count.
+	 */
+	public static function count_orphan_counts( string $table_name ): int {
+		global $wpdb;
+		$blog_id = get_current_blog_id();
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$table_name}` t
+				 LEFT JOIN `{$wpdb->posts}` p ON t.postnumber = p.ID
+				 WHERE p.ID IS NULL AND t.blog_id = %d",
+				$blog_id
+			)
+		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	/**
+	 * Delete orphaned rows from a count table (rows with no matching post).
+	 *
+	 * Only deletes rows belonging to the current blog so that posts on other
+	 * sites in a multisite network are not falsely treated as orphans.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $table_name Count table to clean.
+	 * @param int    $batch_size Maximum rows to delete per call.
+	 * @return int|false Rows deleted, or false on failure.
+	 */
+	public static function delete_orphan_counts( string $table_name, int $batch_size = 1000 ) {
+		global $wpdb;
+		$blog_id = get_current_blog_id();
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->query(
+			$wpdb->prepare(
+				"DELETE t FROM `{$table_name}` t
+				 LEFT JOIN `{$wpdb->posts}` p ON t.postnumber = p.ID
+				 WHERE p.ID IS NULL AND t.blog_id = %d
+				 LIMIT %d",
+				$blog_id,
+				$batch_size
+			)
+		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 }

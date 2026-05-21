@@ -10,6 +10,7 @@ namespace WebberZone\Top_Ten\Admin;
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Util\Helpers;
 use WebberZone\Top_Ten\Util\Hook_Registry;
+use WebberZone\Top_Ten\Util\Csv_Helper;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -193,7 +194,7 @@ class Import_Export {
 				<div class="inside">
 					<form method="post" enctype="multipart/form-data">
 						<p class="description">
-							<?php esc_html_e( 'This action will replace the data in the table being import. Best practice would be to first export the data using the buttons above. Following this, update the file with the new data and then import it. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
+							<?php esc_html_e( 'Importing a file will add or increment counts — it does not replace existing data. To start fresh, use the Maintenance tab to truncate the tables first. Best practice is to export before importing. It is important to maintain the export format of the data to avoid corruption.', 'top-10' ); ?>
 							<br />
 							<?php esc_html_e( 'Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H.', 'top-10' ); ?>
 						</p>
@@ -313,65 +314,7 @@ class Import_Export {
 		$filename = implode( '-', $filename );
 		$filename = $filename . '.csv';
 
-		$header_row = array(
-			esc_html__( 'Post ID', 'top-10' ),
-			esc_html__( 'Visits', 'top-10' ),
-		);
-		if ( $daily ) {
-			$header_row[] = esc_html__( 'Date', 'top-10' );
-		}
-		$header_row[] = esc_html__( 'Blog ID', 'top-10' );
-
-		if ( $export_urls ) {
-			$header_row[] = esc_html__( 'URL', 'top-10' );
-		}
-
-		$data_rows = array();
-		$url_list  = array();
-
-		global $wpdb;
-
-		// Use the Database class to fetch data.
-		$results = array();
-		if ( $network_wide ) {
-			// For network-wide export, we need to get all blogs.
-			if ( is_multisite() ) {
-				$sites = get_sites( array( 'number' => 1000 ) );
-				foreach ( $sites as $site ) {
-					switch_to_blog( (int) $site->blog_id );
-					$blog_results = self::get_blog_results( $daily, (int) $site->blog_id );
-					$results      = array_merge( $results, $blog_results );
-					restore_current_blog();
-				}
-			}
-		} else {
-			$results = self::get_blog_results( $daily, get_current_blog_id() );
-		}
-
-		foreach ( $results as $result ) {
-			$row = array(
-				$result['postnumber'],
-				$result['cntaccess'],
-			);
-			if ( $daily ) {
-				$row[] = $result['dp_date'];
-			}
-			$row[] = $result['blog_id'];
-
-			if ( $export_urls ) {
-				// Check if $result['postnumber'] is found in $url_list array. $url_list is an associative array with post ID as key and URL as value.
-				if ( isset( $url_list[ $result['postnumber'] ] ) ) {
-					$row[] = $url_list[ $result['postnumber'] ];
-				} else {
-					// If $result['postnumber'] is not found in $url_list array, get URL from $result['postnumber'] and add it to $url_list array.
-					$row[] = ( is_multisite() && $network_wide ) ? get_blog_permalink( $result['blog_id'], $result['postnumber'] ) : get_permalink( $result['postnumber'] );
-
-					$url_list[ $result['postnumber'] ] = $row[4];
-				}
-			}
-
-			$data_rows[] = $row;
-		}
+		$results = Csv_Helper::fetch_export_data( $daily, (bool) $network_wide, get_current_blog_id() );
 
 		ignore_user_abort( true );
 
@@ -381,12 +324,7 @@ class Import_Export {
 		header( 'Expires: 0' );
 
 		$fh = fopen( 'php://output', 'w' );
-		fprintf( $fh, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
-
-		fputcsv( $fh, $header_row, ',', '"', '\\' );
-		foreach ( $data_rows as $data_row ) {
-			fputcsv( $fh, $data_row, ',', '"', '\\' );
-		}
+		Csv_Helper::write_export_csv( $fh, $results, $daily, (bool) $export_urls, (bool) $network_wide );
 		fclose( $fh ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 		exit;
@@ -398,8 +336,6 @@ class Import_Export {
 	 * @since 2.7.0
 	 */
 	public static function import_tables() {
-		global $wpdb;
-
 		if ( empty( $_POST['tptn_action'] ) || 'import_tables' !== $_POST['tptn_action'] ) {
 			return;
 		}
@@ -416,149 +352,75 @@ class Import_Export {
 			return;
 		}
 
-		if ( isset( $_POST['tptn_import_total'] ) ) {
-			$daily        = false;
-			$column_count = 3;
-		} elseif ( isset( $_POST['tptn_import_daily'] ) ) {
-			$daily        = true;
-			$column_count = 4;
-		} else {
+		$overall_upload = ! empty( $_FILES['overall_table_file']['tmp_name'] );
+		$daily_upload   = ! empty( $_FILES['daily_table_file']['tmp_name'] );
+
+		if ( ! $overall_upload && ! $daily_upload ) {
 			return;
 		}
 
 		if ( isset( $_POST['network_wide'] ) ) {
-			$network_wide = intval( $_POST['network_wide'] );
+			$network_wide = (bool) intval( $_POST['network_wide'] );
 		} else {
 			return;
 		}
 
 		if ( isset( $_POST['import_urls'] ) ) {
-			$import_urls = intval( $_POST['import_urls'] );
-			++$column_count;
+			$use_urls = (bool) intval( $_POST['import_urls'] );
 		} else {
-			$import_urls = 0;
+			$use_urls = false;
 		}
 
-		if ( isset( $_POST['reset_tables'] ) ) {
-			$reset_tables = intval( $_POST['reset_tables'] );
-		} else {
-			$reset_tables = 0;
-		}
+		$results = array();
 
-		$table_name = Database::get_table( $daily );
-		$filename   = 'import_file';
-		if ( $daily ) {
-			$filename .= '_daily';
-		}
+		if ( $overall_upload ) {
+			$import_file = wp_unslash( $_FILES['overall_table_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$parsed      = Csv_Helper::parse_import_file( $import_file );
 
-		$tmp       = isset( $_FILES[ $filename ]['name'] ) ? explode( '.', sanitize_file_name( wp_unslash( $_FILES[ $filename ]['name'] ) ) ) : array();
-		$extension = end( $tmp );
-
-		if ( 'csv' !== $extension ) {
-			wp_die( esc_html__( 'Please upload a valid .csv file', 'top-10' ) );
-		}
-
-		$import_file = isset( $_FILES[ $filename ]['tmp_name'] ) ? ( wp_unslash( $_FILES[ $filename ]['tmp_name'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
-		if ( empty( $import_file ) ) {
-			wp_die( esc_html__( 'Please upload a file to import', 'top-10' ) );
-		}
-
-		$data        = array();
-		$url_list    = array();
-		$file_import = '';
-
-		// Open uploaded CSV file with read-only mode.
-		$csv_file = fopen( $import_file, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
-
-		// Skip first line.
-		fgetcsv( $csv_file, 1000, ',', '"', '\\' );
-
-		while ( ( $line = fgetcsv( $csv_file, 1000, ',', '"', '\\' ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-
-			if ( count( $line ) !== $column_count ) {
-				$file_import = 'fail';
-				break;
+			if ( 0 === $parsed['total'] ) {
+				wp_safe_redirect(
+					add_query_arg(
+						array(
+							'page'        => 'tptn_exim_page',
+							'file_import' => 'fail',
+						),
+						is_network_admin() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' )
+					)
+				);
+				exit;
 			}
 
-			if ( $import_urls ) {
-				$url = $daily ? $line[4] : $line[3];
-				$url = trim( $url );
-				$url = esc_url_raw( $url );
-
-				// Check if $url is found in $url_list array. $url_list is an associative array with $url as key and post ID as value.
-				if ( isset( $url_list[ $url ] ) ) {
-					$line[0] = $url_list[ $url ];
-				} else {
-					// If $url is not found in $url_list array, get post ID from $url and add it to $url_list array.
-					$line[0] = url_to_postid( $url );
-					if ( 0 === $line[0] ) {
-						continue;
-					}
-					$url_list[ $url ] = $line[0];
-				}
-			}
-
-			if ( $daily ) {
-
-				if ( ! is_network_admin() && ( (int) get_current_blog_id() !== (int) $line[3] ) ) {
-					continue;
-				}
-
-				$dp_date = new \DateTime( $line[2] );
-				$dp_date = $dp_date->format( 'Y-m-d H' );
-
-				$data[] = $wpdb->prepare( '( %d, %d, %s, %d )', $line[0], $line[1], $dp_date, $line[3] );
-			} else {
-				if ( ! is_network_admin() && ( (int) get_current_blog_id() !== (int) $line[2] ) ) {
-					continue;
-				}
-
-				$data[] = $wpdb->prepare( '( %d, %d, %d )', $line[0], $line[1], $line[2] );
+			$prepared = self::build_import_data( $parsed['rows'], false, $use_urls, $network_wide );
+			if ( ! empty( $prepared ) ) {
+				$results[] = Database::bulk_upsert( $prepared, false );
 			}
 		}
 
-		// Close file.
-		fclose( $csv_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		if ( $daily_upload ) {
+			$import_file = wp_unslash( $_FILES['daily_table_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$parsed      = Csv_Helper::parse_import_file( $import_file );
 
-		$result = false;
-		if ( ! empty( $data ) ) {
-			if ( $reset_tables ) {
-				// Truncate the table before import.
-				if ( ! is_multisite() || (bool) $network_wide ) {
-					Database::truncate_table( Database::get_table( $daily ) );
-				} else {
-					\WebberZone\Top_Ten\Counter::delete_counts( array( 'daily' => $daily ) );
-				}
+			if ( 0 === $parsed['total'] ) {
+				wp_safe_redirect(
+					add_query_arg(
+						array(
+							'page'        => 'tptn_exim_page',
+							'file_import' => 'fail',
+						),
+						is_network_admin() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' )
+					)
+				);
+				exit;
 			}
 
-			// Prepare data for bulk upsert.
-			$prepared_data = array();
-			foreach ( $data as $row ) {
-				$line = explode( ',', trim( $row, '()' ) );
-				$line = array_map( 'trim', $line );
-				$line = array_map( 'str_replace', array_fill( 0, count( $line ), "'" ), array_fill( 0, count( $line ), '' ), $line );
-
-				if ( $daily ) {
-					$prepared_data[] = array(
-						'postnumber' => (int) $line[0],
-						'cntaccess'  => (int) $line[1],
-						'dp_date'    => $line[2],
-						'blog_id'    => (int) $line[3],
-					);
-				} else {
-					$prepared_data[] = array(
-						'postnumber' => (int) $line[0],
-						'cntaccess'  => (int) $line[1],
-						'blog_id'    => (int) $line[2],
-					);
-				}
+			$prepared = self::build_import_data( $parsed['rows'], true, $use_urls, $network_wide );
+			if ( ! empty( $prepared ) ) {
+				$results[] = Database::bulk_upsert( $prepared, true );
 			}
-
-			$result = Database::bulk_upsert( $prepared_data, $daily );
 		}
 
-		$file_import = $result ? 'success' : 'fail';
+		$all_success = ! empty( $results ) && ! in_array( false, $results, true );
+		$file_import = $all_success ? 'success' : 'fail';
 
 		wp_safe_redirect(
 			add_query_arg(
@@ -570,6 +432,66 @@ class Import_Export {
 			)
 		);
 		exit;
+	}
+
+	/**
+	 * Build structured import data from parsed CSV rows.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param array $rows         Parsed rows from Csv_Helper::parse_import_file().
+	 * @param bool  $daily        Whether these are daily-table rows.
+	 * @param bool  $use_urls     Whether to resolve URL column to post IDs.
+	 * @param bool  $network_wide Whether this is a network-wide import.
+	 * @return array Prepared data rows for Database::bulk_upsert().
+	 */
+	private static function build_import_data( array $rows, bool $daily, bool $use_urls, bool $network_wide ): array {
+		$prepared = array();
+		$url_list = array();
+
+		foreach ( $rows as $row ) {
+			$post_id = absint( $row['postnumber'] );
+			$blog_id = isset( $row['blog_id'] ) ? absint( $row['blog_id'] ) : get_current_blog_id();
+
+			if ( $use_urls && ! empty( $row['url'] ) ) {
+				$url = esc_url_raw( trim( $row['url'] ) );
+				if ( ! isset( $url_list[ $url ] ) ) {
+					$url_list[ $url ] = url_to_postid( $url );
+				}
+				$post_id = absint( $url_list[ $url ] );
+			}
+
+			if ( 0 === $post_id ) {
+				continue;
+			}
+
+			if ( ! $network_wide && ! is_network_admin() && (int) get_current_blog_id() !== $blog_id ) {
+				continue;
+			}
+
+			if ( $daily ) {
+				$raw_date = isset( $row['dp_date'] ) ? trim( $row['dp_date'] ) : '';
+				try {
+					$dp_date = ( new \DateTime( $raw_date ) )->format( 'Y-m-d H' );
+				} catch ( \Exception $e ) {
+					$dp_date = $raw_date;
+				}
+				$prepared[] = array(
+					'postnumber' => $post_id,
+					'cntaccess'  => absint( $row['cntaccess'] ),
+					'dp_date'    => $dp_date,
+					'blog_id'    => $blog_id,
+				);
+			} else {
+				$prepared[] = array(
+					'postnumber' => $post_id,
+					'cntaccess'  => absint( $row['cntaccess'] ),
+					'blog_id'    => $blog_id,
+				);
+			}
+		}
+
+		return $prepared;
 	}
 
 	/**
@@ -651,22 +573,5 @@ class Import_Export {
 			)
 		);
 		exit;
-	}
-
-	/**
-	 * Get results for a specific blog.
-	 *
-	 * @param bool $daily   Whether to get daily results.
-	 * @param int  $blog_id Blog ID.
-	 * @return array Results.
-	 */
-	private static function get_blog_results( $daily, $blog_id ) {
-		global $wpdb;
-
-		$table = Database::get_table( $daily );
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$sql = $wpdb->prepare( "SELECT * FROM {$table} WHERE blog_id = %d", $blog_id );
-
-		return $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 	}
 }

@@ -60,7 +60,7 @@ class Activator {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		Hook_Registry::add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
+		Hook_Registry::add_action( 'admin_init', array( $this, 'update_db_check' ) );
 		Hook_Registry::add_action( 'wp_initialize_site', array( $this, 'activate_new_site' ) );
 	}
 
@@ -122,23 +122,18 @@ class Activator {
 		$installed_ver = get_site_option( 'tptn_db_version' );
 
 		if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
-			// Recreate tables with the new structure.
-			$result_overall = self::recreate_overall_table( false );
-			$result_daily   = self::recreate_daily_table( false );
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-			// Check for errors.
-			if ( is_wp_error( $result_overall ) ) {
-				// Log the error.
-				error_log( $result_overall->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			$wpdb->hide_errors();
+			dbDelta( self::create_full_table_sql() );
+			dbDelta( self::create_daily_table_sql() );
+			dbDelta( Database::create_log_table_sql() );
+			dbDelta( Database::create_funnel_table_sql() );
+			$wpdb->show_errors();
+
+			if ( self::is_all_tables_installed() ) {
+				update_site_option( 'tptn_db_version', $tptn_db_version );
 			}
-
-			if ( is_wp_error( $result_daily ) ) {
-				// Log the error.
-				error_log( $result_daily->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			}
-
-			// Update the database version.
-			update_site_option( 'tptn_db_version', $tptn_db_version );
 		}
 
 		Cron::enable_aggregation_run();

@@ -189,7 +189,7 @@ class Tools_Page {
 			<form method="post" >
 
 				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Database Status', 'top-10' ); ?></span></h2>
+					<h2><span><?php esc_html_e( 'Status', 'top-10' ); ?></span></h2>
 					<div class="inside">
 						<div class="tptn-db-status">
 							<?php echo self::get_db_status_report(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -380,46 +380,27 @@ class Tools_Page {
 
 		$wpdb->hide_errors();
 
-		// 1. create temporary tables with the data.
-		$wpdb->query( "CREATE TEMPORARY TABLE {$table_name_temp} SELECT * FROM $table_name;" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "CREATE TEMPORARY TABLE {$table_name_daily_temp} SELECT * FROM $table_name_daily;" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// Overall table.
+		$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS {$table_name_temp}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$result_temp = $wpdb->query( "CREATE TEMPORARY TABLE {$table_name_temp} SELECT * FROM {$table_name};" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		// 2. Drop the tables.
-		$wpdb->query( "DROP TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query( "DROP TABLE $table_name_daily" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		if ( false !== $result_temp ) {
+			$wpdb->query( "DROP TABLE {$table_name}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+			Activator::single_activate();
+			$wpdb->query( "INSERT INTO `{$table_name}` (postnumber, cntaccess, blog_id) SELECT postnumber, cntaccess, blog_id FROM `{$table_name_temp}`;" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->query( "DROP TEMPORARY TABLE {$table_name_temp}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		}
 
-		// 3. Run the activation function which will recreate the tables.
-		Activator::single_activate();
+		// Daily table.
+		$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS {$table_name_daily_temp}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$result_daily_temp = $wpdb->query( "CREATE TEMPORARY TABLE {$table_name_daily_temp} SELECT * FROM {$table_name_daily};" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		// 4. Reinsert the data from the temporary table.
-		$sql = "
-		INSERT INTO `$table_name` (postnumber, cntaccess, blog_id) (
-			SELECT
-				postnumber,
-				cntaccess,
-				blog_id
-			FROM `$table_name_temp`
-		);
-		";
-
-		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-
-		$sql = "
-		INSERT INTO `$table_name_daily` (postnumber, cntaccess, dp_date, blog_id) (
-			SELECT
-				postnumber,
-				cntaccess,
-				dp_date,
-				blog_id
-			FROM `$table_name_daily_temp`
-		);
-		";
-
-		$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-
-		// 5. Drop the temporary tables.
-		$wpdb->query( "DROP TABLE $table_name_temp" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query( "DROP TABLE $table_name_daily_temp" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		if ( false !== $result_daily_temp ) {
+			$wpdb->query( "DROP TABLE {$table_name_daily}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+			Activator::single_activate();
+			$wpdb->query( "INSERT INTO `{$table_name_daily}` (postnumber, cntaccess, dp_date, blog_id) SELECT postnumber, cntaccess, dp_date, blog_id FROM `{$table_name_daily_temp}`;" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->query( "DROP TEMPORARY TABLE {$table_name_daily_temp}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		}
 
 		$wpdb->show_errors();
 	}
@@ -560,6 +541,35 @@ class Tools_Page {
 							echo '</span>';
 						}
 						?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+
+			<?php
+			$cron_jobs = array(
+				'tptn_cron_hook'             => __( 'Maintenance cron', 'top-10' ),
+				'tptn_aggregation_cron_hook' => __( 'Aggregation cron', 'top-10' ),
+			);
+			foreach ( $cron_jobs as $hook => $label ) :
+				$next_run = wp_next_scheduled( $hook );
+				?>
+				<tr>
+					<th scope="row"><?php echo esc_html( $label ); ?></th>
+					<td>
+						<?php if ( $next_run ) : ?>
+							<span style="color: #006400;"><?php esc_html_e( 'Scheduled', 'top-10' ); ?></span>
+							<br><span class="description">
+								<?php
+								printf(
+									/* translators: %s: human-readable time difference */
+									esc_html__( 'Next run: %s', 'top-10' ),
+									esc_html( sprintf( __( 'in %s', 'top-10' ), human_time_diff( time(), $next_run ) ) )
+								);
+								?>
+							</span>
+						<?php else : ?>
+							<span style="color: #8B0000;"><?php esc_html_e( 'Not scheduled', 'top-10' ); ?></span>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

@@ -77,6 +77,16 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
   * __Category Inclusion__: Edit Post meta box option to include popular posts from specific categories
   * __RSS Feed Filtering__: Filter RSS feeds by category or post type via settings or URL parameters
 
+* __WP-CLI Integration__
+  * __`wp top10 counts`__: View, get, set, reset, export, and import post view counts from the command line
+  * __`wp top10 db`__: Manage database tables — check status, create, update, recreate, prune old rows, force aggregation, truncate, and clean up orphaned counts
+  * __`wp top10 cache`__: Flush, enable, disable, and check the status of the output cache
+  * __`wp top10 settings`__: Get, set, export, and import plugin settings as JSON
+  * __`wp top10 cron`__: View, enable, disable, and manually trigger the maintenance and aggregation cron jobs
+  * __`wp top10 popular`__: List popular posts with counts using the same query as the front end
+  * __`wp top10 status`__: Print a full plugin status overview
+  * All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`
+
 * __Developer-Friendly Features__
   * __Custom Post Type Sortable Columns__: Admin columns on supported custom post types with sortable functionality
 
