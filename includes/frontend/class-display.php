@@ -1033,7 +1033,7 @@ class Display {
 		}
 
 		// If this post ID is in the DO NOT DISPLAY list.
-		$exclude_on_post_ids_list = isset( $args['exclude_on_post_ids_list'] ) ? $args['exclude_on_post_ids_list'] : \tptn_get_option( 'exclude_on_post_ids_list' );
+		$exclude_on_post_ids_list = isset( $args['exclude_on_post_ids_list'] ) ? $args['exclude_on_post_ids_list'] : \tptn_get_option( 'exclude_on_post_ids' );
 		$exclude_on_post_ids_list = explode( ',', $exclude_on_post_ids_list );
 		if ( in_array( $post->ID, $exclude_on_post_ids_list ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			return true;
