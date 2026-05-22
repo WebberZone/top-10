@@ -76,7 +76,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 
 ### Admin (`includes/admin/`)
 
-- **`class-settings.php`** — Settings page (tabs: General, List, Counter, Thumbnail, Exclusions, Feed, Maintenance, Custom Styles). Settings stored as a single `tptn_settings` array in `wp_options`.
+- **`class-settings.php`** — Settings page (tabs: General, Counter/Tracker, Posts list, Thumbnail, Styles, Maintenance, Feed). Settings stored as a single `tptn_settings` array in `wp_options`.
 - **`class-cron.php`** — Scheduled maintenance (`tptn_cron_hook`) to prune daily table rows older than `TOP_TEN_STORE_DATA` (180) days.
 - **`class-statistics.php`** / **`class-statistics-table.php`** — Admin statistics pages.
 - **`class-dashboard.php`** / **`class-dashboard-widgets.php`** — Dashboard widgets.
