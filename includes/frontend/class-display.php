@@ -1033,16 +1033,15 @@ class Display {
 		}
 
 		// If this post ID is in the DO NOT DISPLAY list.
-		$exclude_on_post_ids_list = isset( $args['exclude_on_post_ids_list'] ) ? $args['exclude_on_post_ids_list'] : \tptn_get_option( 'exclude_on_post_ids' );
-		$exclude_on_post_ids_list = explode( ',', $exclude_on_post_ids_list );
-		if ( in_array( $post->ID, $exclude_on_post_ids_list ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		$exclude_on_post_ids = isset( $args['exclude_on_post_ids'] ) ? $args['exclude_on_post_ids'] : \tptn_get_option( 'exclude_on_post_ids' );
+		$exclude_on_post_ids = wp_parse_id_list( $exclude_on_post_ids );
+		if ( in_array( (int) $post->ID, $exclude_on_post_ids, true ) ) {
 			return true;
 		}
 
 		// If this post type is in the DO NOT DISPLAY list.
-		// If post_types is empty or contains a query string then use parse_str else consider it comma-separated.
 		$exclude_on_post_types = isset( $args['exclude_on_post_types'] ) ? $args['exclude_on_post_types'] : \tptn_get_option( 'exclude_on_post_types' );
-		$exclude_on_post_types = $exclude_on_post_types ? explode( ',', $exclude_on_post_types ) : array();
+		$exclude_on_post_types = wp_parse_list( $exclude_on_post_types );
 
 		if ( in_array( $post->post_type, $exclude_on_post_types, true ) ) {
 			return true;
@@ -1050,7 +1049,7 @@ class Display {
 
 		// If this post's category is in the DO NOT DISPLAY list.
 		$exclude_on_categories = isset( $args['exclude_on_categories'] ) ? $args['exclude_on_categories'] : \tptn_get_option( 'exclude_on_categories' );
-		$exclude_on_categories = explode( ',', $exclude_on_categories );
+		$exclude_on_categories = wp_parse_id_list( $exclude_on_categories );
 		$post_categories       = get_the_terms( $post->ID, 'category' );
 		$categories            = array();
 		if ( ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ) {

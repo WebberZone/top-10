@@ -158,7 +158,7 @@ class REST_API extends \WP_REST_Controller {
 
 		$results = Display::get_posts( $args );
 
-		if ( is_array( $results ) && ! empty( $results ) ) {
+		if ( ! empty( $results ) ) {
 			foreach ( $results as $popular_post ) {
 				if ( ! $this->check_read_permission( $popular_post, $request ) ) {
 					continue;

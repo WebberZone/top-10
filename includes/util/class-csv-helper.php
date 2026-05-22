@@ -123,7 +123,7 @@ class Csv_Helper {
 		}
 
 		$headers = fgetcsv( $handle, 0, ',', '"', '\\' );
-		if ( false === $headers || empty( $headers ) ) {
+		if ( false === $headers ) {
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 			return array(
 				'daily' => false,
@@ -147,7 +147,7 @@ class Csv_Helper {
 		$total = 0;
 
 		while ( false !== ( $line = fgetcsv( $handle, 0, ',', '"', '\\' ) ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-			if ( empty( $line ) || ( 1 === count( $line ) && '' === $line[0] ) ) {
+			if ( 1 === count( $line ) && '' === $line[0] ) {
 				continue;
 			}
 

@@ -628,11 +628,11 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		// Use WP_Query's parse_order method to get a valid order.
 		$query_orderby = $query->get( 'orderby' );
-		$order         = method_exists( $query, 'parse_order' ) ? $query->parse_order( $query->get( 'order' ) ) : 'DESC';
+		$order         = $query->parse_order( $query->get( 'order' ) );
 
 		// Preserve intentional orderby values except the plugin's visits alias.
 		if ( is_array( $query_orderby ) && isset( $query_orderby['visits'] ) ) {
-			$visits_order = method_exists( $query, 'parse_order' ) ? $query->parse_order( $query_orderby['visits'] ) : $order;
+			$visits_order = $query->parse_order( $query_orderby['visits'] );
 			$orderby      = empty( $orderby ) ? "visits $visits_order, {$this->table_name}.postnumber $visits_order" : "visits $visits_order, {$orderby}";
 		} elseif ( empty( $query_orderby ) || 'visits' === $query_orderby ) {
 			$orderby = "visits $order, {$this->table_name}.postnumber $order";
