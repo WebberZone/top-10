@@ -1664,10 +1664,6 @@ class Settings {
 			$tax        = null;
 
 			foreach ( $taxonomies as $taxonomy_name => $taxonomy_object ) {
-				if ( ! is_string( $taxonomy_name ) || '' === $taxonomy_name ) {
-					continue;
-				}
-
 				if ( empty( $taxonomy_object->cap->assign_terms ) ) {
 					continue;
 				}
@@ -1676,7 +1672,7 @@ class Settings {
 					continue;
 				}
 
-				$taxonomy[] = $taxonomy_name;
+				$taxonomy[] = $taxonomy_object->name;
 			}
 
 			if ( empty( $taxonomy ) ) {

@@ -120,32 +120,26 @@ class Helpers {
 				$string .= self::str_putcsv( $work_array[ $i ], $delimiter, $enclosure, $terminator );
 			} else {
 				switch ( gettype( $work_array[ $i ] ) ) {
-					// Manually set some strings.
 					case 'NULL':
-						$sp_format = '';
+						$formatted = '';
 						break;
 					case 'boolean':
-						$sp_format = ( true === $work_array[ $i ] ) ? 'true' : 'false';
+						$formatted = ( true === $work_array[ $i ] ) ? 'true' : 'false';
 						break;
-					// Make sure sprintf has a good datatype to work with.
 					case 'integer':
-						$sp_format = '%i';
+						$formatted = (string) (int) $work_array[ $i ];
 						break;
 					case 'double':
-						$sp_format = '%0.2f';
+						$formatted = number_format( (float) $work_array[ $i ], 2, '.', '' );
 						break;
 					case 'string':
-						$sp_format        = '%s';
-						$work_array[ $i ] = str_replace( "$enclosure", "$enclosure$enclosure", $work_array[ $i ] );
+						$formatted = str_replace( $enclosure, $enclosure . $enclosure, (string) $work_array[ $i ] );
 						break;
-					// Unknown or invalid items for a csv - note: the datatype of array is already handled above, assuming the data is nested.
-					case 'object':
-					case 'resource':
 					default:
-						$sp_format = '';
+						$formatted = '';
 						break;
 				}
-				$string .= sprintf( '%2$s' . $sp_format . '%2$s', $work_array[ $i ], $enclosure );
+				$string .= $enclosure . $formatted . $enclosure;
 				$string .= ( $i < ( $input_size - 1 ) ) ? $delimiter : $terminator;
 			}
 		}
