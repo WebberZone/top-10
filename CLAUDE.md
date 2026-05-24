@@ -54,7 +54,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 - **`includes/class-hook-loader.php`** — Registers `init`, `widgets_init`, `rest_api_init`, and `parse_query` hooks.
 - **`includes/class-counter.php`** (`Counter`) — Hooks into `the_content` to append the viewed count; only fires in the main loop on singular pages.
 - **`includes/class-tracker.php`** (`Tracker`) — Enqueues `tptn_tracker` JS and handles `wp_ajax_tptn_tracker` / `wp_ajax_nopriv_tptn_tracker` AJAX actions that record a view. Tracker type (standard `ajaxurl` vs. pro fast/high-traffic types) is read from `tptn_get_option('tracker_type')`.
-- **`includes/class-database.php`** (`Database`) — All direct DB access. Two custom tables: `{prefix}top_ten` (total counts) and `{prefix}top_ten_daily` (per-day counts). Columns: `postnumber`, `cntaccess`, `dp_date` (daily only), `blog_id`.
+- **`includes/class-database.php`** (`Database`) — All direct DB access. Four custom tables: `{prefix}top_ten` (total counts), `{prefix}top_ten_daily` (per-hour counts), `{prefix}top_ten_visits_funnel` (hot write buffer, drained every 5 min by cron), `{prefix}top_ten_visits_log` (cold archive, pruned by maintenance cron).
 - **`includes/class-top-ten-core-query.php`** (`Top_Ten_Core_Query`) — Extends `WP_Query`; builds the SQL joining posts against the count tables, ordered by `cntaccess`. Supports daily vs. total, multisite blog arrays, and date-range filtering.
 - **`includes/class-top-ten-query.php`** — Public-facing query wrapper; required directly rather than autoloaded.
 
@@ -71,7 +71,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 ### Admin (`includes/admin/`)
 
 - **`class-settings.php`** — Settings page (tabs: General, Counter/Tracker, Posts list, Thumbnail, Styles, Maintenance, Feed). Settings stored as a single `tptn_settings` array in `wp_options`.
-- **`class-cron.php`** — Scheduled maintenance (`tptn_cron_hook`) to prune daily table rows older than `TOP_TEN_STORE_DATA` (180) days.
+- **`class-cron.php`** — Two scheduled jobs: `tptn_cron_hook` prunes daily table rows older than `TOP_TEN_STORE_DATA` (180) days and log table rows; `tptn_aggregation_cron_hook` drains the funnel into the count tables via `Database::aggregate_visit_log()`.
 - **`class-statistics.php`** / **`class-statistics-table.php`** — Admin statistics pages.
 - **`class-dashboard.php`** / **`class-dashboard-widgets.php`** — Dashboard widgets.
 - **`class-columns.php`** — Admin list-table columns showing view counts.
@@ -125,6 +125,6 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **Settings access:** Always use `tptn_get_option($key, $default)` / `tptn_get_settings()`. Settings are also available in `global $tptn_settings` (populated at plugin load).
 - **Pro-gated settings:** Several settings in `class-settings.php` carry `'pro' => true` (e.g. `admin_column_post_types`, `show_dashboard_to_roles`, `show_admin_bar`, `max_execution_time`, `use_global_settings`, `exclude_terms_include_parents`, `maintenance_days`, `feed_category_slugs`). These render as disabled with an upgrade prompt in the free plugin. In the pro plugin, `Pro::update_registered_settings()` iterates all registered settings and sets `'pro' => false` on any entry marked pro-only, enabling those fields in the UI. It also removes the `match_content` setting entirely (replaced by a pro alternative).
 - **Mutual exclusion:** Activating either free or pro automatically deactivates the other (`tptn_deactivate_other_instances`).
-- **DB writes:** All count increments go through `Database::update_count()` using `INSERT … ON DUPLICATE KEY UPDATE`.
+- **DB writes (funnel pattern):** Every tracked view appends one row to the funnel table via `Database::append_to_funnel()`. A cron job (`tptn_aggregation_cron_hook`) runs every 5 minutes, draining the funnel transactionally into `top_ten` and `top_ten_daily` in batch. `Database::update_count()` is deprecated since 4.3.0 — do not use it for new code.
 - **High-traffic tracker config:** The generated `top-10-fast-config.php` must be regenerated whenever DB credentials or the table prefix changes. Prompt the user to regenerate after such changes.
 - **Pro gating check:** `tptn_freemius()->is__premium_only()` and `tptn_freemius()->can_use_premium_code()` are the two guards used in `Main::init()`. Individual pro hooks use `Hook_Registry` just like the free plugin.
