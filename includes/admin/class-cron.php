@@ -131,13 +131,23 @@ class Cron {
 	}
 
 	/**
-	 * Schedule the aggregation cron to run every 5 minutes.
+	 * Schedule the aggregation cron to run at the configured interval.
 	 *
 	 * @since 4.3.0
 	 */
 	public static function enable_aggregation_run() {
+		/**
+		 * Override the aggregation cron schedule. Must be a registered WP-Cron recurrence
+		 * (e.g. 'one_minute', 'two_minutes', 'three_minutes', 'five_minutes').
+		 *
+		 * @since 4.3.0
+		 *
+		 * @param string $interval Schedule name. Default 'five_minutes'.
+		 */
+		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'five_minutes' );
+
 		if ( ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
-			wp_schedule_event( time(), 'five_minutes', 'tptn_aggregation_cron_hook' );
+			wp_schedule_event( time(), $interval, 'tptn_aggregation_cron_hook' );
 		}
 	}
 
@@ -151,12 +161,30 @@ class Cron {
 	}
 
 	/**
-	 * Check that the aggregation cron is scheduled and reschedule it if missing.
+	 * Check that the aggregation cron is scheduled at the correct interval; reschedule if missing or changed.
 	 *
 	 * @since 4.3.0
 	 */
 	public function check_aggregation_cron() {
-		if ( ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
+		/** This filter is documented in includes/admin/class-cron.php */
+		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'five_minutes' );
+
+		$timestamp = wp_next_scheduled( 'tptn_aggregation_cron_hook' );
+
+		if ( ! $timestamp ) {
+			self::enable_aggregation_run();
+			$this->aggregation_cron_was_missing = true;
+			return;
+		}
+
+		$crons    = _get_cron_array();
+		$args_key = md5( serialize( array() ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		$current  = isset( $crons[ $timestamp ]['tptn_aggregation_cron_hook'][ $args_key ]['schedule'] )
+			? $crons[ $timestamp ]['tptn_aggregation_cron_hook'][ $args_key ]['schedule']
+			: '';
+
+		if ( $current !== $interval ) {
+			wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
 			self::enable_aggregation_run();
 			$this->aggregation_cron_was_missing = true;
 		}
