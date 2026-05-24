@@ -170,8 +170,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * New:
 	* Buffered visit tracking: page views are queued in a funnel table and aggregated every 5 minutes, reducing write contention on busy sites.
-	* RSS/Atom feed views are now counted. Enable under Counter settings > Track feed views.
-	* Dashboard At a Glance widget now shows views for the current hour and today.
+	* [Pro] RSS/Atom feed views are now counted. Enable under Counter settings > Track feed views.
+	* [Pro] Dashboard At a Glance widget now shows views for the current hour and today.
 	* [Pro] Full `wp top10` WP-CLI suite: counts, database, cache, settings, cron, and popular posts commands. All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`.
 
 * Improvements:
