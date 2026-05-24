@@ -83,6 +83,7 @@ class Database {
 	 * Update count for a post.
 	 *
 	 * @since 4.2.0
+	 * @deprecated 4.3.0 Use {@see Database::append_to_funnel()} instead.
 	 *
 	 * @param int  $post_id Post ID.
 	 * @param int  $blog_id Blog ID (optional, defaults to current blog).
@@ -90,38 +91,12 @@ class Database {
 	 * @return int|false Number of rows affected or false on error.
 	 */
 	public static function update_count( $post_id, $blog_id = null, $daily = false ) {
-		global $wpdb;
+		_deprecated_function( __METHOD__, '4.3.0', 'Database::append_to_funnel()' );
 
-		$blog_id = $blog_id ?? get_current_blog_id();
-		$table   = self::get_table( $daily );
+		$blog_id          = $blog_id ?? get_current_blog_id();
+		$activate_counter = $daily ? 10 : 1;
 
-		if ( $daily ) {
-			$dp_date = current_time( 'Y-m-d H' );
-			$sql     = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id) VALUES (%d, 1, %s, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess+1",
-				$post_id,
-				$dp_date,
-				$blog_id
-			);
-		} else {
-			$sql = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"INSERT INTO {$table} (postnumber, cntaccess, blog_id) VALUES (%d, 1, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess+1",
-				$post_id,
-				$blog_id
-			);
-		}
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		$result = $wpdb->query( $sql );
-
-		// Trigger action to clear cache.
-		if ( false !== $result ) {
-			do_action( 'tptn_count_updated', $post_id, $blog_id, $daily );
-		}
-
-		return $result;
+		return self::append_to_funnel( $post_id, $blog_id, $activate_counter );
 	}
 
 	/**
