@@ -151,6 +151,12 @@ to users with an active, valid licence. Licensed users can request support [here
 
 No. Top 10 tracks page views and displays popular posts. It is not designed to replace analytics platforms.
 
+= How does tracking work? =
+
+Each visit is queued in a lightweight funnel table and aggregated into the count tables every five minutes by a cron job, so tracking never blocks page loads and works correctly behind page caches.
+
+For a full explanation of tracker types, the funnel flow, and how to adjust the aggregation interval, see [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/).
+
 = How does scheduled maintenance work? =
 
 When enabled, Top 10 runs a scheduled task that periodically removes old entries
