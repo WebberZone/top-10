@@ -199,8 +199,6 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Deactivation now clears both cron jobs and sets the settings option to not autoload.
 	* Removed incorrect `wpmu_drop_tables` filter that tried to drop network-wide tables on site deletion.
 
-* [Release announcement](https://webberzone.com/announcements/top-10-v4-3-0/)
-
 = 4.2.3 =
 
 * Security:
@@ -270,9 +268,3 @@ Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webb
 
 = 4.3.0 =
 This release introduces buffered visit tracking with a new funnel table. Existing daily-count table indexes are updated automatically for new installs — existing sites should run "Recreate Primary Key" under Tools > Top 10 to apply the performance improvement. Pro users also get feed view tracking and a full WP-CLI command suite.
-
-= 4.2.3 =
-Security hardening, Settings API updates, and bug fixes.
-
-= 4.2.2 =
-Bugs squashed from previous releases.
