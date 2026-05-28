@@ -2065,13 +2065,13 @@ msgid "Follow me"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:898
+#: includes/class-database.php:873
 #, php-format
 msgid "Database backup failed on site %1$s. Error message: %2$s"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:917
+#: includes/class-database.php:892
 #, php-format
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
@@ -2661,11 +2661,11 @@ msgstr ""
 msgid "Drain the visits funnel into the count tables immediately. This is equivalent to running the 5-minute aggregation cron job."
 msgstr ""
 
-#: includes/wz-pluggables.php:36
+#: includes/wz-pluggables.php:48
 msgid "Every 5 Minutes"
 msgstr ""
 
-#: includes/admin/class-cron.php:177
+#: includes/admin/class-cron.php:205
 msgid "Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically."
 msgstr ""
 
@@ -2716,4 +2716,16 @@ msgstr ""
 
 #: includes/admin/class-tools-page.php:571
 msgid "Not scheduled"
+msgstr ""
+
+#: includes/wz-pluggables.php:36
+msgid "Every Minute"
+msgstr ""
+
+#: includes/wz-pluggables.php:40
+msgid "Every 2 Minutes"
+msgstr ""
+
+#: includes/wz-pluggables.php:44
+msgid "Every 3 Minutes"
 msgstr ""
