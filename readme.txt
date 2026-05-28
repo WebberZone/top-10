@@ -174,6 +174,10 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.3.0 =
 
+*Release Date - 28 May 2026*
+
+* [Release announcement](https://webberzone.com/announcements/top-10-v4-3-0/)
+
 * New:
 	* Buffered visit tracking: page views are queued in a funnel table and aggregated every 5 minutes, reducing write contention on busy sites.
 	* [Pro] RSS/Atom feed views are now counted. Enable under Counter settings > Track feed views.
@@ -194,6 +198,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Popular posts ordering no longer overridden by Post Types Order and similar plugins.
 	* Deactivation now clears both cron jobs and sets the settings option to not autoload.
 	* Removed incorrect `wpmu_drop_tables` filter that tried to drop network-wide tables on site deletion.
+
+* [Release announcement](https://webberzone.com/announcements/top-10-v4-3-0/)
 
 = 4.2.3 =
 
