@@ -721,29 +721,36 @@ class Database {
 	public static function aggregate_visit_log( $batch_size = 10000 ) {
 		global $wpdb;
 
-		// Use a transient-based mutex so this works on SQLite (e.g. Playground) as well as MySQL.
-		$lock_acquired = get_transient( 'tptn_aggregation_lock' );
-		if ( false !== $lock_acquired ) {
-			return false;
-		}
-		set_transient( 'tptn_aggregation_lock', 1, 60 );
+		// Detect SQLite (e.g. WordPress Playground) vs MySQL/MariaDB.
+		$is_sqlite = false !== strpos( strtolower( $wpdb->db_server_info() ), 'sqlite' );
 
 		$funnel_table = self::get_funnel_table();
 		$log_table    = self::get_log_table();
 		$daily_table  = self::get_table( true );
 		$full_table   = self::get_table( false );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
-			delete_transient( 'tptn_aggregation_lock' );
-			return false;
+		// MySQL-specific locking and transactions.
+		if ( ! $is_sqlite ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$lock_acquired = $wpdb->get_var( "SELECT GET_LOCK('tptn_aggregation', 0)" );
+			if ( '1' !== (string) $lock_acquired ) {
+				return false;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+				$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				return false;
+			}
 		}
 
 		try {
 			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table}" );
 			if ( 0 === $max_id ) {
-				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( ! $is_sqlite ) {
+					$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				}
 				return false;
 			}
 
@@ -767,7 +774,9 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				$wpdb->query( 'ROLLBACK' );
+				if ( ! $is_sqlite ) {
+					$wpdb->query( 'ROLLBACK' );
+				}
 				return false;
 			}
 
@@ -786,7 +795,9 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				$wpdb->query( 'ROLLBACK' );
+				if ( ! $is_sqlite ) {
+					$wpdb->query( 'ROLLBACK' );
+				}
 				return false;
 			}
 
@@ -804,7 +815,9 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				$wpdb->query( 'ROLLBACK' );
+				if ( ! $is_sqlite ) {
+					$wpdb->query( 'ROLLBACK' );
+				}
 				return false;
 			}
 
@@ -816,7 +829,7 @@ class Database {
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( false === $wpdb->query( 'COMMIT' ) ) {
+			if ( ! $is_sqlite && false === $wpdb->query( 'COMMIT' ) ) {
 				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				return false;
 			}
@@ -829,7 +842,9 @@ class Database {
 
 			return true;
 		} finally {
-			delete_transient( 'tptn_aggregation_lock' );
+			if ( ! $is_sqlite ) {
+				$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			}
 		}
 	}
 
