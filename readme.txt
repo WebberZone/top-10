@@ -183,6 +183,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Fixed:
 	* Sync Funnel on WordPress Playground (SQLite) incorrectly reported "another aggregation is in progress" due to unreliable SQLite detection; the `DATABASE_TYPE` constant is now checked first.
+	* Uninstalling the plugin no longer throws a fatal error when attempting to drop database tables; the path to the uninstaller was resolving one level above the plugin directory.
 
 = 4.3.0 =
 
