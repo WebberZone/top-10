@@ -167,10 +167,23 @@ class Tools_Page {
 		/* Sync funnel (run aggregation now) */
 		if ( isset( $_POST['tptn_sync_funnel'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			$result = Database::aggregate_visit_log();
-			if ( $result ) {
+			if ( true === $result ) {
 				add_settings_error( 'tptn-notices', '', esc_html__( 'Funnel has been synced. Buffered visits have been aggregated.', 'top-10' ), 'updated' );
-			} else {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Nothing to sync. The funnel is empty or another sync is in progress.', 'top-10' ), 'updated' );
+			} elseif ( 0 === $result ) {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Nothing to sync. The funnel is empty.', 'top-10' ), 'updated' );
+			} elseif ( false === $result ) {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Sync skipped: another aggregation is already in progress. Please try again in a moment.', 'top-10' ), 'updated' );
+			} elseif ( is_wp_error( $result ) ) {
+				add_settings_error(
+					'tptn-notices',
+					'',
+					sprintf(
+						/* translators: %s: error message from the database */
+						esc_html__( 'Sync failed: %s', 'top-10' ),
+						esc_html( $result->get_error_message() )
+					),
+					'error'
+				);
 			}
 		}
 
@@ -563,6 +576,7 @@ class Tools_Page {
 								printf(
 									/* translators: %s: human-readable time difference */
 									esc_html__( 'Next run: %s', 'top-10' ),
+									/* translators: %s: human-readable time difference */
 									esc_html( sprintf( __( 'in %s', 'top-10' ), human_time_diff( time(), $next_run ) ) )
 								);
 								?>

@@ -716,7 +716,7 @@ class Database {
 	 * @since 4.3.0
 	 *
 	 * @param int $batch_size Maximum funnel rows to process per run.
-	 * @return bool True if rows were processed, false if none found or lock not acquired.
+	 * @return true|false|int|\WP_Error True if rows processed, false if lock not acquired, 0 if funnel empty, WP_Error on DB failure.
 	 */
 	public static function aggregate_visit_log( $batch_size = 10000 ) {
 		global $wpdb;
@@ -740,7 +740,7 @@ class Database {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
 				$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				return false;
+				return new \WP_Error( 'tptn_transaction_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not start transaction.', 'top-10' ) );
 			}
 		}
 
@@ -751,7 +751,7 @@ class Database {
 				if ( ! $is_sqlite ) {
 					$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				}
-				return false;
+				return 0;
 			}
 
 			$cap_id     = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$funnel_table} ORDER BY id ASC LIMIT %d, 1", $batch_size ) );
@@ -777,7 +777,7 @@ class Database {
 				if ( ! $is_sqlite ) {
 					$wpdb->query( 'ROLLBACK' );
 				}
-				return false;
+				return new \WP_Error( 'tptn_log_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to copy visits to log table.', 'top-10' ) );
 			}
 
 			$r = $wpdb->query(
@@ -798,7 +798,7 @@ class Database {
 				if ( ! $is_sqlite ) {
 					$wpdb->query( 'ROLLBACK' );
 				}
-				return false;
+				return new \WP_Error( 'tptn_daily_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into daily table.', 'top-10' ) );
 			}
 
 			$r = $wpdb->query(
@@ -818,7 +818,7 @@ class Database {
 				if ( ! $is_sqlite ) {
 					$wpdb->query( 'ROLLBACK' );
 				}
-				return false;
+				return new \WP_Error( 'tptn_overall_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into overall table.', 'top-10' ) );
 			}
 
 			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d", $max_id ) );
@@ -826,14 +826,14 @@ class Database {
 				if ( ! $is_sqlite ) {
 					$wpdb->query( 'ROLLBACK' );
 				}
-				return false;
+				return new \WP_Error( 'tptn_funnel_delete_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to drain funnel table.', 'top-10' ) );
 			}
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( ! $is_sqlite && false === $wpdb->query( 'COMMIT' ) ) {
 				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				return false;
+				return new \WP_Error( 'tptn_commit_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Transaction commit failed.', 'top-10' ) );
 			}
 
 			do_action( 'tptn_count_updated', 0, 0, false );
