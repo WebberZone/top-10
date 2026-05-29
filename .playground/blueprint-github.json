@@ -1,8 +1,8 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"meta": {
-		"title": "WebberZone Top 10 — Demo",
-		"description": "Try WebberZone Top 10 with pre-imported posts and seeded view counts.",
+		"title": "WebberZone Top 10 — GitHub Version",
+		"description": "Try WebberZone Top 10 from GitHub master branch with pre-imported posts and seeded view counts.",
 		"author": "webberzone"
 	},
 	"landingPage": "/popular-posts/",
@@ -17,9 +17,9 @@
 	"steps": [
 		{
 			"step": "installPlugin",
-			"pluginData": {
-				"resource": "wordpress.org/plugins",
-				"slug": "top-10"
+			"pluginZipFile": {
+				"resource": "url",
+				"url": "https://github.com/WebberZone/top-10/archive/refs/heads/master.zip"
 			},
 			"options": {
 				"activate": true
