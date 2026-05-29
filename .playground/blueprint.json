@@ -2,7 +2,8 @@
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"meta": {
 		"title": "WebberZone Top 10 — Demo",
-		"description": "Try WebberZone Top 10 with pre-imported posts and seeded view counts."
+		"description": "Try WebberZone Top 10 with pre-imported posts and seeded view counts.",
+		"author": "webberzone"
 	},
 	"landingPage": "/popular-posts/",
 	"preferredVersions": {
