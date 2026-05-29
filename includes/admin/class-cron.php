@@ -142,9 +142,9 @@ class Cron {
 		 *
 		 * @since 4.3.0
 		 *
-		 * @param string $interval Schedule name. Default 'five_minutes'.
+		 * @param string $interval Schedule name. Default 'two_minutes'.
 		 */
-		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'five_minutes' );
+		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'two_minutes' );
 
 		if ( ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
 			wp_schedule_event( time(), $interval, 'tptn_aggregation_cron_hook' );
@@ -167,7 +167,7 @@ class Cron {
 	 */
 	public function check_aggregation_cron() {
 		/** This filter is documented in includes/admin/class-cron.php */
-		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'five_minutes' );
+		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'two_minutes' );
 
 		$timestamp = wp_next_scheduled( 'tptn_aggregation_cron_hook' );
 
