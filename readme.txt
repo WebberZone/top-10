@@ -180,10 +180,13 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Aggregation cron now runs every 2 minutes instead of 5 minutes for faster count updates.
 	* Sync Funnel now shows distinct error messages for an empty funnel, a lock conflict, and database failures (including the actual database error).
 	* Dashboard chart now formats large numbers with K/M abbreviations (e.g. 15,437 → 15.4K) and auto-hides overlapping bar labels.
+	* "Recreate Database Tables" in Tools now also recreates the visits funnel and visits log tables.
+	* [Pro] `wp top10 db recreate-tables` now accepts `--table=funnel` and `--table=log` in addition to `overall`, `daily`, and `all`.
 
 * Fixed:
 	* Sync Funnel on WordPress Playground (SQLite) incorrectly reported "another aggregation is in progress" due to unreliable SQLite detection; the `DATABASE_TYPE` constant is now checked first.
 	* Uninstalling the plugin no longer throws a fatal error when attempting to drop database tables; the path to the uninstaller was resolving one level above the plugin directory.
+	* "Recreate Database Tables" silently left the daily table missing due to a stale static cache in the table-installed check; all four tables are now recreated reliably.
 
 = 4.3.0 =
 

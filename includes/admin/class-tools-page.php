@@ -384,38 +384,10 @@ class Tools_Page {
 	 * @since 2.7.0
 	 */
 	public static function recreate_tables() {
-		global $wpdb;
-
-		$table_name            = Database::get_table( false );
-		$table_name_daily      = Database::get_table( true );
-		$table_name_temp       = $table_name . '_temp';
-		$table_name_daily_temp = $table_name_daily . '_temp';
-
-		$wpdb->hide_errors();
-
-		// Overall table.
-		$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS {$table_name_temp}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$result_temp = $wpdb->query( "CREATE TEMPORARY TABLE {$table_name_temp} SELECT * FROM {$table_name};" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-		if ( false !== $result_temp ) {
-			$wpdb->query( "DROP TABLE {$table_name}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-			Activator::single_activate();
-			$wpdb->query( "INSERT INTO `{$table_name}` (postnumber, cntaccess, blog_id) SELECT postnumber, cntaccess, blog_id FROM `{$table_name_temp}`;" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->query( "DROP TEMPORARY TABLE {$table_name_temp}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		}
-
-		// Daily table.
-		$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS {$table_name_daily_temp}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$result_daily_temp = $wpdb->query( "CREATE TEMPORARY TABLE {$table_name_daily_temp} SELECT * FROM {$table_name_daily};" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-		if ( false !== $result_daily_temp ) {
-			$wpdb->query( "DROP TABLE {$table_name_daily}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-			Activator::single_activate();
-			$wpdb->query( "INSERT INTO `{$table_name_daily}` (postnumber, cntaccess, dp_date, blog_id) SELECT postnumber, cntaccess, dp_date, blog_id FROM `{$table_name_daily_temp}`;" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->query( "DROP TEMPORARY TABLE {$table_name_daily_temp}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		}
-
-		$wpdb->show_errors();
+		Database::recreate_overall_table( false );
+		Database::recreate_daily_table( false );
+		Database::recreate_funnel_table( false );
+		Database::recreate_log_table( false );
 	}
 
 	/**
@@ -668,6 +640,8 @@ class Tools_Page {
 		// Recreate tables.
 		$result_overall = Database::recreate_overall_table( false );
 		$result_daily   = Database::recreate_daily_table( false );
+		$result_funnel  = Database::recreate_funnel_table( false );
+		$result_log     = Database::recreate_log_table( false );
 
 		// Check for errors.
 		if ( is_wp_error( $result_overall ) ) {
@@ -688,8 +662,26 @@ class Tools_Page {
 			);
 		}
 
+		if ( is_wp_error( $result_funnel ) ) {
+			add_settings_error(
+				'tptn-notices',
+				'tptn-recreate-funnel-error',
+				$result_funnel->get_error_message(),
+				'error'
+			);
+		}
+
+		if ( is_wp_error( $result_log ) ) {
+			add_settings_error(
+				'tptn-notices',
+				'tptn-recreate-log-error',
+				$result_log->get_error_message(),
+				'error'
+			);
+		}
+
 		// If no errors, add success message.
-		if ( ! is_wp_error( $result_overall ) && ! is_wp_error( $result_daily ) ) {
+		if ( ! is_wp_error( $result_overall ) && ! is_wp_error( $result_daily ) && ! is_wp_error( $result_funnel ) && ! is_wp_error( $result_log ) ) {
 			add_settings_error(
 				'tptn-notices',
 				'tptn-recreate-success',
