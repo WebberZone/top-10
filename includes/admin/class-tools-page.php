@@ -536,7 +536,13 @@ class Tools_Page {
 				'tptn_aggregation_cron_hook' => __( 'Aggregation cron', 'top-10' ),
 			);
 			foreach ( $cron_jobs as $hook => $label ) :
-				$next_run = wp_next_scheduled( $hook );
+				$next_run         = wp_next_scheduled( $hook );
+				$recurrence       = $next_run ? wp_get_schedule( $hook ) : false;
+				$schedules        = wp_get_schedules();
+				$interval_display = '';
+				if ( $recurrence && isset( $schedules[ $recurrence ]['display'] ) ) {
+					$interval_display = $schedules[ $recurrence ]['display'];
+				}
 				?>
 				<tr>
 					<th scope="row"><?php echo esc_html( $label ); ?></th>
@@ -545,6 +551,14 @@ class Tools_Page {
 							<span style="color: #006400;"><?php esc_html_e( 'Scheduled', 'top-10' ); ?></span>
 							<br><span class="description">
 								<?php
+								if ( $interval_display ) {
+									printf(
+										/* translators: %s: schedule display name e.g. "Every two minutes" */
+										esc_html__( 'Runs: %s', 'top-10' ),
+										esc_html( $interval_display )
+									);
+									echo '<br>';
+								}
 								printf(
 									/* translators: %s: human-readable time difference */
 									esc_html__( 'Next run: %s', 'top-10' ),
