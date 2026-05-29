@@ -26,6 +26,13 @@ class Cron {
 	private bool $aggregation_cron_was_missing = false;
 
 	/**
+	 * Whether the aggregation cron interval changed and had to be rescheduled.
+	 *
+	 * @var bool
+	 */
+	private bool $aggregation_cron_interval_changed = false;
+
+	/**
 	 * Initialize the class.
 	 */
 	public function __construct() {
@@ -186,25 +193,32 @@ class Cron {
 		if ( $current !== $interval ) {
 			wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
 			self::enable_aggregation_run();
-			$this->aggregation_cron_was_missing = true;
+			$this->aggregation_cron_interval_changed = true;
 		}
 	}
 
 	/**
-	 * Show an admin notice when the aggregation cron was found missing and rescheduled.
+	 * Show an admin notice when the aggregation cron was missing or rescheduled due to an interval change.
 	 *
 	 * @since 4.3.0
 	 */
 	public function aggregation_cron_missing_notice() {
-		if ( ! $this->aggregation_cron_was_missing ) {
-			return;
+		if ( $this->aggregation_cron_interval_changed ) {
+			?>
+			<div class="notice notice-info is-dismissible">
+				<p>
+					<?php esc_html_e( 'Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) has been rescheduled to match the updated interval.', 'top-10' ); ?>
+				</p>
+			</div>
+			<?php
+		} elseif ( $this->aggregation_cron_was_missing ) {
+			?>
+			<div class="notice notice-warning is-dismissible">
+				<p>
+					<?php esc_html_e( 'Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically.', 'top-10' ); ?>
+				</p>
+			</div>
+			<?php
 		}
-		?>
-		<div class="notice notice-warning is-dismissible">
-			<p>
-				<?php esc_html_e( 'Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically.', 'top-10' ); ?>
-			</p>
-		</div>
-		<?php
 	}
 }
