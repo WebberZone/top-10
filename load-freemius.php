@@ -22,7 +22,7 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 				define( 'WP_FS__PRODUCT_16384_MULTISITE', true );
 			}
 			// Include Freemius SDK.
-			include_once __DIR__ . '/vendor/freemius/start.php';
+			require_once __DIR__ . '/vendor/freemius/start.php';
 			$tptn_freemius = \fs_dynamic_init(
 				array(
 					'id'               => '16384',
@@ -64,7 +64,7 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 	 * Uninstall the plugin.
 	 */
 	function tptn_freemius_uninstall() {
-		include_once __DIR__ . '/uninstaller.php';
+		require_once __DIR__ . '/uninstaller.php';
 	}
 
 	// Init Freemius.
