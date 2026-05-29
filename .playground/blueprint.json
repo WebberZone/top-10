@@ -1,0 +1,47 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "WebberZone Top 10 — Demo",
+		"description": "Try WebberZone Top 10 with pre-imported posts and seeded view counts."
+	},
+	"landingPage": "/popular-posts/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "top-10"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/WebberZone/top-10/master/.playground/demo-content.xml"
+			}
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/top10-seed.php",
+			"data": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/WebberZone/top-10/master/.playground/seed.php"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; require '/tmp/top10-seed.php';"
+		}
+	]
+}
