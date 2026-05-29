@@ -22,9 +22,7 @@ global $wpdb;
  *    the demo shows counts, excerpts and dates out of the box.
  * ---------------------------------------------------------------------------
  */
-$settings = function_exists( 'tptn_get_settings' )
-	? tptn_get_settings()
-	: (array) get_option( 'tptn_settings', array() );
+$settings = (array) get_option( 'tptn_settings', array() );
 
 $settings = array_merge(
 	$settings,
