@@ -785,14 +785,12 @@ class Database {
 			$r = $wpdb->query(
 				$wpdb->prepare(
 					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id)
-					 SELECT * FROM (
-					     SELECT postnumber, COUNT(*) AS cntaccess,
-					            DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id
-					     FROM   {$funnel_table}
-					     WHERE  id <= %d AND activate_counter IN (10, 11)
-					     GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
-					 ) AS new_row
-					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + new_row.cntaccess",
+					 SELECT postnumber, COUNT(*) AS cntaccess,
+					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id
+					 FROM   {$funnel_table}
+					 WHERE  id <= %d AND activate_counter IN (10, 11)
+					 GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
+					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess)",
 					$max_id
 				)
 			);
@@ -806,13 +804,11 @@ class Database {
 			$r = $wpdb->query(
 				$wpdb->prepare(
 					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id)
-					 SELECT * FROM (
-					     SELECT postnumber, COUNT(*) AS cntaccess, blog_id
-					     FROM   {$funnel_table}
-					     WHERE  id <= %d AND activate_counter IN (1, 11)
-					     GROUP  BY postnumber, blog_id
-					 ) AS new_row
-					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + new_row.cntaccess",
+					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id
+					 FROM   {$funnel_table}
+					 WHERE  id <= %d AND activate_counter IN (1, 11)
+					 GROUP  BY postnumber, blog_id
+					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess)",
 					$max_id
 				)
 			);
