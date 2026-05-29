@@ -722,7 +722,9 @@ class Database {
 		global $wpdb;
 
 		// Detect SQLite (e.g. WordPress Playground) vs MySQL/MariaDB.
-		$is_sqlite = false !== strpos( strtolower( $wpdb->db_server_info() ), 'sqlite' );
+		// DATABASE_TYPE is defined by the WordPress SQLite Database Integration drop-in.
+		$is_sqlite = ( defined( 'DATABASE_TYPE' ) && 'sqlite' === DATABASE_TYPE )
+			|| false !== strpos( strtolower( (string) $wpdb->db_server_info() ), 'sqlite' );
 
 		$funnel_table = self::get_funnel_table();
 		$log_table    = self::get_log_table();

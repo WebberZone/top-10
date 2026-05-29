@@ -172,6 +172,17 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.3.1 =
+
+*Release Date - 29 May 2026*
+
+* Improvements:
+	* Aggregation cron now runs every 2 minutes instead of 5 minutes for faster count updates.
+	* Sync Funnel now shows distinct error messages for an empty funnel, a lock conflict, and database failures (including the actual database error).
+
+* Fixed:
+	* Sync Funnel on WordPress Playground (SQLite) incorrectly reported "another aggregation is in progress" due to unreliable SQLite detection; the `DATABASE_TYPE` constant is now checked first.
+
 = 4.3.0 =
 
 *Release Date - 28 May 2026*
