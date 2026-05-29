@@ -823,7 +823,9 @@ class Database {
 
 			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d", $max_id ) );
 			if ( false === $r ) {
-				$wpdb->query( 'ROLLBACK' );
+				if ( ! $is_sqlite ) {
+					$wpdb->query( 'ROLLBACK' );
+				}
 				return false;
 			}
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
