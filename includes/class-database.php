@@ -721,11 +721,12 @@ class Database {
 	public static function aggregate_visit_log( $batch_size = 10000 ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$lock_acquired = $wpdb->get_var( "SELECT GET_LOCK('tptn_aggregation', 0)" );
-		if ( '1' !== (string) $lock_acquired ) {
+		// Use a transient-based mutex so this works on SQLite (e.g. Playground) as well as MySQL.
+		$lock_acquired = get_transient( 'tptn_aggregation_lock' );
+		if ( false !== $lock_acquired ) {
 			return false;
 		}
+		set_transient( 'tptn_aggregation_lock', 1, 60 );
 
 		$funnel_table = self::get_funnel_table();
 		$log_table    = self::get_log_table();
@@ -828,7 +829,7 @@ class Database {
 
 			return true;
 		} finally {
-			$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			delete_transient( 'tptn_aggregation_lock' );
 		}
 	}
 
