@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -174,7 +174,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.3.1 =
 
-*Release Date - 29 May 2026*
+*Release Date - 6 June 2026*
 
 * Improvements:
 	* Aggregation cron now runs every 2 minutes instead of 5 minutes for faster count updates.

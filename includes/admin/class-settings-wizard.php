@@ -54,7 +54,6 @@ class Settings_Wizard extends Settings_Wizard_API {
 	protected function additional_hooks() {
 		// Trigger wizard setup logic on plugin activation.
 		add_action( 'tptn_activate', array( $this, 'trigger_wizard_on_activation' ) );
-		add_action( 'admin_init', array( $this, 'register_wizard_notice' ) );
 
 		// Register Tom Select AJAX handlers for wizard taxonomy fields.
 		add_action( 'wp_ajax_nopriv_' . $this->prefix . '_taxonomy_search_tom_select', array( Settings::class, 'taxonomy_search_tom_select' ) );
@@ -217,43 +216,6 @@ class Settings_Wizard extends Settings_Wizard_API {
 
 		// Also set an option for more persistent storage in multisite environments.
 		update_option( 'tptn_show_wizard', true );
-	}
-
-	/**
-	 * Register the wizard notice with the Admin_Notices_API.
-	 *
-	 * @since 4.2.0
-	 */
-	public function register_wizard_notice() {
-		$admin_notices_api = wz_top_ten()->admin->admin_notices_api;
-		if ( ! $admin_notices_api ) {
-			return;
-		}
-
-		$admin_notices_api->register_notice(
-			array(
-				'id'          => 'tptn_wizard_notice',
-				'message'     => sprintf(
-					'<p>%s</p><p><a href="%s" class="button button-primary">%s</a></p>',
-					esc_html__( 'Welcome to Top 10! Would you like to run the setup wizard to configure the plugin?', 'top-10' ),
-					esc_url( admin_url( 'admin.php?page=tptn_wizard' ) ),
-					esc_html__( 'Run Setup Wizard', 'top-10' )
-				),
-				'type'        => 'info',
-				'dismissible' => true,
-				'capability'  => 'manage_options',
-				'conditions'  => array(
-					function () {
-						$page = sanitize_key( (string) filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
-
-						return ! $this->is_wizard_completed() &&
-							! get_option( 'tptn_wizard_notice_dismissed', false ) &&
-							( get_transient( 'tptn_show_wizard_activation_redirect' ) || get_option( 'tptn_show_wizard', false ) ) &&
-							'tptn_wizard' !== $page;
-					},
-				),
-			)
-		);
 	}
 
 	/**
