@@ -254,14 +254,14 @@ msgstr ""
 
 #. translators: 1: Support link.
 #: includes/admin/class-dashboard.php:719
-#: includes/admin/class-tools-page.php:418
+#: includes/admin/class-tools-page.php:426
 #, php-format
 msgid "For more information or how to get support visit the <a href=\"%1$s\">WebberZone support site</a>."
 msgstr ""
 
 #. translators: 1: Forum link.
 #: includes/admin/class-dashboard.php:721
-#: includes/admin/class-tools-page.php:420
+#: includes/admin/class-tools-page.php:428
 #, php-format
 msgid "Support queries should be posted in the <a href=\"%1$s\">WordPress.org support forums</a>."
 msgstr ""
@@ -270,7 +270,7 @@ msgstr ""
 #. translators: 1: Github issues link, 2: Github plugin page link.
 #: includes/admin/class-dashboard.php:724
 #: includes/admin/class-settings.php:1264
-#: includes/admin/class-tools-page.php:423
+#: includes/admin/class-tools-page.php:431
 #, php-format
 msgid "<a href=\"%1$s\">Post an issue</a> on <a href=\"%2$s\">GitHub</a> (bug reports only)."
 msgstr ""
@@ -278,7 +278,7 @@ msgstr ""
 #: includes/admin/class-dashboard.php:733
 #: includes/admin/class-settings.php:177
 #: includes/admin/class-settings.php:1288
-#: includes/admin/class-tools-page.php:432
+#: includes/admin/class-tools-page.php:440
 msgid "General"
 msgstr ""
 
@@ -460,124 +460,116 @@ msgstr ""
 #. translators: %s: search term
 #. translators: %s: Search query.
 #: includes/admin/class-metabox.php:320
-#: includes/admin/class-settings-wizard.php:196
+#: includes/admin/class-settings-wizard.php:195
 #, php-format
 msgid "No results found for \"%s\""
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:120
+#: includes/admin/class-settings-wizard.php:119
 msgid "Welcome to Top 10"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:121
+#: includes/admin/class-settings-wizard.php:120
 msgid "Thank you for installing Top 10! This wizard will help you configure the essential settings to get your popular posts list working perfectly."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:125
+#: includes/admin/class-settings-wizard.php:124
 msgid "Basic Settings"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:126
+#: includes/admin/class-settings-wizard.php:125
 msgid "Configure how Top 10 tracks and counts your popular posts."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:130
+#: includes/admin/class-settings-wizard.php:129
 msgid "Display Options"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:131
+#: includes/admin/class-settings-wizard.php:130
 msgid "Customize how your popular posts list will look and what information to display."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:135
+#: includes/admin/class-settings-wizard.php:134
 msgid "Content Tuning"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:136
+#: includes/admin/class-settings-wizard.php:135
 msgid "Fine-tune which content is included and how posts are excluded from the list."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:140
+#: includes/admin/class-settings-wizard.php:139
 msgid "Admin Settings"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:141
+#: includes/admin/class-settings-wizard.php:140
 msgid "Configure how Top 10 integrates with your admin area, dashboards, and user roles."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:145
+#: includes/admin/class-settings-wizard.php:144
 msgid "Pro Settings"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:146
+#: includes/admin/class-settings-wizard.php:145
 msgid "Configure Pro-only options such as global block settings, category exclusions, and query optimisation. These features require Top 10 Pro."
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:189
+#: includes/admin/class-settings-wizard.php:188
 msgid "Top 10 Setup Wizard"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:190
+#: includes/admin/class-settings-wizard.php:189
 msgid "Setup Wizard"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:191
+#: includes/admin/class-settings-wizard.php:190
 msgid "Next Step"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:192
+#: includes/admin/class-settings-wizard.php:191
 msgid "Previous Step"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:193
+#: includes/admin/class-settings-wizard.php:192
 msgid "Finish Setup"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:194
+#: includes/admin/class-settings-wizard.php:193
 msgid "Skip Wizard"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:197
+#: includes/admin/class-settings-wizard.php:196
 msgid "Setup Wizard Steps"
 msgstr ""
 
 #. translators: %1$d: Current step number, %2$d: Total number of steps
-#: includes/admin/class-settings-wizard.php:199
+#: includes/admin/class-settings-wizard.php:198
 #, php-format
 msgid "Step %1$d of %2$d"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:200
+#: includes/admin/class-settings-wizard.php:199
 msgid "Setup Complete!"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:201
+#: includes/admin/class-settings-wizard.php:200
 msgid "Your Top 10 plugin has been configured successfully. You can now start displaying popular posts on your site!"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:202
-#: includes/admin/class-settings-wizard.php:376
+#: includes/admin/class-settings-wizard.php:201
+#: includes/admin/class-settings-wizard.php:338
 msgid "Go to Settings"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:203
+#: includes/admin/class-settings-wizard.php:202
 #: includes/admin/class-settings.php:134
 msgid "Modified from default setting"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:238
-msgid "Welcome to Top 10! Would you like to run the setup wizard to configure the plugin?"
-msgstr ""
-
-#: includes/admin/class-settings-wizard.php:240
-msgid "Run Setup Wizard"
-msgstr ""
-
-#: includes/admin/class-settings-wizard.php:379
+#: includes/admin/class-settings-wizard.php:341
 msgid "Go to Tools"
 msgstr ""
 
-#: includes/admin/class-settings-wizard.php:382
+#: includes/admin/class-settings-wizard.php:344
 msgid "View Site"
 msgstr ""
 
@@ -1656,7 +1648,7 @@ msgstr ""
 
 #: includes/admin/class-tools-page.php:62
 #: includes/admin/class-tools-page.php:81
-#: includes/admin/class-tools-page.php:180
+#: includes/admin/class-tools-page.php:197
 msgid "Top 10 Tools"
 msgstr ""
 
@@ -1672,130 +1664,130 @@ msgstr ""
 msgid "Top 10 daily popular posts reset"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:164
+#: includes/admin/class-tools-page.php:167
 msgid "Top 10 tables have been recreated"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:201
-#: includes/admin/class-tools-page.php:207
+#: includes/admin/class-tools-page.php:218
+#: includes/admin/class-tools-page.php:224
 msgid "Clear cache"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:212
+#: includes/admin/class-tools-page.php:229
 msgid "Clear the Top 10 cache. This will also be cleared automatically when you save the settings page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:230
-#: includes/admin/class-tools-page.php:233
+#: includes/admin/class-tools-page.php:247
+#: includes/admin/class-tools-page.php:250
 msgid "Recreate Primary Key"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:236
+#: includes/admin/class-tools-page.php:253
 msgid "Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:245
+#: includes/admin/class-tools-page.php:262
 msgid "Reset database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:248
+#: includes/admin/class-tools-page.php:265
 msgid "This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:254
+#: includes/admin/class-tools-page.php:271
 msgid "Are you sure you want to reset the popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:255
+#: includes/admin/class-tools-page.php:272
 msgid "Reset Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:263
+#: includes/admin/class-tools-page.php:280
 msgid "Are you sure you want to reset the daily popular posts?"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:264
+#: includes/admin/class-tools-page.php:281
 msgid "Reset Daily Popular Posts"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:273
-#: includes/admin/class-tools-page.php:279
+#: includes/admin/class-tools-page.php:290
+#: includes/admin/class-tools-page.php:296
 msgid "Recreate Database Tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:276
+#: includes/admin/class-tools-page.php:293
 msgid "Only click the button below after performing a full backup of the database. You can use any of the popular backup plugins or phpMyAdmin to achieve this. The authors of this plugin do not guarantee that everything will go smoothly as it depends on your site environment and volume of data. If you are not comfortable, please do not proceed."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:279
+#: includes/admin/class-tools-page.php:296
 msgid "Hit Cancel if you have not backed up your database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:434
+#: includes/admin/class-tools-page.php:442
 msgid "This screen provides some tools that help maintain certain features of Top 10."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:435
+#: includes/admin/class-tools-page.php:443
 msgid "Clear the cache, reset the popular posts tables plus some miscellaneous fixes for older versions of Top 10."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:459
+#: includes/admin/class-tools-page.php:467
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:460
+#: includes/admin/class-tools-page.php:468
 msgid "Not Installed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:508
+#: includes/admin/class-tools-page.php:516
 msgid "Database version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:510
+#: includes/admin/class-tools-page.php:518
 msgid "Installed version"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:511
+#: includes/admin/class-tools-page.php:519
 msgid "Current version"
 msgstr ""
 
 #. translators: %s: Table name
-#: includes/admin/class-tools-page.php:523
+#: includes/admin/class-tools-page.php:531
 #, php-format
 msgid "%s table"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Estimated table size
-#: includes/admin/class-tools-page.php:531
+#: includes/admin/class-tools-page.php:539
 #, php-format
 msgid "Entries: %1$s | Est. Size: %2$s"
 msgstr ""
 
 #. translators: 1: Number of entries, 2: Table size
-#: includes/admin/class-tools-page.php:533
+#: includes/admin/class-tools-page.php:541
 #, php-format
 msgid "Entries: %1$s | Size: %2$s"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:579
+#: includes/admin/class-tools-page.php:602
 msgid "Repair database"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:582
+#: includes/admin/class-tools-page.php:605
 msgid "Recreate tables"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:609
-#: includes/admin/class-tools-page.php:647
+#: includes/admin/class-tools-page.php:632
+#: includes/admin/class-tools-page.php:670
 msgid "Security check failed"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:613
-#: includes/admin/class-tools-page.php:651
+#: includes/admin/class-tools-page.php:636
+#: includes/admin/class-tools-page.php:674
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:682
+#: includes/admin/class-tools-page.php:725
 msgid "Tables have been recreated successfully."
 msgstr ""
 
@@ -2065,13 +2057,17 @@ msgid "Follow me"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:873
+#: includes/class-database.php:889
+#: includes/class-database.php:978
+#: includes/class-database.php:1026
 #, php-format
 msgid "Database backup failed on site %1$s. Error message: %2$s"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:892
+#: includes/class-database.php:908
+#: includes/class-database.php:994
+#: includes/class-database.php:1042
 #, php-format
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
@@ -2641,23 +2637,19 @@ msgstr ""
 msgid "Count post views from RSS/Atom feed readers via a tracking pixel. Views are added to the post's regular view count. Note: some feed readers block remote images by default; views are only counted when the reader loads images."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:171
+#: includes/admin/class-tools-page.php:175
 msgid "Funnel has been synced. Buffered visits have been aggregated."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:173
-msgid "Nothing to sync. The funnel is empty or another sync is in progress."
-msgstr ""
-
-#: includes/admin/class-tools-page.php:218
+#: includes/admin/class-tools-page.php:235
 msgid "Sync Funnel"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:221
+#: includes/admin/class-tools-page.php:238
 msgid "Sync Funnel Now"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:224
+#: includes/admin/class-tools-page.php:241
 msgid "Drain the visits funnel into the count tables immediately. This is equivalent to running the 5-minute aggregation cron job."
 msgstr ""
 
@@ -2665,7 +2657,7 @@ msgstr ""
 msgid "Every 5 Minutes"
 msgstr ""
 
-#: includes/admin/class-cron.php:205
+#: includes/admin/class-cron.php:218
 msgid "Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically."
 msgstr ""
 
@@ -2687,34 +2679,35 @@ msgstr ""
 msgid "Enter the number of days to retain raw visit rows in the visits log table. The log stores one row per visit and grows faster than the daily table, so a shorter window is recommended. Enter 0 to use the default value of %s days."
 msgstr ""
 
-#: includes/admin/class-tools-page.php:192
+#: includes/admin/class-tools-page.php:209
 msgid "Status"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:550
+#: includes/admin/class-tools-page.php:558
 msgid "Maintenance cron"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:551
+#: includes/admin/class-tools-page.php:559
 msgid "Aggregation cron"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:560
+#: includes/admin/class-tools-page.php:574
 msgid "Scheduled"
 msgstr ""
 
 #. translators: %s: human-readable time difference
-#: includes/admin/class-tools-page.php:565
+#: includes/admin/class-tools-page.php:587
 #, php-format
 msgid "Next run: %s"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:566
+#. translators: %s: human-readable time difference
+#: includes/admin/class-tools-page.php:589
 #, php-format
 msgid "in %s"
 msgstr ""
 
-#: includes/admin/class-tools-page.php:571
+#: includes/admin/class-tools-page.php:594
 msgid "Not scheduled"
 msgstr ""
 
@@ -2728,4 +2721,52 @@ msgstr ""
 
 #: includes/wz-pluggables.php:44
 msgid "Every 3 Minutes"
+msgstr ""
+
+#: includes/admin/class-cron.php:210
+msgid "Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) has been rescheduled to match the updated interval."
+msgstr ""
+
+#: includes/admin/class-tools-page.php:177
+msgid "Nothing to sync. The funnel is empty."
+msgstr ""
+
+#: includes/admin/class-tools-page.php:179
+msgid "Sync skipped: another aggregation is already in progress. Please try again in a moment."
+msgstr ""
+
+#. translators: %s: error message from the database
+#: includes/admin/class-tools-page.php:186
+#, php-format
+msgid "Sync failed: %s"
+msgstr ""
+
+#. translators: %s: schedule display name e.g. "Every two minutes"
+#: includes/admin/class-tools-page.php:580
+#, php-format
+msgid "Runs: %s"
+msgstr ""
+
+#: includes/class-database.php:745
+msgid "Could not start transaction."
+msgstr ""
+
+#: includes/class-database.php:782
+msgid "Failed to copy visits to log table."
+msgstr ""
+
+#: includes/class-database.php:801
+msgid "Failed to aggregate visits into daily table."
+msgstr ""
+
+#: includes/class-database.php:819
+msgid "Failed to aggregate visits into overall table."
+msgstr ""
+
+#: includes/class-database.php:827
+msgid "Failed to drain funnel table."
+msgstr ""
+
+#: includes/class-database.php:834
+msgid "Transaction commit failed."
 msgstr ""
