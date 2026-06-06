@@ -905,7 +905,7 @@ class Display {
 	 * @param int|\WP_Post $post            Post ID or WP_Post instance.
 	 * @param int|string   $excerpt_length  Length of the excerpt in words.
 	 * @param bool         $use_excerpt     Use excerpt instead of content.
-	 * @param string       $more_link_text  Content for when there is more text. Default is null.
+	 * @param string|null  $more_link_text  Read More text. Pass null to use the default "(more&hellip;)" link. Default '' (no Read More link).
 	 * @return string Post Excerpt
 	 */
 	public static function get_the_excerpt( $post, $excerpt_length = 0, $use_excerpt = true, $more_link_text = '' ) {
@@ -943,8 +943,8 @@ class Display {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param string   $more_link_text    Read More text.
-		 * @param \WP_Post $post              Source Post instance.
+		 * @param string|null $more_link_text Read More text. Null uses the default "(more&hellip;)" link.
+		 * @param \WP_Post     $post           Source Post instance.
 		 */
 		$more_link_text = apply_filters( 'tptn_excerpt_more_link_text', $more_link_text, $post );
 

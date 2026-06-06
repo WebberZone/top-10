@@ -187,10 +187,6 @@ class Tracker {
 	 */
 	public static function parse_request( $wp ) {
 
-		if ( empty( $wp ) ) {
-			global $wp;
-		}
-
 		if ( empty( $wp->query_vars['top_ten_id'] ) ) {
 			return;
 		}

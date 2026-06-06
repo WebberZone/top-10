@@ -160,8 +160,12 @@ class Tools_Page {
 
 		/* Recreate tables */
 		if ( isset( $_POST['tptn_recreate_tables'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			self::recreate_tables();
-			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
+			$result = self::recreate_tables();
+			if ( is_wp_error( $result ) ) {
+				add_settings_error( 'tptn-notices', '', $result->get_error_message(), 'error' );
+			} else {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 tables have been recreated', 'top-10' ), 'updated' );
+			}
 		}
 
 		/* Sync funnel (run aggregation now) */
@@ -384,10 +388,29 @@ class Tools_Page {
 	 * @since 2.7.0
 	 */
 	public static function recreate_tables() {
-		Database::recreate_overall_table( false );
-		Database::recreate_daily_table( false );
-		Database::recreate_funnel_table( false );
-		Database::recreate_log_table( false );
+		$errors = new \WP_Error();
+
+		$result = Database::recreate_overall_table( false );
+		if ( is_wp_error( $result ) ) {
+			$errors->merge_from( $result );
+		}
+
+		$result = Database::recreate_daily_table( false );
+		if ( is_wp_error( $result ) ) {
+			$errors->merge_from( $result );
+		}
+
+		$result = Database::recreate_funnel_table( false );
+		if ( is_wp_error( $result ) ) {
+			$errors->merge_from( $result );
+		}
+
+		$result = Database::recreate_log_table( false );
+		if ( is_wp_error( $result ) ) {
+			$errors->merge_from( $result );
+		}
+
+		return $errors->has_errors() ? $errors : true;
 	}
 
 	/**
