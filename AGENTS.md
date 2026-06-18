@@ -2,15 +2,11 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
-## Response Rules
-
-- Succinct answers ALWAYS. No explanations unless I ask!
-- Return only the changed function/section, not the full file
-- No suggestions outside the scope of what I asked
-
 ## Plugin Overview
 
 WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
+
+webberzone.com: https://webberzone.com/plugins/top-10/
 
 This is the pro version. Activating it automatically deactivates the free Top 10 plugin, and vice versa. Both plugins share the same namespace, function prefix, database tables, and settings key (`tptn_settings`).
 
@@ -60,7 +56,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 - **`includes/class-hook-loader.php`** — Registers `init`, `widgets_init`, `rest_api_init`, and `parse_query` hooks.
 - **`includes/class-counter.php`** (`Counter`) — Hooks into `the_content` to append the viewed count; only fires in the main loop on singular pages.
 - **`includes/class-tracker.php`** (`Tracker`) — Enqueues `tptn_tracker` JS and handles `wp_ajax_tptn_tracker` / `wp_ajax_nopriv_tptn_tracker` AJAX actions that record a view. Tracker type (standard `ajaxurl` vs. pro fast/high-traffic types) is read from `tptn_get_option('tracker_type')`.
-- **`includes/class-database.php`** (`Database`) — All direct DB access. Two custom tables: `{prefix}top_ten` (total counts) and `{prefix}top_ten_daily` (per-day counts). Columns: `postnumber`, `cntaccess`, `dp_date` (daily only), `blog_id`.
+- **`includes/class-database.php`** (`Database`) — All direct DB access. Four custom tables: `{prefix}top_ten` (total counts), `{prefix}top_ten_daily` (per-hour counts), `{prefix}top_ten_visits_funnel` (hot write buffer, drained every 5 min by cron), `{prefix}top_ten_visits_log` (cold archive, pruned by maintenance cron).
 - **`includes/class-top-ten-core-query.php`** (`Top_Ten_Core_Query`) — Extends `WP_Query`; builds the SQL joining posts against the count tables, ordered by `cntaccess`. Supports daily vs. total, multisite blog arrays, and date-range filtering.
 - **`includes/class-top-ten-query.php`** — Public-facing query wrapper; required directly rather than autoloaded.
 
@@ -77,7 +73,7 @@ Four files are `require_once`'d directly (not autoloaded) because they must be a
 ### Admin (`includes/admin/`)
 
 - **`class-settings.php`** — Settings page (tabs: General, Counter/Tracker, Posts list, Thumbnail, Styles, Maintenance, Feed). Settings stored as a single `tptn_settings` array in `wp_options`.
-- **`class-cron.php`** — Scheduled maintenance (`tptn_cron_hook`) to prune daily table rows older than `TOP_TEN_STORE_DATA` (180) days.
+- **`class-cron.php`** — Two scheduled jobs: `tptn_cron_hook` prunes daily table rows older than `TOP_TEN_STORE_DATA` (180) days and log table rows; `tptn_aggregation_cron_hook` drains the funnel into the count tables via `Database::aggregate_visit_log()`.
 - **`class-statistics.php`** / **`class-statistics-table.php`** — Admin statistics pages.
 - **`class-dashboard.php`** / **`class-dashboard-widgets.php`** — Dashboard widgets.
 - **`class-columns.php`** — Admin list-table columns showing view counts.
@@ -125,20 +121,6 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **`admin/class-pro-admin.php`** (`Pro\Admin\Pro_Admin`) — Pro admin layer; instantiates `Admin_Bar`.
 - **`admin/class-admin-bar.php`** (`Pro\Admin\Admin_Bar`) — Adds a Top 10 node to the WordPress admin bar for quick access to stats.
 - **`admin/class-dashboard-widgets.php`** (`Pro\Admin\Dashboard_Widgets`) — Pro dashboard widgets.
-
-## Code Review
-
-When performing code reviews, you MUST:
-
-1. **Trace the actual execution path** - Before reporting any issue, walk through exactly what happens step-by-step in the failure scenario. Do not rely on pattern recognition or assumptions.
-
-2. **Verify the condition is reachable** - Confirm the failure can actually occur in real usage conditions. If it only fails under conditions that cannot occur in the existing codebase, do not report it.
-
-3. **Prove it's a bug** - Show concrete evidence of harm. No speculative or hypothetical bugs. A suspicious code pattern is not a bug unless you can prove it causes actual problems.
-
-4. **Check if it's intentional** - Consider whether the behavior might be a deliberate improvement or design decision before labeling it as an issue.
-
-5. **If uncertain, say so once and stop** - Do not keep revising findings across multiple messages. If you cannot prove a bug with certainty, do not report it.
 
 ## Key Patterns
 
