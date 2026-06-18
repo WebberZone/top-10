@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Plugin Overview
 
-WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.3.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
+WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.3.1. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
 
 webberzone.com: https://webberzone.com/plugins/top-10/
 
