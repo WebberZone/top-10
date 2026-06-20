@@ -1,36 +1,21 @@
 {
-    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-    "meta": {
-        "title": "WebberZone Top 10 — Demo",
-        "description": "Try WebberZone Top 10 with pre-imported posts and seeded view counts.",
-        "author": "webberzone"
-    },
-    "landingPage": "/wp-admin/admin.php?page=tptn_dashboard",
-    "preferredVersions": {
-        "php": "8.3",
-        "wp": "latest"
-    },
-    "features": {
-        "networking": true
-    },
-    "login": true,
-    "steps": [
-        {
-            "step": "installPlugin",
-            "pluginData": {
-                "resource": "wordpress.org/plugins",
-                "slug": "top-10"
-            },
-            "options": {
-                "activate": true
-            }
-        },
-        {
-            "step": "importWxr",
-            "file": {
-                "resource": "url",
-                "url": "https://raw.githubusercontent.com/WebberZone/top-10/master/.playground/demo-content.xml"
-            }
-        }
-    ]
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "\/wp-admin\/admin.php?page=tptn_dashboard",
+	"features": {
+		"networking": true
+	},
+	"steps": [
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/WebberZone/top-10/master/.playground/demo-content.xml"
+			}
+		}
+	]
 }
