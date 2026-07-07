@@ -30,7 +30,7 @@ Default display is: `Visited %totalcount% times, %dailycount% visit(s) today`
 
 ### No visits text
 
-This text is displayed when there are no hits for the post and it isn't a single page. For example, if you display post views on the Homepage or Archives, this text will be used. To override this, simply enter the same text as the above option.
+This text is displayed when there are no hits for the post and it isn't a single page. For example, if you display post views on the Homepage or Archives, this text will be used. To override this, enter the same text as the above option.
 
 ### Number format post count
 
@@ -42,11 +42,11 @@ The daily counter displays visits starting at midnight. This option is enabled b
 
 ### Default custom period range
 
-Set the number of days and hours that will be used for the "Daily" display.
+Set the number of days and hours that will be used for the custom period display. The day field is labeled **Day(s)** in the settings.
 
 ### Always display latest post count
 
-This option uses JavaScript and could increase your page load time as it isn't cached. Turn this off if you are not using caching plugins or are OK with displaying slightly older cached counts.
+This option uses JavaScript to fetch the latest count from a JSON endpoint and will increase your page load time. Turn this off if you are not using caching plugins or are OK with displaying older cached counts.
 
 ### Exclude display on these post IDs
 
@@ -83,11 +83,11 @@ Uncheck to stop tracking logged in users. Only logged out visitors will be track
 
 ### Page views in admin
 
-Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.
+Adds three columns called Total Views, Custom period Views and Views to All Posts and All Pages. The middle column label is dynamic: it shows **Daily Views** when the custom period is set to 1 day, or **Custom (N days) Views** when the range is longer. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.
 
 ### Show views to non-admins
 
-If you disable this then non-admins won't see the above columns or browse the "Popular Posts" and "Daily Popular Posts" screens under the Top 10 admin menu.
+If you disable this then non-admins won't see the above columns or browse the Popular Posts screen under the Top 10 admin menu.
 
 ### Do not track bots
 
