@@ -75,15 +75,6 @@ class Statistics {
 			array( $this, 'render_page' )
 		);
 
-		add_submenu_page(
-			'tptn_dashboard',
-			__( 'Top 10 Daily Popular Posts', 'top-10' ),
-			__( 'Daily Popular Posts', 'top-10' ),
-			'manage_options',
-			'tptn_popular_posts&orderby=daily_count&order=desc',
-			array( $this, 'render_page' )
-		);
-
 		add_action( "load-{$this->parent_id}", array( $this, 'screen_option' ) );
 	}
 

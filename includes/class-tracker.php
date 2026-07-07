@@ -225,11 +225,8 @@ class Tracker {
 
 				$output = Counter::get_post_count( $id );
 
-				header( 'content-type: application/x-javascript' );
-				echo 'document.write("' . $output . '");'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-				// Stop anything else from loading as it is not needed.
-				exit;
+				nocache_headers();
+				wp_send_json( array( 'count' => $output ) );
 			}
 		} else {
 			return;

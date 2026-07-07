@@ -172,6 +172,12 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.3.2 =
+
+* Improvements:
+	* Dynamic post counts now load more reliably and are faster in modern browsers.
+	* Enhanced time range labeling: Interface now dynamically shows "Daily" for 1-day periods or "Custom (N days)" for longer periods, making the UI more accurate based on actual settings.
+
 = 4.3.1 =
 
 *Release Date - 6 June 2026*

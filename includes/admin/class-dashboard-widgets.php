@@ -178,7 +178,8 @@ class Dashboard_Widgets {
 			// Add the daily popular posts widget.
 			wp_add_dashboard_widget(
 				'tptn_daily_dashboard',
-				__( 'Top 10 - Daily Popular Posts', 'top-10' ),
+				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
+				sprintf( __( 'Top 10 - %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label() ),
 				array( __CLASS__, 'popular_posts_widget_daily' ),
 				array( __CLASS__, 'pop_display' )
 			);
@@ -221,7 +222,8 @@ class Dashboard_Widgets {
 			// Add the daily popular posts widget.
 			wp_add_dashboard_widget(
 				'tptn_network_daily_dashboard',
-				__( 'Top 10 - Network Daily Popular Posts', 'top-10' ),
+				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
+				sprintf( __( 'Top 10 - Network %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label() ),
 				array( __CLASS__, 'network_popular_posts_widget_daily' ),
 				array( __CLASS__, 'pop_display' )
 			);
@@ -240,7 +242,7 @@ class Dashboard_Widgets {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param   bool $daily  Switch for Daily or Overall popular posts.
+	 * @param   bool $daily  Switch for Custom Period or Overall popular posts.
 	 * @param   int  $page   Which page of the lists are on.
 	 * @param   int  $limit  Maximum number of posts per page.
 	 * @param   bool $widget Is this a WordPress widget.
@@ -363,7 +365,7 @@ class Dashboard_Widgets {
 
 
 	/**
-	 * Widget for Daily Popular Posts.
+	 * Widget for Custom Period Popular Posts.
 	 *
 	 * @since 3.3.0
 	 */
@@ -381,7 +383,7 @@ class Dashboard_Widgets {
 	}
 
 	/**
-	 * Widget for Network Daily Popular Posts.
+	 * Widget for Network Custom Period Popular Posts.
 	 *
 	 * @since 4.2.0
 	 */

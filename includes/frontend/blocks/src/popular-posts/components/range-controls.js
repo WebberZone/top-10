@@ -5,7 +5,7 @@ export const RangeControls = ({ attributes, onChange }) => (
 	<>
 		<PanelRow>
 			<TextControl
-				label={__('Daily range', 'top-10')}
+				label={__('Day(s)', 'top-10')}
 				value={attributes.daily_range}
 				onChange={onChange('daily_range')}
 				help={__('Number of days', 'top-10')}

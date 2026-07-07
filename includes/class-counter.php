@@ -128,15 +128,31 @@ class Counter {
 
 		$id = intval( $post->ID );
 
-		$nonce_action = 'tptn-nonce-' . $id;
-		$nonce        = wp_create_nonce( $nonce_action );
-
 		if ( \tptn_get_option( 'dynamic_post_count' ) ) {
+			$nonce_action = 'tptn-nonce-' . $id;
+			$nonce        = wp_create_nonce( $nonce_action );
+
+			$fetch_url = add_query_arg(
+				array(
+					'top_ten_id'   => $id,
+					'view_counter' => 1,
+					'_wpnonce'     => $nonce,
+				),
+				$home_url
+			);
+
+			wp_enqueue_script(
+				'tptn-counter',
+				plugins_url( 'includes/js/top-10-counter.min.js', TOP_TEN_PLUGIN_FILE ),
+				array(),
+				TOP_TEN_VERSION,
+				true
+			);
+
 			$output = sprintf(
-				'<div class="tptn_counter" id="tptn_counter_%1$d"><script type="text/javascript" data-cfasync="false" src="%2$s?top_ten_id=%1$d&view_counter=1&_wpnonce=%3$s"></script></div>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+				'<div class="tptn_counter" id="tptn_counter_%1$d" data-tptn-url="%2$s"></div>',
 				$id,
-				$home_url,
-				$nonce
+				esc_url( $fetch_url )
 			);
 		} else {
 			$output = '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . self::get_post_count( $id ) . '</div>';
