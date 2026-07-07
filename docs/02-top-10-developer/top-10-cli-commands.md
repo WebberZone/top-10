@@ -282,13 +282,13 @@ Lists the most-viewed posts using the same query the plugin uses on the front en
 # Top 10 posts overall
 wp top10 popular
 
-# Top 5 daily popular posts for the last 7 days
+# Top 5 custom period popular posts for the last 7 days
 wp top10 popular --daily --days=7 --limit=5
 
 # Multiple post types, CSV output
 wp top10 popular --post-type=post,page --format=csv
 
-# Daily counts between specific dates
+# Custom period counts between specific dates
 wp top10 popular --daily --from-date=2025-01-01 --to-date=2025-12-31
 
 # Posts published in the last 30 days, excluding specific categories
@@ -304,10 +304,10 @@ wp top10 popular --author=1,2 --format=json
 |---|---|---|
 | `--limit=<n>` | 10 | Number of posts to return. |
 | `--offset=<n>` | 0 | Number of posts to skip (for pagination). |
-| `--daily` | — | Use the daily table instead of the overall table. |
-| `--days=<n>` | plugin setting | Date range for daily queries. |
-| `--from-date=<date>` | — | Start date for daily range (`YYYY-MM-DD`). Only used with `--daily`. |
-| `--to-date=<date>` | — | End date for daily range (`YYYY-MM-DD`). Only used with `--daily`. |
+| `--daily` | — | Use the custom period table instead of the overall table. |
+| `--days=<n>` | plugin setting | Date range for custom period queries. |
+| `--from-date=<date>` | — | Start date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
+| `--to-date=<date>` | — | End date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
 | `--how-old=<n>` | — | Limit to posts published within this many days. |
 | `--post-type=<type>` | all public | Post type slug or comma-separated list (e.g. `post,page`). |
 | `--include-cat-ids=<ids>` | — | Comma-separated `term_taxonomy_id`s to include. |

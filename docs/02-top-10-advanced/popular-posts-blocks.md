@@ -10,7 +10,7 @@ order: 0
 
 [kbtoc]
 
-[Top 10](https://webberzone.com/plugins/top-10/) and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) include multiple blocks that allow you to display the popular posts in the block editor or the site editor. This article will explain the various available blocks and how to use them.
+[Top 10](https://webberzone.com/plugins/top-10/) and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) include multiple blocks that allow you to display the popular posts in the block editor or the site editor. The sections below explain each block and how to use it.
 
 [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) brings an advanced *Query Loop block*, which allows you to display popular posts based on specified parameters. You can use the pre-built block patterns or create your own ones within posts or the site editor.
 
@@ -52,7 +52,7 @@ The block lets you preview the popular posts directly in the block editor. You c
 <td>Toggle between displaying all-time popular posts or popular posts for a custom period, which can be set using the next two settings. For example, setting it to 1 day and 12 hours will display the popular posts from the last 36 hours.</td>
 </tr>
 <tr>
-<td>Daily range</td>
+<td>Day(s)</td>
 <td>Number</td>
 <td>Enter the number of days to define the range for displaying popular posts.</td>
 </tr>
@@ -122,7 +122,7 @@ Top 10 Pro users will see an additional section in the block settings sidebar th
 
 ## Using the Top 10 Query Loop Block (Pro version)
 
-This guide will familiarise you with the Core Query Loop Block included in WordPress. If not, the guide below should get you started using this block.
+If you are not familiar with the Core Query Loop Block, the section below will help you start using it.
 
 <figure class="wp-block-video">
 
@@ -188,11 +188,11 @@ Top 10 Pro offers enhanced flexibility and reliability for displaying featured i
 
 If a featured image is not explicitly set for a post, the plugin will automatically fall back to the following configurable options:
 
-1.  **Custom Image**: Select an image from the Media Library as the default featured image.
-2.  **First Image in the Post Content:** If the post contains images, the first image encountered will be used as the featured image.
-3.  **Meta Key:** If a specific meta key is defined, the value associated with that key will be used as the featured image URL. The meta key needs to contain the full URL of the image to be used.
-4.  **Default Image:** The default image can be specified if no image is found using the above methods.
-5.  **Site Icon**: Use the site icon configured in Settings \> General.
+1. **Custom Image**: Select an image from the Media Library as the default featured image.
+2. **First Image in the Post Content:** If the post contains images, the first image encountered will be used as the featured image.
+3. **Meta Key:** If a specific meta key is defined, the value associated with that key will be used as the featured image URL. The meta key needs to contain the full URL of the image to be used.
+4. **Default Image:** The default image can be specified if no image is found using the above methods.
+5. **Site Icon**: Use the site icon configured in Settings \> General.
 
 This feature ensures that your popular posts always have visually appealing featured images, even if a featured image hasn't been set.
 

@@ -8,7 +8,9 @@ status: publish
 order: 0
 ---
 
-[Top 10](https://webberzone.com/plugins/top-10/) offers various tracking methods to efficiently record post views. Each tracker type has unique benefits and considerations. This guide explains the different types of trackers available in the Top 10 WordPress plugin to help you select the best option for your site.
+[Top 10](https://webberzone.com/plugins/top-10/) offers various tracking methods to efficiently record post views. Each tracker type has unique benefits and considerations. The sections below explain the different types of trackers available in the Top 10 WordPress plugin to help you select the best option for your site.
+
+The plugin interface uses **Custom period** for what was historically called **Daily**. When the range is set to 1 day, labels read **Daily**; for longer ranges they read **Custom (N days)**. Internally, the database table, tracker settings, and many API parameters still use the word `daily` for backward compatibility.
 
 ## Selecting the Tracker
 
@@ -86,7 +88,7 @@ If you need counts to update immediately — for example after importing data or
 | Table | Purpose |
 |---|---|
 | `wp_top_ten` | Running total of all-time views per post |
-| `wp_top_ten_daily` | Hourly view counts per post (powers the dashboard chart and "daily" popular posts lists) |
+| `wp_top_ten_daily` | Hourly view counts per post (powers the dashboard chart and custom-period popular posts lists) |
 | `wp_top_ten_visits_funnel` | Hot buffer — raw incoming visits waiting to be aggregated (normally empty between cron runs) |
 | `wp_top_ten_visits_log` | Cold archive — every individual visit, retained for the configured number of days |
 

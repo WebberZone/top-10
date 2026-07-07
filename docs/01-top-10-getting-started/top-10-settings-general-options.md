@@ -44,7 +44,7 @@ If this is selected, the metabox will be hidden from anyone who is not an Admin.
 
 ## Display admin columns
 
-Adds three columns called Total Views, Today's Views and Views to All Posts and All Pages. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.
+Adds three columns called Total Views, Custom period Views and Views to All Posts and All Pages. The middle column label is dynamic: it shows **Daily Views** when the custom period is set to 1 day, or **Custom (N days) Views** when the range is longer. You can selectively disable these by pulling down the Screen Options from the top right of the respective screens.
 
 ## Show views to non-admins
 
