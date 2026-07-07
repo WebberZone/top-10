@@ -69,7 +69,8 @@ class Columns {
 		if ( ( current_user_can( 'manage_options' ) ) || ( \tptn_get_option( 'show_count_non_admins' ) ) ) {
 			if ( \tptn_get_option( 'pv_in_admin' ) ) {
 				$cols['tptn_total'] = __( 'Total Views', 'top-10' );
-				$cols['tptn_daily'] = __( "Today's Views", 'top-10' );
+				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
+				$cols['tptn_daily'] = sprintf( __( '%s Views', 'top-10' ), Helpers::get_daily_range_label() );
 				$cols['tptn_both']  = __( 'Views', 'top-10' );
 			}
 		}

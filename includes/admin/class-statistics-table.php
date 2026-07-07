@@ -445,7 +445,8 @@ class Statistics_Table extends \WP_List_Table {
 			'cb'          => '<input type="checkbox" />',
 			'title'       => __( 'Title', 'top-10' ),
 			'total_count' => __( 'Total visits', 'top-10' ),
-			'daily_count' => __( 'Daily visits', 'top-10' ),
+			/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
+			'daily_count' => sprintf( __( '%s visits', 'top-10' ), Helpers::get_daily_range_label() ),
 			'post_type'   => __( 'Post type', 'top-10' ),
 			'author'      => __( 'Author', 'top-10' ),
 			'date'        => __( 'Date', 'top-10' ),

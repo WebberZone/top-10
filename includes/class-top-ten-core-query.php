@@ -388,7 +388,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 *
 		 * @since 3.2.0
 		 *
-		 * @param array   $meta_query Array of meta_query parameters.
+		 * @param mixed   $meta_query Array of meta_query parameters.
 		 * @param array   $args       Arguments array.
 		 */
 		$meta_query = apply_filters( 'top_ten_query_meta_query', $meta_query, $args ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query

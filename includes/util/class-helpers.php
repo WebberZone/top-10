@@ -63,6 +63,28 @@ class Helpers {
 		return apply_filters( 'tptn_get_from_date', $from_date, $time, $daily_range, $hour_range );
 	}
 
+	/**
+	 * Get a human-readable label for a custom period range.
+	 *
+	 * @since 4.3.2
+	 *
+	 * @param int|null $daily_range Number of days. Defaults to the 'daily_range' option.
+	 * @return string 'Daily' when the range is 1 day, else 'Custom (N days)'.
+	 */
+	public static function get_daily_range_label( $daily_range = null ) {
+		$daily_range = isset( $daily_range ) ? absint( $daily_range ) : (int) \tptn_get_option( 'daily_range', 1 );
+
+		if ( 1 === $daily_range ) {
+			return __( 'Daily', 'top-10' );
+		}
+
+		return sprintf(
+			/* translators: %d: Number of days. */
+			__( 'Custom (%d days)', 'top-10' ),
+			$daily_range
+		);
+	}
+
 
 	/**
 	 * Convert float number to format based on the locale if number_format_count is true.
