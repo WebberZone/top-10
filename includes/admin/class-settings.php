@@ -482,6 +482,14 @@ class Settings {
 				'default' => 'query_based',
 				'options' => self::get_tracker_types(),
 			),
+			'tracking_method'      => array(
+				'id'      => 'tracking_method',
+				'name'    => esc_html__( 'Tracking method', 'top-10' ),
+				'desc'    => esc_html__( 'Funnel tracking buffers views in a staging table that is merged into the count tables by a background job every few minutes and is recommended for most sites. Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Legacy tracking does not populate the visits log table.', 'top-10' ),
+				'type'    => 'radiodesc',
+				'default' => 'funnel',
+				'options' => self::get_tracking_methods(),
+			),
 			'tracker_all_pages'    => array(
 				'id'      => 'tracker_all_pages',
 				'name'    => esc_html__( 'Load tracker on all pages', 'top-10' ),
@@ -1381,6 +1389,37 @@ class Settings {
 		 * @param array $trackers Different trackers.
 		 */
 		return apply_filters( self::$prefix . '_get_tracker_types', $trackers );
+	}
+
+	/**
+	 * Function returns the different tracking methods.
+	 *
+	 * @since 4.3.3
+	 * @return array Tracking methods.
+	 */
+	public static function get_tracking_methods() {
+
+		$methods = array(
+			array(
+				'id'          => 'funnel',
+				'name'        => __( 'Funnel tracking', 'top-10' ),
+				'description' => __( 'Views are buffered and merged into the count tables every few minutes (default)', 'top-10' ),
+			),
+			array(
+				'id'          => 'legacy',
+				'name'        => __( 'Legacy tracking', 'top-10' ),
+				'description' => __( 'Views are written directly to the count tables on every visit (behaviour of versions before 4.3)', 'top-10' ),
+			),
+		);
+
+		/**
+		 * Filter the array containing the tracking methods.
+		 *
+		 * @since 4.3.3
+		 *
+		 * @param array $methods Tracking methods.
+		 */
+		return apply_filters( self::$prefix . '_get_tracking_methods', $methods );
 	}
 
 

@@ -679,6 +679,89 @@ class Database {
 	}
 
 	/**
+	 * Record a single visit using the configured tracking method.
+	 *
+	 * Funnel tracking (default) appends the visit to the funnel table which is
+	 * drained into the count tables by the aggregation cron. Legacy tracking
+	 * writes directly to the count tables on every visit (pre-4.3 behaviour)
+	 * and does not populate the visits log.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param int $post_id          Post ID.
+	 * @param int $blog_id          Blog ID.
+	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int $source           Traffic source: 0 = web, 1 = feed. Only stored by funnel tracking.
+	 * @return int|false Rows inserted/updated or false on error.
+	 */
+	public static function record_view( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
+		if ( 'legacy' === \tptn_get_option( 'tracking_method', 'funnel' ) ) {
+			return self::update_counts_direct( $post_id, $blog_id, $activate_counter );
+		}
+
+		return self::append_to_funnel( $post_id, $blog_id, $activate_counter, $source );
+	}
+
+	/**
+	 * Write a single visit directly to the overall and daily count tables.
+	 *
+	 * This is the legacy (pre-4.3) tracking method: an immediate upsert per view,
+	 * bypassing the funnel table and the aggregation cron. The visits log is not
+	 * populated by this method.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param int $post_id          Post ID.
+	 * @param int $blog_id          Blog ID.
+	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @return int|false Rows inserted/updated or false on error.
+	 */
+	public static function update_counts_direct( $post_id, $blog_id, $activate_counter = 11 ) {
+		global $wpdb;
+
+		$post_id          = absint( $post_id );
+		$blog_id          = absint( $blog_id );
+		$activate_counter = (int) $activate_counter;
+		$rows             = 0;
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( in_array( $activate_counter, array( 1, 11 ), true ) ) {
+			$table  = self::get_table( false );
+			$result = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$table} (postnumber, cntaccess, blog_id) VALUES (%d, 1, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1",
+					$post_id,
+					$blog_id
+				)
+			);
+			if ( false === $result ) {
+				return false;
+			}
+			$rows += (int) $result;
+		}
+
+		if ( in_array( $activate_counter, array( 10, 11 ), true ) ) {
+			$table   = self::get_table( true );
+			$dp_date = current_time( 'Y-m-d H' ) . ':00:00';
+			$result  = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id) VALUES (%d, 1, %s, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1",
+					$post_id,
+					$dp_date,
+					$blog_id
+				)
+			);
+			if ( false === $result ) {
+				return false;
+			}
+			$rows += (int) $result;
+		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		return $rows;
+	}
+
+	/**
 	 * Append a single visit to the funnel table.
 	 *
 	 * @since 4.3.0
