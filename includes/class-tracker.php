@@ -368,7 +368,7 @@ class Tracker {
 		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter, $source );
 
 		if ( $id > 0 && $activate_counter > 0 && $before_update_count ) {
-			$result = Database::append_to_funnel( $id, $blog_id, $activate_counter, $source );
+			$result = Database::record_view( $id, $blog_id, $activate_counter, $source );
 			$str   .= ( false === $result ) ? 'loge' : 'log' . $result;
 		}
 
