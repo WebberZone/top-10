@@ -70,7 +70,7 @@ class Columns {
 			if ( \tptn_get_option( 'pv_in_admin' ) ) {
 				$cols['tptn_total'] = __( 'Total Views', 'top-10' );
 				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
-				$cols['tptn_daily'] = sprintf( __( '%s Views', 'top-10' ), Helpers::get_daily_range_label() );
+				$cols['tptn_daily'] = sprintf( __( '%s Views', 'top-10' ), Helpers::get_daily_range_label( 1 ) );
 				$cols['tptn_both']  = __( 'Views', 'top-10' );
 			}
 		}
@@ -125,7 +125,12 @@ class Columns {
 	 * @return int
 	 */
 	private static function get_daily_count( $id, $blog_id ) {
-		return Counter::get_post_count_only( $id, 'daily', $blog_id );
+		return Counter::get_post_count_only(
+			$id,
+			'daily',
+			$blog_id,
+			array( 'from_date' => current_time( 'Y-m-d' ) . ' 00:00:00' )
+		);
 	}
 
 	/**
@@ -194,7 +199,7 @@ class Columns {
 		$order      = ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 		if ( $is_daily ) {
-			$from_date = Helpers::get_from_date();
+			$from_date = Helpers::get_from_date( current_time( 'Y-m-d' ) . ' 00:00:00', 0, 0 );
 			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
 			$clauses['join'] .= $wpdb->prepare(
 				" LEFT JOIN {$table_name} AS tptn_counts
