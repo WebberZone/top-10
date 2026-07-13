@@ -387,7 +387,7 @@ msgstr ""
 msgid "Import Tables"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:452
+#: includes/admin/class-statistics-table.php:476
 msgid "Date"
 msgstr ""
 
@@ -1576,33 +1576,33 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:446
+#: includes/admin/class-statistics-table.php:470
 #: includes/frontend/widgets/class-count-widget.php:49
 #: includes/frontend/widgets/class-posts-widget.php:80
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:447
+#: includes/admin/class-statistics-table.php:471
 msgid "Total visits"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:450
+#: includes/admin/class-statistics-table.php:474
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:451
+#: includes/admin/class-statistics-table.php:475
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:456
+#: includes/admin/class-statistics-table.php:480
 msgid "Blog"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:492
+#: includes/admin/class-statistics-table.php:516
 msgid "Delete Count"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:556
+#: includes/admin/class-statistics-table.php:580
 msgid "Are you sure you want to do this"
 msgstr ""
 
@@ -2771,7 +2771,7 @@ msgid "Permalink - %s"
 msgstr ""
 
 #. translators: %s: Custom period label (e.g. Daily, Custom (7 days)).
-#: includes/admin/class-statistics-table.php:449
+#: includes/admin/class-statistics-table.php:473
 #, php-format
 msgid "%s visits"
 msgstr ""
