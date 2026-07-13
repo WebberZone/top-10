@@ -179,7 +179,7 @@ class Dashboard_Widgets {
 			wp_add_dashboard_widget(
 				'tptn_daily_dashboard',
 				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
-				sprintf( __( 'Top 10 - %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label() ),
+				sprintf( __( 'Top 10 - %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label( 1 ) ),
 				array( __CLASS__, 'popular_posts_widget_daily' ),
 				array( __CLASS__, 'pop_display' )
 			);
@@ -223,7 +223,7 @@ class Dashboard_Widgets {
 			wp_add_dashboard_widget(
 				'tptn_network_daily_dashboard',
 				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
-				sprintf( __( 'Top 10 - Network %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label() ),
+				sprintf( __( 'Top 10 - Network %s Popular Posts', 'top-10' ), Helpers::get_daily_range_label( 1 ) ),
 				array( __CLASS__, 'network_popular_posts_widget_daily' ),
 				array( __CLASS__, 'pop_display' )
 			);

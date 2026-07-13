@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.3.3
+Stable tag: 4.3.4
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -172,12 +172,16 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.3.3 =
+= 4.3.4 =
 
 *Release Date - TBD*
 
 * Features:
 	* New "Tracking method" setting under Settings » Counter/Tracker » Tracker settings: choose between Funnel tracking (default; views are buffered and merged into the count tables every few minutes) and Legacy tracking (views are written directly to the count tables on every visit, as in versions before 4.3). Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Note that Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
+
+* Fixed:
+	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
+	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
 
 = 4.3.2 =
 

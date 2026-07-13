@@ -436,6 +436,30 @@ class Statistics_Table extends \WP_List_Table {
 	}
 
 	/**
+	 * Get the number of days spanned by the current post-date-filter-from/to request,
+	 * mirroring the default used in get_popular_posts() (today only when unset).
+	 *
+	 * @since 4.3.4
+	 *
+	 * @return int Number of days, minimum 1.
+	 */
+	protected function get_current_filter_days() {
+		$from_date = isset( $_REQUEST['post-date-filter-from'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-from'] ) ) : current_time( 'd M Y' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$to_date   = isset( $_REQUEST['post-date-filter-to'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post-date-filter-to'] ) ) : current_time( 'd M Y' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		$from_timestamp = strtotime( $from_date );
+		$to_timestamp   = strtotime( $to_date );
+
+		if ( false === $from_timestamp || false === $to_timestamp ) {
+			return 1;
+		}
+
+		$days = (int) round( ( $to_timestamp - $from_timestamp ) / DAY_IN_SECONDS ) + 1;
+
+		return max( 1, $days );
+	}
+
+	/**
 	 * Associative array of columns
 	 *
 	 * @return array
@@ -446,7 +470,7 @@ class Statistics_Table extends \WP_List_Table {
 			'title'       => __( 'Title', 'top-10' ),
 			'total_count' => __( 'Total visits', 'top-10' ),
 			/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
-			'daily_count' => sprintf( __( '%s visits', 'top-10' ), Helpers::get_daily_range_label() ),
+			'daily_count' => sprintf( __( '%s visits', 'top-10' ), Helpers::get_daily_range_label( $this->get_current_filter_days() ) ),
 			'post_type'   => __( 'Post type', 'top-10' ),
 			'author'      => __( 'Author', 'top-10' ),
 			'date'        => __( 'Date', 'top-10' ),
