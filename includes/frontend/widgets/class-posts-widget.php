@@ -28,7 +28,7 @@ class Posts_Widget extends \WP_Widget {
 			'widget_tptn_pop', // Base ID.
 			__( 'Popular Posts [Top 10]', 'top-10' ), // Name.
 			array(
-				'description'                 => __( 'Display popular posts', 'where-did-they-go-from-here' ),
+				'description'                 => __( 'Display popular posts', 'top-10' ),
 				'classname'                   => 'tptn_posts_list_widget',
 				'customize_selective_refresh' => true,
 				'show_instance_in_rest'       => true,
