@@ -41,7 +41,7 @@ Enter a comma separated list of post, page or custom post type IDs. This is a gl
 
 ## Exclude Categories
 
-Comma separated list of category slugs. The field above has an autocomplete so simply start typing in the starting letters and it will prompt you with options. Does not support tags or custom taxonomies.
+Comma separated list of category slugs. The field above has an autocomplete so start typing in the starting letters and it will prompt you with options. Does not support tags or custom taxonomies.
 
 ## Heading of posts
 
@@ -95,4 +95,4 @@ Adds the `rel="nofollow"` attribute to the links in order to tell search engines
 
 ## Customize the list HTML
 
-The four set of options will allow you to customize what HTML is used to create the post lists. By default the post lists are created using an unordered list. You shouldn't need to change these as you can easily use CSS to style the list as required.
+The four set of options will allow you to customize what HTML is used to create the post lists. By default the post lists are created using an unordered list. You shouldn't need to change these as you can use CSS to style the list as required.

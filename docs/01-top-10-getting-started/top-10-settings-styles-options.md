@@ -35,7 +35,7 @@ This is the default style included within the plugin as displayed in the below s
 <img src="https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style.webp" class="wp-image-8358" loading="lazy" decoding="async" srcset="https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style.webp 778w, https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style-300x280.webp 300w, https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style-768x716.webp 768w" sizes="auto, (max-width: 778px) 100vw, 778px" width="778" height="725" />
 </figure>
 
-### Grid (Pro only)
+### Grid *(Pro only)*
 
 Available in Top 10 Pro, this displays the thumbnails in a grid.
 
