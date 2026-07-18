@@ -26,7 +26,7 @@ class Count_Widget extends \WP_Widget {
 			'widget_tptn_count', // Base ID.
 			__( 'Overall count [Top 10]', 'top-10' ), // Name.
 			array(
-				'description'                 => __( 'Display overall count', 'where-did-they-go-from-here' ),
+				'description'                 => __( 'Display overall count', 'top-10' ),
 				'customize_selective_refresh' => true,
 				'classname'                   => 'tptn_posts_count_widget',
 			)

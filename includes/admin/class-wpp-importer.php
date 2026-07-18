@@ -87,36 +87,36 @@ class WPP_Importer {
 				<input type="hidden" name="action" value="top_ten_import_wpp">
 				<table class="form-table">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Import Mode', 'top-ten' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Import Mode', 'top-10' ); ?></th>
 						<td>
 							<fieldset>
-								<legend class="screen-reader-text"><?php esc_html_e( 'Import Mode', 'top-ten' ); ?></legend>
+								<legend class="screen-reader-text"><?php esc_html_e( 'Import Mode', 'top-10' ); ?></legend>
 								<label>
 									<input type="radio" name="import_mode" value="merge">
-									<span><?php esc_html_e( 'Merge data (add WPP counts to existing Top 10 counts)', 'top-ten' ); ?></span>
+									<span><?php esc_html_e( 'Merge data (add WPP counts to existing Top 10 counts)', 'top-10' ); ?></span>
 								</label>
 								<br>
 								<label>
 									<input type="radio" name="import_mode" value="replace" checked="checked">
-									<span><?php esc_html_e( 'Replace data (replace Top 10 counts with WPP counts)', 'top-ten' ); ?></span>
+									<span><?php esc_html_e( 'Replace data (replace Top 10 counts with WPP counts)', 'top-10' ); ?></span>
 								</label>
 							</fieldset>
-							<p class="description"><?php esc_html_e( 'Merge mode will add WPP counts to existing Top 10 counts, while replace mode will replace Top 10 counts with WPP counts if they exists for the same post.', 'top-ten' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Merge mode will add WPP counts to existing Top 10 counts, while replace mode will replace Top 10 counts with WPP counts if they exist for the same post.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Data to Import', 'top-ten' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Data to Import', 'top-10' ); ?></th>
 						<td>
 							<fieldset>
-								<legend class="screen-reader-text"><?php esc_html_e( 'Data to Import', 'top-ten' ); ?></legend>
+								<legend class="screen-reader-text"><?php esc_html_e( 'Data to Import', 'top-10' ); ?></legend>
 								<label>
 									<input type="radio" name="import_data" value="total" checked="checked">
-									<span><?php esc_html_e( 'Total counts only', 'top-ten' ); ?></span>
+									<span><?php esc_html_e( 'Total counts only', 'top-10' ); ?></span>
 								</label>
 								<br>
 								<label>
 									<input type="radio" name="import_data" value="daily">
-									<span><?php esc_html_e( 'Daily counts only', 'top-ten' ); ?></span>
+									<span><?php esc_html_e( 'Daily counts only', 'top-10' ); ?></span>
 								</label>
 								<br>
 								<label>
@@ -128,25 +128,25 @@ class WPP_Importer {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Minimum View Count', 'top-ten' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Minimum View Count', 'top-10' ); ?></th>
 						<td>
 							<input type="number" name="min_views" value="1" min="1" step="1">
-							<p class="description"><?php esc_html_e( 'Only import posts with at least this many views. Use this setting to filter out posts with very few views.', 'top-ten' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Only import posts with at least this many views. Use this setting to filter out posts with very few views.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Dry Run', 'top-ten' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Dry Run', 'top-10' ); ?></th>
 						<td>
 							<label>
 								<input type="checkbox" name="dry_run" value="1" checked="checked">
-								<?php esc_html_e( 'Enable Dry Run (simulate import)', 'top-ten' ); ?>
+								<?php esc_html_e( 'Enable Dry Run (simulate import)', 'top-10' ); ?>
 							</label>
-							<p class="description"><?php esc_html_e( 'A dry run will simulate the import process without actually updating the database. This is useful for testing the import parameters.', 'top-ten' ); ?></p>
+							<p class="description"><?php esc_html_e( 'A dry run will simulate the import process without actually updating the database. This is useful for testing the import parameters.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<?php if ( is_multisite() && is_network_admin() ) : ?>
 						<tr>
-							<th scope="row"><?php esc_html_e( 'Select Sites', 'top-ten' ); ?></th>
+							<th scope="row"><?php esc_html_e( 'Select Sites', 'top-10' ); ?></th>
 							<td>
 								<?php
 								$sites = get_sites();
@@ -165,7 +165,7 @@ class WPP_Importer {
 						</tr>
 					<?php endif; ?>
 				</table>
-				<?php submit_button( esc_html__( 'Run Import', 'top-ten' ), 'primary', 'submit', true, array( 'id' => 'top-ten-wpp-import-submit' ) ); ?>
+				<?php submit_button( esc_html__( 'Run Import', 'top-10' ), 'primary', 'submit', true, array( 'id' => 'top-ten-wpp-import-submit' ) ); ?>
 
 				<p id="top-ten-wpp-import-progress" class="hidden notice notice-info">
 				</p>
@@ -362,12 +362,12 @@ class WPP_Importer {
 	public function handle_import_request() {
 		// Verify nonce.
 		if ( ! isset( $_POST['top_ten_import_wpp_nonce_field'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['top_ten_import_wpp_nonce_field'] ) ), 'top_ten_import_wpp_nonce' ) ) {
-			wp_die( esc_html__( 'Nonce verification failed', 'top-ten' ) );
+			wp_die( esc_html__( 'Nonce verification failed', 'top-10' ) );
 		}
 
 		// Check user capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to perform this action', 'top-ten' ) );
+			wp_die( esc_html__( 'You are not allowed to perform this action', 'top-10' ) );
 		}
 
 		// Get import parameters using our helper method.
@@ -384,7 +384,7 @@ class WPP_Importer {
 		}
 
 		if ( empty( $sites ) ) {
-			wp_die( esc_html__( 'No sites selected for import.', 'top-ten' ) );
+			wp_die( esc_html__( 'No sites selected for import.', 'top-10' ) );
 		}
 
 		$import_results = array();
@@ -421,10 +421,10 @@ class WPP_Importer {
 		foreach ( $import_results as $blog_id => $result ) {
 			$blog_details = get_blog_details( $blog_id );
 			/* translators: 1. Blog ID. */
-			$blog_name = $blog_details ? $blog_details->blogname : sprintf( __( 'Blog ID %d', 'top-ten' ), $blog_id );
+			$blog_name = $blog_details ? $blog_details->blogname : sprintf( __( 'Blog ID %d', 'top-10' ), $blog_id );
 			$message  .= sprintf(
 				/* translators: 1: Site name, 2: Blog ID, 3: Total records processed, 4: Daily records processed, 5: Dry run notice */
-				__( 'Site %1$s (ID: %2$d): Total Counts Processed: %3$d, Daily Records Processed: %4$d%5$s', 'top-ten' ),
+				__( 'Site %1$s (ID: %2$d): Total Counts Processed: %3$d, Daily Records Processed: %4$d%5$s', 'top-10' ),
 				esc_html( $blog_name ),
 				$blog_id,
 				$result['total_counts'] ?? 0,
