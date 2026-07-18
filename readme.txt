@@ -190,6 +190,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Admin banner no longer causes a horizontal scrollbar on the plugin's admin pages.
 	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
 	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
+	* Left thumbnail style no longer stacks the thumbnail above the text in narrow containers such as sidebar widgets; it now stays side by side unless there genuinely isn't room.
 
 = 4.3.2 =
 

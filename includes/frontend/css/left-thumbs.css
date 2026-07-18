@@ -13,6 +13,8 @@
 	--tptn-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 	--tptn-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.2);
 	--tptn-transition: 0.2s ease;
+	container-type: inline-size;
+	container-name: tptn-left-thumbs;
 }
 
 .tptn-left-thumbs ul {
@@ -23,7 +25,7 @@
 
 .tptn-left-thumbs ul li {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	gap: var(--tptn-gap);
 	align-items: flex-start;
 	margin-bottom: 1.25rem;
@@ -36,8 +38,8 @@
 	display: block;
 	flex: 0 0 auto;
 	align-self: flex-start;
-	width: min(var(--tptn-thumb-width, 9999px), 100%);
-	max-width: 100%;
+	width: min(var(--tptn-thumb-width, 9999px), 45%);
+	max-width: 45%;
 	padding: var(--tptn-thumb-frame-padding);
 	border-width: var(--tptn-thumb-frame-border-width);
 	border-style: solid;
@@ -69,8 +71,8 @@
 }
 
 .tptn-left-thumbs .tptn_after_thumb {
-	flex: 1 1 12rem;
-	min-width: 0;
+	flex: 1 1 6rem;
+	min-width: 4rem;
 }
 
 .tptn-left-thumbs a.tptn_link {
@@ -94,6 +96,22 @@
 	font-size: 0.9em;
 	line-height: 1.4;
 	opacity: 0.85;
+}
+
+/* Below this width there isn't room for a legible thumbnail + text column side by side, so stack instead. */
+@container tptn-left-thumbs (max-width: 240px) {
+	.tptn-left-thumbs ul li {
+		flex-wrap: wrap;
+	}
+
+	.tptn-left-thumbs li > a.tptn_link {
+		width: min(var(--tptn-thumb-width, 9999px), 100%);
+		max-width: 100%;
+	}
+
+	.tptn-left-thumbs .tptn_after_thumb {
+		flex-basis: 100%;
+	}
 }
 
 /* Reduced motion for accessibility. */

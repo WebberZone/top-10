@@ -1620,13 +1620,13 @@ class Settings {
 		$style = $settings['tptn_styles'] ?? '';
 
 		$inline_thumb_styles = array(
-			'left_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
-			'grid_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline or Thumbnails only when the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+			'left_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline, After, or Thumbnails only when the Popular posts style is set to Left thumbnails. You can change the style in the Styles tab.', 'top-10' ),
+			'grid_thumbs' => esc_html__( 'Note: Thumbnail location can only be Inline, After, or Thumbnails only when the Popular posts style is set to Grid thumbnails. You can change the style in the Styles tab.', 'top-10' ),
 		);
 
 		if ( array_key_exists( $style, $inline_thumb_styles ) ) {
 			$post_thumb_op = $settings['post_thumb_op'] ?? '';
-			if ( 'inline' !== $post_thumb_op && 'thumbs_only' !== $post_thumb_op ) {
+			if ( 'inline' !== $post_thumb_op && 'after' !== $post_thumb_op && 'thumbs_only' !== $post_thumb_op ) {
 				$settings['post_thumb_op'] = 'inline';
 			}
 
