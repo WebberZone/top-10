@@ -880,7 +880,9 @@ class Display {
 	 */
 	public static function get_list_count( $args, $result, $visits ) {
 
-		$tptn_list_count = '(' . Helpers::number_format_i18n( $visits ) . ')';
+		$number_format_style = isset( $args['number_format_style'] ) ? $args['number_format_style'] : null;
+
+		$tptn_list_count = '(' . Helpers::number_format_i18n( $visits, 0, $number_format_style ) . ')';
 
 		/**
 		 * Filter the formatted list count text.
