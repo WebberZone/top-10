@@ -91,9 +91,9 @@ jQuery(document).ready(function ($) {
 				el.disabled = false;
 			});
 
-			// Special handling for left/grid thumbs: restrict post_thumb_op to inline or thumbs_only.
+			// Special handling for left/grid thumbs: restrict post_thumb_op to inline, after, or thumbs_only.
 			if ('left_thumbs' === selectedStyle || 'grid_thumbs' === selectedStyle) {
-				var allowed = ['inline', 'thumbs_only'];
+				var allowed = ['inline', 'after', 'thumbs_only'];
 				var currentChecked = document.querySelector('input[name="tptn_settings[post_thumb_op]"]:checked');
 				var needsFallback = !currentChecked || -1 === allowed.indexOf(currentChecked.value);
 
