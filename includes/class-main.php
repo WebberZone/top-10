@@ -58,9 +58,9 @@ final class Main {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var Frontend\Blocks\Blocks
+	 * @var Frontend\Blocks\Blocks|null
 	 */
-	public Frontend\Blocks\Blocks $blocks;
+	public ?Frontend\Blocks\Blocks $blocks = null;
 
 	/**
 	 * Counter.
@@ -85,9 +85,9 @@ final class Main {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @var Frontend\Feed
+	 * @var Frontend\Feed|null
 	 */
-	public Frontend\Feed $feed;
+	public ?Frontend\Feed $feed = null;
 
 	/**
 	 * Styles.
@@ -161,9 +161,14 @@ final class Main {
 		$this->counter    = new Counter();
 		$this->tracker    = new Tracker();
 		$this->shortcodes = new Frontend\Shortcodes();
-		$this->blocks     = new Frontend\Blocks\Blocks();
-		$this->feed       = new Frontend\Feed();
 		$this->cron       = new Cron();
+
+		if ( Feature_Manager::is_enabled( 'blocks' ) ) {
+			$this->blocks = new Frontend\Blocks\Blocks();
+		}
+		if ( Feature_Manager::is_enabled( 'feed' ) ) {
+			$this->feed = new Frontend\Feed();
+		}
 
 		new Hook_Loader();
 

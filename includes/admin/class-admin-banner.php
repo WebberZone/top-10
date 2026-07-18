@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Admin_Banner {
 
-	private const DEFAULT_STYLE_VERSION = '1.0.0';
+	private const DEFAULT_STYLE_VERSION = '1.0.1';
 
 	/**
 	 * Configuration array for the banner output.

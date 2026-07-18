@@ -84,6 +84,10 @@ final class Hook_Loader {
 	 * @since 3.3.0
 	 */
 	public function register_widgets(): void {
+		if ( ! Feature_Manager::is_enabled( 'legacy_widgets' ) ) {
+			return;
+		}
+
 		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Posts_Widget' );
 		register_widget( '\WebberZone\Top_Ten\Frontend\Widgets\Count_Widget' );
 	}

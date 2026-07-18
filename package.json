@@ -11,7 +11,9 @@
         "build:query": "wp-scripts build --webpack-src-dir=includes/pro/blocks/src/query/ --output-path=includes/pro/blocks/build/query/",
         "build:featured-image": "wp-scripts build --webpack-src-dir=includes/pro/blocks/src/featured-image/ --output-path=includes/pro/blocks/build/featured-image/",
         "build:popular-posts-pro": "wp-scripts build --webpack-src-dir=includes/pro/blocks/src/popular-posts-pro/ --output-path=includes/pro/blocks/build/popular-posts-pro/",
-        "build:pro": "npm run build:query && npm run build:featured-image && npm run build:popular-posts-pro",
+        "build:popular-authors": "wp-scripts build --webpack-src-dir=includes/pro/blocks/src/popular-authors/ --output-path=includes/pro/blocks/build/popular-authors/",
+        "build:popular-posts-by-author": "wp-scripts build --webpack-src-dir=includes/pro/blocks/src/popular-posts-by-author/ --output-path=includes/pro/blocks/build/popular-posts-by-author/",
+        "build:pro": "npm run build:query && npm run build:featured-image && npm run build:popular-posts-pro && npm run build:popular-authors && npm run build:popular-posts-by-author",
         "build:all": "npm run build && npm run build:pro",
         "format": "wp-scripts format ./includes/pro/blocks/src/ ./includes/frontend/blocks/src/",
         "format:free": "wp-scripts format ./includes/frontend/blocks/src/",
@@ -23,7 +25,9 @@
         "start:featured-image": "wp-scripts start --webpack-src-dir=includes/pro/blocks/src/featured-image/ --output-path=includes/pro/blocks/build/featured-image/",
         "start:popular-posts-pro": "wp-scripts start --webpack-src-dir=includes/pro/blocks/src/popular-posts-pro/ --output-path=includes/pro/blocks/build/popular-posts-pro/",
         "start:query": "wp-scripts start --webpack-src-dir=includes/pro/blocks/src/query/ --output-path=includes/pro/blocks/build/query/",
-        "start:pro": "npm run start:query & npm run start:featured-image & npm run start:popular-posts-pro",
+        "start:popular-authors": "wp-scripts start --webpack-src-dir=includes/pro/blocks/src/popular-authors/ --output-path=includes/pro/blocks/build/popular-authors/",
+        "start:popular-posts-by-author": "wp-scripts start --webpack-src-dir=includes/pro/blocks/src/popular-posts-by-author/ --output-path=includes/pro/blocks/build/popular-posts-by-author/",
+        "start:pro": "npm run start:query & npm run start:featured-image & npm run start:popular-posts-pro & npm run start:popular-authors & npm run start:popular-posts-by-author",
         "start:all": "npm run start & npm run start:pro",
         "zip": "wp-scripts plugin-zip"
     },
@@ -43,14 +47,14 @@
         "wpml-config.xml"
     ],
     "devDependencies": {
-        "@wordpress/prettier-config": "^4.50.0",
-        "@wordpress/scripts": "^32",
+        "@wordpress/prettier-config": "^4.51.0",
+        "@wordpress/scripts": "^33",
         "clean-css-cli": "^5.6.3",
         "rtlcss": "^4.3.0",
-        "terser": "^5.48.0"
+        "terser": "^5.49.0"
     },
     "dependencies": {
-        "@wordpress/icons": "^15.1.0",
+        "@wordpress/icons": "^15.2.0",
         "clsx": "^2.1.1",
         "uuid": "^14.0.1"
     }

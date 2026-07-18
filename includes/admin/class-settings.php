@@ -99,11 +99,12 @@ class Settings {
 	 */
 	public function initialise_settings() {
 		$props = array(
-			'default_tab'       => 'general',
+			'default_tab'       => 'features',
 			'help_sidebar'      => $this->get_help_sidebar(),
 			'help_tabs'         => $this->get_help_tabs(),
 			'admin_footer_text' => $this->get_admin_footer_text(),
 			'menus'             => $this->get_menus(),
+			'version'           => TOP_TEN_VERSION,
 		);
 
 		$args = array(
@@ -132,7 +133,10 @@ class Settings {
 			'save_changes'         => esc_html__( 'Save Changes', 'top-10' ),
 			'reset_settings'       => esc_html__( 'Reset all settings', 'top-10' ),
 			'reset_button_confirm' => esc_html__( 'Do you really want to reset all these settings to their default values?', 'top-10' ),
-			'checkbox_modified'    => esc_html__( 'Modified from default setting', 'top-10' ),
+			'modified_field'       => esc_html__( 'Modified from default setting', 'top-10' ),
+			'modified_legend'      => esc_html__( 'Setting modified from its default value', 'top-10' ),
+			'default_label'        => esc_html__( 'Default', 'top-10' ),
+			'default_none'         => esc_html__( 'None', 'top-10' ),
 		);
 
 		/**
@@ -175,6 +179,7 @@ class Settings {
 	 */
 	public static function get_settings_sections() {
 		$settings_sections = array(
+			'features'    => __( 'Features', 'top-10' ),
 			'general'     => __( 'General', 'top-10' ),
 			'counter'     => __( 'Counter/Tracker', 'top-10' ),
 			'list'        => __( 'Posts list', 'top-10' ),
@@ -907,12 +912,13 @@ class Settings {
 				'default' => true,
 			),
 			'thumb_default'      => array(
-				'id'      => 'thumb_default',
-				'name'    => esc_html__( 'Default thumbnail', 'top-10' ),
-				'desc'    => esc_html__( 'Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below.', 'top-10' ),
-				'type'    => 'file',
-				'default' => Display::get_default_thumbnail(),
-				'size'    => 'large',
+				'id'                 => 'thumb_default',
+				'name'               => esc_html__( 'Default thumbnail', 'top-10' ),
+				'desc'               => esc_html__( 'Enter the full URL of the image that you wish to display if no thumbnail is found. This image will be displayed below.', 'top-10' ),
+				'type'               => 'file',
+				'default'            => Display::get_default_thumbnail(),
+				'size'               => 'large',
+				'modified_indicator' => false,
 			),
 		);
 
@@ -1138,6 +1144,105 @@ class Settings {
 		 * @param array $settings Feed settings array
 		 */
 		return apply_filters( self::$prefix . '_settings_feed', $settings );
+	}
+
+	/**
+	 * Retrieve the array of Features settings
+	 *
+	 * All features are enabled by default. Disabling a feature stops its
+	 * classes from being loaded on any request.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return array Features settings array
+	 */
+	public static function settings_features() {
+		$settings = array(
+			'features_header'                => array(
+				'id'   => 'features_header',
+				'name' => '<h3>' . esc_html__( 'Features', 'top-10' ) . '</h3>',
+				'desc' => esc_html__( 'Turn off any features you do not use and the plugin will not load their code. All features are enabled by default. Blocks that are disabled will render as empty on the front end and show an unavailable notice in the block editor.', 'top-10' ),
+				'type' => 'header',
+			),
+			'enable_blocks'                  => array(
+				'id'      => 'enable_blocks',
+				'name'    => esc_html__( 'Popular Posts and Post Count blocks', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the free Popular Posts and Post Count blocks for the block editor.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+			),
+			'enable_feed'                    => array(
+				'id'      => 'enable_feed',
+				'name'    => esc_html__( 'Popular posts feeds', 'top-10' ),
+				'desc'    => esc_html__( 'Adds custom RSS feeds for overall and daily popular posts. The feed settings are on the Feed tab.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+			),
+			'enable_legacy_widgets'          => array(
+				'id'      => 'enable_legacy_widgets',
+				'name'    => esc_html__( 'Legacy widgets', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the classic Popular Posts and Views Count widgets. Disable this if you use blocks instead of classic widgets.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+			),
+			'enable_query_block'             => array(
+				'id'      => 'enable_query_block',
+				'name'    => esc_html__( 'Query block', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the Top 10 Query block and the pre-built block patterns.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+			'enable_featured_image_block'    => array(
+				'id'      => 'enable_featured_image_block',
+				'name'    => esc_html__( 'Featured Image block', 'top-10' ),
+				'desc'    => esc_html__( 'Extends the core Featured Image block with Top 10 options.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+			'enable_popular_posts_pro_block' => array(
+				'id'      => 'enable_popular_posts_pro_block',
+				'name'    => esc_html__( 'Popular Posts Pro block', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the Popular Posts Pro block for the block editor.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+			'enable_fast_tracker'            => array(
+				'id'      => 'enable_fast_tracker',
+				'name'    => esc_html__( 'Fast and High-traffic trackers', 'top-10' ),
+				'desc'    => esc_html__( 'Adds the Fast tracker and High-traffic tracker options to the Tracker type setting. If this is disabled while one of these trackers is in use, the tracker type will be reset to the default.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+			'enable_pro_dashboard_widgets'   => array(
+				'id'      => 'enable_pro_dashboard_widgets',
+				'name'    => esc_html__( 'Pro dashboard widgets', 'top-10' ),
+				'desc'    => esc_html__( 'Adds the enhanced Top 10 Pro widgets to the WordPress dashboard.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+			'enable_popular_authors'         => array(
+				'id'      => 'enable_popular_authors',
+				'name'    => esc_html__( 'Popular Authors', 'top-10' ),
+				'desc'    => esc_html__( 'Enables the Popular Authors blocks, shortcodes, widgets and settings.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
+		);
+
+		/**
+		 * Filters the Features settings array
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param array $settings Features settings array
+		 */
+		return apply_filters( self::$prefix . '_settings_features', $settings );
 	}
 
 	/**
@@ -1540,6 +1645,18 @@ class Settings {
 				self::$prefix . '-notices',
 				'',
 				esc_html__( 'Note: Thumbnail location set to Text only as the Popular posts style is set to Text only. You can change the style in the Styles tab.', 'top-10' ),
+				'warning'
+			);
+		}
+
+		// If the fast/high-traffic trackers are disabled, reset the tracker type to the default.
+		if ( isset( $settings['enable_fast_tracker'] ) && empty( $settings['enable_fast_tracker'] ) && isset( $settings['tracker_type'] ) && in_array( $settings['tracker_type'], array( 'fast_tracker', 'high_traffic_tracker' ), true ) ) {
+			$settings['tracker_type'] = 'query_based';
+
+			add_settings_error(
+				self::$prefix . '-notices',
+				'',
+				esc_html__( 'Note: Tracker type has been reset to the default as the Fast and High-traffic trackers feature is disabled.', 'top-10' ),
 				'warning'
 			);
 		}
