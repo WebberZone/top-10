@@ -415,6 +415,17 @@ class Settings {
 				'type'    => 'checkbox',
 				'default' => true,
 			),
+			'number_format_style'  => array(
+				'id'      => 'number_format_style',
+				'name'    => esc_html__( 'Number format style', 'top-10' ),
+				'desc'    => esc_html__( 'Select Abbreviated to display large view counts in a compact form, e.g. 1.2k or 3.4M, wherever counts are displayed. Full displays the complete number.', 'top-10' ),
+				'type'    => 'select',
+				'default' => 'full',
+				'options' => array(
+					'full'        => esc_html__( 'Full', 'top-10' ),
+					'abbreviated' => esc_html__( 'Abbreviated (1.2k, 3.4M)', 'top-10' ),
+				),
+			),
 			'daily_midnight'       => array(
 				'id'      => 'daily_midnight',
 				'name'    => esc_html__( 'Start daily counts at midnight', 'top-10' ),
