@@ -101,7 +101,7 @@ class WPP_Importer {
 									<span><?php esc_html_e( 'Replace data (replace Top 10 counts with WPP counts)', 'top-10' ); ?></span>
 								</label>
 							</fieldset>
-							<p class="description"><?php esc_html_e( 'Merge mode will add WPP counts to existing Top 10 counts, while replace mode will replace Top 10 counts with WPP counts if they exists for the same post.', 'top-10' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Merge mode will add WPP counts to existing Top 10 counts, while replace mode will replace Top 10 counts with WPP counts if they exist for the same post.', 'top-10' ); ?></p>
 						</td>
 					</tr>
 					<tr>
