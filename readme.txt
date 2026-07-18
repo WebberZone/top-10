@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.3.4
+Stable tag: 4.4.0
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -172,14 +172,22 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.3.4 =
+= 4.4.0 =
 
 *Release Date - TBD*
 
 * Features:
+	* New "Features" tab under Settings: turn off plugin features that you do not use and their code will not be loaded at all. You can toggle the Popular Posts and Post Count blocks, popular posts feeds, legacy widgets, Query block, Featured Image block, Popular Posts Pro block, Fast and High-traffic trackers, Pro dashboard widgets, and Popular Authors.
 	* New "Tracking method" setting under Settings » Counter/Tracker » Tracker settings: choose between Funnel tracking (default; views are buffered and merged into the count tables every few minutes) and Legacy tracking (views are written directly to the count tables on every visit, as in versions before 4.3). Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Note that Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 
+* Improvements:
+	* Redesigned settings page with vertical tab navigation, which is responsive and reverts to horizontal tabs on smaller screens. The settings page now opens on the Features tab.
+	* Checkbox settings now display as toggle switches.
+	* Settings that have been changed from their default value are marked with an indicator dot, with a legend below the buttons. The default value is also displayed below each setting's description.
+	* Admin styles and scripts are now versioned with the plugin version so browsers reliably pick up changes after an update.
+
 * Fixed:
+	* Admin banner no longer causes a horizontal scrollbar on the plugin's admin pages.
 	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
 	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
 

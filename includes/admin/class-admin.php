@@ -304,6 +304,9 @@ class Admin {
 		return array(
 			'capability' => 'manage_options',
 			'prefix'     => 'tptn',
+			'style'      => array(
+				'version' => TOP_TEN_VERSION,
+			),
 			'screen_ids' => array(
 				'toplevel_page_tptn_dashboard',
 				'top-10_page_tptn_options_page',

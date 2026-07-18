@@ -47,6 +47,17 @@ class Settings_Wizard extends Settings_Wizard_API {
 	}
 
 	/**
+	 * Use the plugin version for cache-busting wizard assets.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return string Version number.
+	 */
+	protected function get_version() {
+		return TOP_TEN_VERSION;
+	}
+
+	/**
 	 * Additional hooks specific to Top 10.
 	 *
 	 * @since 4.2.0
@@ -199,7 +210,6 @@ class Settings_Wizard extends Settings_Wizard_API {
 			'wizard_complete'       => __( 'Setup Complete!', 'top-10' ),
 			'setup_complete'        => __( 'Your Top 10 plugin has been configured successfully. You can now start displaying popular posts on your site!', 'top-10' ),
 			'go_to_settings'        => __( 'Go to Settings', 'top-10' ),
-			'checkbox_modified'     => __( 'Modified from default setting', 'top-10' ),
 		);
 	}
 
