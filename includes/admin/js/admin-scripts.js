@@ -41,73 +41,69 @@ jQuery(document).ready(function ($) {
 
 		var strings = top_ten_admin_data.strings || {};
 
-		var disableConfig = {
-			'left_thumbs': {
-				targets: ['post_thumb_op'],
-				messageKey: 'left_thumbs_message'
-			},
-			'grid_thumbs': {
-				targets: ['post_thumb_op'],
-				messageKey: 'grid_thumbs_message'
-			},
-			'text_only': {
-				targets: ['post_thumb_op'],
-				messageKey: 'text_only_message'
-			}
+		var messageConfig = {
+			'left_thumbs': 'left_thumbs_message',
+			'grid_thumbs': 'grid_thumbs_message',
+			'text_only': 'text_only_message'
 		};
 
-		var allTargets = ['post_thumb_op'];
+		function updateMessage(selectedStyle) {
+			var messageKey = messageConfig[selectedStyle];
+			var postThumbOptions = document.querySelectorAll('input[name="tptn_settings[post_thumb_op]"]');
+			if (postThumbOptions.length === 0) {
+				return;
+			}
+
+			var container = postThumbOptions[0].closest('td');
+			if (!container) {
+				return;
+			}
+
+			var existingMessage = container.querySelector('.tptn-js-message');
+			if (!messageKey) {
+				if (existingMessage) {
+					existingMessage.remove();
+				}
+				return;
+			}
+
+			var messageText = strings[messageKey] || '';
+			if (!existingMessage) {
+				var message = document.createElement('p');
+				message.className = 'description tptn-js-message';
+				message.style.color = '#9B0800';
+				message.textContent = messageText;
+				container.appendChild(message);
+			} else if (existingMessage.textContent !== messageText) {
+				existingMessage.textContent = messageText;
+			}
+		}
 
 		function updateFields() {
 			var selectedStyle = styleSelect.value;
-			var config = disableConfig[selectedStyle];
+			var postThumbOptions = document.querySelectorAll('input[name="tptn_settings[post_thumb_op]"]');
 
-			allTargets.forEach(function (target) {
-				var isDisabled = config && -1 !== config.targets.indexOf(target);
-				var selector = 'input[name="tptn_settings[' + target + ']"]';
-				var elements = document.querySelectorAll(selector);
+			// Update the inline message first.
+			updateMessage(selectedStyle);
 
-				if (elements.length === 0) {
-					return;
-				}
-
-				var container = elements[0].closest('td');
-				if (!container) {
-					return;
-				}
-
-				var existingMessage = container.querySelector('.tptn-js-message');
-
-				if (isDisabled) {
-					elements.forEach(function (el) {
-						el.disabled = true;
-					});
-
-					if (!existingMessage) {
-						var message = document.createElement('p');
-						message.className = 'description tptn-js-message';
-						message.style.color = '#9B0800';
-						message.textContent = strings[config.messageKey] || '';
-						container.appendChild(message);
-					} else if (existingMessage.textContent !== (strings[config.messageKey] || '')) {
-						existingMessage.textContent = strings[config.messageKey] || '';
-					}
-				} else {
-					elements.forEach(function (el) {
-						el.disabled = false;
-					});
-
-					if (existingMessage) {
-						existingMessage.remove();
-					}
-				}
+			// Reset all radios to enabled, then re-disable as needed.
+			postThumbOptions.forEach(function (el) {
+				el.disabled = false;
 			});
 
 			// Special handling for left/grid thumbs: restrict post_thumb_op to inline or thumbs_only.
 			if ('left_thumbs' === selectedStyle || 'grid_thumbs' === selectedStyle) {
 				var allowed = ['inline', 'thumbs_only'];
 				var currentChecked = document.querySelector('input[name="tptn_settings[post_thumb_op]"]:checked');
-				if (!currentChecked || -1 === allowed.indexOf(currentChecked.value)) {
+				var needsFallback = !currentChecked || -1 === allowed.indexOf(currentChecked.value);
+
+				postThumbOptions.forEach(function (el) {
+					if (-1 === allowed.indexOf(el.value)) {
+						el.disabled = true;
+					}
+				});
+
+				if (needsFallback) {
 					var inlineRadio = document.querySelector('input[name="tptn_settings[post_thumb_op]"][value="inline"]');
 					if (inlineRadio) {
 						inlineRadio.checked = true;
@@ -117,6 +113,10 @@ jQuery(document).ready(function ($) {
 
 			// Special handling for text_only: force post_thumb_op to text_only.
 			if ('text_only' === selectedStyle) {
+				postThumbOptions.forEach(function (el) {
+					el.disabled = true;
+				});
+
 				var textOnlyRadio = document.querySelector('input[name="tptn_settings[post_thumb_op]"][value="text_only"]');
 				if (textOnlyRadio) {
 					textOnlyRadio.checked = true;
