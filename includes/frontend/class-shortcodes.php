@@ -62,6 +62,7 @@ class Shortcodes {
 
 		$atts = shortcode_atts(
 			array_merge(
+				\tptn_settings_defaults(),
 				$tptn_settings,
 				$wp_query_args,
 				$default_atts
