@@ -191,6 +191,16 @@ class Tools_Page {
 			}
 		}
 
+		/* Fix cron schedules */
+		if ( isset( $_POST['tptn_fix_crons'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+			$result = self::fix_crons();
+			if ( is_wp_error( $result ) ) {
+				add_settings_error( 'tptn-notices', '', implode( ' ', array_map( 'esc_html', $result->get_error_messages() ) ), 'error' );
+			} else {
+				add_settings_error( 'tptn-notices', '', esc_html( $result ), 'updated' );
+			}
+		}
+
 		ob_start();
 		?>
 	<div class="wrap">
@@ -238,7 +248,19 @@ class Tools_Page {
 							<button name="tptn_sync_funnel" type="submit" id="tptn_sync_funnel" class="button button-secondary"><?php esc_attr_e( 'Sync Funnel Now', 'top-10' ); ?></button>
 						</p>
 						<p class="description">
-							<?php esc_html_e( 'Drain the visits funnel into the count tables immediately. This is equivalent to running the 5-minute aggregation cron job.', 'top-10' ); ?>
+							<?php esc_html_e( 'Drain the visits funnel into the count tables immediately. This is equivalent to running the aggregation cron job.', 'top-10' ); ?>
+						</p>
+					</div>
+				</div>
+
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Fix Cron Schedules', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p>
+							<button name="tptn_fix_crons" type="submit" id="tptn_fix_crons" class="button button-secondary"><?php esc_attr_e( 'Fix Cron Schedules', 'top-10' ); ?></button>
+						</p>
+						<p class="description">
+							<?php esc_html_e( 'Clears and reschedules the Top 10 cron jobs (maintenance and aggregation). Use this if the status above shows a job as not scheduled or if your error log reports cron reschedule errors for the Top 10 hooks.', 'top-10' ); ?>
 						</p>
 					</div>
 				</div>
@@ -411,6 +433,89 @@ class Tools_Page {
 		}
 
 		return $errors->has_errors() ? $errors : true;
+	}
+
+	/**
+	 * Clear and reschedule the Top 10 cron jobs.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return string|\WP_Error Success message or WP_Error if a job could not be rescheduled.
+	 */
+	public static function fix_crons() {
+		$errors   = new \WP_Error();
+		$messages = array();
+		$success  = true;
+
+		if ( self::clear_scheduled_hook_or_error( 'tptn_cron_hook', $errors ) ) {
+			if ( tptn_get_option( 'cron_on' ) ) {
+				Cron::enable_run(
+					(int) tptn_get_option( 'cron_hour' ),
+					(int) tptn_get_option( 'cron_min' ),
+					tptn_get_option( 'cron_recurrence' )
+				);
+				if ( wp_next_scheduled( 'tptn_cron_hook' ) ) {
+					$messages[] = __( 'Maintenance cron has been rescheduled.', 'top-10' );
+				} else {
+					$errors->add( 'tptn_cron_hook', __( 'The maintenance cron could not be rescheduled as the cron event list could not be saved.', 'top-10' ) );
+					$success = false;
+				}
+			} else {
+				$messages[] = __( 'Maintenance cron is disabled in the settings and was left unscheduled.', 'top-10' );
+			}
+		} else {
+			$success = false;
+		}
+
+		if ( self::clear_scheduled_hook_or_error( 'tptn_aggregation_cron_hook', $errors ) ) {
+			Cron::enable_aggregation_run();
+			if ( wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
+				$messages[] = __( 'Aggregation cron has been rescheduled.', 'top-10' );
+			} else {
+				$errors->add( 'tptn_aggregation_cron_hook', __( 'The aggregation cron could not be rescheduled as the cron event list could not be saved. Check for object cache or database issues.', 'top-10' ) );
+				$success = false;
+			}
+		} else {
+			$success = false;
+		}
+
+		// Only drop the previously recorded WP-Cron errors once both jobs are confirmed rebuilt (or intentionally left off).
+		if ( $success ) {
+			Cron::clear_reschedule_errors();
+		}
+
+		return $errors->has_errors() ? $errors : implode( ' ', $messages );
+	}
+
+	/**
+	 * Clear a scheduled hook, surfacing any WP_Error from WordPress core instead of silently ignoring it.
+	 *
+	 * If the existing event cannot be cleared, the caller must not attempt to reschedule it: the stale
+	 * event would still satisfy wp_next_scheduled(), making a broken cron write look like a successful repair.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string    $hook   Hook name to clear.
+	 * @param \WP_Error $errors Error collector to append to on failure.
+	 * @return bool True if the hook was cleared (or had nothing scheduled), false on failure.
+	 */
+	private static function clear_scheduled_hook_or_error( $hook, \WP_Error $errors ) {
+		$result = wp_clear_scheduled_hook( $hook, array(), true );
+
+		if ( is_wp_error( $result ) ) {
+			$errors->add(
+				$hook,
+				sprintf(
+					/* translators: 1: Hook name, 2: Error message from WordPress core. */
+					__( 'Could not clear the existing schedule for %1$s: %2$s', 'top-10' ),
+					$hook,
+					$result->get_error_message()
+				)
+			);
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -592,6 +697,21 @@ class Tools_Page {
 							</span>
 						<?php else : ?>
 							<span style="color: #8B0000;"><?php esc_html_e( 'Not scheduled', 'top-10' ); ?></span>
+						<?php endif; ?>
+						<?php
+						$reschedule_error = Cron::get_reschedule_error( $hook );
+						if ( $reschedule_error ) :
+							?>
+							<br><span class="description" style="color: #8B0000;">
+								<?php
+								printf(
+									/* translators: 1: Error message from WP-Cron, 2: Human-readable time difference. */
+									esc_html__( 'WP-Cron reported an error rescheduling this job %2$s ago: %1$s', 'top-10' ),
+									esc_html( $reschedule_error['message'] ),
+									esc_html( human_time_diff( $reschedule_error['time'] ) )
+								);
+								?>
+							</span>
 						<?php endif; ?>
 					</td>
 				</tr>

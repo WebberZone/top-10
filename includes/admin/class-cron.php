@@ -33,6 +33,20 @@ class Cron {
 	private bool $aggregation_cron_interval_changed = false;
 
 	/**
+	 * Transient key prefix used to record core cron reschedule failures for our hooks.
+	 *
+	 * @since 4.4.0
+	 */
+	private const RESCHEDULE_ERROR_TRANSIENT_PREFIX = 'tptn_cron_reschedule_error_';
+
+	/**
+	 * Hooks that this class schedules and should track reschedule errors for.
+	 *
+	 * @since 4.4.0
+	 */
+	private const TRACKED_HOOKS = array( 'tptn_cron_hook', 'tptn_aggregation_cron_hook' );
+
+	/**
 	 * Initialize the class.
 	 */
 	public function __construct() {
@@ -40,6 +54,8 @@ class Cron {
 		Hook_Registry::add_action( 'tptn_aggregation_cron_hook', array( $this, 'run_aggregation' ) );
 		Hook_Registry::add_action( 'admin_init', array( $this, 'check_aggregation_cron' ) );
 		Hook_Registry::add_action( 'admin_notices', array( $this, 'aggregation_cron_missing_notice' ) );
+		Hook_Registry::add_action( 'cron_reschedule_event_error', array( $this, 'log_reschedule_error' ), 10, 2 );
+		Hook_Registry::add_action( 'cron_unschedule_event_error', array( $this, 'log_unschedule_error' ), 10, 2 );
 	}
 
 	/**
@@ -219,6 +235,108 @@ class Cron {
 				</p>
 			</div>
 			<?php
+		}
+
+		foreach ( self::TRACKED_HOOKS as $hook ) {
+			$error = self::get_reschedule_error( $hook );
+			if ( ! $error ) {
+				continue;
+			}
+			?>
+			<div class="notice notice-warning is-dismissible">
+				<p>
+					<?php
+					printf(
+						/* translators: 1: Hook name, 2: Error message, 3: Human-readable time difference. */
+						esc_html__( 'Top 10: WP-Cron reported an error rescheduling %1$s: %2$s (%3$s ago). Use the "Fix Cron Schedules" tool on the Top 10 Tools page if the job stops running.', 'top-10' ),
+						'<code>' . esc_html( $hook ) . '</code>',
+						esc_html( $error['message'] ),
+						esc_html( human_time_diff( $error['time'] ) )
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Record a core WP-Cron reschedule failure for one of our hooks.
+	 *
+	 * Fired from wp-cron.php when the real cron runner fails to persist the
+	 * next occurrence of a recurring event (`_set_cron_array()` failure).
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param mixed  $result Expected to be a WP_Error when core reports a failure.
+	 * @param string $hook   Hook name the error occurred for.
+	 */
+	public function log_reschedule_error( $result, $hook ) {
+		if ( ! in_array( $hook, self::TRACKED_HOOKS, true ) || ! is_wp_error( $result ) ) {
+			return;
+		}
+
+		self::set_reschedule_error( $hook, $result );
+	}
+
+	/**
+	 * Record a core WP-Cron unschedule failure for one of our hooks.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param mixed  $result Expected to be a WP_Error when core reports a failure.
+	 * @param string $hook   Hook name the error occurred for.
+	 */
+	public function log_unschedule_error( $result, $hook ) {
+		if ( ! in_array( $hook, self::TRACKED_HOOKS, true ) || ! is_wp_error( $result ) ) {
+			return;
+		}
+
+		self::set_reschedule_error( $hook, $result );
+	}
+
+	/**
+	 * Store the last cron scheduling error for a hook.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string    $hook   Hook name.
+	 * @param \WP_Error $result Error returned by WordPress core.
+	 */
+	private static function set_reschedule_error( $hook, $result ) {
+		set_transient(
+			self::RESCHEDULE_ERROR_TRANSIENT_PREFIX . $hook,
+			array(
+				'code'    => $result->get_error_code(),
+				'message' => $result->get_error_message(),
+				'time'    => time(),
+			),
+			WEEK_IN_SECONDS
+		);
+	}
+
+	/**
+	 * Retrieve the last recorded cron scheduling error for a hook, if any.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string $hook Hook name.
+	 * @return array{code: string, message: string, time: int}|false Error data, or false if none recorded.
+	 */
+	public static function get_reschedule_error( $hook ) {
+		$error = get_transient( self::RESCHEDULE_ERROR_TRANSIENT_PREFIX . $hook );
+
+		return is_array( $error ) ? $error : false;
+	}
+
+	/**
+	 * Clear the recorded cron scheduling errors for all tracked hooks.
+	 *
+	 * @since 4.4.0
+	 */
+	public static function clear_reschedule_errors() {
+		foreach ( self::TRACKED_HOOKS as $hook ) {
+			delete_transient( self::RESCHEDULE_ERROR_TRANSIENT_PREFIX . $hook );
 		}
 	}
 }
