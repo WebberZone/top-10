@@ -48,13 +48,28 @@ CLAUDE.md
 AGENTS.md
 EOF
 
-# Copy vendor/freemius (manually bundled SDK)
+# Copy required vendor dependencies (everything in vendor/ is excluded above,
+# so production runtime deps must be copied back in explicitly). Dev-only files
+# such as .github workflow folders are stripped from the copies.
 echo "Copying vendor dependencies..."
+mkdir -p "$TEMP_DIR/vendor"
+
+# Freemius SDK (manually bundled).
 if [ -d "vendor/freemius" ]; then
-    mkdir -p "$TEMP_DIR/vendor"
-    cp -r vendor/freemius "$TEMP_DIR/vendor/"
+    rsync -a --exclude='.github' --exclude='.git*' vendor/freemius "$TEMP_DIR/vendor/"
 else
     echo "Warning: vendor/freemius directory not found. Freemius SDK will be missing."
+fi
+
+# Crawler-Detect (bot detection; loaded via a direct require_once, not the
+# Composer autoloader). Only the runtime src/ is needed, not raw/, export.php,
+# tests, or CI config.
+if [ -d "vendor/jaybizzle/crawler-detect/src" ]; then
+    mkdir -p "$TEMP_DIR/vendor/jaybizzle/crawler-detect"
+    rsync -a vendor/jaybizzle/crawler-detect/src "$TEMP_DIR/vendor/jaybizzle/crawler-detect/"
+    cp vendor/jaybizzle/crawler-detect/LICENSE "$TEMP_DIR/vendor/jaybizzle/crawler-detect/"
+else
+    echo "Warning: vendor/jaybizzle/crawler-detect/src directory not found. Bot detection will be degraded."
 fi
 
 # Create zip

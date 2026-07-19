@@ -190,6 +190,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Checkbox settings now display as toggle switches.
 	* Settings that have been changed from their default value are marked with an indicator dot, with a legend below the buttons. The default value is also displayed below each setting's description.
 	* Admin styles and scripts are now versioned with the plugin version so browsers reliably pick up changes after an update.
+	* Bot/crawler detection (used by the "Do not track bots" tracker setting) now uses the actively maintained Crawler-Detect library for broader, more accurate coverage, alongside the existing built-in pattern list.
 
 * Fixed:
 	* Admin banner no longer causes a horizontal scrollbar on the plugin's admin pages.
@@ -198,6 +199,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Left thumbnail style no longer stacks the thumbnail above the text in narrow containers such as sidebar widgets; it now stays side by side unless there genuinely isn't room.
 	* New "Fix Cron Schedules" tool under Top 10 » Tools to clear and reschedule the maintenance and aggregation cron jobs if they stop running.
 	* The Tools page and an admin notice now surface WP-Cron scheduling errors (e.g. "The cron event list could not be saved") directly in the dashboard instead of only appearing in the PHP error log.
+	* [Pro] Fast and High-traffic trackers now respect the "Do not track bots" setting; previously they recorded views for bots and other automated user agents regardless of this setting.
 
 = 4.3.2 =
 
