@@ -7,6 +7,8 @@
 
 namespace WebberZone\Top_Ten\Util;
 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -400,8 +402,13 @@ class Helpers {
 	/**
 	 * Check if the user agent matches known bots.
 	 *
+	 * Uses the jaybizzle/crawler-detect library for the primary check, and falls back to
+	 * a filterable list of patterns for bots that library doesn't recognise (or if the
+	 * library isn't available at all).
+	 *
 	 * @since 3.3.0
-	 * @link https://github.com/janusman/robot-user-agents
+	 * @since 4.4.0 Switched to jaybizzle/crawler-detect for the primary detection.
+	 * @link https://github.com/JayBizzle/Crawler-Detect
 	 *
 	 * @return bool True if the user agent matches a known bot pattern, false otherwise.
 	 */
@@ -410,9 +417,46 @@ class Helpers {
 			return false;
 		}
 
+		if ( class_exists( CrawlerDetect::class ) ) {
+			$crawler_detect = new CrawlerDetect();
+
+			if ( $crawler_detect->isCrawler() ) {
+				return true;
+			}
+		}
+
 		$user_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
 
-		$bot_user_agents = array(
+		/**
+		 * Filter the list of known bot user agent patterns to check against.
+		 *
+		 * Defaults to a bundled list, used as a fallback alongside (or instead of, if the
+		 * jaybizzle/crawler-detect library failed to load) the library's own detection.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param array $bot_user_agents List of bot user agent patterns.
+		 */
+		$bot_user_agents = apply_filters( 'tptn_bots', self::get_default_bot_user_agents() );
+
+		foreach ( $bot_user_agents as $bot_user_agent ) {
+			if ( preg_match( '/' . preg_quote( strtolower( $bot_user_agent ), '/' ) . '/i', strtolower( $user_agent ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Default list of bot user agent patterns, used as a fallback for is_bot().
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return array List of bot user agent patterns.
+	 */
+	protected static function get_default_bot_user_agents() {
+		return array(
 			'11A465',
 			'AddThis.com',
 			'AdsBot-Google',
@@ -592,23 +636,6 @@ class Helpers {
 			'ZoominfoBot',
 			'ZoomSpider',
 		);
-
-		/**
-		 * Filter the list of known bots.
-		 *
-		 * @since 3.3.0
-		 *
-		 * @param array $bot_user_agents List of known bots.
-		 */
-		$bot_user_agent = apply_filters( 'tptn_bots', $bot_user_agents );
-
-		foreach ( $bot_user_agents as $bot_user_agent ) {
-			if ( preg_match( '/' . preg_quote( strtolower( $bot_user_agent ), '/' ) . '/i', strtolower( $user_agent ) ) ) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

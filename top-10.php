@@ -176,6 +176,17 @@ if ( ! function_exists( __NAMESPACE__ . '\\autoload' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/autoloader.php';
 }
 
+// Load the CrawlerDetect library (bundled directly; not via the Composer autoloader).
+$tptn_crawler_detect_src = plugin_dir_path( __FILE__ ) . 'vendor/jaybizzle/crawler-detect/src/';
+if ( ! class_exists( '\Jaybizzle\CrawlerDetect\CrawlerDetect' ) && is_dir( $tptn_crawler_detect_src ) ) {
+	require_once $tptn_crawler_detect_src . 'Fixtures/AbstractProvider.php';
+	require_once $tptn_crawler_detect_src . 'Fixtures/Crawlers.php';
+	require_once $tptn_crawler_detect_src . 'Fixtures/Exclusions.php';
+	require_once $tptn_crawler_detect_src . 'Fixtures/Headers.php';
+	require_once $tptn_crawler_detect_src . 'CrawlerDetect.php';
+}
+unset( $tptn_crawler_detect_src );
+
 
 if ( ! function_exists( __NAMESPACE__ . '\wz_top_ten' ) ) {
 	/**
