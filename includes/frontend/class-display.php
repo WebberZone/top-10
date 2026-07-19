@@ -193,6 +193,10 @@ class Display {
 					$output .= ' <span class="tptn_list_count">' . self::get_list_count( $args, $result, $visits ) . '</span>';
 				}
 
+				if ( ! empty( $args['show_ratings'] ) ) {
+					$output .= self::get_the_ratings( $args, $result );
+				}
+
 				$tptn_list = '';
 				/**
 				 * Filter to add content to the end of each item in the list.
@@ -895,6 +899,38 @@ class Display {
 		 * @param   array   $args             Array of arguments.
 		 */
 		return apply_filters( 'tptn_list_count', $tptn_list_count, $visits, $result, $args );
+	}
+
+
+	/**
+	 * Returns the WP-PostRatings rating of each list item.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param   array    $args   Array of arguments. `show_ratings` can be `stars` (WP-PostRatings template) or `score` (average rating number).
+	 * @param   \WP_Post $result Object of the current post result.
+	 * @return  string Formatted rating markup. Empty string if WP-PostRatings is not active.
+	 */
+	public static function get_the_ratings( $args, $result ) {
+
+		$ratings = '';
+
+		if ( 'score' === $args['show_ratings'] && function_exists( 'expand_ratings_template' ) ) {
+			$ratings = ' <span class="tptn_ratings">' . expand_ratings_template( '%RATINGS_AVERAGE%', $result->ID ) . '</span>';
+		} elseif ( function_exists( 'the_ratings_results' ) ) {
+			$ratings = ' <span class="tptn_ratings">' . the_ratings_results( $result->ID ) . '</span>';
+		}
+
+		/**
+		 * Filter the WP-PostRatings rating markup of each list item.
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param   string   $ratings Formatted rating markup. Empty string if WP-PostRatings is not active.
+		 * @param   \WP_Post $result  Object of the current post result.
+		 * @param   array    $args    Array of arguments.
+		 */
+		return apply_filters( 'tptn_ratings', $ratings, $result, $args );
 	}
 
 

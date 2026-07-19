@@ -754,6 +754,18 @@ class Settings {
 				'type'    => 'checkbox',
 				'default' => false,
 			),
+			'show_ratings'                  => array(
+				'id'      => 'show_ratings',
+				'name'    => esc_html__( 'Show WP-PostRatings rating', 'top-10' ),
+				'desc'    => esc_html__( 'Display the rating from the WP-PostRatings plugin with each post in the list. This option only takes effect when the WP-PostRatings plugin is active. The Star rating output, including the text shown alongside the stars, comes from the "Ratings Voted Text" template which you can edit under Ratings » Ratings Templates.', 'top-10' ),
+				'type'    => 'select',
+				'default' => '',
+				'options' => array(
+					''      => esc_html__( 'Do not display', 'top-10' ),
+					'stars' => esc_html__( 'Star rating', 'top-10' ),
+					'score' => esc_html__( 'Average score, e.g. 4.25', 'top-10' ),
+				),
+			),
 			'title_length'                  => array(
 				'id'      => 'title_length',
 				'name'    => esc_html__( 'Limit post title length (in characters)', 'top-10' ),
