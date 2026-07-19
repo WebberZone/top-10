@@ -170,6 +170,12 @@ function tptn_delete_option( $key = '' ) {
  */
 function tptn_settings_defaults() {
 
+	static $options = null;
+
+	if ( null !== $options ) {
+		return $options;
+	}
+
 	$options       = array();
 	$default_types = array(
 		'color',
@@ -225,7 +231,21 @@ function tptn_settings_defaults() {
 	 *
 	 * @param array   $options Default settings.
 	 */
-	return apply_filters( 'tptn_settings_defaults', $options );
+	$options = apply_filters( 'tptn_settings_defaults', $options );
+
+	return $options;
+}
+
+/**
+ * Get the saved settings merged with the default settings, so newly-registered settings
+ * that are not yet present in the saved `tptn_settings` option still resolve to a value.
+ *
+ * @since 4.4.0
+ *
+ * @return array Settings merged with defaults.
+ */
+function tptn_get_settings_with_defaults() {
+	return array_merge( tptn_settings_defaults(), tptn_get_settings() );
 }
 
 
