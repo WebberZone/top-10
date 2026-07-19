@@ -87,8 +87,7 @@ class Blocks {
 		$attributes['extra_class'] = isset( $attributes['className'] ) ? esc_attr( $attributes['className'] ) : '';
 
 		$defaults = array_merge(
-			\tptn_settings_defaults(),
-			\tptn_get_settings(),
+			\tptn_get_settings_with_defaults(),
 			array(
 				'is_block' => 1,
 			)

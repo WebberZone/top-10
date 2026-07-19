@@ -99,6 +99,23 @@ class Display {
 			return '';
 		}
 
+		/**
+		 * Pre-filter the popular posts output.
+		 *
+		 * Return a non-null value to short-circuit the default rendering, e.g. to
+		 * replace it with a lazy load placeholder. Runs for all display methods.
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param string|null   $pre  Pre-rendered output. Default null.
+		 * @param array         $args Fully parsed arguments array.
+		 * @param \WP_Post|null $post Current post object.
+		 */
+		$pre = apply_filters( 'tptn_pre_pop_posts', null, $args, $post );
+		if ( null !== $pre ) {
+			return (string) $pre;
+		}
+
 		// Check if the cache is enabled and if the output exists. If so, return the output.
 		if ( $args['cache'] ) {
 			$cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( $args );

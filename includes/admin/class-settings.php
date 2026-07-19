@@ -251,6 +251,14 @@ class Settings {
 				'type'    => 'text',
 				'default' => HOUR_IN_SECONDS,
 			),
+			'lazy_load'               => array(
+				'id'      => 'lazy_load',
+				'name'    => esc_html__( 'Lazy load popular posts', 'top-10' ),
+				'desc'    => esc_html__( 'Load popular posts using JavaScript when the list is about to enter the viewport. This speeds up initial page loads and lets full-page caches serve fresh lists. Search engines may not index links loaded this way. Applies to content, shortcodes, widgets and the Popular Posts block. Use lazy_load="0" in the shortcode or block attributes to disable it per instance. Not applied on feeds or AMP pages.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => false,
+				'pro'     => true,
+			),
 			'uninstall_clean_options' => array(
 				'id'      => 'uninstall_clean_options',
 				'name'    => esc_html__( 'Delete options on uninstall', 'top-10' ),
