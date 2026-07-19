@@ -194,6 +194,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
 	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
 	* Left thumbnail style no longer stacks the thumbnail above the text in narrow containers such as sidebar widgets; it now stays side by side unless there genuinely isn't room.
+	* New "Fix Cron Schedules" tool under Top 10 » Tools to clear and reschedule the maintenance and aggregation cron jobs if they stop running.
+	* The Tools page and an admin notice now surface WP-Cron scheduling errors (e.g. "The cron event list could not be saved") directly in the dashboard instead of only appearing in the PHP error log.
 
 = 4.3.2 =
 
