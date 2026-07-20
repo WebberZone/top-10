@@ -175,7 +175,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.4.0 =
 
-*Release Date - TBD*
+*Release Date - 20 July 2026*
 
 * Features:
 	* New "Features" tab under Settings: turn off plugin features that you do not use and their code will not be loaded at all. You can toggle the Popular Posts and Post Count blocks, popular posts feeds, legacy widgets, Query block, Featured Image block, Popular Posts Pro block, Fast and High-traffic trackers, Pro dashboard widgets, and Popular Authors.
