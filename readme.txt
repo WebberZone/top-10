@@ -179,7 +179,6 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Features:
 	* New "Features" tab under Settings: turn off plugin features that you do not use and their code will not be loaded at all. You can toggle the Popular Posts and Post Count blocks, popular posts feeds, legacy widgets, Query block, Featured Image block, Popular Posts Pro block, Fast and High-traffic trackers, Pro dashboard widgets, and Popular Authors.
-	* New "Tracking method" setting under Settings » Counter/Tracker » Tracker settings: choose between Funnel tracking (default; views are buffered and merged into the count tables every few minutes) and Legacy tracking (views are written directly to the count tables on every visit, as in versions before 4.3). Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Note that Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 	* New "Number format style" setting under Settings » Counter/Tracker » Counter settings: choose Abbreviated to display large view counts in a compact form, e.g. 1.2k or 3.4M, wherever counts are displayed. The default remains the full locale-formatted number. It can be overridden per instance with the `number_format_style` shortcode/block attribute, and the suffixes and rounding can be customised via the `tptn_number_format_abbreviations` and `tptn_abbreviate_number_decimals` filters.
 	* WP-PostRatings integration: new "Show WP-PostRatings rating" setting under Settings » Posts list displays each post's rating next to it in the popular posts list, either as the star rating rendered using the WP-PostRatings plugin's own templates or as the average score number. Off by default and only takes effect when the free WP-PostRatings plugin is active. It can be overridden per instance with the `show_ratings` shortcode/block attribute (`stars` or `score`), and the markup can be customised via the `tptn_ratings` filter.
 	* [Pro] New "Lazy load popular posts" setting under Settings » General: load popular posts lists via JavaScript only when they are about to enter the viewport instead of rendering them inline, so full-page caching plugins can serve a page without embedding a live popular-posts query. Applies to content, shortcodes, widgets, and the Popular Posts block. Off by default. Override it per instance with the `lazy_load` shortcode/block attribute, e.g. `lazy_load="0"`. Not applied on feeds, admin, AJAX, cron, WP-CLI, or AMP pages.
@@ -194,12 +193,25 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Fixed:
 	* Admin banner no longer causes a horizontal scrollbar on the plugin's admin pages.
-	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
-	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
 	* Left thumbnail style no longer stacks the thumbnail above the text in narrow containers such as sidebar widgets; it now stays side by side unless there genuinely isn't room.
 	* New "Fix Cron Schedules" tool under Top 10 » Tools to clear and reschedule the maintenance and aggregation cron jobs if they stop running.
 	* The Tools page and an admin notice now surface WP-Cron scheduling errors (e.g. "The cron event list could not be saved") directly in the dashboard instead of only appearing in the PHP error log.
 	* [Pro] Fast and High-traffic trackers now respect the "Do not track bots" setting; previously they recorded views for bots and other automated user agents regardless of this setting.
+
+= 4.3.4 =
+
+*Release Date - 13 July 2026*
+
+* Fixed:
+	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
+	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
+
+= 4.3.3 =
+
+*Release Date - 12 July 2026*
+
+* Features:
+	* New "Tracking method" setting under Settings » Counter/Tracker » Tracker settings: choose between Funnel tracking (default; views are buffered and merged into the count tables every few minutes) and Legacy tracking (views are written directly to the count tables on every visit, as in versions before 4.3). Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Note that Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 
 = 4.3.2 =
 
