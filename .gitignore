@@ -1,6 +1,7 @@
-# Ignore entire vendor except Freemius
+# Ignore vendor development dependencies and binaries, but allow production dependencies
 /vendor/*
 !/vendor/freemius/
+!/vendor/jaybizzle/
 
 # Tooling
 /phpcompat-tools/
