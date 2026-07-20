@@ -111,14 +111,34 @@
 					$is_premium = false;
 				}
 
-                // Override the checkout context with the add-on's purchase details so the checkout flow is initialized for the selected add-on instead of the parent product.
+				/**
+				 * BEGIN TOP 10 PRO MANUAL PATCH (WebberZone)
+				 * Reason: Without this override, the checkout context is initialized for the
+				 * parent product's plan instead of the selected add-on's, so add-on checkout
+				 * lands on the wrong plan/pricing. Each overridden value is validated the same
+				 * way the parent-product plan_id is validated above (line ~89) before being
+				 * accepted, so a malformed/forged request value can't reach the checkout context.
+				 * This block must be re-applied if vendor/freemius is ever manually re-vendored
+				 * from a newer Freemius SDK release (it is not composer-managed).
+				 */
 				$context_params['plugin_id'] = $plugin_id;
 
-				foreach ( array( 'plan_id', 'pricing_id', 'billing_cycle', 'is_trial' ) as $param ) {
-					if ( fs_request_has( $param ) ) {
-						$context_params[ $param ] = fs_request_get( $param );
-					}
+				if ( fs_request_has( 'plan_id' ) && FS_Plugin_Plan::is_valid_id( fs_request_get( 'plan_id' ) ) ) {
+					$context_params['plan_id'] = fs_request_get( 'plan_id' );
 				}
+
+				if ( fs_request_has( 'pricing_id' ) && FS_Pricing::is_valid_id( fs_request_get( 'pricing_id' ) ) ) {
+					$context_params['pricing_id'] = fs_request_get( 'pricing_id' );
+				}
+
+				if ( fs_request_has( 'billing_cycle' ) && in_array( fs_request_get( 'billing_cycle' ), array( WP_FS__PERIOD_MONTHLY, WP_FS__PERIOD_ANNUALLY, WP_FS__PERIOD_LIFETIME ), true ) ) {
+					$context_params['billing_cycle'] = fs_request_get( 'billing_cycle' );
+				}
+
+				if ( fs_request_has( 'is_trial' ) ) {
+					$context_params['is_trial'] = fs_request_get_bool( 'is_trial' );
+				}
+				// END TOP 10 PRO MANUAL PATCH (WebberZone)
 			}
 
 			// Get site context secure params.
