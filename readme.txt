@@ -177,6 +177,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 *Release Date - 20 July 2026*
 
+Release post: [https://webberzone.com/announcements/top-10-v4-4-0/](https://webberzone.com/announcements/top-10-v4-4-0/)
+
 * Features:
 	* New "Features" tab under Settings: turn off plugin features that you do not use and their code will not be loaded at all. You can toggle the Popular Posts and Post Count blocks, popular posts feeds, legacy widgets, Query block, Featured Image block, Popular Posts Pro block, Fast and High-traffic trackers, Pro dashboard widgets, and Popular Authors.
 	* New "Number format style" setting under Settings » Counter/Tracker » Counter settings: choose Abbreviated to display large view counts in a compact form, e.g. 1.2k or 3.4M, wherever counts are displayed. The default remains the full locale-formatted number. It can be overridden per instance with the `number_format_style` shortcode/block attribute, and the suffixes and rounding can be customised via the `tptn_number_format_abbreviations` and `tptn_abbreviate_number_decimals` filters.
