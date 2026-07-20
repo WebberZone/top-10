@@ -175,12 +175,11 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.4.0 =
 
-*Release Date - 20 July 2026*
-
-Release post: [https://webberzone.com/announcements/top-10-v4-4-0/](https://webberzone.com/announcements/top-10-v4-4-0/)
+*Release Date - 21 July 2026*
 
 * Features:
 	* New "Features" tab under Settings: turn off plugin features that you do not use and their code will not be loaded at all. You can toggle the Popular Posts and Post Count blocks, popular posts feeds, legacy widgets, Query block, Featured Image block, Popular Posts Pro block, Fast and High-traffic trackers, Pro dashboard widgets, and Popular Authors.
+	* New "Tracking method" setting under Settings » Counter/Tracker » Tracker settings: choose between Funnel tracking (default; views are buffered and merged into the count tables every few minutes) and Legacy tracking (views are written directly to the count tables on every visit, as in versions before 4.3). Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Note that Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 	* New "Number format style" setting under Settings » Counter/Tracker » Counter settings: choose Abbreviated to display large view counts in a compact form, e.g. 1.2k or 3.4M, wherever counts are displayed. The default remains the full locale-formatted number. It can be overridden per instance with the `number_format_style` shortcode/block attribute, and the suffixes and rounding can be customised via the `tptn_number_format_abbreviations` and `tptn_abbreviate_number_decimals` filters.
 	* WP-PostRatings integration: new "Show WP-PostRatings rating" setting under Settings » Posts list displays each post's rating next to it in the popular posts list, either as the star rating rendered using the WP-PostRatings plugin's own templates or as the average score number. Off by default and only takes effect when the free WP-PostRatings plugin is active. It can be overridden per instance with the `show_ratings` shortcode/block attribute (`stars` or `score`), and the markup can be customised via the `tptn_ratings` filter.
 	* [Pro] New "Lazy load popular posts" setting under Settings » General: load popular posts lists via JavaScript only when they are about to enter the viewport instead of rendering them inline, so full-page caching plugins can serve a page without embedding a live popular-posts query. Applies to content, shortcodes, widgets, and the Popular Posts block. Off by default. Override it per instance with the `lazy_load` shortcode/block attribute, e.g. `lazy_load="0"`. Not applied on feeds, admin, AJAX, cron, WP-CLI, or AMP pages.
@@ -188,6 +187,7 @@ Release post: [https://webberzone.com/announcements/top-10-v4-4-0/](https://webb
 * Improvements:
 	* The `[tptn_list]` shortcode now accepts all registered settings as attributes, including newly added settings that are not yet present in the saved settings.
 	* Redesigned settings page with vertical tab navigation, which is responsive and reverts to horizontal tabs on smaller screens. The settings page now opens on the Features tab.
+	* New search box above the settings tabs: type to instantly filter settings across all tabs. Matching settings are shown grouped by tab with the search term highlighted in their labels and descriptions, each tab displays a count of its matches, and clicking a tab scrolls to its results. You can also search by the internal setting key, e.g. `cache_time`. A single Save Changes bar replaces the per-tab buttons while searching, and the search is fully keyboard and screen reader accessible.
 	* Checkbox settings now display as toggle switches.
 	* Settings that have been changed from their default value are marked with an indicator dot, with a legend below the buttons. The default value is also displayed below each setting's description.
 	* Admin styles and scripts are now versioned with the plugin version so browsers reliably pick up changes after an update.
@@ -195,14 +195,128 @@ Release post: [https://webberzone.com/announcements/top-10-v4-4-0/](https://webb
 
 * Fixed:
 	* Admin banner no longer causes a horizontal scrollbar on the plugin's admin pages.
+	* Custom period label ("Daily" vs "Custom (N days)") on the Dashboard widget, Popular Posts submenu, and post list Views column now matches the data actually shown, instead of always following the site-wide Custom period setting.
+	* Post list Views column, and its sort order, now counts today only instead of the full Custom period range.
 	* Left thumbnail style no longer stacks the thumbnail above the text in narrow containers such as sidebar widgets; it now stays side by side unless there genuinely isn't room.
 	* New "Fix Cron Schedules" tool under Top 10 » Tools to clear and reschedule the maintenance and aggregation cron jobs if they stop running.
 	* The Tools page and an admin notice now surface WP-Cron scheduling errors (e.g. "The cron event list could not be saved") directly in the dashboard instead of only appearing in the PHP error log.
 	* [Pro] Fast and High-traffic trackers now respect the "Do not track bots" setting; previously they recorded views for bots and other automated user agents regardless of this setting.
 
-= Earlier versions =
+= 4.3.2 =
 
-For the changelog of earlier versions, please refer to the separate changelog.txt file or the [releases page on Github](https://github.com/webberzone/top-10/releases).
+*Release Date - 8 July 2026*
+
+* Improvements:
+	* Dynamic post counts now load more reliably and are faster in modern browsers.
+	* Enhanced time range labeling: Interface now dynamically shows "Daily" for 1-day periods or "Custom (N days)" for longer periods, making the UI more accurate based on actual settings.
+
+= 4.3.1 =
+
+*Release Date - 6 June 2026*
+
+* Improvements:
+	* Aggregation cron now runs every 2 minutes instead of 5 minutes for faster count updates.
+	* Sync Funnel now shows distinct error messages for an empty funnel, a lock conflict, and database failures (including the actual database error).
+	* Dashboard chart now formats large numbers with K/M abbreviations (e.g. 15,437 → 15.4K) and auto-hides overlapping bar labels.
+	* "Recreate Database Tables" in Tools now also recreates the visits funnel and visits log tables.
+	* [Pro] `wp top10 db recreate-tables` now accepts `--table=funnel` and `--table=log` in addition to `overall`, `daily`, and `all`.
+
+* Fixed:
+	* Sync Funnel on WordPress Playground (SQLite) incorrectly reported "another aggregation is in progress" due to unreliable SQLite detection; the `DATABASE_TYPE` constant is now checked first.
+	* Uninstalling the plugin no longer throws a fatal error when attempting to drop database tables; the path to the uninstaller was resolving one level above the plugin directory.
+	* "Recreate Database Tables" silently left the daily table missing due to a stale static cache in the table-installed check; all four tables are now recreated reliably.
+
+= 4.3.0 =
+
+*Release Date - 28 May 2026*
+
+* [Release announcement](https://webberzone.com/announcements/top-10-v4-3-0/)
+
+* New:
+	* Buffered visit tracking: page views are queued in a funnel table and aggregated every 5 minutes, reducing write contention on busy sites.
+	* [Pro] RSS/Atom feed views are now counted. Enable under Counter settings > Track feed views.
+	* [Pro] Dashboard At a Glance widget now shows views for the current hour and today.
+	* [Pro] Full `wp top10` WP-CLI suite: counts, database, cache, settings, cron, and popular posts commands. All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`.
+
+* Improvements:
+	* Scheduled maintenance deletes old daily rows in batches to prevent timeouts on large databases.
+	* New index on the daily table speeds up maintenance queries. Apply it to existing installs via Recreate Primary Key under Tools.
+
+* Fixed:
+	* Cache setting was referencing the wrong key, preventing posts from ever being cached.
+	* Database version was recorded before upgrade routines ran, causing upgrades to be silently skipped on re-activation.
+	* Daily queries now work on MySQL servers with ONLY_FULL_GROUP_BY enabled.
+	* Posts with identical counts now display in a consistent order when paginated.
+	* Daily counts now use the site's configured timezone instead of server time.
+	* Dashboard "Total visits" now matches the chart total rather than summing only the top 20 posts.
+	* Popular posts ordering no longer overridden by Post Types Order and similar plugins.
+	* Deactivation now clears both cron jobs and sets the settings option to not autoload.
+	* Removed incorrect `wpmu_drop_tables` filter that tried to drop network-wide tables on site deletion.
+
+= 4.2.3 =
+
+* Security:
+	* Hardened Settings API and metabox output escaping.
+
+* Improvements:
+	* Updated Freemius SDK to version 2.13.1.
+	* Updated Settings API assets and Tom Select handling.
+	* Refreshed translations and generated assets.
+
+* Fixes:
+	* Fixed metabox screen handling when `get_current_screen()` is unavailable.
+	* Fixed admin notices package tags.
+
+= 4.2.2 =
+
+* Modifications:
+	* Taxonomy Suggest script removed from Settings API. Metabox also uses Tom Select for the lookup of the category field in CRP Pro.
+
+* Fixes:
+	* CSS improvements for left-thumbs and grid-thumbs styles.
+
+= 4.2.1 =
+
+* Security:
+	* Fixed REST API permission checks to prevent unauthorized exposure of post passwords in edit context.
+
+* Fixes:
+	* Fixed a bug with the "Clear cache" button in the Tools page.
+	* Fixed thumbnail location restrictions to properly support Grid thumbnails style in addition to Left thumbnails.
+	* Improved JavaScript logic for style-based thumbnail location validation with better error handling and fallback mechanisms.
+
+= 4.2.0 =
+
+Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webberzone.com/announcements/top-10-v4-2-0/)
+
+* New:
+	* Settings wizard to guide initial configuration and review existing settings
+	* Network-wide dashboard with aggregated multisite statistics
+	* [Pro] High-traffic tracking mode with status validation panel
+	* [Pro] Copy settings between multisite network sites
+	* [Pro] Compact “Top 10 Views Overview” dashboard widget
+	* [Pro] Option to disable the Admin Bar menu
+	* [Pro] Maintenance setting to override data retention period
+
+* Improvements:
+	* [Pro] Improved dashboard chart bar click-through to open the Popular Posts screen filtered to that day
+	* Updated Settings API to version 2.7.1
+	* Improved media handler with recursion protection and more robust processing
+	* Media Handler now supports the FIFU WordPress plugin for featured image detection.
+	* Improved Tools page statistics display and caching
+	* Wrapped Import/Export and Tools sections in postbox containers for consistent UI
+
+* Developer / Internal:
+	* Refactored popular posts queries for improved performance and WordPress VIP compatibility
+	* Updated caching behaviour for dynamic exclusions
+	* Refactored database operations into a dedicated Database class
+	* Updated Freemius SDK to version 2.13.0
+
+* Fixes:
+	* Fixed `Top_Ten_Query` handling of the `date_query` argument
+	* Fixed activation redirects on single-site installs within multisite networks
+	* Fixed `exclude_current_post` behaviour when caching is enabled
+	* Fixed live-edit count updates in multisite statistics
 
 == Upgrade Notice ==
 
