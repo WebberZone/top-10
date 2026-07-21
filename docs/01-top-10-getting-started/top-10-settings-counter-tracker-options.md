@@ -36,6 +36,10 @@ This text is displayed when there are no hits for the post and it isn't a single
 
 Activating this option will convert the post counts into a <a href="https://developer.wordpress.org/reference/functions/number_format_i18n/" target="_blank" rel="noreferrer noopener" aria-label="number format based on the locale (opens in a new tab)">number format based on the locale</a>.
 
+### Number format style
+
+Select Abbreviated to display large view counts in a compact form, e.g. 1.2k or 3.4M, wherever counts are displayed. Full displays the complete number. Only applies when **Number format post count** is enabled.
+
 ### Start daily counts at midnight
 
 The daily counter displays visits starting at midnight. This option is enabled by default, similar to most standard counters. If you disable this option, you can use the hourly setting in the next option.
@@ -68,6 +72,10 @@ All tracker types share the same underlying recording mechanism: each page view 
 
 - **Fast Tracker** — a standalone PHP endpoint that loads a minimal WordPress environment, reducing server overhead per tracked visit.
 - **High-traffic Tracker** — bypasses WordPress entirely using a pre-generated config file. Requires generating the config from the Settings page before use.
+
+### Tracking method
+
+Funnel tracking buffers views in a staging table that is merged into the count tables by a background job every few minutes and is recommended for most sites. Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 
 ### Load tracker on all pages
 

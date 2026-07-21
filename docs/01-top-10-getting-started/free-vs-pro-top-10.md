@@ -41,9 +41,11 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Popular Posts Pro block (save/restore defaults) | ❌ | ✅ |
 | Pre-built block patterns (6 layouts) | ❌ | ✅ |
 | Grid Thumbs display style | ❌ | ✅ |
+| Lazy load popular posts lists | ❌ | ✅ |
 | RSS feed filtering by category or post type | ❌ | ✅ |
 | Restrict popular posts to specific taxonomy terms | ❌ | ✅ |
 | Per-post category inclusion (metabox) | ❌ | ✅ |
+| Exclude nested/parent categories when excluding a term | ❌ | ✅ |
 | **Admin & Dashboard** | | |
 | Statistics dashboard (daily and total) | ✅ | ✅ |
 | Admin columns with view counts | ✅ | ✅ |
