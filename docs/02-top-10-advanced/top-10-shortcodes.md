@@ -2,15 +2,15 @@
 slug: top-10-shortcodes
 title: "Top 10 shortcodes"
 products: [top-10]
-sections: [02-top-10-advanced]
-tags: [shortcode,top-10]
+sections: ["02-top-10-advanced"]
+tags: [shortcode, top-10]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2019/04/Shortcodes-in-Top-10-WordPress-plugin.webp"
 ---
 
 Top 10 has two shortcodes that you can use to display the count of the current post and a list of the popular posts.
 
-## \[tptn_views\]
+## [[tptn_views]]
 
 This will display the number of visits of the current post, page or custom post type. It takes the following optional attributes:
 
@@ -21,7 +21,7 @@ This will display the number of visits of the current post, page or custom post 
 
 You can wrap this shortcode in any HTML or within your text.
 
-## \[tptn_list\]
+## [[tptn_list]]
 
 This shortcode lets you insert the popular posts anywhere in your post content. It takes three main optional attributes:
 
@@ -45,5 +45,5 @@ In addition to these attributes, the shortcode can take all options as attribute
 - *post_thumb_op*: Location of the post thumbnail. Values include `inline`, `after`, `text_only` and `thumbs_only`
 - *exclude_post_ids*: Comma-separated list of IDs to exclude
 - *link_nofollow*: Add nofollow attribute to links. 1 or 0
-- *link_new_window*: Add \_blank attribute to links. 1 or 0
+- *link_new_window*: Add _blank attribute to links. 1 or 0
 - *include_cat_ids*: Comma-separated list of term_taxonomy_id – this can be both categories and custom taxonomies
