@@ -17,6 +17,10 @@ The **Popular Post list options** section contains a set of options that allow y
 <figcaption>Top 10 – Post list options</figcaption>
 </figure>
 
+## Use global settings in block *(Pro only)*
+
+If activated, the settings from this page are automatically inserted in the Popular Posts block. This also applies to existing blocks which do not have any attributes set if the post is edited.
+
 ## Number of popular posts to display
 
 Maximum number of posts that will be displayed in the list. This is a global setting and will used if you don't specify the number of posts in the widget or shortcode.
@@ -35,13 +39,33 @@ Top 10 will detect the various post types in your WordPress site and allow you t
 
 At least one option should be selected. This field can be overridden using a comma separated list of post types when using the manual display.
 
+## Exclude Front page and Posts page
+
+If you have designated specific pages for your Front page and Posts page via Settings > Reading, they will be tracked like any other page. Enable this option to exclude them from appearing in the popular posts lists. Note that tracking will still occur.
+
+## Exclude current post
+
+Enabling this will exclude the current post being browsed from being displayed in the popular posts list.
+
 ## Post/page IDs to exclude
 
 Enter a comma separated list of post, page or custom post type IDs. This is a global setting and will be excluded from all popular post lists.
 
 ## Exclude Categories
 
-Comma separated list of category slugs. The field above has an autocomplete so start typing in the starting letters and it will prompt you with options. Does not support tags or custom taxonomies.
+Comma separated list of category slugs. The field above has an autocomplete so start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.
+
+## Exclude category IDs
+
+Read-only field automatically populated based on the above input when the settings are saved. These might differ from the IDs visible in the Categories page, which uses the term_id. Top 10 uses the term_taxonomy_id, which is unique to this taxonomy.
+
+## Include parent categories *(Pro only)*
+
+Exclude popular posts from parent categories or all ancestors for nested categories: None, Only parent categories, or All ancestors.
+
+## Exclude on Categories
+
+Comma separated list of category slugs. Popular posts lists will not be displayed on pages/posts belonging to these categories. The field above has an autocomplete so start typing in the starting letters and it will prompt you with options. Does not support custom taxonomies.
 
 ## Heading of posts
 
