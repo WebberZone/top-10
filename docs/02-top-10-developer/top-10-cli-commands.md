@@ -2,10 +2,10 @@
 slug: top-10-cli-commands
 title: "WP-CLI commands in Top 10 Pro"
 products: [top-10]
-sections: [02-top-10-developer]
-tags: [top-10,wp-cli]
+sections: ["03-top-10-developer-docs"]
+tags: [top-10, wp-cli]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2026/05/Top10-CLI.webp"
 ---
 
 Top 10 Pro includes a full WP-CLI command suite so you can manage counts, database tables, cache, settings, and cron jobs directly from the terminal — without touching the WordPress admin.
@@ -20,7 +20,7 @@ All commands start with `wp top10`. Run any command with `--help` to see its ful
 ## Quick reference
 
 | Command group | What it does |
-|---|---|
+| --- | --- |
 | `wp top10 cache` | Manage the output cache |
 | `wp top10 counts` | View, set, reset, export, and import view counts |
 | `wp top10 cron` | Manage scheduled cron jobs |
@@ -34,7 +34,7 @@ All commands start with `wp top10`. Run any command with `--help` to see its ful
 These flags work across most commands.
 
 | Flag | Description |
-|---|---|
+| --- | --- |
 | `--dry-run` | Show what *would* happen without making any changes. Always safe to run. |
 | `--force` | Skip the interactive confirmation prompt on destructive commands. |
 | `--network` | Run the command for every site in a WordPress multisite network. |
@@ -135,7 +135,7 @@ wp top10 counts import counts.csv --blog-id=3
 ```
 
 | Option | Default | Description |
-|---|---|---|
+| --- | --- | --- |
 | `--table=<table>` | auto | Override table detection: `overall` or `daily`. |
 | `--mode=<mode>` | `add` | `add` increments existing counts; `set` overwrites them. |
 | `--use-urls` | — | Resolve the URL column to a post ID instead of using the Post ID column. |
@@ -301,7 +301,7 @@ wp top10 popular --author=1,2 --format=json
 **Options**
 
 | Option | Default | Description |
-|---|---|---|
+| --- | --- | --- |
 | `--limit=<n>` | 10 | Number of posts to return. |
 | `--offset=<n>` | 0 | Number of posts to skip (for pagination). |
 | `--daily` | — | Use the custom period table instead of the overall table. |
@@ -383,7 +383,7 @@ wp top10 settings copy --destination=all --dry-run
 **Options**
 
 | Option | Default | Description |
-|---|---|---|
+| --- | --- | --- |
 | `--source=<id>` | current site | Blog ID to copy settings from. |
 | `--destination=<id>` | — | Blog ID(s), comma-separated, or `all` for every other site. Required. |
 
