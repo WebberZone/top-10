@@ -134,3 +134,21 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **DB writes (funnel pattern):** Every tracked view appends one row to the funnel table via `Database::append_to_funnel()` (or writes directly via `Database::update_counts_direct()` when `tracking_method` is set to `legacy`). A cron job (`tptn_aggregation_cron_hook`) runs every 2 minutes by default, draining the funnel transactionally into `top_ten` and `top_ten_daily` in batch. The interval can be overridden via the `tptn_aggregation_cron_interval` filter (must be a registered WP-Cron schedule name; built-in options: `one_minute`, `two_minutes`, `three_minutes`, `five_minutes`). `Database::update_count()` is deprecated since 4.3.0 — do not use it for new code.
 - **High-traffic tracker config:** The generated `top-10-fast-config.php` must be regenerated whenever DB credentials or the table prefix changes. Prompt the user to regenerate after such changes.
 - **Pro gating check:** `tptn_freemius()->is__premium_only()` and `tptn_freemius()->can_use_premium_code()` are the two guards used in `Main::init()`. Individual pro hooks use `Hook_Registry` just like the free plugin.
+
+## Shared framework files: `@since` convention
+
+The Settings API (`includes/admin/settings/*.php`) and the Admin Banner (`includes/admin/class-admin-banner.php`) are copy-pasted, shared framework files whose canonical source is the `Settings_API` repo. To keep `@since` tags meaningful and stable across syncs, these files follow special rules:
+
+- Each file carries **exactly one** `@since` tag, on its **class docblock**, set to the plugin version at which that class was **first introduced into this plugin**. This is per-file (the wizard, metabox and banner classes were generally added later than the core Settings API classes).
+- **Do not** add `@since` to methods, functions or properties in these files.
+- When syncing/updating these files from another plugin or the canonical `Settings_API` repo, **do not overwrite the class-level `@since`** — it is plugin-specific. Re-apply the values below after any sync.
+
+| File | `@since` |
+|---|---|
+| `includes/admin/settings/class-settings-api.php` | 4.0.0 |
+| `includes/admin/settings/class-settings-form.php` | 4.0.0 |
+| `includes/admin/settings/class-settings-sanitize.php` | 4.0.0 |
+| `includes/admin/settings/class-settings-wizard-api.php` | 4.2.0 |
+| `includes/admin/settings/class-metabox-api.php` | 4.0.0 |
+| `includes/admin/class-admin-banner.php` | 4.2.0 |
+
