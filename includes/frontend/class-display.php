@@ -1168,8 +1168,8 @@ class Display {
 
 		// Exclude page_on_front and page_for_posts.
 		if ( 'page' === get_option( 'show_on_front' ) && \tptn_get_option( 'exclude_front' ) ) {
-			$page_on_front  = get_option( 'page_on_front' );
-			$page_for_posts = get_option( 'page_for_posts' );
+			$page_on_front  = (int) get_option( 'page_on_front' );
+			$page_for_posts = (int) get_option( 'page_for_posts' );
 			if ( $page_on_front > 0 ) {
 				$exclude_post_ids[] = $page_on_front;
 			}
