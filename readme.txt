@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -173,6 +173,14 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.4.1 =
+
+*Release Date - 25 July 2026*
+
+* Fixed:
+	* "Exclude Front page and Posts page" setting had no effect in the widget/block/shortcode output; the front and posts page IDs were compared as strings against integer post IDs during exclusion filtering.
+	* Settings page sidebar overlapped the tab content; the layout now uses flexbox instead of relying on float ordering.
+
 = 4.4.0 =
 
 *Release Date - 22 July 2026*
@@ -320,5 +328,5 @@ Release post: [https://webberzone.com/announcements/top-10-v4-2-0/](https://webb
 
 == Upgrade Notice ==
 
-= 4.3.0 =
-This release introduces buffered visit tracking with a new funnel table. Existing daily-count table indexes are updated automatically for new installs — existing sites should run "Recreate Primary Key" under Tools > Top 10 to apply the performance improvement. Pro users also get feed view tracking and a full WP-CLI command suite.
+= 4.4.1 =
+Fixes the "Exclude Front page and Posts page" setting having no effect, and a settings page sidebar/tab overlap. No action required.
