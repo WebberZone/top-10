@@ -124,12 +124,12 @@ class Activator {
 		if ( $installed_ver != $tptn_db_version ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-			$wpdb->hide_errors();
+			$show_errors = $wpdb->hide_errors();
 			dbDelta( self::create_full_table_sql() );
 			dbDelta( self::create_daily_table_sql() );
 			dbDelta( Database::create_log_table_sql() );
 			dbDelta( Database::create_funnel_table_sql() );
-			$wpdb->show_errors();
+			$wpdb->show_errors( $show_errors );
 
 			if ( self::is_all_tables_installed() ) {
 				update_site_option( 'tptn_db_version', $tptn_db_version );
@@ -171,9 +171,9 @@ class Activator {
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 			global $wpdb;
-			$wpdb->hide_errors();
+			$show_errors = $wpdb->hide_errors();
 			dbDelta( $sql );
-			$wpdb->show_errors();
+			$wpdb->show_errors( $show_errors );
 		}
 	}
 
