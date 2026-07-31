@@ -318,6 +318,10 @@ class Cron {
 	/**
 	 * Retrieve the last recorded cron scheduling error for a hook, if any.
 	 *
+	 * Core reports a reschedule failure when update_option( 'cron' ) is a no-op —
+	 * e.g. a concurrent cron run already saved the identical schedule. If the hook
+	 * has a valid next occurrence the recorded error is stale: clear and ignore it.
+	 *
 	 * @since 4.4.0
 	 *
 	 * @param string $hook Hook name.
@@ -326,7 +330,16 @@ class Cron {
 	public static function get_reschedule_error( $hook ) {
 		$error = get_transient( self::RESCHEDULE_ERROR_TRANSIENT_PREFIX . $hook );
 
-		return is_array( $error ) ? $error : false;
+		if ( ! is_array( $error ) ) {
+			return false;
+		}
+
+		if ( wp_next_scheduled( $hook ) ) {
+			delete_transient( self::RESCHEDULE_ERROR_TRANSIENT_PREFIX . $hook );
+			return false;
+		}
+
+		return $error;
 	}
 
 	/**
