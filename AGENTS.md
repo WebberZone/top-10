@@ -2,6 +2,13 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+## Response Rules
+
+- Return only the changed function or section, not the full file
+- No explanation unless asked
+- No suggestions outside the scope of what was asked
+- Skip preamble and trailing summaries
+
 ## Attribution
 
 No AI attribution anywhere in this repository or on its GitHub.
