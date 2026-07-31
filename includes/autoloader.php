@@ -19,7 +19,7 @@ function autoload( $class_name ) {
 	$classes_subfolder = 'includes';
 
 	if ( false !== strpos( $class_name, $namespace ) ) {
-		$classes_dir = realpath( TOP_TEN_PLUGIN_DIR ) . DIRECTORY_SEPARATOR . $classes_subfolder . DIRECTORY_SEPARATOR;
+		$classes_dir = TOP_TEN_PLUGIN_DIR . $classes_subfolder . DIRECTORY_SEPARATOR;
 
 		// Project namespace.
 		$project_namespace = $namespace . '\\';
