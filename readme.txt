@@ -175,12 +175,12 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.4.2 =
 
-*Release Date - 29 July 2026*
+*Release Date - 2 August 2026*
 
 * Fixed:
-	* Fatal error ("Class ... not found") on servers with `open_basedir` restrictions. The class autoloader called `realpath()` on the plugin directory, which returns false when the web root is a symlink pointing outside the allowed paths (common on DirectAdmin and CloudLinux hosts), so no plugin class could be loaded.
-	* False-positive "WP-Cron reported an error rescheduling" notice no longer shows when the cron job is still scheduled.
-	* `$wpdb->show_errors()` was called without restoring the prior display state after `hide_errors()` during table creation and the primary-key rebuild tool, which could re-enable raw DB-error output for the rest of the request regardless of `WP_DEBUG_DISPLAY`.
+	* Fatal errors on servers with `open_basedir` restrictions when the plugin directory uses a symlink.
+	* False-positive WP-Cron rescheduling notices when the cron event remains correctly scheduled.
+	* Restored the previous database error display state after table creation and primary-key operations.
 
 = 4.4.1 =
 
