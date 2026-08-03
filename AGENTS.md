@@ -9,6 +9,13 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 - No suggestions outside the scope of what was asked
 - Skip preamble and trailing summaries
 
+## Links
+
+- GitHub: <https://github.com/WebberZone/top-10>
+- WordPress.org: <https://wordpress.org/plugins/top-10/>
+- Documentation: <https://webberzone.com/support/product/top-10/>
+- webberzone.com: <https://webberzone.com/plugins/top-10/>
+
 ## Attribution
 
 No AI attribution anywhere in this repository or on its GitHub.
@@ -19,8 +26,6 @@ No AI attribution anywhere in this repository or on its GitHub.
 ## Plugin Overview
 
 WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.4.2. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
-
-webberzone.com: <https://webberzone.com/plugins/top-10/>
 
 This is the pro version. Activating it automatically deactivates the free Top 10 plugin, and vice versa. Both plugins share the same namespace, function prefix, database tables, and settings key (`tptn_settings`).
 
