@@ -49,7 +49,7 @@ class Settings_Wizard extends Settings_Wizard_API {
 	/**
 	 * Use the plugin version for cache-busting wizard assets.
 	 *
-	 * @since 4.4.0
+	 * @since 4.2.0
 	 *
 	 * @return string Version number.
 	 */
