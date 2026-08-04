@@ -310,7 +310,7 @@ function tptn_get_registered_settings_types() {
 
 
 /**
- * Function to add an action to search for tags using Ajax.
+ * Handles the AJAX request to search for tags in the Top 10 settings.
  *
  * @since 1.7.0
  *

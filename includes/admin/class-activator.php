@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Handles plugin activation and creation of the Top 10 database tables.
  *
  * @since 3.3.0
  */

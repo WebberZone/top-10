@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Displays the post view count in content and feeds.
  *
  * @since 3.3.0
  */
@@ -302,7 +302,7 @@ class Counter {
 			}
 
 			/**
-			 * Returns the post count.
+			 * Filters the post count returned for a post.
 			 *
 			 * @since   2.6.0
 			 *
