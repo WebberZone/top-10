@@ -40,7 +40,7 @@ Writing a single row to the funnel is fast and lightweight — it does not touch
 
 ### Step 2 — The funnel is aggregated (every 2 minutes by default)
 
-A WordPress cron job (`tptn_aggregation_cron_hook`) runs every two minutes by default and processes the funnel. In a single database transaction it:
+A WordPress cron job ([`tptn_aggregation_cron_hook`](https://webberzone.dev/top-10/hooks/tptn_aggregation_cron_hook/)) runs every two minutes by default and processes the funnel. In a single database transaction it:
 
 1. **Copies** funnel rows to the **visits log table** (`wp_top_ten_visits_log`) — a raw audit trail of every visit.
 2. **Aggregates** funnel rows into the **daily count table** (`wp_top_ten_daily`) — one row per post per hour, incremented by the number of funnel rows in that hour.
@@ -51,16 +51,16 @@ All four steps run inside one transaction. If anything fails the transaction rol
 
 ### Step 3 — Old data is pruned
 
-A separate maintenance cron (`tptn_cron_hook`) runs on the schedule you configure and removes old entries from both tables — but with **different retention periods**:
+A separate maintenance cron ([`tptn_cron_hook`](https://webberzone.dev/top-10/hooks/tptn_cron_hook/)) runs on the schedule you configure and removes old entries from both tables — but with **different retention periods**:
 
-- **`wp_top_ten_daily`** — retains data for 180 days by default (controlled by `TOP_TEN_STORE_DATA` / `tptn_maintenance_days` filter).
-- **`wp_top_ten_visits_log`** — retains data for 30 days by default (controlled by `TOP_TEN_LOG_STORE_DATA` / `tptn_log_retention_days` filter).
+- **`wp_top_ten_daily`** — retains data for 180 days by default (controlled by `TOP_TEN_STORE_DATA` / [`tptn_maintenance_days`](https://webberzone.dev/top-10/hooks/tptn_maintenance_days/) filter).
+- **`wp_top_ten_visits_log`** — retains data for 30 days by default (controlled by `TOP_TEN_LOG_STORE_DATA` / [`tptn_log_retention_days`](https://webberzone.dev/top-10/hooks/tptn_log_retention_days/) filter).
 
 The log uses a shorter window because it stores one raw row per visit and grows proportionally to traffic. Once aggregation has run, those rows are already reflected in the count tables and serve only as an audit trail. See [Maintenance options](../01-top-10-getting-started/top-10-maintenance-options/) for how to adjust either retention period.
 
 ### Changing the aggregation interval
 
-The default two-minute interval can be changed using the `tptn_aggregation_cron_interval` filter. The value must be a registered WP-Cron schedule name. Top 10 registers the following schedules out of the box:
+The default two-minute interval can be changed using the [`tptn_aggregation_cron_interval`](https://webberzone.dev/top-10/hooks/tptn_aggregation_cron_interval/) filter. The value must be a registered WP-Cron schedule name. Top 10 registers the following schedules out of the box:
 
 | Schedule name | Interval |
 |---|---|
@@ -107,3 +107,11 @@ The optimal tracking method depends on your website's specific requirements. Con
 - **Debug mode:** Enable **Debug mode** in Counter/Tracker settings to have the tracker output a response in the browser console, which is helpful when troubleshooting why counts are not updating.
 
 By understanding the different tracking methods available in Top 10, you can make an informed decision and ensure accurate and efficient post view tracking on your WordPress website.
+
+## See also
+
+- [`tptn_aggregation_cron_hook`](https://webberzone.dev/top-10/hooks/tptn_aggregation_cron_hook/)
+- [`tptn_cron_hook`](https://webberzone.dev/top-10/hooks/tptn_cron_hook/)
+- [`tptn_maintenance_days`](https://webberzone.dev/top-10/hooks/tptn_maintenance_days/)
+- [`tptn_log_retention_days`](https://webberzone.dev/top-10/hooks/tptn_log_retention_days/)
+- [`tptn_aggregation_cron_interval`](https://webberzone.dev/top-10/hooks/tptn_aggregation_cron_interval/)

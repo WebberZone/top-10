@@ -59,3 +59,8 @@ The two options allow you to set the Hour and Minute of the day when the cron wi
 ## Run maintenance
 
 Choose between Daily, Weekly, Fortnightly or Monthly to run the cron task.
+
+## See also
+
+- [`tptn_maintenance_days`](https://webberzone.dev/top-10/hooks/tptn_maintenance_days/)
+- [`tptn_log_retention_days`](https://webberzone.dev/top-10/hooks/tptn_log_retention_days/)
