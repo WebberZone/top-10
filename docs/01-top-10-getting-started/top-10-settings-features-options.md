@@ -46,4 +46,8 @@ Adds the enhanced Top 10 Pro widgets to the WordPress dashboard.
 
 ## Popular Authors *(Pro only)*
 
-Enables the Popular Authors blocks, shortcodes, widgets, and settings bundled with Top 10 Pro. Disabling this registers empty stubs for the `tptn_popular_authors`, `tptn_author_top_posts`, `wzpa_popular_authors`, and `wzpa_author_top_posts` shortcodes so raw shortcode text does not appear in published content.
+Enables the Popular Authors blocks, shortcodes, widgets, and settings bundled with Top 10 Pro. Disabling this registers empty stubs for the [`tptn_popular_authors`](https://webberzone.dev/top-10/hooks/tptn_popular_authors/), `tptn_author_top_posts`, `wzpa_popular_authors`, and `wzpa_author_top_posts` shortcodes so raw shortcode text does not appear in published content.
+
+## See also
+
+- [`tptn_popular_authors`](https://webberzone.dev/top-10/hooks/tptn_popular_authors/)

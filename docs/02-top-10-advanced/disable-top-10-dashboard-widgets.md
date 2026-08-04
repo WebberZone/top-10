@@ -15,3 +15,7 @@ If you don't want to display this, then you can add the following code into your
 ```php
 add_filter( 'tptn_dashboard_setup', '__return_false' );
 ```
+
+## See also
+
+- [`tptn_dashboard_setup`](https://webberzone.dev/top-10/hooks/tptn_dashboard_setup/)
