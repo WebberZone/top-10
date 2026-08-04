@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Class to register the settings.
+ * Bootstraps the Top 10 admin area and its sub-classes.
  *
  * @since   3.3.0
  */

@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Class to register the settings.
+ * Bootstraps the Top 10 network admin area.
  *
  * @since   3.3.0
  */

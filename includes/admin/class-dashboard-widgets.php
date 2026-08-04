@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Admin Columns Class.
+ * Registers the Top 10 dashboard widgets and At a Glance items.
  *
  * @since 3.3.0
  */
