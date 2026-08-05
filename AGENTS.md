@@ -48,15 +48,16 @@ composer test           # Run all checks (phpcs + phpcompat + phpstan)
 ### JavaScript/CSS
 
 ```bash
-npm run build           # Build free blocks (popular-posts, post-count)
-npm run build:pro       # Build all three pro blocks (query, featured-image, popular-posts-pro)
-npm run build:all       # Build free + pro blocks
-npm run build:assets    # Minify CSS/JS, generate RTL CSS
-npm run start           # Watch free blocks
-npm run start:pro       # Watch all pro blocks (parallel)
-npm run start:all       # Watch free + pro blocks
-npm run lint:js         # ESLint
-npm run lint:css        # Stylelint
+pnpm run build           # Build free blocks (popular-posts, post-count)
+pnpm run build:pro       # Build all three pro blocks (query, featured-image, popular-posts-pro)
+pnpm run build:all       # Build free + pro blocks
+pnpm run build:assets    # Minify CSS/JS, generate RTL CSS
+pnpm run start           # Watch free blocks
+pnpm run start:pro       # Watch all pro blocks (parallel)
+pnpm run start:all       # Watch free + pro blocks
+pnpm run lint:js         # ESLint
+pnpm run lint:css        # Stylelint
+ncu -u && pnpm install   # Update dependencies to latest and reinstall
 ```
 
 Pro block sources live in `includes/pro/blocks/src/{query,featured-image,popular-posts-pro}/`; each builds to its own `includes/pro/blocks/build/<name>/` directory.
