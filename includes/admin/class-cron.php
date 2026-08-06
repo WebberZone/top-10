@@ -192,21 +192,29 @@ class Cron {
 		/** This filter is documented in includes/admin/class-cron.php */
 		$interval = (string) apply_filters( 'tptn_aggregation_cron_interval', 'two_minutes' );
 
-		$timestamp = wp_next_scheduled( 'tptn_aggregation_cron_hook' );
-
-		if ( ! $timestamp ) {
+		if ( ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
 			self::enable_aggregation_run();
 			$this->aggregation_cron_was_missing = true;
 			return;
 		}
 
-		$crons    = _get_cron_array();
-		$args_key = md5( serialize( array() ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-		$current  = isset( $crons[ $timestamp ]['tptn_aggregation_cron_hook'][ $args_key ]['schedule'] )
-			? $crons[ $timestamp ]['tptn_aggregation_cron_hook'][ $args_key ]['schedule']
-			: '';
+		// Look across all scheduled occurrences of the hook, not just the earliest one:
+		// a legitimate one-off catch-up event (schedule = false) can be scheduled alongside
+		// the recurring event and must not be mistaken for a wrong/missing recurring schedule.
+		$args_key               = md5( serialize( array() ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		$crons                  = _get_cron_array();
+		$has_correct_recurrence = false;
 
-		if ( $current !== $interval ) {
+		foreach ( $crons as $events ) {
+			if ( isset( $events['tptn_aggregation_cron_hook'][ $args_key ]['schedule'] )
+				&& $interval === $events['tptn_aggregation_cron_hook'][ $args_key ]['schedule']
+			) {
+				$has_correct_recurrence = true;
+				break;
+			}
+		}
+
+		if ( ! $has_correct_recurrence ) {
 			wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
 			self::enable_aggregation_run();
 			$this->aggregation_cron_interval_changed = true;
