@@ -765,7 +765,7 @@ class Settings {
 			'show_ratings'                  => array(
 				'id'      => 'show_ratings',
 				'name'    => esc_html__( 'Show WP-PostRatings rating', 'top-10' ),
-				'desc'    => esc_html__( 'Display the rating from the WP-PostRatings plugin with each post in the list. This option only takes effect when the WP-PostRatings plugin is active. The Star rating output, including the text shown alongside the stars, comes from the "Ratings Voted Text" template which you can edit under Ratings » Ratings Templates.', 'top-10' ),
+				'desc'    => esc_html__( 'Display the rating from the WP-PostRatings plugin with each post in the list. This option only takes effect when the WP-PostRatings plugin is active. The Star rating output, including the text shown alongside the stars, comes from the "Ratings Voted Text" template which you can edit under WP-PostRatings » Settings » Templates.', 'top-10' ),
 				'type'    => 'select',
 				'default' => '',
 				'options' => array(
