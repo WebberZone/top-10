@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.4.2
+Stable tag: 4.4.3
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -172,6 +172,13 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 [Report a security vulnerability.](https://patchstack.com/database/vdp/top-10)
 
 == Changelog ==
+
+= 4.4.3 =
+
+*Release Date - 10 August 2026*
+
+* Fixed:
+	* Renamed `top-10-tracker.min.js` to `top-10.min.js` to avoid ad-blocker false positives triggered by "tracker" in the filename.
 
 = 4.4.2 =
 

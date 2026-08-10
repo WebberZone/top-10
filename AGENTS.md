@@ -11,10 +11,11 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Links
 
-- GitHub: <https://github.com/WebberZone/top-10>
-- WordPress.org: <https://wordpress.org/plugins/top-10/>
+- GitHub (pro): <https://github.com/WebberZone/top-10-pro>
+- GitHub (free): <https://github.com/WebberZone/top-10>
 - Documentation: <https://webberzone.com/support/product/top-10/>
-- webberzone.com: <https://webberzone.com/plugins/top-10/>
+- webberzone.com (free): <https://webberzone.com/plugins/top-10/>
+- webberzone.com (pro): <https://webberzone.com/plugins/top-10/pro/>
 
 ## Attribution
 
