@@ -2617,7 +2617,7 @@ msgstr ""
 msgid "Every 5 Minutes"
 msgstr ""
 
-#: includes/admin/class-cron.php:234
+#: includes/admin/class-cron.php:242
 msgid "Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) was missing and has been rescheduled automatically."
 msgstr ""
 
@@ -2683,7 +2683,7 @@ msgstr ""
 msgid "Every 3 Minutes"
 msgstr ""
 
-#: includes/admin/class-cron.php:226
+#: includes/admin/class-cron.php:234
 msgid "Top 10: The visit aggregation cron job (tptn_aggregation_cron_hook) has been rescheduled to match the updated interval."
 msgstr ""
 
@@ -2798,7 +2798,7 @@ msgid "Views are written directly to the count tables on every visit (behaviour 
 msgstr ""
 
 #. translators: 1: Hook name, 2: Error message, 3: Human-readable time difference.
-#: includes/admin/class-cron.php:251
+#: includes/admin/class-cron.php:259
 #, php-format
 msgid "Top 10: WP-Cron reported an error rescheduling %1$s: %2$s (%3$s ago). Use the \"Fix Cron Schedules\" tool on the Top 10 Tools page if the job stops running."
 msgstr ""
@@ -2842,10 +2842,6 @@ msgstr ""
 
 #: includes/admin/class-settings.php:767
 msgid "Show WP-PostRatings rating"
-msgstr ""
-
-#: includes/admin/class-settings.php:768
-msgid "Display the rating from the WP-PostRatings plugin with each post in the list. This option only takes effect when the WP-PostRatings plugin is active. The Star rating output, including the text shown alongside the stars, comes from the \"Ratings Voted Text\" template which you can edit under Ratings » Ratings Templates."
 msgstr ""
 
 #: includes/admin/class-settings.php:772
@@ -3069,4 +3065,8 @@ msgstr ""
 
 #: includes/frontend/widgets/class-posts-widget.php:31
 msgid "Display popular posts"
+msgstr ""
+
+#: includes/admin/class-settings.php:768
+msgid "Display the rating from the WP-PostRatings plugin with each post in the list. This option only takes effect when the WP-PostRatings plugin is active. The Star rating output, including the text shown alongside the stars, comes from the \"Ratings Voted Text\" template which you can edit under WP-PostRatings » Settings » Templates."
 msgstr ""
