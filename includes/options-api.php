@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function tptn_get_settings() {
 
-	$settings = get_option( 'tptn_settings' );
+	$settings = get_option( 'tptn_settings', array() );
 
 	/**
 	 * Settings array
@@ -37,18 +37,16 @@ function tptn_get_settings() {
  *
  * Looks to see if the specified setting exists, returns default if not
  *
- * @since  2.5.0
+ * @since 2.5.0
  *
- * @param string $key Option to fetch.
- * @param mixed  $default_value Default option.
+ * @param  string $key           Option to fetch.
+ * @param  mixed  $default_value Default option.
  * @return mixed
  */
 function tptn_get_option( $key = '', $default_value = null ) {
 	global $tptn_settings;
 
-	if ( empty( $tptn_settings ) ) {
-		$tptn_settings = tptn_get_settings();
-	}
+	$tptn_settings = tptn_get_settings();
 
 	if ( is_null( $default_value ) ) {
 		$default_value = tptn_get_default_option( $key );
@@ -254,12 +252,13 @@ function tptn_get_settings_with_defaults() {
  *
  * @since 1.3.0
  *
- * @param string $key Key of the option to fetch.
+ * @param  string $key Key of the option to fetch.
  * @return mixed
  */
 function tptn_get_default_option( $key = '' ) {
 
-	$default_settings = tptn_settings_defaults();
+	/** This filter is documented in includes/options-api.php */
+	$default_settings = apply_filters( 'tptn_settings_defaults', \WebberZone\Top_Ten\Admin\Settings::get_defaults() );
 
 	if ( array_key_exists( $key, $default_settings ) ) {
 		return $default_settings[ $key ];
@@ -347,13 +346,15 @@ function tptn_tags_search() {
 	}
 	$s = trim( $s );
 
-	/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
+	/**
+ * This filter has been defined in /wp-admin/includes/ajax-actions.php
+*/
 	$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
 
 	/*
-	 * Require $term_search_min_chars chars for matching (default: 2)
-	 * ensure it's a non-negative, non-zero integer.
-	 */
+	* Require $term_search_min_chars chars for matching (default: 2)
+	* ensure it's a non-negative, non-zero integer.
+	*/
 	if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
 		wp_die();
 	}
