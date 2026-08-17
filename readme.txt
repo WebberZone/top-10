@@ -173,6 +173,14 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.4.4 =
+
+* Fixed settings on a multisite network reading another site's values in the same request after a `switch_to_blog()` call, when read via `tptn_get_option()` or the global `$tptn_settings`.
+* Fixed `tptn_get_settings()` returning `false` instead of an empty array when no settings had been saved yet.
+
+* Improvements:
+	* Setting defaults are now resolved from a single lightweight list instead of building every settings field, so reading an option early in the page load no longer risks loading translations too early.
+
 = 4.4.3 =
 
 *Release Date - 10 August 2026*

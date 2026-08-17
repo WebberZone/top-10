@@ -22,9 +22,10 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class to register the settings.
  *
- * @since   3.3.0
+ * @since 3.3.0
  */
 class Settings {
+
 
 	/**
 	 * Settings API.
@@ -199,6 +200,145 @@ class Settings {
 		return apply_filters( self::$prefix . '_settings_sections', $settings_sections );
 	}
 
+
+	/**
+	 * Raw defaults for every registered setting, keyed by option ID.
+	 *
+	 * Must exactly match what `tptn_settings_defaults()` computes from
+	 * {@see self::get_registered_settings()}, but without building the full
+	 * (translated) field definitions. Values are pre-normalized: checkboxes are
+	 * `1`/`0`, not `true`/`false`. Computed defaults (e.g. `thumb_default`) are
+	 * represented as `''` here since their real value cannot be known statically.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @return array<string, mixed> Default value for every option ID.
+	 */
+	public static function get_defaults() {
+		return array(
+			'features_header'                => '',
+			'enable_blocks'                  => 1,
+			'enable_feed'                    => 1,
+			'enable_legacy_widgets'          => 1,
+			'enable_query_block'             => 1,
+			'enable_featured_image_block'    => 1,
+			'enable_popular_posts_pro_block' => 1,
+			'enable_fast_tracker'            => 1,
+			'enable_pro_dashboard_widgets'   => 1,
+			'enable_popular_authors'         => 1,
+			'cache'                          => 1,
+			'cache_time'                     => HOUR_IN_SECONDS,
+			'lazy_load'                      => 0,
+			'uninstall_clean_options'        => 1,
+			'uninstall_clean_tables'         => 0,
+			'show_credit'                    => 0,
+			'admin_header'                   => '',
+			'show_metabox'                   => 1,
+			'show_metabox_admins'            => 0,
+			'pv_in_admin'                    => 1,
+			'admin_column_post_types'        => 'post,page',
+			'show_count_non_admins'          => 1,
+			'show_dashboard_to_roles'        => 'administrator',
+			'show_admin_bar'                 => 1,
+			'query_optimization'             => '',
+			'max_execution_time'             => 3000,
+			'counter_header'                 => '',
+			'add_to'                         => 'single,page',
+			'count_disp_form'                => 'Visited %totalcount% times, %dailycount% visit(s) today',
+			'count_disp_form_zero'           => 'No visits yet',
+			'number_format_count'            => 1,
+			'number_format_style'            => 'full',
+			'daily_midnight'                 => 1,
+			'range_desc'                     => '',
+			'daily_range'                    => '1',
+			'hour_range'                     => '0',
+			'dynamic_post_count'             => 0,
+			'exclude_on_post_ids'            => '',
+			'tracker_header'                 => '',
+			'trackers'                       => 'overall,daily',
+			'tracker_type'                   => 'query_based',
+			'tracking_method'                => 'funnel',
+			'tracker_all_pages'              => 0,
+			'track_feed_views'               => 0,
+			'track_users'                    => 'authors,editors,admins',
+			'logged_in'                      => 1,
+			'no_bots'                        => 0,
+			'debug_mode'                     => 0,
+			'use_global_settings'            => 0,
+			'limit'                          => '10',
+			'how_old'                        => '0',
+			'post_types'                     => 'post',
+			'exclusion_header'               => '',
+			'exclude_front'                  => 0,
+			'exclude_current_post'           => 0,
+			'exclude_post_ids'               => '',
+			'exclude_cat_slugs'              => '',
+			'exclude_categories'             => '',
+			'exclude_terms_include_parents'  => 'none',
+			'exclude_on_cat_slugs'           => '',
+			'customize_output_header'        => '',
+			'title'                          => '<h3>Popular posts:</h3>',
+			'title_daily'                    => '<h3>Currently trending:</h3>',
+			'blank_output'                   => 'blank',
+			'blank_output_text'              => 'No top posts yet',
+			'show_excerpt'                   => 0,
+			'excerpt_length'                 => '10',
+			'show_date'                      => 0,
+			'show_author'                    => 0,
+			'disp_list_count'                => 0,
+			'show_ratings'                   => '',
+			'title_length'                   => '60',
+			'link_new_window'                => 0,
+			'link_nofollow'                  => 0,
+			'html_wrapper_header'            => '',
+			'before_list'                    => '<ul>',
+			'after_list'                     => '</ul>',
+			'before_list_item'               => '<li>',
+			'after_list_item'                => '</li>',
+			'post_thumb_op'                  => 'text_only',
+			'thumb_size'                     => 'tptn_thumbnail',
+			'thumb_width'                    => '250',
+			'thumb_height'                   => '250',
+			'thumb_crop'                     => 1,
+			'thumb_create_sizes'             => 1,
+			'thumb_html'                     => 'html',
+			'thumb_meta'                     => 'post-image',
+			'scan_images'                    => 1,
+			'thumb_default_show'             => 1,
+			'thumb_default'                  => '',
+			'tptn_styles'                    => 'no_style',
+			'custom_css'                     => '',
+			'cron_on'                        => 0,
+			'maintenance_days'               => 0,
+			'log_retention_days'             => 0,
+			'cron_range_desc'                => '',
+			'cron_hour'                      => '0',
+			'cron_min'                       => '0',
+			'cron_recurrence'                => 'weekly',
+			'feed_permalink_overall'         => 'popular-posts',
+			'feed_permalink_daily'           => 'popular-posts-daily',
+			'feed_limit'                     => '10',
+			'feed_daily_range'               => '1',
+			'feed_category_slugs'            => '',
+			'wzpa_number'                    => 10,
+			'wzpa_daily_range'               => 1,
+			'wzpa_hour_range'                => 0,
+			'wzpa_optioncount'               => 0,
+			'wzpa_show_postcount'            => 0,
+			'wzpa_show_fullname'             => 0,
+			'wzpa_show_avatar'               => 0,
+			'wzpa_exclude_admin'             => 0,
+			'wzpa_post_type'                 => 'post',
+			'wzpa_cache'                     => 1,
+			'wzpa_styles_desc'               => '',
+			'wzpa_styles'                    => 'no_style',
+			'wzpa_html_wrapper_header'       => '',
+			'wzpa_before_list'               => '<ul>',
+			'wzpa_after_list'                => '</ul>',
+			'wzpa_before_list_item'          => '<li>',
+			'wzpa_after_list_item'           => '</li>',
+		);
+	}
 
 	/**
 	 * Retrieve the array of plugin settings
@@ -985,7 +1125,7 @@ class Settings {
 				'id'          => 'custom_css',
 				'name'        => esc_html__( 'Custom CSS', 'top-10' ),
 				'desc'        => sprintf(
-					/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
+							/* translators: 1: Opening a tag, 2: Closing a tag, 3: Opening code tage, 4. Closing code tag. */
 					esc_html__( 'Do not include %3$sstyle%4$s tags. Check out %1$sthis article%2$s for available CSS classes to style.', 'top-10' ),
 					'<a href="' . esc_url( 'https://webberzone.com/support/knowledgebase/using-and-customising-top-10/' ) . '" target="_blank">',
 					'</a>',
@@ -1022,7 +1162,7 @@ class Settings {
 				'id'      => 'cron_on',
 				'name'    => esc_html__( 'Enable scheduled maintenance', 'top-10' ),
 				'desc'    => sprintf(
-					/* translators: 1: Constant holding number of days data is stored. */
+				/* translators: 1: Constant holding number of days data is stored. */
 					esc_html__( 'Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %s days from the daily tables.', 'top-10' ),
 					'<strong>' . (int) apply_filters( 'tptn_maintenance_days', TOP_TEN_STORE_DATA ) . '</strong>'
 				),
@@ -1033,7 +1173,7 @@ class Settings {
 				'id'      => 'maintenance_days',
 				'name'    => esc_html__( 'Daily table retention period', 'top-10' ),
 				'desc'    => sprintf(
-					/* translators: 1: Constant holding number of days data is stored. */
+							/* translators: 1: Constant holding number of days data is stored. */
 					esc_html__( 'Enter the number of days to retain data in the daily tables before scheduled maintenance removes older entries. Enter 0 to use the default value of %s days.', 'top-10' ),
 					'<strong>' . TOP_TEN_STORE_DATA . '</strong>'
 				),
@@ -1047,7 +1187,7 @@ class Settings {
 				'id'      => 'log_retention_days',
 				'name'    => esc_html__( 'Visits log retention period', 'top-10' ),
 				'desc'    => sprintf(
-					/* translators: 1: Default number of days for visits log retention. */
+							/* translators: 1: Default number of days for visits log retention. */
 					esc_html__( 'Enter the number of days to retain raw visit rows in the visits log table. The log stores one row per visit and grows faster than the daily table, so a shorter window is recommended. Enter 0 to use the default value of %s days.', 'top-10' ),
 					'<strong>' . TOP_TEN_LOG_STORE_DATA . '</strong>'
 				),
@@ -1279,7 +1419,7 @@ class Settings {
 	/**
 	 * Get the various styles.
 	 *
-	 * @since 2.5.0
+	 * @since  2.5.0
 	 * @return array Style options.
 	 */
 	public static function get_styles() {
@@ -1316,7 +1456,7 @@ class Settings {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param array $remove_roles Roles to remove.
+	 * @param  array $remove_roles Roles to remove.
 	 * @return array User roles in the format 'role' => 'name'.
 	 */
 	public static function get_user_roles( $remove_roles = array() ) {
@@ -1359,7 +1499,7 @@ class Settings {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param array $links Array of links.
+	 * @param  array $links Array of links.
 	 * @return array
 	 */
 	public function plugin_actions_links( $links ) {
@@ -1377,8 +1517,8 @@ class Settings {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param array  $links Array of Links.
-	 * @param string $file Current file.
+	 * @param  array  $links Array of Links.
+	 * @param  string $file  Current file.
 	 * @return array
 	 */
 	public function plugin_row_meta( $links, $file ) {
@@ -1402,16 +1542,16 @@ class Settings {
 	 */
 	public function get_help_sidebar() {
 		$help_sidebar =
-			/* translators: 1: Plugin support site link. */
-			'<p>' . sprintf( __( 'For more information or how to get support visit the <a href="%s">support site</a>.', 'top-10' ), esc_url( 'https://webberzone.com/support/' ) ) . '</p>' .
-			/* translators: 1: WordPress.org support forums link. */
-			'<p>' . sprintf( __( 'Support queries should be posted in the <a href="%s">WordPress.org support forums</a>.', 'top-10' ), esc_url( 'https://wordpress.org/support/plugin/top-10' ) ) . '</p>' .
-			'<p>' . sprintf(
-				/* translators: 1: Github issues link, 2: Github plugin page link. */
-				__( '<a href="%1$s">Post an issue</a> on <a href="%2$s">GitHub</a> (bug reports only).', 'top-10' ),
-				esc_url( 'https://github.com/ajaydsouza/top-10/issues' ),
-				esc_url( 'https://github.com/ajaydsouza/top-10' )
-			) . '</p>';
+		/* translators: 1: Plugin support site link. */
+		'<p>' . sprintf( __( 'For more information or how to get support visit the <a href="%s">support site</a>.', 'top-10' ), esc_url( 'https://webberzone.com/support/' ) ) . '</p>' .
+		/* translators: 1: WordPress.org support forums link. */
+		'<p>' . sprintf( __( 'Support queries should be posted in the <a href="%s">WordPress.org support forums</a>.', 'top-10' ), esc_url( 'https://wordpress.org/support/plugin/top-10' ) ) . '</p>' .
+		'<p>' . sprintf(
+		/* translators: 1: Github issues link, 2: Github plugin page link. */
+			__( '<a href="%1$s">Post an issue</a> on <a href="%2$s">GitHub</a> (bug reports only).', 'top-10' ),
+			esc_url( 'https://github.com/ajaydsouza/top-10/issues' ),
+			esc_url( 'https://github.com/ajaydsouza/top-10' )
+		) . '</p>';
 
 		/**
 		 * Filter to modify the help sidebar content.
@@ -1435,49 +1575,49 @@ class Settings {
 				'title'   => esc_html__( 'General', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab provides global settings for how Top 10 works across your site.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Configure caching, uninstall behaviour, admin columns, the dashboard, and other high-level options. You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
+				'<p>' . esc_html__( 'Configure caching, uninstall behaviour, admin columns, the dashboard, and other high-level options. You must click the Save Changes button at the bottom of the screen for new settings to take effect.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-counter-help',
 				'title'   => esc_html__( 'Counter / Tracker', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab controls how Top 10 tracks and displays view counts.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Choose where to display view counts, how they are formatted, which visits are tracked, and how the tracker works (REST API, query variables, or Ajax).', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Choose where to display view counts, how they are formatted, which visits are tracked, and how the tracker works (REST API, query variables, or Ajax).', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-list-help',
 				'title'   => esc_html__( 'Posts list', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab controls the popular posts list output.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Configure the number of posts, age of posts, post types, exclusions, and what information is shown (title, date, author, views, excerpts, and HTML wrappers).', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Configure the number of posts, age of posts, post types, exclusions, and what information is shown (title, date, author, views, excerpts, and HTML wrappers).', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-thumbnail-help',
 				'title'   => esc_html__( 'Thumbnail', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab manages thumbnail settings for the popular posts list.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Choose whether thumbnails are displayed, select the image size, configure custom dimensions, cropping, the default thumbnail, and fallback behaviour when no thumbnail is found.', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Choose whether thumbnails are displayed, select the image size, configure custom dimensions, cropping, the default thumbnail, and fallback behaviour when no thumbnail is found.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-styles-help',
 				'title'   => esc_html__( 'Styles', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab controls how the popular posts list is styled.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Select a built-in style or disable styles if you want to fully control the look using your own CSS.', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Select a built-in style or disable styles if you want to fully control the look using your own CSS.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-maintenance-help',
 				'title'   => esc_html__( 'Maintenance', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab handles tools and maintenance-related options.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Use this screen to reset settings, clear cached popular posts, and manage database-related options such as pruning or rebuilding counts.', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Use this screen to reset settings, clear cached popular posts, and manage database-related options such as pruning or rebuilding counts.', 'top-10' ) . '</p>',
 			),
 			array(
 				'id'      => 'tptn-settings-feed-help',
 				'title'   => esc_html__( 'Feed', 'top-10' ),
 				'content' =>
 				'<p><strong>' . esc_html__( 'This tab controls how Top 10 content appears in your site feed.', 'top-10' ) . '</strong></p>' .
-					'<p>' . esc_html__( 'Configure copyright text and additional HTML that is added before or after the content in your feeds.', 'top-10' ) . '</p>',
+							'<p>' . esc_html__( 'Configure copyright text and additional HTML that is added before or after the content in your feeds.', 'top-10' ) . '</p>',
 			),
 		);
 
@@ -1494,7 +1634,7 @@ class Settings {
 	/**
 	 * Function returns the different types of trackers.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @return array Tracker types.
 	 */
 	public static function get_tracker_types() {
@@ -1530,7 +1670,7 @@ class Settings {
 	/**
 	 * Function returns the different tracking methods.
 	 *
-	 * @since 4.3.3
+	 * @since  4.3.3
 	 * @return array Tracking methods.
 	 */
 	public static function get_tracking_methods() {
@@ -1568,7 +1708,7 @@ class Settings {
 	 */
 	public static function get_admin_footer_text() {
 		return sprintf(
-			/* translators: 1: Opening achor tag with Plugin page link, 2: Closing anchor tag, 3: Opening anchor tag with review link. */
+		/* translators: 1: Opening achor tag with Plugin page link, 2: Closing anchor tag, 3: Opening anchor tag with review link. */
 			__( 'Thank you for using %1$sWebberZone Top 10%2$s! Please %3$srate us%2$s on WordPress.org', 'top-10' ),
 			'<a href="https://webberzone.com/plugins/top-10/" target="_blank">',
 			'</a>',
@@ -1748,11 +1888,11 @@ class Settings {
 		global $tptn_freemius;
 		?>
 		<p>
-			<?php if ( ! $tptn_freemius->is_paying() ) { ?>
+		<?php if ( ! $tptn_freemius->is_paying() ) { ?>
 			<a class="tptn_button tptn_button_gold" href="<?php echo esc_url( $tptn_freemius->get_upgrade_url() ); ?>">
-				<?php esc_html_e( 'Upgrade to Pro', 'top-10' ); ?>
+			<?php esc_html_e( 'Upgrade to Pro', 'top-10' ); ?>
 			</a>
-			<?php } ?>
+		<?php } ?>
 		</p>
 
 		<?php
@@ -1761,8 +1901,8 @@ class Settings {
 	/**
 	 * Updated the settings fields to display a pro version link.
 	 *
-	 * @param string $output Settings field HTML.
-	 * @param array  $args   Settings field arguments.
+	 * @param  string $output Settings field HTML.
+	 * @param  array  $args   Settings field arguments.
 	 * @return string Updated HTML.
 	 */
 	public static function after_setting_output( $output, $args ) {
@@ -1883,13 +2023,15 @@ class Settings {
 			}
 		}
 
-		/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
+		/**
+	* This filter has been defined in /wp-admin/includes/ajax-actions.php
+*/
 		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $search_term );
 
 		/*
-		 * Require $term_search_min_chars chars for matching (default: 2)
-		 * ensure it's a non-negative, non-zero integer.
-		 */
+		* Require $term_search_min_chars chars for matching (default: 2)
+		* ensure it's a non-negative, non-zero integer.
+		*/
 		if ( ( 0 === $term_search_min_chars ) || ( strlen( $search_term ) < $term_search_min_chars ) ) {
 			wp_send_json_success( array() );
 		}
@@ -1919,8 +2061,8 @@ class Settings {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param string $taxonomy  The taxonomy to search.
-	 * @param array  $ts_config Optional Tom Select configuration.
+	 * @param  string $taxonomy  The taxonomy to search.
+	 * @param  array  $ts_config Optional Tom Select configuration.
 	 * @return array Field attributes array.
 	 */
 	private static function get_taxonomy_search_field_attributes( $taxonomy, $ts_config = array() ) {
@@ -1943,7 +2085,7 @@ class Settings {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param array $ts_config Optional Tom Select configuration.
+	 * @param  array $ts_config Optional Tom Select configuration.
 	 * @return array Field attributes array.
 	 */
 	private static function get_meta_keys_search_field_attributes( $ts_config = array() ) {
