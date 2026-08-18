@@ -26,11 +26,8 @@ class Csv_Helper {
 	/**
 	 * Write count rows to an open file handle in the Top 10 CSV format.
 	 *
-	 * Writes UTF-8 BOM (for Excel compatibility), a header row, then one
-	 * data row per result.  The positional column layout is:
-	 *
-	 *   Overall:  Post ID, Visits, Blog ID[, URL]
-	 *   Daily:    Post ID, Visits, Date, Blog ID[, URL]
+	 * Column layout: Overall = Post ID, Visits, Blog ID[, URL]. Daily = Post ID, Visits,
+	 * Date, Blog ID[, URL].
 	 *
 	 * @since 4.3.0
 	 *
@@ -85,13 +82,8 @@ class Csv_Helper {
 	/**
 	 * Parse an import CSV file and return structured rows.
 	 *
-	 * Strips any UTF-8 BOM from the beginning of the file, reads the header
-	 * to auto-detect whether the file targets the overall or daily table
-	 * (by the presence of a "Date" column), then returns every data row in
-	 * a canonical associative format.
-	 *
-	 * The caller is responsible for URL resolution, date normalisation,
-	 * blog filtering, and database writes.
+	 * Auto-detects overall vs. daily table by the presence of a "Date" column. Caller
+	 * handles URL resolution, date normalisation, blog filtering, and database writes.
 	 *
 	 * @since 4.3.0
 	 *
