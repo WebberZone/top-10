@@ -236,13 +236,7 @@ class Tracker {
 	/**
 	 * Add a tracking pixel to feed content.
 	 *
-	 * Appends a 1×1 transparent GIF to each feed item. When a feed reader
-	 * loads the image, parse_request() intercepts the request, increments
-	 * the view count, and serves the GIF. Views are merged into the same
-	 * tables as regular web views.
-	 *
-	 * Note: feed readers that block remote images by default will not trigger
-	 * the pixel. The count only increments when the reader actually loads images.
+	 * Feed readers that block remote images by default will not trigger the count.
 	 *
 	 * @since 4.3.0
 	 *
