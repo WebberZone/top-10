@@ -42,7 +42,7 @@ Constants defined in `top-10.php`: `TOP_TEN_VERSION`, `TOP_TEN_PLUGIN_FILE`, `TO
 composer phpcs          # Lint PHP (WordPress coding standards)
 composer phpcbf         # Auto-fix PHP code style
 composer phpstan        # Static analysis
-composer phpcompat      # Check PHP 7.4–8.5 compatibility
+composer phpcompat      # Check PHP 7.4–8.6 compatibility
 composer test           # Run all checks (phpcs + phpcompat + phpstan)
 ```
 
