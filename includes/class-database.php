@@ -792,9 +792,14 @@ class Database {
 	/**
 	 * Drain the funnel into the log and count tables, then empty the funnel.
 	 *
-	 * All four operations (copy to log, aggregate to daily, aggregate to overall,
-	 * delete from funnel) run inside one transaction. A failure rolls back cleanly
-	 * and the next run retries the same rows with no double-counting risk.
+	 * Each of the four steps (copy to log, aggregate to daily, aggregate to overall,
+	 * delete from funnel) commits independently rather than inside one app-level
+	 * transaction. wpdb silently reconnects and retries a query if the DB connection
+	 * drops mid-request, which would otherwise void an in-flight transaction and let
+	 * later steps (e.g. the funnel delete) commit on a fresh connection while earlier
+	 * ones were rolled back — losing visits with no error. Without a wrapping
+	 * transaction, a crash between steps can at worst cause one batch to be
+	 * re-aggregated (a bounded, self-correcting over-count), never a silent loss.
 	 *
 	 * @since 4.3.0
 	 *
@@ -814,18 +819,12 @@ class Database {
 		$daily_table  = self::get_table( true );
 		$full_table   = self::get_table( false );
 
-		// MySQL-specific locking and transactions.
+		// GET_LOCK is a MySQL-only concurrency guard against overlapping cron runs; not needed for correctness.
 		if ( ! $is_sqlite ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$lock_acquired = $wpdb->get_var( "SELECT GET_LOCK('tptn_aggregation', 0)" );
 			if ( '1' !== (string) $lock_acquired ) {
 				return false;
-			}
-
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
-				$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				return new \WP_Error( 'tptn_transaction_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not start transaction.', 'top-10' ) );
 			}
 		}
 
@@ -833,9 +832,6 @@ class Database {
 			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table}" );
 			if ( 0 === $max_id ) {
-				if ( ! $is_sqlite ) {
-					$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				}
 				return 0;
 			}
 
@@ -859,9 +855,6 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				if ( ! $is_sqlite ) {
-					$wpdb->query( 'ROLLBACK' );
-				}
 				return new \WP_Error( 'tptn_log_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to copy visits to log table.', 'top-10' ) );
 			}
 
@@ -878,9 +871,6 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				if ( ! $is_sqlite ) {
-					$wpdb->query( 'ROLLBACK' );
-				}
 				return new \WP_Error( 'tptn_daily_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into daily table.', 'top-10' ) );
 			}
 
@@ -896,26 +886,14 @@ class Database {
 				)
 			);
 			if ( false === $r ) {
-				if ( ! $is_sqlite ) {
-					$wpdb->query( 'ROLLBACK' );
-				}
 				return new \WP_Error( 'tptn_overall_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into overall table.', 'top-10' ) );
 			}
 
 			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d", $max_id ) );
 			if ( false === $r ) {
-				if ( ! $is_sqlite ) {
-					$wpdb->query( 'ROLLBACK' );
-				}
 				return new \WP_Error( 'tptn_funnel_delete_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to drain funnel table.', 'top-10' ) );
 			}
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( ! $is_sqlite && false === $wpdb->query( 'COMMIT' ) ) {
-				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				return new \WP_Error( 'tptn_commit_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Transaction commit failed.', 'top-10' ) );
-			}
 
 			do_action( 'tptn_count_updated', 0, 0, false );
 

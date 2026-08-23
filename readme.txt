@@ -177,6 +177,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Fixed settings on a multisite network reading another site's values in the same request after a `switch_to_blog()` call, when read via `tptn_get_option()` or the global `$tptn_settings`.
 * Fixed `tptn_get_settings()` returning `false` instead of an empty array when no settings had been saved yet.
+* Fixed a silent loss of visit data in funnel aggregation, and an undefined array key warning in the Fast Tracker.
+* Fixed a WordPress.org plugin-review issue in the settings framework: renamed JS globals, and hardened referer/array handling in settings sanitization.
 
 * Improvements:
 	* Setting defaults are now resolved from a single lightweight list instead of building every settings field, so reading an option early in the page load no longer risks loading translations too early.
