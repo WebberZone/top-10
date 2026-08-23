@@ -36,6 +36,9 @@ Understanding the full tracking flow helps you diagnose issues and explains why 
 
 When a visitor loads a post, the tracker JavaScript fires a request to the configured tracker endpoint. Regardless of which tracker type you choose, each visit inserts one row into the **visits funnel table** (`wp_top_ten_visits_funnel`). Each row stores the post ID, blog ID, timestamp, traffic source (web or RSS feed), and which counters to update (overall, daily, or both).
 
+> [!NOTE]
+> ⓘ Since v4.4.3, the tracker script is served as `top-10.js` (`top-10.min.js`) instead of `top-10-tracker.js` — the old filename tripped ad-blocker rules that match "tracker". If you or a security plugin had whitelisted the old filename, update that rule to the new name.
+
 Writing a single row to the funnel is fast and lightweight — it does not touch the main count tables during the page request.
 
 ### Step 2 — The funnel is aggregated (every 2 minutes by default)
