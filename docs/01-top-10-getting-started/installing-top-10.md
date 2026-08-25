@@ -2,10 +2,10 @@
 slug: installing-top-10
 title: "Installing Top 10"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [installation,top-10]
+sections: ["01-top-10-getting-started"]
+tags: [installation, top-10]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png"
 ---
 
 Top 10 core plugin is hosted on WordPress.org. This makes installing it on your site extremely easy and just like any other plugin.
@@ -17,7 +17,7 @@ Top 10 core plugin is hosted on WordPress.org. This makes installing it on your 
 3. Find the plugin in the list (usually the first result) and click "Install Now"
 4. Activate or Network activate the Plugin in WP-Admin under the Plugins screen
 
-<img src="https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png" class="img-rounded center-block size-full wp-image-36 img-responsive" loading="lazy" decoding="async" srcset="https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png 603w, https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10-300x134.png 300w" sizes="auto, (max-width: 603px) 100vw, 603px" width="603" height="269" alt="Installing Top 10" />
+![Installing Top 10](https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png)
 
 ## Manual install
 

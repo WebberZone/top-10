@@ -2,13 +2,13 @@
 slug: top-10-settings-features-options
 title: "Top 10 Settings – Features"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, top-10, top-10-settings]
 status: publish
-order: 0
+toc: true
 ---
 
-[kbtoc]
+[toc]
 
 The **Features** tab is the first tab on the [Top 10](https://webberzone.com/plugins/top-10/) settings page. It lets you turn off individual features so their code does not load on your site. All features are enabled by default. A block that you disable renders as empty on the front end and shows an unavailable notice in the block editor.
 

@@ -2,13 +2,14 @@
 slug: top-10-settings-general-options
 title: "Top 10 Settings – General options"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, top-10, top-10-settings]
 status: publish
-order: 0
+toc: true
+featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-General-Options.png"
 ---
 
-[kbtoc]
+[toc]
 
 The **General options** tab lets you configure the main options for Top 10 on your WordPress blog.
 

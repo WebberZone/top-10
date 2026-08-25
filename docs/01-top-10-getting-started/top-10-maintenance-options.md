@@ -2,10 +2,10 @@
 slug: top-10-maintenance-options
 title: "Top 10 Settings – Maintenance"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, top-10, top-10-settings]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2019/02/Top-10-Maintenance-options-v2.6.1.png"
 ---
 
 The Top 10 database tables can build up over time, particularly on busy sites. The **Maintenance** section contains options to schedule automatic pruning of old data.

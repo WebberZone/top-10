@@ -2,24 +2,22 @@
 slug: top-10-tools-admin-screen
 title: "Top 10 – Tools Admin Screen"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,tools-page,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, tools-page, top-10, top-10-settings]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/09/Tools.webp"
 ---
 
 The Tools screen in Top 10 offers a set of buttons to help you maintain various features of the plugin.
 
-<figure class="wp-block-image size-large">
-<img src="https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-986x1024.webp" class="wp-image-8331" loading="lazy" decoding="async" srcset="https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-986x1024.webp 986w, https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-289x300.webp 289w, https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-768x797.webp 768w, https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-1480x1536.webp 1480w, https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1.webp 1964w" sizes="auto, (max-width: 986px) 100vw, 986px" width="986" height="1024" alt="Top 10 - Tools screen" />
-</figure>
+![Top 10 - Tools screen](https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-986x1024.webp)
 
 ### Database Status
 
 Displays the current state of all four Top 10 database tables along with the installed and expected database version numbers.
 
 | Table | Purpose |
-|---|---|
+| --- | --- |
 | `wp_top_ten` | Running total of all-time views per post |
 | `wp_top_ten_daily` | Hourly view counts per post (powers the dashboard chart and daily popular posts lists) |
 | `wp_top_ten_visits_funnel` | Hot buffer — incoming visits waiting to be aggregated into the count tables |

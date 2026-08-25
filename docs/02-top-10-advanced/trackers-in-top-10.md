@@ -2,10 +2,10 @@
 slug: trackers-in-top-10
 title: "Trackers in Top 10 – WordPress Popular Posts plugin"
 products: [top-10]
-sections: [02-top-10-advanced]
-tags: [top-10,trackers]
+sections: ["02-top-10-advanced"]
+tags: [top-10, trackers]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tracker-settings.webp"
 ---
 
 [Top 10](https://webberzone.com/plugins/top-10/) offers various tracking methods to efficiently record post views. Each tracker type has unique benefits and considerations. The sections below explain the different types of trackers available in the Top 10 WordPress plugin to help you select the best option for your site.
@@ -14,11 +14,9 @@ The plugin interface uses **Custom period** for what was historically called **D
 
 ## Selecting the Tracker
 
-The tracker can be set in the Top 10 \> Settings \> Counter/Tracker. Scroll down to tracker settings and select the **Tracker type**.
+The tracker can be set in the Top 10 > Settings > Counter/Tracker. Scroll down to tracker settings and select the **Tracker type**.
 
-<figure class="wp-block-image size-large">
-<img src="https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-1024x404.webp" class="wp-image-9342" loading="lazy" decoding="async" srcset="https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-1024x404.webp 1024w, https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-300x118.webp 300w, https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-768x303.webp 768w, https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-1536x606.webp 1536w, https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-2048x809.webp 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px" width="1024" height="404" />
-</figure>
+![](https://webberzone.com/wp-content/uploads/2024/09/Tracker-settings-in-Top-10-Pro-1024x404.webp)
 
 ## Tracker Types
 
@@ -26,7 +24,7 @@ The tracker can be set in the Top 10 \> Settings \> Counter/Tracker. Scroll down
 - **Query Variable-Based Tracker:** Records visits using query variables appended to URLs. Simple and straightforward implementation, and should work with most sites.
 - **Ajaxurl-Based Tracker:** Leverages the built-in `admin-ajax.php` file to process tracking requests. A good alternative to the Query Variable-based tracker.
 - **Fast Tracker (Pro only):** A lightweight standalone PHP endpoint (`fast-tracker-js.php`) that handles tracking requests with a minimal WordPress bootstrap — no themes, widgets, or most plugins are loaded. This significantly reduces server overhead per tracked visit. If your hosting or a security plugin blocks access to the file, whitelist `/wp-content/plugins/top-10-pro/includes/pro/fast-tracker-js.php`.
-- **High-traffic Tracker (Pro only):** Bypasses WordPress entirely. Tracking requests are handled by `high-traffic-tracker-js.php`, which reads a pre-generated config file (`top-10-fast-config.php`) placed in the WordPress root containing hardcoded database credentials. You must generate this config file from **Top 10 &gt; Settings** before the tracker will work, and regenerate it whenever your database credentials or table prefix changes.
+- **High-traffic Tracker (Pro only):** Bypasses WordPress entirely. Tracking requests are handled by `high-traffic-tracker-js.php`, which reads a pre-generated config file (`top-10-fast-config.php`) placed in the WordPress root containing hardcoded database credentials. You must generate this config file from **Top 10 > Settings** before the tracker will work, and regenerate it whenever your database credentials or table prefix changes.
 
 ## How Tracking Works
 
@@ -66,7 +64,7 @@ The log uses a shorter window because it stores one raw row per visit and grows 
 The default two-minute interval can be changed using the [`tptn_aggregation_cron_interval`](https://webberzone.dev/top-10/hooks/tptn_aggregation_cron_interval/) filter. The value must be a registered WP-Cron schedule name. Top 10 registers the following schedules out of the box:
 
 | Schedule name | Interval |
-|---|---|
+| --- | --- |
 | `one_minute` | Every 1 minute |
 | `two_minutes` | Every 2 minutes (default) |
 | `three_minutes` | Every 3 minutes |
@@ -84,12 +82,12 @@ If you supply a schedule name that is not registered, WordPress will fall back t
 
 ### Syncing the funnel manually
 
-If you need counts to update immediately — for example after importing data or testing — you can drain the funnel without waiting for the next cron run. Go to **Top 10 &gt; Tools** and click **Sync Funnel Now**. This runs the same aggregation the cron would run, instantly moving all buffered visits into the count tables.
+If you need counts to update immediately — for example after importing data or testing — you can drain the funnel without waiting for the next cron run. Go to **Top 10 > Tools** and click **Sync Funnel Now**. This runs the same aggregation the cron would run, instantly moving all buffered visits into the count tables.
 
 ### The four database tables at a glance
 
 | Table | Purpose |
-|---|---|
+| --- | --- |
 | `wp_top_ten` | Running total of all-time views per post |
 | `wp_top_ten_daily` | Hourly view counts per post (powers the dashboard chart and custom-period popular posts lists) |
 | `wp_top_ten_visits_funnel` | Hot buffer — raw incoming visits waiting to be aggregated (normally empty between cron runs) |
