@@ -2,17 +2,17 @@
 slug: styling-top-10-popular-posts
 title: "Styling Top 10 Popular Posts"
 products: [top-10]
-sections: [02-top-10-advanced]
-tags: [customisation,popular,styles,top-10]
+sections: ["02-top-10-advanced"]
+tags: [customisation, popular, styles, top-10]
 status: publish
-order: 0
+toc: true
 ---
 
-[kbtoc]
+[toc]
 
 This guide explains how Top 10 loads its CSS and how to override it safely without modifying plugin files.
 
-It applies to both the free and Pro versions. See <a href="https://webberzone.com/plugins/top-10/" data-type="page" data-id="54">Top 10 – Popular Posts for WordPress</a> for the free plugin and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) for additional features.
+It applies to both the free and Pro versions. See [Top 10 – Popular Posts for WordPress](https://webberzone.com/plugins/top-10/) for the free plugin and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) for additional features.
 
 ## What this covers
 

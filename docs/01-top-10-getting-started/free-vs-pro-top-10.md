@@ -3,9 +3,8 @@ slug: free-vs-pro-top-10
 title: "Free vs Pro: Top 10"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
-tags: [top-10, pro, upgrade]
+tags: [pro, top-10, upgrade]
 status: publish
-order: 0
 ---
 
 Top 10 is free to use and packed with features right out of the box. The Pro upgrade adds high-performance tracking modes, advanced admin tools, block editor enhancements, and WP-CLI integration for those who need more control.
@@ -13,13 +12,13 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 ## Free vs Pro
 
 | Feature | Free | Pro |
-|---------|:----:|:---:|
-| **Core** | | |
+| --- | --- | --- |
+| **Core** |  |  |
 | AJAX-based view tracking | ✅ | ✅ |
 | Daily and total view counts | ✅ | ✅ |
 | Display view count on posts | ✅ | ✅ |
 | Popular posts widgets | ✅ | ✅ |
-| Shortcodes `[tptn_list]` and `[tptn_views]` | ✅ | ✅ |
+| Shortcodes `[[tptn_list]]` and `[[tptn_views]]` | ✅ | ✅ |
 | Gutenberg blocks (Popular Posts, Post Count) | ✅ | ✅ |
 | Thumbnail support with fallback logic | ✅ | ✅ |
 | Post and category exclusions | ✅ | ✅ |
@@ -27,7 +26,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | REST API | ✅ | ✅ |
 | Popular posts RSS feed | ✅ | ✅ |
 | Export / import counts and settings | ✅ | ✅ |
-| **Tracking & Performance** | | |
+| **Tracking & Performance** |  |  |
 | Standard AJAX tracker | ✅ | ✅ |
 | Buffered visit tracking (funnel table) | ✅ | ✅ |
 | Fast tracker (lightweight PHP endpoint) | ❌ | ✅ |
@@ -35,7 +34,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | RSS / Atom feed view counting | ❌ | ✅ |
 | MySQL `MAX_EXECUTION_TIME` query guard | ❌ | ✅ |
 | Configurable data retention period | ❌ | ✅ |
-| **Display & Blocks** | | |
+| **Display & Blocks** |  |  |
 | Pro Query Loop block | ❌ | ✅ |
 | Enhanced Featured Image block | ❌ | ✅ |
 | Popular Posts Pro block (save/restore defaults) | ❌ | ✅ |
@@ -46,7 +45,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Restrict popular posts to specific taxonomy terms | ❌ | ✅ |
 | Per-post category inclusion (metabox) | ❌ | ✅ |
 | Exclude nested/parent categories when excluding a term | ❌ | ✅ |
-| **Admin & Dashboard** | | |
+| **Admin & Dashboard** |  |  |
 | Statistics dashboard (daily and total) | ✅ | ✅ |
 | Admin columns with view counts | ✅ | ✅ |
 | Settings wizard | ✅ | ✅ |
@@ -57,12 +56,12 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Dashboard access control by user role | ❌ | ✅ |
 | Choose which post types show admin columns | ❌ | ✅ |
 | Sortable admin columns on custom post types | ❌ | ✅ |
-| **Multisite** | | |
+| **Multisite** |  |  |
 | Network-wide aggregated statistics dashboard | ✅ | ✅ |
 | Copy settings between multisite sites | ❌ | ✅ |
-| **Developer Tools** | | |
+| **Developer Tools** |  |  |
 | WP-CLI commands (counts, DB, cache, settings, cron, popular, status) | ❌ | ✅ |
-| **Support** | | |
+| **Support** |  |  |
 | Community forum | ✅ | ✅ |
 | Priority email support | ❌ | ✅ |
 
@@ -72,8 +71,8 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 
 All paid plans include the same Pro features. The difference is the number of sites and who you can use them on.
 
-| | Pro | Pro Multi | Agency |
-|--|:---:|:---------:|:------:|
+|  | Pro | Pro Multi | Agency |
+| --- | --- | --- | --- |
 | All Pro features | ✅ | ✅ | ✅ |
 | Number of sites | 1 site | 5 to unlimited | Unlimited |
 | Use on client sites | ❌ | ❌ | ✅ |

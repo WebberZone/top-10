@@ -2,20 +2,18 @@
 slug: top-10-settings-list-options
 title: "Top 10 Settings – Popular Post list options"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, top-10, top-10-settings]
 status: publish
-order: 0
+toc: true
+featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Post-list-options-v2.6.1.png"
 ---
 
-[kbtoc]
+[toc]
 
 The **Popular Post list options** section contains a set of options that allow you to fine tune the settings of the list of popular articles from you blog. These are global settings and many of these can be overridden in the widget or the shortcode.
 
-<figure class="wp-block-image is-resized">
-<a href="https://webberzone.com/wp-content/uploads/2016/12/Top-10-Post-list-options-v2.6.1.png"><img src="http://webberzone.com/support/wp-content/uploads/sites/4/2016/12/Top-10-Post-list-options-v2.6.1-423x1024.png" class="wp-image-87" style="aspect-ratio:1;width:1226px;height:auto" decoding="async" alt="Top 10 - Post list options" /></a>
-<figcaption>Top 10 – Post list options</figcaption>
-</figure>
+![Top 10 - Post list options](http://webberzone.com/support/wp-content/uploads/sites/4/2016/12/Top-10-Post-list-options-v2.6.1-423x1024.png)
 
 ## Use global settings in block *(Pro only)*
 

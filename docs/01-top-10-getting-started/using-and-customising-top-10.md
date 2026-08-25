@@ -2,16 +2,16 @@
 slug: using-and-customising-top-10
 title: "Using and Customising Top 10"
 products: [top-10]
-sections: [01-top-10-getting-started]
+sections: ["01-top-10-getting-started"]
 tags: [top-10]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
 Top 10 can be used in four ways to display the popular posts:
 
-1. **Widget**: drag and drop "Popular Posts \[Top 10\]" widget into your theme's sidebar and configure it
-2. **Shortcode**: `[tptn_list]`, so you can embed it inside a post or a page. [View details on the shortcodes](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
+1. **Widget**: drag and drop "Popular Posts [Top 10]" widget into your theme's sidebar and configure it
+2. **Shortcode**: `[[tptn_list]]`, so you can embed it inside a post or a page. [View details on the shortcodes](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
 3. **Template tags**: Use `tptn_show_pop_posts()` to display the popular posts anywhere on your theme. See the template tags section below
 4. **Top_Ten_Query**: You can use this for a more advanced implementation. [Read more details on Top_Ten_Query](https://webberzone.com/support/knowledgebase/top_ten_query/)
 

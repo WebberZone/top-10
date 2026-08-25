@@ -2,13 +2,14 @@
 slug: top-10-settings-counter-tracker-options
 title: "Top 10 Settings – Counter and tracker options"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [settings,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [settings, top-10, top-10-settings]
 status: publish
-order: 0
+toc: true
+featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Counter-Tracker-options-v2.6.1.png"
 ---
 
-[kbtoc]
+[toc]
 
 The **Counter and Tracker options** is the second tab in the Top 10 settings page and allows you to tweak the counter and tracker.
 
@@ -34,7 +35,7 @@ This text is displayed when there are no hits for the post and it isn't a single
 
 ### Number format post count
 
-Activating this option will convert the post counts into a <a href="https://developer.wordpress.org/reference/functions/number_format_i18n/" target="_blank" rel="noreferrer noopener" aria-label="number format based on the locale (opens in a new tab)">number format based on the locale</a>.
+Activating this option will convert the post counts into a <a href="https://developer.wordpress.org/reference/functions/number_format_i18n/" target="_blank" rel="noreferrer noopener">number format based on the locale</a>.
 
 ### Number format style
 
@@ -68,7 +69,7 @@ Top 10 includes three tracker types in the free plugin — REST API based, Query
 
 All tracker types share the same underlying recording mechanism: each page view writes a single row to the visits funnel table and returns immediately. A background cron job aggregates the funnel into the main count tables every two minutes. See [Trackers in Top 10](../02-top-10-advanced/trackers-in-top-10/) for a full explanation of this flow.
 
-<a href="https://webberzone.com/plugins/top-10/pro/" data-type="page" data-id="8237">Top 10 Pro</a> adds two additional trackers:
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) adds two additional trackers:
 
 - **Fast Tracker** — a standalone PHP endpoint that loads a minimal WordPress environment, reducing server overhead per tracked visit.
 - **High-traffic Tracker** — bypasses WordPress entirely using a pre-generated config file. Requires generating the config from the Settings page before use.

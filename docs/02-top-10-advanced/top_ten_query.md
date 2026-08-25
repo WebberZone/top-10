@@ -2,10 +2,10 @@
 slug: top_ten_query
 title: "Display popular posts with Top_Ten_Query"
 products: [top-10]
-sections: [02-top-10-advanced]
+sections: ["02-top-10-advanced"]
 tags: [top-10]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
 Top 10 v3.0.0 introduced **Top_Ten_Query**, which works as a wrapper for <a href="https://developer.wordpress.org/reference/classes/wp_query/" target="_blank" rel="noreferrer noopener">WP_Query</a>. This brings all the power and flexibility of WP_Query to Top 10. If you're not familiar with WP_Query, I recommend <a href="https://developer.wordpress.org/reference/classes/wp_query/" target="_blank" rel="noreferrer noopener">reading the documentation</a>.
@@ -39,53 +39,14 @@ get_tptn_posts() is a wrapper to Top_Ten_Query. You can use it to retrieve an ar
 
 ## Parameters
 
-In addition to the <a href="https://developer.wordpress.org/reference/classes/wp_query/#parameters" rel="noreferrer noopener" target="_blank">WP_Query parameters</a>, Top_Ten_Query also takes these additional parameters.
+In addition to the <a href="https://developer.wordpress.org/reference/classes/wp_query/#parameters" target="_blank" rel="noreferrer noopener">WP_Query parameters</a>, Top_Ten_Query also takes these additional parameters.
 
-<figure class="wp-block-table">
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>blog_id</code></td>
-<td><code>array</code> or <code>string</code></td>
-<td>Array or comma-separated string of blog IDs.</td>
-</tr>
-<tr>
-<td><code>daily</code></td>
-<td><code>bool</code></td>
-<td>Set to <code>true</code> to fetch daily or custom period posts. Set to <code>false</code> for the overall popular posts.</td>
-</tr>
-<tr>
-<td><code>daily_range</code></td>
-<td><code>number</code></td>
-<td>Enter the number of days, e.g. set it to 7 to fetch the popular posts in the past week.</td>
-</tr>
-<tr>
-<td><code>include_cat_ids</code></td>
-<td><code>array</code> or <code>string</code></td>
-<td>Array or comma-separated string of categories or <code>term_taxonomy_id</code>s.</td>
-</tr>
-<tr>
-<td><code>include_post_ids</code></td>
-<td><code>array</code> or <code>string</code></td>
-<td>Array or comma-separated string of post IDs to include.</td>
-</tr>
-<tr>
-<td><code>offset</code></td>
-<td><code>int</code></td>
-<td>Offset the related posts returned by this number.</td>
-</tr>
-<tr>
-<td><code>strict_limit</code></td>
-<td><code>bool</code></td>
-<td>If <code>false</code>, fetches up to 3× the limit to allow filtering.</td>
-</tr>
-</tbody>
-</table>
-</figure>
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `blog_id` | `array` or `string` | Array or comma-separated string of blog IDs. |
+| `daily` | `bool` | Set to `true` to fetch daily or custom period posts. Set to `false` for the overall popular posts. |
+| `daily_range` | `number` | Enter the number of days, e.g. set it to 7 to fetch the popular posts in the past week. |
+| `include_cat_ids` | `array` or `string` | Array or comma-separated string of categories or `term_taxonomy_id`s. |
+| `include_post_ids` | `array` or `string` | Array or comma-separated string of post IDs to include. |
+| `offset` | `int` | Offset the related posts returned by this number. |
+| `strict_limit` | `bool` | If `false`, fetches up to 3× the limit to allow filtering. |

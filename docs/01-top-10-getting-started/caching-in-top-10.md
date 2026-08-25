@@ -2,10 +2,10 @@
 slug: caching-in-top-10
 title: "Caching in Top 10"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [cache,top-10]
+sections: ["01-top-10-getting-started"]
+tags: [cache, top-10]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
 To improve the performance of your WordPress site, the [Top 10](https://webberzone.com/plugins/top-10/) plugin includes inbuilt caching. This guide will walk you through enabling and configuring these settings.
@@ -16,7 +16,7 @@ Caching helps reduce the load on your database and speeds up the delivery of pop
 
 ## Enabling/disabling caching
 
-Caching in Top 10 is enabled by default to optimize the popular posts out-of-the-box. You can toggle the **Enable Cache** setting by navigating to **Top 10** \> **Settings** and the [**General** tab](https://webberzone.com/support/knowledgebase/top-10-settings-general-options/).
+Caching in Top 10 is enabled by default to optimize the popular posts out-of-the-box. You can toggle the **Enable Cache** setting by navigating to **Top 10** > **Settings** and the [**General** tab](https://webberzone.com/support/knowledgebase/top-10-settings-general-options/).
 
 Top 10 will use the Transients API to cache the popular posts output. By default, the plugin will cache the posts for an hour. However, you can change this by updating the **Time to cache** setting.
 

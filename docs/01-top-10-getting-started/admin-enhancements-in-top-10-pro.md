@@ -2,10 +2,10 @@
 slug: admin-enhancements-in-top-10-pro
 title: "Admin Enhancements in Top 10 Pro"
 products: [top-10]
-sections: [01-top-10-getting-started]
-tags: [admin,top-10,top-10-settings]
+sections: ["01-top-10-getting-started"]
+tags: [admin, top-10, top-10-settings]
 status: publish
-order: 0
+featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
 Top 10 Pro enhances your WordPress admin experience with features like a dedicated admin bar menu, customizable dashboard visibility, control over post type columns.
