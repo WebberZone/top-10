@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["02-bs-advanced", "02-top-10-advanced", "02-crp-advanced"]
 tags: [debugging, query-monitor]
 status: publish
+order: 0
 toc: true
 featured_image: "https://webberzone.com/wp-content/uploads/2021/02/Install-Query-Monitor.png"
 ---
