@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
 status: publish
+order: 0
 toc: true
 featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Counter-Tracker-options-v2.6.1.png"
 ---

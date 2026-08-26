@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [pro, top-10, upgrade]
 status: publish
+order: 0
 ---
 
 Top 10 is free to use and packed with features right out of the box. The Pro upgrade adds high-performance tracking modes, advanced admin tools, block editor enhancements, and WP-CLI integration for those who need more control.

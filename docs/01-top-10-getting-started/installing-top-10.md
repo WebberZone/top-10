@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [installation, top-10]
 status: publish
+order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png"
 ---
 

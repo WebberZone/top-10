@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["02-top-10-advanced"]
 tags: [top-10, trackers]
 status: publish
+order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tracker-settings.webp"
 ---
 
