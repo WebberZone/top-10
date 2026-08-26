@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["03-top-10-developer-docs"]
 tags: [top-10, wp-cli]
 status: publish
+order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2026/05/Top10-CLI.webp"
 ---
 

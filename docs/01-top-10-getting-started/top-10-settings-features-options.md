@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
 status: publish
+order: 0
 toc: true
 ---
 

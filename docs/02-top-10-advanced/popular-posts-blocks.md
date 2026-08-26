@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["02-top-10-advanced"]
 tags: [block, counter, featured-image, gutenberg, query-loop, top-10, views]
 status: publish
+order: 0
 toc: true
 ---
 

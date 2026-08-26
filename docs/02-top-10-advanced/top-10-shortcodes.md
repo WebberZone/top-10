@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["02-top-10-advanced"]
 tags: [shortcode, top-10]
 status: publish
+order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2019/04/Shortcodes-in-Top-10-WordPress-plugin.webp"
 ---
 

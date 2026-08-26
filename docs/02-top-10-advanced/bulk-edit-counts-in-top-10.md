@@ -5,6 +5,7 @@ products: [top-10]
 sections: ["02-top-10-advanced"]
 tags: [top-10]
 status: publish
+order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
