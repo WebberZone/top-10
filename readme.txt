@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.4.3
+Stable tag: 4.4.4
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -179,6 +179,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 * Fixed `tptn_get_settings()` returning `false` instead of an empty array when no settings had been saved yet.
 * Fixed a silent loss of visit data in funnel aggregation, and an undefined array key warning in the Fast Tracker.
 * Fixed a WordPress.org plugin-review issue in the settings framework: renamed JS globals, and hardened referer/array handling in settings sanitization.
+* Fixed plugin data being deleted when uninstalling one version while its paired free or Pro counterpart was active.
 
 * Improvements:
 	* Setting defaults are now resolved from a single lightweight list instead of building every settings field, so reading an option early in the page load no longer risks loading translations too early.
