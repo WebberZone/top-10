@@ -11,6 +11,10 @@ if ( ! ( defined( 'WP_UNINSTALL_PLUGIN' ) || defined( 'WP_FS__UNINSTALL_MODE' ) 
 	exit;
 }
 
+if ( is_plugin_active( 'top-10-pro/top-10.php' ) ) {
+	return;
+}
+
 global $wpdb;
 
 $tptn_settings = get_option( 'tptn_settings' );
