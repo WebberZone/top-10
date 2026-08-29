@@ -10,11 +10,15 @@ TEMP_DIR="$BUILD_DIR/$PLUGIN_SLUG"
 
 echo "Creating distribution zip for $PLUGIN_SLUG..."
 
+# Install production-only vendor dependencies.
+echo "Installing Composer production dependencies..."
+composer install --no-dev --optimize-autoloader --classmap-authoritative --quiet
+
 # Clean build directory
 rm -rf "$BUILD_DIR"
 mkdir -p "$TEMP_DIR"
 
-# Copy plugin files (excluding dev/build artifacts and all of vendor)
+# Copy plugin files (excluding dev/build artifacts).
 echo "Copying plugin files..."
 rsync -av --exclude-from=- . "$TEMP_DIR/" <<EOF
 .*
@@ -24,7 +28,6 @@ node_modules/
 phpcompat-tools/
 phpunit/
 /build/
-vendor/
 dev-helpers/
 dev-tools/
 wporg-assets/
@@ -50,30 +53,6 @@ CLAUDE.md
 AGENTS.md
 EOF
 
-# Copy required vendor dependencies (everything in vendor/ is excluded above,
-# so production runtime deps must be copied back in explicitly). Dev-only files
-# such as .github workflow folders are stripped from the copies.
-echo "Copying vendor dependencies..."
-mkdir -p "$TEMP_DIR/vendor"
-
-# Freemius SDK (manually bundled).
-if [ -d "vendor/freemius" ]; then
-    rsync -a --exclude='.github' --exclude='.git*' vendor/freemius "$TEMP_DIR/vendor/"
-else
-    echo "Warning: vendor/freemius directory not found. Freemius SDK will be missing."
-fi
-
-# Crawler-Detect (bot detection; loaded via a direct require_once, not the
-# Composer autoloader). Only the runtime src/ is needed, not raw/, export.php,
-# tests, or CI config.
-if [ -d "vendor/jaybizzle/crawler-detect/src" ]; then
-    mkdir -p "$TEMP_DIR/vendor/jaybizzle/crawler-detect"
-    rsync -a vendor/jaybizzle/crawler-detect/src "$TEMP_DIR/vendor/jaybizzle/crawler-detect/"
-    cp vendor/jaybizzle/crawler-detect/LICENSE "$TEMP_DIR/vendor/jaybizzle/crawler-detect/"
-else
-    echo "Warning: vendor/jaybizzle/crawler-detect/src directory not found. Bot detection will be degraded."
-fi
-
 # Create zip
 echo "Creating zip file..."
 cd "$BUILD_DIR"
@@ -86,3 +65,7 @@ cd ..
 echo ""
 echo "Zip contents summary:"
 unzip -l "$BUILD_DIR/$PLUGIN_SLUG.zip" | tail -1
+
+# Restore Composer development dependencies for local development.
+echo "Restoring Composer dev dependencies..."
+composer install --quiet

@@ -1,7 +1,4 @@
-# Ignore vendor development dependencies and binaries, but allow production dependencies
-/vendor/*
-!/vendor/freemius/
-!/vendor/jaybizzle/
+/vendor/
 
 # Tooling
 /phpcompat-tools/
@@ -10,7 +7,6 @@
 
 # Lock files
 package-lock.json
-composer.lock
 
 # Claude AI
 .claude/
