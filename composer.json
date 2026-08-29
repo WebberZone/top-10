@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": ">=7.4",
+        "freemius/wordpress-sdk": "^2",
         "jaybizzle/crawler-detect": "^1.4"
     },
     "require-dev": {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Autoloads classes from the WebberZone\Top_Ten namespace.
+ * Initializes Freemius SDK for Top 10.
  *
  * @package WebberZone\Top_Ten
  */
@@ -21,8 +21,6 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 			if ( ! defined( 'WP_FS__PRODUCT_16384_MULTISITE' ) ) {
 				define( 'WP_FS__PRODUCT_16384_MULTISITE', true );
 			}
-			// Include Freemius SDK.
-			require_once __DIR__ . '/vendor/freemius/start.php';
 			$tptn_freemius = \fs_dynamic_init(
 				array(
 					'id'               => '16384',

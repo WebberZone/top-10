@@ -166,6 +166,12 @@ if ( ! has_action( 'admin_notices', __NAMESPACE__ . '\\tptn_show_deactivation_no
 global $tptn_db_version;
 $tptn_db_version = '7.0';
 
+// Load the Composer autoloader (includes the Freemius SDK).
+$composer_autoload = plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+if ( file_exists( $composer_autoload ) ) {
+	require_once $composer_autoload;
+}
+
 if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 	// Load Freemius.
 	require_once plugin_dir_path( __FILE__ ) . 'load-freemius.php';
