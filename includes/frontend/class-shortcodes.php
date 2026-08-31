@@ -53,10 +53,12 @@ class Shortcodes {
 		 * Filter the default shortcode attributes.
 		 *
 		 * @since 4.0.0
+		 * @since 4.5.0 Added the `$atts` parameter.
 		 *
 		 * @param array $default_atts Default shortcode attributes.
+		 * @param array $atts         Shortcode attributes.
 		 */
-		$default_atts = apply_filters( 'tptn_shortcode_defaults', $default_atts );
+		$default_atts = apply_filters( 'tptn_shortcode_defaults', $default_atts, $atts );
 
 		$atts = shortcode_atts(
 			array_merge(

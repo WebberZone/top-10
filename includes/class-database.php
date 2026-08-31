@@ -80,6 +80,24 @@ class Database {
 	}
 
 	/**
+	 * Get the count for a site-wide request context.
+	 *
+	 * Site-wide contexts are resolved by the Pro-only fixed-ID map and then
+	 * addressed by their reserved numeric ID in the shared count tables.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param string   $context    Site-wide context key.
+	 * @param int|null $blog_id    Blog ID (optional, defaults to current blog).
+	 * @param bool     $daily      Whether to get the daily count.
+	 * @param array    $date_range Date range array for daily counts.
+	 * @return int Site-wide count.
+	 */
+	public static function get_sitewide_count( $context, $blog_id = null, $daily = false, $date_range = array() ) {
+		return (int) apply_filters( 'tptn_get_sitewide_count', 0, $context, $blog_id, $daily, $date_range );
+	}
+
+	/**
 	 * Update count for a post.
 	 *
 	 * @since 4.2.0
@@ -240,7 +258,6 @@ class Database {
 				'top_ten_visits_funnel' => self::get_funnel_table(),
 				'top_ten_visits_log'    => self::get_log_table(),
 			);
-
 			foreach ( $tables as $key => $table_name ) {
 				if ( self::is_table_installed( $table_name ) ) {
 					$stats[ $key ] = self::get_single_table_statistics( $table_name );
@@ -1200,13 +1217,18 @@ class Database {
 	 */
 	public static function count_orphan_counts( string $table_name ): int {
 		global $wpdb;
-		$blog_id = get_current_blog_id();
+		$blog_id       = get_current_blog_id();
+		$context_ids   = array_map( 'intval', (array) apply_filters( 'tptn_sitewide_context_ids', array() ) );
+		$context_where = '';
+		if ( $context_ids ) {
+			$context_where = ' AND t.postnumber NOT IN (' . implode( ',', $context_ids ) . ')';
+		}
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM `{$table_name}` t
 				 LEFT JOIN `{$wpdb->posts}` p ON t.postnumber = p.ID
-				 WHERE p.ID IS NULL AND t.blog_id = %d",
+				 WHERE p.ID IS NULL AND t.blog_id = %d{$context_where}",
 				$blog_id
 			)
 		);
@@ -1227,13 +1249,18 @@ class Database {
 	 */
 	public static function delete_orphan_counts( string $table_name, int $batch_size = 1000 ) {
 		global $wpdb;
-		$blog_id = get_current_blog_id();
+		$blog_id       = get_current_blog_id();
+		$context_ids   = array_map( 'intval', (array) apply_filters( 'tptn_sitewide_context_ids', array() ) );
+		$context_where = '';
+		if ( $context_ids ) {
+			$context_where = ' AND t.postnumber NOT IN (' . implode( ',', $context_ids ) . ')';
+		}
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->query(
 			$wpdb->prepare(
 				"DELETE t FROM `{$table_name}` t
 				 LEFT JOIN `{$wpdb->posts}` p ON t.postnumber = p.ID
-				 WHERE p.ID IS NULL AND t.blog_id = %d
+				 WHERE p.ID IS NULL AND t.blog_id = %d{$context_where}
 				 LIMIT %d",
 				$blog_id,
 				$batch_size

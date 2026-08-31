@@ -44,20 +44,25 @@ class Tracker {
 	public static function enqueue_scripts() {
 		global $post, $ajax_tptn_tracker;
 
-		if ( ! is_object( $post ) ) {
+		$is_singular          = is_singular();
+		$tracker_all_pages    = (bool) \tptn_get_option( 'tracker_all_pages' );
+		$sitewide_context     = (string) apply_filters( 'tptn_tracker_sitewide_context', '' );
+		$has_sitewide_context = '' !== $sitewide_context;
+
+		if ( ! is_object( $post ) && ! $tracker_all_pages && ! $has_sitewide_context ) {
 			return;
 		}
-		if ( 'draft' === $post->post_status || is_customize_preview() ) {
+		if ( ( is_object( $post ) && 'draft' === $post->post_status ) || is_customize_preview() ) {
 			return;
 		}
 
 		$track_users = wp_parse_list( \tptn_get_option( 'track_users' ) );
 		$trackers    = wp_parse_list( \tptn_get_option( 'trackers' ) );
 
-		if ( is_singular() || \tptn_get_option( 'tracker_all_pages' ) ) {
+		if ( $is_singular || $tracker_all_pages || $has_sitewide_context ) {
 
 			$current_user        = wp_get_current_user();  // Let's get the current user.
-			$post_author         = ( (int) $current_user->ID === (int) $post->post_author ) ? true : false; // Is the current user the post author?
+			$post_author         = is_object( $post ) && ( (int) $current_user->ID === (int) $post->post_author ); // Is the current user the post author?
 			$current_user_admin  = ( current_user_can( 'manage_options' ) ) ? true : false;  // Is the current user an admin?
 			$current_user_editor = ( ( current_user_can( 'edit_others_posts' ) ) && ( ! current_user_can( 'manage_options' ) ) ) ? true : false;    // Is the current user an editor?
 			$is_bot              = Helpers::is_bot();
@@ -81,7 +86,7 @@ class Tracker {
 
 			if ( $include_code ) {
 
-				$id               = is_singular() ? absint( $post->ID ) : 0;
+				$id               = $is_singular && is_object( $post ) ? absint( $post->ID ) : 0;
 				$blog_id          = get_current_blog_id();
 				$activate_counter = in_array( 'overall', $trackers, true ) ? 1 : 0;     // It's 1 if we're updating the overall count.
 				$activate_counter = $activate_counter + ( in_array( 'daily', $trackers, true ) ? 10 : 0 );  // It's 10 if we're updating the daily count.
@@ -122,12 +127,14 @@ class Tracker {
 				$home_url = strtok( $home_url, '?' );
 
 				$ajax_tptn_tracker = array(
-					'ajax_url'         => $home_url,
-					'top_ten_id'       => $id,
-					'top_ten_blog_id'  => $blog_id,
-					'activate_counter' => $activate_counter,
-					'top_ten_debug'    => $top_ten_debug,
-					'tptn_rnd'         => wp_rand( 1, time() ),
+					'ajax_url'                 => $home_url,
+					'top_ten_id'               => $id,
+					'top_ten_sitewide_context' => $sitewide_context,
+					'top_ten_blog_id'          => $blog_id,
+					'activate_counter'         => $activate_counter,
+					'top_ten_debug'            => $top_ten_debug,
+					'tracker_type'             => $tracker_type,
+					'tptn_rnd'                 => wp_rand( 1, time() ),
 				);
 
 				/**
@@ -162,6 +169,7 @@ class Tracker {
 	public static function query_vars( $vars ) {
 		// Add these to the list of queryvars that WP gathers.
 		$vars[] = 'top_ten_id';
+		$vars[] = 'top_ten_sitewide_context';
 		$vars[] = 'top_ten_blog_id';
 		$vars[] = 'activate_counter';
 		$vars[] = 'view_counter';
@@ -187,20 +195,27 @@ class Tracker {
 	 */
 	public static function parse_request( $wp ) {
 
-		if ( empty( $wp->query_vars['top_ten_id'] ) ) {
+		if ( empty( $wp->query_vars['top_ten_id'] ) && empty( $wp->query_vars['top_ten_sitewide_context'] ) ) {
 			return;
 		}
 
-		if ( array_key_exists( 'top_ten_id', $wp->query_vars ) && array_key_exists( 'activate_counter', $wp->query_vars ) ) {
+		if (
+			array_key_exists( 'activate_counter', $wp->query_vars )
+			&& ( array_key_exists( 'top_ten_id', $wp->query_vars ) || array_key_exists( 'top_ten_sitewide_context', $wp->query_vars ) )
+		) {
 
-			$id               = absint( $wp->query_vars['top_ten_id'] );
-			$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] );
+			$id               = absint( $wp->query_vars['top_ten_id'] ?? 0 );
+			$sitewide_context = sanitize_text_field( $wp->query_vars['top_ten_sitewide_context'] ?? '' );
+			$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] ?? 0 );
 			$activate_counter = absint( $wp->query_vars['activate_counter'] );
 
 			$is_feed = ! empty( $wp->query_vars['tptn_feed'] );
 			$source  = $is_feed ? 1 : 0;
 
 			$str = self::update_count( $id, $blog_id, $activate_counter, $source );
+			if ( '' !== $sitewide_context ) {
+				$str .= self::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter, $source );
+			}
 
 			if ( $is_feed ) {
 				self::output_tracking_pixel(); // Sends GIF and exits.
@@ -315,11 +330,15 @@ class Tracker {
 	public static function tracker_parser() {
 
 		$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$sitewide_context = isset( $_POST['top_ten_sitewide_context'] ) ? sanitize_text_field( wp_unslash( $_POST['top_ten_sitewide_context'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$str = self::update_count( $id, $blog_id, $activate_counter, 0 );
+		if ( '' !== $sitewide_context ) {
+			$str .= self::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter, 0 );
+		}
 
 		// If the debug parameter is set then we output $str else we send a No Content header.
 		if ( 1 === $top_ten_debug ) {
@@ -378,5 +397,18 @@ class Tracker {
 		 * @param int $source Traffic source: 0 = web, 1 = feed.
 		 */
 		return apply_filters( 'tptn_update_count', $str, $id, $blog_id, $activate_counter, $source );
+	}
+
+	/**
+	 * Update a site-wide context count.
+	 *
+	 * @param string $context Context key.
+	 * @param int    $blog_id Blog ID.
+	 * @param int    $activate_counter Counter flag.
+	 * @param int    $source Traffic source.
+	 * @return string Response on database update.
+	 */
+	public static function update_sitewide_count( $context, $blog_id, $activate_counter, $source = 0 ) {
+		return (string) apply_filters( 'tptn_tracker_sitewide_count', '', $context, $blog_id, $activate_counter, $source );
 	}
 }

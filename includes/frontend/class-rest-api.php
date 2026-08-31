@@ -235,11 +235,15 @@ class REST_API extends \WP_REST_Controller {
 	public function update_post_count( $request ) {
 
 		$id               = absint( $request->get_param( 'top_ten_id' ) );
+		$sitewide_context = sanitize_text_field( $request->get_param( 'top_ten_sitewide_context' ) );
 		$blog_id          = absint( $request->get_param( 'top_ten_blog_id' ) );
 		$activate_counter = absint( $request->get_param( 'activate_counter' ) );
 		$top_ten_debug    = absint( $request->get_param( 'top_ten_debug' ) );
 
 		$str = \WebberZone\Top_Ten\Tracker::update_count( $id, $blog_id, $activate_counter );
+		if ( '' !== $sitewide_context ) {
+			$str .= \WebberZone\Top_Ten\Tracker::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter );
+		}
 
 		if ( 1 === $top_ten_debug ) {
 			return rest_ensure_response( $str );
@@ -329,22 +333,27 @@ class REST_API extends \WP_REST_Controller {
 	 */
 	public function get_tracker_params() {
 		$args = array(
-			'top_ten_id'       => array(
+			'top_ten_id'               => array(
 				'description'       => esc_html__( 'ID of the post.', 'top-10' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 			),
-			'top_ten_blog_id'  => array(
+			'top_ten_sitewide_context' => array(
+				'description'       => esc_html__( 'Site-wide tracking context: front_page, home_page, search, 404, category, tag, taxonomy, author, post_type_archive, date_archive, archive or other. Each key maps to a fixed reserved ID in the shared count tables.', 'top-10' ),
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'top_ten_blog_id'          => array(
 				'description'       => esc_html__( 'Blog ID of the post.', 'top-10' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 			),
-			'activate_counter' => array(
+			'activate_counter'         => array(
 				'description'       => esc_html__( 'Activate counter flag.', 'top-10' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 			),
-			'top_ten_debug'    => array(
+			'top_ten_debug'            => array(
 				'description'       => esc_html__( 'Debug flag.', 'top-10' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',

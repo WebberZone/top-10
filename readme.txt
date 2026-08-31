@@ -2,8 +2,8 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.4.4
-Requires at least: 6.6
+Stable tag: 4.5.0
+Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -43,6 +43,7 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 
 * __Enhanced Tracking and Performance__
   * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
+  * __Site-wide Tracking__: Track views for the front page, posts page, archives, searches, and 404 pages in addition to individual content
   * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
   * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
   * __Lazy Loading__: Render popular posts lists via JavaScript only when they are about to scroll into view, so full-page caching plugins can serve a page without baking in a live popular-posts query. Works with content, shortcodes, widgets, and the Popular Posts block; disable per instance with the `lazy_load` shortcode/block attribute
@@ -172,6 +173,11 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 [Report a security vulnerability.](https://patchstack.com/database/vdp/top-10)
 
 == Changelog ==
+
+= 4.5.0 =
+
+* Added **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
+* Added optional Pro-only site-wide tracking for front pages, posts pages, archives, searches, and 404 pages.
 
 = 4.4.4 =
 

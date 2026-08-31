@@ -56,14 +56,14 @@
 		},
 		"svgPaddingValues": {
 			"type": "array",
-			"default": [0, 0, 0, 0],
+			"default": [ 0, 0, 0, 0 ],
 			"items": {
 				"type": "number"
 			}
 		},
 		"svgPaddingUnits": {
 			"type": "array",
-			"default": ["px", "px", "px", "px"],
+			"default": [ "px", "px", "px", "px" ],
 			"items": {
 				"type": "string"
 			}
@@ -77,12 +77,12 @@
 			"default": "em"
 		}
 	},
-	"usesContext": ["postId", "postType", "queryId"],
+	"usesContext": [ "postId", "postType", "queryId" ],
 	"example": {
 		"viewportWidth": 350
 	},
 	"supports": {
-		"align": ["wide", "full"],
+		"align": [ "wide", "full" ],
 		"html": false,
 		"color": {
 			"gradients": true,
@@ -115,6 +115,7 @@
 		}
 	},
 	"textdomain": "top-10",
+	"render": "file:./render.php",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"viewStyle": "file:./style-index.css"

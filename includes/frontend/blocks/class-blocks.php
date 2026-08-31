@@ -24,12 +24,18 @@ if ( ! defined( 'WPINC' ) ) {
 class Blocks {
 
 	/**
+	 * Request-local cache for post counts rendered by the Post Count block.
+	 *
+	 * @var array<string, int|string>
+	 */
+	private static $post_count_cache = array();
+
+	/**
 	 * Register blocks with WordPress.
 	 */
 	public function __construct() {
 		Hook_Registry::add_action( 'init', array( $this, 'register_blocks' ) );
 		Hook_Registry::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-		Hook_Registry::add_filter( 'block_editor_rest_api_preload_paths', array( $this, 'add_custom_preload_paths' ) );
 	}
 
 	/**
@@ -41,7 +47,7 @@ class Blocks {
 	 */
 	public function register_blocks() {
 		// Define an array of blocks with their paths and optional render callbacks.
-		$blocks = array(
+		$blocks         = array(
 			'popular-posts' => array(
 				'path'            => __DIR__ . '/build/popular-posts/',
 				'render_callback' => array( $this, 'render_block_popular_posts' ),
@@ -51,6 +57,7 @@ class Blocks {
 				'render_callback' => array( $this, 'render_block_post_count' ),
 			),
 		);
+		$default_blocks = $blocks;
 
 		/**
 		 * Filters the blocks registered by the plugin.
@@ -59,7 +66,12 @@ class Blocks {
 		 *
 		 * @param array $blocks Array of blocks registered by the plugin.
 		 */
-		$blocks = apply_filters( 'tptn_register_blocks', $blocks );
+		$blocks   = apply_filters( 'tptn_register_blocks', $blocks );
+		$manifest = __DIR__ . '/build/blocks-manifest.php';
+		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) && file_exists( $manifest ) && $blocks === $default_blocks ) {
+			wp_register_block_types_from_metadata_collection( __DIR__ . '/build', $manifest );
+			return;
+		}
 
 		// Loop through each block and register it.
 		foreach ( $blocks as $block_name => $block_data ) {
@@ -155,8 +167,8 @@ class Blocks {
 		$args   = array();
 
 		$post_id            = absint( $block->context['postId'] );
-		$counter            = isset( $attributes['counter'] ) ? $attributes['counter'] : 'total';
-		$blog_id            = isset( $attributes['blogId'] ) ? $attributes['blogId'] : get_current_blog_id();
+		$counter_type       = isset( $attributes['counter'] ) ? $attributes['counter'] : 'total';
+		$blog_id            = isset( $attributes['blogId'] ) ? absint( $attributes['blogId'] ) : get_current_blog_id();
 		$from_date          = isset( $attributes['fromDate'] ) ? $attributes['fromDate'] : '';
 		$to_date            = isset( $attributes['toDate'] ) ? $attributes['toDate'] : '';
 		$text_before        = isset( $attributes['textBefore'] ) ? $attributes['textBefore'] : '';
@@ -179,8 +191,6 @@ class Blocks {
 			$args['to_date'] = $to_date;
 		}
 
-		$counter = Counter::get_post_count_only( $post_id, $counter, $blog_id, $args );
-
 		$classes   = array();
 		$classes[] = 'wp-block-tptn-post-count';
 		$classes[] = 'tptn-post-count';
@@ -192,20 +202,22 @@ class Blocks {
 			$classes[] = 'has-link-color';
 		}
 
-		if ( ! $advanced_mode ) {
-			$output = sprintf(
+		$counter = null;
+		if ( ! $advanced_mode || empty( $text_advanced ) ) {
+			$counter = self::get_cached_post_count( $post_id, $counter_type, $blog_id, $args );
+			$output  = sprintf(
 				'%1$s%2$s%3$s',
 				wp_kses_post( (string) $text_before ),
 				esc_html( (string) $counter ),
 				wp_kses_post( (string) $text_after )
 			);
-		} elseif ( ! empty( $text_advanced ) ) {
+		} else {
 			$classes[] = 'tptn-advanced-mode';
 			$output    = $text_advanced;
 
 			foreach ( array( 'total', 'daily', 'overall' ) as $type ) {
 				if ( false !== strpos( $text_advanced, "%{$type}count%" ) ) {
-					$count = Counter::get_post_count_only( $post_id, $type, $blog_id, $args );
+					$count = self::get_cached_post_count( $post_id, $type, $blog_id, $args );
 
 					$output = str_replace(
 						"%{$type}count%",
@@ -258,7 +270,6 @@ class Blocks {
 				'<span class="tptn-post-count-icon">%1$s</span>',
 				wp_kses( $svg_code_with_style, self::get_allowed_svg_tags() )
 			);
-			$icon = '<span class="tptn-post-count-icon">' . $svg_code_with_style . '</span>';
 		}
 		if ( ! empty( $icon ) ) {
 			if ( 'before' === $svg_icon_location ) {
@@ -275,6 +286,25 @@ class Blocks {
 			$wrapper_attributes,
 			wp_kses( $output, self::get_allowed_svg_tags() )
 		);
+	}
+
+	/**
+	 * Get a request-cached post count.
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $counter Counter type.
+	 * @param int    $blog_id Blog ID.
+	 * @param array  $args Additional counter arguments.
+	 * @return int|string Post count.
+	 */
+	private static function get_cached_post_count( $post_id, $counter, $blog_id, $args ) {
+		$cache_key = md5( (string) wp_json_encode( array( $post_id, $counter, $blog_id, $args ) ) );
+
+		if ( ! array_key_exists( $cache_key, self::$post_count_cache ) ) {
+			self::$post_count_cache[ $cache_key ] = Counter::get_post_count_only( $post_id, $counter, $blog_id, $args );
+		}
+
+		return self::$post_count_cache[ $cache_key ];
 	}
 
 	/**
@@ -465,19 +495,5 @@ class Blocks {
 				wp_add_inline_style( "popular-posts-block-editor-{$style}", $extra_css );
 			}
 		}
-	}
-
-	/**
-	 * Add custom preload paths for the REST API.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param array $preload_paths Existing preload paths.
-	 * @return array Modified preload paths.
-	 */
-	public static function add_custom_preload_paths( $preload_paths ) {
-		$preload_paths[] = '/wp/v2/top-10/v1/counter';
-
-		return $preload_paths;
 	}
 }

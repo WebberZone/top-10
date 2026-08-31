@@ -60,5 +60,6 @@
     }
   },
   "textdomain": "top-10",
+  "render": "file:./render.php",
   "editorScript": "file:./index.js"
 }
