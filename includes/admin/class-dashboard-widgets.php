@@ -273,6 +273,10 @@ class Dashboard_Widgets {
 					continue;
 				}
 
+				$context_key = class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) && \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available()
+					? \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_key( $result['ID'], $result['blog_id'] ?? null )
+					: '';
+
 				// Handle network context differently.
 				if ( $network ) {
 					// Check if blog exists.
@@ -281,22 +285,32 @@ class Dashboard_Widgets {
 						continue; // Skip if blog doesn't exist.
 					}
 
-					// Get post from specific blog.
-					$post = get_blog_post( $result['blog_id'], $result['ID'] );
-					if ( ! $post || 'publish' !== $post->post_status ) {
-						continue; // Skip if post doesn't exist or isn't published.
-					}
+					if ( '' !== $context_key ) {
+						$label   = \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_label( $context_key );
+						$output .= '<li>' . esc_html( $label ) . ' <span class="tptn-sitewide-label">(' . esc_html__( 'site-wide', 'top-10' ) . ')</span>';
+					} else {
+						// Get post from specific blog.
+						$post = get_blog_post( $result['blog_id'], $result['ID'] );
+						if ( ! $post || 'publish' !== $post->post_status ) {
+							continue; // Skip if post doesn't exist or isn't published.
+						}
 
-					$output .= '<li><a href="' . get_blog_permalink( $result['blog_id'], $result['ID'] ) . '">' . esc_html( $post->post_title ) . '</a>';
+						$output .= '<li><a href="' . get_blog_permalink( $result['blog_id'], $result['ID'] ) . '">' . esc_html( $post->post_title ) . '</a>';
+					}
 					$output .= ' (' . Helpers::number_format_i18n( $result[ $visits ] ) . ')';
 					$output .= ' <span class="tptn-blog-name">- ' . esc_html( $blog_details->blogname ) . '</span>';
 					$output .= '</li>';
 				} else {
 					// Single site context.
-					if ( ! get_post_status( $result['ID'] ) ) {
-						continue;
+					if ( '' !== $context_key ) {
+						$label   = \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_label( $context_key );
+						$output .= '<li>' . esc_html( $label ) . ' <span class="tptn-sitewide-label">(' . esc_html__( 'site-wide', 'top-10' ) . ')</span>';
+					} else {
+						if ( ! get_post_status( $result['ID'] ) ) {
+							continue;
+						}
+						$output .= '<li><a href="' . get_permalink( $result['ID'] ) . '">' . get_the_title( $result['ID'] ) . '</a>';
 					}
-					$output .= '<li><a href="' . get_permalink( $result['ID'] ) . '">' . get_the_title( $result['ID'] ) . '</a>';
 					$output .= ' (' . Helpers::number_format_i18n( $result[ $visits ] ) . ')';
 					$output .= '</li>';
 				}

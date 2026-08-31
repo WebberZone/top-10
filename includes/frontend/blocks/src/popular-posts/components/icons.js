@@ -4,15 +4,15 @@ export const postIcon = (
 		viewBox="-1.6 -1.6 19.20 19.20"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<g id="SVGRepo_bgCarrier" strokeWidth={0}>
+		<g id="SVGRepo_bgCarrier" strokeWidth={ 0 }>
 			<rect
-				x={-1.6}
-				y={-1.6}
-				width={19.2}
-				height={19.2}
-				rx={0}
+				x={ -1.6 }
+				y={ -1.6 }
+				width={ 19.2 }
+				height={ 19.2 }
+				rx={ 0 }
 				fill="#FFBD59"
-				strokeWidth={0}
+				strokeWidth={ 0 }
 			/>
 		</g>
 		<g

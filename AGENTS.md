@@ -26,7 +26,7 @@ No AI attribution anywhere in this repository or on its GitHub.
 
 ## Plugin Overview
 
-WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.4.2. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
+WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.5.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
 
 This is the pro version. Activating it automatically deactivates the free Top 10 plugin, and vice versa. Both plugins share the same namespace, function prefix, database tables, and settings key (`tptn_settings`).
 
@@ -172,4 +172,3 @@ The Settings API (`includes/admin/settings/*.php`) and the Admin Banner (`includ
 | `includes/admin/settings/class-settings-wizard-api.php` | 4.2.0 |
 | `includes/admin/settings/class-metabox-api.php` | 4.0.0 |
 | `includes/admin/class-admin-banner.php` | 4.2.0 |
-

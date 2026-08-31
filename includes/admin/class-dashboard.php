@@ -461,21 +461,31 @@ class Dashboard {
 				<tbody>
 			<?php
 			foreach ( $results as $result ) :
-				$visits_int = (int) $result['visits'];
-				$visits     = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits_int );
+				$visits_int  = (int) $result['visits'];
+				$visits      = \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( $visits_int );
+				$context_key = class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) && \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available()
+					? \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_key( $result['ID'], $result['blog_id'] ?? null )
+					: '';
 				if ( $is_network && isset( $result['blog_id'] ) ) {
-					$post      = get_blog_post( (int) $result['blog_id'], (int) $result['ID'] );
-					$permalink = is_multisite() ? get_blog_permalink( (int) $result['blog_id'], (int) $result['ID'] ) : get_permalink( (int) $result['ID'] );
+					$post      = '' === $context_key ? get_blog_post( (int) $result['blog_id'], (int) $result['ID'] ) : null;
+					$permalink = '' === $context_key ? ( is_multisite() ? get_blog_permalink( (int) $result['blog_id'], (int) $result['ID'] ) : get_permalink( (int) $result['ID'] ) ) : '';
 				} else {
-					$post      = get_post( (int) $result['ID'] );
-					$permalink = get_permalink( (int) $result['ID'] );
+					$post      = '' === $context_key ? get_post( (int) $result['ID'] ) : null;
+					$permalink = '' === $context_key ? get_permalink( (int) $result['ID'] ) : '';
 				}
-				if ( ! $post ) {
+				if ( ! $post && '' === $context_key ) {
 					continue;
 				}
+				$title = '' !== $context_key ? \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_label( $context_key ) : get_the_title( $post );
 				?>
 				<tr>
-					<td><a href="<?php echo esc_url( $permalink ); ?>" target="_blank"><?php echo esc_html( get_the_title( $post ) ); ?></a></td>
+					<td>
+						<?php if ( '' !== $context_key ) : ?>
+							<?php echo esc_html( $title ); ?> <span class="tptn-sitewide-label">(<?php esc_html_e( 'site-wide', 'top-10' ); ?>)</span>
+						<?php else : ?>
+							<a href="<?php echo esc_url( $permalink ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
+						<?php endif; ?>
+					</td>
 					<?php if ( $is_network && isset( $result['blog_id'] ) ) : ?>
 						<td>
 							<?php
@@ -626,6 +636,8 @@ class Dashboard {
 		$explicit_network = isset( $args['network'] ) ? (bool) $args['network'] : null;
 		$is_network       = ( null !== $explicit_network ) ? $explicit_network : ( is_multisite() && is_network_admin() );
 		$table_name       = Database::get_table( $args['daily'] );
+		$sitewide_ids     = class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) && \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available() ? \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_ids() : array();
+		$sitewide_sql     = empty( $sitewide_ids ) ? '0=1' : $table_name . '.postnumber IN (' . implode( ',', array_map( 'intval', $sitewide_ids ) ) . ')';
 
 		if ( $is_network ) {
 			// Network-wide: aggregate across all blogs.
@@ -659,17 +671,17 @@ class Dashboard {
 		} else {
 			// Single site: existing behaviour filtered by current blog.
 			$fields[] = ( $args['daily'] ) ? "SUM({$table_name}.cntaccess) as visits" : "{$table_name}.cntaccess as visits";
-			$fields[] = "{$wpdb->posts}.ID";
+			$fields[] = "{$table_name}.postnumber as ID";
 
 			$fields = implode( ', ', $fields );
 
 			// Create the JOIN clause.
-			$join = " INNER JOIN {$wpdb->posts} ON {$table_name}.postnumber={$wpdb->posts}.ID ";
+			$join = " LEFT JOIN {$wpdb->posts} ON {$table_name}.postnumber={$wpdb->posts}.ID ";
 
 			// Create the base WHERE clause.
 			$where  = $wpdb->prepare( " AND {$table_name}.blog_id = %d ", $args['blog_id'] ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
-			$where .= " AND ($wpdb->posts.post_type <> 'revision' ) ";   // No revisions.
+			$where .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";   // Show published posts, attachments and site-wide contexts.
+			$where .= " AND (($wpdb->posts.post_type <> 'revision' ) OR {$sitewide_sql}) ";   // No revisions.
 
 			if ( isset( $args['from_date'] ) && ! empty( $args['from_date'] ) ) {
 				$from_date = gmdate( 'Y-m-d', strtotime( $args['from_date'] ) );
@@ -683,7 +695,7 @@ class Dashboard {
 
 			// Create the base GROUP BY clause.
 			if ( $args['daily'] ) {
-				$groupby = " {$wpdb->posts}.ID";
+				$groupby = " {$table_name}.postnumber";
 			}
 
 			// Create the base ORDER BY clause.

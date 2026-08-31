@@ -58,6 +58,88 @@ class Statistics_Table extends \WP_List_Table {
 	}
 
 	/**
+	 * Get the fixed IDs reserved for site-wide tracking contexts.
+	 *
+	 * The class only exists in the Pro build. Keeping this lookup optional lets
+	 * the shared statistics table continue to work in the free plugin.
+	 *
+	 * @return array<int,int> Reserved context IDs.
+	 */
+	protected function get_sitewide_context_ids() {
+		if ( ! class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) || ! \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available() ) {
+			return array();
+		}
+
+		return \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_ids();
+	}
+
+	/**
+	 * Build a SQL condition matching any reserved site-wide context ID.
+	 *
+	 * @param string $alias Count-table alias.
+	 * @return string SQL condition, or an always-false condition when Pro is not loaded.
+	 */
+	protected function get_sitewide_context_condition( $alias = 'ttt' ) {
+		$ids = $this->get_sitewide_context_ids();
+		if ( empty( $ids ) ) {
+			return '0=1';
+		}
+
+		return sprintf( '%s.postnumber IN (%s)', $alias, implode( ',', array_map( 'intval', $ids ) ) );
+	}
+
+	/**
+	 * Get the site-wide context key for a result row.
+	 *
+	 * @param array $item Result row.
+	 * @return string Context key, or an empty string for a post row.
+	 */
+	protected function get_item_context_key( $item ) {
+		if ( ! isset( $item['ID'] ) || ! class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) || ! \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available() ) {
+			return '';
+		}
+
+		return \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_key( $item['ID'], $item['blog_id'] ?? null );
+	}
+
+	/**
+	 * Get a translated label for a site-wide context key.
+	 *
+	 * @param string $context_key Context key.
+	 * @return string Context label.
+	 */
+	protected function get_sitewide_context_label( $context_key ) {
+		if ( '' === $context_key || ! class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) || ! \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available() ) {
+			return '';
+		}
+
+		return \WebberZone\Top_Ten\Pro\Sitewide_Database::get_context_label( $context_key );
+	}
+
+	/**
+	 * Build the search condition for site-wide context labels and keys.
+	 *
+	 * @param string $search Search text.
+	 * @return string SQL condition, or an always-false condition when Pro is not loaded.
+	 */
+	protected function get_sitewide_context_search_condition( $search ) {
+		if ( ! class_exists( 'WebberZone\\Top_Ten\\Pro\\Sitewide_Database' ) || ! \WebberZone\Top_Ten\Pro\Sitewide_Database::is_available() ) {
+			return '0=1';
+		}
+
+		global $wpdb;
+
+		$like       = '%' . $wpdb->esc_like( $search ) . '%';
+		$conditions = array();
+		foreach ( \WebberZone\Top_Ten\Pro\Sitewide_Database::CONTEXT_IDS as $context_key => $context_id ) {
+			$searchable   = $context_key . ' ' . $this->get_sitewide_context_label( $context_key );
+			$conditions[] = $wpdb->prepare( 'ttt.postnumber = %d AND %s LIKE %s', $context_id, $searchable, $like );
+		}
+
+		return '(' . implode( ' OR ', $conditions ) . ')';
+	}
+
+	/**
 	 * Retrieve the Top 10 posts
 	 *
 	 * @param int   $per_page Posts per page.
@@ -89,6 +171,7 @@ class Statistics_Table extends \WP_List_Table {
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
 		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
+		$sitewide_sql     = $this->get_sitewide_context_condition();
 
 		// Fields to return.
 		if ( ! $this->network_wide ) {
@@ -123,11 +206,13 @@ class Statistics_Table extends \WP_List_Table {
 		// Create the base WHERE clause.
 		if ( ! $this->network_wide ) {
 			$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-			$where .= " AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') ";   // Show published posts and attachments.
+			$where .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";   // Show published posts, attachments and site-wide contexts.
 
 			// If search argument is set, do a search for it.
 			if ( ! empty( $args['search'] ) ) {
-				$where .= $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+				$post_search    = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+				$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
+				$where         .= " AND ({$post_search} OR {$context_search}) ";
 			}
 
 			// If post filter argument is set, do a search for it.
@@ -139,7 +224,7 @@ class Statistics_Table extends \WP_List_Table {
 						'public' => true,
 					)
 				);
-				$where     .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";
+				$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
 			}
 		}
 
@@ -185,6 +270,17 @@ class Statistics_Table extends \WP_List_Table {
 
 		$result = $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
+		foreach ( $result as &$row ) {
+			$row['context_key'] = $this->get_item_context_key( $row );
+			if ( '' !== $row['context_key'] ) {
+				$row['title']       = $this->get_sitewide_context_label( $row['context_key'] );
+				$row['post_type']   = __( 'Site-wide', 'top-10' );
+				$row['post_date']   = '';
+				$row['post_author'] = 0;
+			}
+		}
+		unset( $row );
+
 		return $result;
 	}
 
@@ -204,11 +300,15 @@ class Statistics_Table extends \WP_List_Table {
 		$sql = "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt";
 
 		if ( ! $this->network_wide ) {
-			$join   = "INNER JOIN {$wpdb->posts} ON ttt.postnumber=ID";
-			$where .= $wpdb->prepare( ' AND blog_id = %d ', get_current_blog_id() );
+			$join         = "LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID";
+			$sitewide_sql = $this->get_sitewide_context_condition();
+			$where       .= $wpdb->prepare( ' AND ttt.blog_id = %d ', get_current_blog_id() );
+			$where       .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";
 
 			if ( ! empty( $args['search'] ) ) {
-				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s ", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+				$post_search    = $wpdb->prepare( "{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+				$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
+				$where         .= " AND ({$post_search} OR {$context_search}) ";
 			}
 
 			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
@@ -219,7 +319,7 @@ class Statistics_Table extends \WP_List_Table {
 						'public' => true,
 					)
 				);
-				$where     .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";
+				$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
 			}
 		}
 		return $wpdb->get_var( "$sql $join WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -284,6 +384,15 @@ class Statistics_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ) {
+		$context_key = $this->get_item_context_key( $item );
+		if ( '' !== $context_key ) {
+			return sprintf(
+				'<strong>%1$s</strong> <span style="color:grey">(%2$s, id:%3$s)</span>',
+				esc_html( $this->get_sitewide_context_label( $context_key ) ),
+				esc_html__( 'site-wide', 'top-10' ),
+				esc_html( $item['ID'] )
+			);
+		}
 
 		$delete_nonce = wp_create_nonce( 'tptn_delete_entry' );
 		$page         = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -328,6 +437,9 @@ class Statistics_Table extends \WP_List_Table {
 	 * @return string Post date.
 	 */
 	public function column_date( $item ) {
+		if ( '' !== $this->get_item_context_key( $item ) ) {
+			return '';
+		}
 
 		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 
@@ -350,6 +462,9 @@ class Statistics_Table extends \WP_List_Table {
 	 * @return string Post Type.
 	 */
 	public function column_post_type( $item ) {
+		if ( '' !== $this->get_item_context_key( $item ) ) {
+			return esc_html__( 'Site-wide', 'top-10' );
+		}
 
 		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 
@@ -371,6 +486,9 @@ class Statistics_Table extends \WP_List_Table {
 	 * @return string Post Author.
 	 */
 	public function column_author( $item ) {
+		if ( '' !== $this->get_item_context_key( $item ) ) {
+			return '';
+		}
 
 		$post = is_multisite() ? get_blog_post( $item['blog_id'], $item['ID'] ) : get_post( $item['ID'] );
 		if ( ! $post ) {
@@ -402,6 +520,10 @@ class Statistics_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_total_count( $item ) {
+		if ( '' !== $this->get_item_context_key( $item ) ) {
+			return \WebberZone\Top_Ten\Util\Helpers::number_format_i18n( absint( $item['total_count'] ) );
+		}
+
 		return sprintf(
 			'<div contentEditable="true" class="live_edit" id="total_count_%1$s" data-wp-post-id="%1$s" data-wp-count="%2$s"%3$s>%4$s</div>',
 			$item['ID'],

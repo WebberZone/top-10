@@ -5,15 +5,15 @@ export const countIcon = (
 		xmlns="http://www.w3.org/2000/svg"
 		stroke="#0a0a0a"
 	>
-		<g id="SVGRepo_bgCarrier" strokeWidth={0}>
+		<g id="SVGRepo_bgCarrier" strokeWidth={ 0 }>
 			<rect
-				x={-2.4}
-				y={-2.4}
-				width={28.8}
-				height={28.8}
-				rx={0}
+				x={ -2.4 }
+				y={ -2.4 }
+				width={ 28.8 }
+				height={ 28.8 }
+				rx={ 0 }
 				fill="#FFBD59"
-				strokeWidth={0}
+				strokeWidth={ 0 }
 			/>
 		</g>
 		<g
@@ -25,28 +25,28 @@ export const countIcon = (
 			<path
 				d="M13 21L17 3"
 				stroke="#0a0a0a"
-				strokeWidth={2}
+				strokeWidth={ 2 }
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			/>
 			<path
 				d="M7 21L11 3"
 				stroke="#0a0a0a"
-				strokeWidth={2}
+				strokeWidth={ 2 }
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			/>
 			<path
 				d="M20 9L4 9"
 				stroke="#0a0a0a"
-				strokeWidth={2}
+				strokeWidth={ 2 }
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			/>
 			<path
 				d="M4 15L20 15"
 				stroke="#0a0a0a"
-				strokeWidth={2}
+				strokeWidth={ 2 }
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			/>

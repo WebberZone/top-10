@@ -9,110 +9,110 @@ import { PostDisplayControls } from './components/post-display-controls';
 import { StyleControls } from './components/style-controls';
 import { OtherAttributesControl } from './components/other-attributes-control';
 
-export default function Edit({ attributes, setAttributes }) {
+export default function Edit( { attributes, setAttributes } ) {
 	const {
 		heading,
 		daily,
-		show_excerpt,
-		show_author,
-		show_date,
-		disp_list_count,
-		other_attributes,
+		show_excerpt: showExcerpt,
+		show_author: showAuthor,
+		show_date: showDate,
+		disp_list_count: displayListCount,
+		other_attributes: otherAttributes,
 	} = attributes;
 
 	const blockProps = useBlockProps();
 
-	const handleToggle = (attributeName) => () => {
-		setAttributes({ [attributeName]: !attributes[attributeName] });
+	const handleToggle = ( attributeName ) => () => {
+		setAttributes( { [ attributeName ]: ! attributes[ attributeName ] } );
 	};
 
-	const handleChange = (attributeName) => (newValue) => {
-		setAttributes({ [attributeName]: newValue });
+	const handleChange = ( attributeName ) => ( newValue ) => {
+		setAttributes( { [ attributeName ]: newValue } );
 	};
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={__('Popular Posts Settings', 'top-10')}
-					initialOpen={true}
+					title={ __( 'Popular Posts Settings', 'top-10' ) }
+					initialOpen={ true }
 				>
 					<ToggleControlGroup
-						controls={[
+						controls={ [
 							{
-								label: __('Custom period?', 'top-10'),
+								label: __( 'Custom period?', 'top-10' ),
 								attributeName: 'daily',
 								checked: daily,
-								onChange: handleToggle('daily'),
+								onChange: handleToggle( 'daily' ),
 							},
-						]}
+						] }
 					/>
 
-					{daily && (
+					{ daily && (
 						<RangeControls
-							attributes={attributes}
-							onChange={handleChange}
+							attributes={ attributes }
+							onChange={ handleChange }
 						/>
-					)}
+					) }
 
 					<PostDisplayControls
-						attributes={attributes}
-						onChange={handleChange}
+						attributes={ attributes }
+						onChange={ handleChange }
 					/>
 
 					<ToggleControlGroup
-						controls={[
+						controls={ [
 							{
-								label: __('Show heading', 'top-10'),
+								label: __( 'Show heading', 'top-10' ),
 								attributeName: 'heading',
 								checked: heading,
-								onChange: handleToggle('heading'),
+								onChange: handleToggle( 'heading' ),
 							},
 							{
-								label: __('Show excerpt', 'top-10'),
+								label: __( 'Show excerpt', 'top-10' ),
 								attributeName: 'show_excerpt',
-								checked: show_excerpt,
-								onChange: handleToggle('show_excerpt'),
+								checked: showExcerpt,
+								onChange: handleToggle( 'show_excerpt' ),
 							},
 							{
-								label: __('Show author', 'top-10'),
+								label: __( 'Show author', 'top-10' ),
 								attributeName: 'show_author',
-								checked: show_author,
-								onChange: handleToggle('show_author'),
+								checked: showAuthor,
+								onChange: handleToggle( 'show_author' ),
 							},
 							{
-								label: __('Show date', 'top-10'),
+								label: __( 'Show date', 'top-10' ),
 								attributeName: 'show_date',
-								checked: show_date,
-								onChange: handleToggle('show_date'),
+								checked: showDate,
+								onChange: handleToggle( 'show_date' ),
 							},
 							{
-								label: __('Show count', 'top-10'),
+								label: __( 'Show count', 'top-10' ),
 								attributeName: 'disp_list_count',
-								checked: disp_list_count,
-								onChange: handleToggle('disp_list_count'),
+								checked: displayListCount,
+								onChange: handleToggle( 'disp_list_count' ),
 							},
-						]}
+						] }
 					/>
 
 					<StyleControls
-						attributes={attributes}
-						onChange={handleChange}
+						attributes={ attributes }
+						onChange={ handleChange }
 					/>
 
 					<OtherAttributesControl
-						value={other_attributes}
-						onChange={handleChange('other_attributes')}
+						value={ otherAttributes }
+						onChange={ handleChange( 'other_attributes' ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...blockProps}>
+			<div { ...blockProps }>
 				<Disabled>
 					<ServerSideRender
 						block="top-10/popular-posts"
-						attributes={attributes}
-						urlQueryArgs={{ _locale: 'site' }}
+						attributes={ attributes }
+						urlQueryArgs={ { _locale: 'site' } }
 					/>
 				</Disabled>
 			</div>

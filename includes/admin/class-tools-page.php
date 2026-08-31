@@ -626,7 +626,12 @@ class Tools_Page {
 			</tr>
 
 			<?php
-			$table_keys = array( 'top_ten', 'top_ten_daily', 'top_ten_visits_funnel', 'top_ten_visits_log' );
+			$table_keys = array(
+				'top_ten',
+				'top_ten_daily',
+				'top_ten_visits_funnel',
+				'top_ten_visits_log',
+			);
 			foreach ( $table_keys as $table_key ) :
 				if ( ! isset( $statuses[ $table_key ] ) ) {
 					continue;
