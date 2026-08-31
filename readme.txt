@@ -176,8 +176,13 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.5.0 =
 
-* Added **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
-* Added optional Pro-only site-wide tracking for front pages, posts pages, archives, searches, and 404 pages.
+* Features:
+	* **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
+	* Optional Pro-only site-wide tracking for front pages, posts pages, archives, searches, and 404 pages.
+
+* Fixed:
+	* View tracking being lost during quick navigation or browser back-button restores.
+	* View counts being recorded for prerendered or initially hidden pages.
 
 = 4.4.4 =
 

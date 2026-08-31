@@ -1,50 +1,57 @@
-document.addEventListener('DOMContentLoaded', function () {
-    function sendTracker(id, context) {
-        var params = {
+(function () {
+    var tracker = ajax_tptn_tracker;
+    var tracked = false;
+
+    function send(id, context) {
+        var params = new URLSearchParams({
             action: 'tptn_tracker',
             top_ten_id: id,
-            top_ten_blog_id: ajax_tptn_tracker.top_ten_blog_id,
-            activate_counter: ajax_tptn_tracker.activate_counter,
-            top_ten_debug: ajax_tptn_tracker.top_ten_debug
-        };
+            top_ten_blog_id: tracker.top_ten_blog_id,
+            activate_counter: tracker.activate_counter,
+            top_ten_debug: tracker.top_ten_debug
+        });
 
         if (context) {
-            params.top_ten_sitewide_context = context;
+            params.append('top_ten_sitewide_context', context);
         }
 
-        var requestUrl = ajax_tptn_tracker.ajax_url;
-        if ('query_based' === ajax_tptn_tracker.tracker_type) {
-            requestUrl += (requestUrl.indexOf('?') >= 0 ? '&' : '?') + new URLSearchParams(params).toString();
+        var url = tracker.ajax_url;
+        if ('query_based' === tracker.tracker_type) {
+            url += (url.includes('?') ? '&' : '?') + params;
         }
 
-        fetch(requestUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Cache-Control': 'no-cache'
-            },
-            body: new URLSearchParams(params).toString()
-        })
-            .then(function (response) {
-                if (!response.ok && 204 !== response.status) {
-                    throw new Error('Tracker request failed');
-                }
-
-                return response.text();
-            })
-            .then(function (data) {
-                // handle the response data
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
+        if ('1' === tracker.top_ten_debug || !navigator.sendBeacon || !navigator.sendBeacon(url, params)) {
+            fetch(url, { method: 'POST', body: params, keepalive: true }).catch(function () {});
+        }
     }
 
-    if (ajax_tptn_tracker.top_ten_id > 0) {
-        sendTracker(ajax_tptn_tracker.top_ten_id, '');
+    function track() {
+        if (tracked) {
+            return;
+        }
+        if (document.prerendering) {
+            document.addEventListener('prerenderingchange', track, { once: true });
+            return;
+        }
+        if ('hidden' === document.visibilityState) {
+            document.addEventListener('visibilitychange', track, { once: true });
+            return;
+        }
+
+        tracked = true;
+        if (tracker.top_ten_id > 0) {
+            send(tracker.top_ten_id, '');
+        }
+        if (tracker.top_ten_sitewide_context) {
+            send(0, tracker.top_ten_sitewide_context);
+        }
     }
 
-    if (ajax_tptn_tracker.top_ten_sitewide_context) {
-        sendTracker(0, ajax_tptn_tracker.top_ten_sitewide_context);
-    }
-});
+    document.addEventListener('DOMContentLoaded', track);
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            tracked = false;
+            track();
+        }
+    });
+})();
