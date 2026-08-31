@@ -36,6 +36,21 @@ class Blocks {
 	public function __construct() {
 		Hook_Registry::add_action( 'init', array( $this, 'register_blocks' ) );
 		Hook_Registry::add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+		Hook_Registry::add_filter( 'block_editor_rest_api_preload_paths', array( $this, 'add_custom_preload_paths' ) );
+	}
+
+	/**
+	 * Add custom preload paths for the REST API.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param array $preload_paths Existing preload paths.
+	 * @return array Modified preload paths.
+	 */
+	public static function add_custom_preload_paths( $preload_paths ) {
+		$preload_paths[] = '/wp/v2/top-10/v1/counter';
+
+		return $preload_paths;
 	}
 
 	/**
@@ -68,8 +83,24 @@ class Blocks {
 		 */
 		$blocks   = apply_filters( 'tptn_register_blocks', $blocks );
 		$manifest = __DIR__ . '/build/blocks-manifest.php';
-		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) && file_exists( $manifest ) && $blocks === $default_blocks ) {
+
+		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) && file_exists( $manifest ) ) {
 			wp_register_block_types_from_metadata_collection( __DIR__ . '/build', $manifest );
+
+			// Register any blocks added or changed by the filter that fall outside the manifest.
+			foreach ( $blocks as $block_name => $block_data ) {
+				if ( isset( $default_blocks[ $block_name ] ) && $default_blocks[ $block_name ] === $block_data ) {
+					continue;
+				}
+
+				$args = array();
+				if ( isset( $block_data['render_callback'] ) ) {
+					$args['render_callback'] = $block_data['render_callback'];
+				}
+
+				register_block_type( $block_data['path'], $args );
+			}
+
 			return;
 		}
 
