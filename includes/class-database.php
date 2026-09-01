@@ -1301,22 +1301,51 @@ class Database {
 			$transaction_open = true;
 
 			try {
-				$result = $wpdb->query(
+				$daily_rows = $wpdb->get_results(
 					$wpdb->prepare(
-						"INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id)
-						 SELECT postnumber, SUM(cntaccess), %s, blog_id
+						"SELECT postnumber, cntaccess
 						 FROM `{$table}`
 						 WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s
-						 GROUP BY postnumber, blog_id
-						 ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)",
-						$day_start,
+						 ORDER BY postnumber ASC
+						 FOR UPDATE",
 						$blog_id,
 						$day_start,
 						$day_end
-					)
+					),
+					ARRAY_A
 				);
-				if ( false === $result ) {
-					return new \WP_Error( 'tptn_rollup_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not write the daily rollup.', 'top-10' ) );
+				if ( null === $daily_rows ) {
+					return new \WP_Error( 'tptn_rollup_select_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not read the daily rows for the rollup.', 'top-10' ) );
+				}
+
+				$rollup_counts = array();
+				foreach ( $daily_rows as $daily_row ) {
+					$postnumber = (int) $daily_row['postnumber'];
+					if ( ! isset( $rollup_counts[ $postnumber ] ) ) {
+						$rollup_counts[ $postnumber ] = 0;
+					}
+					$rollup_counts[ $postnumber ] += (int) $daily_row['cntaccess'];
+				}
+
+				foreach ( array_chunk( $rollup_counts, 500, true ) as $rollup_batch ) {
+					$values = array();
+					foreach ( $rollup_batch as $postnumber => $count ) {
+						$values[] = $wpdb->prepare(
+							'( %d, %d, %s, %d )',
+							$postnumber,
+							$count,
+							$day_start,
+							$blog_id
+						);
+					}
+
+					$result = $wpdb->query(
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						"INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)'
+					);
+					if ( false === $result ) {
+						return new \WP_Error( 'tptn_rollup_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not write the daily rollup.', 'top-10' ) );
+					}
 				}
 
 				$result = $wpdb->query(
