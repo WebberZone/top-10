@@ -75,6 +75,7 @@ class Activator {
 	 *                                    activated on an individual blog.
 	 */
 	public static function activation_hook( $network_wide ) {
+		Database::clear_table_installation_cache();
 
 		if ( is_multisite() && $network_wide ) {
 			$sites = get_sites(
@@ -174,6 +175,7 @@ class Activator {
 			$show_errors = $wpdb->hide_errors();
 			dbDelta( $sql );
 			$wpdb->show_errors( $show_errors );
+			Database::clear_table_installation_cache();
 		}
 	}
 
@@ -194,6 +196,7 @@ class Activator {
 		self::maybe_create_table( $table_name_daily, self::create_daily_table_sql() );
 		self::maybe_create_table( $table_name_log, Database::create_log_table_sql() );
 		self::maybe_create_table( $table_name_funnel, Database::create_funnel_table_sql() );
+		Database::clear_table_installation_cache();
 	}
 
 	/**
@@ -288,6 +291,7 @@ class Activator {
 		}
 
 		switch_to_blog( $blog );
+		Database::clear_table_installation_cache();
 		self::single_activate();
 		restore_current_blog();
 	}

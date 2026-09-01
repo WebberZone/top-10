@@ -100,9 +100,10 @@ class Admin_Notices {
 			Database::get_funnel_table() => __( 'Visits Funnel', 'top-10' ),
 		);
 
-		$missing = array();
+		$missing  = array();
+		$statuses = Database::get_table_installation_status();
 		foreach ( $all_tables as $table => $label ) {
-			if ( ! Database::is_table_installed( $table ) ) {
+			if ( empty( $statuses[ $table ] ) ) {
 				$missing[] = sprintf( '<code>%s</code> (%s)', esc_html( $table ), esc_html( $label ) );
 			}
 		}

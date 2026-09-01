@@ -145,6 +145,7 @@ class Tools_Page {
 			} else {
 				Counter::delete_counts( array( 'daily' => false ) );
 			}
+			Dashboard_Widgets::clear_network_dashboard_cache();
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 popular posts reset', 'top-10' ), 'updated' );
 		}
 
@@ -155,6 +156,7 @@ class Tools_Page {
 			} else {
 				Counter::delete_counts( array( 'daily' => true ) );
 			}
+			Dashboard_Widgets::clear_network_dashboard_cache();
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'updated' );
 		}
 
@@ -432,6 +434,9 @@ class Tools_Page {
 			$errors->merge_from( $result );
 		}
 
+		Database::clear_table_installation_cache();
+		Dashboard_Widgets::clear_network_dashboard_cache();
+
 		return $errors->has_errors() ? $errors : true;
 	}
 
@@ -571,20 +576,22 @@ class Tools_Page {
 
 		$installed_label     = '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>';
 		$not_installed_label = '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
+		$table_statuses      = Database::get_table_installation_status( true );
 
 		foreach ( $tables as $key => $table_name ) {
-			$statuses[ $key ] = Database::is_table_installed( $table_name ) ? $installed_label : $not_installed_label;
+			$statuses[ $key ] = ! empty( $table_statuses[ $table_name ] ) ? $installed_label : $not_installed_label;
 		}
 
 		// Create tables if they don't exist.
-		if ( ! Database::are_tables_installed() ) {
+		if ( empty( $table_statuses[ Database::get_table( false ) ] ) || empty( $table_statuses[ Database::get_table( true ) ] ) ) {
 			// Use Activator to create tables.
 			Activator::create_tables();
 			Database::clear_table_statistics_cache();
+			$table_statuses = Database::get_table_installation_status( true );
 
 			// Refresh statuses after creating tables.
 			foreach ( $tables as $key => $table_name ) {
-				$statuses[ $key ] = Database::is_table_installed( $table_name ) ? $installed_label : $not_installed_label;
+				$statuses[ $key ] = ! empty( $table_statuses[ $table_name ] ) ? $installed_label : $not_installed_label;
 			}
 		}
 
@@ -763,10 +770,12 @@ class Tools_Page {
 
 		Activator::create_tables();
 		Database::clear_table_statistics_cache();
+		Dashboard_Widgets::clear_network_dashboard_cache();
+		$table_statuses = Database::get_table_installation_status( true );
 
 		$still_missing = false;
-		foreach ( array( Database::get_table( false ), Database::get_table( true ), Database::get_log_table(), Database::get_funnel_table() ) as $table ) {
-			if ( ! Database::is_table_installed( $table ) ) {
+		foreach ( $table_statuses as $installed ) {
+			if ( ! $installed ) {
 				$still_missing = true;
 				break;
 			}
@@ -804,6 +813,8 @@ class Tools_Page {
 		$result_daily   = Database::recreate_daily_table( false );
 		$result_funnel  = Database::recreate_funnel_table( false );
 		$result_log     = Database::recreate_log_table( false );
+		Database::clear_table_installation_cache();
+		Dashboard_Widgets::clear_network_dashboard_cache();
 
 		// Check for errors.
 		if ( is_wp_error( $result_overall ) ) {

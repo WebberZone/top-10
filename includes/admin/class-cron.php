@@ -52,6 +52,9 @@ class Cron {
 	public function __construct() {
 		Hook_Registry::add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
 		Hook_Registry::add_action( 'tptn_aggregation_cron_hook', array( $this, 'run_aggregation' ) );
+		Hook_Registry::add_action( 'tptn_count_updated', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );
+		Hook_Registry::add_action( 'tptn_delete_counts', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );
+		Hook_Registry::add_action( 'tptn_set_count', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );
 		Hook_Registry::add_action( 'admin_init', array( $this, 'check_aggregation_cron' ) );
 		Hook_Registry::add_action( 'admin_notices', array( $this, 'aggregation_cron_missing_notice' ) );
 		Hook_Registry::add_action( 'cron_reschedule_event_error', array( $this, 'log_reschedule_error' ), 10, 2 );
@@ -65,6 +68,11 @@ class Cron {
 	 */
 	public function run_cron() {
 		global $wpdb;
+
+		$table_statuses = Database::get_table_installation_status( true );
+		if ( in_array( false, $table_statuses, true ) ) {
+			return;
+		}
 
 		$delete_from = TOP_TEN_STORE_DATA;
 
@@ -113,6 +121,8 @@ class Cron {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$deleted_log = $wpdb->query( $wpdb->prepare( "DELETE FROM {$log_table} WHERE visited_at < %s LIMIT 1000", $from_date_log ) );
 		} while ( $deleted_log > 0 && microtime( true ) < $deadline_log );
+
+		Dashboard_Widgets::clear_network_dashboard_cache();
 	}
 
 	/**
