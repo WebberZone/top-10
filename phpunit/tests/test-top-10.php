@@ -23,6 +23,8 @@ class TopTenTest extends WP_UnitTestCase {
 	public function test_rollup_daily_preserves_counts_and_blog_scope() {
 		global $wpdb;
 
+		\WebberZone\Top_Ten\Admin\Activator::create_tables();
+
 		$post_id       = $this->factory->post->create( array( 'post_status' => 'publish' ) );
 		$other_post_id = $this->factory->post->create( array( 'post_status' => 'publish' ) );
 		$blog_id       = get_current_blog_id();

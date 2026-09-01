@@ -1,0 +1,89 @@
+name: Database Compatibility
+
+on:
+  workflow_dispatch:
+    inputs:
+      rows:
+        description: Number of daily rows to seed per database job
+        required: true
+        default: '100000'
+        type: choice
+        options:
+          - '10000'
+          - '100000'
+          - '500000'
+
+jobs:
+  database:
+    name: "${{ matrix.database }} ${{ matrix.version }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - database: mysql
+            version: '8.0'
+          - database: mysql
+            version: '8.4'
+          - database: mariadb
+            version: '10.6'
+          - database: mariadb
+            version: '10.11'
+          - database: mariadb
+            version: '11.4'
+
+    services:
+      db:
+        image: ${{ matrix.database }}:${{ matrix.version }}
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli
+          coverage: none
+
+      - name: Install database client and Subversion
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-mysql-client subversion
+
+      - name: Set up PHPUnit
+        run: composer require --no-update phpunit/phpunit:"9.*"
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: highest
+          composer-options: --ignore-platform-reqs
+
+      - name: Set up WordPress test environment
+        run: bash phpunit/install.sh wordpress_test root root 127.0.0.1:3306 latest
+
+      - name: Run tests (single site)
+        run: vendor/bin/phpunit
+
+      - name: Run tests (multisite)
+        env:
+          WP_MULTISITE: 1
+        run: vendor/bin/phpunit
+
+      - name: Run Roll-up stress test
+        env:
+          TOP_TEN_ROLLUP_ROWS: ${{ inputs.rows }}
+        run: vendor/bin/phpunit -c phpunit/rollup-stress.xml.dist
