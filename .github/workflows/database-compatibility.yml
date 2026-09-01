@@ -24,14 +24,19 @@ jobs:
         include:
           - database: mysql
             version: '8.0'
+            health_cmd: mysqladmin ping -h 127.0.0.1 -uroot -proot
           - database: mysql
             version: '8.4'
+            health_cmd: mysqladmin ping -h 127.0.0.1 -uroot -proot
           - database: mariadb
             version: '10.6'
+            health_cmd: healthcheck.sh --connect --innodb_initialized
           - database: mariadb
             version: '10.11'
+            health_cmd: healthcheck.sh --connect --innodb_initialized
           - database: mariadb
             version: '11.4'
+            health_cmd: healthcheck.sh --connect --innodb_initialized
 
     services:
       db:
@@ -42,7 +47,8 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-cmd "${{ matrix.health_cmd }}"
+          --health-start-period 30s
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
