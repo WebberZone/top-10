@@ -1160,6 +1160,236 @@ class Database {
 	}
 
 	/**
+	 * Get the daily-table row counts before and after a rollup.
+	 *
+	 * The projected row count groups rows by post, blog, and calendar date.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param string   $before_date Rows before this date are included.
+	 * @param int|null $blog_id    Blog ID. Defaults to the current blog.
+	 * @return array|\WP_Error Rollup statistics or an error.
+	 */
+	public static function get_daily_rollup_stats( string $before_date, $blog_id = null ) {
+		global $wpdb;
+
+		$before_date = self::normalize_daily_rollup_date( $before_date );
+		if ( is_wp_error( $before_date ) ) {
+			return $before_date;
+		}
+
+		$blog_id = null === $blog_id ? get_current_blog_id() : absint( $blog_id );
+		$table   = self::get_table( true );
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows_before = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$table}` WHERE blog_id = %d AND dp_date < %s",
+				$blog_id,
+				$before_date
+			)
+		);
+		if ( null === $rows_before ) {
+			return new \WP_Error( 'tptn_rollup_count_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not count daily rows before the rollup.', 'top-10' ) );
+		}
+
+		$rows_after = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM (
+					SELECT postnumber, blog_id, DATE(dp_date) AS rollup_date
+					FROM `{$table}`
+					WHERE blog_id = %d AND dp_date < %s
+					GROUP BY postnumber, blog_id, DATE(dp_date)
+				) AS rollup_groups",
+				$blog_id,
+				$before_date
+			)
+		);
+		if ( null === $rows_after ) {
+			return new \WP_Error( 'tptn_rollup_projection_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not calculate the projected daily row count.', 'top-10' ) );
+		}
+
+		$dates = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(DISTINCT DATE(dp_date)) FROM `{$table}` WHERE blog_id = %d AND dp_date < %s",
+				$blog_id,
+				$before_date
+			)
+		);
+		if ( null === $dates ) {
+			return new \WP_Error( 'tptn_rollup_dates_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not count daily rollup dates.', 'top-10' ) );
+		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		return array(
+			'rows_before'  => (int) $rows_before,
+			'rows_after'   => (int) $rows_after,
+			'rows_reduced' => max( 0, (int) $rows_before - (int) $rows_after ),
+			'dates'        => (int) $dates,
+		);
+	}
+
+	/**
+	 * Roll up hourly daily rows older than a date into one midnight row per post.
+	 *
+	 * Each calendar date is processed in its own transaction so an interrupted
+	 * operation can safely resume on the next date. The overall count table is
+	 * never modified.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param string   $before_date Rows before this date are rolled up.
+	 * @param int|null $blog_id    Blog ID. Defaults to the current blog.
+	 * @return array|\WP_Error Rollup statistics or an error.
+	 */
+	public static function rollup_daily( string $before_date, $blog_id = null ) {
+		global $wpdb;
+
+		$before_date = self::normalize_daily_rollup_date( $before_date );
+		if ( is_wp_error( $before_date ) ) {
+			return $before_date;
+		}
+
+		$blog_id = null === $blog_id ? get_current_blog_id() : absint( $blog_id );
+		$table   = self::get_table( true );
+		$before  = self::get_daily_rollup_stats( $before_date, $blog_id );
+		if ( is_wp_error( $before ) ) {
+			return $before;
+		}
+
+		$last_date       = '';
+		$dates_processed = 0;
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		while ( true ) {
+			// Select one unprocessed date at a time. Existing midnight rows are
+			// already rolled up and are therefore skipped on subsequent runs.
+			if ( '' === $last_date ) {
+				$next_date = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT DATE(dp_date) FROM `{$table}` WHERE blog_id = %d AND dp_date < %s AND TIME(dp_date) <> '00:00:00' ORDER BY dp_date ASC LIMIT 1",
+						$blog_id,
+						$before_date
+					)
+				);
+			} else {
+				$next_date_start = ( new \DateTimeImmutable( $last_date, new \DateTimeZone( 'UTC' ) ) )->modify( '+1 day' )->format( 'Y-m-d 00:00:00' );
+				$next_date       = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT DATE(dp_date) FROM `{$table}` WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s AND TIME(dp_date) <> '00:00:00' ORDER BY dp_date ASC LIMIT 1",
+						$blog_id,
+						$next_date_start,
+						$before_date
+					)
+				);
+			}
+
+			if ( null === $next_date ) {
+				if ( ! empty( $wpdb->last_error ) ) {
+					return new \WP_Error( 'tptn_rollup_date_failed', $wpdb->last_error );
+				}
+				break;
+			}
+
+			$day_start        = $next_date . ' 00:00:00';
+			$day_end          = ( new \DateTimeImmutable( $next_date, new \DateTimeZone( 'UTC' ) ) )->modify( '+1 day' )->format( 'Y-m-d 00:00:00' );
+			$transaction_open = false;
+
+			if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+				return new \WP_Error( 'tptn_rollup_start_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not start the daily rollup transaction.', 'top-10' ) );
+			}
+			$transaction_open = true;
+
+			try {
+				$result = $wpdb->query(
+					$wpdb->prepare(
+						"INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id)
+						 SELECT postnumber, SUM(cntaccess), %s, blog_id
+						 FROM `{$table}`
+						 WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s
+						 GROUP BY postnumber, blog_id
+						 ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)",
+						$day_start,
+						$blog_id,
+						$day_start,
+						$day_end
+					)
+				);
+				if ( false === $result ) {
+					return new \WP_Error( 'tptn_rollup_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not write the daily rollup.', 'top-10' ) );
+				}
+
+				$result = $wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM `{$table}` WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s AND dp_date <> %s",
+						$blog_id,
+						$day_start,
+						$day_end,
+						$day_start
+					)
+				);
+				if ( false === $result ) {
+					return new \WP_Error( 'tptn_rollup_delete_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not remove the hourly daily rows.', 'top-10' ) );
+				}
+
+				if ( false === $wpdb->query( 'COMMIT' ) ) {
+					return new \WP_Error( 'tptn_rollup_commit_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not commit the daily rollup.', 'top-10' ) );
+				}
+				$transaction_open = false;
+			} finally {
+				if ( $transaction_open ) {
+					$wpdb->query( 'ROLLBACK' );
+				}
+			}
+			++$dates_processed;
+			$last_date = $next_date;
+		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		$after = self::get_daily_rollup_stats( $before_date, $blog_id );
+		if ( is_wp_error( $after ) ) {
+			return $after;
+		}
+
+		if ( $dates_processed > 0 ) {
+			do_action( 'tptn_count_updated', 0, 0, false );
+		}
+
+		return array(
+			'rows_before'     => $before['rows_before'],
+			'rows_after'      => $after['rows_before'],
+			'rows_reduced'    => max( 0, $before['rows_before'] - $after['rows_before'] ),
+			'dates'           => $after['dates'],
+			'dates_processed' => $dates_processed,
+		);
+	}
+
+	/**
+	 * Normalize a rollup boundary to midnight.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param string $before_date Rollup boundary in Y-m-d or Y-m-d 00:00:00 format.
+	 * @return string|\WP_Error Normalized date or an error.
+	 */
+	private static function normalize_daily_rollup_date( string $before_date ) {
+		$before_date = trim( $before_date );
+		$date        = preg_replace( '/ 00:00:00$/', '', $before_date );
+
+		if ( ! is_string( $date ) || ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
+			return new \WP_Error( 'tptn_invalid_rollup_date', __( 'The daily rollup boundary must be a valid date in Y-m-d format.', 'top-10' ) );
+		}
+
+		$date_object = \DateTimeImmutable::createFromFormat( '!Y-m-d', $date, new \DateTimeZone( 'UTC' ) );
+		$errors      = \DateTimeImmutable::getLastErrors();
+		if ( false === $date_object || ( is_array( $errors ) && ( $errors['warning_count'] > 0 || $errors['error_count'] > 0 ) ) ) {
+			return new \WP_Error( 'tptn_invalid_rollup_date', __( 'The daily rollup boundary must be a valid date in Y-m-d format.', 'top-10' ) );
+		}
+
+		return $date_object->format( 'Y-m-d 00:00:00' );
+	}
+
+	/**
 	 * Count rows in the visits log table older than a given datetime.
 	 *
 	 * @since 4.3.0
