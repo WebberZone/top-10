@@ -17,6 +17,27 @@ use WebberZone\Top_Ten\Util\Helpers;
 class Database {
 
 	/**
+	 * Cached status of the required Top 10 tables for this request.
+	 *
+	 * @var array<string,bool>
+	 */
+	private static $table_installation_cache = array();
+
+	/**
+	 * Database version used to populate the request cache.
+	 *
+	 * @var string|null
+	 */
+	private static $table_installation_cache_version = null;
+
+	/**
+	 * Cached status of non-standard tables checked during this request.
+	 *
+	 * @var array<string,bool>
+	 */
+	private static $individual_table_cache = array();
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -158,6 +179,10 @@ class Database {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $sql );
+
+		if ( false === $result ) {
+			self::clear_table_installation_cache();
+		}
 
 		// Trigger action to clear cache.
 		if ( false !== $result ) {
@@ -350,27 +375,114 @@ class Database {
 	}
 
 	/**
+	 * Invalidate the persistent and request-level table installation caches.
+	 *
+	 * @since 4.5.0
+	 */
+	public static function clear_table_installation_cache() {
+		self::$table_installation_cache         = array();
+		self::$table_installation_cache_version = null;
+		self::$individual_table_cache           = array();
+
+		delete_site_option( 'tptn_tables_installed' );
+	}
+
+	/**
+	 * Get the installation status of the four required Top 10 tables.
+	 *
+	 * The status is persisted in a network option so normal admin requests do
+	 * not need to enumerate the database tables. Explicit diagnostic requests
+	 * can bypass the cache by setting $force to true.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param bool $force Whether to perform a live check.
+	 * @return array<string,bool> Table names mapped to their installation status.
+	 */
+	public static function get_table_installation_status( $force = false ) {
+		global $wpdb, $tptn_db_version;
+
+		$tables  = array(
+			self::get_table( false ),
+			self::get_table( true ),
+			self::get_funnel_table(),
+			self::get_log_table(),
+		);
+		$version = isset( $tptn_db_version ) ? (string) $tptn_db_version : '';
+
+		$has_cached_tables = self::$table_installation_cache_version === $version && count( self::$table_installation_cache ) === count( $tables ) && ! array_diff_key( array_fill_keys( $tables, true ), self::$table_installation_cache );
+		if ( ! $force && $has_cached_tables ) {
+			return self::$table_installation_cache;
+		}
+
+		if ( ! $force ) {
+			$cached         = get_site_option( 'tptn_tables_installed', array() );
+			$has_all_tables = is_array( $cached ) && isset( $cached['db_version'], $cached['tables'] ) && (string) $cached['db_version'] === $version && is_array( $cached['tables'] ) && ! array_diff_key( array_fill_keys( $tables, true ), $cached['tables'] );
+			if ( $has_all_tables ) {
+				self::$table_installation_cache = array();
+				self::$individual_table_cache   = array();
+				foreach ( $tables as $table ) {
+					self::$table_installation_cache[ $table ] = (bool) $cached['tables'][ $table ];
+				}
+				self::$table_installation_cache_version = $version;
+
+				return self::$table_installation_cache;
+			}
+		}
+
+		$statuses = array();
+		foreach ( $tables as $table ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$result             = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+			$statuses[ $table ] = ( $result === $table );
+		}
+
+		self::$table_installation_cache         = $statuses;
+		self::$table_installation_cache_version = $version;
+		update_site_option(
+			'tptn_tables_installed',
+			array(
+				'db_version' => $version,
+				'tables'     => $statuses,
+			)
+		);
+
+		return $statuses;
+	}
+
+	/**
 	 * Check if a table exists.
 	 *
 	 * @since 4.2.0
 	 *
 	 * @param string $table Table name to check.
+	 * @param bool   $force Whether to perform a live check.
 	 * @return bool True if table exists, false otherwise.
 	 */
-	public static function is_table_installed( $table ) {
+	public static function is_table_installed( $table, $force = false ) {
 		global $wpdb;
 
-		static $cache = array();
+		$required_tables = array(
+			self::get_table( false ),
+			self::get_table( true ),
+			self::get_funnel_table(),
+			self::get_log_table(),
+		);
 
-		if ( isset( $cache[ $table ] ) ) {
-			return $cache[ $table ];
+		if ( in_array( $table, $required_tables, true ) ) {
+			$statuses = self::get_table_installation_status( $force );
+			return ! empty( $statuses[ $table ] );
+		}
+
+		if ( ! $force && array_key_exists( $table, self::$individual_table_cache ) ) {
+			return self::$individual_table_cache[ $table ];
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result          = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
-		$cache[ $table ] = ( $result === $table );
+		$result                                 = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+		self::$individual_table_cache[ $table ] = ( $result === $table );
 
-		return $cache[ $table ];
+		return self::$individual_table_cache[ $table ];
 	}
 
 	/**
@@ -420,10 +532,10 @@ class Database {
 
 		if ( $args['daily'] ) {
 			if ( ! empty( $args['from_date'] ) ) {
-				$where[] = $wpdb->prepare( 'DATE(t.dp_date) >= DATE(%s)', $args['from_date'] );
+				$where[] = $wpdb->prepare( 't.dp_date >= %s', gmdate( 'Y-m-d 00:00:00', strtotime( $args['from_date'] ) ) );
 			}
 			if ( ! empty( $args['to_date'] ) ) {
-				$where[] = $wpdb->prepare( 'DATE(t.dp_date) <= DATE(%s)', $args['to_date'] );
+				$where[] = $wpdb->prepare( 't.dp_date < %s', gmdate( 'Y-m-d 00:00:00', strtotime( $args['to_date'] . ' +1 day' ) ) );
 			}
 		}
 
@@ -561,8 +673,10 @@ class Database {
 	 * @return bool True if both tables exist, false otherwise.
 	 */
 	public static function are_tables_installed() {
-		return self::is_table_installed( self::get_table( false ) )
-			&& self::is_table_installed( self::get_table( true ) );
+		$statuses = self::get_table_installation_status();
+
+		return ! empty( $statuses[ self::get_table( false ) ] )
+			&& ! empty( $statuses[ self::get_table( true ) ] );
 	}
 
 	/**
@@ -584,7 +698,9 @@ class Database {
 			cntaccess bigint(20) NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',
 			PRIMARY KEY  (postnumber, blog_id),
-			KEY idx_blog_id (blog_id)
+			KEY idx_blog_id (blog_id),
+			KEY idx_cntaccess (cntaccess),
+			KEY idx_blog_cntaccess (blog_id, cntaccess)
 		) $charset_collate;";
 
 		return $sql;
@@ -752,6 +868,7 @@ class Database {
 				)
 			);
 			if ( false === $result ) {
+				self::clear_table_installation_cache();
 				return false;
 			}
 			$rows += (int) $result;
@@ -769,6 +886,7 @@ class Database {
 				)
 			);
 			if ( false === $result ) {
+				self::clear_table_installation_cache();
 				return false;
 			}
 			$rows += (int) $result;
@@ -793,7 +911,7 @@ class Database {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->insert(
+		$result = $wpdb->insert(
 			self::get_funnel_table(),
 			array(
 				'postnumber'       => absint( $post_id ),
@@ -804,6 +922,12 @@ class Database {
 			),
 			array( '%d', '%d', '%s', '%d', '%d' )
 		);
+
+		if ( false === $result ) {
+			self::clear_table_installation_cache();
+		}
+
+		return $result;
 	}
 
 	/**

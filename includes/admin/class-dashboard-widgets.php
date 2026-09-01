@@ -33,6 +33,16 @@ class Dashboard_Widgets {
 	}
 
 	/**
+	 * Clear cached network dashboard widget output.
+	 *
+	 * @since 4.5.0
+	 */
+	public static function clear_network_dashboard_cache() {
+		update_site_option( 'tptn_network_dashboard_cache_version', wp_generate_uuid4() );
+		delete_site_transient( 'tptn_network_popular_posts_count' );
+	}
+
+	/**
 	 * Add Top 10 views from the current hour to the At a Glance widget.
 	 *
 	 * @since 4.3.0
@@ -255,6 +265,33 @@ class Dashboard_Widgets {
 			$limit = \tptn_get_option( 'limit' );
 		}
 
+		$cache_key = '';
+		$cache_ttl = 0;
+		if ( $network && $widget ) {
+			$cache_ttl = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
+			$cache_key = 'tptn_network_dashboard_' . md5(
+				(string) wp_json_encode(
+					array(
+						'version'   => get_site_option( 'tptn_network_dashboard_cache_version', '1' ),
+						'daily'     => (bool) $daily,
+						'orderby'   => $daily ? 'daily_count' : 'total_count',
+						'order'     => 'DESC',
+						'from_date' => current_time( 'Y-m-d' ),
+						'to_date'   => current_time( 'Y-m-d' ),
+						'page'      => (int) $page,
+						'limit'     => (int) $limit,
+					)
+				)
+			);
+
+			if ( $cache_ttl > 0 ) {
+				$cached = get_site_transient( $cache_key );
+				if ( false !== $cached ) {
+					return $cached;
+				}
+			}
+		}
+
 		$args   = array();
 		$visits = 'total_count';
 		if ( $daily ) {
@@ -364,7 +401,13 @@ class Dashboard_Widgets {
 		 * @param   bool     $widget  Is this a widget
 		 * @param   bool     $network Is this network-wide
 		 */
-		return apply_filters( 'tptn_popular_posts_widget_output', $output, $daily, $page, $limit, $widget, $network );
+		$output = apply_filters( 'tptn_popular_posts_widget_output', $output, $daily, $page, $limit, $widget, $network );
+
+		if ( $network && $widget && $cache_ttl > 0 ) {
+			set_site_transient( $cache_key, $output, $cache_ttl );
+		}
+
+		return $output;
 	}
 
 

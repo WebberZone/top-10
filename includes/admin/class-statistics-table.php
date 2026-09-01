@@ -140,6 +140,153 @@ class Statistics_Table extends \WP_List_Table {
 	}
 
 	/**
+	 * Resolve a safe ordering clause for statistics queries.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param array $args Query arguments.
+	 * @return array{orderby:string,order:string} Ordering fields.
+	 */
+	protected function get_ordering( $args ) {
+		$orderby = '';
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		} elseif ( ! empty( $args['orderby'] ) ) {
+			$orderby = $args['orderby'];
+		}
+
+		if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ), true ) ) {
+			$orderby = 'total_count';
+		}
+
+		$order = '';
+		if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		} elseif ( ! empty( $args['order'] ) ) {
+			$order = $args['order'];
+		}
+
+		if ( ! in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ), true ) ) {
+			$order = 'DESC';
+		}
+
+		return array(
+			'orderby' => $orderby,
+			'order'   => strtoupper( $order ),
+		);
+	}
+
+	/**
+	 * Fetch network-wide popular posts in two phases.
+	 *
+	 * The first query selects only the requested page in the sort order. The
+	 * second query fills in the other count using exact post/blog pairs, which
+	 * avoids joining and grouping the entire network's count tables.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param int    $per_page       Posts per page.
+	 * @param int    $page_number    Page number.
+	 * @param array  $args           Query arguments.
+	 * @param string $from_date      Inclusive lower date boundary.
+	 * @param string $to_date        Exclusive upper date boundary.
+	 * @return array Array of popular posts.
+	 */
+	protected function get_network_popular_posts( $per_page, $page_number, $args, $from_date, $to_date ) {
+		global $wpdb;
+
+		$ordering = $this->get_ordering( $args );
+		$orderby  = 'daily_count' === $ordering['orderby'] ? 'daily_count' : 'total_count';
+		$offset   = max( 0, ( (int) $page_number - 1 ) * (int) $per_page );
+		$limit    = max( 0, (int) $per_page );
+
+		if ( 0 === $limit ) {
+			return array();
+		}
+
+		$daily_table = $wpdb->base_prefix . 'top_ten_daily';
+		$total_table = $wpdb->base_prefix . 'top_ten';
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( 'daily_count' === $orderby ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$sql = $wpdb->prepare(
+				"SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count
+				FROM {$daily_table}
+				WHERE dp_date >= %s AND dp_date < %s
+				GROUP BY postnumber, blog_id
+				ORDER BY daily_count {$ordering['order']}, postnumber ASC, blog_id ASC
+				LIMIT %d, %d",
+				$from_date,
+				$to_date,
+				$offset,
+				$limit
+			);
+		} else {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$sql = $wpdb->prepare(
+				"SELECT postnumber AS ID, blog_id, cntaccess AS total_count
+				FROM {$total_table}
+				ORDER BY cntaccess {$ordering['order']}, postnumber ASC, blog_id ASC
+				LIMIT %d, %d",
+				$offset,
+				$limit
+			);
+		}
+
+		$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		if ( empty( $results ) ) {
+			return array();
+		}
+
+		$pair_conditions = array();
+		foreach ( $results as $result ) {
+			$pair_conditions[] = $wpdb->prepare( '(postnumber = %d AND blog_id = %d)', $result['ID'], $result['blog_id'] );
+		}
+		$pairs = implode( ' OR ', $pair_conditions );
+
+		if ( 'daily_count' === $orderby ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$other_results = $wpdb->get_results(
+				"SELECT postnumber AS ID, blog_id, cntaccess AS total_count FROM {$total_table} WHERE {$pairs}",
+				ARRAY_A
+			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+		} else {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$other_results = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count
+					FROM {$daily_table}
+					WHERE dp_date >= %s AND dp_date < %s AND ({$pairs})
+					GROUP BY postnumber, blog_id",
+					$from_date,
+					$to_date
+				),
+				ARRAY_A
+			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		$other_counts = array();
+		foreach ( $other_results as $result ) {
+			$key                  = (int) $result['ID'] . ':' . (int) $result['blog_id'];
+			$other_counts[ $key ] = $result[ 'daily_count' === $orderby ? 'total_count' : 'daily_count' ];
+		}
+
+		foreach ( $results as &$result ) {
+			$key = (int) $result['ID'] . ':' . (int) $result['blog_id'];
+			if ( 'daily_count' === $orderby ) {
+				$result['total_count'] = isset( $other_counts[ $key ] ) ? $other_counts[ $key ] : 0;
+			} else {
+				$result['daily_count'] = isset( $other_counts[ $key ] ) ? $other_counts[ $key ] : 0;
+			}
+		}
+		unset( $result );
+
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $results;
+	}
+
+	/**
 	 * Retrieve the Top 10 posts
 	 *
 	 * @param int   $per_page Posts per page.
@@ -151,6 +298,7 @@ class Statistics_Table extends \WP_List_Table {
 	public function get_popular_posts( $per_page = 20, $page_number = 1, $args = null ) {
 
 		global $wpdb;
+		$args = is_array( $args ) ? $args : array();
 
 		// Initialise some variables.
 		$fields  = array();
@@ -167,103 +315,89 @@ class Statistics_Table extends \WP_List_Table {
 		$from_date = gmdate( 'Y-m-d', strtotime( $from_date ) );
 		$to_date   = isset( $args['post-date-filter-to'] ) ? $args['post-date-filter-to'] : current_time( 'd M Y' );
 		$to_date   = gmdate( 'Y-m-d', strtotime( $to_date ) );
+		$from_date = $from_date . ' 00:00:00';
+		$to_date   = gmdate( 'Y-m-d 00:00:00', strtotime( $to_date . ' +1 day' ) );
+
+		if ( $this->network_wide ) {
+			$result = $this->get_network_popular_posts( $per_page, $page_number, $args, $from_date, $to_date );
+
+			foreach ( $result as &$row ) {
+				$row['context_key'] = $this->get_item_context_key( $row );
+				if ( '' !== $row['context_key'] ) {
+					$row['title']       = $this->get_sitewide_context_label( $row['context_key'] );
+					$row['post_type']   = __( 'Site-wide', 'top-10' );
+					$row['post_date']   = '';
+					$row['post_author'] = 0;
+				}
+			}
+			unset( $row );
+
+			return $result;
+		}
 
 		/* Start creating the SQL */
-		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily AS ttd';
+		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
 		$sitewide_sql     = $this->get_sitewide_context_condition();
 
 		// Fields to return.
-		if ( ! $this->network_wide ) {
-			$fields[] = "{$wpdb->posts}.post_title as title";
-			$fields[] = "{$wpdb->posts}.post_type";
-			$fields[] = "{$wpdb->posts}.post_date";
-			$fields[] = "{$wpdb->posts}.post_author";
-		}
+		$fields[] = "{$wpdb->posts}.post_title as title";
+		$fields[] = "{$wpdb->posts}.post_type";
+		$fields[] = "{$wpdb->posts}.post_date";
+		$fields[] = "{$wpdb->posts}.post_author";
 
 		$fields[] = 'ttt.postnumber as ID';
 		$fields[] = 'ttt.cntaccess as total_count';
-		$fields[] = 'SUM(ttd.cntaccess) as daily_count';
+		$fields[] = 'SUM(ttd.daily_count) as daily_count';
 		$fields[] = 'ttt.blog_id as blog_id';
 
 		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause.
-		if ( ! $this->network_wide ) {
-			$join .= " LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID ";
-		}
+		$join .= " LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID ";
 		$join .= $wpdb->prepare(
 			" LEFT JOIN (
-			SELECT * FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			'WHERE DATE(ttd.dp_date) >= DATE(%s) AND DATE(ttd.dp_date) <= DATE(%s)
+			SELECT postnumber, blog_id, SUM(cntaccess) AS daily_count FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'WHERE dp_date >= %s AND dp_date < %s AND blog_id = %d
+			GROUP BY postnumber, blog_id
 			) AS ttd
 			ON ttt.postnumber=ttd.postnumber AND ttt.blog_id=ttd.blog_id
 			',
 			$from_date,
-			$to_date
+			$to_date,
+			$blog_id
 		);
 
 		// Create the base WHERE clause.
-		if ( ! $this->network_wide ) {
-			$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
-			$where .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";   // Show published posts, attachments and site-wide contexts.
+		$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
+		$where .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";   // Show published posts, attachments and site-wide contexts.
 
-			// If search argument is set, do a search for it.
-			if ( ! empty( $args['search'] ) ) {
-				$post_search    = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
-				$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
-				$where         .= " AND ({$post_search} OR {$context_search}) ";
-			}
-
-			// If post filter argument is set, do a search for it.
-			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
-				$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
-			} else {
-				$post_types = get_post_types(
-					array(
-						'public' => true,
-					)
-				);
-				$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
-			}
+		// If search argument is set, do a search for it.
+		if ( ! empty( $args['search'] ) ) {
+			$post_search    = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+			$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
+			$where         .= " AND ({$post_search} OR {$context_search}) ";
 		}
 
-		// Create the base GROUP BY clause.
-		$groupby = ' ttt.postnumber, ttt.blog_id ';
-
-		// Create the ORDER BY clause.
-		$orderby = '';
-		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$orderby = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		} elseif ( ! empty( $args['orderby'] ) ) {
-			$orderby = $args['orderby'];
-		}
-
-		if ( $orderby ) {
-			if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ) ) ) { //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-				$orderby = ' total_count ';
-			}
-
-			$order = '';
-			if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$order = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			} elseif ( ! empty( $args['order'] ) ) {
-				$order = $args['order'];
-			}
-
-			if ( $order && in_array( $order, array( 'asc', 'ASC', 'desc', 'DESC' ), true ) ) {
-				$orderby .= " {$order}";
-			} else {
-				$orderby .= ' DESC';
-			}
+		// If post filter argument is set, do a search for it.
+		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
+			$where .= $wpdb->prepare( " AND $wpdb->posts.post_type = %s ", $args['post-type-filter'] );
 		} else {
-			$orderby = ' total_count DESC ';
+			$post_types = get_post_types(
+				array(
+					'public' => true,
+				)
+			);
+			$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
 		}
+
+		$ordering = $this->get_ordering( $args );
+		$orderby  = $ordering['orderby'] . ' ' . $ordering['order'];
 
 		// Create the base LIMITS clause.
 		$limits = $wpdb->prepare( ' LIMIT %d, %d ', ( $page_number - 1 ) * $per_page, $per_page );
 
-		$groupby = " GROUP BY {$groupby} ";
+		$groupby = ' GROUP BY ttt.postnumber, ttt.blog_id ';
 		$orderby = " ORDER BY {$orderby} ";
 
 		$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
@@ -293,34 +427,49 @@ class Statistics_Table extends \WP_List_Table {
 	public function record_count( $args = null ) {
 
 		global $wpdb;
+		$args = is_array( $args ) ? $args : array();
+
+		if ( $this->network_wide ) {
+			$cache_key = 'tptn_network_popular_posts_count';
+			$cached    = get_site_transient( $cache_key );
+			if ( false !== $cached ) {
+				return (string) (int) $cached;
+			}
+
+			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$ttl   = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
+			if ( $ttl > 0 ) {
+				set_site_transient( $cache_key, $count, $ttl );
+			}
+
+			return (string) $count;
+		}
 
 		$where = '';
 		$join  = '';
 
 		$sql = "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten as ttt";
 
-		if ( ! $this->network_wide ) {
-			$join         = "LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID";
-			$sitewide_sql = $this->get_sitewide_context_condition();
-			$where       .= $wpdb->prepare( ' AND ttt.blog_id = %d ', get_current_blog_id() );
-			$where       .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";
+		$join         = "LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID";
+		$sitewide_sql = $this->get_sitewide_context_condition();
+		$where       .= $wpdb->prepare( ' AND ttt.blog_id = %d ', get_current_blog_id() );
+		$where       .= " AND (($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'inherit') OR {$sitewide_sql}) ";
 
-			if ( ! empty( $args['search'] ) ) {
-				$post_search    = $wpdb->prepare( "{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
-				$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
-				$where         .= " AND ({$post_search} OR {$context_search}) ";
-			}
+		if ( ! empty( $args['search'] ) ) {
+			$post_search    = $wpdb->prepare( "{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( $args['search'] ) . '%' );
+			$context_search = $this->get_sitewide_context_search_condition( $args['search'] );
+			$where         .= " AND ({$post_search} OR {$context_search}) ";
+		}
 
-			if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
-				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_type = %s ", $args['post-type-filter'] );
-			} else {
-				$post_types = get_post_types(
-					array(
-						'public' => true,
-					)
-				);
-				$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
-			}
+		if ( isset( $args['post-type-filter'] ) && $this->all_post_type['all'] !== $args['post-type-filter'] ) {
+			$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_type = %s ", $args['post-type-filter'] );
+		} else {
+			$post_types = get_post_types(
+				array(
+					'public' => true,
+				)
+			);
+			$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
 		}
 		return $wpdb->get_var( "$sql $join WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}

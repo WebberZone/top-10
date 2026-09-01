@@ -164,7 +164,7 @@ if ( ! has_action( 'admin_notices', __NAMESPACE__ . '\\tptn_show_deactivation_no
  * @var string
  */
 global $tptn_db_version;
-$tptn_db_version = '7.2';
+$tptn_db_version = '7.3';
 
 // Load the Composer autoloader (includes the Freemius SDK).
 $composer_autoload = plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';

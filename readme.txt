@@ -183,6 +183,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 * Fixed:
 	* View tracking being lost during quick navigation or browser back-button restores.
 	* View counts being recorded for prerendered or initially hidden pages.
+	* Slow network admin requests on large multisite networks by caching table checks, optimizing network popular-post queries, and caching network dashboard widgets. The first upgrade on very large tables may take time while new indexes are added.
 
 = 4.4.4 =
 
