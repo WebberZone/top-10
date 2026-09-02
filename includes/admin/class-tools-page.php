@@ -762,7 +762,9 @@ class Tools_Page {
 						echo $statuses[ $table_key ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						if ( isset( $table_stats[ $table_key ] ) ) {
-							$format = __( 'Est. entries: %1$s | Est. size: %2$s', 'top-10' );
+							$format = is_multisite()
+								? __( 'Network-wide estimated entries: %1$s | Network-wide estimated size: %2$s', 'top-10' )
+								: __( 'Estimated entries: %1$s | Estimated size: %2$s', 'top-10' );
 
 							echo '<br><span class="description">';
 							printf(

@@ -133,6 +133,7 @@ class Dashboard {
 						<?php foreach ( $tabs as $tab_id => $tab_name ) : ?>
 
 						<div id="<?php echo esc_attr( $tab_id ); ?>" data-tptn-tab="<?php echo esc_attr( $tab_id ); ?>" data-tptn-loaded="<?php echo esc_attr( $tab_id === $initial_tab ? '1' : '0' ); ?>">
+							<div class="tptn-dashboard-tab-content">
 							<?php
 								$output = '';
 							if ( empty( $tab_name['hide'] ) && $tab_id === $initial_tab ) {
@@ -143,6 +144,7 @@ class Dashboard {
 							}
 								echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
+							</div>
 
 							<div style="font-weight:bold;padding:5px;">
 
@@ -450,17 +452,17 @@ class Dashboard {
 			),
 			'lastweek'      => array(
 				'title'     => __( 'Last 7 days', 'top-10' ),
-				'from_date' => gmdate( 'd M Y', strtotime( '-1 week' ) ),
+				'from_date' => gmdate( 'd M Y', strtotime( '-6 days' ) ),
 				'to_date'   => current_time( 'd M Y' ),
 			),
 			'lastfortnight' => array(
 				'title'     => __( 'Last 14 days', 'top-10' ),
-				'from_date' => gmdate( 'd M Y', strtotime( '-2 weeks' ) ),
+				'from_date' => gmdate( 'd M Y', strtotime( '-13 days' ) ),
 				'to_date'   => current_time( 'd M Y' ),
 			),
 			'lastmonth'     => array(
 				'title'     => __( 'Last 30 days', 'top-10' ),
-				'from_date' => gmdate( 'd M Y', strtotime( '-30 days' ) ),
+				'from_date' => gmdate( 'd M Y', strtotime( '-29 days' ) ),
 				'to_date'   => current_time( 'd M Y' ),
 			),
 			'overall'       => array(

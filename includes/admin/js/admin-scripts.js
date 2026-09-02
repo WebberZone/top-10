@@ -250,6 +250,10 @@ jQuery(document).ready(function ($) {
 			if (!$panel.length || $panel.data('tptn-loaded') || $panel.data('tptn-loading')) {
 				return;
 			}
+			var $content = $panel.find('.tptn-dashboard-tab-content');
+			if (!$content.length) {
+				return;
+			}
 
 			$panel.data('tptn-loading', true).attr('aria-busy', 'true');
 			$.post(
@@ -262,14 +266,14 @@ jQuery(document).ready(function ($) {
 				},
 				function (response) {
 					if (response && response.success && response.data && typeof response.data.html !== 'undefined') {
-						$panel.html(response.data.html).data('tptn-loaded', true);
+						$content.html(response.data.html).data('tptn-loaded', true);
 					} else {
-						$panel.html('<p>' + tptn_chart_data.tab_error + '</p>');
+						$content.html('<p>' + tptn_chart_data.tab_error + '</p>');
 					}
 				},
 				'json'
 			).fail(function () {
-				$panel.html('<p>' + tptn_chart_data.tab_error + '</p>');
+				$content.html('<p>' + tptn_chart_data.tab_error + '</p>');
 			}).always(function () {
 				$panel.data('tptn-loading', false).removeAttr('aria-busy');
 			});
