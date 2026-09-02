@@ -56,9 +56,10 @@ EOF
 
 # Copy runtime Composer dependencies and generated autoloader.
 echo "Copying vendor dependencies..."
-if [ -d "vendor/freemius" ] && [ -f "vendor/autoload.php" ] && [ -d "vendor/composer" ]; then
+if [ -d "vendor/freemius" ] && [ -d "vendor/jaybizzle" ] && [ -f "vendor/autoload.php" ] && [ -d "vendor/composer" ]; then
     mkdir -p "$TEMP_DIR/vendor"
     cp -r vendor/freemius "$TEMP_DIR/vendor/"
+    cp -r vendor/jaybizzle "$TEMP_DIR/vendor/"
     cp -r vendor/composer "$TEMP_DIR/vendor/"
     cp vendor/autoload.php "$TEMP_DIR/vendor/"
 else
