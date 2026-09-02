@@ -107,10 +107,11 @@ class Tools_Page {
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'security' => wp_create_nonce( 'tptn-admin' ),
 					'strings'  => array(
-						'confirm_message'      => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
-						'clearing_text'        => esc_html__( 'Clearing...', 'top-10' ),
-						'fail_message'         => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
-						'request_fail_message' => esc_html__( 'Request failed: ', 'top-10' ),
+						'confirm_message'         => esc_html__( 'Are you sure you want to clear the cache?', 'top-10' ),
+						'network_confirm_message' => esc_html__( 'Are you sure you want to clear the Top 10 cache across all active sites?', 'top-10' ),
+						'clearing_text'           => esc_html__( 'Clearing...', 'top-10' ),
+						'fail_message'            => esc_html__( 'Failed to clear cache. Please try again.', 'top-10' ),
+						'request_fail_message'    => esc_html__( 'Request failed: ', 'top-10' ),
 					),
 				)
 			);
@@ -241,13 +242,20 @@ class Tools_Page {
 						<p>
 							<?php
 								printf(
-									'<button type="button" name="tptn_cache_clear" class="button button-secondary tptn_cache_clear" aria-label="%1$s">%1$s</button>',
-									esc_html__( 'Clear cache', 'top-10' )
+									'<button type="button" name="tptn_cache_clear" class="button button-secondary tptn_cache_clear" data-network-wide="%1$s" aria-label="%2$s">%2$s</button>',
+									$network_wide ? '1' : '0',
+									esc_html( $network_wide ? __( 'Clear Cache Across Network', 'top-10' ) : __( 'Clear cache', 'top-10' ) )
 								);
 							?>
 						</p>
 						<p class="description">
-							<?php esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' ); ?>
+							<?php
+							if ( $network_wide ) {
+								esc_html_e( 'Clear the Top 10 cache for all active sites in the network.', 'top-10' );
+							} else {
+								esc_html_e( 'Clear the Top 10 cache. This will also be cleared automatically when you save the settings page.', 'top-10' );
+							}
+							?>
 						</p>
 					</div>
 				</div>
@@ -342,7 +350,7 @@ class Tools_Page {
 					</div>
 				</div>
 
-				<?php if ( ! is_multisite() || is_network_admin() ) : ?>
+				<?php if ( ! is_multisite() || $network_wide ) : ?>
 					<div class="postbox">
 						<h2><span><?php esc_html_e( 'Recreate Database Tables', 'top-10' ); ?></span></h2>
 						<div class="inside">

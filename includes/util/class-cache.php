@@ -36,17 +36,25 @@ class Cache {
 	 */
 	public function ajax_clearcache() {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		$network_wide = isset( $_POST['network_wide'] ) && '1' === sanitize_key( wp_unslash( $_POST['network_wide'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$capability   = $network_wide ? 'manage_network_options' : 'manage_options';
+
+		if ( ! current_user_can( $capability ) ) {
 			wp_die();
 		}
 		check_ajax_referer( 'tptn-admin', 'security' );
 
-		$count = $this->delete();
+		$count = $network_wide ? self::delete_network() : $this->delete();
 
 		wp_send_json_success(
 			array(
 				/* translators: 1: Number of entries cleared. */
-				'message' => sprintf( _n( '%s entry cleared', '%s entries cleared', $count, 'top-10' ), number_format_i18n( $count ) ),
+				'message' => sprintf(
+					$network_wide
+						? _n( '%s cache entry cleared across the network', '%s cache entries cleared across the network', $count, 'top-10' )
+						: _n( '%s entry cleared', '%s entries cleared', $count, 'top-10' ),
+					number_format_i18n( $count )
+				),
 			)
 		);
 	}
@@ -77,6 +85,51 @@ class Cache {
 			}
 		}
 		return $loop;
+	}
+
+	/**
+	 * Delete the Top 10 cache across all active network sites.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @return int Number of transients deleted.
+	 */
+	public static function delete_network() {
+		if ( ! is_multisite() ) {
+			return self::delete();
+		}
+
+		$site_ids        = wp_list_pluck(
+			get_sites(
+				array(
+					'archived' => 0,
+					'spam'     => 0,
+					'deleted'  => 0,
+					'number'   => 0,
+				)
+			),
+			'blog_id'
+		);
+		$count           = 0;
+		$current_blog_id = get_current_blog_id();
+
+		foreach ( $site_ids as $site_id ) {
+			$site_id  = absint( $site_id );
+			$switched = $site_id !== $current_blog_id;
+			if ( $switched ) {
+				switch_to_blog( $site_id );
+			}
+
+			try {
+				$count += self::delete();
+			} finally {
+				if ( $switched ) {
+					restore_current_blog();
+				}
+			}
+		}
+
+		return $count;
 	}
 
 	/**
