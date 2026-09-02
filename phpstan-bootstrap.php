@@ -267,10 +267,13 @@ namespace Bricks {
 	}
 }
 
-// When running on the free plugin (includes/pro/ removed by sync), define the site-wide
-// database stub used by shared admin classes.
+// When running on the free plugin (includes/pro/ removed by sync), define Pro class stubs
+// so PHPStan can resolve the ?Pro\Pro $pro property and the site-wide database stub used
+// by shared admin classes.
 namespace WebberZone\Top_Ten\Pro {
 	if ( ! is_dir( dirname( __FILE__ ) . '/includes/pro' ) ) {
+		class Pro {} // phpcs:ignore
+
 		class Sitewide_Database {
 			public const CONTEXT_IDS = array( 'front_page' => PHP_INT_MAX );
 
