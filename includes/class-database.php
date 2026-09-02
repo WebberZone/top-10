@@ -38,6 +38,13 @@ class Database {
 	private static $individual_table_cache = array();
 
 	/**
+	 * Cached table metadata for this request.
+	 *
+	 * @var array<string,array<string,array<string,int|string>>>
+	 */
+	private static $table_metadata_cache = array();
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -260,7 +267,7 @@ class Database {
 	}
 
 	/**
-	 * Get table statistics including entry count and size.
+	 * Get estimated table statistics including entry count and size.
 	 *
 	 * @since 4.2.0
 	 *
@@ -271,17 +278,22 @@ class Database {
 		$stats     = wp_cache_get( $cache_key, 'top-10' );
 
 		if ( false === $stats ) {
-			$stats = array();
-
-			$tables = array(
+			$tables   = array(
 				'top_ten'               => self::get_table( false ),
 				'top_ten_daily'         => self::get_table( true ),
 				'top_ten_visits_funnel' => self::get_funnel_table(),
 				'top_ten_visits_log'    => self::get_log_table(),
 			);
+			$metadata = self::get_table_metadata( array_values( $tables ) );
+			$stats    = array();
+
 			foreach ( $tables as $key => $table_name ) {
-				if ( self::is_table_installed( $table_name ) ) {
-					$stats[ $key ] = self::get_single_table_statistics( $table_name );
+				if ( isset( $metadata[ $table_name ] ) ) {
+					$stats[ $key ] = array(
+						'entries'   => $metadata[ $table_name ]['table_rows'],
+						'size'      => $metadata[ $table_name ]['data_length'] + $metadata[ $table_name ]['index_length'],
+						'estimated' => true,
+					);
 				}
 			}
 
@@ -300,65 +312,97 @@ class Database {
 	}
 
 	/**
-	 * Get entry count and estimated size for a single table.
+	 * Get table metadata for a set of tables.
 	 *
-	 * @since 4.3.0
+	 * @since 4.5.0
 	 *
-	 * @param string $table_name Table name.
-	 * @return array {
-	 *     @type int   $entries Number of entries.
-	 *     @type float $size    Estimated size in bytes.
-	 * }
+	 * @param string[] $tables Tables to inspect.
+	 * @param bool     $force  Whether to bypass the request cache.
+	 * @return array<string,array<string,int|string>> Table metadata keyed by name.
 	 */
-	private static function get_single_table_statistics( $table_name ) {
+	private static function get_table_metadata( $tables, $force = false ) {
 		global $wpdb;
 
-		// Get row count.
-		if ( is_network_admin() ) {
-			// In network admin, count all entries.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
+		$tables = array_values( array_unique( array_filter( $tables, 'is_string' ) ) );
+		if ( empty( $tables ) ) {
+			return array();
+		}
+
+		$cache_key = implode( '|', $tables );
+		if ( ! $force && isset( self::$table_metadata_cache[ $cache_key ] ) ) {
+			return self::$table_metadata_cache[ $cache_key ];
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $tables ), '%s' ) );
+		if ( self::is_sqlite() ) {
+			$sql = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				"SELECT name AS TABLE_NAME, 0 AS TABLE_ROWS, 0 AS DATA_LENGTH, 0 AS INDEX_LENGTH FROM sqlite_master WHERE type = 'table' AND name IN ({$placeholders})",
+				...$tables
+			);
 		} else {
-			// In individual site admin, count only entries for this blog.
-			$count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$wpdb->prepare(
-					"SELECT COUNT(*) FROM `{$table_name}` WHERE blog_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					get_current_blog_id()
-				)
+			$sql = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				"SELECT TABLE_NAME, TABLE_ROWS, DATA_LENGTH, INDEX_LENGTH FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ({$placeholders})",
+				...$tables
 			);
 		}
 
-		// Refresh InnoDB stats so information_schema reflects the current state.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "ANALYZE TABLE `{$table_name}`" );
-
-		// Get table size in bytes (always shows total size across all blogs).
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$size = $wpdb->get_var(
-			$wpdb->prepare(
-				'SELECT (data_length + index_length) FROM information_schema.TABLES WHERE table_schema = %s AND table_name = %s',
-				defined( 'DB_NAME' ) ? DB_NAME : '', // @codingStandardsIgnoreLine - WordPress constant
-				$table_name
-			)
-		);
-
-		// Calculate size for individual sites in multisite.
-		$calculated_size = $size ? (int) $size : 0;
-		if ( is_multisite() && ! is_network_admin() && $calculated_size > 0 ) {
-			// Get total entries to calculate ratio.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$total_count = $wpdb->get_var( "SELECT COUNT(*) FROM `{$table_name}`" );
-
-			if ( $total_count > 0 && $count > 0 ) {
-				// Estimate size based on entry count ratio.
-				$calculated_size = ( $count / $total_count ) * $calculated_size;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$rows     = $wpdb->get_results( $sql, ARRAY_A );
+		$metadata = array();
+		foreach ( $rows as $row ) {
+			$table_name = isset( $row['TABLE_NAME'] ) ? (string) $row['TABLE_NAME'] : '';
+			if ( '' !== $table_name && in_array( $table_name, $tables, true ) ) {
+				$metadata[ $table_name ] = array(
+					'table_rows'   => absint( $row['TABLE_ROWS'] ?? 0 ),
+					'data_length'  => absint( $row['DATA_LENGTH'] ?? 0 ),
+					'index_length' => absint( $row['INDEX_LENGTH'] ?? 0 ),
+				);
 			}
 		}
 
-		return array(
-			'entries' => absint( $count ),
-			'size'    => $calculated_size,
-		);
+		self::$table_metadata_cache[ $cache_key ] = $metadata;
+
+		return $metadata;
+	}
+
+	/**
+	 * Get installation status for a set of tables.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param string[] $tables Tables to inspect.
+	 * @param bool     $force  Whether to bypass the request cache.
+	 * @return array<string,bool> Table statuses keyed by name.
+	 */
+	private static function get_table_statuses( $tables, $force = false ) {
+		$tables   = array_values( array_unique( array_filter( $tables, 'is_string' ) ) );
+		$metadata = self::get_table_metadata( $tables, $force );
+		$statuses = array_fill_keys( $tables, false );
+
+		foreach ( array_keys( $metadata ) as $table ) {
+			$statuses[ $table ] = true;
+		}
+
+		return $statuses;
+	}
+
+	/**
+	 * Determine whether the current database is SQLite.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @return bool Whether SQLite is in use.
+	 */
+	private static function is_sqlite() {
+		global $wpdb;
+
+		if ( defined( 'DATABASE_TYPE' ) && 'sqlite' === strtolower( (string) DATABASE_TYPE ) ) {
+			return true;
+		}
+
+		return method_exists( $wpdb, 'db_server_info' ) && false !== strpos( strtolower( (string) $wpdb->db_server_info() ), 'sqlite' );
 	}
 
 	/**
@@ -379,6 +423,7 @@ class Database {
 		self::$table_installation_cache         = array();
 		self::$table_installation_cache_version = null;
 		self::$individual_table_cache           = array();
+		self::$table_metadata_cache             = array();
 
 		delete_site_option( 'tptn_tables_installed' );
 	}
@@ -396,7 +441,7 @@ class Database {
 	 * @return array<string,bool> Table names mapped to their installation status.
 	 */
 	public static function get_table_installation_status( $force = false ) {
-		global $wpdb, $tptn_db_version;
+		global $tptn_db_version;
 
 		$tables  = array(
 			self::get_table( false ),
@@ -426,12 +471,7 @@ class Database {
 			}
 		}
 
-		$statuses = array();
-		foreach ( $tables as $table ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			$result             = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
-			$statuses[ $table ] = ( $result === $table );
-		}
+		$statuses = self::get_table_statuses( $tables, $force );
 
 		self::$table_installation_cache         = $statuses;
 		self::$table_installation_cache_version = $version;
@@ -456,8 +496,6 @@ class Database {
 	 * @return bool True if table exists, false otherwise.
 	 */
 	public static function is_table_installed( $table, $force = false ) {
-		global $wpdb;
-
 		$required_tables = array(
 			self::get_table( false ),
 			self::get_table( true ),
@@ -474,9 +512,8 @@ class Database {
 			return self::$individual_table_cache[ $table ];
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result                                 = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
-		self::$individual_table_cache[ $table ] = ( $result === $table );
+		$statuses                               = self::get_table_statuses( array( $table ), $force );
+		self::$individual_table_cache[ $table ] = ! empty( $statuses[ $table ] );
 
 		return self::$individual_table_cache[ $table ];
 	}
@@ -940,11 +977,16 @@ class Database {
 	 *
 	 * @since 4.3.0
 	 *
-	 * @param int $batch_size Maximum funnel rows to process per run.
+	 * @param int      $batch_size Maximum funnel rows to process per run.
+	 * @param int|null $blog_id   Optional blog ID. When set, only that site's buffered visits are processed.
 	 * @return true|false|int|\WP_Error True if rows processed, false if lock not acquired, 0 if funnel empty, WP_Error on DB failure.
 	 */
-	public static function aggregate_visit_log( $batch_size = 10000 ) {
+	public static function aggregate_visit_log( $batch_size = 10000, $blog_id = null ) {
 		global $wpdb;
+
+		$batch_size = max( 1, absint( $batch_size ) );
+		$blog_id    = null === $blog_id ? null : absint( $blog_id );
+		$blog_where = null === $blog_id ? '' : $wpdb->prepare( ' AND blog_id = %d', $blog_id );
 
 		// Detect SQLite (e.g. WordPress Playground) vs MySQL/MariaDB.
 		// DATABASE_TYPE is defined by the WordPress SQLite Database Integration drop-in.
@@ -967,12 +1009,12 @@ class Database {
 
 		try {
 			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table}" );
+			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table} WHERE 1=1{$blog_where}" );
 			if ( 0 === $max_id ) {
 				return 0;
 			}
 
-			$cap_id     = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$funnel_table} ORDER BY id ASC LIMIT %d, 1", $batch_size ) );
+			$cap_id     = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$funnel_table} WHERE 1=1{$blog_where} ORDER BY id ASC LIMIT %d, 1", $batch_size ) );
 			$was_capped = false;
 			if ( null !== $cap_id ) {
 				$capped_max = (int) $cap_id - 1;
@@ -987,7 +1029,7 @@ class Database {
 					"INSERT INTO {$log_table} (postnumber, blog_id, visited_at, source)
 					 SELECT postnumber, blog_id, visited_at, source
 					 FROM   {$funnel_table}
-					 WHERE  id <= %d",
+					 WHERE  id <= %d{$blog_where}",
 					$max_id
 				)
 			);
@@ -1001,7 +1043,7 @@ class Database {
 					 SELECT postnumber, COUNT(*) AS cntaccess,
 					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id
 					 FROM   {$funnel_table}
-					 WHERE  id <= %d AND activate_counter IN (10, 11)
+					 WHERE  id <= %d AND activate_counter IN (10, 11){$blog_where}
 					 GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
 					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess)",
 					$max_id
@@ -1016,7 +1058,7 @@ class Database {
 					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id)
 					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id
 					 FROM   {$funnel_table}
-					 WHERE  id <= %d AND activate_counter IN (1, 11)
+					 WHERE  id <= %d AND activate_counter IN (1, 11){$blog_where}
 					 GROUP  BY postnumber, blog_id
 					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess)",
 					$max_id
@@ -1026,7 +1068,7 @@ class Database {
 				return new \WP_Error( 'tptn_overall_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into overall table.', 'top-10' ) );
 			}
 
-			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d", $max_id ) );
+			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d{$blog_where}", $max_id ) );
 			if ( false === $r ) {
 				return new \WP_Error( 'tptn_funnel_delete_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to drain funnel table.', 'top-10' ) );
 			}

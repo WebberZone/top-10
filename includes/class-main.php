@@ -121,9 +121,9 @@ final class Main {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var object|null
+	 * @var Pro\Pro
 	 */
-	public $pro = null;
+	public ?Pro\Pro $pro = null;
 
 	/**
 	 * Gets the instance of the class.

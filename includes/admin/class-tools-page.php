@@ -126,14 +126,16 @@ class Tools_Page {
 	 */
 	public function render_page() {
 		$screen       = get_current_screen();
-		$network_wide = false;
+		$network_wide = is_multisite() && is_network_admin();
 
-		if ( $screen->id === $this->parent_id . '-network' ) {
+		// Keep the screen check as a fallback for admin screen implementations that
+		// do not expose is_network_admin() reliably.
+		if ( $screen && $screen->id === $this->parent_id . '-network' ) {
 			$network_wide = true;
 		}
 
-		/* Truncate overall posts table */
-		if ( isset( $_POST['tptn_recreate_primary_key'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+		/* Recreate the shared table indexes. */
+		if ( ( ! is_multisite() || $network_wide ) && isset( $_POST['tptn_recreate_primary_key'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			self::recreate_primary_key();
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Primary Key has been recreated', 'top-10' ), 'updated' );
 		}
@@ -160,8 +162,8 @@ class Tools_Page {
 			add_settings_error( 'tptn-notices', '', esc_html__( 'Top 10 daily popular posts reset', 'top-10' ), 'updated' );
 		}
 
-		/* Recreate tables */
-		if ( isset( $_POST['tptn_recreate_tables'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+		/* Recreate the shared tables. */
+		if ( ( ! is_multisite() || $network_wide ) && isset( $_POST['tptn_recreate_tables'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			$result = self::recreate_tables();
 			if ( is_wp_error( $result ) ) {
 				add_settings_error( 'tptn-notices', '', $result->get_error_message(), 'error' );
@@ -172,11 +174,18 @@ class Tools_Page {
 
 		/* Sync funnel (run aggregation now) */
 		if ( isset( $_POST['tptn_sync_funnel'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			$result = Database::aggregate_visit_log();
+			$blog_id = ( is_multisite() && ! $network_wide ) ? get_current_blog_id() : null;
+			$result  = Database::aggregate_visit_log( 10000, $blog_id );
 			if ( true === $result ) {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Funnel has been synced. Buffered visits have been aggregated.', 'top-10' ), 'updated' );
+				$message = $network_wide
+					? __( 'The network funnel has been synced. Buffered visits from all sites have been aggregated.', 'top-10' )
+					: __( 'The site funnel has been synced. Buffered visits for this site have been aggregated.', 'top-10' );
+				add_settings_error( 'tptn-notices', '', esc_html( $message ), 'updated' );
 			} elseif ( 0 === $result ) {
-				add_settings_error( 'tptn-notices', '', esc_html__( 'Nothing to sync. The funnel is empty.', 'top-10' ), 'updated' );
+				$message = $network_wide
+					? __( 'Nothing to sync. The network funnel is empty.', 'top-10' )
+					: __( 'Nothing to sync. This site funnel is empty.', 'top-10' );
+				add_settings_error( 'tptn-notices', '', esc_html( $message ), 'updated' );
 			} elseif ( false === $result ) {
 				add_settings_error( 'tptn-notices', '', esc_html__( 'Sync skipped: another aggregation is already in progress. Please try again in a moment.', 'top-10' ), 'updated' );
 			} elseif ( is_wp_error( $result ) ) {
@@ -195,7 +204,7 @@ class Tools_Page {
 
 		/* Fix cron schedules */
 		if ( isset( $_POST['tptn_fix_crons'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
-			$result = self::fix_crons();
+			$result = self::fix_crons( $network_wide );
 			if ( is_wp_error( $result ) ) {
 				add_settings_error( 'tptn-notices', '', implode( ' ', array_map( 'esc_html', $result->get_error_messages() ) ), 'error' );
 			} else {
@@ -244,13 +253,19 @@ class Tools_Page {
 				</div>
 
 				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Sync Funnel', 'top-10' ); ?></span></h2>
+					<h2><span><?php echo esc_html( $network_wide ? __( 'Sync Network Funnel', 'top-10' ) : __( 'Sync Funnel', 'top-10' ) ); ?></span></h2>
 					<div class="inside">
 						<p>
-							<button name="tptn_sync_funnel" type="submit" id="tptn_sync_funnel" class="button button-secondary"><?php esc_attr_e( 'Sync Funnel Now', 'top-10' ); ?></button>
+							<button name="tptn_sync_funnel" type="submit" id="tptn_sync_funnel" class="button button-secondary"><?php echo esc_html( $network_wide ? __( 'Sync Network Funnel Now', 'top-10' ) : __( 'Sync Funnel Now', 'top-10' ) ); ?></button>
 						</p>
 						<p class="description">
-							<?php esc_html_e( 'Drain the visits funnel into the count tables immediately. This is equivalent to running the aggregation cron job.', 'top-10' ); ?>
+							<?php
+							if ( $network_wide ) {
+								esc_html_e( 'Drain buffered visits from all sites into the count tables immediately. This is equivalent to running the aggregation cron job.', 'top-10' );
+							} else {
+								esc_html_e( 'Drain this site\'s buffered visits into the count tables immediately. Other sites\' buffered visits are not affected.', 'top-10' );
+							}
+							?>
 						</p>
 					</div>
 				</div>
@@ -258,44 +273,60 @@ class Tools_Page {
 				<?php do_action( 'tptn_tools_page_actions', $network_wide ); ?>
 
 				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Fix Cron Schedules', 'top-10' ); ?></span></h2>
+					<h2><span><?php echo esc_html( $network_wide ? __( 'Fix Network Cron Schedules', 'top-10' ) : __( 'Fix Cron Schedules', 'top-10' ) ); ?></span></h2>
 					<div class="inside">
 						<p>
-							<button name="tptn_fix_crons" type="submit" id="tptn_fix_crons" class="button button-secondary"><?php esc_attr_e( 'Fix Cron Schedules', 'top-10' ); ?></button>
+							<button name="tptn_fix_crons" type="submit" id="tptn_fix_crons" class="button button-secondary"><?php echo esc_html( $network_wide ? __( 'Fix Network Cron Schedules', 'top-10' ) : __( 'Fix Cron Schedules', 'top-10' ) ); ?></button>
 						</p>
 						<p class="description">
-							<?php esc_html_e( 'Clears and reschedules the Top 10 cron jobs (maintenance and aggregation). Use this if the status above shows a job as not scheduled or if your error log reports cron reschedule errors for the Top 10 hooks.', 'top-10' ); ?>
+							<?php
+							if ( $network_wide ) {
+								esc_html_e( 'Clears and reschedules the Top 10 maintenance and aggregation jobs for all active sites. Use this if a site\'s job is not scheduled or if your error log reports cron reschedule errors.', 'top-10' );
+							} else {
+								esc_html_e( 'Clears and reschedules the Top 10 cron jobs for this site. Use this if the status above shows a job as not scheduled or if your error log reports cron reschedule errors for the Top 10 hooks.', 'top-10' );
+							}
+							?>
 						</p>
 					</div>
 				</div>
 
-				<div class="postbox">
-					<h2><span><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></span></h2>
-					<div class="inside">
-						<p>
-							<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
-						</p>
-						<p class="description">
-							<?php esc_html_e( 'Deletes and reinitializes the primary key in the database tables. If the above function gives an error, then you can run the below code in phpMyAdmin or Adminer. Remember to backup your database first!', 'top-10' ); ?>
-						</p>
-						<p>
-							<code style="display:block;"><?php echo self::recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
-						</p>
+				<?php if ( ! is_multisite() || $network_wide ) : ?>
+					<div class="postbox">
+						<h2><span><?php esc_html_e( 'Recreate Primary Key', 'top-10' ); ?></span></h2>
+						<div class="inside">
+							<p>
+								<button name="tptn_recreate_primary_key" type="submit" id="tptn_recreate_primary_key" class="button button-secondary"><?php esc_attr_e( 'Recreate Primary Key', 'top-10' ); ?></button>
+							</p>
+							<p class="description">
+								<?php esc_html_e( 'Deletes and reinitializes the primary key in the shared database tables. Run this from Network Admin on multisite installations. Remember to back up your database first!', 'top-10' ); ?>
+							</p>
+							<p>
+								<code style="display:block;"><?php echo self::recreate_primary_key_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></code>
+							</p>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
 
 				<div class="postbox">
 					<h2><span><?php esc_html_e( 'Reset database', 'top-10' ); ?></span></h2>
 					<div class="inside">
 						<p class="description">
-							<?php esc_html_e( 'This will reset the Top 10 tables. If this is a multisite install, this will reset the popular posts for the current site. If this is the Network Admin screen, then it will reset the popular posts across all sites. This cannot be reversed. Make sure that your database has been backed up before proceeding', 'top-10' ); ?>
+							<?php
+							if ( $network_wide ) {
+								esc_html_e( 'This will reset the Top 10 popular posts across all sites in the network. This cannot be reversed. Make sure that your database has been backed up before proceeding.', 'top-10' );
+							} elseif ( is_multisite() ) {
+								esc_html_e( 'This will reset the Top 10 popular posts for the current site only. Other sites in the network will not be affected. This cannot be reversed. Make sure that your database has been backed up before proceeding.', 'top-10' );
+							} else {
+								esc_html_e( 'This will reset the Top 10 popular posts for this site. This cannot be reversed. Make sure that your database has been backed up before proceeding.', 'top-10' );
+							}
+							?>
 						</p>
 						<p>
 							<?php
 							printf(
 								'<button name="tptn_reset_overall" type="submit" id="tptn_reset_overall" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
-								esc_attr__( 'Are you sure you want to reset the popular posts?', 'top-10' ),
-								esc_attr__( 'Reset Popular Posts', 'top-10' )
+								esc_attr__( $network_wide ? 'Are you sure you want to reset popular posts across the network?' : 'Are you sure you want to reset the popular posts for this site?', 'top-10' ),
+								esc_attr__( $network_wide ? 'Reset Popular Posts Across Network' : 'Reset Popular Posts', 'top-10' )
 							);
 							?>
 						</p>
@@ -303,8 +334,8 @@ class Tools_Page {
 							<?php
 							printf(
 								'<button name="tptn_reset_daily" type="submit" id="tptn_reset_daily" class="button button-secondary" style="color:#fff;background-color: #a00;border-color: #900;" onclick="if (!confirm(\'%s\')) return false;">%s</button>',
-								esc_attr__( 'Are you sure you want to reset the daily popular posts?', 'top-10' ),
-								esc_attr__( 'Reset Daily Popular Posts', 'top-10' )
+								esc_attr__( $network_wide ? 'Are you sure you want to reset daily popular posts across the network?' : 'Are you sure you want to reset the daily popular posts for this site?', 'top-10' ),
+								esc_attr__( $network_wide ? 'Reset Daily Popular Posts Across Network' : 'Reset Daily Popular Posts', 'top-10' )
 							);
 							?>
 						</p>
@@ -447,9 +478,79 @@ class Tools_Page {
 	 *
 	 * @since 4.4.0
 	 *
+	 * @param bool $network_wide Whether to repair cron schedules for all active sites.
 	 * @return string|\WP_Error Success message or WP_Error if a job could not be rescheduled.
 	 */
-	public static function fix_crons() {
+	public static function fix_crons( $network_wide = false ) {
+		if ( $network_wide && is_multisite() ) {
+			$site_ids        = wp_list_pluck(
+				get_sites(
+					array(
+						'archived' => 0,
+						'spam'     => 0,
+						'deleted'  => 0,
+						'number'   => 0,
+					)
+				),
+				'blog_id'
+			);
+			$errors          = new \WP_Error();
+			$sites_processed = 0;
+			$current_blog_id = get_current_blog_id();
+
+			foreach ( $site_ids as $site_id ) {
+				$site_id  = absint( $site_id );
+				$switched = $site_id !== $current_blog_id;
+				if ( $switched ) {
+					switch_to_blog( $site_id );
+				}
+
+				try {
+					$result = self::fix_crons_for_site();
+					if ( is_wp_error( $result ) ) {
+						foreach ( $result->get_error_messages() as $message ) {
+							$errors->add(
+								'tptn-cron-site-' . $site_id,
+								sprintf(
+									/* translators: 1: Site ID, 2: Error message. */
+									__( 'Site %1$d: %2$s', 'top-10' ),
+									$site_id,
+									$message
+								)
+							);
+						}
+					} else {
+						++$sites_processed;
+					}
+				} finally {
+					if ( $switched ) {
+						restore_current_blog();
+					}
+				}
+			}
+
+			if ( $errors->has_errors() ) {
+				return $errors;
+			}
+
+			return sprintf(
+				/* translators: %s: Number of sites. */
+				__( 'Cron schedules have been repaired for %s active site(s).', 'top-10' ),
+				number_format_i18n( $sites_processed )
+			);
+		}
+
+		return self::fix_crons_for_site();
+	}
+
+	/**
+	 * Clear and reschedule the Top 10 cron jobs for the current site.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @return string|\WP_Error Success message or WP_Error if a job could not be rescheduled.
+	 */
+	private static function fix_crons_for_site() {
 		$errors   = new \WP_Error();
 		$messages = array();
 		$success  = true;
@@ -653,11 +754,7 @@ class Tools_Page {
 						echo $statuses[ $table_key ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						if ( isset( $table_stats[ $table_key ] ) ) {
-							$format = ( is_multisite() && ! is_network_admin() )
-								/* translators: 1: Number of entries, 2: Estimated table size */
-								? __( 'Entries: %1$s | Est. Size: %2$s', 'top-10' )
-								/* translators: 1: Number of entries, 2: Table size */
-								: __( 'Entries: %1$s | Size: %2$s', 'top-10' );
+							$format = __( 'Est. entries: %1$s | Est. size: %2$s', 'top-10' );
 
 							echo '<br><span class="description">';
 							printf(
@@ -731,11 +828,11 @@ class Tools_Page {
 				</tr>
 			<?php endforeach; ?>
 
-			<?php if ( ! Database::are_tables_installed() ) : ?>
+			<?php if ( ( ! is_multisite() || is_network_admin() ) && ! Database::are_tables_installed() ) : ?>
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Repair database', 'top-10' ); ?></th>
 				<td>
-					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=tptn_dashboard&action=recreate_tables' ), 'tptn-recreate-tables' ) ); ?>" class="button">
+					<a href="<?php echo esc_url( wp_nonce_url( ( is_multisite() && is_network_admin() ? network_admin_url( 'admin.php?page=tptn_network_tools_page&action=recreate_tables' ) : admin_url( 'admin.php?page=tptn_tools_page&action=recreate_tables' ) ), 'tptn-recreate-tables' ) ); ?>" class="button">
 						<?php esc_html_e( 'Recreate tables', 'top-10' ); ?>
 					</a>
 				</td>
@@ -766,7 +863,12 @@ class Tools_Page {
 			wp_die( esc_html__( 'Security check failed', 'top-10' ) );
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( is_multisite() && ! is_network_admin() ) {
+			wp_die( esc_html__( 'Database table repair must be run from Network Admin.', 'top-10' ) );
+		}
+
+		$capability = is_network_admin() ? 'manage_network_options' : 'manage_options';
+		if ( ! current_user_can( $capability ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'top-10' ) );
 		}
 
@@ -785,7 +887,7 @@ class Tools_Page {
 
 		$status   = $still_missing ? 'failed' : 'created';
 		$referer  = wp_get_referer();
-		$fallback = admin_url( 'admin.php?page=' . ( is_network_admin() ? 'tptn_network_tools_page' : 'tptn_tools_page' ) );
+		$fallback = is_network_admin() ? network_admin_url( 'admin.php?page=tptn_network_tools_page' ) : admin_url( 'admin.php?page=tptn_tools_page' );
 		$redirect = add_query_arg( 'tptn_tables_created', $status, $referer ? $referer : $fallback );
 
 		wp_safe_redirect( $redirect );
@@ -806,7 +908,12 @@ class Tools_Page {
 			wp_die( esc_html__( 'Security check failed', 'top-10' ) );
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( is_multisite() && ! is_network_admin() ) {
+			wp_die( esc_html__( 'Database table repair must be run from Network Admin.', 'top-10' ) );
+		}
+
+		$capability = is_network_admin() ? 'manage_network_options' : 'manage_options';
+		if ( ! current_user_can( $capability ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'top-10' ) );
 		}
 
@@ -869,8 +976,11 @@ class Tools_Page {
 		}
 
 		// Redirect back to the tools page.
-		$page = is_network_admin() ? 'tptn_network_tools_page' : 'tptn_tools_page';
-		wp_safe_redirect( admin_url( 'admin.php?page=' . $page . '&settings-updated=true' ) );
+		if ( is_network_admin() ) {
+			wp_safe_redirect( network_admin_url( 'admin.php?page=tptn_network_tools_page&settings-updated=true' ) );
+		} else {
+			wp_safe_redirect( admin_url( 'admin.php?page=tptn_tools_page&settings-updated=true' ) );
+		}
 		exit;
 	}
 }
