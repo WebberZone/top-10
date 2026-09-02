@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.0-beta1
+Stable tag: 4.5.0
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -174,19 +174,20 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.5.0-beta1 =
+= 4.5.0 =
 
 * Features:
-	* **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
-	* Optional Pro-only site-wide tracking for front pages, posts pages, archives, and searches.
-	* Added a **Reduce Daily Table Size** tool to combine older hourly records, plus the Pro-only `wp top10 db rollup` command for CLI and multisite use.
+	* [Pro] **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
+	* [Pro] Optional site-wide tracking for front pages, posts pages, archives, and searches.
+	* Added a **Reduce Daily Table Size** tool to combine older hourly records.
+	* [Pro] Added the `wp top10 db rollup` command for CLI and multisite use.
 
 * Fixed:
 	* View tracking being lost during quick navigation or browser back-button restores.
 	* View counts being recorded for prerendered or initially hidden pages.
 	* Bot views being recorded from cached pages, and views being recorded for browser prefetches, prerenders, or direct navigations to tracker URLs.
 	* Tracker scripts not running when loaded asynchronously after `DOMContentLoaded` has fired.
-	* Daily counts in the Pro `wp top10 popular` command not respecting the selected custom date range.
+	* [Pro] Daily counts in the `wp top10 popular` command not respecting the selected custom date range.
 	* Slow network admin requests on large multisite networks by caching table checks, optimizing network popular-post queries, and caching network dashboard widgets.
 
 = 4.4.4 =

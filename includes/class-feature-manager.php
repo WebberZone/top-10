@@ -79,6 +79,18 @@ class Feature_Manager {
 				'setting' => 'enable_popular_authors',
 				'default' => true,
 			),
+			'page_builders'           => array(
+				'setting' => 'enable_page_builders',
+				'default' => true,
+			),
+			'sitewide_tracking'       => array(
+				'setting' => 'enable_sitewide_tracking',
+				'default' => true,
+			),
+			'daily_table_rollup'      => array(
+				'setting' => 'enable_daily_table_rollup',
+				'default' => true,
+			),
 		);
 
 		/**

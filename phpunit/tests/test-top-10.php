@@ -18,6 +18,38 @@ class TopTenTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Ensure every 4.5.0 optional feature has a settings toggle.
+	 */
+	public function test_4_5_features_have_settings_toggles() {
+		$features = \WebberZone\Top_Ten\Feature_Manager::get_features();
+		$settings = \WebberZone\Top_Ten\Admin\Settings::settings_features();
+		$headers  = array(
+			'features_display_header',
+			'features_tracking_header',
+			'features_data_header',
+			'features_admin_header',
+		);
+
+		foreach ( $headers as $header ) {
+			$this->assertArrayHasKey( $header, $settings );
+			$this->assertSame( 'header', $settings[ $header ]['type'] );
+		}
+
+		$expected = array(
+			'page_builders'      => 'enable_page_builders',
+			'sitewide_tracking'  => 'enable_sitewide_tracking',
+			'daily_table_rollup' => 'enable_daily_table_rollup',
+		);
+
+		foreach ( $expected as $feature => $setting ) {
+			$this->assertArrayHasKey( $feature, $features );
+			$this->assertSame( $setting, $features[ $feature ]['setting'] );
+			$this->assertArrayHasKey( $setting, $settings );
+			$this->assertTrue( $settings[ $setting ]['pro'] );
+		}
+	}
+
+	/**
 	 * Roll up old daily rows without changing counts or recent hourly rows.
 	 */
 	public function test_rollup_daily_preserves_counts_and_blog_scope() {
