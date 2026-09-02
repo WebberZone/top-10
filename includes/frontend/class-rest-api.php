@@ -233,6 +233,11 @@ class REST_API extends \WP_REST_Controller {
 	 * @return mixed|\WP_REST_Response Array of post objects or post IDs.
 	 */
 	public function update_post_count( $request ) {
+		if ( ! \WebberZone\Top_Ten\Tracker::is_tracking_request_allowed() ) {
+			$response = new \WP_REST_Response( '', 204 );
+			$response->header( 'Cache-Control', 'max-age=15, s-maxage=0' );
+			return $response;
+		}
 
 		$id               = absint( $request->get_param( 'top_ten_id' ) );
 		$sitewide_context = sanitize_text_field( $request->get_param( 'top_ten_sitewide_context' ) );
@@ -339,7 +344,7 @@ class REST_API extends \WP_REST_Controller {
 				'sanitize_callback' => 'absint',
 			),
 			'top_ten_sitewide_context' => array(
-				'description'       => esc_html__( 'Site-wide tracking context: front_page, home_page, search, 404, category, tag, taxonomy, author, post_type_archive, date_archive, archive or other. Each key maps to a fixed reserved ID in the shared count tables.', 'top-10' ),
+				'description'       => esc_html__( 'Site-wide tracking context: front_page, home_page, search, category, tag, taxonomy, author, post_type_archive, date_archive, archive or other. Each key maps to a fixed reserved ID in the shared count tables.', 'top-10' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 			),

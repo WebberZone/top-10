@@ -665,7 +665,7 @@ class Settings {
 			'track_sitewide'       => array(
 				'id'      => 'track_sitewide',
 				'name'    => esc_html__( 'Track site-wide views', 'top-10' ),
-				'desc'    => esc_html__( 'Track views for the front page, posts page, archives, search results and 404 pages in addition to individual posts and pages. Site-wide contexts use fixed reserved IDs in the shared Top 10 tables: front page = PHP_INT_MAX; home page = PHP_INT_MAX - 1; search = PHP_INT_MAX - 2; 404 = PHP_INT_MAX - 3; category = PHP_INT_MAX - 4; tag = PHP_INT_MAX - 5; taxonomy = PHP_INT_MAX - 6; author = PHP_INT_MAX - 7; post type archive = PHP_INT_MAX - 8; date archive = PHP_INT_MAX - 9; archive = PHP_INT_MAX - 10; other = PHP_INT_MAX - 11. These IDs are the same on every site and counts remain separate by site (blog ID).', 'top-10' ),
+				'desc'    => esc_html__( 'Track views for the front page, posts page, archives, and search results in addition to individual posts and pages. Site-wide contexts use fixed reserved IDs in the shared Top 10 tables: front page = PHP_INT_MAX; home page = PHP_INT_MAX - 1; search = PHP_INT_MAX - 2; category = PHP_INT_MAX - 4; tag = PHP_INT_MAX - 5; taxonomy = PHP_INT_MAX - 6; author = PHP_INT_MAX - 7; post type archive = PHP_INT_MAX - 8; date archive = PHP_INT_MAX - 9; archive = PHP_INT_MAX - 10; other = PHP_INT_MAX - 11. These IDs are the same on every site and counts remain separate by site (blog ID).', 'top-10' ),
 				'type'    => 'checkbox',
 				'default' => false,
 				'pro'     => true,

@@ -1,4 +1,8 @@
 (function () {
+    if ('undefined' === typeof ajax_tptn_tracker) {
+        return;
+    }
+
     var tracker = ajax_tptn_tracker;
     var tracked = false;
 
@@ -20,6 +24,7 @@
             url += (url.includes('?') ? '&' : '?') + params;
         }
 
+        // Keep URLSearchParams as the beacon body so WordPress parses the payload as form data.
         if ('1' === tracker.top_ten_debug || !navigator.sendBeacon || !navigator.sendBeacon(url, params)) {
             fetch(url, { method: 'POST', body: params, keepalive: true }).catch(function () {});
         }
@@ -47,7 +52,12 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', track);
+    if ('loading' === document.readyState) {
+        document.addEventListener('DOMContentLoaded', track);
+    } else {
+        track();
+    }
+
     window.addEventListener('pageshow', function (event) {
         if (event.persisted) {
             tracked = false;

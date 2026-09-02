@@ -203,6 +203,16 @@ class Tracker {
 			array_key_exists( 'activate_counter', $wp->query_vars )
 			&& ( array_key_exists( 'top_ten_id', $wp->query_vars ) || array_key_exists( 'top_ten_sitewide_context', $wp->query_vars ) )
 		) {
+			if ( ! self::is_tracking_request_allowed() ) {
+				if ( array_key_exists( 'top_ten_debug', $wp->query_vars ) && 1 === absint( $wp->query_vars['top_ten_debug'] ) ) {
+					header( 'content-type: application/x-javascript' );
+					wp_send_json( 'blocked' );
+				} else {
+					header( 'HTTP/1.0 204 No Content' );
+					header( 'Cache-Control: max-age=15, s-maxage=0' );
+				}
+				exit;
+			}
 
 			$id               = absint( $wp->query_vars['top_ten_id'] ?? 0 );
 			$sitewide_context = sanitize_text_field( $wp->query_vars['top_ten_sitewide_context'] ?? '' );
@@ -328,12 +338,23 @@ class Tracker {
 	 * @since 2.4.0
 	 */
 	public static function tracker_parser() {
+		$top_ten_debug = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+		if ( ! self::is_tracking_request_allowed() ) {
+			if ( 1 === $top_ten_debug ) {
+				echo esc_html( 'blocked' );
+				wp_die();
+			}
+
+			header( 'HTTP/1.0 204 No Content' );
+			header( 'Cache-Control: max-age=15, s-maxage=0' );
+			wp_die( '', '', array( 'response' => 204 ) );
+		}
 
 		$id               = isset( $_POST['top_ten_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$sitewide_context = isset( $_POST['top_ten_sitewide_context'] ) ? sanitize_text_field( wp_unslash( $_POST['top_ten_sitewide_context'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$top_ten_debug    = isset( $_POST['top_ten_debug'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_debug'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$str = self::update_count( $id, $blog_id, $activate_counter, 0 );
 		if ( '' !== $sitewide_context ) {
@@ -349,6 +370,36 @@ class Tracker {
 		}
 
 		wp_die();
+	}
+
+	/**
+	 * Check whether a tracker request should be processed.
+	 *
+	 * Cached pages can enqueue the tracker for a bot, so bot detection must also run
+	 * at the endpoint. Browser prefetches and direct navigations must not create views.
+	 *
+	 * @since 4.5.0
+	 * @return bool True when the request may be tracked.
+	 */
+	public static function is_tracking_request_allowed() {
+		foreach ( array( 'HTTP_SEC_PURPOSE', 'HTTP_PURPOSE' ) as $header ) {
+			$value = isset( $_SERVER[ $header ] ) && is_string( $_SERVER[ $header ] )
+				? sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) )
+				: '';
+
+			if ( preg_match( '/(?:^|[\s,;])(?:prefetch|prerender)(?:$|[\s,;])/i', $value ) ) {
+				return false;
+			}
+		}
+
+		$fetch_mode = isset( $_SERVER['HTTP_SEC_FETCH_MODE'] ) && is_string( $_SERVER['HTTP_SEC_FETCH_MODE'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['HTTP_SEC_FETCH_MODE'] ) )
+			: '';
+		if ( 'navigate' === strtolower( $fetch_mode ) ) {
+			return false;
+		}
+
+		return ! ( \tptn_get_option( 'no_bots' ) && Helpers::is_bot() );
 	}
 
 	/**
