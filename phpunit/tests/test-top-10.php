@@ -449,16 +449,19 @@ class TopTenTest extends WP_UnitTestCase {
 		$this->assertNotFalse( has_action( 'wp_ajax_tptn_dashboard_tab', array( $dashboard, 'get_dashboard_tab' ) ) );
 		$this->assertSame( 1, substr_count( $html, 'data-tptn-loaded="1"' ) );
 		$this->assertSame( $tab_count - 1, substr_count( $html, 'data-tptn-loaded="0"' ) );
+		$this->assertSame( $tab_count, substr_count( $html, 'tptn-dashboard-tab-content' ) );
+		$this->assertSame( $tab_count, substr_count( $html, 'View all popular posts' ) );
 	}
 
 	/**
-	 * Preserve the existing inclusive date ranges for the historical tabs.
+	 * Keep the historical tab labels aligned with their inclusive date ranges.
 	 */
-	public function test_dashboard_preserves_historical_tab_date_ranges() {
+	public function test_dashboard_historical_tab_date_ranges_match_labels() {
 		$tabs = ( new \WebberZone\Top_Ten\Admin\Dashboard() )->get_tabs();
 
-		$this->assertSame( gmdate( 'd M Y', strtotime( '-1 week' ) ), $tabs['lastweek']['from_date'] );
-		$this->assertSame( gmdate( 'd M Y', strtotime( '-30 days' ) ), $tabs['lastmonth']['from_date'] );
+		$this->assertSame( gmdate( 'd M Y', strtotime( '-6 days' ) ), $tabs['lastweek']['from_date'] );
+		$this->assertSame( gmdate( 'd M Y', strtotime( '-13 days' ) ), $tabs['lastfortnight']['from_date'] );
+		$this->assertSame( gmdate( 'd M Y', strtotime( '-29 days' ) ), $tabs['lastmonth']['from_date'] );
 	}
 
 	/**
