@@ -11,6 +11,8 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Release Notes
 
+- `readme.txt` is the shared release changelog for the Top 10 Free and Pro pair. Maintain one logical changelog in the Pro site copy; do not independently author separate Free and Pro changelogs.
+- When the site copy is authoritative, sync it to the GitHub Pro checkout with `dev-tools/deploy-plugin.sh --pull --file=readme.txt --site network top-10-pro`, then use `sync-pro-to-free.sh` when preparing the Free checkout. Release-only version fields may differ temporarily for beta packaging.
 - In `readme.txt`, prefix any Pro-only changelog bullet with `[Pro]`
 
 ## Links
