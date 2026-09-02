@@ -188,7 +188,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Bot views being recorded from cached pages, and views being recorded for browser prefetches, prerenders, or direct navigations to tracker URLs.
 	* Tracker scripts not running when loaded asynchronously after `DOMContentLoaded` has fired.
 	* [Pro] Daily counts in the `wp top10 popular` command not respecting the selected custom date range.
-	* Slow network admin requests on large multisite networks by caching table checks, optimizing network popular-post queries, and caching network dashboard widgets.
+	* Slow network admin requests on large multisite networks by caching table checks, using one metadata query and estimated table statistics, optimizing network popular-post and dashboard queries, and lazy-loading historical tabs.
 
 = 4.4.4 =
 

@@ -50,6 +50,102 @@ class TopTenTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Use one exact metadata query for all required tables and preserve cached checks.
+	 */
+	public function test_table_status_uses_bulk_metadata_query() {
+		global $wpdb;
+
+		\WebberZone\Top_Ten\Admin\Activator::create_tables();
+		\WebberZone\Top_Ten\Database::clear_table_installation_cache();
+
+		$queries  = array();
+		$listener = function ( $query ) use ( &$queries ) {
+			$queries[] = $query;
+			return $query;
+		};
+		add_filter( 'query', $listener );
+
+		try {
+			$statuses = \WebberZone\Top_Ten\Database::get_table_installation_status( true );
+		} finally {
+			remove_filter( 'query', $listener );
+		}
+
+		$metadata_queries = array_filter(
+			$queries,
+			function ( $query ) {
+				return false !== stripos( $query, 'information_schema.TABLES' ) || false !== stripos( $query, 'sqlite_master' );
+			}
+		);
+		$this->assertCount( 1, $metadata_queries );
+		$this->assertStringContainsString( 'IN (', reset( $metadata_queries ) );
+		$this->assertCount( 4, $statuses );
+		$this->assertNotContains( false, $statuses );
+
+		$queries  = array();
+		add_filter( 'query', $listener );
+		try {
+			\WebberZone\Top_Ten\Database::get_table_installation_status();
+		} finally {
+			remove_filter( 'query', $listener );
+		}
+		$metadata_queries = array_filter(
+			$queries,
+			function ( $query ) {
+				return false !== stripos( $query, 'information_schema.TABLES' ) || false !== stripos( $query, 'sqlite_master' );
+			}
+		);
+		$this->assertCount( 0, $metadata_queries );
+
+		$queries  = array();
+		$missing_table = $wpdb->prefix . 'top_ten_missing_for_test';
+		add_filter( 'query', $listener );
+		try {
+			$missing = \WebberZone\Top_Ten\Database::is_table_installed( $missing_table, true );
+		} finally {
+			remove_filter( 'query', $listener );
+			\WebberZone\Top_Ten\Database::clear_table_installation_cache();
+		}
+		$metadata_queries = array_filter(
+			$queries,
+			function ( $query ) {
+				return false !== stripos( $query, 'information_schema.TABLES' ) || false !== stripos( $query, 'sqlite_master' );
+			}
+		);
+		$this->assertFalse( $missing );
+		$this->assertCount( 1, $metadata_queries );
+	}
+
+	/**
+	 * Use estimated metadata for the Tools page without counting or analysing tables.
+	 */
+	public function test_table_statistics_use_estimated_metadata() {
+		\WebberZone\Top_Ten\Admin\Activator::create_tables();
+		\WebberZone\Top_Ten\Database::clear_table_installation_cache();
+		\WebberZone\Top_Ten\Database::clear_table_statistics_cache();
+
+		$queries  = array();
+		$listener = function ( $query ) use ( &$queries ) {
+			$queries[] = $query;
+			return $query;
+		};
+		add_filter( 'query', $listener );
+		try {
+			$stats = \WebberZone\Top_Ten\Database::get_table_statistics();
+		} finally {
+			remove_filter( 'query', $listener );
+			\WebberZone\Top_Ten\Database::clear_table_installation_cache();
+		}
+
+		$this->assertArrayHasKey( 'top_ten_daily', $stats );
+		$this->assertTrue( $stats['top_ten_daily']['estimated'] );
+		foreach ( $queries as $query ) {
+			$this->assertStringNotContainsString( 'ANALYZE TABLE', $query );
+			$this->assertStringNotContainsString( 'COUNT(*) FROM', $query );
+		}
+	}
+
+	/**
 	 * Roll up old daily rows without changing counts or recent hourly rows.
 	 */
 	public function test_rollup_daily_preserves_counts_and_blog_scope() {
@@ -247,6 +343,122 @@ class TopTenTest extends WP_UnitTestCase {
 				$_REQUEST['order'] = $old_order;
 			}
 		}
+	}
+
+	/**
+	 * Use sargable half-open date ranges for dashboard totals, lists and charts.
+	 */
+	public function test_dashboard_queries_use_half_open_date_ranges() {
+		global $wpdb;
+
+		\WebberZone\Top_Ten\Admin\Activator::create_tables();
+
+		$post_id       = $this->factory->post->create( array( 'post_status' => 'publish' ) );
+		$blog_id       = get_current_blog_id();
+		$other_blog_id = $blog_id + 1000;
+		$daily_table   = \WebberZone\Top_Ten\Database::get_table( true );
+		$rows          = array(
+			array( 7, '2026-01-01 23:00:00', $blog_id ),
+			array( 11, '2026-01-02 00:00:00', $blog_id ),
+			array( 13, '2026-01-02 23:00:00', $blog_id ),
+			array( 19, '2026-01-02 12:00:00', $other_blog_id ),
+			array( 17, '2026-01-03 00:00:00', $blog_id ),
+		);
+
+		foreach ( $rows as $row ) {
+			$wpdb->insert(
+				$daily_table,
+				array(
+					'postnumber' => $post_id,
+					'cntaccess'  => $row[0],
+					'dp_date'    => $row[1],
+					'blog_id'    => $row[2],
+				),
+				array( '%d', '%d', '%s', '%d' )
+			);
+		}
+
+		$queries  = array();
+		$listener = function ( $query ) use ( &$queries ) {
+			if ( false !== stripos( $query, 'top_ten_daily' ) ) {
+				$queries[] = $query;
+			}
+			return $query;
+		};
+		add_filter( 'query', $listener );
+
+		try {
+			$dashboard       = new \WebberZone\Top_Ten\Admin\Dashboard();
+			$single_args     = array(
+				'daily'     => true,
+				'from_date' => '01 Jan 2026',
+				'to_date'   => '02 Jan 2026',
+				'blog_id'   => $blog_id,
+				'network'   => false,
+			);
+			$single_results  = $dashboard->get_popular_posts( $single_args );
+			$single_total    = $dashboard->get_period_total_visits( $single_args );
+			$network_args    = $single_args;
+			$network_args['network'] = true;
+			$network_results = $dashboard->get_popular_posts( $network_args );
+			$network_total   = $dashboard->get_period_total_visits( $network_args );
+			$chart           = $dashboard->fetch_visits_by_date( '2026-01-01', '2026-01-02', true );
+		} finally {
+			remove_filter( 'query', $listener );
+			$wpdb->delete( $daily_table, array( 'postnumber' => $post_id ), array( '%d' ) );
+		}
+
+		$this->assertSame( 31, isset( $single_results[0]['visits'] ) ? (int) $single_results[0]['visits'] : null );
+		$this->assertSame( 31, $single_total );
+		$this->assertCount( 2, $network_results );
+		$this->assertSame( 31, (int) $network_results[0]['visits'] );
+		$this->assertSame( 19, (int) $network_results[1]['visits'] );
+		$this->assertSame( 50, $network_total );
+
+		$chart_totals = array();
+		foreach ( $chart as $row ) {
+			$chart_totals[ $row->date ] = (int) $row->visits;
+		}
+		$this->assertSame( 7, $chart_totals['2026-01-01'] ?? null );
+		$this->assertSame( 43, $chart_totals['2026-01-02'] ?? null );
+		$this->assertArrayNotHasKey( '2026-01-03', $chart_totals );
+
+		foreach ( $queries as $query ) {
+			$this->assertStringNotContainsString( 'WHERE DATE(dp_date)', $query );
+			$this->assertStringNotContainsString( 'DATE(dp_date) >=', $query );
+			$this->assertStringNotContainsString( 'DATE(dp_date) <=', $query );
+		}
+	}
+
+	/**
+	 * Render only the first historical tab and register the lazy-load endpoint.
+	 */
+	public function test_dashboard_lazy_loads_historical_tabs() {
+		$dashboard = new \WebberZone\Top_Ten\Admin\Dashboard();
+		$tabs     = $dashboard->get_tabs();
+		$tab_count = 0;
+		foreach ( $tabs as $tab ) {
+			if ( empty( $tab['hide'] ) ) {
+				++$tab_count;
+			}
+		}
+		ob_start();
+		$dashboard->render_page();
+		$html = ob_get_clean();
+
+		$this->assertNotFalse( has_action( 'wp_ajax_tptn_dashboard_tab', array( $dashboard, 'get_dashboard_tab' ) ) );
+		$this->assertSame( 1, substr_count( $html, 'data-tptn-loaded="1"' ) );
+		$this->assertSame( $tab_count - 1, substr_count( $html, 'data-tptn-loaded="0"' ) );
+	}
+
+	/**
+	 * Preserve the existing inclusive date ranges for the historical tabs.
+	 */
+	public function test_dashboard_preserves_historical_tab_date_ranges() {
+		$tabs = ( new \WebberZone\Top_Ten\Admin\Dashboard() )->get_tabs();
+
+		$this->assertSame( gmdate( 'd M Y', strtotime( '-1 week' ) ), $tabs['lastweek']['from_date'] );
+		$this->assertSame( gmdate( 'd M Y', strtotime( '-30 days' ) ), $tabs['lastmonth']['from_date'] );
 	}
 
 	/**

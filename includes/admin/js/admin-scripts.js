@@ -236,6 +236,39 @@ jQuery(document).ready(function ($) {
 
 	$(function () {
 		var $tabsContainer = $("#dashboard-historical-visits");
+		if (!$tabsContainer.length) {
+			return;
+		}
+
+		function loadDashboardTab($panel) {
+			if (!$panel.length || $panel.data('tptn-loaded') || $panel.data('tptn-loading')) {
+				return;
+			}
+
+			$panel.data('tptn-loading', true).attr('aria-busy', 'true');
+			$.post(
+				tptn_chart_data.tabs_url || ajaxurl,
+				{
+					action: 'tptn_dashboard_tab',
+					security: tptn_chart_data.security,
+					tab: $panel.data('tptn-tab'),
+					network: parseInt($tabsContainer.data('tptn-network'), 10) || 0
+				},
+				function (response) {
+					if (response && response.success && response.data && typeof response.data.html !== 'undefined') {
+						$panel.html(response.data.html).data('tptn-loaded', true);
+					} else {
+						$panel.html('<p>' + tptn_chart_data.tab_error + '</p>');
+					}
+				},
+				'json'
+			).fail(function () {
+				$panel.html('<p>' + tptn_chart_data.tab_error + '</p>');
+			}).always(function () {
+				$panel.data('tptn-loading', false).removeAttr('aria-busy');
+			});
+		}
+
 		$tabsContainer.tabs({
 			create: function (event, ui) {
 				$(ui.tab.find("a")).addClass("nav-tab-active");
@@ -243,6 +276,7 @@ jQuery(document).ready(function ($) {
 			activate: function (event, ui) {
 				$(ui.oldTab.find("a")).removeClass("nav-tab-active");
 				$(ui.newTab.find("a")).addClass("nav-tab-active");
+				loadDashboardTab(ui.newPanel);
 			}
 		});
 
