@@ -255,6 +255,8 @@ class Tools_Page {
 					</div>
 				</div>
 
+				<?php do_action( 'tptn_tools_page_actions', $network_wide ); ?>
+
 				<div class="postbox">
 					<h2><span><?php esc_html_e( 'Fix Cron Schedules', 'top-10' ); ?></span></h2>
 					<div class="inside">

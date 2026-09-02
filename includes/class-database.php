@@ -180,10 +180,6 @@ class Database {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $sql );
 
-		if ( false === $result ) {
-			self::clear_table_installation_cache();
-		}
-
 		// Trigger action to clear cache.
 		if ( false !== $result ) {
 			do_action( 'tptn_set_count', $post_id, $count, $blog_id, $daily );
