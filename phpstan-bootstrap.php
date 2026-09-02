@@ -267,10 +267,30 @@ namespace Bricks {
 	}
 }
 
-// When running on the free plugin (includes/pro/ removed by sync), define a Pro\Pro stub
-// so PHPStan can resolve the ?Pro\Pro $pro property declaration in class-main.php.
+// When running on the free plugin (includes/pro/ removed by sync), define the site-wide
+// database stub used by shared admin classes.
 namespace WebberZone\Top_Ten\Pro {
 	if ( ! is_dir( dirname( __FILE__ ) . '/includes/pro' ) ) {
-		class Pro {} // phpcs:ignore
+		class Sitewide_Database {
+			public const CONTEXT_IDS = array( 'front_page' => PHP_INT_MAX );
+
+			public static function is_available(): bool {
+				return false;
+			}
+
+			public static function get_context_key( $post_id, $blog_id = null ): string {
+				unset( $post_id, $blog_id );
+				return '';
+			}
+
+			public static function get_context_label( $context_key ): string {
+				unset( $context_key );
+				return '';
+			}
+
+			public static function get_context_ids(): array {
+				return array();
+			}
+		}
 	}
 }
