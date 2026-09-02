@@ -1,20 +1,26 @@
 jQuery(document).ready(function ($) {
 
 	$('button[name="tptn_cache_clear"]').on('click', function () {
-		if (confirm(top_ten_admin_data.strings.confirm_message)) {
-			var $button = $(this);
+		var $button = $(this);
+		var networkWide = '1' === $button.attr('data-network-wide');
+		var confirmMessage = networkWide && top_ten_admin_data.strings.network_confirm_message
+			? top_ten_admin_data.strings.network_confirm_message
+			: top_ten_admin_data.strings.confirm_message;
+
+		if (confirm(confirmMessage)) {
 			var originalText = $button.text();
 			var clearingText = top_ten_admin_data.strings.clearing_text ? top_ten_admin_data.strings.clearing_text : 'Clearing...';
 			$button.prop('disabled', true).text(clearingText).append(' <span class="spinner is-active"></span>');
-			clearCache($button, originalText);
+			clearCache($button, originalText, networkWide);
 		}
 	});
 
 	// Function to clear the cache.
-	function clearCache($button, originalText) {
+	function clearCache($button, originalText, networkWide) {
 		$.post(ajaxurl, {
 			action: 'tptn_clear_cache',
-			security: top_ten_admin_data.security
+			security: top_ten_admin_data.security,
+			network_wide: networkWide ? '1' : '0'
 		}, function (response) {
 			if (response.success) {
 				alert(response.data.message);
