@@ -362,6 +362,24 @@ class Database {
 			}
 		}
 
+		// Temporary tables are not exposed through information_schema or sqlite_master.
+		foreach ( array_diff( $tables, array_keys( $metadata ) ) as $table_name ) {
+			$query           = $wpdb->prepare( 'SELECT 1 FROM %i LIMIT 0', $table_name );
+			$suppress_errors = $wpdb->suppress_errors();
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+			$table_exists = false !== $wpdb->query( $query );
+			$wpdb->suppress_errors( $suppress_errors );
+
+			if ( $table_exists ) {
+				$metadata[ $table_name ] = array(
+					'table_rows'   => 0,
+					'data_length'  => 0,
+					'index_length' => 0,
+				);
+			}
+		}
+
 		self::$table_metadata_cache[ $cache_key ] = $metadata;
 
 		return $metadata;
