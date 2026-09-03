@@ -76,7 +76,6 @@ jobs:
         uses: ramsey/composer-install@v4
         with:
           dependency-versions: highest
-          composer-options: --ignore-platform-reqs
 
       - name: Set up WordPress test environment
         run: |
