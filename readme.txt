@@ -182,13 +182,16 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Added a **Reduce Daily Table Size** tool to combine older hourly records.
 	* [Pro] Added the `wp top10 db rollup` command for CLI and multisite use.
 
+* Performance:
+	* Reduced large multisite admin overhead by replacing repeated table-existence queries and exact Tools-page statistics with cached metadata, direct WPP table probes, and estimated row counts.
+	* Improved dashboard performance with index-friendly `dp_date` ranges, optimized network popular-post queries, and on-demand loading of historical tabs.
+
 * Fixed:
 	* View tracking being lost during quick navigation or browser back-button restores.
 	* View counts being recorded for prerendered or initially hidden pages.
 	* Bot views being recorded from cached pages, and views being recorded for browser prefetches, prerenders, or direct navigations to tracker URLs.
 	* Tracker scripts not running when loaded asynchronously after `DOMContentLoaded` has fired.
 	* [Pro] Daily counts in the `wp top10 popular` command not respecting the selected custom date range.
-	* Slow network admin requests on large multisite networks by caching table checks, using one metadata query and estimated table statistics, optimizing network popular-post and dashboard queries, and lazy-loading historical tabs.
 	* Hardened settings sanitization for users without the `unfiltered_html` capability.
 
 = 4.4.4 =

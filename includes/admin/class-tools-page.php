@@ -687,7 +687,7 @@ class Tools_Page {
 
 		$installed_label     = '<span style="color: #006400;">' . __( 'Installed', 'top-10' ) . '</span>';
 		$not_installed_label = '<span style="color: #8B0000;">' . __( 'Not Installed', 'top-10' ) . '</span>';
-		$table_statuses      = Database::get_table_installation_status( true );
+		$table_statuses      = Database::get_table_installation_status();
 
 		foreach ( $tables as $key => $table_name ) {
 			$statuses[ $key ] = ! empty( $table_statuses[ $table_name ] ) ? $installed_label : $not_installed_label;
