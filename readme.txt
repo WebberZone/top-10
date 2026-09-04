@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.0
+Stable tag: 4.5.0-beta3
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -174,7 +174,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.5.0 =
+= 4.5.0-beta3 =
 
 * Features:
 	* [Pro] **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
