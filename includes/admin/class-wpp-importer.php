@@ -293,14 +293,31 @@ class WPP_Importer {
 	private function wpp_tables_exist(): bool {
 		global $wpdb;
 
-		$tables_exist = true;
+		$tables       = array(
+			$wpdb->prefix . 'popularpostsdata',
+			$wpdb->prefix . 'popularpostssummary',
+		);
+		$key          = implode( '|', $tables );
+		static $cache = array();
 
-		$data_table    = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}popularpostsdata'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$summary_table = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}popularpostssummary'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-
-		if ( ! $data_table || ! $summary_table ) {
-			$tables_exist = false;
+		if ( array_key_exists( $key, $cache ) ) {
+			return $cache[ $key ];
 		}
+
+		$tables_exist = true;
+		foreach ( $tables as $table ) {
+			$query           = $wpdb->prepare( 'SELECT 1 FROM %i LIMIT 0', $table );
+			$suppress_errors = $wpdb->suppress_errors();
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+			if ( false === $wpdb->query( $query ) ) {
+				$tables_exist = false;
+			}
+
+			$wpdb->suppress_errors( $suppress_errors );
+		}
+
+		$cache[ $key ] = $tables_exist;
 
 		return $tables_exist;
 	}

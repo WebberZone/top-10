@@ -278,6 +278,10 @@ class Database {
 		$stats     = wp_cache_get( $cache_key, 'top-10' );
 
 		if ( false === $stats ) {
+			$stats = is_multisite() ? get_site_transient( $cache_key ) : get_transient( $cache_key );
+		}
+
+		if ( false === $stats ) {
 			$tables   = array(
 				'top_ten'               => self::get_table( false ),
 				'top_ten_daily'         => self::get_table( true ),
@@ -297,9 +301,15 @@ class Database {
 				}
 			}
 
-			// Cache for 5 minutes.
-			wp_cache_set( $cache_key, $stats, 'top-10', 300 );
+			// Cache for 5 minutes. Network-wide table metadata is shared by all sites.
+			if ( is_multisite() ) {
+				set_site_transient( $cache_key, $stats, 5 * MINUTE_IN_SECONDS );
+			} else {
+				set_transient( $cache_key, $stats, 5 * MINUTE_IN_SECONDS );
+			}
 		}
+
+		wp_cache_set( $cache_key, $stats, 'top-10', 5 * MINUTE_IN_SECONDS );
 
 		/**
 		 * Filter the table statistics.
@@ -430,6 +440,12 @@ class Database {
 	 */
 	public static function clear_table_statistics_cache() {
 		wp_cache_delete( 'tptn_table_statistics', 'top-10' );
+
+		if ( is_multisite() ) {
+			delete_site_transient( 'tptn_table_statistics' );
+		} else {
+			delete_transient( 'tptn_table_statistics' );
+		}
 	}
 
 	/**
