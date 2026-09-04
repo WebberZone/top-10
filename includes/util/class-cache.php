@@ -356,8 +356,8 @@ class Cache {
 			}
 		}
 
-		// Generate cache key.
-		return md5( wp_json_encode( $args ) );
+		// Keep generated keys discoverable by get_widget_keys() and delete().
+		return 'tptn_cache_' . md5( wp_json_encode( $args ) );
 	}
 
 	/**
