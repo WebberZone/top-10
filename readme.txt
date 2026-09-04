@@ -192,6 +192,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Bot views being recorded from cached pages, and views being recorded for browser prefetches, prerenders, or direct navigations to tracker URLs.
 	* Tracker scripts not running when loaded asynchronously after `DOMContentLoaded` has fired.
 	* [Pro] Daily counts in the `wp top10 popular` command not respecting the selected custom date range.
+	* Generated output cache keys not being discoverable by the Clear Cache tools and WP-CLI cache flush command.
 	* Hardened settings sanitization for users without the `unfiltered_html` capability.
 
 = 4.4.4 =

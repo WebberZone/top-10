@@ -18,6 +18,23 @@ class TopTenTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Keep generated transient keys discoverable by the cache clear routine.
+	 */
+	public function test_cache_keys_use_the_tptn_namespace() {
+		$key = \WebberZone\Top_Ten\Util\Cache::get_key(
+			array(
+				'cache_regression' => wp_generate_uuid4(),
+			)
+		);
+
+		$this->assertStringStartsWith( 'tptn_cache_', $key );
+		set_transient( $key, 'cache test', MINUTE_IN_SECONDS );
+		$this->assertContains( $key, \WebberZone\Top_Ten\Util\Cache::get_widget_keys() );
+		$this->assertSame( 1, \WebberZone\Top_Ten\Util\Cache::delete( array( $key ) ) );
+		$this->assertFalse( get_transient( $key ) );
+	}
+
+	/**
 	 * Ensure every 4.5.0 optional feature has a settings toggle.
 	 */
 	public function test_4_5_features_have_settings_toggles() {
