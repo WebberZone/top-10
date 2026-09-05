@@ -35,6 +35,8 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | RSS / Atom feed view counting | ❌ | ✅ |
 | MySQL `MAX_EXECUTION_TIME` query guard | ❌ | ✅ |
 | Configurable data retention period | ❌ | ✅ |
+| Site-wide tracking (front page, archives, search) | ❌ | ✅ |
+| Reduce Daily Table Size tool (admin + WP-CLI) | ❌ | ✅ |
 | **Display & Blocks** |  |  |
 | Pro Query Loop block | ❌ | ✅ |
 | Enhanced Featured Image block | ❌ | ✅ |
@@ -46,6 +48,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Restrict popular posts to specific taxonomy terms | ❌ | ✅ |
 | Per-post category inclusion (metabox) | ❌ | ✅ |
 | Exclude nested/parent categories when excluding a term | ❌ | ✅ |
+| Page builder elements (Elementor, Bricks, WPBakery) | ❌ | ✅ |
 | **Admin & Dashboard** |  |  |
 | Statistics dashboard (daily and total) | ✅ | ✅ |
 | Admin columns with view counts | ✅ | ✅ |

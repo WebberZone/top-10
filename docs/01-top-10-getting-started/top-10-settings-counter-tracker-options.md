@@ -79,6 +79,10 @@ All tracker types share the same underlying recording mechanism: each page view 
 
 Funnel tracking buffers views in a staging table that is merged into the count tables by a background job every few minutes and is recommended for most sites. Switch to Legacy tracking if view counts are not updating on your site, e.g. when WP-Cron is disabled or unreliable. Legacy tracking does not populate the visits log table. The Fast and High-traffic trackers respect this setting; regenerate the High-traffic config file after changing it.
 
+### Track site-wide views *(Pro only)*
+
+Tracks views for the front page, posts page, archives, and search results, in addition to individual posts and pages. Requires the **Site-wide tracking** feature to be enabled on the Features tab. Each context (front page, search, category, tag, author, and so on) is counted using a reserved ID that is the same on every site; counts still remain separate per site on a multisite network.
+
 ### Load tracker on all pages
 
 This will load the tracker js on all pages. Helpful if you are running minification/concatenation plugins.
