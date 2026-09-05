@@ -256,6 +256,19 @@ wp top10 db recreate-tables --force
 
 `--table` accepts `overall`, `daily`, `funnel`, `log`, or `all` (default).
 
+### `rollup` — combine old hourly records into daily totals
+
+Combines daily-table rows older than the given number of days into a single row per post, reducing table size without changing overall view counts. Same operation as the **Reduce Daily Table Size** tool on the Tools admin screen. Requires the **Daily table size reduction** feature to be enabled in Top 10 settings.
+
+```bash
+wp top10 db rollup --dry-run
+wp top10 db rollup --before=30 --dry-run
+wp top10 db rollup --before=14 --force
+wp top10 db rollup --network --dry-run
+```
+
+`--before=<days>` defaults to `14`. Requires `--force` or `--dry-run`.
+
 ### `truncate` — delete all rows from a table
 
 **Destructive.** Requires `--force` or `--dry-run`.

@@ -24,7 +24,7 @@ Displays the current state of all four Top 10 database tables along with the ins
 | `wp_top_ten_visits_funnel` | Hot buffer — incoming visits waiting to be aggregated into the count tables |
 | `wp_top_ten_visits_log` | Cold archive — every individual visit, retained for the configured number of days |
 
-Each table row shows whether the table is installed, the number of entries, and its estimated size. If a required table is missing a **Recreate tables** link appears to repair it.
+Each table row shows whether the table is installed, its estimated number of entries, and its estimated size. If a required table is missing a **Recreate tables** link appears to repair it. On a multisite network, these figures are network-wide totals across all sites and are labeled accordingly.
 
 ### Clear Cache
 
@@ -47,6 +47,15 @@ Deletes and reinitializes the primary key in the database tables. If you encount
 ### Reset Database
 
 Resets the Top 10 tables. For multisite installs, it resets the popular posts for the current site. On the Network Admin screen, it resets the popular posts across all sites. **This action cannot be reversed, so ensure your database is backed up before proceeding.**
+
+### Reduce Daily Table Size *(Pro only)*
+
+Combines hourly records in the daily table that are older than a chosen number of days (default 14) into a single daily record per post. This reduces the size of `wp_top_ten_daily` without changing overall view counts or recent hourly data. On the Network Admin Tools screen, the button reads **Reduce Daily Table Size Across Network** and runs for every active site.
+
+This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](../02-top-10-developer/top-10-cli-commands/).
+
+> [!NOTE]
+> ⓘ This tool requires the **Daily table size reduction** feature to be enabled on the Features tab of Top 10 settings (on by default).
 
 ### Recreate Database Tables
 
