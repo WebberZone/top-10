@@ -52,7 +52,7 @@ Resets the Top 10 tables. For multisite installs, it resets the popular posts fo
 
 Combines hourly records in the daily table that are older than a chosen number of days (default 14) into a single daily record per post. This reduces the size of `wp_top_ten_daily` without changing overall view counts or recent hourly data. On the Network Admin Tools screen, the button reads **Reduce Daily Table Size Across Network** and runs for every active site.
 
-This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](../02-top-10-developer/top-10-cli-commands/).
+This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](../03-top-10-developer-docs/top-10-cli-commands/).
 
 > [!NOTE]
 > ⓘ This tool requires the **Daily table size reduction** feature to be enabled on the Features tab of Top 10 settings (on by default).
