@@ -37,9 +37,21 @@ Extends the core Featured Image block with Top 10 options.
 
 Registers the Popular Posts Pro block for the block editor.
 
+## Page builder integrations *(Pro only)*
+
+Registers the Popular Posts (Top 10) elements for Elementor, Bricks Builder, and WPBakery Page Builder. See [Page builder integrations](https://webberzone.com/support/knowledgebase/page-builder-integrations/).
+
 ## Fast and High-traffic trackers *(Pro only)*
 
 Adds the Fast tracker and High-traffic tracker options to the [Tracker type setting](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/). If you disable this while one of these trackers is in use, the tracker type resets to the default.
+
+## Site-wide tracking *(Pro only)*
+
+Enables the site-wide tracking feature. With this on, turn on **Track site-wide views** under [Counter/Tracker](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/) to count views of the front page, posts page, archives, and searches.
+
+## Daily table size reduction *(Pro only)*
+
+Enables the **Reduce Daily Table Size** tool on the [Tools screen](https://webberzone.com/support/knowledgebase/top-10-tools-admin-screen/) and the `wp top10 db rollup` command, which combine older hourly records into one daily record per post.
 
 ## Pro dashboard widgets *(Pro only)*
 

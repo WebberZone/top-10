@@ -179,7 +179,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 * Features:
 	* [Pro] **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
 	* [Pro] Optional site-wide tracking for front pages, posts pages, archives, and searches.
-	* Added a **Reduce Daily Table Size** tool to combine older hourly records.
+	* [Pro] Added a **Reduce Daily Table Size** tool to combine older hourly records.
 	* [Pro] Added the `wp top10 db rollup` command for CLI and multisite use.
 
 * Performance:
