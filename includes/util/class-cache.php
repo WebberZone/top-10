@@ -386,6 +386,13 @@ class Cache {
 			}
 		}
 
+		/**
+		 * Filters the list of Top 10 cache keys found in the options table.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param string[] $keys Cache keys without the transient prefix.
+		 */
 		return apply_filters( 'tptn_cache_get_widget_keys', $keys );
 	}
 }

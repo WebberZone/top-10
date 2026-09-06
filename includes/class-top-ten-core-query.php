@@ -897,7 +897,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		// Support caching to speed up retrieval.
 		if ( $this->should_cache() && ! $this->in_cache ) {
-			/** This filter is defined in display-posts.php */
+			/** This filter is documented in includes/frontend/class-display.php */
 			$cache_time = apply_filters( 'tptn_cache_time', $this->query_args['cache_time'], $this->query_args );
 			$cache_name = $this->cache_name;
 			$post_ids   = wp_list_pluck( $query->posts, 'ID' );

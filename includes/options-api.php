@@ -108,6 +108,14 @@ function tptn_update_option( $key = '', $value = false ) {
 	$options = get_option( 'tptn_settings' );
 
 	// Let's let devs alter that value coming in.
+	/**
+	 * Filters a setting value before it is written to the options table.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param mixed  $value The value being saved.
+	 * @param string $key   The settings key being updated.
+	 */
 	$value = apply_filters( 'tptn_update_option', $value, $key );
 
 	// Next let's try to update the value.

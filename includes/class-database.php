@@ -122,6 +122,19 @@ class Database {
 	 * @return int Site-wide count.
 	 */
 	public static function get_sitewide_count( $context, $blog_id = null, $daily = false, $date_range = array() ) {
+		/**
+		 * Filters the view count for a site-wide context.
+		 *
+		 * Site-wide contexts are a Pro feature; the free plugin always returns 0.
+		 *
+		 * @since 4.5.0
+		 *
+		 * @param int      $count      The site-wide count.
+		 * @param string   $context    Site-wide context key.
+		 * @param int|null $blog_id    Blog ID, or null for the current blog.
+		 * @param bool     $daily      Whether a daily count was requested.
+		 * @param array    $date_range Date range used for daily counts.
+		 */
 		return (int) apply_filters( 'tptn_get_sitewide_count', 0, $context, $blog_id, $daily, $date_range );
 	}
 
@@ -189,6 +202,16 @@ class Database {
 
 		// Trigger action to clear cache.
 		if ( false !== $result ) {
+			/**
+			 * Fires after a post's view count has been written to the database.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param int  $post_id Post ID.
+			 * @param int  $count   The count that was stored.
+			 * @param int  $blog_id Blog ID.
+			 * @param bool $daily   Whether the daily table was updated.
+			 */
 			do_action( 'tptn_set_count', $post_id, $count, $blog_id, $daily );
 		}
 
@@ -260,6 +283,13 @@ class Database {
 
 		// Trigger action to clear cache.
 		if ( false !== $result ) {
+			/**
+			 * Fires after view counts have been deleted from the database.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param array $args Arguments describing which counts were deleted.
+			 */
 			do_action( 'tptn_delete_counts', $args );
 		}
 
@@ -1108,6 +1138,18 @@ class Database {
 			}
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
+			/**
+			 * Fires after view counts change, so caches can be invalidated.
+			 *
+			 * Bulk operations such as funnel aggregation and the daily rollup pass zeros,
+			 * signalling that many posts changed rather than one specific post.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param int  $post_id Post ID, or 0 after a bulk update.
+			 * @param int  $blog_id Blog ID, or 0 after a bulk update.
+			 * @param bool $daily   Whether the daily table was updated.
+			 */
 			do_action( 'tptn_count_updated', 0, 0, false );
 
 			if ( $was_capped && ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
@@ -1577,6 +1619,7 @@ class Database {
 		}
 
 		if ( $dates_processed > 0 ) {
+			/** This action is documented in includes/class-database.php */
 			do_action( 'tptn_count_updated', 0, 0, false );
 		}
 
@@ -1672,7 +1715,14 @@ class Database {
 	 */
 	public static function count_orphan_counts( string $table_name ): int {
 		global $wpdb;
-		$blog_id       = get_current_blog_id();
+		$blog_id = get_current_blog_id();
+		/**
+		 * Filters the reserved post IDs used to store site-wide view counts.
+		 *
+		 * @since 4.5.0
+		 *
+		 * @param int[] $context_ids Reserved context IDs. Default empty array.
+		 */
 		$context_ids   = array_map( 'intval', (array) apply_filters( 'tptn_sitewide_context_ids', array() ) );
 		$context_where = '';
 		if ( $context_ids ) {
@@ -1704,7 +1754,8 @@ class Database {
 	 */
 	public static function delete_orphan_counts( string $table_name, int $batch_size = 1000 ) {
 		global $wpdb;
-		$blog_id       = get_current_blog_id();
+		$blog_id = get_current_blog_id();
+		/** This filter is documented in includes/class-database.php */
 		$context_ids   = array_map( 'intval', (array) apply_filters( 'tptn_sitewide_context_ids', array() ) );
 		$context_where = '';
 		if ( $context_ids ) {

@@ -1180,6 +1180,7 @@ class Settings {
 				'desc'    => sprintf(
 				/* translators: 1: Constant holding number of days data is stored. */
 					esc_html__( 'Regularly cleaning the database can enhance performance, especially for high-traffic blogs. Enabling maintenance will automatically delete entries older than %s days from the daily tables.', 'top-10' ),
+					/** This filter is documented in includes/admin/class-cron.php */
 					'<strong>' . (int) apply_filters( 'tptn_maintenance_days', TOP_TEN_STORE_DATA ) . '</strong>'
 				),
 				'type'    => 'checkbox',

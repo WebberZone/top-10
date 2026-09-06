@@ -51,13 +51,7 @@ class Count_Widget extends \WP_Widget {
 		</p>
 
 		<?php
-			/**
-			 * Fires after Top 10 widget options.
-			 *
-			 * @since 2.0.0
-			 *
-			 * @param   array   $instance   Widget options array
-			 */
+			/** This action is documented in includes/frontend/widgets/class-posts-widget.php */
 			do_action( 'tptn_widget_options_after', $instance );
 		?>
 
@@ -78,13 +72,7 @@ class Count_Widget extends \WP_Widget {
 		$instance          = $old_instance;
 		$instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 
-		/**
-		 * Filters Update widget options array.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param   array   $instance   Widget options array
-		 */
+		/** This action is documented in includes/frontend/widgets/class-posts-widget.php */
 		return apply_filters( 'tptn_widget_options_update', $instance );
 	} //ending update
 

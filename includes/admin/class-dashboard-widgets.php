@@ -268,6 +268,13 @@ class Dashboard_Widgets {
 		$cache_key = '';
 		$cache_ttl = 0;
 		if ( $network && $widget ) {
+			/**
+			 * Filters how long the network dashboard widget output is cached.
+			 *
+			 * @since 4.5.0
+			 *
+			 * @param int $cache_ttl Cache lifetime in seconds. Default 15 minutes.
+			 */
 			$cache_ttl = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
 			$cache_key = 'tptn_network_dashboard_' . md5(
 				(string) wp_json_encode(

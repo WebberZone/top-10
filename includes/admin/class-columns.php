@@ -229,6 +229,14 @@ class Columns {
 
 		$clauses['orderby'] = "tptn_visits {$order}";
 
+		/**
+		 * Filters the query clauses used to sort the admin posts list by view count.
+		 *
+		 * @since 3.4.0-RC2
+		 *
+		 * @param array     $clauses  The query clauses, keyed by clause name.
+		 * @param \WP_Query $wp_query The WP_Query instance.
+		 */
 		return apply_filters( 'tptn_posts_clauses', $clauses, $wp_query );
 	}
 

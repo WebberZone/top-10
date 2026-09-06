@@ -102,7 +102,10 @@ class Statistics {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Top 10 Popular Posts', 'top-10' ); ?></h1>
-			<?php do_action( 'tptn_settings_page_header' ); ?>
+			<?php
+			/** This action is documented in includes/admin/class-dashboard.php */
+			do_action( 'tptn_settings_page_header' );
+			?>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">

@@ -130,6 +130,14 @@ class REST_API extends \WP_REST_Controller {
 			);
 		}
 
+		/**
+		 * Filters the result of the permissions check for the Top 10 REST endpoints.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param bool             $permission Whether the request is allowed.
+		 * @param \WP_REST_Request $request    The REST request object.
+		 */
 		return apply_filters( 'top_ten_rest_api_permissions_check', true, $request );
 	}
 
@@ -326,6 +334,13 @@ class REST_API extends \WP_REST_Controller {
 			),
 		);
 
+		/**
+		 * Filters the query parameters accepted by the popular posts REST endpoint.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array $args Collection parameters, keyed by parameter name.
+		 */
 		return apply_filters( 'top_ten_rest_api_get_items_params', $args );
 	}
 
@@ -365,6 +380,13 @@ class REST_API extends \WP_REST_Controller {
 			),
 		);
 
+		/**
+		 * Filters the query parameters accepted by the tracker REST endpoint.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array $args Collection parameters, keyed by parameter name.
+		 */
 		return apply_filters( 'top_ten_rest_api_get_tracker_params', $args );
 	}
 
@@ -404,6 +426,13 @@ class REST_API extends \WP_REST_Controller {
 			),
 		);
 
+		/**
+		 * Filters the query parameters accepted by the counter REST endpoint.
+		 *
+		 * @since 3.4.0-RC1
+		 *
+		 * @param array $args Collection parameters, keyed by parameter name.
+		 */
 		return apply_filters( 'top_ten_rest_api_get_counter_params', $args );
 	}
 

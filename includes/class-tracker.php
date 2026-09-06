@@ -44,8 +44,15 @@ class Tracker {
 	public static function enqueue_scripts() {
 		global $post, $ajax_tptn_tracker;
 
-		$is_singular          = is_singular();
-		$tracker_all_pages    = (bool) \tptn_get_option( 'tracker_all_pages' );
+		$is_singular       = is_singular();
+		$tracker_all_pages = (bool) \tptn_get_option( 'tracker_all_pages' );
+		/**
+		 * Filters the site-wide context key tracked for the current request.
+		 *
+		 * @since 4.5.0
+		 *
+		 * @param string $sitewide_context Context key, or an empty string when the request is not tracked site-wide.
+		 */
 		$sitewide_context     = (string) apply_filters( 'tptn_tracker_sitewide_context', '' );
 		$has_sitewide_context = '' !== $sitewide_context;
 
@@ -460,6 +467,17 @@ class Tracker {
 	 * @return string Response on database update.
 	 */
 	public static function update_sitewide_count( $context, $blog_id, $activate_counter, $source = 0 ) {
+		/**
+		 * Filters the response returned after recording a site-wide view.
+		 *
+		 * @since 4.5.0
+		 *
+		 * @param string $response         Response text.
+		 * @param string $context          Site-wide context key.
+		 * @param int    $blog_id          Blog ID.
+		 * @param int    $activate_counter Which counters are active.
+		 * @param int    $source           Traffic source.
+		 */
 		return (string) apply_filters( 'tptn_tracker_sitewide_count', '', $context, $blog_id, $activate_counter, $source );
 	}
 }

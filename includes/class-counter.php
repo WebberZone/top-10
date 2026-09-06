@@ -237,6 +237,13 @@ class Counter {
 			}
 		}
 
+		/**
+		 * Filters the formatted view count displayed for a post.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string $count_display The formatted count text.
+		 */
 		return apply_filters( 'tptn_post_count', ( $is_zero_total_count && ! $is_singular ) ? $count_disp_form_zero : $count_disp_form );
 	}
 

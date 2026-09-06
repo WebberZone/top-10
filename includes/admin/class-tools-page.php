@@ -217,7 +217,10 @@ class Tools_Page {
 		?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Top 10 Tools', 'top-10' ); ?></h1>
-		<?php do_action( 'tptn_settings_page_header' ); ?>
+		<?php
+		/** This action is documented in includes/admin/class-dashboard.php */
+		do_action( 'tptn_settings_page_header' );
+		?>
 
 		<?php settings_errors(); ?>
 
@@ -278,7 +281,16 @@ class Tools_Page {
 					</div>
 				</div>
 
-				<?php do_action( 'tptn_tools_page_actions', $network_wide ); ?>
+				<?php
+				/**
+				 * Fires between the action boxes on the Tools page.
+				 *
+				 * @since 4.5.0
+				 *
+				 * @param bool $network_wide Whether the Tools page is being rendered in network admin.
+				 */
+				do_action( 'tptn_tools_page_actions', $network_wide );
+				?>
 
 				<div class="postbox">
 					<h2><span><?php echo esc_html( $network_wide ? __( 'Fix Network Cron Schedules', 'top-10' ) : __( 'Fix Cron Schedules', 'top-10' ) ); ?></span></h2>
@@ -665,6 +677,13 @@ class Tools_Page {
 			)
 		);
 
+		/**
+		 * Fires after the Tools page help tabs have been registered.
+		 *
+		 * @since 2.5.0
+		 *
+		 * @param \WP_Screen $screen The current screen object.
+		 */
 		do_action( 'tptn_settings_tools_help', $screen );
 	}
 

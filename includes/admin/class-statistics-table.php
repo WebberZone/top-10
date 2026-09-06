@@ -437,7 +437,8 @@ class Statistics_Table extends \WP_List_Table {
 			}
 
 			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$ttl   = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
+			/** This filter is documented in includes/admin/class-dashboard-widgets.php */
+			$ttl = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
 			if ( $ttl > 0 ) {
 				set_site_transient( $cache_key, $count, $ttl );
 			}
