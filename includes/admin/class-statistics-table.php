@@ -646,7 +646,7 @@ class Statistics_Table extends \WP_List_Table {
 		}
 
 		$author_info = get_userdata( (int) $post->post_author );
-		$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ) ) );
+		$author_name = ( false === $author_info ) ? '' : ucwords( trim( stripslashes( $author_info->display_name ), '' ) );
 
 		return sprintf(
 			'<a href="%s">%s</a>',

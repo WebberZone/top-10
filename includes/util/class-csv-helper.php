@@ -150,10 +150,10 @@ class Csv_Helper {
 			);
 
 			if ( $daily ) {
-				$row['dp_date'] = isset( $line[ $col_date ] ) ? trim( $line[ $col_date ] ) : '';
+				$row['dp_date'] = isset( $line[ $col_date ] ) ? trim( $line[ $col_date ], '' ) : '';
 			}
 			if ( $has_url && isset( $line[ $col_url ] ) ) {
-				$row['url'] = trim( $line[ $col_url ] );
+				$row['url'] = trim( $line[ $col_url ], '' );
 			}
 
 			$rows[] = $row;

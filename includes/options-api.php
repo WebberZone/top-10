@@ -352,7 +352,7 @@ function tptn_tags_search() {
 		$s = explode( ',', $s );
 		$s = $s[ count( $s ) - 1 ];
 	}
-	$s = trim( $s );
+	$s = trim( $s, '' );
 
 	/**
  * This filter has been defined in /wp-admin/includes/ajax-actions.php
