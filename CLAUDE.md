@@ -26,9 +26,13 @@ No AI attribution anywhere in this repository or on its GitHub.
 
 ## Plugin Overview
 
-WebberZone Top 10 Pro is the premium version of Top 10 — it counts daily and total post views and displays popular posts lists. Working version pending release: 4.5.0. Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.6+, PHP 7.4+. DB version: `7.0`.
+**This file is identical in `top-10` (free) and `top-10-pro` (pro).** To tell which repo you are in: `includes/pro/` exists in the pro repo only, and the git remote is `WebberZone/top-10-pro` rather than `WebberZone/top-10`. The pro repo is the source of truth for both — make every change there, including free-tier code, then regenerate the free repo with `dev-tools/sync-pro-to-free.sh`. Never edit the free repo directly.
 
-This is the pro version. Activating it automatically deactivates the free Top 10 plugin, and vice versa. Both plugins share the same namespace, function prefix, database tables, and settings key (`tptn_settings`).
+WebberZone Top 10 counts daily and total post views and displays popular posts lists. Top 10 Pro is the premium version. Activating either plugin automatically deactivates the other; both share the same namespace, function prefix, database tables and settings key (`tptn_settings`).
+
+Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.0`.
+
+Versions: `readme.txt`'s `Stable tag` is the released version; `TOP_TEN_VERSION` in `top-10.php` is the working version — use it for new `@since` tags. Do not bump either unless asked.
 
 The Freemius header annotation `@fs_premium_only /includes/pro/, /css/pro/` means those directories are only shipped in the paid build.
 
