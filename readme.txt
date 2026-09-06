@@ -188,6 +188,9 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* Reduced large multisite admin overhead by replacing repeated table-existence queries and exact Tools-page statistics with cached metadata, direct WPP table probes, and estimated row counts.
 	* Improved dashboard performance with index-friendly `dp_date` ranges, optimized network popular-post queries, and on-demand loading of historical tabs.
 
+* Improvements:
+	* Setting defaults are now resolved from a single lightweight list instead of building every settings field, so reading an option early in the page load no longer risks loading translations too early.
+
 * Fixed:
 	* View tracking being lost during quick navigation or browser back-button restores.
 	* View counts being recorded for prerendered or initially hidden pages.
@@ -196,17 +199,11 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 	* [Pro] Daily counts in the `wp top10 popular` command not respecting the selected custom date range.
 	* Generated output cache keys not being discoverable by the Clear Cache tools and WP-CLI cache flush command.
 	* Hardened settings sanitization for users without the `unfiltered_html` capability.
-
-= 4.4.4 =
-
-* Fixed settings on a multisite network reading another site's values in the same request after a `switch_to_blog()` call, when read via `tptn_get_option()` or the global `$tptn_settings`.
-* Fixed `tptn_get_settings()` returning `false` instead of an empty array when no settings had been saved yet.
-* Fixed a silent loss of visit data in funnel aggregation, and an undefined array key warning in the Fast Tracker.
-* Fixed a WordPress.org plugin-review issue in the settings framework: renamed JS globals, and hardened referer/array handling in settings sanitization.
-* Fixed plugin data being deleted when uninstalling one version while its paired free or Pro counterpart was active.
-
-* Improvements:
-	* Setting defaults are now resolved from a single lightweight list instead of building every settings field, so reading an option early in the page load no longer risks loading translations too early.
+	* Settings on a multisite network reading another site's values in the same request after a `switch_to_blog()` call, when read via `tptn_get_option()` or the global `$tptn_settings`.
+	* `tptn_get_settings()` returning `false` instead of an empty array when no settings had been saved yet.
+	* A silent loss of visit data in funnel aggregation, and an undefined array key warning in the Fast Tracker.
+	* A WordPress.org plugin-review issue in the settings framework: renamed JS globals, and hardened referer/array handling in settings sanitization.
+	* Plugin data being deleted when uninstalling one version while its paired free or Pro counterpart was active.
 
 = 4.4.3 =
 
