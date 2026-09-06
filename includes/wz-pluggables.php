@@ -200,7 +200,7 @@ if ( ! function_exists( 'wz_tags_search' ) ) :
 			$s = explode( ',', $s );
 			$s = $s[ count( $s ) - 1 ];
 		}
-		$s = trim( $s, '' );
+		$s = trim( $s, " \t\n\r\0\x0B" );
 
 		/** This filter has been defined in /wp-admin/includes/ajax-actions.php */
 		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $taxonomies, $s );

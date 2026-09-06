@@ -1641,7 +1641,7 @@ class Database {
 	 * @return string|\WP_Error Normalized date or an error.
 	 */
 	private static function normalize_daily_rollup_date( string $before_date ) {
-		$before_date = trim( $before_date, '' );
+		$before_date = trim( $before_date, " \t\n\r\0\x0B" );
 		$date        = preg_replace( '/ 00:00:00$/', '', $before_date );
 
 		if ( ! is_string( $date ) || ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {

@@ -2051,7 +2051,7 @@ class Settings {
 			$search_term = explode( ',', $search_term );
 			$search_term = $search_term[ count( $search_term ) - 1 ];
 		}
-		$search_term = trim( $search_term, '' );
+		$search_term = trim( $search_term, " \t\n\r\0\x0B" );
 
 		if ( 'public_taxonomies' === $endpoint ) {
 			$taxonomies = (array) get_taxonomies( array( 'public' => true ), 'objects' );
