@@ -176,6 +176,8 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.5.0 =
 
+*Release Date - 7 September 2026*
+
 * Features:
 	* [Pro] **Popular Posts (Top 10)** elements for **Elementor**, **Bricks Builder**, and **WPBakery Page Builder**.
 	* [Pro] Optional site-wide tracking for front pages, posts pages, archives, and searches.
