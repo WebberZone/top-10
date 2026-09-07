@@ -1,6 +1,6 @@
 <?php
 /**
- * Initializes Freemius SDK for Top 10.
+ * Initializes Freemius SDK for Top 10 Pro.
  *
  * @package WebberZone\Top_Ten
  */
