@@ -81,7 +81,7 @@ for vendor_dir in $VENDOR_DIRS; do
     fi
     mkdir -p "$TEMP_DIR/vendor/$vendor_dir"
     rsync -a --exclude='.git*' --exclude='.github' --exclude='composer.json' --exclude='composer.lock' \
-        --exclude='*.dist' --exclude='*.neon*' --exclude='phpunit.xml*' \
+        --exclude='*.dist' --exclude='*.dist.php' --exclude='.php-cs-fixer.dist.php' --exclude='*.neon*' --exclude='phpunit.xml*' \
         "vendor/$vendor_dir/" "$TEMP_DIR/vendor/$vendor_dir/"
     echo "  + vendor/$vendor_dir"
 done
