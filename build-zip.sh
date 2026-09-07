@@ -79,7 +79,10 @@ for vendor_dir in $VENDOR_DIRS; do
         echo "Error: vendor/$vendor_dir not found. Run 'composer build:vendor' first." >&2
         exit 1
     fi
-    cp -r "vendor/$vendor_dir" "$TEMP_DIR/vendor/"
+    mkdir -p "$TEMP_DIR/vendor/$vendor_dir"
+    rsync -a --exclude='.git*' --exclude='.github' --exclude='composer.json' --exclude='composer.lock' \
+        --exclude='*.dist' --exclude='*.neon*' --exclude='phpunit.xml*' \
+        "vendor/$vendor_dir/" "$TEMP_DIR/vendor/$vendor_dir/"
     echo "  + vendor/$vendor_dir"
 done
 cp -r vendor/composer "$TEMP_DIR/vendor/"
