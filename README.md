@@ -96,6 +96,12 @@ Top 10 does not collect personal visitor data out of the box. Tracking data is s
 
 You are responsible for ensuring GDPR compliance on your website.
 
+### Multilingual sites
+
+Top 10 works with WPML, Polylang and TranslatePress without additional plugin configuration. WPML and Polylang map popular posts to the language being viewed. TranslatePress translates popular post titles, excerpts and links with the rest of the page, including results delivered through the REST API and lazy-loaded lists in Top 10 Pro.
+
+Popular post caches are separated by language, preventing cached lists from serving another language's links.
+
 ### Translations
 
 Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/) to contribute.

@@ -87,6 +87,12 @@ Top 10 does not collect personal visitor data out of the box. Tracking data is s
 
 You are responsible for ensuring GDPR compliance on your website.
 
+= Multilingual sites =
+
+Top 10 works with WPML, Polylang and TranslatePress without additional plugin configuration. WPML and Polylang map popular posts to the language being viewed. TranslatePress translates popular post titles, excerpts and links with the rest of the page, including results delivered through the REST API and lazy-loaded lists in Top 10 Pro.
+
+Popular post caches are separated by language, preventing cached lists from serving another language's links.
+
 = Translations =
 
 Top 10 is available for translation on [WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10).  
@@ -173,6 +179,17 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 [Report a security vulnerability.](https://patchstack.com/database/vdp/top-10)
 
 == Changelog ==
+
+= Unreleased =
+
+**Added**
+
+* Added TranslatePress translation for popular post titles, excerpts and links returned through the REST API.
+* [Pro] Added TranslatePress support for lazy-loaded popular posts.
+
+**Fixed**
+
+* Cached popular posts were shared across languages on WPML, Polylang and TranslatePress sites.
 
 = 4.5.0 =
 

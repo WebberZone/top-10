@@ -7,6 +7,7 @@
 
 namespace WebberZone\Top_Ten\Util;
 
+use WebberZone\Top_Ten\Frontend\Language_Handler;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -357,7 +358,7 @@ class Cache {
 		}
 
 		// Keep generated keys discoverable by get_widget_keys() and delete().
-		return 'tptn_cache_' . md5( wp_json_encode( $args ) );
+		return 'tptn_cache_' . md5( Language_Handler::get_cache_language() . '|' . wp_json_encode( $args ) );
 	}
 
 	/**

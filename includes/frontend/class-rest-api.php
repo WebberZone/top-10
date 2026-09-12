@@ -154,6 +154,9 @@ class REST_API extends \WP_REST_Controller {
 
 		$args = $request->get_params();
 
+		// Transport-only: the language must not reach the query or its cache key.
+		unset( $args['lang'] );
+
 		/**
 		 * Filter the REST API arguments before they passed to get_tptn_posts().
 		 *
@@ -331,6 +334,10 @@ class REST_API extends \WP_REST_Controller {
 				'type'        => 'string',
 				'enum'        => array( 'view', 'embed', 'edit' ),
 				'default'     => 'view',
+			),
+			'lang'       => array(
+				'description' => esc_html__( 'TranslatePress language code to render the response in.', 'top-10' ),
+				'type'        => 'string',
 			),
 		);
 
