@@ -3,7 +3,7 @@ slug: top-10-multisite-network-performance
 title: "Top 10 Multisite Network Performance"
 products: [top-10]
 sections: ["02-top-10-advanced"]
-tags: [top-10, performance, multisite]
+tags: [multisite, performance, top-10]
 status: publish
 order: 0
 toc: true

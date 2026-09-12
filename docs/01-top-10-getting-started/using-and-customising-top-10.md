@@ -1,6 +1,6 @@
 ---
 slug: using-and-customising-top-10
-title: "Using and Customising Top 10"
+title: "Using and Customizing Top 10"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [top-10]

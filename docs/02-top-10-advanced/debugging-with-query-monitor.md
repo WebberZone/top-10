@@ -2,7 +2,7 @@
 slug: debugging-with-query-monitor
 title: "Debugging with Query Monitor"
 products: [top-10]
-sections: ["02-bs-advanced", "02-top-10-advanced", "02-crp-advanced"]
+sections: ["02-bs-advanced", "02-crp-advanced", "02-top-10-advanced"]
 tags: [debugging, query-monitor]
 status: publish
 order: 0

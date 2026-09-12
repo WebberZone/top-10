@@ -3,7 +3,7 @@ slug: page-builder-integrations
 title: "Page Builder Integrations for Top 10 Pro"
 products: [top-10]
 sections: ["02-top-10-advanced"]
-tags: [top-10, pro, bricks, elementor, wpbakery, page-builder]
+tags: [bricks, elementor, page-builder, pro, top-10, wpbakery]
 status: publish
 order: 0
 toc: true
