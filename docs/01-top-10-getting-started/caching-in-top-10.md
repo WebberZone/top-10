@@ -21,6 +21,8 @@ Caching in Top 10 is enabled by default to optimize the popular posts out-of-the
 
 Top 10 will use the Transients API to cache the popular posts output. By default, the plugin will cache the posts for an hour. However, you can change this by updating the **Time to cache** setting.
 
+On multilingual sites, cache keys include the current language via `Language_Handler::get_cache_language()`, so a cached list from one language is not served to visitors of another. You can adjust the language component of the key with the `tptn_cache_language` filter.
+
 ## Clearing the cache
 
 You can manually clear the plugin cache by visiting the [**Tools** page](https://webberzone.com/support/knowledgebase/top-10-tools-admin-screen/) and using the **Clear Cache** button. [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) users also have a dedicated **Clear cache** button in the Settings page at the bottom.

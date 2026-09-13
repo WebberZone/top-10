@@ -24,6 +24,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Thumbnail support with fallback logic | ✅ | ✅ |
 | Post and category exclusions | ✅ | ✅ |
 | Custom post type support | ✅ | ✅ |
+| Multilingual support (WPML, Polylang and TranslatePress) | ✅ | ✅ |
 | REST API | ✅ | ✅ |
 | Popular posts RSS feed | ✅ | ✅ |
 | Export / import counts and settings | ✅ | ✅ |
