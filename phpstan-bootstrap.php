@@ -298,8 +298,8 @@ namespace WebberZone\Top_Ten\Pro {
 	}
 }
 
-// TranslatePress has no official PHPStan stub package, so declare the minimal surface CRP's
-// language handler touches.
+// TranslatePress has no official PHPStan stub package, so declare the minimal surface the
+// Top 10 language handler touches.
 namespace {
 	if ( ! class_exists( 'TRP_Translate_Press' ) ) {
 		class TRP_Translate_Press {

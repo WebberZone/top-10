@@ -270,11 +270,22 @@ class Language_Handler {
 		if ( current_user_can( (string) apply_filters( 'trp_translating_capability', 'manage_options' ) ) ) {
 			$available = array_merge( $available, isset( $settings['translation-languages'] ) ? (array) $settings['translation-languages'] : array() );
 		}
+		$available = array_values( array_unique( array_map( 'strval', $available ) ) );
 
 		$language = '';
 
 		if ( $request instanceof \WP_REST_Request ) {
-			$language = (string) $request->get_param( 'lang' );
+			$raw_language = $request->get_param( 'lang' );
+			$language     = is_string( $raw_language ) ? sanitize_text_field( $raw_language ) : '';
+		}
+
+		// Accept either a TranslatePress locale (fr_FR) or its URL slug (fr).
+		$url_slugs = isset( $settings['url-slugs'] ) && is_array( $settings['url-slugs'] ) ? $settings['url-slugs'] : array();
+		foreach ( $url_slugs as $locale => $slug ) {
+			if ( is_string( $slug ) && $slug === $language ) {
+				$language = (string) $locale;
+				break;
+			}
 		}
 
 		if ( '' === $language ) {
@@ -379,7 +390,9 @@ class Language_Handler {
 			return $result;
 		}
 
-		if ( false === strpos( (string) $request->get_route(), self::get_rest_namespace() ) ) {
+		$route     = (string) $request->get_route();
+		$namespace = '/' . self::get_rest_namespace();
+		if ( $route !== $namespace && 0 !== strpos( $route, $namespace . '/' ) ) {
 			return $result;
 		}
 
@@ -394,7 +407,28 @@ class Language_Handler {
 			return self::trp_translate_content( $result, $language );
 		}
 
-		return self::translate_rest_data( $result, $language );
+		/**
+		 * Filters the response keys Top 10 translates with TranslatePress.
+		 *
+		 * @since 4.5.1
+		 *
+		 * @param array $keys Associative array of `content` and `url` key names.
+		 */
+		$keys = apply_filters(
+			'tptn_trp_rest_translatable_keys',
+			array(
+				'content' => array( 'html', 'title', 'excerpt', 'content', 'name', 'description' ),
+				// `guid` is deliberately absent: it is an immutable identifier, not a navigable URL.
+				'url'     => array( 'link', 'permalink' ),
+			)
+		);
+		$keys = (array) $keys;
+		$keys = array(
+			'content' => isset( $keys['content'] ) && is_array( $keys['content'] ) ? array_values( array_map( 'strval', array_filter( $keys['content'], 'is_scalar' ) ) ) : array(),
+			'url'     => isset( $keys['url'] ) && is_array( $keys['url'] ) ? array_values( array_map( 'strval', array_filter( $keys['url'], 'is_scalar' ) ) ) : array(),
+		);
+
+		return self::translate_rest_data( $result, $language, $keys );
 	}
 
 	/**
@@ -415,29 +449,14 @@ class Language_Handler {
 	 *
 	 * @param  array  $data     Response data.
 	 * @param  string $language Target language code.
+	 * @param  array  $keys     Translatable `content` and `url` key names.
 	 * @param  int    $depth    Current recursion depth.
 	 * @return array Translated response data.
 	 */
-	protected static function translate_rest_data( array $data, string $language, int $depth = 0 ): array {
+	protected static function translate_rest_data( array $data, string $language, array $keys, int $depth = 0 ): array {
 		if ( $depth > 5 ) {
 			return $data;
 		}
-
-		/**
-		 * Filters the response keys Top 10 translates with TranslatePress.
-		 *
-		 * @since 4.5.1
-		 *
-		 * @param array $keys Associative array of `content` and `url` key names.
-		 */
-		$keys = apply_filters(
-			'tptn_trp_rest_translatable_keys',
-			array(
-				'content' => array( 'html', 'title', 'excerpt', 'content', 'name', 'description' ),
-				// `guid` is deliberately absent: it is an immutable identifier, not a navigable URL.
-				'url'     => array( 'link', 'permalink' ),
-			)
-		);
 
 		foreach ( $data as $key => $value ) {
 			if ( is_array( $value ) ) {
@@ -452,7 +471,7 @@ class Language_Handler {
 					}
 				}
 
-				$data[ $key ] = self::translate_rest_data( $value, $language, $depth + 1 );
+				$data[ $key ] = self::translate_rest_data( $value, $language, $keys, $depth + 1 );
 				continue;
 			}
 
