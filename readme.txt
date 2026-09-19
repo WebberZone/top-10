@@ -179,7 +179,7 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 *Release Date - 19 September 2026*
 
 * Fixed:
-	* Security: Hardened thumbnail dimension handling to prevent stored Cross-Site Scripting by an Author-level user via block attributes. Reported by Athiwat Tiprasaharn (Jitlada) and Itthidej Aramsri (Boeing777) via Wordfence.
+	* Security: Hardened thumbnail dimension handling to prevent stored Cross-Site Scripting by an Author-level user via block attributes.
 
 = 4.5.0 =
 
