@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.0
+Stable tag: 4.5.1
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -191,6 +191,13 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 * Cached popular posts were shared across languages on WPML, Polylang and TranslatePress sites.
 
+= 4.5.1 =
+
+*Release Date - 19 September 2026*
+
+* Fixed:
+	* Security: Hardened thumbnail dimension handling to prevent stored Cross-Site Scripting by an Author-level user via block attributes.
+
 = 4.5.0 =
 
 Release date: 7 September 2026
@@ -233,6 +240,9 @@ Release post: https://webberzone.com/announcements/top-10-v4-5/
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/top-10/releases).
 
 == Upgrade Notice ==
+
+= 4.5.1 =
+Security release. Fixes a stored Cross-Site Scripting vulnerability that could be exploited by users with Author-level access or above. Update immediately.
 
 = 4.5.0 =
 Adds page builder elements, site-wide tracking and a daily-table rollup tool. Fixes several cases of lost view counts and cuts admin overhead on large multisite networks.
