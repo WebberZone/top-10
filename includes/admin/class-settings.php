@@ -218,8 +218,10 @@ class Settings {
 		return array(
 			'features_header'                => '',
 			'features_display_header'        => '',
+			'features_performance_header'    => '',
 			'enable_blocks'                  => 1,
 			'enable_legacy_widgets'          => 1,
+			'enable_rest_api'                => 1,
 			'enable_query_block'             => 1,
 			'enable_featured_image_block'    => 1,
 			'enable_popular_posts_pro_block' => 1,
@@ -232,7 +234,9 @@ class Settings {
 			'features_data_header'           => '',
 			'enable_daily_table_rollup'      => 1,
 			'features_admin_header'          => '',
+			'features_api_header'            => '',
 			'enable_pro_dashboard_widgets'   => 1,
+			'enable_lazy_load'               => 1,
 			'cache'                          => 1,
 			'cache_time'                     => HOUR_IN_SECONDS,
 			'lazy_load'                      => 0,
@@ -1412,6 +1416,20 @@ class Settings {
 				'default' => 1,
 				'pro'     => true,
 			),
+			'features_performance_header'    => array(
+				'id'   => 'features_performance_header',
+				'name' => '<h3>' . esc_html__( 'Performance', 'top-10' ) . '</h3>',
+				'desc' => esc_html__( 'Control optional output performance modules.', 'top-10' ),
+				'type' => 'header',
+			),
+			'enable_lazy_load'               => array(
+				'id'      => 'enable_lazy_load',
+				'name'    => esc_html__( 'Lazy-load module', 'top-10' ),
+				'desc'    => esc_html__( 'Loads the lazy-loading module and its REST endpoint. Disable this to remove lazy-loading support, including per-shortcode and per-block lazy_load overrides. Requires REST API endpoints to be enabled.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
+			),
 			'features_tracking_header'       => array(
 				'id'   => 'features_tracking_header',
 				'name' => '<h3>' . esc_html__( 'Tracking and feeds', 'top-10' ) . '</h3>',
@@ -1468,6 +1486,19 @@ class Settings {
 				'type'    => 'checkbox',
 				'default' => 1,
 				'pro'     => true,
+			),
+			'features_api_header'            => array(
+				'id'   => 'features_api_header',
+				'name' => '<h3>' . esc_html__( 'API integrations', 'top-10' ) . '</h3>',
+				'desc' => esc_html__( 'Control the Top 10 REST API endpoints used by integrations, tracking, blocks, and lazy loading.', 'top-10' ),
+				'type' => 'header',
+			),
+			'enable_rest_api'                => array(
+				'id'      => 'enable_rest_api',
+				'name'    => esc_html__( 'REST API endpoints', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the top-10/v1 endpoints for popular posts, tracking, counters, blocks, and lazy loading. Keep enabled if your tracker type is REST-based or if your integrations or blocks use these endpoints.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
 			),
 		);
 
