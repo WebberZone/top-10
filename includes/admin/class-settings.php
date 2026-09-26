@@ -138,6 +138,9 @@ class Settings {
 			'modified_legend'      => esc_html__( 'Setting modified from its default value', 'top-10' ),
 			'default_label'        => esc_html__( 'Default', 'top-10' ),
 			'default_none'         => esc_html__( 'None', 'top-10' ),
+			'repeater_move_up'     => esc_html__( 'Move item up', 'top-10' ),
+			'repeater_move_down'   => esc_html__( 'Move item down', 'top-10' ),
+			'repeater_remove_item' => esc_html__( 'Remove item', 'top-10' ),
 		);
 
 		/**

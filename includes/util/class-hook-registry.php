@@ -2,7 +2,7 @@
 /**
  * Hook Registry class.
  *
- * @package WebberZone\Top_Ten\Util
+ * @package WebberZone\Top_Ten
  */
 
 namespace WebberZone\Top_Ten\Util;
