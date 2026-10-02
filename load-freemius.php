@@ -73,6 +73,10 @@ if ( ! function_exists( __NAMESPACE__ . '\\tptn_freemius' ) ) {
 
 	// Init Freemius.
 	tptn_freemius();
-	// Signal that SDK was initiated.
+	/**
+	 * Fires after the Freemius SDK has been initialized.
+	 *
+	 * @since 4.0.0
+	 */
 	do_action( 'tptn_freemius_loaded' );
 }
