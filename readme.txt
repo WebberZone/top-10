@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.1
+Stable tag: 4.5.2
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -180,23 +180,34 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= Unreleased =
+= 4.5.2 =
+
+Release date: 7 October 2026
 
 **Added**
 
-* Added TranslatePress translation for popular post titles, excerpts and links returned through the REST API.
-* [Pro] Added TranslatePress support for lazy-loaded popular posts.
+* TranslatePress translation for popular post titles, excerpts and links returned through the REST API.
+* REST API endpoints toggle in the Features tab for disabling unused Top 10 API integrations.
+* [Pro] TranslatePress support for lazy-loaded popular posts.
+* [Pro] Independent lazy-loading module toggle in the Features tab. Disabling REST API endpoints also disables lazy loading.
+
+**Changed**
+
+* Updated Freemius SDK to 2.13.5.
 
 **Fixed**
 
 * Cached popular posts were shared across languages on WPML, Polylang and TranslatePress sites.
+* Setup wizard labels were not associated with their input fields.
+* Updating settings before any options had been saved could trigger a PHP deprecation warning.
 
 = 4.5.1 =
 
-*Release Date - 19 September 2026*
+Release date: 19 September 2026
 
-* Fixed:
-	* Security: Hardened thumbnail dimension handling to prevent stored Cross-Site Scripting by an Author-level user via block attributes.
+**Security**
+
+* Hardened thumbnail dimension handling to prevent stored cross-site scripting through block attributes.
 
 = 4.5.0 =
 
@@ -241,8 +252,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.5.1 =
-Security release. Fixes a stored Cross-Site Scripting vulnerability that could be exploited by users with Author-level access or above. Update immediately.
-
-= 4.5.0 =
-Adds page builder elements, site-wide tracking and a daily-table rollup tool. Fixes several cases of lost view counts and cuts admin overhead on large multisite networks.
+= 4.5.2 =
+Keeps popular posts in the correct language on multilingual sites, adds controls for REST API endpoints and Pro lazy loading, and fixes setup wizard accessibility.
