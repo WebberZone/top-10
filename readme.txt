@@ -193,7 +193,7 @@ Release date: 7 October 2026
 
 **Changed**
 
-* Updated Freemius SDK to 2.13.5.
+* Updated Freemius SDK to the latest version.
 
 **Fixed**
 
