@@ -33,10 +33,66 @@ class Cache {
 	/**
 	 * Invalidate cached rankings and output after their source data changes.
 	 *
-	 * @since 4.5.2
+	 * @since 4.6.0
+	 * @param int $blog_id Site whose data changed, or 0 for all sites.
 	 */
-	public static function invalidate(): void {
+	public static function invalidate( $blog_id = 0 ): void {
+		if ( is_multisite() && $blog_id > 0 ) {
+			update_blog_option( absint( $blog_id ), 'tptn_cache_generation', wp_generate_uuid4() );
+			return;
+		}
 		update_site_option( 'tptn_cache_generation', wp_generate_uuid4() );
+	}
+
+	/**
+	 * Invalidate the sites identified by a count update.
+	 *
+	 * @since 4.6.0
+	 * @param int   $post_id Post ID, or 0 for a bulk update.
+	 * @param int   $blog_id Blog ID, or 0 for a bulk update.
+	 * @param bool  $daily Whether daily counts changed.
+	 * @param int[] $blog_ids Sites affected by a bulk update.
+	 */
+	public static function invalidate_counts( $post_id = 0, $blog_id = 0, $daily = false, $blog_ids = array() ): void {
+		$blog_ids = $blog_id > 0 ? array( $blog_id ) : wp_parse_id_list( $blog_ids );
+		if ( empty( $blog_ids ) || in_array( 0, $blog_ids, true ) ) {
+			self::invalidate();
+			return;
+		}
+		foreach ( $blog_ids as $site_id ) {
+			self::invalidate( $site_id );
+		}
+	}
+
+	/**
+	 * Invalidate the site whose count was set.
+	 *
+	 * @since 4.6.0
+	 * @param int $post_id Post ID.
+	 * @param int $count Stored count.
+	 * @param int $blog_id Site ID.
+	 */
+	public static function invalidate_set_count( $post_id, $count, $blog_id ): void {
+		self::invalidate( $blog_id );
+	}
+
+	/**
+	 * Invalidate the scope of a count deletion.
+	 *
+	 * @since 4.6.0
+	 * @param array $args Count deletion arguments.
+	 */
+	public static function invalidate_deleted_counts( $args ): void {
+		self::invalidate( $args['blog_id'] ?? 0 );
+	}
+
+	/**
+	 * Invalidate lists affected by a post change on the current site.
+	 *
+	 * @since 4.6.0
+	 */
+	public static function invalidate_current_blog(): void {
+		self::invalidate( get_current_blog_id() );
 	}
 
 	/**
@@ -79,11 +135,19 @@ class Cache {
 	 */
 	public static function delete( $transients = array() ) {
 		$loop = 0;
+		if ( empty( $transients ) ) {
+			self::invalidate_current_blog();
+		}
 
 		$default_transients = self::get_keys();
 
 		if ( ! empty( $transients ) ) {
-			$transients = array_intersect( $default_transients, (array) $transients );
+			$transients = wp_using_ext_object_cache() ? array_filter(
+				(array) $transients,
+				static function ( $key ) use ( $default_transients ) {
+					return is_string( $key ) && ( 0 === strpos( $key, 'tptn_' ) || in_array( $key, $default_transients, true ) );
+				}
+			) : array_intersect( $default_transients, (array) $transients );
 		} else {
 			$transients = $default_transients;
 		}
@@ -183,6 +247,15 @@ class Cache {
 	public static function get_key( $attr ): string {
 		$args                           = (array) $attr;
 		$args['_tptn_cache_generation'] = get_site_option( 'tptn_cache_generation', '' );
+		if ( is_multisite() ) {
+			$blog_ids = array_unique( array_merge( array( get_current_blog_id() ), wp_parse_id_list( $args['blog_id'] ?? array() ), wp_parse_id_list( $args['_tptn_cache_blog_ids'] ?? array() ) ) );
+			sort( $blog_ids, SORT_NUMERIC );
+			$args['_tptn_cache_blog_generations'] = array();
+			foreach ( $blog_ids as $blog_id ) {
+				$args['_tptn_cache_blog_generations'][ $blog_id ] = get_blog_option( $blog_id, 'tptn_cache_generation', '' );
+			}
+		}
+		unset( $args['_tptn_cache_blog_ids'] );
 
 		static $setting_types = null;
 		if ( null === $setting_types ) {

@@ -57,12 +57,13 @@ class Language_Handler {
 			}
 
 			// If this is NULL or already processed ID or matches current post then skip processing this loop.
-			if ( ! $result->ID || in_array( $result->ID, $processed_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			$identity = ( $result->blog_id ?? get_current_blog_id() ) . ':' . $result->ID;
+			if ( ! $result->ID || in_array( $identity, $processed_ids, true ) ) {
 				continue;
 			}
 
 			// Push the current ID into the array to ensure we're not repeating it.
-			array_push( $processed_ids, $result->ID );
+			array_push( $processed_ids, $identity );
 
 			// Let's get the Post using the ID.
 			$result = get_post( $result );
@@ -80,40 +81,43 @@ class Language_Handler {
 	 * @return \WP_Post|array|null Post opbject, updated if needed.
 	 */
 	public static function object_id_cur_lang( $post ) {
-
-		$return_original_if_missing = false;
-
-		$post         = get_post( $post );
-		$current_lang = apply_filters( 'wpml_current_language', null );
-
-		// Polylang implementation.
-		if ( function_exists( 'pll_get_post' ) ) {
-			$post = \pll_get_post( $post->ID );
-			$post = get_post( $post );
+		$blog_id  = is_object( $post ) ? (int) ( $post->blog_id ?? get_current_blog_id() ) : get_current_blog_id();
+		$switched = is_multisite() && get_current_blog_id() !== $blog_id;
+		if ( $switched ) {
+			switch_to_blog( $blog_id );
 		}
-
-		// WPML implementation.
-		/**
-		 * Filter to modify if the original language ID is returned.
-		 *
-		 * @since 2.2.3
-		 *
-		 * @param bool $return_original_if_missing Flag to return original post ID if translated post ID is missing.
-		 * @param int  $id                         Post ID
-		 */
-		$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', $return_original_if_missing, $post->ID );
-
-		$post = apply_filters( 'wpml_object_id', $post->ID, $post->post_type, $return_original_if_missing, $current_lang );
-		$post = get_post( $post );
-
-		/**
-		 * Filters Post object for current language.
-		 *
-		 * @since 2.1.0
-		 *
-		 * @param \WP_Post|array|null $id Post object.
-		 */
-		return apply_filters( 'tptn_object_id_cur_lang', $post );
+		try {
+			$original = get_post( $post );
+			if ( ! $original ) {
+				return null;
+			}
+			$post = $original;
+			if ( function_exists( 'pll_get_post' ) ) {
+				$id   = \pll_get_post( $post->ID );
+				$post = $id ? get_post( $id ) : null;
+			}
+			if ( ! $post ) {
+				return null;
+			}
+			$current_lang               = apply_filters( 'wpml_current_language', null );
+			$return_original_if_missing = apply_filters( 'tptn_wpml_return_original', false, $post->ID );
+			$id                         = apply_filters( 'wpml_object_id', $post->ID, $post->post_type, $return_original_if_missing, $current_lang );
+			$post                       = $id ? ( (int) $id === (int) $original->ID ? $original : get_post( $id ) ) : null;
+			if ( $post ) {
+				$metadata = array();
+				foreach ( array( 'blog_id', 'visits', 'postnumber' ) as $field ) {
+					if ( isset( $original->$field ) ) {
+						$metadata[ $field ] = $original->$field;
+					}
+				}
+				$post = new \WP_Post( (object) array_merge( $post->to_array(), $metadata ) );
+			}
+			return apply_filters( 'tptn_object_id_cur_lang', $post );
+		} finally {
+			if ( $switched ) {
+				restore_current_blog();
+			}
+		}
 	}
 
 	/**

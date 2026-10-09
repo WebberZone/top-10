@@ -700,7 +700,7 @@ class Database {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $sql );
 		if ( $result > 0 ) {
-			do_action( 'tptn_count_updated', 0, 0, $daily );
+			do_action( 'tptn_count_updated', 0, 0, $daily, wp_list_pluck( $data, 'blog_id' ) );
 		}
 		return $result;
 	}
@@ -1095,6 +1095,16 @@ class Database {
 				}
 			}
 
+			$affected_blogs = array( $blog_id ?? get_current_blog_id() );
+			if ( is_multisite() && null === $blog_id ) {
+				$affected_blogs = $wpdb->get_col(
+					$wpdb->prepare( "SELECT DISTINCT blog_id FROM {$funnel_table} WHERE id <= %d", $max_id )
+				);
+				if ( $wpdb->last_error ) {
+					$affected_blogs = array();
+				}
+			}
+
 			$r = $wpdb->query(
 				$wpdb->prepare(
 					"INSERT INTO {$log_table} (postnumber, blog_id, visited_at, source)
@@ -1152,12 +1162,14 @@ class Database {
 			 * signalling that many posts changed rather than one specific post.
 			 *
 			 * @since 4.2.0
+			 * @since 4.6.0 Added the `$blog_ids` parameter.
 			 *
-			 * @param int  $post_id Post ID, or 0 after a bulk update.
-			 * @param int  $blog_id Blog ID, or 0 after a bulk update.
-			 * @param bool $daily   Whether the daily table was updated.
+			 * @param int   $post_id  Post ID, or 0 after a bulk update.
+			 * @param int   $blog_id  Blog ID, or 0 after a bulk update.
+			 * @param bool  $daily    Whether the daily table was updated.
+			 * @param int[] $blog_ids Sites affected by a bulk update, or empty when unknown.
 			 */
-			do_action( 'tptn_count_updated', 0, 0, false );
+			do_action( 'tptn_count_updated', 0, 0, false, $affected_blogs );
 
 			if ( $was_capped && ! wp_next_scheduled( 'tptn_aggregation_cron_hook' ) ) {
 				wp_schedule_single_event( time(), 'tptn_aggregation_cron_hook' );
@@ -1627,7 +1639,7 @@ class Database {
 
 		if ( $dates_processed > 0 ) {
 			/** This action is documented in includes/class-database.php */
-			do_action( 'tptn_count_updated', 0, 0, false );
+			do_action( 'tptn_count_updated', 0, 0, false, array( $blog_id ) );
 		}
 
 		return array(

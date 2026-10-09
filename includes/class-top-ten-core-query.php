@@ -91,7 +91,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Count-table conditions used by the daily aggregation.
 	 *
-	 * @since 4.5.2
+	 * @since 4.6.0
 	 * @var string
 	 */
 	private $daily_where = '';
@@ -457,7 +457,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		if ( $this->should_cache() && ! $this->in_cache ) {
 			// Handle exclude_current_post by adding current_post_id for cache key consistency.
-			$cache_args = $this->query_args;
+			$cache_args                         = $this->query_args;
+			$cache_args['_tptn_cache_blog_ids'] = $this->blog_id;
 			if ( null !== $generated_date_query && $generated_date_query === $cache_args['date_query'] ) {
 				unset( $cache_args['date_query'][0]['before'] );
 			}
@@ -782,7 +783,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 	/**
 	 * Aggregate daily rows before loading posts when the count clauses are unchanged.
 	 *
-	 * @since 4.5.2
+	 * @since 4.6.0
 	 * @param array     $clauses Query clauses.
 	 * @param \WP_Query $query Query instance.
 	 * @param int       $blog_id Site whose counts are being queried.
@@ -942,8 +943,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 			$post_ids = get_transient( $cache_name );
 
-			if ( ! empty( $post_ids ) ) {
-				$posts                = get_posts(
+			if ( ! empty( $post_ids ) && ( ! $this->multiple_blogs || isset( $post_ids['sites'] ) ) ) {
+				$posts                = $this->multiple_blogs ? $this->get_cached_network_posts( $post_ids['sites'], $query ) : get_posts(
 					array(
 						'post__in'    => array_unique( $post_ids ),
 						'fields'      => $query->get( 'fields' ),
@@ -996,6 +997,19 @@ class Top_Ten_Core_Query extends \WP_Query {
 			$cache_time = apply_filters( 'tptn_cache_time', $this->query_args['cache_time'], $this->query_args );
 			$cache_name = $this->cache_name;
 			$post_ids   = wp_list_pluck( $query->posts, 'ID' );
+			if ( $this->multiple_blogs ) {
+				$post_ids = array( 'sites' => array() );
+				foreach ( $query->posts as $post ) {
+					if ( ! ( $post instanceof \WP_Post ) || ! isset( $post->blog_id, $post->visits ) ) {
+						continue;
+					}
+					$post_ids['sites'][] = array(
+						'ID'      => $post->ID,
+						'blog_id' => (int) $post->blog_id,
+						'visits'  => (int) $post->visits,
+					);
+				}
+			}
 
 			set_transient( $cache_name, $post_ids, $cache_time );
 		}
@@ -1033,6 +1047,58 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		remove_filter( 'the_posts', array( $this, 'the_posts' ) );
 
+		return $posts;
+	}
+
+	/**
+	 * Hydrate cached network rankings in their source sites and original order.
+	 *
+	 * @param array     $entries Ranked post identities and counts.
+	 * @param \WP_Query $query Query being hydrated.
+	 * @return \WP_Post[] Cached posts.
+	 */
+	private function get_cached_network_posts( $entries, $query ) {
+		$groups = array();
+		$found  = array();
+		foreach ( $entries as $entry ) {
+			$groups[ $entry['blog_id'] ][] = $entry['ID'];
+		}
+		foreach ( $groups as $blog_id => $ids ) {
+			switch_to_blog( $blog_id );
+			try {
+				$posts = get_posts(
+					array(
+						'post__in'    => array_unique( $ids ),
+						'orderby'     => 'post__in',
+						'post_type'   => $query->get( 'post_type' ),
+						'post_status' => $query->get( 'post_status' ),
+						'numberposts' => count( $ids ),
+					)
+				);
+				foreach ( $posts as $post ) {
+					$found[ $blog_id . ':' . $post->ID ] = $post;
+				}
+			} finally {
+				restore_current_blog();
+			}
+		}
+		$posts = array();
+		foreach ( $entries as $entry ) {
+			$key = $entry['blog_id'] . ':' . $entry['ID'];
+			if ( isset( $found[ $key ] ) ) {
+				$post    = new \WP_Post(
+					(object) array_merge(
+						$found[ $key ]->to_array(),
+						array(
+							'blog_id'    => $entry['blog_id'],
+							'visits'     => $entry['visits'],
+							'postnumber' => $entry['ID'],
+						)
+					)
+				);
+				$posts[] = $post;
+			}
+		}
 		return $posts;
 	}
 

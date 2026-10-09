@@ -180,19 +180,22 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.5.3 =
+= 4.6.0 =
 
 Release date: TBD
 
 **Changed**
 
 * Sped up daily popular-post queries for long date ranges, filtered lists and multisite networks.
+* Kept cached popular-post lists reusable when view counts changed on unrelated network sites.
 
 **Fixed**
 
 * Popular-post query caches were missed when the automatically generated end time changed between requests.
 * Cached popular-post rankings and output remained stale after view counts or posts changed.
 * Cross-site popular-post queries used invalid sorting references, and query callbacks remained active during later queries.
+* Cached network lists could return posts from the wrong site or omit posts with matching IDs on different sites.
+* Clearing the popular-post cache did not refresh lists when persistent object caching was enabled.
 
 = 4.5.2 =
 
@@ -266,5 +269,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.5.3 =
+= 4.6.0 =
 Speeds up daily popular-post queries on large sites, makes query caching reusable, refreshes cached lists when counts or posts change, and fixes cross-site queries.
