@@ -45,6 +45,9 @@ final class Hook_Loader {
 	private function register_hooks(): void {
 		$this->register_init_hooks();
 		$this->register_plugin_hooks();
+		foreach ( array( 'tptn_count_updated', 'tptn_set_count', 'tptn_delete_counts', 'clean_post_cache' ) as $hook ) {
+			Hook_Registry::add_action( $hook, array( Util\Cache::class, 'invalidate' ) );
+		}
 	}
 
 	/**

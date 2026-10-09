@@ -698,7 +698,11 @@ class Database {
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		return $wpdb->query( $sql );
+		$result = $wpdb->query( $sql );
+		if ( $result > 0 ) {
+			do_action( 'tptn_count_updated', 0, 0, $daily );
+		}
+		return $result;
 	}
 
 	/**
@@ -990,6 +994,9 @@ class Database {
 		}
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
+		if ( $rows > 0 ) {
+			do_action( 'tptn_count_updated', $post_id, $blog_id, in_array( $activate_counter, array( 10, 11 ), true ) );
+		}
 		return $rows;
 	}
 

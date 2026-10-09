@@ -31,6 +31,15 @@ class Cache {
 	}
 
 	/**
+	 * Invalidate cached rankings and output after their source data changes.
+	 *
+	 * @since 4.5.2
+	 */
+	public static function invalidate(): void {
+		update_site_option( 'tptn_cache_generation', wp_generate_uuid4() );
+	}
+
+	/**
 	 * Function to clear the Top 10 Cache with Ajax.
 	 *
 	 * @since   2.2.0
@@ -172,7 +181,8 @@ class Cache {
 	 * @return string Cache meta key
 	 */
 	public static function get_key( $attr ): string {
-		$args = (array) $attr;
+		$args                           = (array) $attr;
+		$args['_tptn_cache_generation'] = get_site_option( 'tptn_cache_generation', '' );
 
 		static $setting_types = null;
 		if ( null === $setting_types ) {

@@ -54,8 +54,8 @@ if ( ! class_exists( 'Top_Ten_Query' ) ) :
 			Hook_Registry::remove_filter( 'posts_where', array( $core_query, 'posts_where' ) );
 			Hook_Registry::remove_filter( 'posts_orderby', array( $core_query, 'posts_orderby' ), 9999 );
 			Hook_Registry::remove_filter( 'posts_groupby', array( $core_query, 'posts_groupby' ) );
-			Hook_Registry::remove_filter( 'posts_clauses', array( $core_query, 'posts_clauses' ) );
-			Hook_Registry::remove_filter( 'posts_request', array( $core_query, 'posts_request' ) );
+			Hook_Registry::remove_filter( 'posts_clauses', array( $core_query, 'posts_clauses' ), 20 );
+			Hook_Registry::remove_filter( 'posts_request', array( $core_query, 'posts_request' ), 20 );
 			Hook_Registry::remove_filter( 'posts_pre_query', array( $core_query, 'posts_pre_query' ) );
 			Hook_Registry::remove_filter( 'the_posts', array( $core_query, 'the_posts' ) );
 			Hook_Registry::remove_action( 'the_post', array( $core_query, 'switch_to_blog_in_loop' ) );
