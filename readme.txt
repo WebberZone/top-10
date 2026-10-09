@@ -180,6 +180,20 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.5.3 =
+
+Release date: TBD
+
+**Changed**
+
+* Sped up daily popular-post queries for long date ranges, filtered lists and multisite networks.
+
+**Fixed**
+
+* Popular-post query caches were missed when the automatically generated end time changed between requests.
+* Cached popular-post rankings and output remained stale after view counts or posts changed.
+* Cross-site popular-post queries used invalid sorting references, and query callbacks remained active during later queries.
+
 = 4.5.2 =
 
 Release date: 7 October 2026
@@ -193,7 +207,7 @@ Release date: 7 October 2026
 
 **Changed**
 
-* Updated Freemius SDK to the latest version.
+* Updated Freemius SDK to 2.13.5.
 
 **Fixed**
 
@@ -252,5 +266,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.5.2 =
-Keeps popular posts in the correct language on multilingual sites, adds controls for REST API endpoints and Pro lazy loading, and fixes setup wizard accessibility.
+= 4.5.3 =
+Speeds up daily popular-post queries on large sites, makes query caching reusable, refreshes cached lists when counts or posts change, and fixes cross-site queries.
