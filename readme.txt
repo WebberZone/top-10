@@ -261,7 +261,6 @@ Release post: https://webberzone.com/announcements/top-10-v4-5/
 * Visit data was silently lost in funnel aggregation, and the Fast Tracker raised an undefined array key warning.
 * Plugin data was deleted when uninstalling one version while its paired free or Pro counterpart was active.
 * Improved compatibility with PHP 8.6.
-* [Pro] Daily counts in the `wp top10 popular` command did not respect the selected custom date range.
 
 = Earlier versions =
 
