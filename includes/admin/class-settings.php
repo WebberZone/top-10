@@ -643,7 +643,7 @@ class Settings {
 				'name'    => esc_html__( 'Data source', 'top-10' ),
 				'desc'    => self::get_data_mode_description(),
 				'type'    => 'radiodesc',
-				'default' => Koko_Analytics::MODE_HYBRID,
+				'default' => Koko_Analytics::MODE_TOP10,
 				'options' => self::get_data_modes(),
 			),
 			'tracker_header'       => array(
@@ -1804,12 +1804,12 @@ class Settings {
 			array(
 				'id'          => Koko_Analytics::MODE_TOP10,
 				'name'        => __( 'Top 10', 'top-10' ),
-				'description' => __( 'Top 10 tracks views and powers the popular posts', 'top-10' ),
+				'description' => __( 'Top 10 tracks views and powers the popular posts (default)', 'top-10' ),
 			),
 			array(
 				'id'          => Koko_Analytics::MODE_HYBRID,
 				'name'        => __( 'Hybrid', 'top-10' ),
-				'description' => __( 'Koko Analytics powers the popular posts while Top 10 keeps tracking views and counts (default)', 'top-10' ),
+				'description' => __( 'Koko Analytics powers the popular posts while Top 10 keeps tracking views and counts', 'top-10' ),
 			),
 			array(
 				'id'          => Koko_Analytics::MODE_KOKO,

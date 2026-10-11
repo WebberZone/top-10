@@ -58,7 +58,7 @@ class Koko_Analytics {
 	public static function get_mode(): string {
 		$mode = (string) \tptn_get_option( 'data_mode' );
 
-		return in_array( $mode, array( self::MODE_TOP10, self::MODE_HYBRID, self::MODE_KOKO ), true ) ? $mode : self::MODE_HYBRID;
+		return in_array( $mode, array( self::MODE_TOP10, self::MODE_HYBRID, self::MODE_KOKO ), true ) ? $mode : self::MODE_TOP10;
 	}
 
 	/**
