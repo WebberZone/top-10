@@ -239,6 +239,7 @@ class QueryCacheTest extends WP_UnitTestCase {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Requires multisite.' );
 		}
+		add_filter( 'tptn_allow_network_queries', '__return_true' );
 		$home  = get_current_blog_id();
 		$other = self::factory()->blog->create();
 		$id    = self::factory()->post->create( array( 'post_title' => 'Local ranking' ) );

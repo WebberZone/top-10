@@ -126,7 +126,7 @@ class DailyQueryTest extends WP_UnitTestCase {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Multisite only.' );
 		}
-		$args = array( 'blog_id' => array( get_current_blog_id(), self::$fixture_blog_id ) );
+		$args = array_merge( tptn_settings_defaults(), array( 'blog_id' => array( get_current_blog_id(), self::$fixture_blog_id ) ) );
 		add_filter( 'tptn_allow_network_queries', '__return_false' );
 		$q = new \WebberZone\Top_Ten\Top_Ten_Core_Query( $args );
 		$this->assertFalse( $q->multiple_blogs );
