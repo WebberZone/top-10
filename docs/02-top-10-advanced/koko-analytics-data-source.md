@@ -3,7 +3,7 @@ slug: koko-analytics-data-source
 title: "Use Koko Analytics as the data source for Top 10"
 products: [top-10]
 sections: ["02-top-10-advanced"]
-tags: [top-10, koko-analytics, trackers]
+tags: [koko-analytics, top-10, trackers]
 status: publish
 order: 0
 toc: true
