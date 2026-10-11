@@ -33,23 +33,25 @@ class Helpers {
 	 *
 	 * @since 2.6.0
 	 *
-	 * @param string $time        A date/time string.
-	 * @param int    $daily_range Daily range.
-	 * @param int    $hour_range  Hour range.
+	 * @param string    $time        A date/time string.
+	 * @param int       $daily_range Daily range.
+	 * @param int       $hour_range  Hour range.
+	 * @param bool|null $daily_midnight Whether to use calendar days. Null uses the global setting.
 	 * @return string From date
 	 */
-	public static function get_from_date( $time = null, $daily_range = null, $hour_range = null ) {
+	public static function get_from_date( $time = null, $daily_range = null, $hour_range = null, $daily_midnight = null ) {
 
 		$current_time = isset( $time ) ? strtotime( $time ) : strtotime( current_time( 'mysql' ) );
 		$daily_range  = isset( $daily_range ) ? absint( $daily_range ) : (int) \tptn_get_option( 'daily_range' );
 		$hour_range   = isset( $hour_range ) ? absint( $hour_range ) : (int) \tptn_get_option( 'hour_range' );
 
-		if ( \tptn_get_option( 'daily_midnight' ) ) {
+		if ( $daily_midnight ?? \tptn_get_option( 'daily_midnight' ) ) {
 			$from_date = $current_time - ( max( 0, ( $daily_range - 1 ) ) * DAY_IN_SECONDS );
 			$from_date = gmdate( 'Y-m-d 0:0:0', $from_date );
 		} else {
 			$from_date = $current_time - ( $daily_range * DAY_IN_SECONDS + $hour_range * HOUR_IN_SECONDS );
-			$from_date = gmdate( 'Y-m-d H:0:0', $from_date );
+			$format    = isset( $time ) && false === $daily_midnight ? 'Y-m-d H:i:s' : 'Y-m-d H:0:0';
+			$from_date = gmdate( $format, $from_date );
 		}
 
 		/**
@@ -61,8 +63,9 @@ class Helpers {
 		 * @param string $time        A date/time string.
 		 * @param int    $daily_range Daily range.
 		 * @param int    $hour_range  Hour range.
+		 * @param bool|null $daily_midnight Whether to use calendar days. Null uses the global setting.
 		 */
-		return apply_filters( 'tptn_get_from_date', $from_date, $time, $daily_range, $hour_range );
+		return apply_filters( 'tptn_get_from_date', $from_date, $time, $daily_range, $hour_range, $daily_midnight );
 	}
 
 	/**

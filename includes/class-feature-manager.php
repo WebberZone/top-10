@@ -67,6 +67,10 @@ class Feature_Manager {
 				'setting' => 'enable_lazy_load',
 				'default' => true,
 			),
+			'advanced_block'          => array(
+				'setting' => 'enable_advanced_block',
+				'default' => true,
+			),
 			'query_block'             => array(
 				'setting' => 'enable_query_block',
 				'default' => true,

@@ -601,14 +601,14 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		if ( $this->is_daily ) {
 			if ( isset( $this->query_args['from_date'] ) ) {
-				$from_date = Helpers::get_from_date( $this->query_args['from_date'], 0, 0 );
+				$from_date = Helpers::get_from_date( $this->query_args['from_date'], 0, 0, false );
 			} else {
-				$from_date = Helpers::get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'] );
+				$from_date = Helpers::get_from_date( null, $this->query_args['daily_range'], $this->query_args['hour_range'], $this->query_args['daily_midnight'] ?? null );
 			}
 			$count_where .= $wpdb->prepare( " AND {$this->table_name}.dp_date >= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			if ( isset( $this->query_args['to_date'] ) ) {
-				$to_date      = Helpers::get_from_date( $this->query_args['to_date'], 0, 0 );
+				$to_date      = Helpers::get_from_date( $this->query_args['to_date'], 0, 0, false );
 				$count_where .= $wpdb->prepare( " AND {$this->table_name}.dp_date <= %s ", $to_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 			}
 		}

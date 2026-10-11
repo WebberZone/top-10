@@ -58,6 +58,7 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
   * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
 
 * __Advanced Blocks and Widgets__
+  * __Popular Posts — Advanced__: Standalone editable cards with six layouts, live previews, lifetime or selected-period view counts, taxonomy and author filters, manual selections, custom-field conditions, and configurable empty states
   * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor
   * __Enhanced Top 10 Featured Image Block__: Support for multiple image sources with fallbacks
   * __Popular Posts Block Enhancements__:

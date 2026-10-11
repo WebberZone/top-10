@@ -52,7 +52,7 @@ composer test           # Run all checks (phpcs + phpcompat + phpstan)
 
 ```bash
 pnpm run build           # Build free blocks (popular-posts, post-count)
-pnpm run build:pro       # Build all three pro blocks (query, featured-image, popular-posts-pro)
+pnpm run build:pro       # Build all premium blocks, including the Advanced block family
 pnpm run build:all       # Build free + pro blocks
 pnpm run build:assets    # Minify CSS/JS, generate RTL CSS
 pnpm run start           # Watch free blocks
@@ -63,7 +63,7 @@ pnpm run lint:css        # Stylelint
 ncu -u && pnpm install   # Update dependencies to latest and reinstall
 ```
 
-Pro block sources live in `includes/pro/blocks/src/{query,featured-image,popular-posts-pro}/`; each builds to its own `includes/pro/blocks/build/<name>/` directory.
+Pro block sources live in `includes/pro/blocks/src/`; each builds to its own `includes/pro/blocks/build/<name>/` directory. The standalone Advanced family lives in `src/advanced/`, builds with `pnpm run build:advanced`, and has separate query, preview, image, pattern, and post-result PHP modules. Run `build:pro-manifest` after individual block builds.
 
 ## Distribution zip vendor invariant
 
@@ -147,6 +147,8 @@ if ( tptn_freemius()->is__premium_only() ) {
   - **High-traffic tracker** — an even more minimal endpoint (`high-traffic-tracker-js.php`) that uses a pre-generated config file (`top-10-fast-config.php` placed in the WordPress root) with hardcoded DB credentials, requiring no WordPress load at all. The config is generated/deleted via admin AJAX actions (`tptn_generate_fast_config` / `tptn_delete_fast_config`).
 
 - **`class-styles.php`** (`Pro\Styles`) — Adds the `grid_thumbs` display style via `tptn_get_styles` filter; overrides the CSS path via `tptn_get_style` for pro-only CSS in `css/pro/`.
+
+- **`blocks/class-advanced.php`** — Standalone Advanced Popular Posts parent, template, empty state, image, title, date, excerpt, and count blocks. `Advanced_Query` normalizes bounded settings and loads matching period counts; `Advanced_Preview` handles editor-only REST previews; `Advanced_Image` resolves fallback images independently of the legacy image feature; `Advanced_Patterns` provides six layouts.
 
 - **`blocks/class-query.php`** — Pro Query block: a full server-side-rendered block for embedding popular posts lists with per-block settings.
 - **`blocks/class-featured-image.php`** — Pro Featured Image block.

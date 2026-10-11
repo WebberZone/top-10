@@ -226,6 +226,7 @@ class Settings {
 			'enable_legacy_widgets'          => 1,
 			'enable_rest_api'                => 1,
 			'enable_abilities_api'           => 1,
+			'enable_advanced_block'          => 1,
 			'enable_query_block'             => 1,
 			'enable_featured_image_block'    => 1,
 			'enable_popular_posts_pro_block' => 1,
@@ -1379,6 +1380,14 @@ class Settings {
 				'desc'    => esc_html__( 'Registers the classic Popular Posts and Views Count widgets. Disable this if you use blocks instead of classic widgets.', 'top-10' ),
 				'type'    => 'checkbox',
 				'default' => 1,
+			),
+			'enable_advanced_block'          => array(
+				'id'      => 'enable_advanced_block',
+				'name'    => esc_html__( 'Top 10 Popular Posts — Advanced block', 'top-10' ),
+				'desc'    => esc_html__( 'Registers the Advanced Popular Posts block with editable cards and layout patterns.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
+				'pro'     => true,
 			),
 			'enable_query_block'             => array(
 				'id'      => 'enable_query_block',
