@@ -1814,7 +1814,7 @@ class Settings {
 			array(
 				'id'          => Koko_Analytics::MODE_KOKO,
 				'name'        => __( 'Koko Analytics only', 'top-10' ),
-				'description' => __( 'Koko Analytics powers the popular posts. Top 10 stops tracking and hides its view counts', 'top-10' ),
+				'description' => __( 'Koko Analytics powers the popular posts. Top 10 stops tracking and hides the view counts it adds to posts and the admin post lists', 'top-10' ),
 			),
 		);
 

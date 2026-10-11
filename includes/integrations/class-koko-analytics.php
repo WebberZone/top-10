@@ -130,7 +130,7 @@ class Koko_Analytics {
 			}
 
 			$ready = array() === array_diff( array( 'date', 'post_id', 'pageviews' ), $columns ) ? KOKO_ANALYTICS_VERSION : '';
-			set_site_transient( $cache_key, $ready, DAY_IN_SECONDS );
+			set_site_transient( $cache_key, $ready, $ready ? DAY_IN_SECONDS : 5 * MINUTE_IN_SECONDS );
 		}
 
 		self::$available[ $blog_id ] = KOKO_ANALYTICS_VERSION === $ready;

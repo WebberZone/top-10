@@ -74,7 +74,7 @@ class Admin_Notices {
 			$admin_notices_api->register_notice(
 				array(
 					'id'          => 'tptn_koko_unavailable',
-					'message'     => '<p>' . esc_html__( 'Top 10: Koko Analytics is selected as the data source but is not active. Top 10 is tracking views and powering the popular posts until Koko Analytics is reactivated.', 'top-10' ) . '</p>',
+					'message'     => '<p>' . esc_html__( 'Top 10: Koko Analytics is selected as the data source but is not active or its database tables are not ready. Top 10 is tracking views and powering the popular posts until Koko Analytics is reactivated.', 'top-10' ) . '</p>',
 					'type'        => 'warning',
 					'dismissible' => false,
 					'capability'  => 'manage_options',
