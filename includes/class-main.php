@@ -117,6 +117,14 @@ final class Main {
 	public Cron $cron;
 
 	/**
+	 * Abilities API.
+	 *
+	 * @since 4.6.0
+	 * @var Abilities|null
+	 */
+	public ?Abilities $abilities = null;
+
+	/**
 	 * Pro class.
 	 *
 	 * @since 4.0.0
@@ -162,6 +170,7 @@ final class Main {
 		$this->tracker    = new Tracker();
 		$this->shortcodes = new Frontend\Shortcodes();
 		$this->cron       = new Cron();
+		$this->abilities  = new Abilities();
 
 		if ( Feature_Manager::is_enabled( 'blocks' ) ) {
 			$this->blocks = new Frontend\Blocks\Blocks();

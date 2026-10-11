@@ -65,6 +65,8 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Network-wide aggregated statistics dashboard | ✅ | ✅ |
 | Copy settings between multisite sites | ❌ | ✅ |
 | **Developer Tools** |  |  |
+| Abilities API: popular posts and view counts (WordPress 6.9+) | ✅ | ✅ |
+| Abilities API: count editing and cache clearing | ❌ | ✅ |
 | WP-CLI commands (counts, DB, cache, settings, cron, popular, status) | ❌ | ✅ |
 | **Support** |  |  |
 | Community forum | ✅ | ✅ |

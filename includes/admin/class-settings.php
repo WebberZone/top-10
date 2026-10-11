@@ -225,6 +225,7 @@ class Settings {
 			'enable_blocks'                  => 1,
 			'enable_legacy_widgets'          => 1,
 			'enable_rest_api'                => 1,
+			'enable_abilities_api'           => 1,
 			'enable_query_block'             => 1,
 			'enable_featured_image_block'    => 1,
 			'enable_popular_posts_pro_block' => 1,
@@ -1495,6 +1496,13 @@ class Settings {
 				'name' => '<h3>' . esc_html__( 'API integrations', 'top-10' ) . '</h3>',
 				'desc' => esc_html__( 'Control the Top 10 REST API endpoints used by integrations, tracking, blocks, and lazy loading.', 'top-10' ),
 				'type' => 'header',
+			),
+			'enable_abilities_api'           => array(
+				'id'      => 'enable_abilities_api',
+				'name'    => esc_html__( 'Abilities API', 'top-10' ),
+				'desc'    => esc_html__( 'Expose popular posts and view counts to authenticated integrations on WordPress 6.9+. Pro also exposes count editing and cache clearing. These abilities work independently of the Top 10 REST API endpoints.', 'top-10' ),
+				'type'    => 'checkbox',
+				'default' => 1,
 			),
 			'enable_rest_api'                => array(
 				'id'      => 'enable_rest_api',
