@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Helpers;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
@@ -43,6 +44,10 @@ class Tracker {
 	 */
 	public static function enqueue_scripts() {
 		global $post, $ajax_tptn_tracker;
+
+		if ( Koko_Analytics::is_tracking_disabled() ) {
+			return;
+		}
 
 		$is_singular       = is_singular();
 		$tracker_all_pages = (bool) \tptn_get_option( 'tracker_all_pages' );
@@ -296,7 +301,7 @@ class Tracker {
 		$activate_counter = in_array( 'overall', $trackers, true ) ? 1 : 0;
 		$activate_counter = $activate_counter + ( in_array( 'daily', $trackers, true ) ? 10 : 0 );
 
-		if ( 0 === $activate_counter ) {
+		if ( 0 === $activate_counter || Koko_Analytics::is_tracking_disabled() ) {
 			return $content;
 		}
 
@@ -384,6 +389,10 @@ class Tracker {
 	 * @return bool True when the request may be tracked.
 	 */
 	public static function is_tracking_request_allowed() {
+		if ( Koko_Analytics::is_tracking_disabled() ) {
+			return false;
+		}
+
 		foreach ( array( 'HTTP_SEC_PURPOSE', 'HTTP_PURPOSE' ) as $header ) {
 			$value = isset( $_SERVER[ $header ] ) && is_string( $_SERVER[ $header ] )
 				? sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) )
