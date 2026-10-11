@@ -11,6 +11,7 @@ use WebberZone\Top_Ten\Admin\Settings\Settings_API;
 use WebberZone\Top_Ten\Admin\Settings\Settings_Sanitize;
 use WebberZone\Top_Ten\Frontend\Display;
 use WebberZone\Top_Ten\Frontend\Media_Handler;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Helpers;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
@@ -636,6 +637,14 @@ class Settings {
 				'desc'    => esc_html__( 'Comma-separated list of post or page IDs to exclude displaying the top posts on. e.g. 188,320,500', 'top-10' ),
 				'type'    => 'numbercsv',
 				'default' => '',
+			),
+			'data_mode'            => array(
+				'id'      => 'data_mode',
+				'name'    => esc_html__( 'Data source', 'top-10' ),
+				'desc'    => self::get_data_mode_description(),
+				'type'    => 'radiodesc',
+				'default' => Koko_Analytics::MODE_TOP10,
+				'options' => self::get_data_modes(),
 			),
 			'tracker_header'       => array(
 				'id'   => 'tracker_header',
@@ -1781,6 +1790,63 @@ class Settings {
 		 * @param array $trackers Different trackers.
 		 */
 		return apply_filters( self::$prefix . '_get_tracker_types', $trackers );
+	}
+
+	/**
+	 * Function returns the different data modes.
+	 *
+	 * @since  4.6.0
+	 * @return array Data modes.
+	 */
+	public static function get_data_modes() {
+
+		$modes = array(
+			array(
+				'id'          => Koko_Analytics::MODE_TOP10,
+				'name'        => __( 'Top 10', 'top-10' ),
+				'description' => __( 'Top 10 tracks views and powers the popular posts (default)', 'top-10' ),
+			),
+			array(
+				'id'          => Koko_Analytics::MODE_HYBRID,
+				'name'        => __( 'Hybrid', 'top-10' ),
+				'description' => __( 'Koko Analytics powers the popular posts while Top 10 keeps tracking views and counts', 'top-10' ),
+			),
+			array(
+				'id'          => Koko_Analytics::MODE_KOKO,
+				'name'        => __( 'Koko Analytics only', 'top-10' ),
+				'description' => __( 'Koko Analytics powers the popular posts. Top 10 stops tracking and hides its view counts', 'top-10' ),
+			),
+		);
+
+		/**
+		 * Filter the array containing the data modes.
+		 *
+		 * @since 4.6.0
+		 *
+		 * @param array $modes Data modes.
+		 */
+		return apply_filters( self::$prefix . '_get_data_modes', $modes );
+	}
+
+	/**
+	 * Get the description for the data source setting.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @return string Description.
+	 */
+	public static function get_data_mode_description() {
+		$desc = esc_html__( 'Koko Analytics counts page views per day, so custom periods are rounded to whole days and overall counts cover the data Koko Analytics keeps. Network-wide lists always use Top 10.', 'top-10' );
+
+		if ( ! Koko_Analytics::is_available() ) {
+			$desc .= ' <strong>' . sprintf(
+				/* translators: %s: Link to the Koko Analytics plugin. */
+				esc_html__( 'Install and activate %s to use the Hybrid or Koko Analytics only modes. Until then, Top 10 is used.', 'top-10' ),
+				'<a href="https://wordpress.org/plugins/koko-analytics/" target="_blank">Koko Analytics</a>'
+			) . '</strong>';
+		}
+
+		return $desc;
 	}
 
 	/**

@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Helpers;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
@@ -48,6 +49,10 @@ class Counter {
 		// Track the number of times this function is called.
 		static $filter_calls = 0;
 		++$filter_calls;
+
+		if ( Koko_Analytics::is_tracking_disabled() ) {
+			return $content;
+		}
 
 		// Check if this is the last call of 'the_content' and only process for the main query.
 		if ( ! ( in_the_loop() && is_main_query() && (int) get_queried_object_id() === (int) $post->ID ) || ( doing_filter( 'the_content' ) && isset( $wp_filters['the_content'] ) && (int) $wp_filters['the_content'] !== $filter_calls ) ) {
@@ -97,7 +102,7 @@ class Counter {
 
 		$add_to = \tptn_get_option( 'add_to', false );
 
-		if ( ! empty( $add_to['feed'] ) ) {
+		if ( ! empty( $add_to['feed'] ) && ! Koko_Analytics::is_tracking_disabled() ) {
 			return $content . '<div class="tptn_counter" id="tptn_counter_' . $id . '">' . self::get_post_count( $id ) . '</div>';
 		} else {
 			return $content;
@@ -193,7 +198,7 @@ class Counter {
 			$id = absint( $post );
 		}
 
-		if ( $id <= 0 ) {
+		if ( $id <= 0 || Koko_Analytics::is_tracking_disabled() ) {
 			return '';
 		}
 
