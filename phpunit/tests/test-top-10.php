@@ -250,6 +250,11 @@ class TopTenTest extends WP_UnitTestCase {
 		$overall_table = \WebberZone\Top_Ten\Database::get_table();
 		$before_date   = '2000-01-03 00:00:00';
 
+		// rollup_daily() runs its own transactions, which commit this test's rows
+		// outside the WP test-suite rollback. Clear leftovers from earlier runs
+		// (or the single-site leg) so the counts below only see this test's rows.
+		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$daily_table}` WHERE blog_id = %d", $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
 		$rows = array(
 			array( $post_id, 1, '2000-01-01 00:00:00', $blog_id ),
 			array( $post_id, 2, '2000-01-01 01:00:00', $blog_id ),
@@ -331,6 +336,11 @@ class TopTenTest extends WP_UnitTestCase {
 			$wpdb->delete( $daily_table, array( 'postnumber' => $post_id ), array( '%d' ) );
 			$wpdb->delete( $daily_table, array( 'postnumber' => $other_post_id ), array( '%d' ) );
 			$wpdb->delete( $overall_table, array( 'postnumber' => $post_id ), array( '%d' ) );
+
+			// The WP test suite rolls the test transaction back in tear_down(),
+			// which would undo these deletes after rollup_daily() committed; commit
+			// them so the next test (or leg) starts from a clean table.
+			$wpdb->query( 'COMMIT' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		}
 	}
 
