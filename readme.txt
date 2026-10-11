@@ -184,83 +184,21 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 Release date: TBD
 
-**Changed**
-
-* Sped up daily popular-post queries for long date ranges, filtered lists and multisite networks.
-* Kept cached popular-post lists reusable when view counts changed on unrelated network sites.
-
-**Fixed**
-
-* Popular-post query caches were missed when the automatically generated end time changed between requests.
-* Cached popular-post rankings and output remained stale after view counts or posts changed.
-* Cross-site popular-post queries used invalid sorting references, and query callbacks remained active during later queries.
-* Cached network lists could return posts from the wrong site or omit posts with matching IDs on different sites.
-* Clearing the popular-post cache did not refresh lists when persistent object caching was enabled.
-
-= 4.5.2 =
-
-Release date: 7 October 2026
-
 **Added**
 
-* TranslatePress translation for popular post titles, excerpts and links returned through the REST API.
-* REST API endpoints toggle in the Features tab for disabling unused Top 10 API integrations.
-* [Pro] TranslatePress support for lazy-loaded popular posts.
-* [Pro] Independent lazy-loading module toggle in the Features tab. Disabling REST API endpoints also disables lazy loading.
+* WordPress Abilities API support for popular posts and view counts.
+* [Pro] Advanced Popular Posts block with six layouts and sidebar support, enabled by default.
+* [Pro] Abilities for editing counts and clearing caches.
 
 **Changed**
 
-* Updated Freemius SDK to 2.13.5.
+* Improved daily-query performance and multisite cache reuse.
 
 **Fixed**
 
-* Cached popular posts were shared across languages on WPML, Polylang and TranslatePress sites.
-* Setup wizard labels were not associated with their input fields.
-* Updating settings before any options had been saved could trigger a PHP deprecation warning.
-
-= 4.5.1 =
-
-Release date: 19 September 2026
-
-**Security**
-
-* Hardened thumbnail dimension handling to prevent stored cross-site scripting through block attributes.
-
-= 4.5.0 =
-
-Release date: 7 September 2026
-Release post: https://webberzone.com/announcements/top-10-v4-5/
-
-**Added**
-
-* [Pro] Popular Posts elements for Elementor, Bricks Builder and WPBakery Page Builder.
-* [Pro] Optional site-wide tracking for front pages, posts pages, archives and searches.
-* [Pro] Reduce Daily Table Size tool to combine older hourly records.
-* [Pro] `wp top10 db rollup` command for CLI and multisite use.
-
-**Changed**
-
-* Reduced admin overhead on large multisite networks by caching table metadata, probing WPP tables directly and using estimated row counts on the Tools page.
-* Sped up the dashboard with index-friendly `dp_date` ranges, optimized network popular-post queries and on-demand loading of historical tabs.
-* Setting defaults are now resolved from a lightweight list instead of building every settings field, so reading an option early in the page load no longer loads translations too early.
-
-**Security**
-
-* Hardened settings sanitization for users without the `unfiltered_html` capability.
-* Hardened referer and array handling in settings sanitization, and renamed the settings JS globals.
-
-**Fixed**
-
-* View tracking was lost during quick navigation or browser back-button restores.
-* View counts were recorded for prerendered or initially hidden pages.
-* Bot views were recorded from cached pages, and views were recorded for browser prefetches, prerenders and direct navigations to tracker URLs.
-* Tracker scripts did not run when loaded asynchronously after `DOMContentLoaded` had fired.
-* Generated output cache keys were not discoverable by the Clear Cache tools or the WP-CLI cache flush command.
-* Settings on a multisite network read another site's values in the same request after a `switch_to_blog()` call, when read via `tptn_get_option()` or the global `$tptn_settings`.
-* `tptn_get_settings()` returned `false` instead of an empty array when no settings had been saved yet.
-* Visit data was silently lost in funnel aggregation, and the Fast Tracker raised an undefined array key warning.
-* Plugin data was deleted when uninstalling one version while its paired free or Pro counterpart was active.
-* Improved compatibility with PHP 8.6.
+* Stale rankings, cache misses and cross-site query errors.
+* Missing tracking on bot-generated cached pages.
+* Incorrect rounding of custom date ranges.
 
 = Earlier versions =
 
@@ -269,4 +207,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.0 =
-Speeds up daily popular-post queries on large sites, makes query caching reusable, refreshes cached lists when counts or posts change, and fixes cross-site queries.
+Adds WordPress Abilities API support and the Pro Advanced Popular Posts block, speeds up daily queries, and keeps cached rankings current.
