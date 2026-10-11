@@ -186,13 +186,14 @@ Release date: TBD
 
 **Added**
 
-* WordPress Abilities API support for popular posts and view counts.
+* Koko Analytics as an optional data source for popular posts. Top 10 tracking can be switched off. Pro users also get it in network-wide lists.
+* WordPress Abilities API support for popular posts and view counts. Pro users also get abilities for editing counts and clearing caches.
 * [Pro] Advanced Popular Posts block with six layouts and sidebar support, enabled by default.
-* [Pro] Abilities for editing counts and clearing caches.
 
 **Changed**
 
 * Improved daily-query performance and multisite cache reuse.
+* Popular posts lists spanning multiple network sites are now Pro only.
 
 **Fixed**
 
@@ -207,4 +208,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.0 =
-Adds WordPress Abilities API support and the Pro Advanced Popular Posts block, speeds up daily queries, and keeps cached rankings current.
+Adds Koko Analytics as an optional data source, Abilities API support and the Pro Advanced Popular Posts block. Network-wide lists now need Pro.

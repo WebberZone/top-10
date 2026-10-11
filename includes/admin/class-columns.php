@@ -9,6 +9,7 @@ namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
 use WebberZone\Top_Ten\Counter;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Helpers;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
@@ -65,6 +66,10 @@ class Columns {
 	 * @return array Modified array of columns.
 	 */
 	public static function add_columns( $cols ) {
+
+		if ( Koko_Analytics::is_tracking_disabled() ) {
+			return $cols;
+		}
 
 		if ( ( current_user_can( 'manage_options' ) ) || ( \tptn_get_option( 'show_count_non_admins' ) ) ) {
 			if ( \tptn_get_option( 'pv_in_admin' ) ) {

@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 use function WebberZone\Top_Ten\wz_top_ten;
 
@@ -67,6 +68,18 @@ class Admin_Notices {
 					)
 				);
 			}
+		}
+
+		if ( Koko_Analytics::MODE_TOP10 !== Koko_Analytics::get_mode() && ! Koko_Analytics::is_available() ) {
+			$admin_notices_api->register_notice(
+				array(
+					'id'          => 'tptn_koko_unavailable',
+					'message'     => '<p>' . esc_html__( 'Top 10: Koko Analytics is selected as the data source but is not active or its database tables are not ready. Top 10 is tracking views and powering the popular posts until Koko Analytics is reactivated.', 'top-10' ) . '</p>',
+					'type'        => 'warning',
+					'dismissible' => false,
+					'capability'  => 'manage_options',
+				)
+			);
 		}
 
 		$missing = $this->get_missing_tables();
