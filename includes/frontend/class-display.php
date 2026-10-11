@@ -168,7 +168,7 @@ class Display {
 		 */
 		$post_classes = apply_filters( 'tptn_post_class', $post_classes );
 
-		$output .= '<div class="' . $post_classes . '" data-tptn-source="' . esc_attr( Koko_Analytics::get_list_source( $args['blog_id'] ?? array() ) ) . '">';
+		$output .= '<div class="' . $post_classes . '" data-tptn-source="' . esc_attr( Koko_Analytics::get_list_source() ) . '">';
 
 		if ( $results ) {
 

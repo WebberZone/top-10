@@ -188,12 +188,14 @@ Release date: TBD
 
 * WordPress Abilities API support for popular posts and view counts.
 * Koko Analytics data source: let Koko Analytics power the popular posts, optionally switching off Top 10 tracking.
+* [Pro] Koko Analytics data for popular posts lists across network sites.
 * [Pro] Advanced Popular Posts block with six layouts and sidebar support, enabled by default.
 * [Pro] Abilities for editing counts and clearing caches.
 
 **Changed**
 
 * Improved daily-query performance and multisite cache reuse.
+* Popular posts lists that span several network sites are now a Pro feature. Top 10 shows the current site's list instead.
 
 **Fixed**
 

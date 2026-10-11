@@ -122,10 +122,26 @@ class DailyQueryTest extends WP_UnitTestCase {
 		$this->assertSame( array( '25', '10' ), wp_list_pluck( $wpdb->get_results( $q->request ), 'visits' ) );
 	}
 
+	public function test_network_queries_are_limited_to_current_site_unless_allowed() {
+		if ( ! is_multisite() ) {
+			$this->markTestSkipped( 'Multisite only.' );
+		}
+		$args = array( 'blog_id' => array( get_current_blog_id(), self::$fixture_blog_id ) );
+		add_filter( 'tptn_allow_network_queries', '__return_false' );
+		$q = new \WebberZone\Top_Ten\Top_Ten_Core_Query( $args );
+		$this->assertFalse( $q->multiple_blogs );
+		$this->assertSame( array( get_current_blog_id() ), $q->blog_id );
+		remove_filter( 'tptn_allow_network_queries', '__return_false' );
+		add_filter( 'tptn_allow_network_queries', '__return_true' );
+		$q = new \WebberZone\Top_Ten\Top_Ten_Core_Query( $args );
+		$this->assertTrue( $q->multiple_blogs );
+	}
+
 	public function test_multisite_aggregation_preserves_blog_scope() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Multisite only.' );
 		}
+		add_filter( 'tptn_allow_network_queries', '__return_true' );
 		global $wpdb;
 		$ids = $this->seed();
 		$blog_id = self::$fixture_blog_id;

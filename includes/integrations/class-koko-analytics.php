@@ -97,18 +97,14 @@ class Koko_Analytics {
 	}
 
 	/**
-	 * Get the source that powers a list for the given blog IDs.
+	 * Get the source that powers popular posts lists. Sites in a network list without Koko Analytics use Top 10.
 	 *
 	 * @since 4.6.0
 	 *
-	 * @param mixed $blog_ids Blog IDs of the list. Empty for the current blog.
 	 * @return string 'koko' or 'top10'.
 	 */
-	public static function get_list_source( $blog_ids = array() ): string {
-		$blog_ids = wp_parse_id_list( $blog_ids );
-		$single   = ! $blog_ids || array( get_current_blog_id() ) === array_values( array_unique( $blog_ids ) );
-
-		return ( $single && self::is_source() ) ? 'koko' : 'top10';
+	public static function get_list_source(): string {
+		return self::is_source() ? 'koko' : 'top10';
 	}
 
 	/**
@@ -133,19 +129,20 @@ class Koko_Analytics {
 	public static function is_available( $blog_id = 0 ): bool {
 		global $wpdb;
 
-		if ( ! defined( 'KOKO_ANALYTICS_VERSION' ) ) {
-			return false;
-		}
-
 		$blog_id = $blog_id ? (int) $blog_id : get_current_blog_id();
 		if ( isset( self::$available[ $blog_id ] ) ) {
 			return self::$available[ $blog_id ];
 		}
 
-		$cache_key = 'tptn_koko_ready_' . $blog_id;
+		if ( ! self::is_active( $blog_id ) ) {
+			self::$available[ $blog_id ] = false;
+			return false;
+		}
+
+		$cache_key = 'tptn_koko_status_' . $blog_id;
 		$ready     = get_site_transient( $cache_key );
 
-		if ( KOKO_ANALYTICS_VERSION !== $ready ) {
+		if ( false === $ready ) {
 			$table   = self::get_table( $blog_id );
 			$columns = array();
 
@@ -155,13 +152,35 @@ class Koko_Analytics {
 				$columns = $wpdb->get_col( $wpdb->prepare( 'SHOW COLUMNS FROM %i', $table ) );
 			}
 
-			$ready = array() === array_diff( array( 'date', 'post_id', 'pageviews' ), $columns ) ? KOKO_ANALYTICS_VERSION : '';
-			set_site_transient( $cache_key, $ready, $ready ? DAY_IN_SECONDS : 5 * MINUTE_IN_SECONDS );
+			$ready = array() === array_diff( array( 'date', 'post_id', 'pageviews' ), $columns ) ? 'ready' : 'missing';
+			set_site_transient( $cache_key, $ready, 'ready' === $ready ? DAY_IN_SECONDS : 5 * MINUTE_IN_SECONDS );
 		}
 
-		self::$available[ $blog_id ] = KOKO_ANALYTICS_VERSION === $ready;
+		self::$available[ $blog_id ] = 'ready' === $ready;
 
 		return self::$available[ $blog_id ];
+	}
+
+	/**
+	 * Whether Koko Analytics is active on a site.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @return bool
+	 */
+	private static function is_active( $blog_id ): bool {
+		$plugin = defined( 'KOKO_ANALYTICS_PLUGIN_FILE' ) ? plugin_basename( KOKO_ANALYTICS_PLUGIN_FILE ) : 'koko-analytics/koko-analytics.php';
+
+		if ( ! is_multisite() || get_current_blog_id() === $blog_id ) {
+			return defined( 'KOKO_ANALYTICS_VERSION' );
+		}
+
+		if ( array_key_exists( $plugin, (array) get_site_option( 'active_sitewide_plugins', array() ) ) ) {
+			return true;
+		}
+
+		return in_array( $plugin, (array) get_blog_option( $blog_id, 'active_plugins', array() ), true );
 	}
 
 	/**

@@ -26,6 +26,13 @@ if ( ! defined( 'WPINC' ) ) {
 class Top_Ten_Core_Query extends \WP_Query {
 
 	/**
+	 * Placeholder for each site's counts table in network lists.
+	 *
+	 * @since 4.6.0
+	 */
+	const NETWORK_COUNTS_TOKEN = '/*tptn_network_counts*/';
+
+	/**
 	 * Array of blog IDs.
 	 *
 	 * @since 3.0.2
@@ -225,6 +232,19 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		// Parse the blog_id argument to get an array of IDs.
 		$this->blog_id = wp_parse_id_list( $args['blog_id'] );
+
+		/**
+		 * Filters whether popular posts lists may include other sites in the network.
+		 *
+		 * @since 4.6.0
+		 *
+		 * @param bool  $allow Whether to allow lists across sites. Default false.
+		 * @param array $args  Query arguments.
+		 */
+		if ( is_multisite() && ! apply_filters( 'tptn_allow_network_queries', false, $args ) ) {
+			$this->blog_id = array( get_current_blog_id() );
+		}
+
 		if ( is_multisite() ) {
 			if ( count( $this->blog_id ) > 1 || ( 1 === count( $this->blog_id ) && get_current_blog_id() !== (int) $this->blog_id[0] ) ) {
 				$this->multiple_blogs = true;
@@ -236,10 +256,10 @@ class Top_Ten_Core_Query extends \WP_Query {
 		 *
 		 * @since 4.6.0
 		 *
-		 * @param bool  $use_koko Whether to use Koko Analytics. Network-wide queries always use Top 10.
+		 * @param bool  $use_koko Whether to use Koko Analytics. Sites in a network list without Koko Analytics use Top 10.
 		 * @param array $args     Query arguments.
 		 */
-		$this->use_koko = ! $this->multiple_blogs && (bool) apply_filters( 'tptn_query_use_koko_analytics', Koko_Analytics::is_source(), $args );
+		$this->use_koko = (bool) apply_filters( 'tptn_query_use_koko_analytics', Koko_Analytics::is_source(), $args );
 
 		// Set the number of posts to be retrieved with over-fetch buffer for PHP exclusions.
 		$requested_limit = (int) $args['limit'];
@@ -580,9 +600,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		if ( $this->use_koko ) {
-			list( $from_date, $to_date ) = $this->get_count_date_range();
-
-			$join .= ' INNER JOIN (' . Koko_Analytics::get_counts_sql( $from_date, $to_date ) . ") AS {$this->table_name} ON {$this->table_name}.postnumber={$wpdb->posts}.ID ";
+			// Network lists swap in each site's counts table in posts_clauses().
+			$counts = $this->multiple_blogs ? self::NETWORK_COUNTS_TOKEN : '(' . $this->get_counts_sql( get_current_blog_id() ) . ')';
+			$join  .= " INNER JOIN {$counts} AS {$this->table_name} ON {$this->table_name}.postnumber={$wpdb->posts}.ID ";
 		} else {
 			$join .= " INNER JOIN {$this->table_name} ON {$this->table_name}.postnumber={$wpdb->posts}.ID ";
 		}
@@ -674,6 +694,36 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$to_date = isset( $this->query_args['to_date'] ) ? Helpers::get_from_date( $this->query_args['to_date'], 0, 0, false ) : '';
 
 		return array( $from_date, $to_date );
+	}
+
+	/**
+	 * Build a site's counts table for Koko Analytics mode, using Top 10 counts when Koko Analytics is not available on that site.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @return string SELECT statement exposing postnumber, cntaccess and blog_id.
+	 */
+	private function get_counts_sql( $blog_id ) {
+		global $wpdb;
+
+		list( $from_date, $to_date ) = $this->get_count_date_range();
+
+		if ( Koko_Analytics::is_available( $blog_id ) ) {
+			return Koko_Analytics::get_counts_sql( $from_date, $to_date, $blog_id );
+		}
+
+		$table = Database::get_table( $this->is_daily );
+		if ( ! $this->is_daily ) {
+			return $wpdb->prepare( 'SELECT postnumber, cntaccess, blog_id FROM %i WHERE blog_id = %d', $table, $blog_id );
+		}
+
+		$sql = $wpdb->prepare( 'SELECT postnumber, SUM(cntaccess) AS cntaccess, blog_id FROM %i WHERE blog_id = %d AND dp_date >= %s', $table, $blog_id, $from_date );
+		if ( $to_date ) {
+			$sql .= $wpdb->prepare( ' AND dp_date <= %s', $to_date );
+		}
+
+		return $sql . ' GROUP BY postnumber, blog_id';
 	}
 
 	/**
@@ -791,12 +841,15 @@ class Top_Ten_Core_Query extends \WP_Query {
 					";
 				$ms_select .= $wpdb->prepare( " AND {$this->table_name}.blog_id = %d", $blog_id ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-				if ( $this->is_daily ) {
+				if ( $this->is_daily && ! $this->use_koko ) {
 					$ms_select .= " GROUP BY {$this->table_name}.postnumber ";
 				}
 
 				$ms_select = str_replace( $root_site_db_prefix, $wpdb->prefix, $ms_select );
 				$ms_select = str_replace( "{$wpdb->prefix}top_ten", "{$wpdb->base_prefix}top_ten", $ms_select );
+				if ( $this->use_koko ) {
+					$ms_select = str_replace( self::NETWORK_COUNTS_TOKEN, '(' . $this->get_counts_sql( $blog_id ) . ')', $ms_select );
+				}
 
 				$this->ms_select[] = $ms_select;
 
