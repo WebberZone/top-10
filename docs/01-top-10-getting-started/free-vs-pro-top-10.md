@@ -31,6 +31,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | **Tracking & Performance** |  |  |
 | Standard AJAX tracker | ✅ | ✅ |
 | Buffered visit tracking (funnel table) | ✅ | ✅ |
+| Koko Analytics as the data source | ✅ | ✅ |
 | Fast tracker (lightweight PHP endpoint) | ❌ | ✅ |
 | High-traffic tracker (zero WordPress load) | ❌ | ✅ |
 | RSS / Atom feed view counting | ❌ | ✅ |
@@ -63,6 +64,8 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Sortable admin columns on custom post types | ❌ | ✅ |
 | **Multisite** |  |  |
 | Network-wide aggregated statistics dashboard | ✅ | ✅ |
+| Popular posts lists across network sites | ❌ | ✅ |
+| Koko Analytics data in network-wide lists | ❌ | ✅ |
 | Copy settings between multisite sites | ❌ | ✅ |
 | **Developer Tools** |  |  |
 | Abilities API: popular posts and view counts (WordPress 6.9+) | ✅ | ✅ |
