@@ -29,7 +29,10 @@ class TopTenTest extends WP_UnitTestCase {
 
 		$this->assertStringStartsWith( 'tptn_cache_', $key );
 		set_transient( $key, 'cache test', MINUTE_IN_SECONDS );
-		$this->assertContains( $key, \WebberZone\Top_Ten\Util\Cache::get_widget_keys() );
+		$this->assertSame( 'cache test', get_transient( $key ) );
+		if ( ! wp_using_ext_object_cache() ) {
+			$this->assertContains( $key, \WebberZone\Top_Ten\Util\Cache::get_widget_keys() );
+		}
 		$this->assertSame( 1, \WebberZone\Top_Ten\Util\Cache::delete( array( $key ) ) );
 		$this->assertFalse( get_transient( $key ) );
 	}
@@ -42,9 +45,11 @@ class TopTenTest extends WP_UnitTestCase {
 		$settings = \WebberZone\Top_Ten\Admin\Settings::settings_features();
 		$headers  = array(
 			'features_display_header',
+			'features_performance_header',
 			'features_tracking_header',
 			'features_data_header',
 			'features_admin_header',
+			'features_api_header',
 		);
 
 		foreach ( $headers as $header ) {
@@ -64,6 +69,18 @@ class TopTenTest extends WP_UnitTestCase {
 			$this->assertArrayHasKey( $setting, $settings );
 			$this->assertTrue( $settings[ $setting ]['pro'] );
 		}
+
+		$this->assertSame( 'enable_rest_api', $features['rest_api']['setting'] );
+		$this->assertTrue( $features['rest_api']['default'] );
+		$this->assertSame( 1, $settings['enable_rest_api']['default'] );
+		$this->assertArrayNotHasKey( 'pro', $settings['enable_rest_api'] );
+		$this->assertSame( 'enable_lazy_load', $features['lazy_load']['setting'] );
+		$this->assertTrue( $features['lazy_load']['default'] );
+		$this->assertSame( 1, $settings['enable_lazy_load']['default'] );
+		$this->assertTrue( $settings['enable_lazy_load']['pro'] );
+		$this->assertSame( 0, \WebberZone\Top_Ten\Admin\Settings::get_defaults()['lazy_load'] );
+		$this->assertSame( 1, \WebberZone\Top_Ten\Admin\Settings::get_defaults()['enable_lazy_load'] );
+		$this->assertArrayHasKey( 'lazy_load', \WebberZone\Top_Ten\Admin\Settings::settings_general() );
 	}
 
 	/**
@@ -99,7 +116,7 @@ class TopTenTest extends WP_UnitTestCase {
 		$this->assertCount( 4, $statuses );
 		$this->assertNotContains( false, $statuses );
 
-		$queries  = array();
+		$queries = array();
 		add_filter( 'query', $listener );
 		try {
 			\WebberZone\Top_Ten\Database::get_table_installation_status();
@@ -114,7 +131,7 @@ class TopTenTest extends WP_UnitTestCase {
 		);
 		$this->assertCount( 0, $metadata_queries );
 
-		$queries  = array();
+		$queries       = array();
 		$missing_table = $wpdb->prefix . 'top_ten_missing_for_test';
 		add_filter( 'query', $listener );
 		try {
@@ -160,6 +177,61 @@ class TopTenTest extends WP_UnitTestCase {
 			$this->assertStringNotContainsString( 'ANALYZE TABLE', $query );
 			$this->assertStringNotContainsString( 'COUNT(*) FROM', $query );
 		}
+
+		wp_cache_delete( 'tptn_table_statistics', 'top-10' );
+		$queries = array();
+		add_filter( 'query', $listener );
+		try {
+			$cached_stats = \WebberZone\Top_Ten\Database::get_table_statistics();
+		} finally {
+			remove_filter( 'query', $listener );
+		}
+
+		$metadata_queries = array_filter(
+			$queries,
+			function ( $query ) {
+				return false !== stripos( $query, 'information_schema.TABLES' ) || false !== stripos( $query, 'sqlite_master' );
+			}
+		);
+		$this->assertSame( $stats, $cached_stats );
+		$this->assertCount( 0, $metadata_queries );
+	}
+
+	/**
+	 * Use direct table probes for the optional WPP importer tables.
+	 */
+	public function test_wpp_table_check_avoids_show_tables_like() {
+		global $wpdb;
+
+		$importer = new \WebberZone\Top_Ten\Admin\WPP_Importer();
+		$method   = new ReflectionMethod( $importer, 'wpp_tables_exist' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+		$queries  = array();
+		$listener = function ( $query ) use ( &$queries ) {
+			$queries[] = $query;
+			return $query;
+		};
+		add_filter( 'query', $listener );
+
+		try {
+			$method->invoke( $importer );
+		} finally {
+			remove_filter( 'query', $listener );
+		}
+
+		$wpp_queries = array_filter(
+			$queries,
+			function ( $query ) use ( $wpdb ) {
+				return false !== stripos( $query, $wpdb->prefix . 'popularposts' );
+			}
+		);
+		$this->assertCount( 2, $wpp_queries );
+		foreach ( $wpp_queries as $query ) {
+			$this->assertStringNotContainsString( 'SHOW TABLES LIKE', $query );
+			$this->assertStringContainsString( 'SELECT 1 FROM', $query );
+		}
 	}
 
 	/**
@@ -195,9 +267,9 @@ class TopTenTest extends WP_UnitTestCase {
 						$daily_table,
 						array(
 							'postnumber' => $row[0],
-							'cntaccess' => $row[1],
-							'dp_date'   => $row[2],
-							'blog_id'   => $row[3],
+							'cntaccess'  => $row[1],
+							'dp_date'    => $row[2],
+							'blog_id'    => $row[3],
 						),
 						array( '%d', '%d', '%s', '%d' )
 					)
@@ -270,17 +342,33 @@ class TopTenTest extends WP_UnitTestCase {
 
 		\WebberZone\Top_Ten\Admin\Activator::create_tables();
 
-		$post_id        = $this->factory->post->create( array( 'post_status' => 'publish' ) );
-		$blog_id        = get_current_blog_id();
-		$other_blog_id  = $blog_id + 1000;
-		$daily_table    = \WebberZone\Top_Ten\Database::get_table( true );
-		$overall_table  = \WebberZone\Top_Ten\Database::get_table();
-		$old_orderby    = isset( $_REQUEST['orderby'] ) ? $_REQUEST['orderby'] : null;
-		$old_order      = isset( $_REQUEST['order'] ) ? $_REQUEST['order'] : null;
+		$post_id       = $this->factory->post->create( array( 'post_status' => 'publish' ) );
+		$blog_id       = get_current_blog_id();
+		$other_blog_id = $blog_id + 1000;
+		$daily_table   = \WebberZone\Top_Ten\Database::get_table( true );
+		$overall_table = \WebberZone\Top_Ten\Database::get_table();
+		$old_orderby   = isset( $_REQUEST['orderby'] ) ? $_REQUEST['orderby'] : null;
+		$old_order     = isset( $_REQUEST['order'] ) ? $_REQUEST['order'] : null;
 
 		try {
-			$wpdb->insert( $overall_table, array( 'postnumber' => $post_id, 'cntaccess' => 1000000, 'blog_id' => $blog_id ), array( '%d', '%d', '%d' ) );
-			$wpdb->insert( $overall_table, array( 'postnumber' => $post_id, 'cntaccess' => 900000, 'blog_id' => $other_blog_id ), array( '%d', '%d', '%d' ) );
+			$wpdb->insert(
+				$overall_table,
+				array(
+					'postnumber' => $post_id,
+					'cntaccess'  => 1000000,
+					'blog_id'    => $blog_id,
+				),
+				array( '%d', '%d', '%d' )
+			);
+			$wpdb->insert(
+				$overall_table,
+				array(
+					'postnumber' => $post_id,
+					'cntaccess'  => 900000,
+					'blog_id'    => $other_blog_id,
+				),
+				array( '%d', '%d', '%d' )
+			);
 
 			$daily_rows = array(
 				array( $post_id, 500000, '2026-01-01 00:00:00', $blog_id ),
@@ -301,7 +389,7 @@ class TopTenTest extends WP_UnitTestCase {
 				);
 			}
 
-			$range = array(
+			$range               = array(
 				'post-date-filter-from' => '01 Jan 2026',
 				'post-date-filter-to'   => '01 Jan 2026',
 			);
@@ -405,21 +493,21 @@ class TopTenTest extends WP_UnitTestCase {
 		add_filter( 'query', $listener );
 
 		try {
-			$dashboard       = new \WebberZone\Top_Ten\Admin\Dashboard();
-			$single_args     = array(
+			$dashboard               = new \WebberZone\Top_Ten\Admin\Dashboard();
+			$single_args             = array(
 				'daily'     => true,
 				'from_date' => '01 Jan 2026',
 				'to_date'   => '02 Jan 2026',
 				'blog_id'   => $blog_id,
 				'network'   => false,
 			);
-			$single_results  = $dashboard->get_popular_posts( $single_args );
-			$single_total    = $dashboard->get_period_total_visits( $single_args );
-			$network_args    = $single_args;
+			$single_results          = $dashboard->get_popular_posts( $single_args );
+			$single_total            = $dashboard->get_period_total_visits( $single_args );
+			$network_args            = $single_args;
 			$network_args['network'] = true;
-			$network_results = $dashboard->get_popular_posts( $network_args );
-			$network_total   = $dashboard->get_period_total_visits( $network_args );
-			$chart           = $dashboard->fetch_visits_by_date( '2026-01-01', '2026-01-02', true );
+			$network_results         = $dashboard->get_popular_posts( $network_args );
+			$network_total           = $dashboard->get_period_total_visits( $network_args );
+			$chart                   = $dashboard->fetch_visits_by_date( '2026-01-01', '2026-01-02', true );
 		} finally {
 			remove_filter( 'query', $listener );
 			$wpdb->delete( $daily_table, array( 'postnumber' => $post_id ), array( '%d' ) );
@@ -452,7 +540,7 @@ class TopTenTest extends WP_UnitTestCase {
 	 */
 	public function test_dashboard_lazy_loads_historical_tabs() {
 		$dashboard = new \WebberZone\Top_Ten\Admin\Dashboard();
-		$tabs     = $dashboard->get_tabs();
+		$tabs      = $dashboard->get_tabs();
 		$tab_count = 0;
 		foreach ( $tabs as $tab ) {
 			if ( empty( $tab['hide'] ) ) {
@@ -495,5 +583,53 @@ class TopTenTest extends WP_UnitTestCase {
 
 		$post = get_post( $post_id );
 		$this->assertEquals( $user_id, $post->post_author );
+	}
+
+	/**
+	 * Ensure the tracker is enqueued even when a caching preload bot requests the page
+	 * with Do Not Track Bots enabled. Bot filtering must happen at the endpoint, not
+	 * at HTML-generation time, so cached pages still contain the tracker for humans.
+	 */
+	public function test_tracker_enqueued_for_preload_bot_with_no_bots_enabled() {
+		$post_id = $this->factory->post->create( array( 'post_status' => 'publish' ) );
+
+		$original_ua                = $_SERVER['HTTP_USER_AGENT'] ?? '';
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 (compatible; WP-Rocket-SaaS/1.0; +https://wp-rocket.me/bot/)';
+
+		$original_settings             = get_option( 'tptn_settings', array() );
+		$settings                      = \tptn_get_settings();
+		$settings['no_bots']           = 1;
+		$settings['tracker_all_pages'] = 1;
+		$settings['track_users']       = array( 'authors', 'editors', 'admins' );
+		$settings['logged_in']         = 1;
+		update_option( 'tptn_settings', $settings );
+
+		$this->go_to( get_permalink( $post_id ) );
+
+		\WebberZone\Top_Ten\Tracker::enqueue_scripts();
+
+		$this->assertTrue( wp_script_is( 'tptn_tracker', 'enqueued' ), 'Tracker must be enqueued for preload bot UA so cached HTML includes it.' );
+
+		$_SERVER['HTTP_USER_AGENT'] = $original_ua;
+		update_option( 'tptn_settings', $original_settings );
+	}
+
+	/**
+	 * Ensure endpoint-level bot blocking still rejects tracker requests from bots
+	 * when Do Not Track Bots is enabled.
+	 */
+	public function test_tracking_request_blocked_for_bot_at_endpoint() {
+		$original_ua                = $_SERVER['HTTP_USER_AGENT'] ?? '';
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 (compatible; WP-Rocket-SaaS/1.0; +https://wp-rocket.me/bot/)';
+
+		$original_settings   = get_option( 'tptn_settings', array() );
+		$settings            = \tptn_get_settings();
+		$settings['no_bots'] = 1;
+		update_option( 'tptn_settings', $settings );
+
+		$this->assertFalse( \WebberZone\Top_Ten\Tracker::is_tracking_request_allowed() );
+
+		$_SERVER['HTTP_USER_AGENT'] = $original_ua;
+		update_option( 'tptn_settings', $original_settings );
 	}
 }
