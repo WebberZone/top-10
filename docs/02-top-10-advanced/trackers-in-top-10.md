@@ -102,6 +102,10 @@ The optimal tracking method depends on your website's specific requirements. Con
 - **Plugin compatibility:** Ensure the chosen tracking method is compatible with other plugins you're using. If any plugin or your hosting blocks access to the Fast Tracker file, whitelist `/wp-content/plugins/top-10-pro/includes/pro/fast-tracker-js.php`.
 - **Caching:** Because every tracker type writes to the funnel and not directly to the count tables, page caching does not interfere with tracking. Each visit still fires the tracker JS regardless of whether the HTML page itself was served from cache.
 
+### Using Koko Analytics instead
+
+If you run Koko Analytics, the **Koko Analytics only** data source switches off every Top 10 tracker and builds popular posts lists from Koko Analytics page views. See [Use Koko Analytics as the data source for Top 10](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/).
+
 ### Additional Tips
 
 - **Test and monitor:** Experiment with different tracking methods to determine the best performance for your website.

@@ -58,6 +58,12 @@ This option uses JavaScript to fetch the latest count from a JSON endpoint and w
 
 Enter a comma-separated list of post, page or custom post type IDs to exclude displaying the top posts on. e.g. 188,320,500
 
+### Data source
+
+Choose where popular posts lists get their view counts. **Top 10** (default) uses Top 10's own counts. **Hybrid** uses [Koko Analytics](https://wordpress.org/plugins/koko-analytics/) page views for the lists while Top 10 keeps tracking. **Koko Analytics only** uses Koko Analytics page views and switches off Top 10 tracking and the view counts it adds to posts and admin lists.
+
+Hybrid and Koko Analytics only need Koko Analytics to be active. The description shows the mode in use. See [Use Koko Analytics as the data source for Top 10](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/).
+
 ## Tracker settings
 
 ### Enable trackers

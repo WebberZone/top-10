@@ -44,7 +44,7 @@ In addition to the <a href="https://developer.wordpress.org/reference/classes/wp
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `blog_id` | `array` or `string` | Array or comma-separated string of blog IDs. |
+| `blog_id` | `array` or `string` | Array or comma-separated string of blog IDs. Lists across several sites need Top 10 Pro; the free plugin uses the current site. |
 | `daily` | `bool` | Set to `true` to fetch daily or custom period posts. Set to `false` for the overall popular posts. |
 | `daily_range` | `number` | Enter the number of days, e.g. set it to 7 to fetch the popular posts in the past week. |
 | `include_cat_ids` | `array` or `string` | Array or comma-separated string of categories or `term_taxonomy_id`s. |
