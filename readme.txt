@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.2
+Stable tag: 4.6.0-beta1
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -180,9 +180,9 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
-= 4.6.0 =
+= 4.6.0-beta1 =
 
-Release date: TBD
+Release date: 11 October 2026
 
 **Added**
 
@@ -207,5 +207,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.6.0 =
+= 4.6.0-beta1 =
 Adds Koko Analytics as an optional data source, Abilities API support and the Pro Advanced Popular Posts block. Network-wide lists now need Pro.
