@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Frontend;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Helpers;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -167,7 +168,7 @@ class Display {
 		 */
 		$post_classes = apply_filters( 'tptn_post_class', $post_classes );
 
-		$output .= '<div class="' . $post_classes . '">';
+		$output .= '<div class="' . $post_classes . '" data-tptn-source="' . esc_attr( Koko_Analytics::get_list_source( $args['blog_id'] ?? array() ) ) . '">';
 
 		if ( $results ) {
 

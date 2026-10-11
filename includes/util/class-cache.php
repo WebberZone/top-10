@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Util;
 
 use WebberZone\Top_Ten\Frontend\Language_Handler;
+use WebberZone\Top_Ten\Integrations\Koko_Analytics;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -247,6 +248,7 @@ class Cache {
 	public static function get_key( $attr ): string {
 		$args                           = (array) $attr;
 		$args['_tptn_cache_generation'] = get_site_option( 'tptn_cache_generation', '' );
+		$args['_tptn_data_mode']        = Koko_Analytics::get_effective_mode();
 		if ( is_multisite() ) {
 			$blog_ids = array_unique( array_merge( array( get_current_blog_id() ), wp_parse_id_list( $args['blog_id'] ?? array() ), wp_parse_id_list( $args['_tptn_cache_blog_ids'] ?? array() ) ) );
 			sort( $blog_ids, SORT_NUMERIC );

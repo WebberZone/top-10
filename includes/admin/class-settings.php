@@ -643,7 +643,7 @@ class Settings {
 				'name'    => esc_html__( 'Data source', 'top-10' ),
 				'desc'    => self::get_data_mode_description(),
 				'type'    => 'radiodesc',
-				'default' => Koko_Analytics::MODE_TOP10,
+				'default' => Koko_Analytics::MODE_HYBRID,
 				'options' => self::get_data_modes(),
 			),
 			'tracker_header'       => array(
@@ -1804,12 +1804,12 @@ class Settings {
 			array(
 				'id'          => Koko_Analytics::MODE_TOP10,
 				'name'        => __( 'Top 10', 'top-10' ),
-				'description' => __( 'Top 10 tracks views and powers the popular posts (default)', 'top-10' ),
+				'description' => __( 'Top 10 tracks views and powers the popular posts', 'top-10' ),
 			),
 			array(
 				'id'          => Koko_Analytics::MODE_HYBRID,
 				'name'        => __( 'Hybrid', 'top-10' ),
-				'description' => __( 'Koko Analytics powers the popular posts while Top 10 keeps tracking views and counts', 'top-10' ),
+				'description' => __( 'Koko Analytics powers the popular posts while Top 10 keeps tracking views and counts (default)', 'top-10' ),
 			),
 			array(
 				'id'          => Koko_Analytics::MODE_KOKO,
@@ -1836,12 +1836,24 @@ class Settings {
 	 * @return string Description.
 	 */
 	public static function get_data_mode_description() {
-		$desc = esc_html__( 'Koko Analytics counts page views per day, so custom periods are rounded to whole days and overall counts cover the data Koko Analytics keeps. Network-wide lists always use Top 10.', 'top-10' );
+		$labels = wp_list_pluck( self::get_data_modes(), 'name', 'id' );
+		$mode   = Koko_Analytics::get_effective_mode();
+		$status = '<strong>' . sprintf(
+			/* translators: %s: Data mode name. */
+			esc_html__( 'In use: %s.', 'top-10' ),
+			esc_html( $labels[ $mode ] ?? $mode )
+		) . '</strong> ';
+		if ( Koko_Analytics::is_available() ) {
+			/* translators: %s: Koko Analytics version. */
+			$status .= sprintf( esc_html__( 'Koko Analytics %s detected.', 'top-10' ), esc_html( Koko_Analytics::get_version() ) ) . ' ';
+		}
+
+		$desc = $status . esc_html__( 'Koko Analytics counts page views per day, so custom periods are rounded to whole days and overall counts cover the data Koko Analytics keeps. Network-wide lists always use Top 10.', 'top-10' );
 
 		if ( ! Koko_Analytics::is_available() ) {
 			$desc .= ' <strong>' . sprintf(
 				/* translators: %s: Link to the Koko Analytics plugin. */
-				esc_html__( 'Install and activate %s to use the Hybrid or Koko Analytics only modes. Until then, Top 10 is used.', 'top-10' ),
+				esc_html__( 'Install and activate %s to use the Hybrid or Koko Analytics only modes.', 'top-10' ),
 				'<a href="https://wordpress.org/plugins/koko-analytics/" target="_blank">Koko Analytics</a>'
 			) . '</strong>';
 		}

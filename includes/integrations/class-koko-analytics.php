@@ -56,9 +56,9 @@ class Koko_Analytics {
 	 * @return string One of the MODE_* constants.
 	 */
 	public static function get_mode(): string {
-		$mode = (string) \tptn_get_option( 'data_mode', self::MODE_TOP10 );
+		$mode = (string) \tptn_get_option( 'data_mode' );
 
-		return in_array( $mode, array( self::MODE_HYBRID, self::MODE_KOKO ), true ) ? $mode : self::MODE_TOP10;
+		return in_array( $mode, array( self::MODE_TOP10, self::MODE_HYBRID, self::MODE_KOKO ), true ) ? $mode : self::MODE_HYBRID;
 	}
 
 	/**
@@ -83,6 +83,32 @@ class Koko_Analytics {
 	 */
 	public static function is_source(): bool {
 		return self::MODE_TOP10 !== self::get_effective_mode();
+	}
+
+	/**
+	 * Get the Koko Analytics version.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @return string Version, or an empty string when Koko Analytics is not loaded.
+	 */
+	public static function get_version(): string {
+		return defined( 'KOKO_ANALYTICS_VERSION' ) ? (string) KOKO_ANALYTICS_VERSION : '';
+	}
+
+	/**
+	 * Get the source that powers a list for the given blog IDs.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param mixed $blog_ids Blog IDs of the list. Empty for the current blog.
+	 * @return string 'koko' or 'top10'.
+	 */
+	public static function get_list_source( $blog_ids = array() ): string {
+		$blog_ids = wp_parse_id_list( $blog_ids );
+		$single   = ! $blog_ids || array( get_current_blog_id() ) === array_values( array_unique( $blog_ids ) );
+
+		return ( $single && self::is_source() ) ? 'koko' : 'top10';
 	}
 
 	/**
