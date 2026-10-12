@@ -20,6 +20,7 @@ global $wpdb;
 $tptn_settings = get_option( 'tptn_settings' );
 
 wp_clear_scheduled_hook( 'tptn_aggregation_cron_hook' );
+wp_clear_scheduled_hook( 'tptn_feed_backfill_hook' );
 
 if ( ! empty( $tptn_settings['uninstall_clean_options'] ) ) {
 	delete_site_option( 'tptn_cache_generation' );
@@ -39,6 +40,8 @@ if ( ! empty( $tptn_settings['uninstall_clean_tables'] ) ) {
 		$wpdb->query( "DROP TABLE $table_name" );
 	}
 	delete_site_option( 'tptn_db_version' );
+	delete_site_option( 'tptn_feed_counts' );
+	delete_option( 'tptn_feed_counts' );
 }
 
 // Delete data across multisite or single site.

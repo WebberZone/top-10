@@ -479,19 +479,23 @@ class Import_Export {
 				} catch ( \Exception $e ) {
 					$dp_date = $raw_date;
 				}
-				$prepared[] = array(
+				$item = array(
 					'postnumber' => $post_id,
 					'cntaccess'  => absint( $row['cntaccess'] ),
 					'dp_date'    => $dp_date,
 					'blog_id'    => $blog_id,
 				);
 			} else {
-				$prepared[] = array(
+				$item = array(
 					'postnumber' => $post_id,
 					'cntaccess'  => absint( $row['cntaccess'] ),
 					'blog_id'    => $blog_id,
 				);
 			}
+			if ( isset( $row['feedcnt'] ) ) {
+				$item['feedcnt'] = absint( $row['feedcnt'] );
+			}
+			$prepared[] = $item;
 		}
 
 		return $prepared;

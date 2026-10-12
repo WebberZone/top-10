@@ -174,6 +174,7 @@ class Database {
 
 		$blog_id = $blog_id ?? get_current_blog_id();
 		$table   = self::get_table( $daily );
+		$clamp   = Feed_Counts::is_enabled() ? $wpdb->prepare( ', feedcnt = LEAST(feedcnt, %d)', $count ) : '';
 
 		if ( $daily ) {
 			$dp_date = current_time( 'Y-m-d H' );
@@ -185,7 +186,7 @@ class Database {
 				$dp_date,
 				$blog_id,
 				$count
-			);
+			) . $clamp;
 		} else {
 			$sql = $wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -194,7 +195,7 @@ class Database {
 				$count,
 				$blog_id,
 				$count
-			);
+			) . $clamp;
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
@@ -453,7 +454,7 @@ class Database {
 	 *
 	 * @return bool Whether SQLite is in use.
 	 */
-	private static function is_sqlite() {
+	public static function is_sqlite() {
 		global $wpdb;
 
 		if ( defined( 'DATABASE_TYPE' ) && 'sqlite' === strtolower( (string) DATABASE_TYPE ) ) {
@@ -677,25 +678,32 @@ class Database {
 			return false;
 		}
 
-		$table  = self::get_table( $daily );
-		$values = array();
+		$table    = self::get_table( $daily );
+		$values   = array();
+		$enabled  = Feed_Counts::is_enabled();
+		$has_feed = $enabled && in_array( true, array_map( fn( $row ) => isset( $row['feedcnt'] ), $data ), true );
 
 		foreach ( $data as $row ) {
+			$feed = $has_feed ? $wpdb->prepare( ', %d', min( absint( $row['feedcnt'] ?? 0 ), absint( $row['cntaccess'] ) ) ) : '';
 			if ( $daily ) {
 				$dp_date  = isset( $row['dp_date'] ) ? $row['dp_date'] : current_time( 'Y-m-d H' );
-				$values[] = $wpdb->prepare( '( %d, %d, %s, %d )', $row['postnumber'], $row['cntaccess'], $dp_date, $row['blog_id'] );
+				$values[] = $wpdb->prepare( '( %d, %d, %s, %d', $row['postnumber'], $row['cntaccess'], $dp_date, $row['blog_id'] ) . $feed . ' )';
 			} else {
-				$values[] = $wpdb->prepare( '( %d, %d, %d )', $row['postnumber'], $row['cntaccess'], $row['blog_id'] );
+				$values[] = $wpdb->prepare( '( %d, %d, %d', $row['postnumber'], $row['cntaccess'], $row['blog_id'] ) . $feed . ' )';
 			}
 		}
 
-		if ( $daily ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$sql = "INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)';
-		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$sql = "INSERT INTO {$table} (postnumber, cntaccess, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)';
+		$columns = $daily ? 'postnumber, cntaccess, dp_date, blog_id' : 'postnumber, cntaccess, blog_id';
+		$update  = 'cntaccess = VALUES(cntaccess)';
+		if ( $has_feed ) {
+			$columns .= ', feedcnt';
+			$update  .= ', feedcnt = VALUES(feedcnt)';
+		} elseif ( $enabled ) {
+			$update .= ', feedcnt = LEAST(feedcnt, VALUES(cntaccess))';
 		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$sql = "INSERT INTO {$table} ({$columns}) VALUES " . implode( ',', $values ) . " ON DUPLICATE KEY UPDATE {$update}";
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $sql );
@@ -784,20 +792,24 @@ class Database {
 	 * Create table SQL for the main top_ten table.
 	 *
 	 * @since 4.2.0
+	 * @since 4.6.0 Added the `$with_feed` parameter.
 	 *
+	 * @param bool|null $with_feed Whether to include the feedcnt column. Null detects it from the live table.
 	 * @return string SQL to create the main table.
 	 */
-	public static function create_full_table_sql() {
+	public static function create_full_table_sql( $with_feed = null ) {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
 		$table_name      = $wpdb->base_prefix . 'top_ten';
+		// No blank line when omitted: dbDelta reads an empty line as an unnamed index and issues a failing ALTER.
+		$feed_column = ( $with_feed ?? Feed_Counts::schema_includes_column( $table_name ) ) ? "\n\t\t\tfeedcnt bigint(20) NOT NULL DEFAULT '0'," : '';
 
 		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 		" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
-			blog_id bigint(20) NOT NULL DEFAULT '1',
+			blog_id bigint(20) NOT NULL DEFAULT '1',{$feed_column}
 			PRIMARY KEY  (postnumber, blog_id),
 			KEY idx_blog_id (blog_id),
 			KEY idx_cntaccess (cntaccess),
@@ -811,21 +823,24 @@ class Database {
 	 * Create table SQL for the daily top_ten_daily table.
 	 *
 	 * @since 4.2.0
+	 * @since 4.6.0 Added the `$with_feed` parameter.
 	 *
+	 * @param bool|null $with_feed Whether to include the feedcnt column. Null detects it from the live table.
 	 * @return string SQL to create the daily table.
 	 */
-	public static function create_daily_table_sql() {
+	public static function create_daily_table_sql( $with_feed = null ) {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
 		$table_name      = $wpdb->base_prefix . 'top_ten_daily';
+		$feed_column     = ( $with_feed ?? Feed_Counts::schema_includes_column( $table_name ) ) ? "\n\t\t\tfeedcnt bigint(20) NOT NULL DEFAULT '0'," : '';
 
 		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 		" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
 			dp_date DATETIME NOT NULL,
-			blog_id bigint(20) NOT NULL DEFAULT '1',
+			blog_id bigint(20) NOT NULL DEFAULT '1',{$feed_column}
 			PRIMARY KEY  (postnumber, dp_date, blog_id),
 			KEY blog_date (blog_id, dp_date, postnumber),
 			KEY idx_dp_date (dp_date)
@@ -859,14 +874,15 @@ class Database {
 		$charset_collate = $wpdb->get_charset_collate();
 		$table_name      = self::get_funnel_table();
 
+		// dbDelta reads a column type only after a single space; aligned padding forces a no-op CHANGE COLUMN on every upgrade.
 		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 		" (
-			id               bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			postnumber       bigint(20) UNSIGNED NOT NULL,
-			blog_id          bigint(20) UNSIGNED NOT NULL DEFAULT '1',
-			visited_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			postnumber bigint(20) UNSIGNED NOT NULL,
+			blog_id bigint(20) UNSIGNED NOT NULL DEFAULT '1',
+			visited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			activate_counter tinyint(2) UNSIGNED NOT NULL DEFAULT '11',
-			source           tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+			source tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
@@ -898,13 +914,14 @@ class Database {
 		$charset_collate = $wpdb->get_charset_collate();
 		$table_name      = self::get_log_table();
 
+		// dbDelta reads a column type only after a single space; aligned padding forces a no-op CHANGE COLUMN on every upgrade.
 		$sql = "CREATE TABLE {$table_name}" . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 		" (
-			id         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			postnumber bigint(20) UNSIGNED NOT NULL,
-			blog_id    bigint(20) UNSIGNED NOT NULL DEFAULT '1',
+			blog_id bigint(20) UNSIGNED NOT NULL DEFAULT '1',
 			visited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			source     tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+			source tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
 			PRIMARY KEY  (id),
 			KEY idx_visited_at (visited_at)
 		) $charset_collate;";
@@ -930,7 +947,7 @@ class Database {
 	 */
 	public static function record_view( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
 		if ( 'legacy' === \tptn_get_option( 'tracking_method', 'funnel' ) ) {
-			return self::update_counts_direct( $post_id, $blog_id, $activate_counter );
+			return self::update_counts_direct( $post_id, $blog_id, $activate_counter, $source );
 		}
 
 		return self::append_to_funnel( $post_id, $blog_id, $activate_counter, $source );
@@ -948,22 +965,28 @@ class Database {
 	 * @param int $post_id          Post ID.
 	 * @param int $blog_id          Blog ID.
 	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int $source           Traffic source: 0 = web, 1 = feed.
 	 * @return int|false Rows inserted/updated or false on error.
 	 */
-	public static function update_counts_direct( $post_id, $blog_id, $activate_counter = 11 ) {
+	public static function update_counts_direct( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
 		global $wpdb;
 
 		$post_id          = absint( $post_id );
 		$blog_id          = absint( $blog_id );
 		$activate_counter = (int) $activate_counter;
 		$rows             = 0;
+		// Only feed views read the option, so web views keep their single query.
+		$is_feed      = 1 === (int) $source && Feed_Counts::is_enabled();
+		$feed_columns = $is_feed ? ', feedcnt' : '';
+		$feed_value   = $is_feed ? ', 1' : '';
+		$feed_update  = $is_feed ? ', feedcnt = feedcnt + 1' : '';
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( in_array( $activate_counter, array( 1, 11 ), true ) ) {
 			$table  = self::get_table( false );
 			$result = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$table} (postnumber, cntaccess, blog_id) VALUES (%d, 1, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1",
+					"INSERT INTO {$table} (postnumber, cntaccess, blog_id{$feed_columns}) VALUES (%d, 1, %d{$feed_value}) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}",
 					$post_id,
 					$blog_id
 				)
@@ -980,7 +1003,7 @@ class Database {
 			$dp_date = current_time( 'Y-m-d H' ) . ':00:00';
 			$result  = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id) VALUES (%d, 1, %s, %d) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1",
+					"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id{$feed_columns}) VALUES (%d, 1, %s, %d{$feed_value}) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}",
 					$post_id,
 					$dp_date,
 					$blog_id
@@ -1085,6 +1108,14 @@ class Database {
 				return 0;
 			}
 
+			// Read under the lock: Feed_Counts::enable() flips this while holding the same lock.
+			Feed_Counts::reset_cache();
+			$with_feed         = Feed_Counts::is_enabled();
+			$feed_column       = $with_feed ? ', feedcnt' : '';
+			$feed_select       = $with_feed ? ', SUM(source = 1) AS feedcnt' : '';
+			$daily_feed_update = $with_feed ? ", feedcnt = {$daily_table}.feedcnt + VALUES(feedcnt)" : '';
+			$full_feed_update  = $with_feed ? ", feedcnt = {$full_table}.feedcnt + VALUES(feedcnt)" : '';
+
 			$cap_id     = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$funnel_table} WHERE 1=1{$blog_where} ORDER BY id ASC LIMIT %d, 1", $batch_size ) );
 			$was_capped = false;
 			if ( null !== $cap_id ) {
@@ -1120,13 +1151,13 @@ class Database {
 
 			$r = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id)
+					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id{$feed_column})
 					 SELECT postnumber, COUNT(*) AS cntaccess,
-					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id
+					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id{$feed_select}
 					 FROM   {$funnel_table}
 					 WHERE  id <= %d AND activate_counter IN (10, 11){$blog_where}
 					 GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
-					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess)",
+					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess){$daily_feed_update}",
 					$max_id
 				)
 			);
@@ -1136,12 +1167,12 @@ class Database {
 
 			$r = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id)
-					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id
+					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id{$feed_column})
+					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id{$feed_select}
 					 FROM   {$funnel_table}
 					 WHERE  id <= %d AND activate_counter IN (1, 11){$blog_where}
 					 GROUP  BY postnumber, blog_id
-					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess)",
+					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess){$full_feed_update}",
 					$max_id
 				)
 			);
@@ -1211,9 +1242,21 @@ class Database {
 		$backup_table_name = ( $backup ) ? $table_name . '_backup' : $table_name . '_temp';
 		$success           = false;
 
+		// Callers using the default field list would otherwise zero the feed history.
+		if ( ! in_array( 'feedcnt', $fields, true ) && false !== strpos( $create_table_sql, 'feedcnt' ) && Feed_Counts::table_has_column( $table_name, true ) ) {
+			$fields[] = 'feedcnt';
+		}
+
 		$fields_sql          = implode( ', ', $fields );
-		$fields_sql_with_sum = str_replace( 'cntaccess', 'SUM(cntaccess) as cntaccess', $fields_sql );
+		$fields_sql_with_sum = implode(
+			', ',
+			array_map(
+				fn( $field ) => in_array( $field, array( 'cntaccess', 'feedcnt' ), true ) ? "SUM({$field}) as {$field}" : $field,
+				$fields
+			)
+		);
 		$group_by_sql        = implode( ', ', $group_by_fields );
+		$feed_update         = in_array( 'feedcnt', $fields, true ) ? ", $table_name.feedcnt = $table_name.feedcnt + VALUES(feedcnt)" : '';
 
 		if ( $backup ) {
 			$success = $wpdb->query( "CREATE TABLE $backup_table_name LIKE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -1236,7 +1279,7 @@ class Database {
 
 			$insert_fields_sql = 'tt.' . implode( ', tt.', $fields );
 
-			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $insert_fields_sql FROM $backup_table_name AS tt ON DUPLICATE KEY UPDATE $table_name.cntaccess = $table_name.cntaccess + VALUES(cntaccess)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $insert_fields_sql FROM $backup_table_name AS tt ON DUPLICATE KEY UPDATE $table_name.cntaccess = $table_name.cntaccess + VALUES(cntaccess){$feed_update}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			if ( false === $success ) {
 				/* translators: 1: Site number, 2: Error message */
@@ -1261,11 +1304,13 @@ class Database {
 	 * @return bool|\WP_Error True if recreated, error message if failed.
 	 */
 	public static function recreate_overall_table( $backup = true ) {
-		global $wpdb;
+		$table     = self::get_table( false );
+		$with_feed = Feed_Counts::table_has_column( $table, true );
 		return self::recreate_table(
-			$wpdb->base_prefix . 'top_ten',
-			self::create_full_table_sql(),
-			$backup
+			$table,
+			self::create_full_table_sql( $with_feed ),
+			$backup,
+			$with_feed ? array( 'postnumber', 'cntaccess', 'blog_id', 'feedcnt' ) : array( 'postnumber', 'cntaccess', 'blog_id' )
 		);
 	}
 
@@ -1279,12 +1324,17 @@ class Database {
 	 * @return bool|\WP_Error True if recreated, error message if failed.
 	 */
 	public static function recreate_daily_table( $backup = true ) {
-		global $wpdb;
+		$table     = self::get_table( true );
+		$with_feed = Feed_Counts::table_has_column( $table, true );
+		$fields    = array( 'postnumber', 'cntaccess', 'dp_date', 'blog_id' );
+		if ( $with_feed ) {
+			$fields[] = 'feedcnt';
+		}
 		return self::recreate_table(
-			$wpdb->base_prefix . 'top_ten_daily',
-			self::create_daily_table_sql(),
+			$table,
+			self::create_daily_table_sql( $with_feed ),
 			$backup,
-			array( 'postnumber', 'cntaccess', 'dp_date', 'blog_id' ),
+			$fields,
 			array( 'postnumber', 'dp_date', 'blog_id' )
 		);
 	}
@@ -1516,6 +1566,8 @@ class Database {
 
 		$last_date       = '';
 		$dates_processed = 0;
+		$with_feed       = Feed_Counts::is_enabled();
+		$feed_select     = $with_feed ? ', feedcnt' : '';
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		while ( true ) {
@@ -1560,7 +1612,7 @@ class Database {
 			try {
 				$daily_rows = $wpdb->get_results(
 					$wpdb->prepare(
-						"SELECT postnumber, cntaccess
+						"SELECT postnumber, cntaccess{$feed_select}
 						 FROM `{$table}`
 						 WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s
 						 ORDER BY postnumber ASC
@@ -1576,30 +1628,30 @@ class Database {
 				}
 
 				$rollup_counts = array();
+				$rollup_feeds  = array();
 				foreach ( $daily_rows as $daily_row ) {
 					$postnumber = (int) $daily_row['postnumber'];
 					if ( ! isset( $rollup_counts[ $postnumber ] ) ) {
 						$rollup_counts[ $postnumber ] = 0;
+						$rollup_feeds[ $postnumber ]  = 0;
 					}
 					$rollup_counts[ $postnumber ] += (int) $daily_row['cntaccess'];
+					$rollup_feeds[ $postnumber ]  += (int) ( $daily_row['feedcnt'] ?? 0 );
 				}
 
 				foreach ( array_chunk( $rollup_counts, 500, true ) as $rollup_batch ) {
 					$values = array();
 					foreach ( $rollup_batch as $postnumber => $count ) {
-						$values[] = $wpdb->prepare(
-							'( %d, %d, %s, %d )',
-							$postnumber,
-							$count,
-							$day_start,
-							$blog_id
-						);
+						$values[] = $with_feed
+							? $wpdb->prepare( '( %d, %d, %s, %d, %d )', $postnumber, $count, $day_start, $blog_id, $rollup_feeds[ $postnumber ] )
+							: $wpdb->prepare( '( %d, %d, %s, %d )', $postnumber, $count, $day_start, $blog_id );
 					}
 
-					$result = $wpdb->query(
-						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-						"INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)'
-					);
+					$rollup_sql = $with_feed
+						? "INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id, feedcnt) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess), feedcnt = VALUES(feedcnt)'
+						: "INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)';
+
+					$result = $wpdb->query( $rollup_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					if ( false === $result ) {
 						return new \WP_Error( 'tptn_rollup_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Could not write the daily rollup.', 'top-10' ) );
 					}

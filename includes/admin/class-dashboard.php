@@ -153,6 +153,7 @@ class Dashboard {
 							?>
 							</div>
 
+							<?php if ( empty( $tab_name['hide_footer'] ) ) : ?>
 							<div style="font-weight:bold;padding:5px;">
 
 								<?php
@@ -181,6 +182,7 @@ class Dashboard {
 								<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'View all popular posts', 'top-10' ); ?> &raquo;</a>
 
 							</div>
+							<?php endif; ?>
 
 						</div><!-- /#tab_id-->
 
@@ -507,6 +509,21 @@ class Dashboard {
 	 */
 	public function display_popular_posts( $args = array() ) {
 		$output = '';
+
+		/**
+		 * Filters a dashboard tab's content before the popular posts table is built.
+		 *
+		 * Return a string to replace the table, for tabs that render their own report.
+		 *
+		 * @since 4.6.0
+		 *
+		 * @param string|null $output Tab HTML, or null to render the popular posts table.
+		 * @param array       $args   Tab arguments, including `network`.
+		 */
+		$pre = apply_filters( 'tptn_admin_dashboard_tab_content', null, $args );
+		if ( null !== $pre ) {
+			return (string) $pre;
+		}
 
 		$defaults = array(
 			'daily'       => true,

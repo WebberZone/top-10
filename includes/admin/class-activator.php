@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Feed_Counts;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 use WebberZone\Top_Ten\Admin\Cron;
 
@@ -119,6 +120,8 @@ class Activator {
 		self::maybe_create_table( $table_name_log, Database::create_log_table_sql() );
 		self::maybe_create_table( $table_name_funnel, Database::create_funnel_table_sql() );
 
+		Feed_Counts::maybe_upgrade();
+
 		// Upgrade table code.
 		$installed_ver = get_site_option( 'tptn_db_version' );
 
@@ -197,6 +200,7 @@ class Activator {
 		self::maybe_create_table( $table_name_log, Database::create_log_table_sql() );
 		self::maybe_create_table( $table_name_funnel, Database::create_funnel_table_sql() );
 		Database::clear_table_installation_cache();
+		Feed_Counts::maybe_upgrade();
 	}
 
 	/**

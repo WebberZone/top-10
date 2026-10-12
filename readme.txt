@@ -189,6 +189,8 @@ Release date: TBD
 * Koko Analytics as an optional data source for popular posts. Top 10 tracking can be switched off. Pro users also get it in network-wide lists.
 * WordPress Abilities API support for popular posts and view counts. Pro users also get abilities for editing counts and clearing caches.
 * [Pro] Advanced Popular Posts block with six layouts and sidebar support, enabled by default.
+* [Pro] Feed vs web tab on the Top 10 dashboard. It shows feed and web views for the last 7 days, the last 30 days and all time, plus the posts most read via feed. Feed views already in the visits log are imported in the background.
+* Count exports include a Feed Visits column, and imports restore it.
 
 **Changed**
 
