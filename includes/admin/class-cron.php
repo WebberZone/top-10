@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Feed_Counts;
 use WebberZone\Top_Ten\Util\Hook_Registry;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -52,6 +53,7 @@ class Cron {
 	public function __construct() {
 		Hook_Registry::add_action( 'tptn_cron_hook', array( $this, 'run_cron' ) );
 		Hook_Registry::add_action( 'tptn_aggregation_cron_hook', array( $this, 'run_aggregation' ) );
+		Hook_Registry::add_action( Feed_Counts::BACKFILL_HOOK, array( Feed_Counts::class, 'run_backfill' ) );
 		Hook_Registry::add_action( 'tptn_count_updated', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );
 		Hook_Registry::add_action( 'tptn_delete_counts', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );
 		Hook_Registry::add_action( 'tptn_set_count', array( Dashboard_Widgets::class, 'clear_network_dashboard_cache' ) );

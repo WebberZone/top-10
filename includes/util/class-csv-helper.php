@@ -26,8 +26,8 @@ class Csv_Helper {
 	/**
 	 * Write count rows to an open file handle in the Top 10 CSV format.
 	 *
-	 * Column layout: Overall = Post ID, Visits, Blog ID[, URL]. Daily = Post ID, Visits,
-	 * Date, Blog ID[, URL].
+	 * Column layout: Overall = Post ID, Visits, Blog ID[, URL][, Feed Visits]. Daily = Post ID,
+	 * Visits, Date, Blog ID[, URL][, Feed Visits]. Feed Visits is last so older importers ignore it.
 	 *
 	 * @since 4.3.0
 	 *
@@ -53,6 +53,10 @@ class Csv_Helper {
 		if ( $include_urls ) {
 			$header[] = 'URL';
 		}
+		$include_feed = ! empty( $rows ) && array_key_exists( 'feedcnt', reset( $rows ) );
+		if ( $include_feed ) {
+			$header[] = 'Feed Visits';
+		}
 
 		fputcsv( $fh, $header, ',', '"', '\\' );
 
@@ -74,6 +78,9 @@ class Csv_Helper {
 				}
 				$line[] = $url_cache[ $bid ][ $pid ];
 			}
+			if ( $include_feed ) {
+				$line[] = (int) $row['feedcnt'];
+			}
 
 			fputcsv( $fh, $line, ',', '"', '\\' );
 		}
@@ -94,8 +101,10 @@ class Csv_Helper {
 	 *                                       associative array with the keys
 	 *                                       postnumber (int), cntaccess (int),
 	 *                                       blog_id (int), plus dp_date (string)
-	 *                                       when daily is true, and url (string)
-	 *                                       when an optional URL column is present.
+	 *                                       when daily is true, url (string)
+	 *                                       when an optional URL column is present,
+	 *                                       and feedcnt (int) when a Feed Visits
+	 *                                       column is present.
 	 *               - total: int            Total number of data rows.
 	 */
 	public static function parse_import_file( string $file_path ): array {
@@ -134,6 +143,7 @@ class Csv_Helper {
 		$col_blog_id = $daily ? 3 : 2;
 		$col_url     = $daily ? 4 : 3;
 		$has_url     = isset( $headers[ $col_url ] ) && 'URL' === $headers[ $col_url ];
+		$col_feed    = array_search( 'Feed Visits', $headers, true );
 
 		$rows  = array();
 		$total = 0;
@@ -154,6 +164,9 @@ class Csv_Helper {
 			}
 			if ( $has_url && isset( $line[ $col_url ] ) ) {
 				$row['url'] = trim( $line[ $col_url ], " \t\n\r\0\x0B" );
+			}
+			if ( false !== $col_feed && isset( $line[ $col_feed ] ) ) {
+				$row['feedcnt'] = absint( $line[ $col_feed ] );
 			}
 
 			$rows[] = $row;

@@ -8,6 +8,7 @@
 namespace WebberZone\Top_Ten\Admin;
 
 use WebberZone\Top_Ten\Database;
+use WebberZone\Top_Ten\Feed_Counts;
 use WebberZone\Top_Ten\Counter;
 use WebberZone\Top_Ten\Admin\Activator;
 use WebberZone\Top_Ten\Util\Hook_Registry;
@@ -203,6 +204,16 @@ class Tools_Page {
 			}
 		}
 
+		/* Add the feed views column. */
+		if ( ( ! is_multisite() || $network_wide ) && isset( $_POST['tptn_add_feed_columns'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
+			$result = Feed_Counts::add_columns_now();
+			if ( is_wp_error( $result ) ) {
+				add_settings_error( 'tptn-notices', '', esc_html( $result->get_error_message() ), 'error' );
+			} else {
+				add_settings_error( 'tptn-notices', '', esc_html__( 'Feed view counting is now enabled.', 'top-10' ), 'updated' );
+			}
+		}
+
 		/* Fix cron schedules */
 		if ( isset( $_POST['tptn_fix_crons'] ) && check_admin_referer( 'tptn-tools-settings' ) ) {
 			$result = self::fix_crons( $network_wide );
@@ -280,6 +291,20 @@ class Tools_Page {
 						</p>
 					</div>
 				</div>
+
+				<?php if ( ( ! is_multisite() || $network_wide ) && Feed_Counts::is_pending() ) : ?>
+				<div class="postbox">
+					<h2><span><?php esc_html_e( 'Enable Feed View Counts', 'top-10' ); ?></span></h2>
+					<div class="inside">
+						<p>
+							<button name="tptn_add_feed_columns" type="submit" id="tptn_add_feed_columns" class="button button-secondary"><?php esc_html_e( 'Add Feed Views Column', 'top-10' ); ?></button>
+						</p>
+						<p class="description">
+							<?php esc_html_e( 'Your database server cannot add the feed views column instantly, so it was not added automatically. Adding it rebuilds the count tables, which can take several minutes on large sites. Run it during a quiet period, or use: wp top10 db add-feed-columns', 'top-10' ); ?>
+						</p>
+					</div>
+				</div>
+				<?php endif; ?>
 
 				<?php
 				/**

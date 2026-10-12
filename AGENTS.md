@@ -34,7 +34,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 WebberZone Top 10 counts daily and total post views and displays popular posts lists. Top 10 Pro is the premium version. Activating either plugin automatically deactivates the other; both share the same namespace, function prefix, database tables and settings key (`tptn_settings`).
 
-Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.0`.
+Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.4`.
 
 Versions: `readme.txt`'s `Stable tag` is the released version; `TOP_TEN_VERSION` in `top-10.php` is the working version — use it for new `@since` tags. Do not bump either unless asked.
 
@@ -173,6 +173,7 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **Pro-gated settings:** Several settings in `class-settings.php` carry `'pro' => true` (e.g. `admin_column_post_types`, `show_dashboard_to_roles`, `show_admin_bar`, `max_execution_time`, `track_feed_views`, `use_global_settings`, `exclude_terms_include_parents`, `maintenance_days`, `log_retention_days`, `feed_category_slugs`). These render as disabled with an upgrade prompt in the free plugin. In the pro plugin, `Pro::update_registered_settings()` iterates all registered settings and sets `'pro' => false` on any entry marked pro-only, enabling those fields in the UI. It also removes the `match_content` setting entirely (replaced by a pro alternative).
 - **Mutual exclusion:** Activating either free or pro automatically deactivates the other (`tptn_deactivate_other_instances`).
 - **DB writes (funnel pattern):** Every tracked view appends one row to the funnel table via `Database::append_to_funnel()` (or writes directly via `Database::update_counts_direct()` when `tracking_method` is set to `legacy`). A cron job (`tptn_aggregation_cron_hook`) runs every 2 minutes by default, draining the funnel transactionally into `top_ten` and `top_ten_daily` in batch. The interval can be overridden via the `tptn_aggregation_cron_interval` filter (must be a registered WP-Cron schedule name; built-in options: `one_minute`, `two_minutes`, `three_minutes`, `five_minutes`). `Database::update_count()` is deprecated since 4.3.0 — do not use it for new code.
+- **Feed counts (`feedcnt`):** Both count tables carry `feedcnt`, the feed share of `cntaccess` (web = `cntaccess - feedcnt`). `Feed_Counts` (`includes/class-feed-counts.php`) owns the column: it is added with `ALGORITHM=INSTANT` on upgrade (or left pending for the Tools page / `wp top10 db add-feed-columns` when the server cannot), aggregation writes it only once the `tptn_feed_counts` network option is enabled, and history is backfilled from the visits log by `tptn_feed_backfill_hook`. Any code that copies, merges or overwrites count rows must carry or clamp `feedcnt` so it never exceeds `cntaccess`.
 - **High-traffic tracker config:** The generated `top-10-fast-config.php` must be regenerated whenever DB credentials or the table prefix changes. Prompt the user to regenerate after such changes.
 - **Pro gating check:** `tptn_freemius()->is__premium_only()` and `tptn_freemius()->can_use_premium_code()` are the two guards used in `Main::init()`. Individual pro hooks use `Hook_Registry` just like the free plugin.
 
