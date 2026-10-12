@@ -1,5 +1,5 @@
 ---
-slug: page-builder-integrations
+slug: top-10-page-builder-integrations
 title: "Page Builder Integrations for Top 10 Pro"
 products: [top-10]
 sections: ["02-top-10-advanced"]

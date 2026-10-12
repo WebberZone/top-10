@@ -1,159 +1,70 @@
-# WebberZone Top 10 Pro — Popular Posts
+# WebberZone Top 10 — Popular Posts
 
 [![Top 10](https://raw.githubusercontent.com/WebberZone/top-10/master/wporg-assets/banner-1544x500.png)](https://wordpress.org/plugins/top-10/)
 
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
-[![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](https://opensource.org/licenses/GPL-2.0)
-[![WordPress Tested](https://img.shields.io/wordpress/v/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
+[![WordPress Tested](https://img.shields.io/wordpress/plugin/tested/top-10.svg?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Required PHP](https://img.shields.io/wordpress/plugin/required-php/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
 [![Active installs](https://img.shields.io/wordpress/plugin/installs/top-10?style=flat-square)](https://wordpress.org/plugins/top-10/)
+[![Rating](https://img.shields.io/wordpress/plugin/rating/top-10?style=flat-square)](https://wordpress.org/support/plugin/top-10/reviews/)
+[![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-__Requires:__ 6.8
+Top 10 is a post views counter and popular posts plugin for WordPress. It counts daily and total page views on posts, pages and custom post types, then displays your most viewed and trending posts with blocks, widgets and shortcodes. All data stays in your WordPress database, with no cookies and no personal data.
 
-__Tested up to:__ 7.1
+[WordPress.org](https://wordpress.org/plugins/top-10/) · [Plugin page](https://webberzone.com/plugins/top-10/) · [Documentation](https://webberzone.com/support/product/top-10/) · [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/)
 
-__Requires PHP:__ 7.4
+## Features
 
-__License:__ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
+- Daily and total view counts, tracked in the background so page caches don't block counting
+- Popular posts lists by total views or a custom period
+- Popular Posts and Post Count blocks, widgets, and the `[tptn_list]` and `[tptn_views]` shortcodes
+- Admin dashboard with a views chart, view-count columns, and a multisite network dashboard
+- Koko Analytics as an optional data source
+- Import and export of counts and settings, and migration from WordPress Popular Posts
+- REST API, Abilities API, and extensive actions and filters
+- Works with WPML, Polylang and TranslatePress
 
-__Plugin page:__ [Top 10](https://webberzone.com/plugins/top-10/) | [WordPress.org plugin page](https://wordpress.org/plugins/top-10/)
-
-Track post views and page views, and display popular posts and trending content on your WordPress site.
-
-## Description
-
-WordPress lacks built-in page view tracking or a popular posts feature. [Top 10](https://webberzone.com/plugins/top-10/) solves this by counting views across posts, pages, and custom post types, then letting you showcase your most popular content.
-
-Top 10 provides blocks, widgets, shortcodes, and template functions for displaying popular posts and view counts across your site. All tracking data is stored locally in your WordPress database, with no external services involved.
-
-Top 10 includes comprehensive features such as thumbnail support, flexible display options, custom post type support, and developer-friendly extensibility. A built-in caching layer reduces server load, while AJAX-based tracking avoids page cache interference and works with most popular caching plugins.
-
-Top 10 also exposes a powerful API with WordPress actions and filters, allowing developers to customise queries, tracking behaviour, and output rendering without modifying core plugin files.
-
-### Features
-
-* __Page Counter__: Tracks hourly post views on posts, pages, and custom post types. Display counts automatically using blocks, shortcodes, or template functions
-* __Popular Posts__: Display most viewed posts by total counts or within custom time periods
-* __Gutenberg Support__: Dedicated "Popular Posts [Top 10]" block with configurable display options
-* __Multisite Dashboard__: Network-wide aggregated statistics across all sites in a multisite installation
-* __Widgets__: Sidebar widgets for daily and overall popular posts with extensive customisation
-* __Shortcodes__: Use `[tptn_list]` to display popular post lists and `[tptn_views]` to show view counts
-* __Thumbnails__:
-  * WordPress post thumbnail support with custom `tptn_thumbnail` image size
-  * Automatic extraction of the first image from post content
-  * Manual thumbnail URLs via Edit Post screens
-* __Exclusions__: Exclude posts by category or post ID from popular post lists
-* __Styling__: Output wrapped in semantic CSS classes. Add custom CSS via settings or use included styles
-* __Admin Interface__: View daily and overall popular posts from the dashboard. Adds sortable view-count columns to post and page lists
-* __Export/Import__: Export count tables and settings, and restore them on the same site or other installs
-* __Caching Compatibility__: Works with WP Super Cache, W3 Total Cache, Quick Cache, and similar plugins
-* __Developer-Friendly__: Extensive filters and actions to customise queries, tracking behaviour, and output rendering
-
-### Features in Top 10 Pro
-
-* __Enhanced Tracking and Performance__
-  * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
-  * __Buffered Visit Tracking__: Every page view is written to a lightweight funnel table first, then aggregated into the count tables by a background cron job every 5 minutes. This eliminates write contention on high-traffic posts where many simultaneous visitors would otherwise compete to update the same row
-  * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
-  * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
-
-* __Advanced Blocks and Widgets__
-  * __Popular Posts — Advanced__: Standalone editable cards with six layouts, live previews, lifetime or selected-period view counts, taxonomy and author filters, manual selections, custom-field conditions, and configurable empty states
-  * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor
-  * __Enhanced Top 10 Featured Image Block__: Support for multiple image sources with fallbacks
-  * __Popular Posts Block Enhancements__:
-    * Save and clear default block settings with a single click
-    * Auto-insert default and global settings attributes with an option to disable
-
-* __Enhanced Admin Tools__
-  * __Admin Bar Integration__: Admin bar menu item to view daily, total, and overall post counts, access admin pages, and clear cache
-  * __Disable Admin Bar menu__: Setting to disable the Admin Bar menu
-  * __Dashboard Access Control__: Setting to control which user roles can view the Top 10 dashboard
-  * __Display Settings__: Setting to choose which post type screens display admin columns
-  * __Mini "Top 10 Views Overview" widget__: Compact views-over-time chart on the WordPress Dashboard
-  * __Multisite Settings Copy__: Tool to copy settings between sites in a multisite network
-
-* __Custom Display Options__
-  * __Taxonomy-Specific Displays__: `display_only_on_tax_ids` parameter to restrict popular post displays to specific taxonomy terms
-  * __Category Inclusion__: Edit Post meta box option to include popular posts from specific categories
-  * __RSS Feed Filtering__: Filter RSS feeds by category or post type via settings or URL parameters
-
-* __WP-CLI Integration__
-  * __`wp top10 counts`__: View, get, set, reset, export, and import post view counts from the command line
-  * __`wp top10 db`__: Manage database tables — check status, create, update, recreate, prune old rows, force aggregation, truncate, and clean up orphaned counts
-  * __`wp top10 cache`__: Flush, enable, disable, and check the status of the output cache
-  * __`wp top10 settings`__: Get, set, export, and import plugin settings as JSON
-  * __`wp top10 cron`__: View, enable, disable, and manually trigger the maintenance and aggregation cron jobs
-  * __`wp top10 popular`__: List popular posts with counts using the same query as the front end
-  * __`wp top10 status`__: Print a full plugin status overview
-  * All destructive commands support `--dry-run` and `--force`; multisite commands support `--network` and `--blog-id`
-
-* __Developer-Friendly Features__
-  * __Custom Post Type Sortable Columns__: Admin columns on supported custom post types with sortable functionality
-
-### GDPR
-
-Top 10 does not collect personal visitor data out of the box. Tracking data is stored locally in the `wp_top_ten` and `wp_top_ten_daily` database tables (table prefix may vary).
-
-You are responsible for ensuring GDPR compliance on your website.
-
-### Multilingual sites
-
-Top 10 works with WPML, Polylang and TranslatePress without additional plugin configuration. WPML and Polylang map popular posts to the language being viewed. TranslatePress translates popular post titles, excerpts and links with the rest of the page, including results delivered through the REST API and lazy-loaded lists in Top 10 Pro.
-
-Popular post caches are separated by language, preventing cached lists from serving another language's links.
-
-### Translations
-
-Top 10 is available for [translation directly on WordPress.org](https://translate.wordpress.org/projects/wp-plugins/top-10). Check out the official [Translator Handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/) to contribute.
-
-### Other plugins from WebberZone
-
-Top 10 - Popular Posts is one of the many plugins developed by WebberZone. Check out our other plugins:
-
-* [Contextual Related Posts](https://wordpress.org/plugins/contextual-related-posts/) - Display related posts on your WordPress blog and feed
-* [WebberZone Snippetz](https://wordpress.org/plugins/add-to-all/) - The ultimate snippet manager for WordPress to create and manage custom HTML, CSS or JS code snippets
-* [Knowledge Base](https://wordpress.org/plugins/knowledgebase/) - Create a knowledge base or FAQ section on your WordPress site
-* [Better Search](https://wordpress.org/plugins/better-search/) - Enhance the default WordPress search with contextual results sorted by relevance
-* [Auto-Close](https://wordpress.org/plugins/autoclose/) - Automatically close comments, pingbacks and trackbacks and manage revisions
-* [Popular Authors](https://wordpress.org/plugins/popular-authors/) - Display popular authors in your WordPress widget
-* [Followed Posts](https://wordpress.org/plugins/where-did-they-go-from-here/) - Show a list of related posts based on what your users have read
-
-## Screenshots
-
-![Top 10 Popular Posts](https://raw.github.com/WebberZone/top-10/master/wporg-assets/screenshot-1.png)
-*Top 10 Popular Posts*
-
-For more screenshots visit the [WordPress plugin page](http://wordpress.org/plugins/top-10/screenshots/).
+See the [full feature list on WordPress.org](https://wordpress.org/plugins/top-10/) and the [Free vs Pro comparison](https://webberzone.com/support/knowledgebase/free-vs-pro-top-10/).
 
 ## Installation
 
-### WordPress install (the easy way)
+- **WordPress admin:** Go to Plugins → Add New, search for "Top 10", then install and activate it.
+- **WP-CLI:** `wp plugin install top-10 --activate`
+- **Zip:** Download a release from [GitHub Releases](https://github.com/WebberZone/top-10/releases) and upload it under Plugins → Add New → Upload Plugin.
 
-1. Navigate to Plugins within your WordPress Admin Area
+Then configure the plugin under Top 10 → Settings.
 
-2. Click "Add new" and in the search box enter "Top 10"
+## Development
 
-3. Find the plugin in the list (usually the first result) and click "Install Now"
+This repository holds the latest development version. Stable releases are published on [WordPress.org](https://wordpress.org/plugins/top-10/).
 
-### Manual install
+Requirements: WordPress 6.8+, PHP 7.4+, [Composer](https://getcomposer.org/) and [pnpm](https://pnpm.io/).
 
-1. Download the __top-10.zip__ file from this release post
-2. Visit __Plugins__ in your Admin Area
-3. Hit the __Add New__ button next to the Plugins heading
-4. Hit the __Upload__ button next to the Add Plugins heading
-5. Select the __top-10.zip__ file that you downloaded and hit Install Now
-6. Activate the Plugin in WP-Admin.
-7. Go to __Top 10 &raquo; Settings__ to configure
-8. Go to __Appearance &raquo; Widgets__ to add the Popular Posts sidebar widget to your theme
-9. Go to __Top 10 &raquo; View Popular Posts__ to view the list of popular posts
+```bash
+composer install
+pnpm install
+pnpm run build          # Build the blocks
+pnpm run build:assets   # Minify CSS and JS, and generate RTL CSS
+composer test           # PHPCS, PHP compatibility and PHPStan
+composer phpcbf         # Fix coding standards
+```
 
-## Frequently Asked Questions
+PHPUnit tests live in `phpunit/tests/` and need the WordPress test suite, installed with `phpunit/install.sh`. Architecture notes are in [`CLAUDE.md`](https://github.com/WebberZone/top-10/blob/master/CLAUDE.md).
 
-Check out the [FAQ on the plugin page](http://wordpress.org/plugins/top-10/faq/) and the [FAQ on the WebberZone knowledgebase](https://webberzone.com/support/section/top-10/).
+## Contributing
 
-If your question isn't listed there, please create a new post at the [WordPress.org support forum](http://wordpress.org/support/plugin/top-10). It is the fastest way to get support as I monitor the forums regularly.
+Pull requests for bug fixes and improvements are welcome. Follow the WordPress coding standards and run `composer test` before submitting. Please use the [WordPress.org support forum](https://wordpress.org/support/plugin/top-10/) for support questions, not GitHub issues.
 
-## About this repository
+Help translate Top 10 on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/top-10).
 
-This GitHub repository always holds the latest development version of the plugin. If you're looking for an official WordPress release, you can find this on the [WordPress.org repository](http://wordpress.org/plugins/top-10). In addition to stable releases, latest beta versions are made available under [releases](https://github.com/WebberZone/top-10/releases).
+## Security
+
+Report security vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/top-10). See [`security.md`](https://github.com/WebberZone/top-10/blob/master/security.md).
+
+## Changelog
+
+See the changelog in [`readme.txt`](https://github.com/WebberZone/top-10/blob/master/readme.txt) and the [releases page](https://github.com/WebberZone/top-10/releases).
+
+## License
+
+Top 10 is licensed under the [GNU General Public License v2 or later](https://www.gnu.org/licenses/gpl-2.0.html).
