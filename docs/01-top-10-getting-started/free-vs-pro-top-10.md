@@ -52,6 +52,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Per-post category inclusion (metabox) | ❌ | ✅ |
 | Exclude nested/parent categories when excluding a term | ❌ | ✅ |
 | Page builder elements (Elementor, Bricks, WPBakery) | ❌ | ✅ |
+| [Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-blocks/) blocks, shortcodes, and widgets | ❌ | ✅ |
 | **Admin & Dashboard** |  |  |
 | Statistics dashboard (daily and total) | ✅ | ✅ |
 | Admin columns with view counts | ✅ | ✅ |
