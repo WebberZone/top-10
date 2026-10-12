@@ -3,7 +3,7 @@ slug: popular-posts-blocks
 title: "Blocks in Top 10"
 products: [top-10]
 sections: ["02-top-10-advanced"]
-tags: [block, counter, featured-image, gutenberg, query-loop, top-10, views]
+tags: [advanced-block, block, counter, featured-image, gutenberg, query-loop, top-10, views]
 status: publish
 order: 0
 toc: true
@@ -19,7 +19,7 @@ toc: true
 
 To add the Top 10 blocks, click the block editor's plus (+) icon. Search for "Top 10" to see the available blocks. Click on the desired block to insert it into your content area.
 
-If you're using the pro version, you'll also have access to the "Top 10 Query Loop" and "Top 10 Featured Image" blocks, as well as the "Top 10 Popular Posts" and "Top 10 Post Count" blocks.
+If you're using the pro version, you'll also have access to the "Top 10 Popular Posts — Advanced", "Top 10 Query Loop" and "Top 10 Featured Image" blocks, as well as the "Top 10 Popular Posts" and "Top 10 Post Count" blocks.
 
 ![Insert Block menu in the Gutenberg editor in WordPress. Search for a Top 10 block. The block editor will display 2 blocks for the free version and 2 for the pro version.](https://webberzone.com/wp-content/uploads/2024/09/Top-10-Adding-the-Blocks.webp)
 
@@ -41,15 +41,55 @@ The block lets you preview the popular posts directly in the block editor. You c
 | Show author | Toggle | Display the author of each post |
 | Show date | Toggle | Displays the published date of each post. |
 | Show count | Toggle | Display the number of views alongside the post title. |
-| Styles | Dropdown | You can choose from various styles to display popular posts. The free version of Top 10 offers three styles: No Styles, Text Only, and Left Thumbnails. The pro version adds an extra style to display posts in a grid.  
-
-Selecting "Text only" will change the below option for the Thumbnail location to "No thumbnail". |
+| Styles | Dropdown | You can choose from various styles to display popular posts. The free version of Top 10 offers three styles: No Styles, Text Only, and Left Thumbnails. The pro version adds an extra style to display posts in a grid. Selecting "Text only" changes the Thumbnail location option below to "No thumbnail". |
 | Thumbnail location | Dropdown | This provides four self-explanatory options. "Before title", "After title", "Only thumbnail", "No thumbnail". Selecting "No thumbnail" will change the above option for Styles to "Text only". |
 | Other attributes | Textarea field | Enter other attributes in a URL-style string-query. It supports any of the plugin's global settings e.g. `post_types=post,page&link_nofollow=1&exclude_post_ids=5,6`. |
 
 ### Pro Settings
 
 Top 10 Pro users will see an additional section in the block settings sidebar that allows them to save the existing block settings as default or clear the defaults.
+
+## Top 10 Popular Posts — Advanced block *(Pro only)*
+
+The Advanced block lets you design the popular posts list visually. You edit one card, and every popular post in the list uses that design. It needs the **Top 10 Popular Posts — Advanced block** feature, which is enabled by default on the [Features tab](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/).
+
+### Choose a layout
+
+When you insert the block, pick one of six layout patterns. Use **Change pattern** in the block toolbar to switch later.
+
+- **Text list**: Post titles only.
+- **Small image beside title**: A small image to the left of each title.
+- **Image above title**: Cards with an image, title, and view count.
+- **Image, title and excerpt**: Cards with an image, title, date, view count, and excerpt.
+- **Horizontal image and text**: An image beside the title, date, view count, and excerpt.
+- **Rounded thumbnails**: Square images with rounded corners beside each title.
+
+### Card blocks
+
+The card is built from these blocks, which you can add, remove, move, and style like any other block:
+
+| Block | Description |
+| --- | --- |
+| Popular Post Title | The post title, with a heading level and an optional link. |
+| Popular Post Image | The post's image, chosen from the featured image and the sources you enable: a custom image, a meta key, the first image in the content, the default image, or the site icon. |
+| Popular Post Date | The post date, with an optional custom format. |
+| Popular Post Excerpt | An excerpt of the post. Default length: 24 words. |
+| Popular Post Views | The view count for the selected popularity period, followed by a suffix. Default suffix: `views`. |
+
+The **Popular Posts Template** block holds the card. It sets the maximum number of columns, the minimum card width, and the gap between cards. The **Popular Posts Empty State** block holds the content shown when no popular posts are found.
+
+### Block settings
+
+| Panel | Settings |
+| --- | --- |
+| Popularity period | **Count views from**: **All time**, **Recent days and hours**, or **Date range**. A date range uses the site timezone; leave the end date empty to include all later views. |
+| Results | Number of posts (1–50), order by, order, and posts to skip. **Use global count and post types** resets the number of posts and post types to the plugin settings. |
+| Filters | Post types, authors, and terms to include or exclude for each public taxonomy. |
+| Manual selections | Specific posts to include or exclude. |
+| Empty results | **Hide the entire section** (default) or **Show the empty state**. |
+| Advanced custom-field conditions | Custom-field conditions that posts must match. |
+
+Lists built with the Top 10 Query Loop block can be converted to the Advanced block using the block toolbar's **Transform** menu.
 
 ## Using the Top 10 Query Loop Block (Pro version)
 

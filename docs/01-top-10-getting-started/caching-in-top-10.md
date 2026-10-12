@@ -23,6 +23,16 @@ Top 10 will use the Transients API to cache the popular posts output. By default
 
 On multilingual sites, cache keys include the current language via `Language_Handler::get_cache_language()`, so a cached list from one language is not served to visitors of another. You can adjust the language component of the key with the `tptn_cache_language` filter.
 
+## Automatic refresh
+
+Cached lists refresh without waiting for the cache time to expire when their data changes:
+
+- Top 10 aggregates new views into the count tables.
+- A view count is set, edited, imported, or deleted.
+- A post is created, updated, or deleted.
+
+On a multisite network, only the cached lists of the affected sites refresh. Changing the [data source](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/) also starts a fresh set of cached lists.
+
 ## Clearing the cache
 
 You can manually clear the plugin cache by visiting the [**Tools** page](https://webberzone.com/support/knowledgebase/top-10-tools-admin-screen/) and using the **Clear Cache** button. [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) users also have a dedicated **Clear cache** button in the Settings page at the bottom.

@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2026/05/Top10-CLI.webp"
 ---
 
-Top 10 Pro includes a full WP-CLI command suite so you can manage counts, database tables, cache, settings, and cron jobs directly from the terminal — without touching the WordPress admin.
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) includes a full WP-CLI command suite so you can manage counts, database tables, cache, settings, and cron jobs directly from the terminal — without touching the WordPress admin.
 
 All commands start with `wp top10`. Run any command with `--help` to see its full option list.
 
@@ -123,9 +123,11 @@ wp top10 counts export --dry-run
 
 The default file name is `tptn-counts-{timestamp}.csv` in the current directory. Files may only be written to the WordPress root, the uploads directory, or the system temp directory.
 
+When the count tables have the feed views column, the file ends with a **Feed Visits** column holding the feed share of each row's visits.
+
 ### `import` — load counts from a CSV file
 
-The file must use the same column layout produced by `counts export` (or the admin export page). The table type — overall or daily — is auto-detected from the header row.
+The file must use the same column layout produced by `counts export` (or the admin export page). The table type — overall or daily — is auto-detected from the header row. A **Feed Visits** column is restored in `add` mode and ignored in `set` mode.
 
 ```bash
 wp top10 counts import counts.csv
@@ -190,6 +192,15 @@ wp top10 cron run --dry-run
 wp top10 db status
 wp top10 db status --format=json
 wp top10 db status --network
+```
+
+### `add-feed-columns` — enable separate feed view counts
+
+Adds the `feedcnt` column to the count tables and enables separate feed view counts. Top 10 adds this column instantly during the upgrade where the database server supports it. Use this command when it could not, which the Tools screen also reports. The tables are altered online where the server supports it, and historical feed views are then imported from the visits log in the background.
+
+```bash
+wp top10 db add-feed-columns
+wp top10 db add-feed-columns --dry-run
 ```
 
 ### `aggregate` — drain the visits funnel immediately

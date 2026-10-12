@@ -62,7 +62,7 @@ Enter a comma-separated list of post, page or custom post type IDs to exclude di
 
 Choose where popular posts lists get their view counts. **Top 10** (default) uses Top 10's own counts. **Hybrid** uses [Koko Analytics](https://wordpress.org/plugins/koko-analytics/) page views for the lists while Top 10 keeps tracking. **Koko Analytics only** uses Koko Analytics page views and switches off Top 10 tracking and the view counts it adds to posts and admin lists.
 
-Hybrid and Koko Analytics only need Koko Analytics to be active. The description shows the mode in use. See [Use Koko Analytics as the data source for Top 10](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/).
+Hybrid and Koko Analytics only need Koko Analytics to be active; without it, Top 10 keeps tracking and powering the lists. The description shows the mode in use. See [Use Koko Analytics as the data source for Top 10](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/).
 
 ## Tracker settings
 
@@ -74,7 +74,7 @@ Top 10 tracks hits in two tables in the database. The overall table only tracks 
 
 Top 10 includes three tracker types in the free plugin — REST API based, Query variable based, and Ajaxurl based — plus two additional high-performance options in Pro.
 
-All tracker types share the same underlying recording mechanism: each page view writes a single row to the visits funnel table and returns immediately. A background cron job aggregates the funnel into the main count tables every two minutes. See [Trackers in Top 10](../02-top-10-advanced/trackers-in-top-10/) for a full explanation of this flow.
+All tracker types share the same underlying recording mechanism: each page view writes a single row to the visits funnel table and returns immediately. A background cron job aggregates the funnel into the main count tables every two minutes. See [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/) for a full explanation of this flow.
 
 [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) adds two additional trackers:
 
@@ -88,6 +88,10 @@ Funnel tracking buffers views in a staging table that is merged into the count t
 ### Track site-wide views *(Pro only)*
 
 Tracks views for the front page, posts page, archives, and search results, in addition to individual posts and pages. Requires the **Site-wide tracking** feature to be enabled on the Features tab. Each context (front page, search, category, tag, author, and so on) is counted using a reserved ID that is the same on every site; counts still remain separate per site on a multisite network.
+
+### Track feed views *(Pro only)*
+
+Counts post views from RSS and Atom feed readers using a tracking pixel. Feed views are added to the post's regular view count and also reported separately in the **Feed vs web** tab of the Top 10 dashboard. Some feed readers block remote images by default, so views are only counted when the reader loads images. Disabled by default.
 
 ### Load tracker on all pages
 

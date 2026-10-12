@@ -58,7 +58,7 @@ A separate maintenance cron ([`tptn_cron_hook`](https://webberzone.dev/top-10/ho
 - **`wp_top_ten_daily`** — retains data for 180 days by default (controlled by `TOP_TEN_STORE_DATA` / [`tptn_maintenance_days`](https://webberzone.dev/top-10/hooks/tptn_maintenance_days/) filter).
 - **`wp_top_ten_visits_log`** — retains data for 30 days by default (controlled by `TOP_TEN_LOG_STORE_DATA` / [`tptn_log_retention_days`](https://webberzone.dev/top-10/hooks/tptn_log_retention_days/) filter).
 
-The log uses a shorter window because it stores one raw row per visit and grows proportionally to traffic. Once aggregation has run, those rows are already reflected in the count tables and serve only as an audit trail. See [Maintenance options](../01-top-10-getting-started/top-10-maintenance-options/) for how to adjust either retention period.
+The log uses a shorter window because it stores one raw row per visit and grows proportionally to traffic. Once aggregation has run, those rows are already reflected in the count tables and serve only as an audit trail. See [Maintenance options](https://webberzone.com/support/knowledgebase/top-10-maintenance-options/) for how to adjust either retention period.
 
 ### Changing the aggregation interval
 

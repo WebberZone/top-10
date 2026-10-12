@@ -1848,7 +1848,7 @@ class Settings {
 			$status .= sprintf( esc_html__( 'Koko Analytics %s detected.', 'top-10' ), esc_html( Koko_Analytics::get_version() ) ) . ' ';
 		}
 
-		$desc = $status . esc_html__( 'Koko Analytics counts page views per day, so custom periods are rounded to whole days and overall counts cover the data Koko Analytics keeps. Network-wide lists always use Top 10.', 'top-10' );
+		$desc = $status . esc_html__( 'Koko Analytics counts page views per day, so custom periods are rounded to whole days and overall counts cover the data Koko Analytics keeps. In network-wide lists, each site uses its own Koko Analytics data, or Top 10 counts where Koko Analytics is not active.', 'top-10' );
 
 		if ( ! Koko_Analytics::is_available() ) {
 			$desc .= ' <strong>' . sprintf(
