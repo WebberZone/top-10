@@ -15,10 +15,12 @@
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
  * Version:     4.6.0
+ * Requires at least: 6.8
+ * Requires PHP: 7.4
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: top-10
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WebberZone/top-10/

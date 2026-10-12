@@ -43,7 +43,7 @@ Registers the Popular Posts Pro block for the block editor.
 
 ## Page builder integrations *(Pro only)*
 
-Registers the Popular Posts (Top 10) elements for Elementor, Bricks Builder, and WPBakery Page Builder. See [Page builder integrations](https://webberzone.com/support/knowledgebase/page-builder-integrations/).
+Registers the Popular Posts (Top 10) elements for Elementor, Bricks Builder, and WPBakery Page Builder. See [Page builder integrations](https://webberzone.com/support/knowledgebase/top-10-page-builder-integrations/).
 
 ## Lazy-load module *(Pro only)*
 
