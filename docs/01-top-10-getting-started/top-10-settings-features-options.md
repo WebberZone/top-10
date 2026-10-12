@@ -69,6 +69,8 @@ Adds the enhanced Top 10 Pro widgets to the WordPress dashboard.
 
 Enables the Popular Authors blocks, shortcodes, widgets, and settings bundled with Top 10 Pro. Disabling this registers empty stubs for the [`tptn_popular_authors`](https://webberzone.dev/top-10/hooks/tptn_popular_authors/), `tptn_author_top_posts`, `wzpa_popular_authors`, and `wzpa_author_top_posts` shortcodes so raw shortcode text does not appear in published content.
 
+See [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/) and [Migrating from the Popular Authors Plugin](https://webberzone.com/support/knowledgebase/migrating-from-popular-authors/).
+
 ## Abilities API
 
 Exposes popular posts and view counts to authenticated integrations on WordPress 6.9 or later. Top 10 Pro also exposes lifetime count editing and cache clearing. This setting is enabled by default and works independently of the Top 10 REST API endpoints. See [Top 10 Abilities API](https://webberzone.com/support/knowledgebase/top-10-abilities-api/).
