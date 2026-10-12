@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.2
+Stable tag: 4.6.0
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -18,7 +18,7 @@ Top 10 provides blocks, widgets, shortcodes, and template functions for displayi
 
 Top 10 includes comprehensive features such as thumbnail support, flexible display options, custom post type support, and developer-friendly extensibility. A built-in caching layer reduces server load, while AJAX-based tracking avoids page cache interference and works with most popular caching plugins.
 
-Top 10 also exposes a powerful API with WordPress actions and filters, allowing developers to customise queries, tracking behaviour, and output rendering without modifying core plugin files.
+Top 10 also exposes a powerful API with WordPress actions and filters, allowing developers to customize queries, tracking behavior, and output rendering without modifying core plugin files.
 
 = Features =
 
@@ -26,7 +26,7 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 * **Popular Posts**: Display most viewed posts by total counts or within custom time periods
 * **Gutenberg Support**: Dedicated “Popular Posts [Top 10]” block with configurable display options
 * **Multisite Dashboard**: Network-wide aggregated statistics across all sites in a multisite installation
-* **Widgets**: Sidebar widgets for daily and overall popular posts with extensive customisation
+* **Widgets**: Sidebar widgets for daily and overall popular posts with extensive customization
 * **Shortcodes**: Use `[tptn_list]` to display popular post lists and `[tptn_views]` to show view counts
 * **Thumbnails**:
 	* WordPress post thumbnail support with custom `tptn_thumbnail` image size
@@ -36,19 +36,22 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
 * **Styling**: Output wrapped in semantic CSS classes. Add custom CSS via settings or use included styles
 * **Admin Interface**: View daily and overall popular posts from the dashboard. Adds sortable view-count columns to post and page lists
 * **Export/Import**: Export count tables and settings, and restore them on the same site or other installs
+* **Koko Analytics Data Source**: Build popular posts lists from Koko Analytics page views, optionally switching off Top 10 tracking
+* **Abilities API**: Expose popular posts and view counts to authenticated integrations on WordPress 6.9+
 * **Caching Compatibility**: Works with WP Super Cache, W3 Total Cache, Quick Cache, and similar plugins
-* **Developer-Friendly**: Extensive filters and actions to customise queries, tracking behaviour, and output rendering
+* **Developer-Friendly**: Extensive filters and actions to customize queries, tracking behavior, and output rendering
 
 = Features in Top 10 Pro =
 
 * __Enhanced Tracking and Performance__
   * __Fast and High-Traffic Trackers__: Alternative tracking methods for improved performance on busy sites
   * __Site-wide Tracking__: Track views for the front page, posts page, archives, and searches in addition to individual content
-  * __Query Optimisation__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
+  * __Query Optimization__: MySQL `MAX_EXECUTION_TIME` directive to prevent long-running queries, configurable via settings and the `top_ten_query_max_execution_time` filter
   * __Data Retention Override__: Customizable data retention period (default 180 days via `TOP_TEN_STORE_DATA`)
   * __Lazy Loading__: Render popular posts lists via JavaScript only when they are about to scroll into view, so full-page caching plugins can serve a page without baking in a live popular-posts query. Works with content, shortcodes, widgets, and the Popular Posts block; disable per instance with the `lazy_load` shortcode/block attribute
 
 * __Advanced Blocks and Widgets__
+  * __Advanced Popular Posts Block__: Design popular posts with editable cards and six layout patterns
   * __Top 10 Query Block__: Query and display popular posts directly from the block or site editor
   * __Enhanced Top 10 Featured Image Block__: Support for multiple image sources with fallbacks
   * __Popular Posts Block Enhancements__:
@@ -61,6 +64,8 @@ Top 10 also exposes a powerful API with WordPress actions and filters, allowing 
   * __Dashboard Access Control__: Setting to control which user roles can view the Top 10 dashboard
   * __Display Settings__: Setting to choose which post type screens display admin columns
   * __Mini "Top 10 Views Overview" widget__: Compact views-over-time chart on the WordPress Dashboard
+  * __Feed vs Web Report__: Dashboard tab comparing feed and web views, with the posts most read via feed
+  * __Network-wide Lists__: Popular posts lists across multiple sites in a network, including Koko Analytics data
   * __Multisite Settings Copy__: Tool to copy settings between sites in a multisite network
 
 * __Custom Display Options__
@@ -182,26 +187,30 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 = 4.6.0 =
 
-Release date: TBD
+Release date: 15 October 2026
 
 **Added**
 
-* Koko Analytics as an optional data source for popular posts. Top 10 tracking can be switched off. Pro users also get it in network-wide lists.
-* WordPress Abilities API support for popular posts and view counts. Pro users also get abilities for editing counts and clearing caches.
-* [Pro] Advanced Popular Posts block with six layouts and sidebar support, enabled by default.
-* [Pro] Feed vs web tab on the Top 10 dashboard. It shows feed and web views for the last 7 days, the last 30 days and all time, plus the posts most read via feed. Feed views already in the visits log are imported in the background.
-* Count exports include a Feed Visits column, and imports restore it.
+* Koko Analytics as an optional data source for popular posts, including a mode that switches off Top 10 tracking.
+* [Pro] Koko Analytics data in popular posts lists that span network sites.
+* WordPress Abilities API support for popular posts and view counts on WordPress 6.9+.
+* [Pro] Abilities for editing view counts and clearing the cache.
+* [Pro] Advanced Popular Posts block with editable cards and six layout patterns.
+* [Pro] Feed vs web tab on the Top 10 dashboard, reporting feed and web views and the posts most read via feed.
+* Feed Visits column in count exports, restored on import.
 
 **Changed**
 
-* Improved daily-query performance and multisite cache reuse.
 * Popular posts lists spanning multiple network sites are now Pro only.
+* Cached popular posts lists refresh when view counts or posts change, instead of waiting for the cache to expire.
+* Daily popular posts queries add up view counts before loading posts, reducing query time on large sites.
 
 **Fixed**
 
-* Stale rankings, cache misses and cross-site query errors.
-* Missing tracking on bot-generated cached pages.
-* Incorrect rounding of custom date ranges.
+* The popular posts query cache was never reused because its key changed every second.
+* With Do not track bots enabled, views were not counted on cached pages that a bot had generated.
+* Custom date ranges, such as those on the Top 10 dashboard, were rounded to midnight or the hour instead of using the exact start and end times.
+* Every database upgrade re-altered the visits log and funnel table columns.
 
 = Earlier versions =
 
@@ -210,4 +219,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.0 =
-Adds Koko Analytics as an optional data source, Abilities API support and the Pro Advanced Popular Posts block. Network-wide lists now need Pro.
+Adds Koko Analytics as a data source, Abilities API support, and the Pro Advanced Popular Posts block and feed vs web report. Lists spanning network sites now need Pro.

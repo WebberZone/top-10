@@ -25,6 +25,10 @@ Adds custom RSS feeds for overall and daily popular posts. The feed settings are
 
 Registers the classic Popular Posts and Views Count widgets. Disable this if you use blocks instead of classic widgets.
 
+## Top 10 Popular Posts — Advanced block *(Pro only)*
+
+Registers the Advanced Popular Posts block, its card blocks, and its six layout patterns. See [Blocks in Top 10](https://webberzone.com/support/knowledgebase/popular-posts-blocks/).
+
 ## Query block *(Pro only)*
 
 Registers the Top 10 Query block and the pre-built block patterns.
@@ -40,6 +44,10 @@ Registers the Popular Posts Pro block for the block editor.
 ## Page builder integrations *(Pro only)*
 
 Registers the Popular Posts (Top 10) elements for Elementor, Bricks Builder, and WPBakery Page Builder. See [Page builder integrations](https://webberzone.com/support/knowledgebase/page-builder-integrations/).
+
+## Lazy-load module *(Pro only)*
+
+Loads the lazy-loading module and its REST endpoint. Disable this to remove lazy-loading support, including per-shortcode and per-block `lazy_load` overrides. Requires **REST API endpoints** to be enabled.
 
 ## Fast and High-traffic trackers *(Pro only)*
 
@@ -64,6 +72,10 @@ Enables the Popular Authors blocks, shortcodes, widgets, and settings bundled wi
 ## Abilities API
 
 Exposes popular posts and view counts to authenticated integrations on WordPress 6.9 or later. Top 10 Pro also exposes lifetime count editing and cache clearing. This setting is enabled by default and works independently of the Top 10 REST API endpoints. See [Top 10 Abilities API](https://webberzone.com/support/knowledgebase/top-10-abilities-api/).
+
+## REST API endpoints
+
+Registers the `top-10/v1` endpoints for popular posts, tracking, counters, blocks, and lazy loading. Keep this enabled if your tracker type is REST-based or if your integrations or blocks use these endpoints.
 
 ## See also
 

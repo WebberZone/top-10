@@ -110,6 +110,6 @@ A control left blank (or, for a checkbox/switcher, left unchecked) falls back to
 
 ## See also
 
-- [Top 10 shortcodes](../02-top-10-advanced/top-10-shortcodes/)
-- [Blocks in Top 10](../02-top-10-advanced/popular-posts-blocks/)
-- [Top 10 Settings – Styles options](../01-top-10-getting-started/top-10-settings-styles-options/)
+- [Top 10 shortcodes](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
+- [Blocks in Top 10](https://webberzone.com/support/knowledgebase/popular-posts-blocks/)
+- [Top 10 Settings – Styles options](https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/)

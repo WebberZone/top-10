@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/09/Tools.webp"
 ---
 
-The Tools screen in Top 10 offers a set of buttons to help you maintain various features of the plugin.
+The Tools screen in [Top 10](https://webberzone.com/plugins/top-10/) offers a set of buttons to help you maintain various features of the plugin.
 
 ![Top 10 - Tools screen](https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tools-screen-1-986x1024.webp)
 
@@ -38,7 +38,13 @@ Top 10 uses a two-stage tracking pipeline: every page view is written as a singl
 
 Use **Sync Funnel Now** when you need counts to reflect immediately — for example after importing data, during testing, or if you suspect the aggregation cron is not running. It is equivalent to running the aggregation cron job on demand. If the funnel is empty, a lock from a concurrent run is detected, or a database error occurs, a distinct error message is shown rather than a silent no-op.
 
-See [Trackers in Top 10](../02-top-10-advanced/trackers-in-top-10/) for a full explanation of the tracking pipeline and database tables.
+See [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/) for a full explanation of the tracking pipeline and database tables.
+
+### Enable Feed View Counts
+
+Top 10 stores the feed share of each view count in a `feedcnt` column on `wp_top_ten` and `wp_top_ten_daily`. The upgrade adds this column instantly where the database server supports it (MySQL 8.0.12+ or MariaDB 10.3+). On other servers the column is left pending, an admin notice appears on Top 10 screens, and this box shows an **Add Feed Views Column** button.
+
+Adding the column rebuilds the count tables, which can take several minutes on large sites, so run it during a quiet period. Historical feed views are then imported from the visits log in the background. On a multisite network, the button is on the Network Admin Tools screen. The same operation is available from the command line via [`wp top10 db add-feed-columns`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
 
 ### Recreate Primary Key
 
@@ -52,7 +58,7 @@ Resets the Top 10 tables. For multisite installs, it resets the popular posts fo
 
 Combines hourly records in the daily table that are older than a chosen number of days (default 14) into a single daily record per post. This reduces the size of `wp_top_ten_daily` without changing overall view counts or recent hourly data. On the Network Admin Tools screen, the button reads **Reduce Daily Table Size Across Network** and runs for every active site.
 
-This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](../03-top-10-developer-docs/top-10-cli-commands/).
+This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
 
 > [!NOTE]
 > ⓘ This tool requires the **Daily table size reduction** feature to be enabled on the Features tab of Top 10 settings (on by default).
