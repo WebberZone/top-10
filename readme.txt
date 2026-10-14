@@ -169,6 +169,10 @@ Release date: 15 October 2026
 * Cached popular posts lists refresh when view counts or posts change, instead of waiting for the cache to expire.
 * Daily popular posts queries add up view counts before loading posts, reducing query time on large sites.
 
+**Security**
+
+* Hardened escaping of the popular posts wrapper classes.
+
 **Fixed**
 
 * The popular posts query cache was never reused because its key changed every second.

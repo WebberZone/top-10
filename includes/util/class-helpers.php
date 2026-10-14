@@ -688,6 +688,7 @@ class Helpers {
 					case 'class':
 					case 'className':
 					case 'extra_class':
+					case 'instance_id':
 						$classes           = explode( ' ', $value );
 						$sanitized_classes = array_map( 'sanitize_html_class', $classes );
 						$args[ $key ]      = implode( ' ', $sanitized_classes );
