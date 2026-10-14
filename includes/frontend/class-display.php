@@ -151,7 +151,7 @@ class Display {
 
 		$post_classes = array(
 			'main'        => $args['daily'] ? 'tptn_posts_daily ' : 'tptn_posts ',
-			'widget'      => $args['is_widget'] ? 'tptn_posts_widget tptn_posts_widget-' . $args['instance_id'] : '',
+			'widget'      => $args['is_widget'] ? 'tptn_posts_widget tptn_posts_widget-' . sanitize_html_class( $args['instance_id'] ) : '',
 			'shortcode'   => $args['is_shortcode'] ? 'tptn_posts_shortcode' : '',
 			'block'       => $args['is_block'] ? 'tptn_posts_block' : '',
 			'extra_class' => $args['extra_class'],
@@ -168,7 +168,7 @@ class Display {
 		 */
 		$post_classes = apply_filters( 'tptn_post_class', $post_classes );
 
-		$output .= '<div class="' . $post_classes . '" data-tptn-source="' . esc_attr( Koko_Analytics::get_list_source() ) . '">';
+		$output .= '<div class="' . esc_attr( $post_classes ) . '" data-tptn-source="' . esc_attr( Koko_Analytics::get_list_source() ) . '">';
 
 		if ( $results ) {
 
