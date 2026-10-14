@@ -91,7 +91,7 @@ Tracks views for the front page, posts page, archives, and search results, in ad
 
 ### Track feed views *(Pro only)*
 
-Counts post views from RSS and Atom feed readers using a tracking pixel. Feed views are added to the post's regular view count and also reported separately in the **Feed vs web** tab of the Top 10 dashboard. Some feed readers block remote images by default, so views are only counted when the reader loads images. Disabled by default.
+Counts post views from RSS and Atom feed readers using a tracking pixel. Feed views are added to the post's regular view count and also reported separately in the **Feed vs web** tab of the Top 10 dashboard. Some feed readers block remote images by default, so views are only counted when the reader loads images. Disabled by default. See [Feed vs web statistics](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/) for report setup and historical-data limits.
 
 ### Load tracker on all pages
 

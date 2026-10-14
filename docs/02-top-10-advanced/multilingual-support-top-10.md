@@ -26,6 +26,8 @@ To show the original post when a translation is missing on WPML, add this snippe
 add_filter( 'tptn_wpml_return_original', '__return_true' );
 ```
 
+For Pro lists across network sites, Top 10 resolves translations on each post's source site. Cached network results preserve the site ID as well as the post ID, so posts with the same ID on different sites remain distinct.
+
 ## TranslatePress
 
 TranslatePress does not create separate posts; it translates strings on the page. Top 10 therefore translates the popular post titles, excerpts, and links instead of swapping post IDs.
@@ -38,7 +40,7 @@ On the front end, the popular posts list is translated with the rest of the page
 
 Cached lists differ per language, so Top 10 adds the current language to every cache key. `Language_Handler::get_cache_language()` resolves the language from TranslatePress, then Polylang with `pll_current_language( 'locale' )`, then WPML with `wpml_current_language`.
 
-The key is built in `includes/util/class-cache.php` as `tptn_cache_` followed by an MD5 hash of the language and the serialized display arguments. On a monolingual site the language component is empty, so keys behave as before.
+The key is built in `includes/util/class-cache.php` as `tptn_cache_` followed by an MD5 hash of the language and normalized query arguments. Arguments that do not affect query results are excluded. The arguments also include the effective data mode and cache generation values, so changing the source or tracked data invalidates old results. On a monolingual site the language component is empty.
 
 Use the `tptn_cache_language` filter to change or supply the language component. The snippet below covers a custom language plugin that Top 10 does not detect on its own:
 

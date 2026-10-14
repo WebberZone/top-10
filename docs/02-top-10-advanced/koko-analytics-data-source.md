@@ -44,7 +44,7 @@ All your list settings still apply: post types, exclusions, categories, post age
 
 Koko Analytics stores one row per post per day, so Top 10 works in whole days:
 
-- **Custom period**: Top 10 adds up the days in the range. Hours are ignored, so a range of 1 day and 6 hours returns the same list as 1 day.
+- **Custom period**: Top 10 computes the start and end of the range, then rounds those boundaries down to dates. With **Start daily counts at midnight** enabled, additional hours do not affect the start date. With that setting disabled, additional hours can move the start into an earlier day; Koko Analytics then includes that whole day.
 - **Overall**: Top 10 adds up all the data Koko Analytics still holds. If Koko Analytics automatic data cleanup is on, the deleted data is not included.
 
 With **Start daily counts at midnight** turned on (the default), a range of 7 days covers today and the 6 days before it. To compare a list with the Koko Analytics dashboard, pick the same dates:

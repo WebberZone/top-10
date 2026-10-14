@@ -15,6 +15,10 @@ toc: true
 
 [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) brings an advanced *Query Loop block*, which allows you to display popular posts based on specified parameters. You can use the pre-built block patterns or create your own ones within posts or the site editor.
 
+## Advanced Popular Posts block *(Pro only)*
+
+Top 10 Pro 4.6.0 adds **Top 10 Popular Posts — Advanced**, with editable repeated cards, six layout patterns, popularity periods, filters, and an empty state. Its editor preview requires REST API endpoints. See [Advanced Popular Posts block](https://webberzone.com/support/knowledgebase/advanced-popular-posts-block/) for setup and supported Query Loop conversions.
+
 ## Adding the Blocks
 
 To add the Top 10 blocks, click the block editor's plus (+) icon. Search for "Top 10" to see the available blocks. Click on the desired block to insert it into your content area.

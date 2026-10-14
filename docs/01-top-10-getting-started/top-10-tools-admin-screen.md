@@ -42,9 +42,9 @@ See [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-i
 
 ### Enable Feed View Counts
 
-Top 10 stores the feed share of each view count in a `feedcnt` column on `wp_top_ten` and `wp_top_ten_daily`. The upgrade adds this column instantly where the database server supports it (MySQL 8.0.12+ or MariaDB 10.3+). On other servers the column is left pending, an admin notice appears on Top 10 screens, and this box shows an **Add Feed Views Column** button.
+Top 10 stores the feed share of each view count in a `feedcnt` column on `wp_top_ten` and `wp_top_ten_daily`. The upgrade adds this column instantly where the database server supports it (MySQL 8.0.12+ or MariaDB 10.3+). Small tables and SQLite databases can be updated directly. If a larger table cannot be updated instantly, the column is left pending, an admin notice appears on Top 10 screens, and this box shows an **Add Feed Views Column** button.
 
-Adding the column rebuilds the count tables, which can take several minutes on large sites, so run it during a quiet period. Historical feed views are then imported from the visits log in the background. On a multisite network, the button is on the Network Admin Tools screen. The same operation is available from the command line via [`wp top10 db add-feed-columns`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
+Adding the column rebuilds the count tables, which can take several minutes on large sites, so run it during a quiet period. Historical feed views are then imported from the visits log in the background. See [Feed vs web statistics](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/) for the report and backfill limits. On a multisite network, the button is on the Network Admin Tools screen. The same operation is available from the command line via [`wp top10 db add-feed-columns`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
 
 ### Recreate Primary Key
 

@@ -13,6 +13,12 @@ featured_image: "https://webberzone.com/wp-content/uploads/2024/09/Top-10-Tracke
 
 The plugin interface uses **Custom period** for what was historically called **Daily**. When the range is set to 1 day, labels read **Daily**; for longer ranges they read **Custom (N days)**. Internally, the database table, tracker settings, and many API parameters still use the word `daily` for backward compatibility.
 
+## Data source and tracking
+
+The [Data source setting](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/) controls whether Top 10 records new views. **Top 10** and **Hybrid** keep tracking enabled. **Koko Analytics only** stops Top 10 tracking, including feed pixels and Pro Fast and High-traffic trackers, while Koko Analytics powers popular posts lists.
+
+If Koko Analytics is unavailable, Top 10 falls back to its own data and tracking. Clear your page cache after changing modes so pages use the current tracker setup.
+
 ## Selecting the Tracker
 
 The tracker can be set in the Top 10 > Settings > Counter/Tracker. Scroll down to tracker settings and select the **Tracker type**.
@@ -50,6 +56,8 @@ A WordPress cron job ([`tptn_aggregation_cron_hook`](https://webberzone.dev/top-
 4. **Deletes** the processed funnel rows.
 
 All four steps run inside one transaction. If anything fails the transaction rolls back cleanly and the next cron run retries the same rows — there is no risk of double-counting.
+
+Feed views are included in regular counts. From 4.6.0, once feed view counts are enabled, their share is also stored separately for the Pro [Feed vs web report](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/). This does not double-count views.
 
 ### Step 3 — Old data is pruned
 

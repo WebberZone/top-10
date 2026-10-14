@@ -12,7 +12,7 @@ featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Genera
 
 [toc]
 
-The **General options** tab lets you configure the main options for Top 10 on your WordPress blog.
+The **General options** tab lets you configure the main options for [Top 10](https://webberzone.com/plugins/top-10/) on your WordPress blog.
 
 ## Enable cache
 
@@ -27,6 +27,8 @@ Enter the number of seconds to cache the output of the popular posts.
 ## Lazy load popular posts *(Pro only)*
 
 Load popular posts using JavaScript when the list is about to enter the viewport. This speeds up initial page loads and lets full-page caches serve fresh lists. Search engines may not index links loaded this way. Applies to content, shortcodes, widgets and the Popular Posts block. Use `lazy_load="0"` in the shortcode or block attributes to disable it per instance. Not applied on feeds or AMP pages.
+
+Requires both **Lazy-load module** and **REST API endpoints** under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Disabling either feature prevents lazy loading, including per-instance overrides.
 
 ## Delete options on uninstall
 
