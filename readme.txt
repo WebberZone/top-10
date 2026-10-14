@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget, trending posts, post views counter, multisite, block, shortcode
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.5.2
+Stable tag: 4.5.3
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -180,6 +180,14 @@ The Patchstack team help validate, triage and handle any security vulnerabilitie
 
 == Changelog ==
 
+= 4.5.3 =
+
+Release date: 15 October 2026
+
+**Security**
+
+* Hardened escaping of the popular posts wrapper classes.
+
 = 4.5.2 =
 
 Release date: 7 October 2026
@@ -251,6 +259,9 @@ Release post: https://webberzone.com/announcements/top-10-v4-5/
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/top-10/releases).
 
 == Upgrade Notice ==
+
+= 4.5.3 =
+Security release. Hardens escaping of the popular posts wrapper. Update recommended.
 
 = 4.5.2 =
 Keeps popular posts in the correct language on multilingual sites, adds controls for REST API endpoints and Pro lazy loading, and fixes setup wizard accessibility.
