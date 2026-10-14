@@ -31,7 +31,7 @@ Cached lists refresh without waiting for the cache time to expire when their dat
 - A view count is set, edited, imported, or deleted.
 - A post is created, updated, or deleted.
 
-On a multisite network, only the cached lists of the affected sites refresh. Changing the [data source](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/) also starts a fresh set of cached lists.
+On a multisite network, site-specific changes invalidate that site's lists and Pro lists that include its posts. Bulk operations can invalidate caches across the network. Changing the [data source](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/) also starts a fresh set of cached lists.
 
 ## Clearing the cache
 

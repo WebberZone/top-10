@@ -27,7 +27,7 @@ Registers the classic Popular Posts and Views Count widgets. Disable this if you
 
 ## Top 10 Popular Posts — Advanced block *(Pro only)*
 
-Registers the Advanced Popular Posts block, its card blocks, and its six layout patterns. See [Blocks in Top 10](https://webberzone.com/support/knowledgebase/popular-posts-blocks/).
+Registers the Advanced Popular Posts block, its card blocks, and its six layout patterns. Enabled by default. See [Advanced Popular Posts block](https://webberzone.com/support/knowledgebase/advanced-popular-posts-block/).
 
 ## Query block *(Pro only)*
 

@@ -40,7 +40,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Site-wide tracking (front page, archives, search) | ❌ | ✅ |
 | Reduce Daily Table Size tool (admin + WP-CLI) | ❌ | ✅ |
 | **Display & Blocks** |  |  |
-| Advanced Popular Posts block (editable cards, 6 layouts) | ❌ | ✅ |
+| [Advanced Popular Posts block](https://webberzone.com/support/knowledgebase/advanced-popular-posts-block/) (editable cards, 6 layouts) | ❌ | ✅ |
 | Pro Query Loop block | ❌ | ✅ |
 | Enhanced Featured Image block | ❌ | ✅ |
 | Popular Posts Pro block (save/restore defaults) | ❌ | ✅ |
@@ -61,7 +61,7 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Admin bar menu (daily, total, and overall counts) | ❌ | ✅ |
 | Option to disable admin bar menu | ❌ | ✅ |
 | Mini "Views Overview" dashboard widget | ❌ | ✅ |
-| Feed vs web views dashboard report | ❌ | ✅ |
+| [Feed vs web views dashboard report](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/) | ❌ | ✅ |
 | Dashboard access control by user role | ❌ | ✅ |
 | Choose which post types show admin columns | ❌ | ✅ |
 | Sortable admin columns on custom post types | ❌ | ✅ |
