@@ -1,5 +1,13 @@
 This file holds the archive of changelog entries
 
+= 4.5.3 =
+
+Release date: 15 October 2026
+
+**Security**
+
+* Hardened escaping of the popular posts wrapper classes.
+
 = 4.5.2 =
 
 Release date: 7 October 2026
