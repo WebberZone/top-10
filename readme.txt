@@ -172,10 +172,13 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 
 **Security**
 
-* Hardened escaping of the popular posts wrapper classes.
+* Prevented password-unlocked excerpts from being shared with other visitors through cached popular posts lists.
+* Prevented thumbnails from exposing images inside or attached to password-protected posts before the password was entered.
+* Hardened thumbnail URLs to reject unsafe protocols.
 
 **Fixed**
 
+* Malformed custom thumbnail dimensions caused PHP errors during image-size selection.
 * The popular posts query cache was never reused because its key changed every second.
 * With Do not track bots enabled, views were not counted on cached pages that a bot had generated.
 * Custom date ranges, such as those on the Top 10 dashboard, were rounded to midnight or the hour instead of using the exact start and end times.
@@ -188,4 +191,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.0 =
-Adds Koko Analytics as a data source, Abilities API support, and the Pro Advanced Popular Posts block and feed vs web report. Lists spanning network sites now need Pro.
+Security fixes prevent protected excerpts and images leaking through popular posts lists. Adds Koko Analytics, Abilities API support, and Pro Advanced blocks and feed reports. Lists spanning network sites now need Pro. Update recommended.

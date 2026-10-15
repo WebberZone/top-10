@@ -64,6 +64,11 @@ class Display {
 		// Sanitize the attributes.
 		$args = Helpers::sanitize_args( $args );
 
+		// Password-unlocked output must never enter or read a shared cache.
+		if ( defined( 'COOKIEHASH' ) && ! empty( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] ) ) {
+			$args['cache'] = false;
+		}
+
 		// Short circuit flag.
 		$short_circuit = false;
 
@@ -119,7 +124,7 @@ class Display {
 
 		// Check if the cache is enabled and if the output exists. If so, return the output.
 		if ( $args['cache'] ) {
-			$cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( $args );
+			$cache_name = \WebberZone\Top_Ten\Util\Cache::get_key( array_merge( $args, array( '_tptn_output_version' => 2 ) ) );
 
 			$output = get_transient( $cache_name );
 
