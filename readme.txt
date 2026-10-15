@@ -152,6 +152,7 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 = 4.6.0 =
 
 Release date: 15 October 2026
+Release post: https://webberzone.com/announcements/top-10-v4-6/
 
 **Added**
 
