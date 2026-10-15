@@ -175,6 +175,8 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 * Prevented password-unlocked excerpts from being shared with other visitors through cached popular posts lists.
 * Prevented thumbnails from exposing images inside or attached to password-protected posts before the password was entered.
 * Hardened thumbnail URLs to reject unsafe protocols.
+* Restricted the popular posts REST endpoint to its documented parameters (`limit`, `post_types`, `daily` and `context`), preventing unbounded queries and probing of hidden post meta. `limit` is capped at 100 and `post_types` accepts only public post types.
+* Prevented the view count REST endpoint from returning counts for posts the visitor cannot read, such as drafts.
 
 **Fixed**
 
@@ -183,6 +185,7 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 * With Do not track bots enabled, views were not counted on cached pages that a bot had generated.
 * Custom date ranges, such as those on the Top 10 dashboard, were rounded to midnight or the hour instead of using the exact start and end times.
 * Every database upgrade re-altered the visits log and funnel table columns.
+* The popular posts REST endpoint and `get_tptn_posts()` returned no posts, or raised a PHP warning, when called without a `limit`.
 
 = Earlier versions =
 

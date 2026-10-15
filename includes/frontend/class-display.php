@@ -553,6 +553,9 @@ class Display {
 	 * @return \WP_Post[]|int[] Array of post objects or post IDs.
 	 */
 	public static function get_posts( $args = array() ) {
+		global $tptn_settings;
+
+		$args = wp_parse_args( $args, array_merge( \tptn_settings_defaults(), (array) $tptn_settings ) );
 
 		$get_posts = new \Top_Ten_Query( $args );
 

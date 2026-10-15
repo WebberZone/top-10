@@ -160,7 +160,13 @@ class REST_API extends \WP_REST_Controller {
 	public function get_items( $request ) {
 		$popular_posts = array();
 
-		$args = $request->get_params();
+		// Only registered params may reach the query; raw query vars allowed unbounded and meta-probing queries.
+		$args = array_filter(
+			array_intersect_key( $request->get_params(), $this->get_items_params() ),
+			static function ( $value ) {
+				return null !== $value && '' !== $value;
+			}
+		);
 
 		// Transport-only: the language must not reach the query or its cache key.
 		unset( $args['lang'] );
@@ -314,6 +320,20 @@ class REST_API extends \WP_REST_Controller {
 			$args['to_date'] = $to_date;
 		}
 
+		$switched = is_multisite() && get_current_blog_id() !== $blog_id;
+		if ( $switched ) {
+			switch_to_blog( $blog_id );
+		}
+		$post     = get_post( $id );
+		$readable = $post instanceof \WP_Post && $this->check_read_permission( $post );
+		if ( $switched ) {
+			restore_current_blog();
+		}
+
+		if ( ! $readable ) {
+			return $error;
+		}
+
 		$counter = absint( Counter::get_post_count_only( (int) $id, $counter, $blog_id, $args ) );
 
 		return rest_ensure_response( $counter );
@@ -331,11 +351,28 @@ class REST_API extends \WP_REST_Controller {
 			'limit'      => array(
 				'description'       => esc_html__( 'Number of posts', 'top-10' ),
 				'type'              => 'integer',
-				'sanitize_callback' => 'absint',
+				'sanitize_callback' => static function ( $value ) {
+					return min( absint( $value ), 100 );
+				},
 			),
 			'post_types' => array(
-				'description' => esc_html__( 'Post types', 'top-10' ),
-				'type'        => 'string',
+				'description'       => esc_html__( 'Post types', 'top-10' ),
+				'type'              => 'string',
+				'sanitize_callback' => static function ( $value ) {
+					$allowed = get_post_types(
+						array(
+							'public'       => true,
+							'show_in_rest' => true,
+						)
+					);
+					$types   = array_intersect( array_map( 'sanitize_key', wp_parse_list( (string) $value ) ), $allowed );
+					sort( $types );
+					return implode( ',', $types );
+				},
+			),
+			'daily'      => array(
+				'description' => esc_html__( 'Whether to use daily counts instead of overall counts.', 'top-10' ),
+				'type'        => 'boolean',
 			),
 			'context'    => array(
 				'description' => esc_html__( 'Scope under which the request is made; determines fields present in response.', 'top-10' ),
