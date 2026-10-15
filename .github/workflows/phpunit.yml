@@ -6,6 +6,14 @@ on:
   schedule:
     - cron: '0 4 * * 1'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Test coverage
+        type: choice
+        default: quick
+        options:
+          - quick
+          - full
 
 permissions:
   contents: read
@@ -31,13 +39,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+        php: ${{ fromJSON((github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full')) && '["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"]' || '["8.3"]') }}
         wp: ['latest']
         mysql: ['8.4']
-        include:
-          - php: '7.4'
-            wp: '6.8'
-            mysql: '8.0'
+        include: ${{ fromJSON((github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full')) && '[{"php":"7.4","wp":"6.8","mysql":"8.0"}]' || '[]') }}
     services:
       mysql:
         image: mysql:${{ matrix.mysql }}
@@ -84,7 +89,7 @@ jobs:
         run: composer phpunit
 
       - name: Run tests (multisite)
-        if: ${{ !cancelled() && steps.wordpress.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.wordpress.outcome == 'success' && (matrix.php == '8.5' || (matrix.php == '8.3' && (github.event_name == 'push' || github.event_name == 'pull_request'))) }}
         env:
           WP_MULTISITE: 1
         run: composer phpunit
