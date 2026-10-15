@@ -2016,21 +2016,21 @@ msgstr ""
 msgid "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
 msgstr ""
 
-#: includes/frontend/class-display.php:791
+#: includes/frontend/class-display.php:794
 msgid " by "
 msgstr ""
 
 #. translators: %s: Post title.
-#: includes/frontend/class-display.php:1017
+#: includes/frontend/class-display.php:1020
 #, php-format
 msgid "Continue reading %s"
 msgstr ""
 
-#: includes/frontend/class-display.php:1025
+#: includes/frontend/class-display.php:1028
 msgid "(more&hellip;)"
 msgstr ""
 
-#: includes/frontend/class-display.php:1053
+#: includes/frontend/class-display.php:1056
 msgid "There is no excerpt because this is a protected post."
 msgstr ""
 
@@ -2042,55 +2042,55 @@ msgstr ""
 msgid "Sorry, you are not allowed to view this context."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:206
-#: includes/frontend/class-rest-api.php:294
+#: includes/frontend/class-rest-api.php:212
+#: includes/frontend/class-rest-api.php:300
 msgid "Invalid post ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:332
+#: includes/frontend/class-rest-api.php:352
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:8
 msgid "Number of posts"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:337
+#: includes/frontend/class-rest-api.php:359
 msgid "Post types"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:341
+#: includes/frontend/class-rest-api.php:378
 msgid "Scope under which the request is made; determines fields present in response."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:376
-#: includes/frontend/class-rest-api.php:422
+#: includes/frontend/class-rest-api.php:413
+#: includes/frontend/class-rest-api.php:459
 msgid "ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:386
+#: includes/frontend/class-rest-api.php:423
 msgid "Blog ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:391
+#: includes/frontend/class-rest-api.php:428
 msgid "Activate counter flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:396
+#: includes/frontend/class-rest-api.php:433
 msgid "Debug flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:427
+#: includes/frontend/class-rest-api.php:464
 msgid "Counter type."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:432
+#: includes/frontend/class-rest-api.php:469
 msgid "Blog ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:437
+#: includes/frontend/class-rest-api.php:474
 msgid "From date."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:442
+#: includes/frontend/class-rest-api.php:479
 msgid "To date."
 msgstr ""
 
@@ -3242,7 +3242,7 @@ msgstr ""
 msgid "The daily rollup boundary must be a valid date in Y-m-d format."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:381
+#: includes/frontend/class-rest-api.php:418
 msgid "Site-wide tracking context: front_page, home_page, search, category, tag, taxonomy, author, post_type_archive, date_archive, archive or other. Each key maps to a fixed reserved ID in the shared count tables."
 msgstr ""
 
@@ -3303,7 +3303,7 @@ msgid "Registers the top-10/v1 endpoints for popular posts, tracking, counters, 
 msgstr ""
 
 #: includes/frontend/class-rest-api.php:91
-#: includes/frontend/class-rest-api.php:347
+#: includes/frontend/class-rest-api.php:384
 msgid "TranslatePress language code to render the response in."
 msgstr ""
 
@@ -3449,4 +3449,8 @@ msgstr ""
 
 #: includes/class-feed-counts.php:339
 msgid "Another aggregation run is in progress. Please try again in a moment."
+msgstr ""
+
+#: includes/frontend/class-rest-api.php:374
+msgid "Whether to use daily counts instead of overall counts."
 msgstr ""
