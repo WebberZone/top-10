@@ -35,11 +35,11 @@ The tracker can be set in the Top 10 > Settings > Counter/Tracker. Scroll down t
 
 ## How Tracking Works
 
-Understanding the full tracking flow helps you diagnose issues and explains why counts may appear with a short delay.
+Understanding the full tracking flow helps you diagnose issues and explains why counts may appear with a short delay. This section describes **Funnel** tracking, the default **Tracking method**. See [Legacy tracking](#legacy-tracking) for how views are recorded when Legacy is selected.
 
 ### Step 1 — A visit is recorded
 
-When a visitor loads a post, the tracker JavaScript fires a request to the configured tracker endpoint. Regardless of which tracker type you choose, each visit inserts one row into the **visits funnel table** (`wp_top_ten_visits_funnel`). Each row stores the post ID, blog ID, timestamp, traffic source (web or RSS feed), and which counters to update (overall, daily, or both).
+When a visitor loads a post, the tracker JavaScript fires a request to the configured tracker endpoint. With Funnel tracking, whichever tracker type you choose, each visit inserts one row into the **visits funnel table** (`wp_top_ten_visits_funnel`). Each row stores the post ID, blog ID, timestamp, traffic source (web or RSS feed), and which counters to update (overall, daily, or both).
 
 > [!NOTE]
 > ⓘ Since v4.4.3, the tracker script is served as `top-10.js` (`top-10.min.js`) instead of `top-10-tracker.js` — the old filename tripped ad-blocker rules that match "tracker". If you or a security plugin had whitelisted the old filename, update that rule to the new name.
@@ -67,6 +67,12 @@ A separate maintenance cron ([`tptn_cron_hook`](https://webberzone.dev/top-10/ho
 - **`wp_top_ten_visits_log`** — retains data for 30 days by default (controlled by `TOP_TEN_LOG_STORE_DATA` / [`tptn_log_retention_days`](https://webberzone.dev/top-10/hooks/tptn_log_retention_days/) filter).
 
 The log uses a shorter window because it stores one raw row per visit and grows proportionally to traffic. Once aggregation has run, those rows are already reflected in the count tables and serve only as an audit trail. See [Maintenance options](https://webberzone.com/support/knowledgebase/top-10-maintenance-options/) for how to adjust either retention period.
+
+### Legacy tracking
+
+Set **Tracking method** to **Legacy** in Top 10 > Settings > Counter/Tracker and each visit is written straight to `wp_top_ten` and `wp_top_ten_daily` during the tracker request. The funnel and the aggregation cron are skipped, so counts update immediately, and the visits log table is not populated.
+
+Use Legacy if counts are not updating, for example when WP-Cron is disabled or unreliable. The Fast and High-traffic trackers follow this setting too. Regenerate the High-traffic config file after changing it.
 
 ### Changing the aggregation interval
 
@@ -108,7 +114,7 @@ The optimal tracking method depends on your website's specific requirements. Con
 
 - **Website size and traffic:** The High-traffic or Fast Trackers are best suited for large/high-traffic websites due to their performance advantages. On most sites the REST API or Query Variable tracker works perfectly well.
 - **Plugin compatibility:** Ensure the chosen tracking method is compatible with other plugins you're using. If any plugin or your hosting blocks access to the Fast Tracker file, whitelist `/wp-content/plugins/top-10-pro/includes/pro/fast-tracker-js.php`.
-- **Caching:** Because every tracker type writes to the funnel and not directly to the count tables, page caching does not interfere with tracking. Each visit still fires the tracker JS regardless of whether the HTML page itself was served from cache.
+- **Caching:** Page caching does not interfere with tracking. Each visit still fires the tracker JS regardless of whether the HTML page itself was served from cache.
 
 ### Using Koko Analytics instead
 
