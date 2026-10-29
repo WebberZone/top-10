@@ -14,7 +14,7 @@
  * Plugin Name: WebberZone Top 10
  * Plugin URI:  https://webberzone.com/plugins/top-10/
  * Description: Count daily and total visits per post and display the most popular posts based on the number of views
- * Version:     4.6.0
+ * Version:     4.6.1
  * Requires at least: 6.8
  * Requires PHP: 7.4
  * Author:      WebberZone
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 3.1.0
  */
 if ( ! defined( 'TOP_TEN_VERSION' ) ) {
-	define( 'TOP_TEN_VERSION', '4.6.0' );
+	define( 'TOP_TEN_VERSION', '4.6.1' );
 }
 
 /**
