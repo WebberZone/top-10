@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.6.0
+Stable tag: 4.6.1
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -149,6 +149,15 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
+= 4.6.1 =
+
+Release date: 28 October 2026
+
+**Fixed**
+
+* [Pro] Lazy loaded popular posts lists on cached pages used the global custom period instead of the list's own after the global setting changed.
+* [Pro] Lazy loaded lists that failed signature verification showed the site's default list instead of being removed.
+
 = 4.6.0 =
 
 Release date: 15 October 2026
@@ -186,6 +195,13 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 * Custom date ranges, such as those on the Top 10 dashboard, were rounded to midnight or the hour instead of using the exact start and end times.
 * Every database upgrade re-altered the visits log and funnel table columns.
 * The popular posts REST endpoint and `get_tptn_posts()` returned no posts, or raised a PHP warning, when called without a `limit`.
+* [Pro] Network-wide popular posts lists failed with a database error.
+* [Pro] Cached network-wide lists loaded posts from the current site instead of each post's own site.
+* [Pro] Network-wide lists dropped posts that shared an ID with a post on another site, and looked up translations on the wrong site.
+* [Pro] Blocks added with the retired Popular Authors plugin stopped rendering once that plugin was removed. They now render and can be converted to the Top 10 Pro blocks.
+* [Pro] Popular Authors widgets set to Overall in the retired Popular Authors plugin showed daily counts.
+* [Pro] Themes calling `wzpa_list_popular_authors_args()` failed with a fatal error once the retired Popular Authors plugin was removed.
+* [Pro] Running the retired Popular Authors plugin alongside Top 10 Pro registered the Popular Authors widget twice. Top 10 Pro now shows a notice asking you to deactivate it.
 
 = Earlier versions =
 
@@ -193,5 +209,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.6.0 =
-Security fixes prevent protected excerpts and images leaking through popular posts lists. Adds Koko Analytics, Abilities API support, and Pro Advanced blocks and feed reports. Lists spanning network sites now need Pro. Update recommended.
+= 4.6.1 =
+Fixes Pro lazy loaded popular posts lists on cached pages showing the global custom period instead of their own. Update recommended if you use lazy loading.
