@@ -663,7 +663,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 		$this->daily_where = $count_where;
 		$where            .= $count_where;
 
-		if ( in_array( 'inherit', (array) $query->get( 'post_status' ), true ) ) {
+		// Network lists are filtered in the_posts(), checking each post in its own site.
+		if ( ! $this->multiple_blogs && in_array( 'inherit', (array) $query->get( 'post_status' ), true ) ) {
 			$where .= self::get_attachment_parent_where();
 		}
 
@@ -1103,6 +1104,11 @@ class Top_Ten_Core_Query extends \WP_Query {
 			return $posts;
 		}
 
+		if ( $this->multiple_blogs && ! $this->in_cache ) {
+			$query->posts = $this->filter_visible_network_posts( $query->posts, $query );
+			$posts        = $query->posts;
+		}
+
 		// Support caching to speed up retrieval.
 		if ( $this->should_cache() && ! $this->in_cache ) {
 			/** This filter is documented in includes/frontend/class-display.php */
@@ -1303,8 +1309,61 @@ class Top_Ten_Core_Query extends \WP_Query {
 			return $post_ids;
 		}
 
-		$visible = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE ID IN (" . implode( ',', $post_ids ) . ')' . self::get_attachment_parent_where() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+		// Two queries instead of a self-referencing subquery, which MySQL rejects on temporary tables.
+		$parents = $wpdb->get_results( "SELECT ID, post_parent FROM {$wpdb->posts} WHERE ID IN (" . implode( ',', $post_ids ) . ") AND post_status = 'inherit' AND post_parent > 0" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+		if ( empty( $parents ) ) {
+			return $post_ids;
+		}
 
-		return array_values( array_intersect( $post_ids, array_map( 'intval', $visible ) ) );
+		$viewable = "'" . implode( "','", esc_sql( array_values( array_filter( get_post_types(), 'is_post_type_viewable' ) ) ) ) . "'";
+		$visible  = array_map( 'intval', $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE ID IN (" . implode( ',', wp_parse_id_list( wp_list_pluck( $parents, 'post_parent' ) ) ) . ") AND post_status = 'publish' AND post_type IN ({$viewable})" ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+
+		$hidden = array();
+		foreach ( $parents as $row ) {
+			if ( ! in_array( (int) $row->post_parent, $visible, true ) ) {
+				$hidden[] = (int) $row->ID;
+			}
+		}
+
+		return array_values( array_diff( $post_ids, $hidden ) );
+	}
+
+	/**
+	 * Drop attachments whose parent visitors cannot see from network results, checking each post in its own site.
+	 *
+	 * @since 4.6.1
+	 *
+	 * @param array     $posts Posts carrying a blog_id, or post IDs when only IDs were requested.
+	 * @param \WP_Query $query Query whose post statuses apply.
+	 * @return array Remaining posts, in their original order.
+	 */
+	private function filter_visible_network_posts( $posts, $query ): array {
+		$groups = array();
+		foreach ( $posts as $post ) {
+			if ( $post instanceof \WP_Post && 'inherit' === $post->post_status && isset( $post->blog_id ) ) {
+				$groups[ (int) $post->blog_id ][] = (int) $post->ID;
+			}
+		}
+
+		$hidden = array();
+		foreach ( $groups as $blog_id => $ids ) {
+			switch_to_blog( $blog_id );
+			try {
+				foreach ( array_diff( $ids, $this->filter_visible_ids( $ids, $query ) ) as $id ) {
+					$hidden[ $blog_id . ':' . $id ] = true;
+				}
+			} finally {
+				restore_current_blog();
+			}
+		}
+
+		return array_values(
+			array_filter(
+				$posts,
+				static function ( $post ) use ( $hidden ) {
+					return ! ( $post instanceof \WP_Post && isset( $post->blog_id ) && isset( $hidden[ $post->blog_id . ':' . $post->ID ] ) );
+				}
+			)
+		);
 	}
 }
