@@ -158,6 +158,10 @@ Release date: 1 November 2026
 * Hardened popular posts lists so they no longer show attachments of private, draft or other unpublished posts.
 * Hardened the `post_status` and `post_type` attributes of the `[tptn_list]` shortcode, which now accept only published content and viewable post types.
 
+**Fixed**
+
+* On attachment pages, and in search results that included an attachment, posts without a featured image used that attachment as their thumbnail.
+
 = 4.6.0 =
 
 Release date: 15 October 2026
@@ -203,4 +207,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.1 =
-Fixes Pro lazy loaded popular posts lists on cached pages showing the global custom period instead of their own, and hardens popular posts lists against showing unpublished content. Update recommended.
+Hardens popular posts lists against showing unpublished content and fixes wrong thumbnails on attachment pages. Also fixes Pro lazy loaded lists on cached pages. Update recommended.
