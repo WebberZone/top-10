@@ -309,6 +309,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 				);
 			}
 
+			$post_types = self::get_allowed_post_types( $post_types );
+
 			/**
 			 * Filter the post_types passed to the query.
 			 *
@@ -319,6 +321,8 @@ class Top_Ten_Core_Query extends \WP_Query {
 			 * @param array   $args        Arguments array.
 			 */
 			$args['post_type'] = apply_filters( 'top_ten_posts_post_types', $post_types, $args );
+		} else {
+			$args['post_type'] = self::get_allowed_post_types( $args['post_type'] );
 		}
 
 		// Tax Query.
@@ -463,8 +467,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		$args['meta_query'] = $meta_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 
-		// Set post_status.
-		$args['post_status'] = empty( $args['post_status'] ) ? array( 'publish', 'inherit' ) : $args['post_status'];
+		// Shortcode and block attributes reach post_status, so only public statuses are kept; inherit is for attachments.
+		$post_status         = array_intersect( wp_parse_list( $args['post_status'] ?? '' ), array_merge( get_post_stati( array( 'public' => true ) ), array( 'inherit' ) ) );
+		$args['post_status'] = empty( $post_status ) ? array( 'publish', 'inherit' ) : array_values( $post_status );
 
 		// Unset what we don't need.
 		unset( $args['title'] );
@@ -657,6 +662,10 @@ class Top_Ten_Core_Query extends \WP_Query {
 
 		$this->daily_where = $count_where;
 		$where            .= $count_where;
+
+		if ( in_array( 'inherit', (array) $query->get( 'post_status' ), true ) ) {
+			$where .= self::get_attachment_parent_where();
+		}
 
 		/**
 		 * Filters the WHERE clause of Top_Ten_Core_Query.
@@ -1042,16 +1051,21 @@ class Top_Ten_Core_Query extends \WP_Query {
 			$post_ids = get_transient( $cache_name );
 
 			if ( ! empty( $post_ids ) && ( ! $this->multiple_blogs || isset( $post_ids['sites'] ) ) ) {
-				$posts                = $this->multiple_blogs ? $this->get_cached_network_posts( $post_ids['sites'], $query ) : get_posts(
-					array(
-						'post__in'    => array_unique( $post_ids ),
-						'fields'      => $query->get( 'fields' ),
-						'orderby'     => 'post__in',
-						'post_type'   => $query->get( 'post_type' ),
-						'post_status' => $query->get( 'post_status' ),
-						'numberposts' => $query->get( 'posts_per_page' ),
-					)
-				);
+				if ( $this->multiple_blogs ) {
+					$posts = $this->get_cached_network_posts( $post_ids['sites'], $query );
+				} else {
+					$visible_ids = $this->filter_visible_ids( array_unique( $post_ids ), $query );
+					$posts       = empty( $visible_ids ) ? array() : get_posts(
+						array(
+							'post__in'    => $visible_ids,
+							'fields'      => $query->get( 'fields' ),
+							'orderby'     => 'post__in',
+							'post_type'   => $query->get( 'post_type' ),
+							'post_status' => $query->get( 'post_status' ),
+							'numberposts' => $query->get( 'posts_per_page' ),
+						)
+					);
+				}
 				$query->found_posts   = count( $posts );
 				$query->max_num_pages = (int) ceil( $query->found_posts / $query->get( 'posts_per_page' ) );
 				$this->in_cache       = true;
@@ -1116,6 +1130,9 @@ class Top_Ten_Core_Query extends \WP_Query {
 			$include_post_ids = wp_parse_id_list( $this->query_args['include_post_ids'] );
 		}
 		if ( ! empty( $include_post_ids ) ) {
+			$include_post_ids = $this->filter_visible_ids( $include_post_ids, $query );
+		}
+		if ( ! empty( $include_post_ids ) ) {
 			$extra_posts = get_posts(
 				array(
 					'include'     => $include_post_ids,
@@ -1164,9 +1181,13 @@ class Top_Ten_Core_Query extends \WP_Query {
 		foreach ( $groups as $blog_id => $ids ) {
 			switch_to_blog( $blog_id );
 			try {
+				$ids = $this->filter_visible_ids( array_unique( $ids ), $query );
+				if ( empty( $ids ) ) {
+					continue;
+				}
 				$posts = get_posts(
 					array(
-						'post__in'    => array_unique( $ids ),
+						'post__in'    => $ids,
 						'orderby'     => 'post__in',
 						'post_type'   => $query->get( 'post_type' ),
 						'post_status' => $query->get( 'post_status' ),
@@ -1209,5 +1230,81 @@ class Top_Ten_Core_Query extends \WP_Query {
 	 */
 	protected function should_cache() {
 		return ! empty( $this->query_args['cache_posts'] ) && ! ( is_preview() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) );
+	}
+
+	/**
+	 * Restrict requested post types to those visitors can view, plus the post types in the settings.
+	 *
+	 * @since 4.6.1
+	 *
+	 * @param string|array $post_types Requested post types.
+	 * @return string[] Allowed post types.
+	 */
+	public static function get_allowed_post_types( $post_types ): array {
+		// Not checked with post_type_exists(): network lists can use another site's post types.
+		$configured = array_diff( array_map( 'sanitize_key', self::parse_post_types( tptn_get_option( 'post_types' ) ) ), array( 'revision', '' ) );
+		$allowed    = array_diff( array_merge( array_filter( get_post_types(), 'is_post_type_viewable' ), $configured ), array( 'revision' ) );
+		$post_types = array_intersect( array_map( 'sanitize_key', self::parse_post_types( $post_types ) ), $allowed );
+
+		return array_values( empty( $post_types ) ? $configured : $post_types );
+	}
+
+	/**
+	 * Parse post types given as an array, a comma-separated list, a query string or 'all'.
+	 *
+	 * @since 4.6.1
+	 *
+	 * @param string|array $post_types Post types.
+	 * @return array Post types.
+	 */
+	private static function parse_post_types( $post_types ): array {
+		if ( is_array( $post_types ) ) {
+			return $post_types;
+		}
+		if ( 'all' === $post_types ) {
+			return get_post_types( array( 'public' => true ) );
+		}
+		if ( false === strpos( (string) $post_types, '=' ) ) {
+			return wp_parse_list( (string) $post_types );
+		}
+		parse_str( $post_types, $parsed );
+		return $parsed;
+	}
+
+	/**
+	 * Get the WHERE clause that hides attachments whose parent visitors cannot see.
+	 *
+	 * @since 4.6.1
+	 *
+	 * @return string SQL clause starting with AND.
+	 */
+	public static function get_attachment_parent_where(): string {
+		global $wpdb;
+
+		$viewable = "'" . implode( "','", esc_sql( array_values( array_filter( get_post_types(), 'is_post_type_viewable' ) ) ) ) . "'";
+
+		return " AND ( {$wpdb->posts}.post_status <> 'inherit' OR {$wpdb->posts}.post_parent = 0 OR {$wpdb->posts}.post_parent IN ( SELECT tptn_parent.ID FROM {$wpdb->posts} AS tptn_parent WHERE tptn_parent.post_status = 'publish' AND tptn_parent.post_type IN ({$viewable}) ) )";
+	}
+
+	/**
+	 * Drop attachments whose parent visitors cannot see from post IDs loaded outside the main SQL.
+	 *
+	 * @since 4.6.1
+	 *
+	 * @param int[]     $post_ids Post IDs on the current site.
+	 * @param \WP_Query $query    Query whose post statuses apply.
+	 * @return int[] Remaining post IDs, in their original order.
+	 */
+	private function filter_visible_ids( $post_ids, $query ): array {
+		global $wpdb;
+
+		$post_ids = wp_parse_id_list( $post_ids );
+		if ( empty( $post_ids ) || ! in_array( 'inherit', (array) $query->get( 'post_status' ), true ) ) {
+			return $post_ids;
+		}
+
+		$visible = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE ID IN (" . implode( ',', $post_ids ) . ')' . self::get_attachment_parent_where() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+
+		return array_values( array_intersect( $post_ids, array_map( 'intval', $visible ) ) );
 	}
 }
