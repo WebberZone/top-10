@@ -153,6 +153,11 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 Release date: 31 October 2026
 
+**Security**
+
+* Popular posts lists no longer show attachments of private, draft or other unpublished posts.
+* Restricted the `post_status` and `post_type` attributes of the `[tptn_list]` shortcode to published content and viewable post types, so they could no longer list drafts or revisions.
+
 = 4.6.0 =
 
 Release date: 15 October 2026
@@ -198,4 +203,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.1 =
-Fixes Pro lazy loaded popular posts lists on cached pages showing the global custom period instead of their own. Update recommended if you use lazy loading.
+Security release. Stops popular posts lists from showing attachments of unpublished posts, and stops the shortcode from listing drafts. Also fixes Pro lazy loaded lists on cached pages. Update as soon as you can.
