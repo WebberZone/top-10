@@ -151,7 +151,7 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 = 4.6.1 =
 
-Release date: 28 October 2026
+Release date: 31 October 2026
 
 = 4.6.0 =
 
