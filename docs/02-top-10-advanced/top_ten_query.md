@@ -57,3 +57,23 @@ In addition to the <a href="https://developer.wordpress.org/reference/classes/wp
 | `include_post_ids` | `array` or `string` | Array or comma-separated string of post IDs to include. |
 | `offset` | `int` | Offset the related posts returned by this number. |
 | `strict_limit` | `bool` | If `false`, fetches up to 3× the limit to allow filtering. |
+
+## Post types and statuses
+
+Lists built from shortcode and block attributes pass through the same query, so Top_Ten_Query limits what it returns to content visitors are allowed to see. From Top 10 4.6.1:
+
+- `post_type` and `post_types` accept only post types that WordPress lets visitors view, plus the post types selected in the plugin settings. Revisions are never returned. Post types that are not allowed are ignored, and if none are left, the post types in the settings are used.
+- `post_status` accepts only public statuses, such as `publish`, and `inherit`, which attachments use. Other statuses, such as `draft`, `pending`, `future` and `private`, are ignored, and the default of `publish` and `inherit` is used instead.
+- An attachment is returned only if it is not attached to a post, or its parent post is published and of a viewable post type.
+
+To add a post type to lists built from `post_types` or the plugin settings, use the `top_ten_posts_post_types` filter, which runs after this check:
+
+```php
+add_filter(
+	'top_ten_posts_post_types',
+	function ( $post_types ) {
+		$post_types[] = 'my_post_type';
+		return $post_types;
+	}
+);
+```
