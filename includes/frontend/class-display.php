@@ -383,6 +383,7 @@ class Display {
 		// Create the base WHERE clause.
 		$where .= $wpdb->prepare( " AND {$table_name}.blog_id = %d ", $blog_id ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$where .= " AND ({$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'inherit') ";   // Show published posts and attachments.
+		$where .= \WebberZone\Top_Ten\Top_Ten_Core_Query::get_attachment_parent_where();
 
 		if ( $args['daily'] ) {
 			$where .= $wpdb->prepare( " AND {$table_name}.dp_date >= %s ", $from_date ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -395,12 +396,13 @@ class Display {
 		$exclude_post_ids = apply_filters( 'tptn_exclude_post_ids', $exclude_post_ids );
 
 		// Convert it back to string.
-		$exclude_post_ids = implode( ',', array_filter( $exclude_post_ids ) );
+		$exclude_post_ids = implode( ',', wp_parse_id_list( $exclude_post_ids ) );
 
 		if ( $exclude_post_ids ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$where .= " AND $wpdb->posts.ID NOT IN ({$exclude_post_ids}) ";
 		}
-		$where .= " AND $wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') ";    // Array of post types.
+		$post_types = \WebberZone\Top_Ten\Top_Ten_Core_Query::get_allowed_post_types( $post_types );
+		$where     .= " AND $wpdb->posts.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') ";    // Array of post types.
 
 		// How old should the posts be?
 		if ( $args['how_old'] ) {
@@ -410,9 +412,11 @@ class Display {
 		}
 
 		if ( isset( $args['include_cat_ids'] ) && ! empty( $args['include_cat_ids'] ) ) {
-			$include_cat_ids = $args['include_cat_ids'];
+			$include_cat_ids = implode( ',', wp_parse_id_list( $args['include_cat_ids'] ) );
 
-			$where .= " AND $wpdb->posts.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ($include_cat_ids) )";
+			if ( $include_cat_ids ) {
+				$where .= " AND $wpdb->posts.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ($include_cat_ids) )";
+			}
 		}
 
 		// Create the base GROUP BY clause.
