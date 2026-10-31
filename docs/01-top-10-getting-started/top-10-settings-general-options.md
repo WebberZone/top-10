@@ -30,6 +30,8 @@ Load popular posts using JavaScript when the list is about to enter the viewport
 
 Requires both **Lazy-load module** and **REST API endpoints** under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Disabling either feature prevents lazy loading, including per-instance overrides.
 
+Each placeholder carries the list's settings, signed so they cannot be altered. From 4.6.1, a list's time period (`daily`, `daily_range`, `hour_range` and `daily_midnight`) is always stored in the placeholder, so a page served from a full-page cache keeps the list's own period even after you change the global custom period. If a placeholder fails verification, for example on a cached page created before your site's security keys changed, the placeholder is removed instead of being replaced with the default popular posts list. Clear your page cache after changing the security keys so the lists reappear.
+
 ## Delete options on uninstall
 
 If this is checked, all settings related to Top 10 are removed from the database if you choose to uninstall/delete the plugin.
