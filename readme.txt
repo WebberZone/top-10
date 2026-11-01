@@ -208,3 +208,6 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 = 4.6.1 =
 Hardens popular posts lists against showing unpublished content and fixes wrong thumbnails on attachment pages. Also fixes Pro lazy loaded lists on cached pages. Update recommended.
+
+= 4.6.0 =
+Security fixes prevent protected excerpts and images leaking through popular posts lists. Adds Koko Analytics, Abilities API support, and Pro Advanced blocks and feed reports. Lists spanning network sites now need Pro. Update recommended.
