@@ -66,6 +66,7 @@ class Test_Top_Ten_Rendering_Security extends WP_UnitTestCase {
 		$this->assert_safe_html( $html );
 		$this->assertStringContainsString( 'tptn_posts_widget-', $html );
 	}
+
 	public function test_wrapper_is_escaped_after_class_filters() {
 		$filter = static function ( $classes ) {
 			return $classes . '" onmouseover="alert(1)';
@@ -104,6 +105,7 @@ class Test_Top_Ten_Rendering_Security extends WP_UnitTestCase {
 			}
 		}
 	}
+
 	public function test_locked_posts_do_not_expose_body_images() {
 		wp_update_post(
 			array(

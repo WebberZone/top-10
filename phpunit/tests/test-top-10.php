@@ -75,6 +75,7 @@ class TopTenTest extends WP_UnitTestCase {
 		$this->assertFalse( $missing );
 		$this->assertCount( 1, $metadata_queries );
 	}
+
 	/**
 	 * Roll up old daily rows without changing counts or recent hourly rows.
 	 */
@@ -184,6 +185,7 @@ class TopTenTest extends WP_UnitTestCase {
 			$wpdb->query( 'COMMIT' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		}
 	}
+
 	/**
 	 * Use sargable half-open date ranges for dashboard totals, lists and charts.
 	 */
