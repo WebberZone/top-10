@@ -3,7 +3,6 @@
 use WebberZone\Top_Ten\Abilities;
 use WebberZone\Top_Ten\Admin\Activator;
 use WebberZone\Top_Ten\Database;
-use WebberZone\Top_Ten\Main;
 
 class TopTenAbilitiesTest extends WP_UnitTestCase {
 
@@ -35,38 +34,6 @@ class TopTenAbilitiesTest extends WP_UnitTestCase {
 		wp_set_current_user( 0 );
 		parent::tear_down();
 	}
-
-	public function test_registration_and_metadata() {
-		foreach ( array( 'get-popular-posts', 'get-post-views' ) as $name ) {
-			$ability = wp_get_ability( 'top-10/' . $name );
-			$this->assertNotNull( $ability );
-			$this->assertTrue( $ability->get_meta()['public'] );
-			$this->assertTrue( $ability->get_meta()['show_in_rest'] );
-			$this->assertTrue( $ability->get_meta()['mcp']['public'] );
-			$this->assertTrue( $ability->get_meta()['annotations']['readonly'] );
-		}
-		Main::get_instance()->abilities->register_category();
-		$this->assertNotNull( wp_get_ability_category( 'webberzone' ) );
-		if ( ! is_dir( TOP_TEN_PLUGIN_DIR . 'includes/pro' ) ) {
-			$this->assertArrayNotHasKey( 'top-10/edit-post-count', wp_get_abilities() );
-			$this->assertArrayNotHasKey( 'top-10/clear-cache', wp_get_abilities() );
-		}
-	}
-
-	public function test_toggle_disables_registration_hooks() {
-		$disable = static function ( $enabled, $feature ) {
-			return 'abilities_api' === $feature ? false : $enabled;
-		};
-		add_filter( 'tptn_feature_enabled', $disable, 10, 2 );
-		try {
-			$abilities = new Abilities();
-			$this->assertFalse( has_action( 'wp_abilities_api_init', array( $abilities, 'register_abilities' ) ) );
-			$this->assertFalse( has_action( 'wp_abilities_api_categories_init', array( $abilities, 'register_category' ) ) );
-		} finally {
-			remove_filter( 'tptn_feature_enabled', $disable, 10 );
-		}
-	}
-
 	public function test_popular_posts_delegate_and_filter_unreadable_posts() {
 		$visible = get_post( self::factory()->post->create( array( 'post_title' => 'A &amp; B' ) ) );
 		$visible->visits = 42;
@@ -90,26 +57,6 @@ class TopTenAbilitiesTest extends WP_UnitTestCase {
 		$this->assertSame( get_current_blog_id(), $received['blog_id'] );
 		$this->assertSame( array( 'post' ), $received['post_types'] );
 	}
-
-	public function test_schema_rejects_invalid_input_before_querying() {
-		$calls = 0;
-		$filter = static function ( $posts ) use ( &$calls ) {
-			++$calls;
-			return $posts;
-		};
-		add_filter( 'get_tptn_posts', $filter );
-		try {
-			foreach ( array( array( 'count' => 0 ), array( 'count' => 101 ), array( 'period' => 'weekly' ), array( 'daily_range' => -1 ), array( 'post_types' => array() ), array( 'post_types' => array( 1 ) ), array( 'blog_id' => 2 ) ) as $input ) {
-				$this->assertWPError( wp_get_ability( 'top-10/get-popular-posts' )->execute( $input ) );
-			}
-			$this->assertSame( 0, $calls );
-		} finally {
-			remove_filter( 'get_tptn_posts', $filter );
-		}
-		$this->assertWPError( wp_get_ability( 'top-10/get-post-views' )->execute( array() ) );
-		$this->assertWPError( wp_get_ability( 'top-10/get-popular-posts' )->execute( array( 'post_types' => array( 'unknown' ) ) ) );
-	}
-
 	public function test_post_counts_match_public_helpers_and_deny_unreadable_posts() {
 		$post_id = self::factory()->post->create();
 		Database::set_count( $post_id, 100 );

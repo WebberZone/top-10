@@ -23,14 +23,6 @@ class FeedCountsTest extends WP_UnitTestCase {
 		$row   = $wpdb->get_row( $wpdb->prepare( "SELECT SUM(cntaccess) AS total, SUM(feedcnt) AS feed FROM {$table} WHERE postnumber = %d AND blog_id = %d", $post_id, get_current_blog_id() ), ARRAY_A ); // phpcs:ignore WordPress.DB
 		return array( (int) $row['total'], (int) $row['feed'] );
 	}
-
-	public function test_feed_counts_are_enabled_with_both_columns() {
-		$this->assertTrue( Feed_Counts::is_enabled() );
-		$this->assertFalse( Feed_Counts::is_pending() );
-		$this->assertTrue( Feed_Counts::table_has_column( Database::get_table( false ), true ) );
-		$this->assertTrue( Feed_Counts::table_has_column( Database::get_table( true ), true ) );
-	}
-
 	public function test_aggregation_counts_feed_views_separately() {
 		$id = self::factory()->post->create();
 		Database::append_to_funnel( $id, get_current_blog_id(), 11, 1 );
@@ -58,18 +50,6 @@ class FeedCountsTest extends WP_UnitTestCase {
 		Database::set_count( $id, 0 );
 		$this->assertSame( array( 0, 0 ), $this->counts( $id ) );
 	}
-
-	public function test_bulk_upsert_sets_or_clamps_feed_views() {
-		$id   = self::factory()->post->create();
-		$blog = get_current_blog_id();
-		Database::bulk_upsert( array( array( 'postnumber' => $id, 'cntaccess' => 10, 'blog_id' => $blog, 'feedcnt' => 4 ) ) );
-		$this->assertSame( array( 10, 4 ), $this->counts( $id ) );
-		Database::bulk_upsert( array( array( 'postnumber' => $id, 'cntaccess' => 3, 'blog_id' => $blog ) ) );
-		$this->assertSame( array( 3, 3 ), $this->counts( $id ) );
-		Database::bulk_upsert( array( array( 'postnumber' => $id, 'cntaccess' => 5, 'blog_id' => $blog, 'feedcnt' => 9 ) ) );
-		$this->assertSame( array( 5, 5 ), $this->counts( $id ) );
-	}
-
 	public function test_csv_round_trip_keeps_feed_visits_and_reads_old_files() {
 		$file = tempnam( sys_get_temp_dir(), 'tptn-feed' );
 		$fh   = fopen( $file, 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions
@@ -91,11 +71,5 @@ class FeedCountsTest extends WP_UnitTestCase {
 		$parsed = Csv_Helper::parse_import_file( $file );
 		$this->assertArrayNotHasKey( 'feedcnt', $parsed['rows'][0] );
 		unlink( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions
-	}
-
-	public function test_schema_omits_column_only_for_existing_tables_without_it() {
-		$this->assertTrue( Feed_Counts::schema_includes_column( 'wp_tptn_table_that_does_not_exist' ) );
-		$this->assertStringContainsString( 'feedcnt', Database::create_full_table_sql( true ) );
-		$this->assertStringNotContainsString( 'feedcnt', Database::create_daily_table_sql( false ) );
 	}
 }

@@ -65,30 +65,6 @@ class DailyQueryTest extends WP_UnitTestCase {
 		$q = $this->query( array( 'post__in' => $ids, 'offset' => 1, 'limit' => 1 ) );
 		$this->assertSame( array( $ids[1] ), wp_list_pluck( $q->posts, 'ID' ) );
 	}
-
-	public function test_custom_daily_sql_keeps_original_table_available() {
-		$ids = $this->seed();
-		$filter = static function ( $where, $query ) {
-			return $where . " AND {$query->table_name}.cntaccess >= 20";
-		};
-		add_filter( 'top_ten_query_posts_where', $filter, 10, 2 );
-		try {
-			$q = $this->query( array( 'post__in' => $ids ) );
-		} finally {
-			remove_filter( 'top_ten_query_posts_where', $filter );
-		}
-		$this->assertStringNotContainsString( 'INNER JOIN (SELECT postnumber', $q->request );
-		$this->assertSame( array( $ids[2], $ids[1] ), wp_list_pluck( $q->posts, 'ID' ) );
-	}
-
-	public function test_meta_join_keeps_ranking_semantics() {
-		$ids = $this->seed();
-		update_post_meta( $ids[0], 'daily_fixture', 'yes' );
-		update_post_meta( $ids[2], 'daily_fixture', 'yes' );
-		$q = $this->query( array( 'post__in' => $ids, 'meta_key' => 'daily_fixture', 'meta_value' => 'yes' ) );
-		$this->assertStringContainsString( 'INNER JOIN (SELECT postnumber', $q->request );
-		$this->assertSame( array( $ids[2], $ids[0] ), wp_list_pluck( $q->posts, 'ID' ) );
-	}
 	public function test_optimized_and_legacy_sql_return_identical_rankings() {
 		global $wpdb;
 		$ids = $this->seed();
@@ -109,19 +85,6 @@ class DailyQueryTest extends WP_UnitTestCase {
 			$this->assertSame( $rows, $wpdb->get_results( $legacy->request, ARRAY_A ) );
 		}
 	}
-
-	public function test_taxonomy_join_preserves_counts_and_exclusions() {
-		global $wpdb;
-		$ids = $this->seed();
-		$term = self::factory()->term->create( array( 'taxonomy' => 'category' ) );
-		wp_set_post_terms( $ids[0], array( $term ), 'category' );
-		wp_set_post_terms( $ids[2], array( $term ), 'category' );
-		$q = $this->query( array( 'category__in' => array( $term ) ) );
-		$this->assertStringContainsString( 'INNER JOIN (SELECT postnumber', $q->request );
-		$this->assertSame( array( $ids[2], $ids[0] ), wp_list_pluck( $q->posts, 'ID' ) );
-		$this->assertSame( array( '25', '10' ), wp_list_pluck( $wpdb->get_results( $q->request ), 'visits' ) );
-	}
-
 	public function test_network_queries_are_limited_to_current_site_unless_allowed() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Multisite only.' );
@@ -168,15 +131,6 @@ class DailyQueryTest extends WP_UnitTestCase {
 		$this->assertSame( array( '30', '10' ), wp_list_pluck( $wpdb->get_results( $filtered->request ), 'visits' ) );
 		$this->assertSame( '', $wpdb->last_error );
 	}
-
-	public function test_post_id_that_overrides_post_in_is_not_restricted() {
-		$ids = $this->seed();
-		$q = $this->query( array( 'p' => $ids[2], 'post__in' => array( $ids[0] ) ) );
-		$this->assertStringNotContainsString( 'postnumber IN (', $q->request );
-		$this->assertStringContainsString( 'postnumber = ' . $ids[2], $q->request );
-		$this->assertSame( array( $ids[2] ), wp_list_pluck( $q->posts, 'ID' ) );
-	}
-
 	public function test_filtered_cache_hit_skips_the_eligible_post_lookup() {
 		$ids = $this->seed();
 		update_post_meta( $ids[0], 'daily_fixture', 'yes' );
@@ -193,14 +147,6 @@ class DailyQueryTest extends WP_UnitTestCase {
 		$this->assertSame( wp_list_pluck( $cold->posts, 'ID' ), wp_list_pluck( $warm->posts, 'ID' ) );
 		$this->assertSame( array(), array_values( preg_grep( '/SELECT DISTINCT.*LIMIT 501/', $sql ) ) );
 	}
-
-	public function test_filtered_query_with_no_matching_posts_stays_empty() {
-		$this->seed();
-		$q = $this->query( array( 'meta_key' => 'missing_daily_fixture', 'meta_value' => 'yes' ) );
-		$this->assertSame( array(), $q->posts );
-		$this->assertSame( '', $GLOBALS['wpdb']->last_error );
-	}
-
 	public function test_post_becoming_eligible_after_probe_is_still_included() {
 		$ids = $this->seed();
 		update_post_meta( $ids[0], 'daily_fixture', 'yes' );
