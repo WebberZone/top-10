@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WebberZone Top 10 4.6.0\n"
+"Project-Id-Version: WebberZone Top 10 4.6.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/top-10\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T17:46:47+00:00\n"
+"POT-Creation-Date: 2026-11-01T04:00:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: top-10\n"
@@ -2899,21 +2899,21 @@ msgstr ""
 msgid "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
 msgstr ""
 
-#: includes/frontend/class-display.php:794
+#: includes/frontend/class-display.php:798
 msgid " by "
 msgstr ""
 
 #. translators: %s: Post title.
-#: includes/frontend/class-display.php:1020
+#: includes/frontend/class-display.php:1024
 #, php-format
 msgid "Continue reading %s"
 msgstr ""
 
-#: includes/frontend/class-display.php:1028
+#: includes/frontend/class-display.php:1032
 msgid "(more&hellip;)"
 msgstr ""
 
-#: includes/frontend/class-display.php:1056
+#: includes/frontend/class-display.php:1060
 msgid "There is no excerpt because this is a protected post."
 msgstr ""
 

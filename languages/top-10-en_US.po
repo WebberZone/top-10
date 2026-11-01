@@ -2016,21 +2016,21 @@ msgstr ""
 msgid "Popular posts by <a href=\"%1$s\" rel=\"nofollow\" %2$s>Top 10 plugin</a>"
 msgstr ""
 
-#: includes/frontend/class-display.php:794
+#: includes/frontend/class-display.php:798
 msgid " by "
 msgstr ""
 
 #. translators: %s: Post title.
-#: includes/frontend/class-display.php:1020
+#: includes/frontend/class-display.php:1024
 #, php-format
 msgid "Continue reading %s"
 msgstr ""
 
-#: includes/frontend/class-display.php:1028
+#: includes/frontend/class-display.php:1032
 msgid "(more&hellip;)"
 msgstr ""
 
-#: includes/frontend/class-display.php:1056
+#: includes/frontend/class-display.php:1060
 msgid "There is no excerpt because this is a protected post."
 msgstr ""
 
