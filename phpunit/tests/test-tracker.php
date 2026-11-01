@@ -107,6 +107,7 @@ class TopTenTrackerTest extends WP_UnitTestCase {
 			array( $human, 1, true ),
 		);
 	}
+
 	/**
 	 * Ensure prefetch and prerender headers are rejected.
 	 *
@@ -133,6 +134,7 @@ class TopTenTrackerTest extends WP_UnitTestCase {
 			array( 'HTTP_SEC_PURPOSE', 'prerender' ),
 		);
 	}
+
 	/**
 	 * Ensure the REST tracker endpoint returns 204 for bot requests.
 	 */

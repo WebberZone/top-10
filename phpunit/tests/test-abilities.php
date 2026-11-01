@@ -34,6 +34,7 @@ class TopTenAbilitiesTest extends WP_UnitTestCase {
 		wp_set_current_user( 0 );
 		parent::tear_down();
 	}
+
 	public function test_popular_posts_delegate_and_filter_unreadable_posts() {
 		$visible = get_post( self::factory()->post->create( array( 'post_title' => 'A &amp; B' ) ) );
 		$visible->visits = 42;
@@ -57,6 +58,7 @@ class TopTenAbilitiesTest extends WP_UnitTestCase {
 		$this->assertSame( get_current_blog_id(), $received['blog_id'] );
 		$this->assertSame( array( 'post' ), $received['post_types'] );
 	}
+
 	public function test_post_counts_match_public_helpers_and_deny_unreadable_posts() {
 		$post_id = self::factory()->post->create();
 		Database::set_count( $post_id, 100 );

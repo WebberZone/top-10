@@ -23,6 +23,7 @@ class FeedCountsTest extends WP_UnitTestCase {
 		$row   = $wpdb->get_row( $wpdb->prepare( "SELECT SUM(cntaccess) AS total, SUM(feedcnt) AS feed FROM {$table} WHERE postnumber = %d AND blog_id = %d", $post_id, get_current_blog_id() ), ARRAY_A ); // phpcs:ignore WordPress.DB
 		return array( (int) $row['total'], (int) $row['feed'] );
 	}
+
 	public function test_aggregation_counts_feed_views_separately() {
 		$id = self::factory()->post->create();
 		Database::append_to_funnel( $id, get_current_blog_id(), 11, 1 );
@@ -50,6 +51,7 @@ class FeedCountsTest extends WP_UnitTestCase {
 		Database::set_count( $id, 0 );
 		$this->assertSame( array( 0, 0 ), $this->counts( $id ) );
 	}
+
 	public function test_csv_round_trip_keeps_feed_visits_and_reads_old_files() {
 		$file = tempnam( sys_get_temp_dir(), 'tptn-feed' );
 		$fh   = fopen( $file, 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions

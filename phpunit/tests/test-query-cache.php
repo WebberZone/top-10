@@ -32,6 +32,7 @@ class QueryCacheTest extends WP_UnitTestCase {
 		$this->assertSame( $key, $this->key( $args ) );
 		$this->assertNotSame( $key, $this->key( array_merge( $args, array( 'daily_range' => 7 ) ) ) );
 	}
+
 	public function test_count_edits_invalidate_cached_ranking() {
 		$ids = self::factory()->post->create_many( 2 );
 		Database::set_count( $ids[0], 5 );
@@ -76,6 +77,7 @@ class QueryCacheTest extends WP_UnitTestCase {
 		$this->assertSame( $local_key, $this->key() );
 		$this->assertNotSame( $remote_key, $this->key( $remote_args ) );
 	}
+
 	public function test_network_cache_preserves_colliding_post_ids_and_source_sites() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Requires multisite.' );
