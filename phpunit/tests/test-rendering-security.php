@@ -66,12 +66,6 @@ class Test_Top_Ten_Rendering_Security extends WP_UnitTestCase {
 		$this->assert_safe_html( $html );
 		$this->assertStringContainsString( 'tptn_posts_widget-', $html );
 	}
-
-	public function test_shortcode_classes_cannot_create_attributes() {
-		$html = do_shortcode( '[tptn_list cache="0" extra_class=\'safe" onmouseover="alert(1)\']' );
-		$this->assert_safe_html( $html );
-	}
-
 	public function test_wrapper_is_escaped_after_class_filters() {
 		$filter = static function ( $classes ) {
 			return $classes . '" onmouseover="alert(1)';

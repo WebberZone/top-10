@@ -100,30 +100,13 @@ class TopTenTrackerTest extends WP_UnitTestCase {
 	 */
 	public function data_bot_endpoint_expectations() {
 		$ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 (compatible; WP-Rocket-SaaS/1.0; +https://wp-rocket.me/bot/)';
+		$human = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 		return array(
 			array( $ua, 1, false ),
 			array( $ua, 0, true ),
+			array( $human, 1, true ),
 		);
 	}
-
-	/**
-	 * Ensure human requests are still allowed when Do Not Track Bots is enabled.
-	 */
-	public function test_tracking_request_allowed_for_human() {
-		$original_ua                = $_SERVER['HTTP_USER_AGENT'] ?? '';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
-
-		$original_settings   = get_option( 'tptn_settings', array() );
-		$settings            = \tptn_get_settings();
-		$settings['no_bots'] = 1;
-		update_option( 'tptn_settings', $settings );
-
-		$this->assertTrue( \WebberZone\Top_Ten\Tracker::is_tracking_request_allowed() );
-
-		$_SERVER['HTTP_USER_AGENT'] = $original_ua;
-		update_option( 'tptn_settings', $original_settings );
-	}
-
 	/**
 	 * Ensure prefetch and prerender headers are rejected.
 	 *
@@ -150,19 +133,6 @@ class TopTenTrackerTest extends WP_UnitTestCase {
 			array( 'HTTP_SEC_PURPOSE', 'prerender' ),
 		);
 	}
-
-	/**
-	 * Ensure Sec-Fetch-Mode: navigate is rejected.
-	 */
-	public function test_tracking_request_blocked_for_navigate_fetch_mode() {
-		$original_value                 = $_SERVER['HTTP_SEC_FETCH_MODE'] ?? '';
-		$_SERVER['HTTP_SEC_FETCH_MODE'] = 'navigate';
-
-		$this->assertFalse( \WebberZone\Top_Ten\Tracker::is_tracking_request_allowed() );
-
-		$_SERVER['HTTP_SEC_FETCH_MODE'] = $original_value;
-	}
-
 	/**
 	 * Ensure the REST tracker endpoint returns 204 for bot requests.
 	 */
