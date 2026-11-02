@@ -67,7 +67,6 @@ class Settings_Wizard extends Settings_Wizard_API {
 		add_action( 'tptn_activate', array( $this, 'trigger_wizard_on_activation' ) );
 
 		// Register Tom Select AJAX handlers for wizard taxonomy fields.
-		add_action( 'wp_ajax_nopriv_' . $this->prefix . '_taxonomy_search_tom_select', array( Settings::class, 'taxonomy_search_tom_select' ) );
 		add_action( 'wp_ajax_' . $this->prefix . '_taxonomy_search_tom_select', array( Settings::class, 'taxonomy_search_tom_select' ) );
 	}
 

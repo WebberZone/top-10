@@ -64,6 +64,14 @@ class Display {
 		// Sanitize the attributes.
 		$args = Helpers::sanitize_args( $args );
 
+		// Content (shortcode, block, builders) may not point thumbnails at protected meta other than the saved setting.
+		foreach ( array( 'thumb_meta', 'acf_field' ) as $meta_arg ) {
+			$saved = (string) tptn_get_option( $meta_arg, '' );
+			if ( ! empty( $args[ $meta_arg ] ) && $saved !== $args[ $meta_arg ] && is_protected_meta( (string) $args[ $meta_arg ], 'post' ) ) {
+				$args[ $meta_arg ] = $saved;
+			}
+		}
+
 		// Password-unlocked output must never enter or read a shared cache.
 		if ( defined( 'COOKIEHASH' ) && ! empty( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] ) ) {
 			$args['cache'] = false;
