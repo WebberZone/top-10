@@ -245,8 +245,28 @@ class Top_Ten_Core_Query extends \WP_Query {
 			$this->blog_id = array( get_current_blog_id() );
 		}
 
+		// Other sites are only listed while they are public: not archived, deleted, spam or private.
 		if ( is_multisite() ) {
-			if ( count( $this->blog_id ) > 1 || ( 1 === count( $this->blog_id ) && get_current_blog_id() !== (int) $this->blog_id[0] ) ) {
+			$current       = get_current_blog_id();
+			$this->blog_id = array_values(
+				array_filter(
+					$this->blog_id,
+					static function ( $id ) use ( $current ) {
+						if ( (int) $id === $current ) {
+							return true;
+						}
+						$site = get_site( $id );
+						return $site && ! $site->archived && ! $site->deleted && ! $site->spam && (int) $site->public >= 0;
+					}
+				)
+			);
+			if ( empty( $this->blog_id ) ) {
+				$this->blog_id = array( $current );
+			}
+		}
+
+		if ( is_multisite() ) {
+			if ( count( $this->blog_id ) > 1 || get_current_blog_id() !== (int) $this->blog_id[0] ) {
 				$this->multiple_blogs = true;
 			}
 		}
