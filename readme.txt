@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.6.1
+Stable tag: 4.6.2
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -149,6 +149,15 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
+= 4.6.2 =
+
+Release date: 2 November 2026
+
+**Security**
+
+* Hardened thumbnail and settings field handling.
+* [Pro] Hardened the featured image REST endpoint, page builder attributes and network-wide lists.
+
 = 4.6.1 =
 
 Release date: 1 November 2026
@@ -206,8 +215,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.6.1 =
-Hardens popular posts lists against showing unpublished content and fixes wrong thumbnails on attachment pages. Also fixes Pro lazy loaded lists on cached pages. Update recommended.
-
-= 4.6.0 =
-Security fixes prevent protected excerpts and images leaking through popular posts lists. Adds Koko Analytics, Abilities API support, and Pro Advanced blocks and feed reports. Lists spanning network sites now need Pro. Update recommended.
+= 4.6.2 =
+Security release. Update recommended.
