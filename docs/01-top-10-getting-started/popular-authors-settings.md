@@ -1,6 +1,6 @@
 ---
 slug: popular-authors-settings
-title: "Top 10 Settings – Popular Authors"
+title: "Top 10 Settings: Popular Authors"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [popular-authors, settings, top-10, top-10-settings]
@@ -13,7 +13,7 @@ toc: true
 
 Popular Authors ranks your site's authors by the total views of their posts, using the counts tracked by [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/). It replaces the retired standalone [Popular Authors](https://webberzone.com/support/product/popular-authors/) plugin.
 
-The settings below set the global defaults. Open **Top 10 → Settings** and click the **Popular Authors** tab. The tab appears only when **Popular Authors** is enabled under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/), which it is by default.
+The settings below set the global defaults. Open **Top 10 → Settings** and click the **Popular Authors** tab. The tab appears only when **Popular Authors** is enabled under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/), which it is by default.
 
 Every setting is stored in Top 10's settings with a `wzpa_` prefix. Values set on a block, widget, shortcode, or template tag override these defaults.
 
@@ -33,7 +33,7 @@ Number of days counted when a list uses daily views instead of all-time views. A
 
 Number of hours added to the day range.
 
-**Default:** `0` **Range:** 0–23
+**Default:** `0` **Range:** 0 to 23
 
 ## Show views
 

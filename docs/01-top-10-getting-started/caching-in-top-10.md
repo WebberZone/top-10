@@ -7,7 +7,10 @@ tags: [cache, top-10]
 status: publish
 order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
+toc: true
 ---
+
+[toc]
 
 To improve the performance of your WordPress site, the [Top 10](https://webberzone.com/plugins/top-10/) plugin includes inbuilt caching. This guide will walk you through enabling and configuring these settings.
 

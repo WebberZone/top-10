@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-list-options
-title: "Top 10 Settings – Popular Post list options"
+title: "Top 10 Settings: Popular Post list options"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -11,6 +11,8 @@ featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Post-l
 ---
 
 [toc]
+
+The **Popular post list options** section in [Top 10](https://webberzone.com/plugins/top-10/) controls which posts appear and how the list is displayed.
 
 The **Popular Post list options** section contains a set of options that allow you to fine tune the settings of the list of popular articles from you blog. These are global settings and many of these can be overridden in the widget or the shortcode.
 

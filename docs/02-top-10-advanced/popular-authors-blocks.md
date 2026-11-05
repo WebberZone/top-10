@@ -11,7 +11,7 @@ toc: true
 
 [toc]
 
-[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) includes two Popular Authors blocks, a classic widget, and a dashboard widget. They require **Popular Authors** to be enabled under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Any setting a block or widget does not specify falls back to the defaults under [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) includes two Popular Authors blocks, a classic widget, and a dashboard widget. They require **Popular Authors** to be enabled under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Any setting a block or widget does not specify falls back to the defaults under [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
 
 Both blocks are listed under **Widgets** in the block inserter. Both render on the server, so the editor preview matches the front end.
 
@@ -79,7 +79,7 @@ The classic **Popular Authors** widget is available in **Appearance → Widgets*
 | Show full name | Display the first and last name instead of the display name. |
 | Show avatar | Display the author's avatar. |
 
-Post types, style, caching, and the HTML wrappers come from [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
+Post types, style, caching, and the HTML wrappers come from [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
 
 ## Top Authors dashboard widget
 

@@ -100,5 +100,5 @@ add_filter(
 
 ## See also
 
-- [Top 10 Settings – Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/)
+- [Top 10 Settings: Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/)
 - [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/)

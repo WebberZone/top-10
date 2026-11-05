@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-styles-options
-title: "Top 10 Settings – Styles options"
+title: "Top 10 Settings: Styles options"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2019/02/Top-10-Styles-options-v2.6.1.png"
 ---
 
-The **Styles** section contains a set of options that allow you to choose between various styles to customize the appearance of the popular posts list. These are global settings and many of these can be overridden in the widget or the shortcode.
+The **Styles** section in [Top 10](https://webberzone.com/plugins/top-10/) lets you choose the appearance of the popular posts list.
 
 ![Top 10 Style options](https://webberzone.com/wp-content/uploads/2019/02/Top-10-v2.9.0-Style-options.png)
 
@@ -27,15 +27,15 @@ This forces the display of the posts to be text only. i.e. no thumbnails
 
 ### Left thumbnails
 
-This is the default style included within the plugin as displayed in the below screenshot.
+This places the thumbnail before the title and excerpt, as shown below. The default selection is **No styles**.
 
-![](https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style.webp)
+![Top 10 popular posts with thumbnails beside the titles](https://webberzone.com/wp-content/uploads/2019/02/Top-10-Left-Thumbnails-style.webp)
 
 ### Grid *(Pro only)*
 
 Available in Top 10 Pro, this displays the thumbnails in a grid.
 
-![](https://webberzone.com/wp-content/uploads/2019/02/Top-10-Grid-style-1024x445.webp)
+![Top 10 popular posts in a thumbnail grid](https://webberzone.com/wp-content/uploads/2019/02/Top-10-Grid-style-1024x445.webp)
 
 ## Custom CSS
 

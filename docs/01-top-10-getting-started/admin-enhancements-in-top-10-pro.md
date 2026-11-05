@@ -13,7 +13,7 @@ featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384
 
 ### New Admin Bar Menu
 
-The new admin bar menu provides quick access to essential Top 10 features. You can view daily, total, and overall post counts, navigate directly to Top 10 admin pages, and clear the Top 10 cache – all from the admin bar. This enhancement saves time by putting vital information and controls at your fingertips.
+The new admin bar menu provides quick access to essential Top 10 features. You can view daily, total, and overall post counts, navigate directly to Top 10 admin pages, and clear the Top 10 cache: all from the admin bar. This enhancement saves time by putting vital information and controls at your fingertips.
 
 ### Customizable Admin Columns
 

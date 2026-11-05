@@ -13,7 +13,7 @@ toc: true
 
 This guide explains how Top 10 loads its CSS and how to override it safely without modifying plugin files.
 
-It applies to both the free and Pro versions. See [Top 10 – Popular Posts for WordPress](https://webberzone.com/plugins/top-10/) for the free plugin and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) for additional features.
+It applies to both the free and Pro versions. See [Top 10: Popular Posts for WordPress](https://webberzone.com/plugins/top-10/) for the free plugin and [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) for additional features.
 
 ## What this covers
 

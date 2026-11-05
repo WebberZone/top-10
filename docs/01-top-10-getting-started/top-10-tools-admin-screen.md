@@ -1,6 +1,6 @@
 ---
 slug: top-10-tools-admin-screen
-title: "Top 10 – Tools Admin Screen"
+title: "Top 10: Tools Admin Screen"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, tools-page, top-10, top-10-settings]
@@ -21,8 +21,8 @@ Displays the current state of all four Top 10 database tables along with the ins
 | --- | --- |
 | `wp_top_ten` | Running total of all-time views per post |
 | `wp_top_ten_daily` | Hourly view counts per post (powers the dashboard chart and daily popular posts lists) |
-| `wp_top_ten_visits_funnel` | Hot buffer — incoming visits waiting to be aggregated into the count tables |
-| `wp_top_ten_visits_log` | Cold archive — every individual visit, retained for the configured number of days |
+| `wp_top_ten_visits_funnel` | Hot buffer: incoming visits waiting to be aggregated into the count tables |
+| `wp_top_ten_visits_log` | Cold archive: every individual visit, retained for the configured number of days |
 
 Each table row shows whether the table is installed, its estimated number of entries, and its estimated size. If a required table is missing a **Recreate tables** link appears to repair it. On a multisite network, these figures are network-wide totals across all sites and are labeled accordingly.
 
@@ -36,7 +36,7 @@ Drains the visits funnel table into the count tables immediately, without waitin
 
 Top 10 uses a two-stage tracking pipeline: every page view is written as a single row into the `wp_top_ten_visits_funnel` table, and a background cron job aggregates those rows into `wp_top_ten` and `wp_top_ten_daily` every two minutes. This keeps the per-request database write as fast as possible.
 
-Use **Sync Funnel Now** when you need counts to reflect immediately — for example after importing data, during testing, or if you suspect the aggregation cron is not running. It is equivalent to running the aggregation cron job on demand. If the funnel is empty, a lock from a concurrent run is detected, or a database error occurs, a distinct error message is shown rather than a silent no-op.
+Use **Sync Funnel Now** when you need counts to reflect immediately: for example after importing data, during testing, or if you suspect the aggregation cron is not running. It is equivalent to running the aggregation cron job on demand. If the funnel is empty, a lock from a concurrent run is detected, or a database error occurs, a distinct error message is shown rather than a silent no-op.
 
 See [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/) for a full explanation of the tracking pipeline and database tables.
 
@@ -58,7 +58,7 @@ Resets the Top 10 tables. For multisite installs, it resets the popular posts fo
 
 Combines hourly records in the daily table that are older than a chosen number of days (default 14) into a single daily record per post. This reduces the size of `wp_top_ten_daily` without changing overall view counts or recent hourly data. On the Network Admin Tools screen, the button reads **Reduce Daily Table Size Across Network** and runs for every active site.
 
-This is a one-way reduction of older hourly detail — back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
+This is a one-way reduction of older hourly detail: back up your database first if you need to retain it. The same operation is available from the command line via [`wp top10 db rollup`](https://webberzone.com/support/knowledgebase/top-10-cli-commands/).
 
 > [!NOTE]
 > ⓘ This tool requires the **Daily table size reduction** feature to be enabled on the Features tab of Top 10 settings (on by default).

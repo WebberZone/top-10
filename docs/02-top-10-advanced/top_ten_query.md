@@ -7,7 +7,10 @@ tags: [top-10]
 status: publish
 order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
+toc: true
 ---
+
+[toc]
 
 [Top 10](https://webberzone.com/plugins/top-10/) v3.0.0 introduced **Top_Ten_Query**, which works as a wrapper for <a href="https://developer.wordpress.org/reference/classes/wp_query/" target="_blank" rel="noreferrer noopener">WP_Query</a>. This brings all the power and flexibility of WP_Query to Top 10. If you're not familiar with WP_Query, I recommend <a href="https://developer.wordpress.org/reference/classes/wp_query/" target="_blank" rel="noreferrer noopener">reading the documentation</a>.
 
@@ -43,6 +46,10 @@ get_tptn_posts() is a wrapper to Top_Ten_Query. You can use it to retrieve an ar
 Queries follow the [Data source setting](https://webberzone.com/support/knowledgebase/koko-analytics-data-source/). In Hybrid and Koko Analytics only modes, lists use Koko Analytics page views. Date boundaries resolve to whole days, and overall counts cover only retained Koko Analytics data.
 
 Top 10 Pro can query other network sites; sites without usable Koko Analytics data fall back to Top 10 counts. The free plugin restricts queries to the current site.
+
+## Network site selection *(Pro only)*
+
+Network queries ignore remote sites that are missing, archived, deleted, marked as spam, or have a negative `public` flag. A flag of `0` is still accepted; this check does not require `public` to equal `1`. The current site remains eligible. If none of the requested remote sites remains eligible, the query falls back to the current site.
 
 ## Parameters
 

@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2024/11/product-16384-banner-740x416-1.png"
 ---
 
-Top 10 can be used in four ways to display the popular posts:
+[Top 10](https://webberzone.com/plugins/top-10/) can be used in four ways to display the popular posts:
 
 1. **Widget**: drag and drop "Popular Posts [Top 10]" widget into your theme's sidebar and configure it
 2. **Shortcode**: `[[tptn_list]]`, so you can embed it inside a post or a page. [View details on the shortcodes](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)

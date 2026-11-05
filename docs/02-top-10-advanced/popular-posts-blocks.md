@@ -53,7 +53,7 @@ The block lets you preview the popular posts directly in the block editor. You c
 
 Top 10 Pro users will see an additional section in the block settings sidebar that allows them to save the existing block settings as default or clear the defaults.
 
-## Top 10 Popular Posts — Advanced block *(Pro only)*
+## Top 10 Popular Posts: Advanced block *(Pro only)*
 
 The Advanced block lets you design the popular posts list visually. You edit one card, and every popular post in the list uses that design. It needs the **Top 10 Popular Posts — Advanced block** feature, which is enabled by default on the [Features tab](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/).
 
@@ -87,7 +87,7 @@ The **Popular Posts Template** block holds the card. It sets the maximum number 
 | Panel | Settings |
 | --- | --- |
 | Popularity period | **Count views from**: **All time**, **Recent days and hours**, or **Date range**. A date range uses the site timezone; leave the end date empty to include all later views. |
-| Results | Number of posts (1–50), order by, order, and posts to skip. **Use global count and post types** resets the number of posts and post types to the plugin settings. |
+| Results | Number of posts (1 to 50), order by, order, and posts to skip. **Use global count and post types** resets the number of posts and post types to the plugin settings. |
 | Filters | Post types, authors, and terms to include or exclude for each public taxonomy. |
 | Manual selections | Specific posts to include or exclude. |
 | Empty results | **Hide the entire section** (default) or **Show the empty state**. |
@@ -95,14 +95,9 @@ The **Popular Posts Template** block holds the card. It sets the maximum number 
 
 Lists built with the Top 10 Query Loop block can be converted to the Advanced block using the block toolbar's **Transform** menu.
 
-## Using the Top 10 Query Loop Block (Pro version)
+## Using the Top 10 Query Loop Block *(Pro only)*
 
 If you are not familiar with the Core Query Loop Block, the section below will help you start using it.
-
-<figure class="wp-block-video">
-</figure>
-
-The above video gives you a basic preview of inserting the Top 10 Query Loop block, the various settings, and the output on your site's front end.
 
 The block allows you to modify the output and layout flexibly. You have a few ready-made patterns currently included, with more coming in future versions. Here is a short guide on how to use it:
 
@@ -115,8 +110,8 @@ The Query Loop block allows you to customize the query that will be used to retr
 - **Offset**: Set the number of posts to skip from the beginning of the results.
 - **Order By**: Choose how the results should be sorted (e.g., visits, date, title, author, etc.).
 - **Order**: Toggle between Ascending and Descending.
-- **Filters – Taxonomy**: Filter the results by specific taxonomies (e.g., category, tag).
-- **Filters – Authors**: Filter the results by specific authors.
+- **Filters: Taxonomy**: Filter the results by specific taxonomies (e.g., category, tag).
+- **Filters: Authors**: Filter the results by specific authors.
 
 ### 2. Customize the Layout
 
@@ -145,12 +140,12 @@ Within the Query Loop block, you can add additional blocks to display specific c
 - **Post Title**: Show the title of the post or page.
 - **Post Content**: Display the full content of the post or page.
 - **Post Date**: Show the date the post or page was published.
-- **Post Featured Image**: Display the featured image of the post or page. Top 10 Pro includes an [advanced Featured Image Block](#top-10-featured-image-block-pro-version).
+- **Post Featured Image**: Display the featured image of the post or page. Top 10 Pro includes an [advanced Featured Image Block](#top-10-featured-image-block-pro-only).
 - **Post Views**: Use the [Top 10 Post Count block](#top-10-post-count) to display the number of views the post has received.
 
 You can arrange and style these blocks to create a visually appealing and informative layout for your content.
 
-## Top 10 Featured Image Block (Pro version)
+## Top 10 Featured Image Block *(Pro only)*
 
 Top 10 Pro offers enhanced flexibility and reliability for displaying featured images in your posts. This can be used for the popular posts list and across your WordPress site that uses the Block or the Site editor.
 
@@ -163,6 +158,8 @@ If a featured image is not explicitly set for a post, the plugin will automatic
 5. **Site Icon**: Use the site icon configured in Settings > General.
 
 This feature ensures that your popular posts always have visually appealing featured images, even if a featured image hasn't been set.
+
+The featured-image editor preview requires `edit_posts` and access to the requested post. Revisions require permission to edit that revision. Users without `manage_options` can preview a custom image meta key only when it is registered, exposed through REST, unprotected, and editable by that user on the requested post. Other keys are ignored in the preview.
 
 ## Top 10 Post Count
 

@@ -8,14 +8,14 @@ status: publish
 order: 0
 ---
 
-The standalone [Popular Authors](https://webberzone.com/support/product/popular-authors/) plugin is retired. Version 1.5.0 was its final release, and it will receive no further updates, including security updates. Popular Authors is now built into [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/).
+The standalone [Popular Authors](https://webberzone.com/support/product/popular-authors/) plugin is retired. Popular Authors is now built into [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/).
 
 Most of your setup carries over. The blocks were renamed and some developer hooks changed, so review the sections below before you remove the old plugin.
 
 ## Switching to Top 10 Pro
 
 1. Install and activate Top 10 Pro. Activating it deactivates the free Top 10 plugin automatically. Your counts and settings stay in place.
-2. Confirm **Popular Authors** is enabled under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). It is enabled by default.
+2. Confirm **Popular Authors** is enabled under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). It is enabled by default.
 3. Check your custom code and CSS against **Hooks and CSS** below.
 4. Deactivate the Popular Authors plugin. Top 10 Pro shows a notice while both are active. Until then, the shortcodes and dashboard widget are registered twice, and the old plugin's template tags take precedence over Top 10 Pro's.
 5. Convert the old blocks to the Top 10 Pro blocks, as described under **Blocks** below.
@@ -23,7 +23,7 @@ Most of your setup carries over. The blocks were renamed and some developer hook
 
 ## What carries over
 
-- **Settings.** Popular Authors always stored its settings inside Top 10's settings, using the same `wzpa_` keys. They appear under **Top 10 → Settings → Popular Authors**. See [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
+- **Settings.** Popular Authors always stored its settings inside Top 10's settings, using the same `wzpa_` keys. They appear under **Top 10 → Settings → Popular Authors**. See [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
 - **Classic widgets.** The widget has the same ID, so existing **Popular Authors** widgets keep their settings and output.
 - **Shortcodes.** [[wzpa_popular_authors]] and [[wzpa_author_top_posts]] still work. New content can use [[tptn_popular_authors]] and [[tptn_author_top_posts]]. See [Popular Authors Shortcodes](https://webberzone.com/support/knowledgebase/popular-authors-shortcode/).
 - **Template tags.** `wzpa_list_popular_authors()`, `wzpa_list_popular_authors_args()`, `wzpa_get_popular_author_ids()`, and `wzpa_display_top_posts_by_author()` still work. See [Popular Authors Template Tags, Hooks, and CSS](https://webberzone.com/support/knowledgebase/popular-authors-template-tags/).

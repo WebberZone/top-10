@@ -11,7 +11,7 @@ toc: true
 
 [toc]
 
-[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) provides PHP functions to display or query popular authors from a theme or plugin. They are defined only when **Popular Authors** is enabled under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/), so wrap calls in `function_exists()`.
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) provides PHP functions to display or query popular authors from a theme or plugin. They are defined only when **Popular Authors** is enabled under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/), so wrap calls in `function_exists()`.
 
 Each `tptn_` function has a `wzpa_` alias kept for sites moving from the retired [Popular Authors](https://webberzone.com/support/product/popular-authors/) plugin. See [Migrating from the Popular Authors Plugin](https://webberzone.com/support/knowledgebase/migrating-from-popular-authors/).
 
@@ -38,21 +38,21 @@ if ( function_exists( 'tptn_list_popular_authors' ) ) {
 
 **Parameters:**
 
-- `$args` *(array, optional)* — Display arguments. See **Display arguments** below. Omitted arguments use the values under [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
+- `$args` *(array, optional)*: Display arguments. See **Display arguments** below. Omitted arguments use the values under [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/).
 
-**Returns:** `string|void` — The HTML, unless `echo` is `true`. The default for `echo` is `false`.
+**Returns:** `string|void`: The HTML, unless `echo` is `true`. The default for `echo` is `false`.
 
 Alias: `wzpa_list_popular_authors( $args )`, with the same parameters and return value.
 
 ### `wzpa_list_popular_authors_args( $args )`
 
-Returns the display arguments merged with the defaults from [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/). Kept for themes written for the retired plugin.
+Returns the display arguments merged with the defaults from [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/). Kept for themes written for the retired plugin.
 
 **Parameters:**
 
-- `$args` *(array, optional)* — Arguments that override the defaults.
+- `$args` *(array, optional)*: Arguments that override the defaults.
 
-**Returns:** `array` — The full set of display arguments.
+**Returns:** `array`: The full set of display arguments.
 
 ### `tptn_get_popular_author_ids( $args )`
 
@@ -76,9 +76,9 @@ foreach ( $authors as $author ) {
 
 **Parameters:**
 
-- `$args` *(array, optional)* — Accepts `number`, `offset`, `paged`, `daily`, `daily_range`, `hour_range`, `post_type`, `include`, `exclude`, and `exclude_admin` from **Display arguments** below. Results always come from the current site.
+- `$args` *(array, optional)*: Accepts `number`, `offset`, `paged`, `daily`, `daily_range`, `hour_range`, `post_type`, `include`, `exclude`, and `exclude_admin` from **Display arguments** below. Results always come from the current site.
 
-**Returns:** `array` — Objects with `author_id`, `visits`, and `post_count` properties, sorted by `visits` in descending order.
+**Returns:** `array`: Objects with `author_id`, `visits`, and `post_count` properties, sorted by `visits` in descending order.
 
 Alias: `wzpa_get_popular_author_ids( $args )`.
 
@@ -94,12 +94,12 @@ tptn_display_top_posts_by_author( 42, 'id', array( 'limit' => 5 ) );
 
 **Parameters:**
 
-- `$author` *(int|string)* — The author to look up, matched against `$field`.
-- `$field` *(string, optional)* — What `$author` contains: `id`, `slug`, `email`, or `login`. Default `id`.
-- `$args` *(array, optional)* — Top 10 popular posts arguments, such as `limit`, `post_type`, `orderby`, `order`, `daily`, `daily_range`, `hour_range`, and `disp_list_count`.
-- `$echo_value` *(bool, optional)* — Whether to print the output. Default `true`.
+- `$author` *(int|string)*: The author to look up, matched against `$field`.
+- `$field` *(string, optional)*: What `$author` contains: `id`, `slug`, `email`, or `login`. Default `id`.
+- `$args` *(array, optional)*: Top 10 popular posts arguments, such as `limit`, `post_type`, `orderby`, `order`, `daily`, `daily_range`, `hour_range`, and `disp_list_count`.
+- `$echo_value` *(bool, optional)*: Whether to print the output. Default `true`.
 
-**Returns:** `string|void` — The HTML when `$echo_value` is `false`. An empty string when the author is not found or has no published posts.
+**Returns:** `string|void`: The HTML when `$echo_value` is `false`. An empty string when the author is not found or has no published posts.
 
 Alias: `wzpa_display_top_posts_by_author( $author, $field, $args, $echo_value )`.
 
@@ -141,8 +141,8 @@ Filters the HTML of a popular authors list, including cached output. See [`tptn_
 
 **Parameters:**
 
-- `$output` *(string)* — The list HTML.
-- `$args` *(array)* — Display arguments.
+- `$output` *(string)*: The list HTML.
+- `$args` *(array)*: Display arguments.
 
 ### `wzpa_authors_class`
 
@@ -150,8 +150,8 @@ Filters the classes on the wrapper `<div>`. See [`wzpa_authors_class`](https://w
 
 **Parameters:**
 
-- `$post_classes` *(string)* — Space-separated classes.
-- `$args` *(array)* — Display arguments.
+- `$post_classes` *(string)*: Space-separated classes.
+- `$args` *(array)*: Display arguments.
 
 ### `wzpa_get_styles`
 
@@ -159,7 +159,7 @@ Filters the styles offered in the **Popular Authors style** setting. See [`wzpa_
 
 **Parameters:**
 
-- `$styles` *(array)* — Styles, each with `id`, `name`, and `description` keys.
+- `$styles` *(array)*: Styles, each with `id`, `name`, and `description` keys.
 
 ### `wzpa_get_style`
 
@@ -167,8 +167,8 @@ Filters the stylesheet chosen for a style. See [`wzpa_get_style`](https://webber
 
 **Parameters:**
 
-- `$style_array` *(array)* — `name` (the stylesheet name, such as `card`) and `extra_css` (CSS added inline).
-- `$wzpa_style` *(string)* — The selected style key.
+- `$style_array` *(array)*: `name` (the stylesheet name, such as `card`) and `extra_css` (CSS added inline).
+- `$wzpa_style` *(string)*: The selected style key.
 
 ### `tptn_popular_authors_dashboard_widget_args`
 
@@ -187,7 +187,7 @@ add_filter(
 
 **Parameters:**
 
-- `$args` *(array)* — Display arguments. Default `number` is `10`, with `optioncount` and `show_avatar` enabled.
+- `$args` *(array)*: Display arguments. Default `number` is `10`, with `optioncount` and `show_avatar` enabled.
 
 ### `tptn_popular_authors_max_execution_time`
 
@@ -195,7 +195,7 @@ Filters the MySQL `MAX_EXECUTION_TIME` hint, in milliseconds, added to the popul
 
 **Parameters:**
 
-- `$max_execution_time` *(int)* — Defaults to the Top 10 **Max Execution Time** setting.
+- `$max_execution_time` *(int)*: Defaults to the Top 10 **Max Execution Time** setting.
 
 ### `tptn_cache_time`
 
