@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-counter-tracker-options
-title: "Top 10 Settings – Counter and tracker options"
+title: "Top 10 Settings: Counter and tracker options"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -72,14 +72,14 @@ Top 10 tracks hits in two tables in the database. The overall table only tracks 
 
 ### Tracker type
 
-Top 10 includes three tracker types in the free plugin — REST API based, Query variable based, and Ajaxurl based — plus two additional high-performance options in Pro.
+Top 10 includes three tracker types in the free plugin (REST API based, Query variable based, and Ajaxurl based) plus two additional high-performance options in Pro.
 
 All tracker types share the same underlying recording mechanism, set by **Tracking method** below. With Funnel tracking (the default), each page view writes a single row to the visits funnel table and returns immediately, and a background cron job aggregates the funnel into the main count tables every two minutes. With Legacy tracking, each view is written straight to the count tables. See [Trackers in Top 10](https://webberzone.com/support/knowledgebase/trackers-in-top-10/) for a full explanation of this flow.
 
 [Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) adds two additional trackers:
 
-- **Fast Tracker** — a standalone PHP endpoint that loads a minimal WordPress environment, reducing server overhead per tracked visit.
-- **High-traffic Tracker** — bypasses WordPress entirely using a pre-generated config file. Requires generating the config from the Settings page before use.
+- **Fast Tracker**: a standalone PHP endpoint that loads a minimal WordPress environment, reducing server overhead per tracked visit.
+- **High-traffic Tracker**: bypasses WordPress entirely using a pre-generated config file. Requires generating the config from the Settings page before use.
 
 ### Tracking method
 

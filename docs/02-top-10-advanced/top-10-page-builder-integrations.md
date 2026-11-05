@@ -57,7 +57,7 @@ If the Bricks theme is active, Top 10 Pro registers a **Popular Posts (Top 10)**
 
 ### Configuring the element
 
-The element's **Content** tab exposes the same **General**, **Query**, **Display**, and **Output** groups as Elementor — see [shared controls](#shared-controls) below. Click the lightning-bolt icon next to a supported text control to insert a dynamic tag, e.g. `Most viewed in {term_name}`.
+The element's **Content** tab exposes the same **General**, **Query**, **Display**, and **Output** groups as Elementor: see [shared controls](#shared-controls) below. Click the lightning-bolt icon next to a supported text control to insert a dynamic tag, e.g. `Most viewed in {term_name}`.
 
 ## Shared controls
 
@@ -65,51 +65,51 @@ All three elements expose the same set of controls, grouped the same way:
 
 **General**
 
-- **Title** — heading text shown above the list. Leave blank to use the plugin setting.
-- **Custom period title** — heading text shown when **Custom period** is enabled below. Leave blank to use the plugin setting.
-- **Show heading** — toggle the heading on or off.
-- **Custom period** — switch from all-time counts to a custom date range.
-- **Days in period** / **Hours in period** — only shown when **Custom period** is on. Leave blank to use the plugin's [default custom period range](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/).
-- **Number of posts** — maximum popular posts to display.
-- **Offset** — number of posts to skip from the top.
-- **Published within (days)** — only show posts published within this many days. Leave blank to use the plugin setting; `0` means no restriction.
+- **Title**: heading text shown above the list. Leave blank to use the plugin setting.
+- **Custom period title**: heading text shown when **Custom period** is enabled below. Leave blank to use the plugin setting.
+- **Show heading**: toggle the heading on or off.
+- **Custom period**: switch from all-time counts to a custom date range.
+- **Days in period** / **Hours in period**: only shown when **Custom period** is on. Leave blank to use the plugin's [default custom period range](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/).
+- **Number of posts**: maximum popular posts to display.
+- **Offset**: number of posts to skip from the top.
+- **Published within (days)**: only show posts published within this many days. Leave blank to use the plugin setting; `0` means no restriction.
 
 **Query**
 
-- **Post types** — comma-separated post type slugs to include (Bricks exposes this as a multi-select of registered post types instead).
-- **Include category term IDs** — comma-separated `term_taxonomy_id`s. Only posts in these categories are included.
-- **Include post IDs** — comma-separated post IDs to force-include.
-- **Exclude current post** — leave the currently viewed post out of the results.
-- **Exclude post IDs** — comma-separated post IDs to exclude.
-- **Exclude category slugs** — comma-separated category slugs to exclude.
+- **Post types**: comma-separated post type slugs to include (Bricks exposes this as a multi-select of registered post types instead).
+- **Include category term IDs**: comma-separated `term_taxonomy_id`s. Only posts in these categories are included.
+- **Include post IDs**: comma-separated post IDs to force-include.
+- **Exclude current post**: leave the currently viewed post out of the results.
+- **Exclude post IDs**: comma-separated post IDs to exclude.
+- **Exclude category slugs**: comma-separated category slugs to exclude.
 
 **Display**
 
-- **Style** — one of the plugin's built-in styles (same list as the [Styles settings](https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/)).
-- **Thumbnail placement** — inline before the title, inline after the title, thumbnails only, or no thumbnails.
-- **Thumbnail size** — a registered WordPress image size name. Hidden when **Thumbnail placement** is set to no thumbnails.
+- **Style**: one of the plugin's built-in styles (same list as the [Styles settings](https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/)).
+- **Thumbnail placement**: inline before the title, inline after the title, thumbnails only, or no thumbnails.
+- **Thumbnail size**: a registered WordPress image size name. Hidden when **Thumbnail placement** is set to no thumbnails.
 - **Show excerpt** and **Excerpt length (words)**.
 - **Show author**.
 - **Show date**.
 - **Show view count**.
-- **Show rating** — do not display, star rating, or average score. Requires the free [WP-PostRatings](https://wordpress.org/plugins/wp-postratings/) plugin to be active.
+- **Show rating**: do not display, star rating, or average score. Requires the free [WP-PostRatings](https://wordpress.org/plugins/wp-postratings/) plugin to be active.
 
 **Output** (WPBakery calls this group **Advanced**)
 
-- **Other attributes** — a free-text field accepting extra [[tptn_list]] shortcode attributes for options not exposed as a dedicated control, e.g. `lazy_load=0&link_nofollow=1` or `link_nofollow="1"`.
+- **Other attributes**: a free-text field accepting supported [[tptn_list]] shortcode and plugin settings attributes for options not exposed as a dedicated control. Unknown keys and arbitrary `WP_Query` variables are discarded. For example, use `lazy_load=0&link_nofollow=1` or `link_nofollow="1"`.
 
 ## How controls fall back to your saved settings
 
-A control left blank (or, for a checkbox/switcher, left unchecked) falls back to your saved Top 10 settings — the same way an omitted [[tptn_list]] shortcode attribute does. Only an explicit value typed into a control overrides the saved setting for that element instance.
+A control left blank (or, for a checkbox/switcher, left unchecked) falls back to your saved Top 10 settings, the same way an omitted [[tptn_list]] shortcode attribute does. Only an explicit value typed into a control overrides the saved setting for that element instance.
 
 ## Troubleshooting
 
 - **The element doesn't appear in the panel.** Confirm the relevant builder plugin/theme is active, that Top 10 Pro (not the free version) is active, and that **Page builder integrations** is enabled on the Features tab of Top 10 settings.
-- **A setting doesn't seem to apply.** Check whether the control was left blank/unchecked — it will use your saved plugin settings instead. Set an explicit value on the element to override it.
-- **No popular posts are shown.** The same query and settings apply regardless of how the element is inserted — check your [Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/) and [Posts list options](https://webberzone.com/support/knowledgebase/top-10-settings-list-options/) first.
+- **A setting doesn't seem to apply.** Check whether the control was left blank/unchecked: it will use your saved plugin settings instead. Set an explicit value on the element to override it.
+- **No popular posts are shown.** The same query and settings apply regardless of how the element is inserted: check your [Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/) and [Posts list options](https://webberzone.com/support/knowledgebase/top-10-settings-list-options/) first.
 
 ## See also
 
 - [Top 10 shortcodes](https://webberzone.com/support/knowledgebase/top-10-shortcodes/)
 - [Blocks in Top 10](https://webberzone.com/support/knowledgebase/popular-posts-blocks/)
-- [Top 10 Settings – Styles options](https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/)
+- [Top 10 Settings: Styles options](https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/)

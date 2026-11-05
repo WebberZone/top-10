@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2015/12/Installing-Top-10.png"
 ---
 
-Top 10 core plugin is hosted on WordPress.org. This makes installing it on your site extremely easy and just like any other plugin.
+[Top 10](https://webberzone.com/plugins/top-10/) core plugin is hosted on WordPress.org. This makes installing it on your site extremely easy and just like any other plugin.
 
 ## WordPress install (The easy way)
 

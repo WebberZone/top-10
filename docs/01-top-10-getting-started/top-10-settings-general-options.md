@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-general-options
-title: "Top 10 Settings – General options"
+title: "Top 10 Settings: General options"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -28,7 +28,7 @@ Enter the number of seconds to cache the output of the popular posts.
 
 Load popular posts using JavaScript when the list is about to enter the viewport. This speeds up initial page loads and lets full-page caches serve fresh lists. Search engines may not index links loaded this way. Applies to content, shortcodes, widgets and the Popular Posts block. Use `lazy_load="0"` in the shortcode or block attributes to disable it per instance. Not applied on feeds or AMP pages.
 
-Requires both **Lazy-load module** and **REST API endpoints** under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Disabling either feature prevents lazy loading, including per-instance overrides.
+Requires both **Lazy-load module** and **REST API endpoints** under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). Disabling either feature prevents lazy loading, including per-instance overrides.
 
 Each placeholder carries the list's settings, signed so they cannot be altered. From 4.6.1, a list's time period (`daily`, `daily_range`, `hour_range` and `daily_midnight`) is always stored in the placeholder, so a page served from a full-page cache keeps the list's own period even after you change the global custom period. If a placeholder fails verification, for example on a cached page created before your site's security keys changed, the placeholder is removed instead of being replaced with the default popular posts list. Clear your page cache after changing the security keys so the lists reappear.
 

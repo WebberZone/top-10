@@ -8,7 +8,7 @@ status: publish
 order: 0
 ---
 
-[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) registers two Popular Authors shortcodes: one lists your most popular authors and one lists the most popular posts of a single author. They require **Popular Authors** to be enabled under [Top 10 Settings – Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). When it is disabled, the shortcodes output nothing instead of showing raw shortcode text.
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) registers two Popular Authors shortcodes: one lists your most popular authors and one lists the most popular posts of a single author. They require **Popular Authors** to be enabled under [Top 10 Settings: Features](https://webberzone.com/support/knowledgebase/top-10-settings-features-options/). When it is disabled, the shortcodes output nothing instead of showing raw shortcode text.
 
 The `wzpa_` shortcodes from the retired [Popular Authors](https://webberzone.com/support/product/popular-authors/) plugin still work. [[wzpa_popular_authors]] accepts the same attributes as [[tptn_popular_authors]], and [[wzpa_author_top_posts]] accepts the same attributes as [[tptn_author_top_posts]].
 
@@ -20,7 +20,7 @@ Displays your authors ranked by the total views of their posts.
 [[tptn_popular_authors number="5" optioncount="1" show_avatar="1"]]
 ```
 
-All attributes are optional. Attributes you omit use the values under [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/). For boolean attributes, use `1` or `0`. Any non-empty value other than `0`, including `false`, turns the option on, except for `daily`.
+All attributes are optional. Attributes you omit use the values under [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/). For boolean attributes, use `1` or `0`. Any non-empty value other than `0`, including `false`, turns the option on, except for `daily`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |

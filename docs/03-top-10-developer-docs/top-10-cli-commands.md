@@ -7,9 +7,12 @@ tags: [top-10, wp-cli]
 status: publish
 order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2026/05/Top10-CLI.webp"
+toc: true
 ---
 
-[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) includes a full WP-CLI command suite so you can manage counts, database tables, cache, settings, and cron jobs directly from the terminal — without touching the WordPress admin.
+[toc]
+
+[Top 10 Pro](https://webberzone.com/plugins/top-10/pro/) includes a full WP-CLI command suite so you can manage counts, database tables, cache, settings, and cron jobs directly from the terminal without touching the WordPress admin.
 
 All commands start with `wp top10`. Run any command with `--help` to see its full option list.
 
@@ -70,7 +73,7 @@ wp top10 cache flush --network
 
 ## `wp top10 counts`
 
-### `view` — list posts with counts
+### `view`: list posts with counts
 
 ```bash
 wp top10 counts view
@@ -79,14 +82,14 @@ wp top10 counts view --from-date=2025-01-01 --to-date=2025-12-31
 wp top10 counts view --network
 ```
 
-### `get` — get the count for one post
+### `get`: get the count for one post
 
 ```bash
 wp top10 counts get 42
 wp top10 counts get 42 --table=daily
 ```
 
-### `set` — overwrite the count for one post
+### `set`: overwrite the count for one post
 
 Only applies to the overall table.
 
@@ -95,7 +98,7 @@ wp top10 counts set 42 1000
 wp top10 counts set 42 1000 --dry-run
 ```
 
-### `reset` — delete counts
+### `reset`: delete counts
 
 ```bash
 # Preview what would be deleted
@@ -110,7 +113,7 @@ wp top10 counts reset --network --force
 
 `--table` accepts `overall`, `daily`, or `all` (default).
 
-### `export` — write counts to a CSV file
+### `export`: write counts to a CSV file
 
 The CSV format is compatible with the admin Import/Export page.
 
@@ -125,9 +128,9 @@ The default file name is `tptn-counts-{timestamp}.csv` in the current directory.
 
 When the count tables have the feed views column, the file ends with a **Feed Visits** column holding the feed share of each row's visits.
 
-### `import` — load counts from a CSV file
+### `import`: load counts from a CSV file
 
-The file must use the same column layout produced by `counts export` (or the admin export page). The table type — overall or daily — is auto-detected from the header row. A **Feed Visits** column is restored in `add` mode and ignored in `set` mode.
+The file must use the same column layout produced by `counts export` (or the admin export page). The table type (overall or daily) is auto-detected from the header row. A **Feed Visits** column is restored in `add` mode and ignored in `set` mode.
 
 ```bash
 wp top10 counts import counts.csv
@@ -141,7 +144,7 @@ wp top10 counts import counts.csv --blog-id=3
 | --- | --- | --- |
 | `--table=<table>` | auto | Override table detection: `overall` or `daily`. |
 | `--mode=<mode>` | `add` | `add` increments existing counts; `set` overwrites them. |
-| `--use-urls` | — | Resolve the URL column to a post ID instead of using the Post ID column. |
+| `--use-urls` | Not applicable | Resolve the URL column to a post ID instead of using the Post ID column. |
 | `--batch-size=<n>` | 1000 | Rows processed per database batch. |
 
 ## `wp top10 cron`
@@ -174,7 +177,7 @@ wp top10 cron disable --job=maintenance --force
 wp top10 cron disable --force
 ```
 
-### `run` — trigger a cron job immediately
+### `run`: trigger a cron job immediately
 
 The job must already be scheduled. Useful for testing or flushing a backlog.
 
@@ -186,7 +189,7 @@ wp top10 cron run --dry-run
 
 ## `wp top10 db`
 
-### `status` — show table info
+### `status`: show table info
 
 ```bash
 wp top10 db status
@@ -194,7 +197,7 @@ wp top10 db status --format=json
 wp top10 db status --network
 ```
 
-### `add-feed-columns` — enable separate feed view counts
+### `add-feed-columns`: enable separate feed view counts
 
 Adds the `feedcnt` column to the count tables and enables separate feed view counts. Top 10 adds this column instantly during the upgrade where the database server supports it. Use this command when it could not, which the Tools screen also reports. The tables are altered online where the server supports it, and historical feed views are then imported from the visits log in the background.
 
@@ -203,7 +206,7 @@ wp top10 db add-feed-columns
 wp top10 db add-feed-columns --dry-run
 ```
 
-### `aggregate` — drain the visits funnel immediately
+### `aggregate`: drain the visits funnel immediately
 
 The aggregation cron normally runs every 2 minutes. Use this to force an immediate run.
 
@@ -213,7 +216,7 @@ wp top10 db aggregate --dry-run
 wp top10 db aggregate --batch-size=5000
 ```
 
-### `cleanup-orphans` — remove counts for deleted posts
+### `cleanup-orphans`: remove counts for deleted posts
 
 Count rows that reference posts no longer in the database are removed. On multisite, only rows for the current site are affected.
 
@@ -228,7 +231,7 @@ wp top10 db cleanup-orphans --table=overall --force
 wp top10 db cleanup-orphans --network --force
 ```
 
-### `create-tables` — create any missing tables
+### `create-tables`: create any missing tables
 
 Safe to run on an existing install; uses `dbDelta` so it will not destroy data.
 
@@ -237,7 +240,7 @@ wp top10 db create-tables
 wp top10 db create-tables --dry-run
 ```
 
-### `prune` — delete old rows
+### `prune`: delete old rows
 
 Removes rows older than the configured retention period. Default: 180 days for the daily table, 30 days for the visits log.
 
@@ -254,7 +257,7 @@ wp top10 db prune --log-days=7 --table=log --force
 
 `--table` accepts `daily`, `log`, or `all` (default).
 
-### `recreate-tables` — drop and rebuild a table
+### `recreate-tables`: drop and rebuild a table
 
 Creates a backup table before dropping by default. Use `--no-backup` to skip. Each table's data is preserved by copying it to a temporary table before the drop and restoring it afterwards.
 
@@ -267,7 +270,7 @@ wp top10 db recreate-tables --force
 
 `--table` accepts `overall`, `daily`, `funnel`, `log`, or `all` (default).
 
-### `rollup` — combine old hourly records into daily totals
+### `rollup`: combine old hourly records into daily totals
 
 Combines daily-table rows older than the given number of days into a single row per post, reducing table size without changing overall view counts. Same operation as the **Reduce Daily Table Size** tool on the Tools admin screen. Requires the **Daily table size reduction** feature to be enabled in Top 10 settings.
 
@@ -280,7 +283,7 @@ wp top10 db rollup --network --dry-run
 
 `--before=<days>` defaults to `14`. Requires `--force` or `--dry-run`.
 
-### `truncate` — delete all rows from a table
+### `truncate`: delete all rows from a table
 
 **Destructive.** Requires `--force` or `--dry-run`.
 
@@ -291,7 +294,7 @@ wp top10 db truncate --table=all --dry-run
 
 `--table` accepts `overall`, `daily`, `log`, `funnel`, or `all` (default).
 
-### `update-tables` — apply pending schema upgrades
+### `update-tables`: apply pending schema upgrades
 
 Runs the same upgrade routine as plugin activation.
 
@@ -329,16 +332,16 @@ wp top10 popular --author=1,2 --format=json
 | --- | --- | --- |
 | `--limit=<n>` | 10 | Number of posts to return. |
 | `--offset=<n>` | 0 | Number of posts to skip (for pagination). |
-| `--daily` | — | Use the custom period table instead of the overall table. |
+| `--daily` | Not applicable | Use the custom period table instead of the overall table. |
 | `--days=<n>` | plugin setting | Date range for custom period queries. |
-| `--from-date=<date>` | — | Start date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
-| `--to-date=<date>` | — | End date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
-| `--how-old=<n>` | — | Limit to posts published within this many days. |
+| `--from-date=<date>` | Not applicable | Start date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
+| `--to-date=<date>` | Not applicable | End date for the custom period (`YYYY-MM-DD`). Only used with `--daily`. |
+| `--how-old=<n>` | Not applicable | Limit to posts published within this many days. |
 | `--post-type=<type>` | all public | Post type slug or comma-separated list (e.g. `post,page`). |
-| `--include-cat-ids=<ids>` | — | Comma-separated `term_taxonomy_id`s to include. |
-| `--exclude-categories=<ids>` | — | Comma-separated `term_taxonomy_id`s to exclude. |
-| `--include-post-ids=<ids>` | — | Comma-separated post IDs to force-include at the top of the list. |
-| `--author=<id>` | — | Author ID or comma-separated list of author IDs to filter by. |
+| `--include-cat-ids=<ids>` | Not applicable | Comma-separated `term_taxonomy_id`s to include. |
+| `--exclude-categories=<ids>` | Not applicable | Comma-separated `term_taxonomy_id`s to exclude. |
+| `--include-post-ids=<ids>` | Not applicable | Comma-separated post IDs to force-include at the top of the list. |
+| `--author=<id>` | Not applicable | Author ID or comma-separated list of author IDs to filter by. |
 | `--blog-id=<id>` | current site | Blog ID or comma-separated list of blog IDs (multisite only). |
 | `--format=<format>` | table | Output format. Supports `table`, `json`, `csv`, `ids`, `count`. |
 
@@ -384,7 +387,7 @@ wp top10 settings import settings.json --merge
 wp top10 settings import settings.json --dry-run
 ```
 
-### `copy` — copy settings between sites (multisite only)
+### `copy`: copy settings between sites (multisite only)
 
 Copies all Top 10 settings from a source site to one or more destination sites. The source is excluded from the destination list automatically.
 
@@ -410,7 +413,7 @@ wp top10 settings copy --destination=all --dry-run
 | Option | Default | Description |
 | --- | --- | --- |
 | `--source=<id>` | current site | Blog ID to copy settings from. |
-| `--destination=<id>` | — | Blog ID(s), comma-separated, or `all` for every other site. Required. |
+| `--destination=<id>` | Not applicable | Blog ID(s), comma-separated, or `all` for every other site. Required. |
 
 ## `wp top10 status`
 

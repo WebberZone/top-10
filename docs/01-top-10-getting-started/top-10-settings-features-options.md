@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-features-options
-title: "Top 10 Settings – Features"
+title: "Top 10 Settings: Features"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -25,7 +25,7 @@ Adds custom RSS feeds for overall and daily popular posts. The feed settings are
 
 Registers the classic Popular Posts and Views Count widgets. Disable this if you use blocks instead of classic widgets.
 
-## Top 10 Popular Posts — Advanced block *(Pro only)*
+## Top 10 Popular Posts: Advanced block *(Pro only)*
 
 Registers the Advanced Popular Posts block, its card blocks, and its six layout patterns. Enabled by default. See [Advanced Popular Posts block](https://webberzone.com/support/knowledgebase/advanced-popular-posts-block/).
 
@@ -69,7 +69,7 @@ Adds the enhanced Top 10 Pro widgets to the WordPress dashboard.
 
 Enables the Popular Authors blocks, shortcodes, widgets, and settings bundled with Top 10 Pro. Disabling this registers empty stubs for the [`tptn_popular_authors`](https://webberzone.dev/top-10/hooks/tptn_popular_authors/), `tptn_author_top_posts`, `wzpa_popular_authors`, and `wzpa_author_top_posts` shortcodes so raw shortcode text does not appear in published content.
 
-See [Top 10 Settings – Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/) and [Migrating from the Popular Authors Plugin](https://webberzone.com/support/knowledgebase/migrating-from-popular-authors/).
+See [Top 10 Settings: Popular Authors](https://webberzone.com/support/knowledgebase/popular-authors-settings/) and [Migrating from the Popular Authors Plugin](https://webberzone.com/support/knowledgebase/migrating-from-popular-authors/).
 
 ## Abilities API
 

@@ -8,7 +8,7 @@ status: publish
 order: 0
 ---
 
-Top 10 adds two Dashboard Widgets that allows logged in users to see the popular posts. These widgets reflect the same counts as **Top 10 > Popular Posts**.
+[Top 10](https://webberzone.com/plugins/top-10/) adds two Dashboard Widgets that allows logged in users to see the popular posts. These widgets reflect the same counts as **Top 10 > Popular Posts**.
 
 If you don't want to display this, then you can add the following code into your theme's functions.php or a file in `mu-plugins` folder.
 

@@ -1,15 +1,18 @@
 ---
 slug: top-10-maintenance-options
-title: "Top 10 Settings – Maintenance"
+title: "Top 10 Settings: Maintenance"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
 status: publish
 order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2019/02/Top-10-Maintenance-options-v2.6.1.png"
+toc: true
 ---
 
-The Top 10 database tables can build up over time, particularly on busy sites. The **Maintenance** section contains options to schedule automatic pruning of old data.
+[toc]
+
+The [Top 10](https://webberzone.com/plugins/top-10/) database tables can build up over time, particularly on busy sites. The **Maintenance** section contains options to schedule automatic pruning of old data.
 
 ## Enable scheduled maintenance
 
@@ -35,7 +38,7 @@ add_filter( 'tptn_maintenance_days', function( $days ) {
 
 ## Visits log retention period (Pro)
 
-Controls how many days of raw visit rows are kept in the visits log table (`wp_top_ten_visits_log`). Unlike the daily table, the log stores **one row per individual page view** and grows proportionally to raw traffic — on a busy site it can accumulate millions of rows far faster than the daily table.
+Controls how many days of raw visit rows are kept in the visits log table (`wp_top_ten_visits_log`). Unlike the daily table, the log stores **one row per individual page view** and grows proportionally to raw traffic: on a busy site it can accumulate millions of rows far faster than the daily table.
 
 Because log rows are already aggregated into the count tables within 2 minutes of being written, they serve only as an audit trail after that point. The default is **30 days**, which is deliberately shorter than the daily table's retention.
 

@@ -1,6 +1,6 @@
 ---
 slug: top-10-settings-thumbnail-options
-title: "Top 10 Settings – Thumbnail options"
+title: "Top 10 Settings: Thumbnail options"
 products: [top-10]
 sections: ["01-top-10-getting-started"]
 tags: [settings, top-10, top-10-settings]
@@ -10,9 +10,10 @@ toc: true
 featured_image: "https://webberzone.com/wp-content/uploads/2019/02/Top-10-Thumbnail-options-v2.6.1.png"
 ---
 
+
 [toc]
 
-The **Thumbnail options** section contains options that let you fine-tune the thumbnails displayed in the popular posts. These are global settings, and many of these can be overridden in the widget or the shortcode.
+The **Thumbnail options** section in [Top 10](https://webberzone.com/plugins/top-10/) contains options that let you fine-tune the thumbnails displayed in the popular posts. These are global settings, and many of these can be overridden in the widget or the shortcode.
 
 ## Location of the post thumbnail
 
@@ -41,6 +42,8 @@ Specify the HTML markup for the thumbnails included in the posts. Choose between
 ## Thumbnail meta field name
 
 The value of this field should contain the URL of the image. Find this in the metabox in the Edit Post screen.
+
+Shortcodes, blocks, and page builders cannot override the thumbnail or ACF field with a different protected meta key. Such an override falls back to the saved plugin setting. Administrators can still configure the intended key in the settings.
 
 ## Get first image
 
