@@ -149,6 +149,12 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
+= 4.6.4 =
+
+**Changed**
+
+* Hardened multisite WordPress Popular Posts imports so cross-site targets require the `manage_network_options` capability.
+
 = 4.6.3 =
 
 Release date: 8 November 2026
@@ -222,6 +228,9 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/top-10/releases).
 
 == Upgrade Notice ==
+
+= 4.6.4 =
+Hardens multisite WordPress Popular Posts import permissions. Cross-site imports now require network-level capabilities.
 
 = 4.6.3 =
 Hardens who can change site-wide Popular Posts block defaults. Update recommended.

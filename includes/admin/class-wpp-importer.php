@@ -149,7 +149,7 @@ class WPP_Importer {
 							<th scope="row"><?php esc_html_e( 'Select Sites', 'top-10' ); ?></th>
 							<td>
 								<?php
-								$sites = get_sites();
+								$sites = get_sites( array( 'network_id' => get_current_network_id() ) );
 								if ( ! empty( $sites ) ) {
 									foreach ( $sites as $site ) {
 										$blog_details = get_blog_details( $site->blog_id );
@@ -201,6 +201,81 @@ class WPP_Importer {
 	}
 
 	/**
+	 * Get and authorize the sites requested for import.
+	 *
+	 * @since 4.6.4
+	 * @param array $request Request data array.
+	 * @return array|\WP_Error Authorized site IDs or an error.
+	 */
+	private function get_authorized_import_sites( array $request ) {
+		$current_blog_id = get_current_blog_id();
+		$sites           = array();
+
+		if ( isset( $request['sites'] ) ) {
+			if ( ! is_array( $request['sites'] ) ) {
+				return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
+			}
+
+			$requested_sites = $request['sites'];
+		} elseif (
+			is_multisite() &&
+			( is_network_admin() || ( isset( $request['is_network_admin'] ) && '1' === $request['is_network_admin'] ) )
+		) {
+			return new \WP_Error( 'no_sites_selected', __( 'No sites selected for import.', 'top-10' ) );
+		} elseif ( isset( $request['blog_id'] ) ) {
+			$requested_blog_id = $request['blog_id'];
+
+			if (
+				! is_scalar( $requested_blog_id ) ||
+				( '' !== (string) $requested_blog_id && ! ctype_digit( (string) $requested_blog_id ) )
+			) {
+				return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
+			}
+
+			$requested_blog_id = '' !== (string) $requested_blog_id ? (int) $requested_blog_id : 0;
+			$requested_sites   = array( $requested_blog_id ? $requested_blog_id : $current_blog_id );
+		} else {
+			$requested_sites = array( $current_blog_id );
+		}
+
+		foreach ( $requested_sites as $requested_site ) {
+			if ( ! is_scalar( $requested_site ) || ! ctype_digit( (string) $requested_site ) || 0 === (int) $requested_site ) {
+				return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
+			}
+
+			$sites[] = (int) $requested_site;
+		}
+
+		$sites = array_values( array_unique( $sites ) );
+
+		if ( empty( $sites ) ) {
+			return new \WP_Error( 'no_sites_selected', __( 'No sites selected for import.', 'top-10' ) );
+		}
+
+		$can_import_network = is_multisite() && current_user_can( 'manage_network_options' );
+
+		foreach ( $sites as $blog_id ) {
+			if ( ! $blog_id ) {
+				return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
+			}
+
+			if ( $current_blog_id !== $blog_id && ! $can_import_network ) {
+				return new \WP_Error( 'forbidden_site', __( 'You are not allowed to import data for the selected site.', 'top-10' ) );
+			}
+
+			if ( is_multisite() ) {
+				$site = get_site( $blog_id );
+
+				if ( ! $site || ( $current_blog_id !== $blog_id && get_current_network_id() !== (int) $site->network_id ) ) {
+					return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
+				}
+			}
+		}
+
+		return $sites;
+	}
+
+	/**
 	 * Process AJAX import request.
 	 *
 	 * @since 4.1.0
@@ -229,22 +304,14 @@ class WPP_Importer {
 		// Get import options from AJAX request.
 		$params = $this->process_import_parameters( $_POST );
 
-		// Determine sites to process.
-		$sites            = array();
-		$is_network_admin = is_multisite() && isset( $_POST['is_network_admin'] ) && '1' === $_POST['is_network_admin'];
+		$sites = $this->get_authorized_import_sites( $_POST );
 
-		if ( isset( $_POST['sites'] ) && is_array( $_POST['sites'] ) ) {
-			$sites = array_map( 'absint', $_POST['sites'] );
-		} elseif ( ! $is_network_admin ) {
-			$sites[] = $params['blog_id'];
-		}
-
-		// No sites to process.
-		if ( empty( $sites ) ) {
+		if ( is_wp_error( $sites ) ) {
 			wp_send_json_error(
 				array(
-					'message' => esc_html__( 'No sites selected for import.', 'top-10' ),
-				)
+					'message' => esc_html( $sites->get_error_message() ),
+				),
+				403
 			);
 		}
 
@@ -390,18 +457,10 @@ class WPP_Importer {
 		// Get import parameters using our helper method.
 		$params = $this->process_import_parameters( $_POST );
 
-		// Determine sites.
-		$sites            = array();
-		$is_network_admin = is_multisite() && is_network_admin();
+		$sites = $this->get_authorized_import_sites( $_POST );
 
-		if ( isset( $_POST['sites'] ) && is_array( $_POST['sites'] ) ) {
-			$sites = array_map( 'absint', $_POST['sites'] );
-		} elseif ( ! $is_network_admin ) {
-			$sites[] = $params['blog_id'];
-		}
-
-		if ( empty( $sites ) ) {
-			wp_die( esc_html__( 'No sites selected for import.', 'top-10' ) );
+		if ( is_wp_error( $sites ) ) {
+			wp_die( esc_html( $sites->get_error_message() ), '', array( 'response' => 403 ) );
 		}
 
 		$import_results = array();
@@ -436,9 +495,9 @@ class WPP_Importer {
 		// Build summary message.
 		$message = '';
 		foreach ( $import_results as $blog_id => $result ) {
-			$blog_details = get_blog_details( $blog_id );
+			$blog_details = is_multisite() ? get_blog_details( $blog_id ) : false;
 			/* translators: 1. Blog ID. */
-			$blog_name = $blog_details ? $blog_details->blogname : sprintf( __( 'Blog ID %d', 'top-10' ), $blog_id );
+			$blog_name = $blog_details ? $blog_details->blogname : ( is_multisite() ? sprintf( __( 'Blog ID %d', 'top-10' ), $blog_id ) : get_bloginfo( 'name' ) );
 			$message  .= sprintf(
 				/* translators: 1: Site name, 2: Blog ID, 3: Total records processed, 4: Daily records processed, 5: Dry run notice */
 				__( 'Site %1$s (ID: %2$d): Total Counts Processed: %3$d, Daily Records Processed: %4$d%5$s', 'top-10' ),
