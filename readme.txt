@@ -224,4 +224,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 4.6.3 =
-Security release. Restricts who can change site-wide Popular Posts block defaults. Update recommended.
+Hardens who can change site-wide Popular Posts block defaults. Update recommended.
