@@ -2,7 +2,7 @@
 Tags: popular posts, post views, page views, most viewed posts, popular posts widget
 Contributors: webberzone, ajay
 Donate link: https://wzn.io/donate-wz
-Stable tag: 4.6.2
+Stable tag: 4.6.3
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -149,6 +149,14 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
+= 4.6.3 =
+
+Release date: 8 November 2026
+
+**Security**
+
+* [Pro] Restricted saving site-wide Popular Posts block defaults to users with the `manage_options` capability.
+
 = 4.6.2 =
 
 Release date: 3 November 2026
@@ -215,5 +223,5 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.6.2 =
-Security release. Update recommended.
+= 4.6.3 =
+Security release. Restricts who can change site-wide Popular Posts block defaults. Update recommended.
