@@ -36,7 +36,7 @@ WebberZone Top 10 counts daily and total post views and displays popular posts l
 
 Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.4`.
 
-Versions: `readme.txt`'s `Stable tag` is the released version; `TOP_TEN_VERSION` in `top-10.php` is the working version — use it for new `@since` tags. Do not bump either unless asked.
+Versions: `readme.txt`'s `Stable tag` is the released version; `TOP_TEN_VERSION` in `top-10.php` is the working version — use it for new `@since` tags. If the working version equals `Stable tag`, it is already released — don't use it for new work. Follow the root versioning rule: next `X.Y.(Z+1)` for fixes, `X.(Y+1).0` for features, never `X+1.0.0` ([../AGENTS.md](../AGENTS.md#versioning)).
 
 The Freemius header annotation `@fs_premium_only /includes/pro/, /css/pro/` means those directories are only shipped in the paid build.
 
