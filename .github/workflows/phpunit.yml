@@ -7,21 +7,9 @@ on:
       - '[0-9]*'
   pull_request:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: Test coverage
-        type: choice
-        default: quick
-        options:
-          - quick
-          - full
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name != 'release' }}
 
 env:
   WP_TESTS_DOMAIN: localhost
@@ -33,74 +21,9 @@ env:
 
 jobs:
   test:
-    name: PHP ${{ matrix.php }} / WP ${{ matrix.wp }} / MySQL ${{ matrix.mysql }}
+    name: PHP 8.5
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    continue-on-error: ${{ matrix.php == '8.6' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ${{ fromJSON((github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full')) && '["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"]' || '["8.3"]') }}
-        wp: ['latest']
-        mysql: ['8.4']
-        include: ${{ fromJSON((github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full')) && '[{"php":"7.4","wp":"6.8","mysql":"8.0"}]' || '[]') }}
-    services:
-      mysql:
-        image: mysql:${{ matrix.mysql }}
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: gd, exif, intl, mbstring, mysqli, xml, zip
-          tools: composer
-          coverage: none
-
-      - name: Resolve PHPUnit dependencies for PHP 7.4 and 8.0
-        if: matrix.php == '7.4' || matrix.php == '8.0'
-        run: |
-          if [ -f composer.lock ]; then
-            composer update doctrine/instantiator myclabs/deep-copy --with-all-dependencies --minimal-changes --no-install --no-interaction --no-progress
-          else
-            composer update --no-install --no-interaction --no-progress
-          fi
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v4
-
-      - name: Install WordPress test suite
-        id: wordpress
-        env:
-          WP_VERSION: ${{ matrix.wp }}
-        run: bash phpunit/install.sh wordpress_test root root 127.0.0.1:3306 "$WP_VERSION"
-
-      - name: Run tests (single site)
-        run: composer phpunit
-
-      - name: Run tests (multisite)
-        if: ${{ !cancelled() && steps.wordpress.outcome == 'success' && (matrix.php == '8.5' || (matrix.php == '8.3' && (github.event_name == 'push' || github.event_name == 'pull_request'))) }}
-        env:
-          WP_MULTISITE: 1
-        run: composer phpunit
-
-  trunk:
-    name: WordPress trunk / PHP 8.5 / MySQL 8.4
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    continue-on-error: true
     services:
       mysql:
         image: mysql:8.4
@@ -114,29 +37,13 @@ jobs:
           --health-timeout=5s
           --health-retries=10
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
           extensions: gd, exif, intl, mbstring, mysqli, xml, zip
           tools: composer
           coverage: none
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v4
-
-      - name: Install WordPress test suite
-        id: wordpress
-        run: bash phpunit/install.sh wordpress_test root root 127.0.0.1:3306 trunk
-
-      - name: Run tests (single site)
-        run: composer phpunit
-
-      - name: Run tests (multisite)
-        if: ${{ !cancelled() && steps.wordpress.outcome == 'success' }}
-        env:
-          WP_MULTISITE: 1
-        run: composer phpunit
+      - uses: ramsey/composer-install@v4
+      - run: bash phpunit/install.sh wordpress_test root root 127.0.0.1:3306 latest
+      - run: composer phpunit

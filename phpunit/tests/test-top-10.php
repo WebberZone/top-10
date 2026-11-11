@@ -31,13 +31,13 @@ class TopTenTest extends WP_UnitTestCase {
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$daily_table}` WHERE blog_id = %d", $blog_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		$rows = array(
-			array( $post_id, 1, '2000-01-01 00:00:00', $blog_id ),
-			array( $post_id, 2, '2000-01-01 01:00:00', $blog_id ),
-			array( $post_id, 3, '2000-01-01 12:00:00', $blog_id ),
-			array( $post_id, 5, '2000-01-02 04:00:00', $blog_id ),
-			array( $post_id, 11, '2000-01-03 01:00:00', $blog_id ),
-			array( $other_post_id, 7, '2000-01-01 04:00:00', $blog_id ),
-			array( $post_id, 13, '2000-01-01 08:00:00', $other_blog_id ),
+			array( $post_id, 1, '2000-01-01 00:00:00', $blog_id, null ),
+			array( $post_id, 2, '2000-01-01 01:00:00', $blog_id, 1 ),
+			array( $post_id, 3, '2000-01-01 12:00:00', $blog_id, 2 ),
+			array( $post_id, 5, '2000-01-02 04:00:00', $blog_id, null ),
+			array( $post_id, 11, '2000-01-03 01:00:00', $blog_id, 0 ),
+			array( $other_post_id, 7, '2000-01-01 04:00:00', $blog_id, null ),
+			array( $post_id, 13, '2000-01-01 08:00:00', $other_blog_id, null ),
 		);
 
 		try {
@@ -50,8 +50,9 @@ class TopTenTest extends WP_UnitTestCase {
 							'cntaccess'  => $row[1],
 							'dp_date'    => $row[2],
 							'blog_id'    => $row[3],
+							'visitors'   => $row[4],
 						),
-						array( '%d', '%d', '%s', '%d' )
+						array( '%d', '%d', '%s', '%d', '%d' )
 					)
 				);
 			}
@@ -85,7 +86,7 @@ class TopTenTest extends WP_UnitTestCase {
 
 			$rolled_rows = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT cntaccess, dp_date FROM `{$daily_table}` WHERE postnumber = %d AND blog_id = %d ORDER BY dp_date ASC",
+					"SELECT cntaccess, dp_date, visitors FROM `{$daily_table}` WHERE postnumber = %d AND blog_id = %d ORDER BY dp_date ASC",
 					$post_id,
 					$blog_id
 				),
@@ -93,6 +94,7 @@ class TopTenTest extends WP_UnitTestCase {
 			);
 			$this->assertCount( 3, $rolled_rows );
 			$this->assertSame( '6', $rolled_rows[0]['cntaccess'] );
+			$this->assertSame( array( '3', null, '0' ), array_column( $rolled_rows, 'visitors' ) );
 			$this->assertSame( '2000-01-01 00:00:00', $rolled_rows[0]['dp_date'] );
 			$this->assertSame( '2000-01-02 00:00:00', $rolled_rows[1]['dp_date'] );
 			$this->assertSame( '2000-01-03 01:00:00', $rolled_rows[2]['dp_date'] );
