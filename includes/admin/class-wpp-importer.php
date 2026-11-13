@@ -203,7 +203,7 @@ class WPP_Importer {
 	/**
 	 * Get and authorize the sites requested for import.
 	 *
-	 * @since 4.6.4
+	 * @since 4.7.0
 	 * @param array $request Request data array.
 	 * @return array|\WP_Error Authorized site IDs or an error.
 	 */
@@ -255,10 +255,6 @@ class WPP_Importer {
 		$can_import_network = is_multisite() && current_user_can( 'manage_network_options' );
 
 		foreach ( $sites as $blog_id ) {
-			if ( ! $blog_id ) {
-				return new \WP_Error( 'invalid_site', __( 'One or more selected sites are invalid.', 'top-10' ) );
-			}
-
 			if ( $current_blog_id !== $blog_id && ! $can_import_network ) {
 				return new \WP_Error( 'forbidden_site', __( 'You are not allowed to import data for the selected site.', 'top-10' ) );
 			}

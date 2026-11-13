@@ -76,6 +76,11 @@ class TopTenTest extends WP_UnitTestCase {
 			$this->assertSame( 2, $stats['rows_reduced'] );
 			$this->assertSame( 2, $stats['dates'] );
 
+			$this->assertSame(
+				array( $post_id => 3, $other_post_id => null ),
+				\WebberZone\Top_Ten\Database::get_visitor_counts( array( $post_id, $other_post_id ), $blog_id, true, array( 'from_date' => '2000-01-01', 'to_date' => '2000-01-01' ) )
+			);
+
 			$result = \WebberZone\Top_Ten\Database::rollup_daily( $before_date );
 			$this->assertIsArray( $result );
 			$this->assertSame( 2, $result['dates_processed'] );

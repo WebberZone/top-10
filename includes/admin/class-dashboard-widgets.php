@@ -248,6 +248,32 @@ class Dashboard_Widgets {
 	}
 
 	/**
+	 * Format the measured visitor count for one dashboard list row.
+	 *
+	 * @since 4.7.0
+	 *
+	 * @param array $result  Statistics row.
+	 * @param int   $blog_id Site ID.
+	 * @param bool  $daily   Whether the row covers today's period.
+	 * @return string Visitor suffix, or empty when unmeasured.
+	 */
+	private static function format_visitor_count( $result, $blog_id, $daily ) {
+		$visitor_key = $daily ? 'daily_visitors' : 'total_visitors';
+		if ( ! isset( $result[ $visitor_key ] ) || ! class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ) {
+			return '';
+		}
+
+		$today    = $daily ? current_time( 'Y-m-d' ) : null;
+		$coverage = \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( $blog_id, $today, $today, (int) $result[ $visitor_key ] );
+		if ( 'unavailable' === $coverage ) {
+			return '';
+		}
+
+		$output = ' · ' . Helpers::number_format_i18n( $result[ $visitor_key ] ) . ' ' . __( 'visitors', 'top-10' );
+		return 'partial' === $coverage ? $output . ' (' . __( 'partial', 'top-10' ) . ')' : $output;
+	}
+
+	/**
 	 *  Create the Dashboard Widget and content of the Popular pages
 	 *
 	 * @since 3.3.0
@@ -342,6 +368,7 @@ class Dashboard_Widgets {
 						$output .= '<li><a href="' . get_blog_permalink( $result['blog_id'], $result['ID'] ) . '">' . esc_html( $post->post_title ) . '</a>';
 					}
 					$output .= ' (' . Helpers::number_format_i18n( $result[ $visits ] ) . ')';
+					$output .= self::format_visitor_count( $result, (int) $result['blog_id'], $daily );
 					$output .= ' <span class="tptn-blog-name">- ' . esc_html( $blog_details->blogname ) . '</span>';
 					$output .= '</li>';
 				} else {
@@ -356,6 +383,7 @@ class Dashboard_Widgets {
 						$output .= '<li><a href="' . get_permalink( $result['ID'] ) . '">' . get_the_title( $result['ID'] ) . '</a>';
 					}
 					$output .= ' (' . Helpers::number_format_i18n( $result[ $visits ] ) . ')';
+					$output .= self::format_visitor_count( $result, get_current_blog_id(), $daily );
 					$output .= '</li>';
 				}
 			}

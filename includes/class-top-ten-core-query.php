@@ -584,9 +584,14 @@ class Top_Ten_Core_Query extends \WP_Query {
 			return $fields;
 		}
 
-		$_fields[] = "{$this->table_name}.postnumber";
-		$_fields[] = $this->is_daily && ! $this->use_koko ? "SUM({$this->table_name}.cntaccess) as visits" : "{$this->table_name}.cntaccess as visits";
-		$_fields[] = "{$this->table_name}.blog_id";
+		$_fields[]      = "{$this->table_name}.postnumber";
+		$_fields[]      = $this->is_daily && ! $this->use_koko ? "SUM({$this->table_name}.cntaccess) as visits" : "{$this->table_name}.cntaccess as visits";
+		$_fields[]      = "{$this->table_name}.blog_id";
+		$query_orderby  = $query->get( 'orderby' );
+		$sorts_visitors = 'visitors' === $query_orderby || ( is_array( $query_orderby ) && isset( $query_orderby['visitors'] ) );
+		if ( $sorts_visitors && ! $this->use_koko && apply_filters( 'tptn_enable_visitor_sort', false ) && Database::table_has_column( $this->table_name, 'visitors' ) ) {
+			$_fields[] = $this->is_daily ? "SUM({$this->table_name}.visitors) as visitor_count" : "{$this->table_name}.visitors as visitor_count";
+		}
 
 		$_fields = implode( ', ', $_fields );
 
@@ -772,11 +777,15 @@ class Top_Ten_Core_Query extends \WP_Query {
 		}
 
 		// Use WP_Query's parse_order method to get a valid order.
-		$query_orderby = $query->get( 'orderby' );
-		$order         = $query->parse_order( $query->get( 'order' ) );
+		$query_orderby  = $query->get( 'orderby' );
+		$order          = $query->parse_order( $query->get( 'order' ) );
+		$visitors_order = is_array( $query_orderby ) && isset( $query_orderby['visitors'] ) ? $query->parse_order( $query_orderby['visitors'] ) : $order;
+		$sorts_visitors = 'visitors' === $query_orderby || ( is_array( $query_orderby ) && isset( $query_orderby['visitors'] ) );
 
 		// Preserve intentional orderby values except the plugin's visits alias.
-		if ( is_array( $query_orderby ) && isset( $query_orderby['visits'] ) ) {
+		if ( $sorts_visitors && apply_filters( 'tptn_enable_visitor_sort', false ) && Database::table_has_column( $this->table_name, 'visitors' ) && ! $this->use_koko ) {
+			$orderby = empty( $orderby ) ? "visitor_count {$visitors_order}, {$this->table_name}.postnumber {$visitors_order}" : "visitor_count {$visitors_order}, {$orderby}";
+		} elseif ( is_array( $query_orderby ) && isset( $query_orderby['visits'] ) ) {
 			$visits_order = $query->parse_order( $query_orderby['visits'] );
 			$orderby      = empty( $orderby ) ? "visits $visits_order, {$this->table_name}.postnumber $visits_order" : "visits $visits_order, {$orderby}";
 		} elseif ( empty( $query_orderby ) || 'visits' === $query_orderby ) {

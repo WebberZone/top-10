@@ -155,7 +155,12 @@ class Statistics_Table extends \WP_List_Table {
 			$orderby = $args['orderby'];
 		}
 
-		if ( ! in_array( $orderby, array( 'title', 'daily_count', 'total_count' ), true ) ) {
+		$visitor_sort_available = apply_filters( 'tptn_admin_unique_visitors_enabled', false );
+		$allowed_orderby        = array( 'title', 'daily_count', 'total_count' );
+		if ( $visitor_sort_available ) {
+			$allowed_orderby = array_merge( $allowed_orderby, array( 'daily_visitors', 'total_visitors' ) );
+		}
+		if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
 			$orderby = 'total_count';
 		}
 
@@ -195,46 +200,54 @@ class Statistics_Table extends \WP_List_Table {
 	protected function get_network_popular_posts( $per_page, $page_number, $args, $from_date, $to_date ) {
 		global $wpdb;
 
-		$ordering = $this->get_ordering( $args );
-		$orderby  = 'daily_count' === $ordering['orderby'] ? 'daily_count' : 'total_count';
-		$offset   = max( 0, ( (int) $page_number - 1 ) * (int) $per_page );
-		$limit    = max( 0, (int) $per_page );
+		$ordering    = $this->get_ordering( $args );
+		$orderby     = in_array( $ordering['orderby'], array( 'daily_count', 'daily_visitors', 'total_visitors' ), true ) ? $ordering['orderby'] : 'total_count';
+		$daily_order = in_array( $orderby, array( 'daily_count', 'daily_visitors' ), true );
+		$offset      = max( 0, ( (int) $page_number - 1 ) * (int) $per_page );
+		$limit       = max( 0, (int) $per_page );
 
 		if ( 0 === $limit ) {
 			return array();
 		}
 
-		$daily_table = $wpdb->base_prefix . 'top_ten_daily';
-		$total_table = $wpdb->base_prefix . 'top_ten';
+		$daily_table    = $wpdb->base_prefix . 'top_ten_daily';
+		$total_table    = $wpdb->base_prefix . 'top_ten';
+		$visitor_schema = apply_filters( 'tptn_admin_unique_visitors_enabled', false )
+			&& Database::table_has_column( $daily_table, 'visitors' )
+			&& Database::table_has_column( $total_table, 'visitors' );
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( 'daily_count' === $orderby ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $daily_order ) {
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- The optional visitor field and table identifiers are selected from fixed schema values.
 			$sql = $wpdb->prepare(
-				"SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count
+				'SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count' . ( $visitor_schema ? ', SUM(visitors) AS daily_visitors' : ', NULL AS daily_visitors' ) . "
 				FROM {$daily_table}
 				WHERE dp_date >= %s AND dp_date < %s
 				GROUP BY postnumber, blog_id
-				ORDER BY daily_count {$ordering['order']}, postnumber ASC, blog_id ASC
+				ORDER BY {$orderby} {$ordering['order']}, postnumber ASC, blog_id ASC
 				LIMIT %d, %d",
 				$from_date,
 				$to_date,
 				$offset,
 				$limit
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- The optional visitor field and table identifiers are selected from fixed schema values.
 			$sql = $wpdb->prepare(
-				"SELECT postnumber AS ID, blog_id, cntaccess AS total_count
+				'SELECT postnumber AS ID, blog_id, cntaccess AS total_count' . ( $visitor_schema ? ', visitors AS total_visitors' : ', NULL AS total_visitors' ) . "
 				FROM {$total_table}
-				ORDER BY cntaccess {$ordering['order']}, postnumber ASC, blog_id ASC
+				ORDER BY {$orderby} {$ordering['order']}, postnumber ASC, blog_id ASC
 				LIMIT %d, %d",
 				$offset,
 				$limit
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
-		$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- The query string is assembled only from validated schema and already-prepared clauses.
+		$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		if ( empty( $results ) ) {
 			return array();
 		}
@@ -245,17 +258,18 @@ class Statistics_Table extends \WP_List_Table {
 		}
 		$pairs = implode( ' OR ', $pair_conditions );
 
-		if ( 'daily_count' === $orderby ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $daily_order ) {
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- The optional visitor field and table identifiers are selected from fixed schema values.
 			$other_results = $wpdb->get_results(
-				"SELECT postnumber AS ID, blog_id, cntaccess AS total_count FROM {$total_table} WHERE {$pairs}",
+				'SELECT postnumber AS ID, blog_id, cntaccess AS total_count' . ( $visitor_schema ? ', visitors AS total_visitors' : ', NULL AS total_visitors' ) . " FROM {$total_table} WHERE {$pairs}",
 				ARRAY_A
 			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- The optional visitor field and table identifiers are selected from fixed schema values.
 			$other_results = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count
+					'SELECT postnumber AS ID, blog_id, SUM(cntaccess) AS daily_count' . ( $visitor_schema ? ', SUM(visitors) AS daily_visitors' : ', NULL AS daily_visitors' ) . "
 					FROM {$daily_table}
 					WHERE dp_date >= %s AND dp_date < %s AND ({$pairs})
 					GROUP BY postnumber, blog_id",
@@ -264,20 +278,23 @@ class Statistics_Table extends \WP_List_Table {
 				),
 				ARRAY_A
 			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		$other_counts = array();
 		foreach ( $other_results as $result ) {
 			$key                  = (int) $result['ID'] . ':' . (int) $result['blog_id'];
-			$other_counts[ $key ] = $result[ 'daily_count' === $orderby ? 'total_count' : 'daily_count' ];
+			$other_counts[ $key ] = $result;
 		}
 
 		foreach ( $results as &$result ) {
 			$key = (int) $result['ID'] . ':' . (int) $result['blog_id'];
-			if ( 'daily_count' === $orderby ) {
-				$result['total_count'] = isset( $other_counts[ $key ] ) ? $other_counts[ $key ] : 0;
+			if ( $daily_order ) {
+				$result['total_count']    = isset( $other_counts[ $key ]['total_count'] ) ? $other_counts[ $key ]['total_count'] : 0;
+				$result['total_visitors'] = $other_counts[ $key ]['total_visitors'] ?? null;
 			} else {
-				$result['daily_count'] = isset( $other_counts[ $key ] ) ? $other_counts[ $key ] : 0;
+				$result['daily_count']    = $other_counts[ $key ]['daily_count'] ?? 0;
+				$result['daily_visitors'] = $other_counts[ $key ]['daily_visitors'] ?? null;
 			}
 		}
 		unset( $result );
@@ -338,6 +355,9 @@ class Statistics_Table extends \WP_List_Table {
 		/* Start creating the SQL */
 		$table_name_daily = $wpdb->base_prefix . 'top_ten_daily';
 		$table_name       = $wpdb->base_prefix . 'top_ten AS ttt';
+		$visitor_schema   = apply_filters( 'tptn_admin_unique_visitors_enabled', false )
+			&& Database::table_has_column( $wpdb->base_prefix . 'top_ten_daily', 'visitors' )
+			&& Database::table_has_column( $wpdb->base_prefix . 'top_ten', 'visitors' );
 		$sitewide_sql     = $this->get_sitewide_context_condition();
 
 		// Fields to return.
@@ -350,14 +370,17 @@ class Statistics_Table extends \WP_List_Table {
 		$fields[] = 'ttt.cntaccess as total_count';
 		$fields[] = 'SUM(ttd.daily_count) as daily_count';
 		$fields[] = 'ttt.blog_id as blog_id';
+		$fields[] = $visitor_schema ? 'ttt.visitors as total_visitors' : 'NULL as total_visitors';
+		$fields[] = $visitor_schema ? 'SUM(ttd.daily_visitors) as daily_visitors' : 'NULL as daily_visitors';
 
 		$fields = implode( ', ', $fields );
 
 		// Create the JOIN clause.
 		$join .= " LEFT JOIN {$wpdb->posts} ON ttt.postnumber={$wpdb->posts}.ID ";
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared -- Table and column fragments are derived from fixed plugin schema values.
 		$join .= $wpdb->prepare(
-			" LEFT JOIN (
-			SELECT postnumber, blog_id, SUM(cntaccess) AS daily_count FROM {$table_name_daily} " . // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			' LEFT JOIN (
+				SELECT postnumber, blog_id, SUM(cntaccess) AS daily_count, ' . ( $visitor_schema ? 'SUM(visitors)' : 'NULL' ) . " AS daily_visitors FROM {$table_name_daily} " .
 			'WHERE dp_date >= %s AND dp_date < %s AND blog_id = %d
 			GROUP BY postnumber, blog_id
 			) AS ttd
@@ -367,6 +390,7 @@ class Statistics_Table extends \WP_List_Table {
 			$to_date,
 			$blog_id
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 
 		// Create the base WHERE clause.
 		$where .= $wpdb->prepare( ' AND ttt.blog_id = %d ', $blog_id ); // Posts need to be from the current blog only.
@@ -402,7 +426,9 @@ class Statistics_Table extends \WP_List_Table {
 
 		$sql = "SELECT $fields FROM {$table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 
-		$result = $wpdb->get_results( $sql, 'ARRAY_A' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Query clauses were built from fixed identifiers and individually prepared user values.
+		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		foreach ( $result as &$row ) {
 			$row['context_key'] = $this->get_item_context_key( $row );
@@ -436,7 +462,9 @@ class Statistics_Table extends \WP_List_Table {
 				return (string) (int) $cached;
 			}
 
-			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The count targets the fixed plugin table.
+			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}top_ten" );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			/** This filter is documented in includes/admin/class-dashboard-widgets.php */
 			$ttl = max( 0, (int) apply_filters( 'tptn_network_dashboard_cache_ttl', 15 * MINUTE_IN_SECONDS ) );
 			if ( $ttl > 0 ) {
@@ -472,7 +500,9 @@ class Statistics_Table extends \WP_List_Table {
 			);
 			$where     .= " AND ($wpdb->posts.post_type IN ('" . join( "', '", $post_types ) . "') OR {$sitewide_sql}) ";
 		}
-		return $wpdb->get_var( "$sql $join WHERE 1=1 $where" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The SQL clauses use the fixed plugin schema and individually prepared values.
+		return $wpdb->get_var( "$sql $join WHERE 1=1 $where" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -684,6 +714,49 @@ class Statistics_Table extends \WP_List_Table {
 	}
 
 	/**
+	 * Render the total unique visitor count.
+	 *
+	 * @param array $item Current item.
+	 * @return string
+	 */
+	public function column_total_visitors( $item ) {
+		if ( null === $item['total_visitors'] ) {
+			return '—';
+		}
+		$coverage = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( (int) $item['blog_id'], null, null, (int) $item['total_visitors'] ) : 'unavailable';
+		if ( 'unavailable' === $coverage ) {
+			return '—';
+		}
+		$output = Helpers::number_format_i18n( absint( $item['total_visitors'] ) );
+		if ( 'partial' === $coverage ) {
+			$output .= ' (' . __( 'partial', 'top-10' ) . ')';
+		}
+		return $output;
+	}
+
+	/**
+	 * Render the period unique visitor count.
+	 *
+	 * @param array $item Current item.
+	 * @return string
+	 */
+	public function column_daily_visitors( $item ) {
+		if ( null === $item['daily_visitors'] ) {
+			return '—';
+		}
+		$range    = $this->get_current_filter_dates();
+		$coverage = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( (int) ( $item['blog_id'] ?? get_current_blog_id() ), $range['from'], $range['to'], (int) $item['daily_visitors'] ) : 'unavailable';
+		if ( 'unavailable' === $coverage ) {
+			return '—';
+		}
+		$output = Helpers::number_format_i18n( absint( $item['daily_visitors'] ) );
+		if ( 'partial' === $coverage ) {
+			$output .= ' (' . __( 'partial', 'top-10' ) . ')';
+		}
+		return $output;
+	}
+
+	/**
 	 * Handles the blog id column output.
 	 *
 	 * @param array $item Current item.
@@ -705,6 +778,24 @@ class Statistics_Table extends \WP_List_Table {
 			),
 			esc_html( $blog_details->blogname )
 		);
+	}
+
+	/**
+	 * Get the local dates selected by the post-date-filter-from/to request (today when unset).
+	 *
+	 * @since 4.7.0
+	 *
+	 * @return array{from: string, to: string} Inclusive Y-m-d bounds.
+	 */
+	protected function get_current_filter_dates() {
+		$dates = array();
+		foreach ( array( 'from', 'to' ) as $bound ) {
+			$value           = isset( $_REQUEST[ 'post-date-filter-' . $bound ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ 'post-date-filter-' . $bound ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$timestamp       = '' === $value ? false : strtotime( $value );
+			$dates[ $bound ] = false === $timestamp ? current_time( 'Y-m-d' ) : gmdate( 'Y-m-d', $timestamp );
+		}
+
+		return $dates;
 	}
 
 	/**
@@ -747,6 +838,10 @@ class Statistics_Table extends \WP_List_Table {
 			'author'      => __( 'Author', 'top-10' ),
 			'date'        => __( 'Date', 'top-10' ),
 		);
+		if ( apply_filters( 'tptn_admin_unique_visitors_enabled', false ) && Database::table_has_column( Database::get_table(), 'visitors' ) && Database::table_has_column( Database::get_table( true ), 'visitors' ) ) {
+			$columns['total_visitors'] = __( 'Total unique visitors', 'top-10' );
+			$columns['daily_visitors'] = __( 'Unique visitors in period', 'top-10' );
+		}
 
 		if ( $this->network_wide ) {
 			$columns['blog_id'] = __( 'Blog', 'top-10' );
@@ -772,6 +867,10 @@ class Statistics_Table extends \WP_List_Table {
 			'total_count' => array( 'total_count', true ),
 			'daily_count' => array( 'daily_count', true ),
 		);
+		if ( apply_filters( 'tptn_admin_unique_visitors_enabled', false ) && Database::table_has_column( Database::get_table(), 'visitors' ) && Database::table_has_column( Database::get_table( true ), 'visitors' ) ) {
+			$sortable_columns['total_visitors'] = array( 'total_visitors', true );
+			$sortable_columns['daily_visitors'] = array( 'daily_visitors', true );
+		}
 		if ( ! $this->network_wide ) {
 			$sortable_columns['title'] = array( 'title', false );
 		}
