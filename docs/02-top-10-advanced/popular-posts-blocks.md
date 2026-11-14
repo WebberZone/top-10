@@ -87,7 +87,7 @@ The **Popular Posts Template** block holds the card. It sets the maximum number 
 | Panel | Settings |
 | --- | --- |
 | Popularity period | **Count views from**: **All time**, **Recent days and hours**, or **Date range**. A date range uses the site timezone; leave the end date empty to include all later views. |
-| Results | Number of posts (1 to 50), order by, order, and posts to skip. **Use global count and post types** resets the number of posts and post types to the plugin settings. |
+| Results | Number of posts (1 to 50), order by, order, and posts to skip. **Order by** includes **Unique visitors**, which needs [unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) to be on. **Use global count and post types** resets the number of posts and post types to the plugin settings. |
 | Filters | Post types, authors, and terms to include or exclude for each public taxonomy. |
 | Manual selections | Specific posts to include or exclude. |
 | Empty results | **Hide the entire section** (default) or **Show the empty state**. |
@@ -108,7 +108,7 @@ The Query Loop block allows you to customize the query that will be used to retr
 - **Number of Posts**: Enter the number of posts to display per page.
 - **Post Types**: Select one or multiple post types to include in the popular posts.
 - **Offset**: Set the number of posts to skip from the beginning of the results.
-- **Order By**: Choose how the results should be sorted (e.g., visits, date, title, author, etc.).
+- **Order By**: Choose how the results should be sorted (e.g., visits, unique visitors, date, title, author, etc.).
 - **Order**: Toggle between Ascending and Descending.
 - **Filters: Taxonomy**: Filter the results by specific taxonomies (e.g., category, tag).
 - **Filters: Authors**: Filter the results by specific authors.

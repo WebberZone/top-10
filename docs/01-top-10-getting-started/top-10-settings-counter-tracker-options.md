@@ -93,6 +93,14 @@ Tracks views for the front page, posts page, archives, and search results, in ad
 
 Counts post views from RSS and Atom feed readers using a tracking pixel. Feed views are added to the post's regular view count and also reported separately in the **Feed vs web** tab of the Top 10 dashboard. Some feed readers block remote images by default, so views are only counted when the reader loads images. Disabled by default. See [Feed vs web statistics](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/) for report setup and historical-data limits.
 
+### Count unique visitors *(Pro only)*
+
+Counts each visitor once per post per day, without cookies. Only a daily salted digest is stored, and it cannot be linked across days or posts. On by default. Periods when this is off are shown as partial or unavailable in reports. See [Unique visitors in Top 10 Pro](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/).
+
+### Track external referrers *(Pro only)*
+
+Stores daily counts by external host for each post. Referrer paths, query strings and credentials are discarded. Disabled by default. Counts are kept for the visits log retention period. See [Referrer tracking in Top 10 Pro](https://webberzone.com/support/knowledgebase/referrer-tracking-in-top-10/).
+
 ### Load tracker on all pages
 
 This will load the tracker js on all pages. Helpful if you are running minification/concatenation plugins.

@@ -42,7 +42,7 @@ Visitor counts begin when the setting is first active. Views recorded earlier ha
 | Partial | Some of the period was not measured. The figure is shown with "(partial)" and is a lower bound. |
 | Unavailable | The period was not measured. No figure is shown. |
 
-Deactivating a plugin that Top 10 depends on for tracking pauses visitor counting, and the days affected are marked as incomplete.
+Turning off **Count unique visitors** or deactivating Top 10 Pro pauses counting and marks that day as incomplete, so the gap shows as partial in reports.
 
 ## Where unique visitors appear
 

@@ -51,7 +51,7 @@ When [Koko Analytics supplies the data](https://webberzone.com/support/knowledge
 
 **Number of posts** allows 1 to 50 results and initially uses the plugin's global limit, capped at 50. **Skip posts** allows an offset of 0 to 500. Results default to descending view counts.
 
-You can change **Order by** to date, last modified, title, author, random, menu order, post ID, or a custom-field value. Custom-field ordering needs a key, either entered directly or supplied by a custom-field condition.
+You can change **Order by** to unique visitors, date, last modified, title, author, random, menu order, post ID, or a custom-field value. **Unique visitors** needs [unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) to be on. Custom-field ordering needs a key, either entered directly or supplied by a custom-field condition.
 
 Filter results by public post types, authors, and included or excluded taxonomy terms. Manual selections let you include or exclude specific posts. Global post exclusions also apply. **Advanced custom-field conditions** supports up to ten conditions combined with AND or OR.
 
