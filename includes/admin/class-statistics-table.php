@@ -40,6 +40,13 @@ class Statistics_Table extends \WP_List_Table {
 	public $network_wide;
 
 	/**
+	 * Visitor coverage for each site and reporting interval in this table.
+	 *
+	 * @var array<string,string>
+	 */
+	private $visitor_coverage = array();
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param bool $network_wide Network wide popular posts.
@@ -723,7 +730,7 @@ class Statistics_Table extends \WP_List_Table {
 		if ( null === $item['total_visitors'] ) {
 			return '—';
 		}
-		$coverage = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( (int) $item['blog_id'], null, null, (int) $item['total_visitors'] ) : 'unavailable';
+		$coverage = $this->get_visitor_coverage( (int) $item['blog_id'] );
 		if ( 'unavailable' === $coverage ) {
 			return '—';
 		}
@@ -745,7 +752,7 @@ class Statistics_Table extends \WP_List_Table {
 			return '—';
 		}
 		$range    = $this->get_current_filter_dates();
-		$coverage = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( (int) ( $item['blog_id'] ?? get_current_blog_id() ), $range['from'], $range['to'], (int) $item['daily_visitors'] ) : 'unavailable';
+		$coverage = $this->get_visitor_coverage( (int) ( $item['blog_id'] ?? get_current_blog_id() ), $range['from'], $range['to'] );
 		if ( 'unavailable' === $coverage ) {
 			return '—';
 		}
@@ -754,6 +761,22 @@ class Statistics_Table extends \WP_List_Table {
 			$output .= ' (' . __( 'partial', 'top-10' ) . ')';
 		}
 		return $output;
+	}
+
+	/**
+	 * Get coverage once per site and interval for measured visitor counts.
+	 *
+	 * @param int         $blog_id Site ID.
+	 * @param string|null $from_date Inclusive start or null for lifetime totals.
+	 * @param string|null $to_date Inclusive end or null for the current time.
+	 * @return string Coverage status.
+	 */
+	private function get_visitor_coverage( $blog_id, $from_date = null, $to_date = null ) {
+		$key = implode( ':', array( $blog_id, $from_date ?? '', $to_date ?? '' ) );
+		if ( ! isset( $this->visitor_coverage[ $key ] ) ) {
+			$this->visitor_coverage[ $key ] = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( $blog_id, $from_date, $to_date, 0 ) : 'unavailable';
+		}
+		return $this->visitor_coverage[ $key ];
 	}
 
 	/**
