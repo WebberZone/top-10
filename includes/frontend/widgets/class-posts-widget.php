@@ -56,6 +56,7 @@ class Posts_Widget extends \WP_Widget {
 		$instance['thumb_width']      = isset( $instance['thumb_width'] ) ? $instance['thumb_width'] : '';
 		$instance['daily']            = isset( $instance['daily'] ) ? $instance['daily'] : 'overall';
 		$instance['daily_range']      = isset( $instance['daily_range'] ) ? $instance['daily_range'] : '';
+		$instance['orderby']          = isset( $instance['orderby'] ) ? $instance['orderby'] : 'visits';
 		$instance['hour_range']       = isset( $instance['hour_range'] ) ? $instance['hour_range'] : '';
 		$instance['include_cat_ids']  = isset( $instance['include_cat_ids'] ) ? $instance['include_cat_ids'] : '';
 		$instance['include_post_ids'] = isset( $instance['include_post_ids'] ) ? $instance['include_post_ids'] : '';
@@ -102,6 +103,17 @@ class Posts_Widget extends \WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'hour_range' ) ); ?>"><?php esc_html_e( 'Hours', 'top-10' ); ?></label>
 			<input id="<?php echo esc_attr( $this->get_field_id( 'hour_range' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'hour_range' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['hour_range'] ); ?>" />
 		</p>
+		<?php $orderby_options = apply_filters( 'tptn_widget_orderby_options', array( 'visits' => __( 'Views', 'top-10' ) ), $instance, $this ); ?>
+		<?php if ( count( $orderby_options ) > 1 ) : ?>
+			<p>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>"><?php esc_html_e( 'Order posts by', 'top-10' ); ?></label>
+				<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'orderby' ) ); ?>">
+					<?php foreach ( $orderby_options as $value => $label ) : ?>
+						<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $instance['orderby'], $value ); ?>><?php echo esc_html( $label ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</p>
+		<?php endif; ?>
 		<p>
 			<input class="checkbox" type="checkbox" <?php checked( $instance['disp_list_count'], true ); ?> id="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'disp_list_count' ) ); ?>" />
 			<label for="<?php echo esc_attr( $this->get_field_id( 'disp_list_count' ) ); ?>"><?php esc_html_e( 'Show count', 'top-10' ); ?></label>
@@ -195,6 +207,8 @@ class Posts_Widget extends \WP_Widget {
 		$instance['show_date']       = isset( $new_instance['show_date'] ) ? (bool) $new_instance['show_date'] : false;
 		$instance['daily']           = $new_instance['daily'];
 		$instance['daily_range']     = $new_instance['daily_range'];
+		$orderby_options             = apply_filters( 'tptn_widget_orderby_options', array( 'visits' => __( 'Views', 'top-10' ) ), $new_instance, $this );
+		$instance['orderby']         = isset( $new_instance['orderby'], $orderby_options[ $new_instance['orderby'] ] ) ? sanitize_key( $new_instance['orderby'] ) : 'visits';
 		$instance['hour_range']      = $new_instance['hour_range'];
 		$instance['thumb_height']    = $new_instance['thumb_height'];
 		$instance['thumb_width']     = $new_instance['thumb_width'];
@@ -306,6 +320,7 @@ class Posts_Widget extends \WP_Widget {
 			'post_types'       => $post_types,
 			'include_cat_ids'  => $include_cat_ids,
 			'include_post_ids' => $include_post_ids,
+			'orderby'          => isset( $instance['orderby'] ) ? $instance['orderby'] : 'visits',
 		);
 
 		/**

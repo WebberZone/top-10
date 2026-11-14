@@ -119,6 +119,7 @@ class Statistics {
 								$this->pop_posts_table->display();
 								?>
 							</form>
+							<?php do_action( 'tptn_statistics_after_table' ); ?>
 						</div>
 					</div>
 					<div id="postbox-container-1" class="postbox-container">

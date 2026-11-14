@@ -31,6 +31,14 @@ Use the `display_only_on_tax_ids` parameter to fine-tune where your popular post
 
 Gain more granular control over which posts are featured as popular with the new option in the Edit Post meta box. You can now include popular posts from specific categories directly from the post editing screen, ensuring the right content is highlighted on your site. This only applies for the page that is being viewed.
 
+### Unique Visitors Column and Reports
+
+With **Count unique visitors** enabled, the **Page views in admin** columns gain a sortable **Unique Visitors** column. The Top 10 statistics screen adds **Total unique visitors** and **Unique visitors in period** columns, and dashboard lists show the visitor count after the views. Figures for periods that were only partly measured are marked "(partial)". See [Unique visitors in Top 10 Pro](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/).
+
+### External Referrers
+
+With **Track external referrers** enabled, the Top 10 metabox on the Edit Post screen lists the sites that sent visitors to the post. A **Referrers** screen and a panel on the statistics screen show the top sources for the whole site. See [Referrer tracking in Top 10 Pro](https://webberzone.com/support/knowledgebase/referrer-tracking-in-top-10/).
+
 ### Feed vs Web Dashboard Tab
 
 The **Feed vs web** tab on the Top 10 dashboard splits views into feed and web views for the last 7 days, the last 30 days, and all time. It also lists the posts most read via feed over the last 30 days and all time. The network dashboard shows the same report across all sites.

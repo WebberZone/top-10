@@ -42,6 +42,8 @@ Controls how many days of raw visit rows are kept in the visits log table (`wp_t
 
 Because log rows are already aggregated into the count tables within 2 minutes of being written, they serve only as an audit trail after that point. The default is **30 days**, which is deliberately shorter than the daily table's retention.
 
+The same period applies to [external referrer](https://webberzone.com/support/knowledgebase/referrer-tracking-in-top-10/) counts, which are removed once they are older than the retention period.
+
 Enter a number of days and save. Enter `0` to fall back to the default. You can also override the default via **wp-config.php**:
 
 ```php

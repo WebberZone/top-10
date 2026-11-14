@@ -15,7 +15,7 @@ Track post views and page views, and display popular posts and trending content 
 
 [Top 10](https://webberzone.com/plugins/top-10/) is a post views counter and popular posts plugin for WordPress. It counts daily and total page views on posts, pages and custom post types, then displays your most viewed and trending posts with blocks, widgets and shortcodes.
 
-All tracking data stays in your WordPress database, with no external services, no cookies and no personal data. Views are queued in a lightweight table and counted in the background, so tracking works behind page caches without slowing down your pages.
+All tracking data stays in your WordPress database, with no external analytics services or tracking cookies. Top 10 Pro can optionally measure daily unique visitors by processing the request IP address and user agent transiently; it stores only daily, post-scoped digests, not raw IP addresses or user agents. Views are queued in a lightweight table and counted in the background, so tracking works behind page caches without slowing down your pages.
 
 Top 10 also offers thumbnails with fallbacks, flexible display options and a built-in cache. Developers can customize queries, tracking and output with WordPress actions and filters.
 
@@ -49,13 +49,14 @@ Top 10 also offers thumbnails with fallbacks, flexible display options and a bui
 * **Performance**: [Lazy-loaded lists](https://webberzone.com/support/knowledgebase/top-10-settings-general-options/), a query time limit, and [configurable data retention](https://webberzone.com/support/knowledgebase/top-10-maintenance-options/)
 * **Admin Tools**: [Admin bar menu, Feed vs web report, dashboard access by role and more](https://webberzone.com/support/knowledgebase/admin-enhancements-in-top-10-pro/)
 * **Multisite**: [Network-wide popular posts lists](https://webberzone.com/support/knowledgebase/top-10-multisite-network-performance/), including Koko Analytics data, and copying settings between sites
+* **Daily Unique Visitors**: Cookieless daily visitor counts and sorting in popular post lists, reports, dashboards, blocks and WP-CLI, with coverage labels for historical or capped periods
 * **Display Options**: Grid Thumbs style, lists restricted to taxonomy terms, and RSS feeds filtered by category or post type
 * **WP-CLI**: [`wp top10` commands](https://webberzone.com/support/knowledgebase/top-10-cli-commands/) for counts, database, cache, settings, cron and status
 * **Abilities API**: [Count editing and cache clearing](https://webberzone.com/support/knowledgebase/top-10-abilities-api/) for integrations
 
 = Privacy and GDPR =
 
-Top 10 does not use cookies and does not store personal data. Its database tables (`wp_top_ten`, `wp_top_ten_daily`, `wp_top_ten_visits_funnel` and `wp_top_ten_visits_log`; the prefix may vary) hold only post IDs, site IDs, view counts, visit times and whether a view came from the web or a feed. No IP addresses or user agents are stored. The user agent is read only to skip bots when that option is on.
+Top 10 does not use tracking cookies. The Free plugin does not store IP addresses or user agents. Top 10 Pro can optionally measure daily unique visitors by hashing the request IP address and user agent with a rotating daily salt and a post-specific value. The raw IP address and user agent are used only during the request and are not stored. Pro marker storage is capped per site and day; reports identify periods with incomplete or unavailable coverage. Review your site's privacy information for the features you enable. This description does not determine your site's legal obligations.
 
 You are responsible for ensuring GDPR compliance on your website.
 
@@ -149,11 +150,27 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
-= 4.6.4 =
+= 4.7.0 =
+
+Release date: 15 November 2026
+Release post: https://webberzone.com/announcements/top-10-v4-7/
+
+**Added**
+
+* [Pro] Daily unique visitor counts and sorting in popular posts lists, widgets, blocks, statistics, WP-CLI and the Abilities API, with coverage labels for unmeasured periods.
+* [Pro] External referrer tracking in statistics and post metaboxes, storing normalized source hosts only.
 
 **Changed**
 
-* Hardened multisite WordPress Popular Posts imports so cross-site targets require the `manage_network_options` capability.
+* Multisite WordPress Popular Posts imports now require `manage_network_options` for cross-site targets.
+
+**Fixed**
+
+* Settings import ran imported values through settings sanitization before saving.
+* Multisite site administrators could export or import another site's view counts through the network-wide tables option.
+* Saving an array to a single-value setting caused a fatal error.
+* Settings import from a partial file deleted keys missing from the file.
+* Backslashes in Custom CSS, such as icon font codes, were removed on the front end and on settings import.
 
 = 4.6.3 =
 
@@ -229,7 +246,7 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 
 == Upgrade Notice ==
 
-= 4.6.4 =
+= 4.7.0 =
 Hardens multisite WordPress Popular Posts import permissions. Cross-site imports now require network-level capabilities.
 
 = 4.6.3 =

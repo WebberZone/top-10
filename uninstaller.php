@@ -39,6 +39,20 @@ if ( ! empty( $tptn_settings['uninstall_clean_tables'] ) ) {
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query( "DROP TABLE $table_name" );
 	}
+
+	// Pro visitor and referrer tables exist only on sites that used those features.
+	$optional_tables = array(
+		$wpdb->base_prefix . 'top_ten_unique_visitors',
+		$wpdb->base_prefix . 'top_ten_unique_visitor_quotas',
+		$wpdb->base_prefix . 'top_ten_unique_visitor_coverage',
+		$wpdb->base_prefix . 'top_ten_unique_visitor_salts',
+		$wpdb->base_prefix . 'top_ten_referrer_sources',
+		$wpdb->base_prefix . 'top_ten_referrer_daily',
+	);
+	foreach ( $optional_tables as $table_name ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+	}
 	delete_site_option( 'tptn_db_version' );
 	delete_site_option( 'tptn_feed_counts' );
 	delete_option( 'tptn_feed_counts' );

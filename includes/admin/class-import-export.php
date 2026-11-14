@@ -38,7 +38,8 @@ class Import_Export {
 	 * @since 3.3.0
 	 */
 	public function __construct() {
-		Hook_Registry::add_filter( 'admin_init', array( $this, 'process_settings_import' ), 9 );
+		// After Settings_API::admin_init() (priority 10) registers the sanitize callback that update_option() applies.
+		Hook_Registry::add_action( 'admin_init', array( $this, 'process_settings_import' ), 11 );
 		Hook_Registry::add_filter( 'admin_init', array( $this, 'process_settings_export' ) );
 		Hook_Registry::add_filter( 'admin_init', array( $this, 'export_tables' ) );
 		Hook_Registry::add_filter( 'admin_init', array( $this, 'import_tables' ), 9 );
@@ -293,7 +294,7 @@ class Import_Export {
 		}
 
 		if ( isset( $_POST['network_wide'] ) ) {
-			$network_wide = intval( $_POST['network_wide'] );
+			$network_wide = intval( $_POST['network_wide'] ) && is_network_admin() && current_user_can( 'manage_network_options' );
 		} else {
 			return;
 		}
@@ -363,7 +364,7 @@ class Import_Export {
 		}
 
 		if ( isset( $_POST['network_wide'] ) ) {
-			$network_wide = (bool) intval( $_POST['network_wide'] );
+			$network_wide = intval( $_POST['network_wide'] ) && is_network_admin() && current_user_can( 'manage_network_options' );
 		} else {
 			return;
 		}
@@ -561,14 +562,27 @@ class Import_Export {
 
 		$import_file = isset( $_FILES[ $filename ]['tmp_name'] ) ? ( wp_unslash( $_FILES[ $filename ]['tmp_name'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-		if ( empty( $import_file ) ) {
+		if ( empty( $import_file ) || ! is_uploaded_file( $import_file ) ) {
 			wp_die( esc_html__( 'Please upload a file to import', 'top-10' ) );
 		}
 
-		// Retrieve the settings from the file and convert the json object to an array.
-		$settings = (array) json_decode( file_get_contents( $import_file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$settings = json_decode( (string) file_get_contents( $import_file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
-		update_option( 'tptn_settings', $settings );
+		if ( empty( $settings ) || ! is_array( $settings ) ) {
+			wp_die( esc_html__( 'Please upload a valid .json file', 'top-10' ) );
+		}
+
+		// The sanitize callback is only registered on screens that fire admin_menu.
+		if ( ! has_filter( 'sanitize_option_tptn_settings' ) ) {
+			wp_die( esc_html__( 'Settings can only be imported from the Import/Export page.', 'top-10' ) );
+		}
+
+		// The sanitize callback unsets registered keys absent from input, so merge first to keep unlisted settings.
+		$current  = get_option( 'tptn_settings', array() );
+		$settings = array_merge( is_array( $current ) ? $current : array(), $settings );
+
+		// The sanitize callbacks wp_unslash() their input, so slash first to keep literal backslashes.
+		update_option( 'tptn_settings', wp_slash( $settings ) );
 
 		wp_safe_redirect(
 			add_query_arg(

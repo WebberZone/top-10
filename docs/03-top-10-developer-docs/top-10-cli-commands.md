@@ -343,7 +343,14 @@ wp top10 popular --author=1,2 --format=json
 | `--include-post-ids=<ids>` | Not applicable | Comma-separated post IDs to force-include at the top of the list. |
 | `--author=<id>` | Not applicable | Author ID or comma-separated list of author IDs to filter by. |
 | `--blog-id=<id>` | current site | Blog ID or comma-separated list of blog IDs (multisite only). |
+| `--orderby=<field>` | `visits` | Sort by `visits`, `visitors`, `date`, `modified`, `title` or `ID`. |
 | `--format=<format>` | table | Output format. Supports `table`, `json`, `csv`, `ids`, `count`. |
+
+The output includes a **Visitors** column with the unique visitor count for the same period. It shows `Unavailable` when the period was not measured, and `(partial)` after a count that covers only part of the period. Sorting by `visitors` needs [unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) to be on.
+
+```bash
+wp top10 popular --orderby=visitors --limit=5
+```
 
 ## `wp top10 settings`
 

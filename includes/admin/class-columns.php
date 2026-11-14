@@ -77,6 +77,9 @@ class Columns {
 				/* translators: %s: Custom period label (e.g. Daily, Custom (7 days)). */
 				$cols['tptn_daily'] = sprintf( __( '%s Views', 'top-10' ), Helpers::get_daily_range_label( 1 ) );
 				$cols['tptn_both']  = __( 'Views', 'top-10' );
+				if ( apply_filters( 'tptn_admin_unique_visitors_enabled', false ) ) {
+					$cols['tptn_visitors'] = __( 'Unique Visitors', 'top-10' );
+				}
 			}
 		}
 		return $cols;
@@ -106,6 +109,9 @@ class Columns {
 
 		if ( in_array( $column_name, array( 'tptn_daily', 'tptn_both' ), true ) ) {
 			$counts['daily'] = self::get_daily_count( $id, $blog_id );
+		}
+		if ( 'tptn_visitors' === $column_name && apply_filters( 'tptn_admin_unique_visitors_enabled', false ) ) {
+			$counts['visitors'] = Database::get_visitor_count( $id, $blog_id );
 		}
 
 		echo esc_html( self::format_output( $counts, $column_name ) );
@@ -156,6 +162,17 @@ class Columns {
 			case 'tptn_both':
 				$output = Helpers::number_format_i18n( $counts['total'] ) . ' / ' . Helpers::number_format_i18n( $counts['daily'] );
 				break;
+			case 'tptn_visitors':
+				$coverage = class_exists( 'WebberZone\\Top_Ten\\Pro\\Unique_Visitors' ) ? \WebberZone\Top_Ten\Pro\Unique_Visitors::get_coverage_status( get_current_blog_id(), null, null, $counts['visitors'] ) : 'unavailable';
+				if ( null === $counts['visitors'] || 'unavailable' === $coverage ) {
+					$output = '—';
+				} else {
+					$output = Helpers::number_format_i18n( $counts['visitors'] );
+					if ( 'partial' === $coverage ) {
+						$output .= ' (' . __( 'partial', 'top-10' ) . ')';
+					}
+				}
+				break;
 			default:
 				$output = '';
 				break;
@@ -176,6 +193,9 @@ class Columns {
 		if ( \tptn_get_option( 'pv_in_admin' ) ) {
 			$cols['tptn_total'] = array( 'tptn_total', true );
 			$cols['tptn_daily'] = array( 'tptn_daily', true );
+			if ( apply_filters( 'tptn_admin_unique_visitors_enabled', false ) ) {
+				$cols['tptn_visitors'] = array( 'tptn_visitors', true );
+			}
 		}
 
 		return $cols;
@@ -194,14 +214,15 @@ class Columns {
 		global $wpdb;
 
 		$orderby = $wp_query->get( 'orderby' );
-		if ( ! in_array( $orderby, array( 'tptn_total', 'tptn_daily' ), true ) ) {
+		if ( ! in_array( $orderby, array( 'tptn_total', 'tptn_daily', 'tptn_visitors' ), true ) || ( 'tptn_visitors' === $orderby && ! apply_filters( 'tptn_admin_unique_visitors_enabled', false ) ) ) {
 			return $clauses;
 		}
 
-		$is_daily   = ( 'tptn_daily' === $orderby );
-		$table_name = Database::get_table( $is_daily );
-		$blog_id    = get_current_blog_id();
-		$order      = ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+		$is_daily    = ( 'tptn_daily' === $orderby );
+		$is_visitors = ( 'tptn_visitors' === $orderby );
+		$table_name  = Database::get_table( $is_daily );
+		$blog_id     = get_current_blog_id();
+		$order       = ( 'ASC' === strtoupper( (string) $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 		if ( $is_daily ) {
 			$from_date = Helpers::get_from_date( current_time( 'Y-m-d' ) . ' 00:00:00', 0, 0 );
@@ -223,7 +244,7 @@ class Columns {
 				$clauses['groupby'] .= ", {$wpdb->posts}.ID";
 			}
 		} else {
-			$clauses['fields'] .= ', COALESCE(tptn_counts.cntaccess, 0) AS tptn_visits';
+			$clauses['fields'] .= $is_visitors ? ', tptn_counts.visitors AS tptn_visits' : ', COALESCE(tptn_counts.cntaccess, 0) AS tptn_visits';
 			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated internally.
 			$clauses['join'] .= $wpdb->prepare(
 				" LEFT JOIN {$table_name} AS tptn_counts ON {$wpdb->posts}.ID = tptn_counts.postnumber AND tptn_counts.blog_id = %d",

@@ -110,7 +110,7 @@ class Language_Handler {
 						$metadata[ $field ] = $original->$field;
 					}
 				}
-				$post = new \WP_Post( (object) array_merge( $post->to_array(), $metadata ) );
+				$post = new \WP_Post( (object) array_merge( get_object_vars( $post ), $metadata ) );
 			}
 			return apply_filters( 'tptn_object_id_cur_lang', $post );
 		} finally {

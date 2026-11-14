@@ -269,8 +269,10 @@ class REST_API extends \WP_REST_Controller {
 		$blog_id          = absint( $request->get_param( 'top_ten_blog_id' ) );
 		$activate_counter = absint( $request->get_param( 'activate_counter' ) );
 		$top_ten_debug    = absint( $request->get_param( 'top_ten_debug' ) );
+		$referrer_input   = $request->get_param( 'top_ten_referrer_host' );
+		$referrer_host    = is_string( $referrer_input ) ? $referrer_input : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Pro validates this value before storage.
 
-		$str = \WebberZone\Top_Ten\Tracker::update_count( $id, $blog_id, $activate_counter );
+		$str = \WebberZone\Top_Ten\Tracker::update_count( $id, $blog_id, $activate_counter, 0, $referrer_host );
 		if ( '' !== $sitewide_context ) {
 			$str .= \WebberZone\Top_Ten\Tracker::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter );
 		}
@@ -433,6 +435,11 @@ class REST_API extends \WP_REST_Controller {
 				'description'       => esc_html__( 'Debug flag.', 'top-10' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
+			),
+			'top_ten_referrer_host'    => array(
+				'description' => esc_html__( 'Normalized external referrer scheme and host.', 'top-10' ),
+				'type'        => 'string',
+				'maxLength'   => 512,
 			),
 		);
 

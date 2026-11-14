@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 WebberZone Top 10 counts daily and total post views and displays popular posts lists. Top 10 Pro is the premium version. Activating either plugin automatically deactivates the other; both share the same namespace, function prefix, database tables and settings key (`tptn_settings`).
 
-Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.4`.
+Namespace: `WebberZone\Top_Ten`. Function prefix: `tptn_`. Requires WordPress 6.8+, PHP 7.4+. DB version: `7.5`.
 
 Versions: `readme.txt`'s `Stable tag` is the released version; `TOP_TEN_VERSION` in `top-10.php` is the working version — use it for new `@since` tags. If the working version equals `Stable tag`, it is already released — don't use it for new work. Follow the root versioning rule: next `X.Y.(Z+1)` for fixes, `X.(Y+1).0` for features, never `X+1.0.0` ([../CLAUDE.md](../CLAUDE.md#versioning)).
 
@@ -157,6 +157,10 @@ if ( tptn_freemius()->is__premium_only() ) {
 - **`class-fast-tracker.php`** (`Pro\Fast_Tracker`) — Adds two additional tracker types to the settings dropdown:
   - **Fast tracker** — a lightweight standalone PHP endpoint (`fast-tracker-js.php`) that bypasses WordPress bootstrap.
   - **High-traffic tracker** — an even more minimal endpoint (`high-traffic-tracker-js.php`) that uses a pre-generated config file (`top-10-fast-config.php` placed in the WordPress root) with hardcoded DB credentials, requiring no WordPress load at all. The config is generated/deleted via admin AJAX actions (`tptn_generate_fast_config` / `tptn_delete_fast_config`).
+
+- **`class-unique-visitors.php`** (`Pro\Unique_Visitors`) — Cookieless daily unique visitors (`track_unique_visitors`, default off). Hooks `tptn_record_view` to claim a daily salted marker and write the view in one MySQL transaction guarded by `CONNECTION_ID()`. Network tables `top_ten_unique_visitors`, `_quotas`, `_coverage` and `_salts` hold markers, the bounded per-day marker quota, per-day coverage (incomplete or saturated days) and the daily salt; `get_coverage_status()` returns `complete`, `partial` or `unavailable` for reports.
+- **`class-referrers.php`** (`Pro\Referrers`) — Opt-in external referrer tracking (`track_referrers`). Stores only normalized `scheme://host` in `top_ten_referrer_sources` and per-post daily counts in `top_ten_referrer_daily`, aggregated from the funnel's `referrer_host` column and pruned with the visits-log retention.
+- Both classes remember their verified schema in the autoloaded per-site options `tptn_unique_visitor_schema` and `tptn_referrer_schema` (value = DB version), so normal requests run no `SHOW` queries. `Database::clear_table_installation_cache()` deletes them; call it after any change to those tables. The Fast and High-traffic endpoints read the same flags.
 
 - **`class-styles.php`** (`Pro\Styles`) — Adds the `grid_thumbs` display style via `tptn_get_styles` filter; overrides the CSS path via `tptn_get_style` for pro-only CSS in `css/pro/`.
 
