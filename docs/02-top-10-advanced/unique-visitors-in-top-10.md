@@ -69,7 +69,7 @@ Review your site's privacy information for the features you enable. This descrip
 
 ## Removing the data
 
-Uninstalling Top 10 removes the unique visitor tables along with the other plugin tables. Turning the setting off stops new counting and keeps the daily visitor totals already recorded.
+Uninstalling Top 10 removes the unique visitor tables only when **Delete counter data on uninstall** is enabled. Turning the setting off stops new counting and keeps the daily visitor totals already recorded.
 
 ## See also
 
