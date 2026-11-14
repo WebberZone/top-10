@@ -15,7 +15,7 @@ toc: true
 
 ## Turn on unique visitor counts
 
-**Count unique visitors** is a Pro setting in [Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/). It is on by default and needs an active Top 10 Pro license.
+**Count unique visitors** is a Pro setting in [Counter and tracker options](https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/). It is off by default and needs an active Top 10 Pro license.
 
 Unique visitors are counted for the same views as the regular counters, so your tracker, user group and bot settings still apply. The feature works with both **Funnel** and **Legacy** tracking methods.
 

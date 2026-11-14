@@ -95,7 +95,7 @@ Counts post views from RSS and Atom feed readers using a tracking pixel. Feed vi
 
 ### Count unique visitors *(Pro only)*
 
-Counts each visitor once per post per day, without cookies. Only a daily salted digest is stored, and it cannot be linked across days or posts. On by default. Periods when this is off are shown as partial or unavailable in reports. See [Unique visitors in Top 10 Pro](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/).
+Counts each visitor once per post per day, without cookies. Only a daily salted digest is stored, and it cannot be linked across days or posts. Off by default. Periods when this is off are shown as partial or unavailable in reports. See [Unique visitors in Top 10 Pro](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/).
 
 ### Track external referrers *(Pro only)*
 
