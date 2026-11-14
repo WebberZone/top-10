@@ -1242,7 +1242,7 @@ class Top_Ten_Core_Query extends \WP_Query {
 			if ( isset( $found[ $key ] ) ) {
 				$post    = new \WP_Post(
 					(object) array_merge(
-						$found[ $key ]->to_array(),
+						get_object_vars( $found[ $key ] ),
 						array(
 							'blog_id'    => $entry['blog_id'],
 							'visits'     => $entry['visits'],
