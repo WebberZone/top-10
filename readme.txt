@@ -152,22 +152,25 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 = 4.7.0 =
 
+Release date: 15 November 2026
+Release post: https://webberzone.com/announcements/top-10-v4-7/
+
 **Added**
 
-* [Pro] Daily unique visitor counts and sorting in popular post lists, widgets, blocks, dashboards, statistics, WP-CLI and the Abilities API, with coverage labels for unmeasured periods.
-* [Pro] Optional external referrer tracking and reports in statistics and post metaboxes. Stores normalized source hosts without credentials, paths, query strings or fragments, with visits-log retention.
-
-**Fixed**
-
-* Settings import now runs the imported values through the settings sanitization before saving them.
-* Site administrators on multisite can no longer export or import other sites' view counts through the network-wide tables option.
-* Saving an array to a single-value setting no longer causes a fatal error.
-* Importing a settings file that contains only some settings no longer deletes the settings missing from the file.
-* Backslashes in Custom CSS, such as icon font codes, are no longer removed on the front end or on settings import.
+* [Pro] Daily unique visitor counts and sorting in popular posts lists, widgets, blocks, statistics, WP-CLI and the Abilities API, with coverage labels for unmeasured periods.
+* [Pro] External referrer tracking in statistics and post metaboxes, storing normalized source hosts only.
 
 **Changed**
 
-* Hardened multisite WordPress Popular Posts imports so cross-site targets require the `manage_network_options` capability.
+* Multisite WordPress Popular Posts imports now require `manage_network_options` for cross-site targets.
+
+**Fixed**
+
+* Settings import ran imported values through settings sanitization before saving.
+* Multisite site administrators could export or import another site's view counts through the network-wide tables option.
+* Saving an array to a single-value setting caused a fatal error.
+* Settings import from a partial file deleted keys missing from the file.
+* Backslashes in Custom CSS, such as icon font codes, were removed on the front end and on settings import.
 
 = 4.6.3 =
 
