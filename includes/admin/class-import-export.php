@@ -574,7 +574,7 @@ class Import_Export {
 
 		// The sanitize callback is only registered on screens that fire admin_menu.
 		if ( ! has_filter( 'sanitize_option_tptn_settings' ) ) {
-			wp_die( esc_html__( 'Settings can only be imported from the Tools page.', 'top-10' ) );
+			wp_die( esc_html__( 'Settings can only be imported from the Import/Export page.', 'top-10' ) );
 		}
 
 		// The sanitize callback unsets registered keys absent from input, so merge first to keep unlisted settings.
