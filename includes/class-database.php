@@ -45,6 +45,13 @@ class Database {
 	private static $table_metadata_cache = array();
 
 	/**
+	 * Cached custom-table columns for this request.
+	 *
+	 * @var array<string,bool>
+	 */
+	private static $table_column_cache = array();
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -105,6 +112,61 @@ class Database {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		return (int) $wpdb->get_var( $sql );
+	}
+
+	/**
+	 * Get a measured unique visitor count for a post.
+	 *
+	 * @since 4.7.0
+	 * @param int   $post_id    Post ID.
+	 * @param int   $blog_id    Blog ID (optional, defaults to current blog).
+	 * @param bool  $daily      Whether to query daily data.
+	 * @param array $date_range Optional daily date range.
+	 * @return int|null Visitor count, or null when no visitor data is available.
+	 */
+	public static function get_visitor_count( $post_id, $blog_id = null, $daily = false, $date_range = array() ) {
+		$counts = self::get_visitor_counts( array( $post_id ), $blog_id, $daily, $date_range );
+		return $counts[ absint( $post_id ) ] ?? null;
+	}
+
+	/**
+	 * Read measured visitor counts for a set of posts in one query.
+	 *
+	 * @since 4.7.0
+	 * @param int[]    $post_ids   Post IDs.
+	 * @param int|null $blog_id    Site ID. Defaults to the current site.
+	 * @param bool     $daily      Whether to use hourly count rows.
+	 * @param array    $date_range Optional inclusive local date or datetime bounds.
+	 * @return array<int,int|null> Visitor counts keyed by post ID.
+	 */
+	public static function get_visitor_counts( $post_ids, $blog_id = null, $daily = false, $date_range = array() ) {
+		global $wpdb;
+
+		$post_ids = wp_parse_id_list( $post_ids );
+		$counts   = array_fill_keys( $post_ids, null );
+		$table    = self::get_table( $daily );
+		if ( ! $post_ids || ! self::table_has_column( $table, 'visitors' ) ) {
+			return $counts;
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $post_ids ), '%d' ) );
+		$where        = $wpdb->prepare( "WHERE blog_id = %d AND postnumber IN ({$placeholders})", array_merge( array( $blog_id ?? get_current_blog_id() ), $post_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		if ( $daily && ! empty( $date_range['from_date'] ) ) {
+			$where .= $wpdb->prepare( ' AND dp_date >= %s', $date_range['from_date'] );
+		}
+		if ( $daily && ! empty( $date_range['to_date'] ) ) {
+			$to_date = $date_range['to_date'];
+			$where  .= $wpdb->prepare( ' AND dp_date <= %s', 10 === strlen( $to_date ) ? $to_date . ' 23:59:59' : $to_date );
+		}
+
+		$measure = $daily ? 'SUM(visitors)' : 'visitors';
+		$group   = $daily ? ' GROUP BY postnumber' : '';
+		$rows    = $wpdb->get_results( "SELECT postnumber, {$measure} AS visitors FROM {$table} {$where}{$group}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $rows as $row ) {
+			$counts[ (int) $row->postnumber ] = null === $row->visitors ? null : (int) $row->visitors;
+		}
+
+		return $counts;
 	}
 
 	/**
@@ -489,8 +551,12 @@ class Database {
 		self::$table_installation_cache_version = null;
 		self::$individual_table_cache           = array();
 		self::$table_metadata_cache             = array();
+		self::$table_column_cache               = array();
 
 		delete_site_option( 'tptn_tables_installed' );
+		// Pro caches its verified optional schema per site; drop it so the next request re-checks.
+		delete_option( 'tptn_unique_visitor_schema' );
+		delete_option( 'tptn_referrer_schema' );
 	}
 
 	/**
@@ -549,6 +615,25 @@ class Database {
 		);
 
 		return $statuses;
+	}
+
+	/**
+	 * Check whether a custom table contains a column.
+	 *
+	 * @since 4.7.0
+	 * @param string $table  Custom table name.
+	 * @param string $column Column name.
+	 * @return bool Whether the column exists.
+	 */
+	public static function table_has_column( $table, $column ) {
+		$columns = &self::$table_column_cache;
+		$key     = $table . ':' . $column;
+		if ( ! array_key_exists( $key, $columns ) ) {
+			global $wpdb;
+			$columns[ $key ] = $column === $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM %i LIKE %s', $table, $column ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- The result is cached in the table-column cache.
+		}
+
+		return $columns[ $key ];
 	}
 
 	/**
@@ -809,6 +894,7 @@ class Database {
 		" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
+			visitors bigint(20) DEFAULT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',{$feed_column}
 			PRIMARY KEY  (postnumber, blog_id),
 			KEY idx_blog_id (blog_id),
@@ -839,6 +925,7 @@ class Database {
 		" (
 			postnumber bigint(20) NOT NULL,
 			cntaccess bigint(20) NOT NULL,
+			visitors bigint(20) DEFAULT NULL,
 			dp_date DATETIME NOT NULL,
 			blog_id bigint(20) NOT NULL DEFAULT '1',{$feed_column}
 			PRIMARY KEY  (postnumber, dp_date, blog_id),
@@ -883,6 +970,7 @@ class Database {
 			visited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			activate_counter tinyint(2) UNSIGNED NOT NULL DEFAULT '11',
 			source tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+			is_unique tinyint(1) UNSIGNED DEFAULT NULL,
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
@@ -939,18 +1027,25 @@ class Database {
 	 *
 	 * @since 4.3.3
 	 *
-	 * @param int $post_id          Post ID.
-	 * @param int $blog_id          Blog ID.
-	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
-	 * @param int $source           Traffic source: 0 = web, 1 = feed. Only stored by funnel tracking.
+	 * @param int      $post_id          Post ID.
+	 * @param int      $blog_id          Blog ID.
+	 * @param int      $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int      $source           Traffic source: 0 = web, 1 = feed. Only stored by funnel tracking.
+	 * @param int|null $is_unique Optional measured visitor flag.
+	 * @param string   $referrer_host Normalized Pro-only referrer host.
 	 * @return int|false Rows inserted/updated or false on error.
 	 */
-	public static function record_view( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
-		if ( 'legacy' === \tptn_get_option( 'tracking_method', 'funnel' ) ) {
-			return self::update_counts_direct( $post_id, $blog_id, $activate_counter, $source );
+	public static function record_view( $post_id, $blog_id, $activate_counter = 11, $source = 0, $is_unique = null, $referrer_host = '' ) {
+		$pro_result = apply_filters( 'tptn_record_view', null, $post_id, $blog_id, $activate_counter, $source, $referrer_host );
+		if ( null !== $pro_result ) {
+			return $pro_result;
 		}
 
-		return self::append_to_funnel( $post_id, $blog_id, $activate_counter, $source );
+		if ( 'legacy' === \tptn_get_option( 'tracking_method', 'funnel' ) ) {
+			return self::update_counts_direct( $post_id, $blog_id, $activate_counter, $source, $is_unique );
+		}
+
+		return self::append_to_funnel( $post_id, $blog_id, $activate_counter, $source, $is_unique );
 	}
 
 	/**
@@ -962,13 +1057,16 @@ class Database {
 	 *
 	 * @since 4.3.3
 	 *
-	 * @param int $post_id          Post ID.
-	 * @param int $blog_id          Blog ID.
-	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
-	 * @param int $source           Traffic source: 0 = web, 1 = feed.
+	 * @param int         $post_id          Post ID.
+	 * @param int         $blog_id          Blog ID.
+	 * @param int         $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int         $source           Traffic source: 0 = web, 1 = feed.
+	 * @param int|null    $is_unique Optional measured visitor flag.
+	 * @param string|null $visited_at Site-local visit timestamp.
+	 * @param int|null    $connection_id MySQL connection owning a Pro visit transaction.
 	 * @return int|false Rows inserted/updated or false on error.
 	 */
-	public static function update_counts_direct( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
+	public static function update_counts_direct( $post_id, $blog_id, $activate_counter = 11, $source = 0, $is_unique = null, $visited_at = null, $connection_id = null ) {
 		global $wpdb;
 
 		$post_id          = absint( $post_id );
@@ -976,22 +1074,27 @@ class Database {
 		$activate_counter = (int) $activate_counter;
 		$rows             = 0;
 		// Only feed views read the option, so web views keep their single query.
-		$is_feed      = 1 === (int) $source && Feed_Counts::is_enabled();
-		$feed_columns = $is_feed ? ', feedcnt' : '';
-		$feed_value   = $is_feed ? ', 1' : '';
-		$feed_update  = $is_feed ? ', feedcnt = feedcnt + 1' : '';
+		$is_feed        = 1 === (int) $source && Feed_Counts::is_enabled();
+		$feed_columns   = $is_feed ? ', feedcnt' : '';
+		$feed_value     = $is_feed ? ', 1' : '';
+		$feed_update    = $is_feed ? ', feedcnt = feedcnt + 1' : '';
+		$visitor_column = null === $is_unique ? '' : ', visitors';
+		$visitor_value  = null === $is_unique ? '' : ', ' . (int) $is_unique;
+		$visitor_update = null === $is_unique ? '' : ', visitors = COALESCE(visitors, 0) + VALUES(visitors)';
+		$values_start   = null === $connection_id ? 'VALUES (' : 'SELECT ';
+		$values_end     = null === $connection_id ? ')' : $wpdb->prepare( ' WHERE CONNECTION_ID() = %d', $connection_id );
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( in_array( $activate_counter, array( 1, 11 ), true ) ) {
 			$table  = self::get_table( false );
 			$result = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$table} (postnumber, cntaccess, blog_id{$feed_columns}) VALUES (%d, 1, %d{$feed_value}) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}",
+					"INSERT INTO {$table} (postnumber, cntaccess, blog_id{$feed_columns}{$visitor_column}) {$values_start}%d, 1, %d{$feed_value}{$visitor_value}{$values_end} ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}{$visitor_update}",
 					$post_id,
 					$blog_id
 				)
 			);
-			if ( false === $result ) {
+			if ( false === $result || ( null !== $connection_id && 0 === $result ) ) {
 				self::clear_table_installation_cache();
 				return false;
 			}
@@ -1000,16 +1103,16 @@ class Database {
 
 		if ( in_array( $activate_counter, array( 10, 11 ), true ) ) {
 			$table   = self::get_table( true );
-			$dp_date = current_time( 'Y-m-d H' ) . ':00:00';
+			$dp_date = null === $visited_at ? current_time( 'Y-m-d H' ) . ':00:00' : substr( $visited_at, 0, 13 ) . ':00:00';
 			$result  = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id{$feed_columns}) VALUES (%d, 1, %s, %d{$feed_value}) ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}",
+					"INSERT INTO {$table} (postnumber, cntaccess, dp_date, blog_id{$feed_columns}{$visitor_column}) {$values_start}%d, 1, %s, %d{$feed_value}{$visitor_value}{$values_end} ON DUPLICATE KEY UPDATE cntaccess = cntaccess + 1{$feed_update}{$visitor_update}",
 					$post_id,
 					$dp_date,
 					$blog_id
 				)
 			);
-			if ( false === $result ) {
+			if ( false === $result || ( null !== $connection_id && 0 === $result ) ) {
 				self::clear_table_installation_cache();
 				return false;
 			}
@@ -1017,7 +1120,7 @@ class Database {
 		}
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		if ( $rows > 0 ) {
+		if ( $rows > 0 && null === $connection_id ) {
 			do_action( 'tptn_count_updated', $post_id, $blog_id, in_array( $activate_counter, array( 10, 11 ), true ) );
 		}
 		return $rows;
@@ -1028,27 +1131,57 @@ class Database {
 	 *
 	 * @since 4.3.0
 	 *
-	 * @param int $post_id          Post ID.
-	 * @param int $blog_id          Blog ID.
-	 * @param int $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
-	 * @param int $source           Traffic source: 0 = web, 1 = feed.
+	 * @param int         $post_id          Post ID.
+	 * @param int         $blog_id          Blog ID.
+	 * @param int         $activate_counter Counter flag: 1 = overall, 10 = daily, 11 = both.
+	 * @param int         $source           Traffic source: 0 = web, 1 = feed.
+	 * @param int|null    $is_unique Optional measured visitor flag.
+	 * @param string|null $visited_at Site-local visit timestamp.
+	 * @param int|null    $connection_id MySQL connection owning a Pro visit transaction.
+	 * @param string      $referrer_host Normalized Pro-only referrer host.
 	 * @return int|false Rows inserted or false on error.
 	 */
-	public static function append_to_funnel( $post_id, $blog_id, $activate_counter = 11, $source = 0 ) {
+	public static function append_to_funnel( $post_id, $blog_id, $activate_counter = 11, $source = 0, $is_unique = null, $visited_at = null, $connection_id = null, $referrer_host = '' ) {
 		global $wpdb;
 
+		if ( null !== $connection_id ) {
+			$table      = self::get_funnel_table();
+			$unique     = null === $is_unique ? -1 : (int) $is_unique;
+			$visited_at = null === $visited_at ? current_time( 'mysql' ) : $visited_at;
+			// Pro passes a referrer only after verifying the column; a missing column fails and rolls back.
+			if ( '' !== $referrer_host ) {
+				$sql  = 'INSERT INTO %i (postnumber, blog_id, visited_at, activate_counter, source, is_unique, referrer_host) SELECT %d, %d, %s, %d, %d, IF(%d = -1, NULL, %d), %s WHERE CONNECTION_ID() = %d';
+				$args = array( $table, $post_id, $blog_id, $visited_at, $activate_counter, $source, $unique, $unique, $referrer_host, $connection_id );
+			} else {
+				$sql  = 'INSERT INTO %i (postnumber, blog_id, visited_at, activate_counter, source, is_unique) SELECT %d, %d, %s, %d, %d, IF(%d = -1, NULL, %d) WHERE CONNECTION_ID() = %d';
+				$args = array( $table, $post_id, $blog_id, $visited_at, $activate_counter, $source, $unique, $unique, $connection_id );
+			}
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- This guarded write must remain on the transaction-owning connection.
+			$result = $wpdb->query( $wpdb->prepare( $sql, ...$args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			return 1 === $result ? $result : false;
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->insert(
-			self::get_funnel_table(),
-			array(
-				'postnumber'       => absint( $post_id ),
-				'blog_id'          => absint( $blog_id ),
-				'visited_at'       => current_time( 'mysql' ),
-				'activate_counter' => (int) $activate_counter,
-				'source'           => (int) $source,
-			),
-			array( '%d', '%d', '%s', '%d', '%d' )
+		$data    = array(
+			'postnumber'       => absint( $post_id ),
+			'blog_id'          => absint( $blog_id ),
+			'visited_at'       => null === $visited_at ? current_time( 'mysql' ) : $visited_at,
+			'activate_counter' => (int) $activate_counter,
+			'source'           => (int) $source,
 		);
+		$formats = array( '%d', '%d', '%s', '%d', '%d' );
+		if ( null !== $is_unique ) {
+			$data['is_unique'] = (int) $is_unique;
+			$formats[]         = '%d';
+		}
+		if ( '' !== $referrer_host && self::table_has_column( self::get_funnel_table(), 'referrer_host' ) ) {
+			$data['referrer_host'] = $referrer_host;
+			$formats[]             = '%s';
+		}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- This insert is the tracker’s required write to its count buffer.
+			$result = $wpdb->insert( self::get_funnel_table(), $data, $formats );
 
 		if ( false === $result ) {
 			self::clear_table_installation_cache();
@@ -1060,14 +1193,9 @@ class Database {
 	/**
 	 * Drain the funnel into the log and count tables, then empty the funnel.
 	 *
-	 * Each of the four steps (copy to log, aggregate to daily, aggregate to overall,
-	 * delete from funnel) commits independently rather than inside one app-level
-	 * transaction. wpdb silently reconnects and retries a query if the DB connection
-	 * drops mid-request, which would otherwise void an in-flight transaction and let
-	 * later steps (e.g. the funnel delete) commit on a fresh connection while earlier
-	 * ones were rolled back — losing visits with no error. Without a wrapping
-	 * transaction, a crash between steps can at worst cause one batch to be
-	 * re-aggregated (a bounded, self-correcting over-count), never a silent loss.
+	 * A Pro aggregation transaction reads every write from a session-local frozen
+	 * batch. If wpdb reconnects, the batch disappears and replay cannot delete or
+	 * count a different set of visits. The default drain commits each step independently.
 	 *
 	 * @since 4.3.0
 	 *
@@ -1087,10 +1215,19 @@ class Database {
 		$is_sqlite = ( defined( 'DATABASE_TYPE' ) && 'sqlite' === DATABASE_TYPE )
 			|| false !== strpos( strtolower( (string) $wpdb->db_server_info() ), 'sqlite' );
 
-		$funnel_table = self::get_funnel_table();
-		$log_table    = self::get_log_table();
-		$daily_table  = self::get_table( true );
-		$full_table   = self::get_table( false );
+		$funnel_table          = self::get_funnel_table();
+		$log_table             = self::get_log_table();
+		$daily_table           = self::get_table( true );
+		$full_table            = self::get_table( false );
+		$has_visitors          = self::table_has_column( $funnel_table, 'is_unique' )
+			&& self::table_has_column( $daily_table, 'visitors' )
+			&& self::table_has_column( $full_table, 'visitors' );
+		$daily_visitors_column = $has_visitors ? ', visitors' : '';
+		$full_visitors_column  = $has_visitors ? ', visitors' : '';
+		$daily_visitors_select = $has_visitors ? ', SUM(is_unique) AS visitors' : '';
+		$full_visitors_select  = $has_visitors ? ', SUM(is_unique) AS visitors' : '';
+		$daily_visitors_update = $has_visitors ? ', visitors = IF(VALUES(visitors) IS NULL, visitors, COALESCE(visitors, 0) + VALUES(visitors))' : '';
+		$full_visitors_update  = $has_visitors ? ', visitors = IF(VALUES(visitors) IS NULL, visitors, COALESCE(visitors, 0) + VALUES(visitors))' : '';
 
 		// GET_LOCK is a MySQL-only concurrency guard against overlapping cron runs; not needed for correctness.
 		if ( ! $is_sqlite ) {
@@ -1101,6 +1238,10 @@ class Database {
 			}
 		}
 
+		$source_table     = $funnel_table;
+		$batch_table      = '';
+		$transaction_open = false;
+		$connection_id    = 0;
 		try {
 			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$funnel_table} WHERE 1=1{$blog_where}" );
@@ -1126,10 +1267,38 @@ class Database {
 				}
 			}
 
+			if ( ! $is_sqlite && $has_visitors && apply_filters( 'tptn_use_transactional_aggregation', false ) ) {
+				$connection_id = (int) $wpdb->get_var( "SELECT IF(IS_USED_LOCK('tptn_aggregation') = CONNECTION_ID(), CONNECTION_ID(), NULL)" );
+				$batch_table   = 'tptn_batch_' . str_replace( '-', '', wp_generate_uuid4() );
+				if ( ! $connection_id || false === $wpdb->query( "CREATE TEMPORARY TABLE {$batch_table} LIKE {$funnel_table}" ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange -- This session-local table makes reconnects fail closed during the aggregation transaction.
+					return new \WP_Error( 'tptn_batch_create_failed', __( 'Could not prepare the visit aggregation batch.', 'top-10' ) );
+				}
+				if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+					return new \WP_Error( 'tptn_batch_start_failed', __( 'Could not start the visit aggregation transaction.', 'top-10' ) );
+				}
+				$transaction_open = true;
+				$frozen           = $wpdb->query(
+					$wpdb->prepare(
+						"INSERT INTO {$batch_table} SELECT * FROM {$funnel_table}
+						 WHERE id <= %d{$blog_where} AND CONNECTION_ID() = %d ORDER BY id LIMIT %d FOR UPDATE",
+						$max_id,
+						$connection_id,
+						$batch_size
+					)
+				);
+				if ( false === $frozen ) {
+					return new \WP_Error( 'tptn_batch_copy_failed', __( 'Could not capture the visit aggregation batch.', 'top-10' ) );
+				}
+				if ( 0 === $frozen ) {
+					return 0;
+				}
+				$source_table = $batch_table;
+			}
+
 			$affected_blogs = array( $blog_id ?? get_current_blog_id() );
 			if ( is_multisite() && null === $blog_id ) {
 				$affected_blogs = $wpdb->get_col(
-					$wpdb->prepare( "SELECT DISTINCT blog_id FROM {$funnel_table} WHERE id <= %d", $max_id )
+					$wpdb->prepare( "SELECT DISTINCT blog_id FROM {$source_table} WHERE id <= %d", $max_id )
 				);
 				if ( $wpdb->last_error ) {
 					$affected_blogs = array();
@@ -1140,7 +1309,7 @@ class Database {
 				$wpdb->prepare(
 					"INSERT INTO {$log_table} (postnumber, blog_id, visited_at, source)
 					 SELECT postnumber, blog_id, visited_at, source
-					 FROM   {$funnel_table}
+					 FROM   {$source_table}
 					 WHERE  id <= %d{$blog_where}",
 					$max_id
 				)
@@ -1151,13 +1320,13 @@ class Database {
 
 			$r = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id{$feed_column})
+					"INSERT INTO {$daily_table} (postnumber, cntaccess, dp_date, blog_id{$feed_column}{$daily_visitors_column})
 					 SELECT postnumber, COUNT(*) AS cntaccess,
-					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id{$feed_select}
-					 FROM   {$funnel_table}
+					        DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00') AS dp_date, blog_id{$feed_select}{$daily_visitors_select}
+					 FROM   {$source_table}
 					 WHERE  id <= %d AND activate_counter IN (10, 11){$blog_where}
 					 GROUP  BY postnumber, DATE_FORMAT(visited_at, '%%Y-%%m-%%d %%H:00:00'), blog_id
-					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess){$daily_feed_update}",
+					 ON DUPLICATE KEY UPDATE cntaccess = {$daily_table}.cntaccess + VALUES(cntaccess){$daily_feed_update}{$daily_visitors_update}",
 					$max_id
 				)
 			);
@@ -1167,12 +1336,12 @@ class Database {
 
 			$r = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id{$feed_column})
-					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id{$feed_select}
-					 FROM   {$funnel_table}
+					"INSERT INTO {$full_table} (postnumber, cntaccess, blog_id{$feed_column}{$full_visitors_column})
+					 SELECT postnumber, COUNT(*) AS cntaccess, blog_id{$feed_select}{$full_visitors_select}
+					 FROM   {$source_table}
 					 WHERE  id <= %d AND activate_counter IN (1, 11){$blog_where}
 					 GROUP  BY postnumber, blog_id
-					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess){$full_feed_update}",
+					 ON DUPLICATE KEY UPDATE cntaccess = {$full_table}.cntaccess + VALUES(cntaccess){$full_feed_update}{$full_visitors_update}",
 					$max_id
 				)
 			);
@@ -1180,9 +1349,40 @@ class Database {
 				return new \WP_Error( 'tptn_overall_insert_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate visits into overall table.', 'top-10' ) );
 			}
 
-			$r = $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d{$blog_where}", $max_id ) );
+			$coverage_table = $wpdb->base_prefix . 'top_ten_unique_visitor_coverage';
+			if ( $has_visitors && $coverage_table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $coverage_table ) ) ) ) {
+				$r = $wpdb->query(
+					$wpdb->prepare(
+						"INSERT INTO {$coverage_table} (blog_id, visit_date, complete, saturated)
+						 SELECT DISTINCT blog_id, DATE(visited_at), 0, 0
+						 FROM {$source_table}
+						 WHERE id <= %d AND is_unique IS NULL{$blog_where}
+						 ON DUPLICATE KEY UPDATE complete = 0",
+						$max_id
+					)
+				);
+				if ( false === $r ) {
+					return new \WP_Error( 'tptn_visitor_coverage_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to record visitor coverage.', 'top-10' ) );
+				}
+			}
+
+			if ( $transaction_open && class_exists( 'WebberZone\\Top_Ten\\Pro\\Referrers' ) && self::table_has_column( $funnel_table, 'referrer_host' ) ) {
+				if ( ! \WebberZone\Top_Ten\Pro\Referrers::aggregate_batch( $batch_table, $connection_id, $max_id, $blog_id ) ) {
+					return new \WP_Error( 'tptn_referrer_aggregation_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to aggregate referrers.', 'top-10' ) );
+				}
+			}
+
+			$r = $transaction_open
+				? $wpdb->query( "DELETE FROM {$funnel_table} WHERE id IN (SELECT id FROM {$batch_table})" )
+				: $wpdb->query( $wpdb->prepare( "DELETE FROM {$funnel_table} WHERE id <= %d{$blog_where}", $max_id ) );
 			if ( false === $r ) {
 				return new \WP_Error( 'tptn_funnel_delete_failed', $wpdb->last_error ? $wpdb->last_error : __( 'Failed to drain funnel table.', 'top-10' ) );
+			}
+			if ( $transaction_open ) {
+				if ( false === $wpdb->query( 'COMMIT' ) || $connection_id !== (int) $wpdb->get_var( 'SELECT CONNECTION_ID()' ) ) {
+					return new \WP_Error( 'tptn_batch_commit_failed', __( 'Could not confirm the visit aggregation transaction.', 'top-10' ) );
+				}
+				$transaction_open = false;
 			}
 			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
@@ -1208,6 +1408,12 @@ class Database {
 
 			return true;
 		} finally {
+			if ( $transaction_open ) {
+				$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			}
+			if ( '' !== $batch_table ) {
+				$wpdb->query( $wpdb->prepare( 'DROP TEMPORARY TABLE IF EXISTS %i', $batch_table ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
+			}
 			if ( ! $is_sqlite ) {
 				$wpdb->query( "SELECT RELEASE_LOCK('tptn_aggregation')" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			}
@@ -1246,17 +1452,21 @@ class Database {
 		if ( ! in_array( 'feedcnt', $fields, true ) && false !== strpos( $create_table_sql, 'feedcnt' ) && Feed_Counts::table_has_column( $table_name, true ) ) {
 			$fields[] = 'feedcnt';
 		}
+		if ( ! in_array( 'visitors', $fields, true ) && false !== strpos( $create_table_sql, 'visitors' ) && self::table_has_column( $table_name, 'visitors' ) ) {
+			$fields[] = 'visitors';
+		}
 
 		$fields_sql          = implode( ', ', $fields );
 		$fields_sql_with_sum = implode(
 			', ',
 			array_map(
-				fn( $field ) => in_array( $field, array( 'cntaccess', 'feedcnt' ), true ) ? "SUM({$field}) as {$field}" : $field,
+				fn( $field ) => in_array( $field, array( 'cntaccess', 'feedcnt', 'visitors' ), true ) ? "SUM({$field}) as {$field}" : $field,
 				$fields
 			)
 		);
 		$group_by_sql        = implode( ', ', $group_by_fields );
 		$feed_update         = in_array( 'feedcnt', $fields, true ) ? ", $table_name.feedcnt = $table_name.feedcnt + VALUES(feedcnt)" : '';
+		$visitor_update      = in_array( 'visitors', $fields, true ) ? ", $table_name.visitors = IF(VALUES(visitors) IS NULL, $table_name.visitors, COALESCE($table_name.visitors, 0) + VALUES(visitors))" : '';
 
 		if ( $backup ) {
 			$success = $wpdb->query( "CREATE TABLE $backup_table_name LIKE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -1279,7 +1489,7 @@ class Database {
 
 			$insert_fields_sql = 'tt.' . implode( ', tt.', $fields );
 
-			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $insert_fields_sql FROM $backup_table_name AS tt ON DUPLICATE KEY UPDATE $table_name.cntaccess = $table_name.cntaccess + VALUES(cntaccess){$feed_update}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $insert_fields_sql FROM $backup_table_name AS tt ON DUPLICATE KEY UPDATE $table_name.cntaccess = $table_name.cntaccess + VALUES(cntaccess){$feed_update}{$visitor_update}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 			if ( false === $success ) {
 				/* translators: 1: Site number, 2: Error message */
@@ -1353,8 +1563,18 @@ class Database {
 
 		$table_name        = self::get_funnel_table();
 		$backup_table_name = $backup ? $table_name . '_backup' : $table_name . '_temp';
+		$create_table_sql  = self::create_funnel_table_sql();
 		$fields_sql        = 'postnumber, blog_id, visited_at, activate_counter, source';
 		$success           = false;
+		$has_referrer      = self::table_has_column( $table_name, 'referrer_host' );
+
+		if ( self::table_has_column( $table_name, 'is_unique' ) ) {
+			$fields_sql .= ', is_unique';
+		}
+		if ( $has_referrer ) {
+			$fields_sql      .= ', referrer_host';
+			$create_table_sql = str_replace( "\t\t\tPRIMARY KEY  (id)", "\t\t\treferrer_host varchar(320) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,\n\t\t\tPRIMARY KEY  (id)", $create_table_sql );
+		}
 
 		if ( $backup ) {
 			$success = $wpdb->query( "CREATE TABLE $backup_table_name LIKE $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -1362,7 +1582,7 @@ class Database {
 				/* translators: 1: Site number, 2: Error message */
 				return new \WP_Error( 'tptn_database_backup_failed', sprintf( esc_html__( 'Database backup failed on site %1$s. Error message: %2$s', 'top-10' ), get_site_url(), $wpdb->last_error ) );
 			}
-			$wpdb->query( "INSERT INTO $backup_table_name SELECT * FROM $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$success = $wpdb->query( "INSERT INTO $backup_table_name SELECT * FROM $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		} else {
 			$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$success = $wpdb->query( "CREATE TEMPORARY TABLE $backup_table_name AS SELECT $fields_sql FROM $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -1370,7 +1590,7 @@ class Database {
 
 		if ( false !== $success ) {
 			$wpdb->query( "DROP TABLE IF EXISTS $table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$wpdb->query( self::create_funnel_table_sql() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( $create_table_sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
 
 			$success = $wpdb->query( "INSERT INTO $table_name ($fields_sql) SELECT $fields_sql FROM $backup_table_name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
@@ -1566,8 +1786,15 @@ class Database {
 
 		$last_date       = '';
 		$dates_processed = 0;
-		$with_feed       = Feed_Counts::is_enabled();
-		$feed_select     = $with_feed ? ', feedcnt' : '';
+		$count_fields    = array( 'cntaccess' );
+		if ( Feed_Counts::is_enabled() ) {
+			$count_fields[] = 'feedcnt';
+		}
+		if ( self::table_has_column( $table, 'visitors' ) ) {
+			$count_fields[] = 'visitors';
+		}
+		$count_columns = implode( ', ', $count_fields );
+		$count_updates = implode( ', ', array_map( static fn( $field ) => "$field = VALUES($field)", $count_fields ) );
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		while ( true ) {
@@ -1612,7 +1839,7 @@ class Database {
 			try {
 				$daily_rows = $wpdb->get_results(
 					$wpdb->prepare(
-						"SELECT postnumber, cntaccess{$feed_select}
+						"SELECT postnumber, {$count_columns}
 						 FROM `{$table}`
 						 WHERE blog_id = %d AND dp_date >= %s AND dp_date < %s
 						 ORDER BY postnumber ASC
@@ -1628,28 +1855,26 @@ class Database {
 				}
 
 				$rollup_counts = array();
-				$rollup_feeds  = array();
 				foreach ( $daily_rows as $daily_row ) {
 					$postnumber = (int) $daily_row['postnumber'];
-					if ( ! isset( $rollup_counts[ $postnumber ] ) ) {
-						$rollup_counts[ $postnumber ] = 0;
-						$rollup_feeds[ $postnumber ]  = 0;
+					foreach ( $count_fields as $field ) {
+						if ( isset( $daily_row[ $field ] ) ) {
+							$rollup_counts[ $postnumber ][ $field ] = ( $rollup_counts[ $postnumber ][ $field ] ?? 0 ) + (int) $daily_row[ $field ];
+						}
 					}
-					$rollup_counts[ $postnumber ] += (int) $daily_row['cntaccess'];
-					$rollup_feeds[ $postnumber ]  += (int) ( $daily_row['feedcnt'] ?? 0 );
 				}
 
 				foreach ( array_chunk( $rollup_counts, 500, true ) as $rollup_batch ) {
 					$values = array();
-					foreach ( $rollup_batch as $postnumber => $count ) {
-						$values[] = $with_feed
-							? $wpdb->prepare( '( %d, %d, %s, %d, %d )', $postnumber, $count, $day_start, $blog_id, $rollup_feeds[ $postnumber ] )
-							: $wpdb->prepare( '( %d, %d, %s, %d )', $postnumber, $count, $day_start, $blog_id );
+					foreach ( $rollup_batch as $postnumber => $counts ) {
+						$row = $wpdb->prepare( '( %d, %s, %d', $postnumber, $day_start, $blog_id );
+						foreach ( $count_fields as $field ) {
+							$row .= isset( $counts[ $field ] ) ? ', ' . (int) $counts[ $field ] : ', NULL';
+						}
+						$values[] = $row . ' )';
 					}
 
-					$rollup_sql = $with_feed
-						? "INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id, feedcnt) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess), feedcnt = VALUES(feedcnt)'
-						: "INSERT INTO `{$table}` (postnumber, cntaccess, dp_date, blog_id) VALUES " . implode( ',', $values ) . ' ON DUPLICATE KEY UPDATE cntaccess = VALUES(cntaccess)';
+					$rollup_sql = "INSERT INTO `{$table}` (postnumber, dp_date, blog_id, {$count_columns}) VALUES " . implode( ',', $values ) . " ON DUPLICATE KEY UPDATE {$count_updates}";
 
 					$result = $wpdb->query( $rollup_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 					if ( false === $result ) {

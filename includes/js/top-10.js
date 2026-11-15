@@ -6,6 +6,25 @@
     var tracker = ajax_tptn_tracker;
     var tracked = false;
 
+    function getReferrerHost() {
+        if (!tracker.track_referrers || !document.referrer) {
+            return '';
+        }
+
+        try {
+            var referrer = new URL(document.referrer);
+            var scheme = referrer.protocol.toLowerCase().replace(/:$/, '');
+            var host = referrer.hostname.toLowerCase().replace(/\.$/, '').replace(/^www\./, '');
+            if (!host || !/^(https?|android-app|ios-app)$/.test(scheme)) {
+                return '';
+            }
+
+            return scheme + '://' + host;
+        } catch (error) {
+            return '';
+        }
+    }
+
     function send(id, context) {
         var params = new URLSearchParams({
             action: 'tptn_tracker',
@@ -17,6 +36,11 @@
 
         if (context) {
             params.append('top_ten_sitewide_context', context);
+        }
+
+        var referrerHost = getReferrerHost();
+        if (referrerHost) {
+            params.append('top_ten_referrer_host', referrerHost);
         }
 
         var url = tracker.ajax_url;

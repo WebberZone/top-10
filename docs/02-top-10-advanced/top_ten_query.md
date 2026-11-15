@@ -63,6 +63,7 @@ In addition to the <a href="https://developer.wordpress.org/reference/classes/wp
 | `include_cat_ids` | `array` or `string` | Array or comma-separated string of categories or `term_taxonomy_id`s. |
 | `include_post_ids` | `array` or `string` | Array or comma-separated string of post IDs to include. |
 | `offset` | `int` | Offset the related posts returned by this number. |
+| `orderby` *(Pro only)* | `string` or `array` | Pass `visitors` to sort by unique visitors instead of views, or `array( 'visitors' => 'DESC' )` to set the direction. Needs [unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) and does not apply when Koko Analytics is the data source. |
 | `strict_limit` | `bool` | If `false`, fetches up to 3× the limit to allow filtering. |
 
 ## Post types and statuses

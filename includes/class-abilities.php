@@ -114,18 +114,27 @@ class Abilities {
 						'required'             => array( 'id', 'title', 'url', 'views' ),
 						'additionalProperties' => true,
 						'properties'           => array(
-							'id'    => array(
+							'id'               => array(
 								'type'    => 'integer',
 								'minimum' => 1,
 							),
-							'title' => array( 'type' => 'string' ),
-							'url'   => array(
+							'title'            => array( 'type' => 'string' ),
+							'url'              => array(
 								'type'   => 'string',
 								'format' => 'uri',
 							),
-							'views' => array(
+							'views'            => array(
 								'type'    => 'integer',
 								'minimum' => 0,
+							),
+							'visitors'         => array(
+								'type'        => array( 'integer', 'null' ),
+								'minimum'     => 0,
+								'description' => __( 'Sum of measured daily unique visitors for this post. A client can count once each day. Unavailable periods return null.', 'top-10' ),
+							),
+							'visitor_coverage' => array(
+								'type' => 'string',
+								'enum' => array( 'complete', 'partial', 'unavailable' ),
 							),
 						),
 					),
@@ -158,13 +167,31 @@ class Abilities {
 					'required'             => array( 'total', 'daily' ),
 					'additionalProperties' => true,
 					'properties'           => array(
-						'total' => array(
+						'total'                  => array(
 							'type'    => 'integer',
 							'minimum' => 0,
 						),
-						'daily' => array(
+						'daily'                  => array(
 							'type'    => 'integer',
 							'minimum' => 0,
+						),
+						'total_visitors'         => array(
+							'type'        => array( 'integer', 'null' ),
+							'minimum'     => 0,
+							'description' => __( 'Sum of measured daily unique visitors for this post since tracking began. Unavailable periods return null.', 'top-10' ),
+						),
+						'daily_visitors'         => array(
+							'type'        => array( 'integer', 'null' ),
+							'minimum'     => 0,
+							'description' => __( 'Sum of measured daily unique visitors in the configured range. Unavailable periods return null.', 'top-10' ),
+						),
+						'total_visitor_coverage' => array(
+							'type' => 'string',
+							'enum' => array( 'complete', 'partial', 'unavailable' ),
+						),
+						'daily_visitor_coverage' => array(
+							'type' => 'string',
+							'enum' => array( 'complete', 'partial', 'unavailable' ),
 						),
 					),
 				),
@@ -253,7 +280,7 @@ class Abilities {
 				'views' => (int) ( $post->visits ?? 0 ),
 			);
 		}
-		return $results;
+		return apply_filters( 'tptn_ability_popular_posts', $results, $input );
 	}
 
 	/**
@@ -267,9 +294,11 @@ class Abilities {
 		if ( ! $this->can_read_post( $input ) ) {
 			return new \WP_Error( 'ability_invalid_permissions', __( 'You do not have permission to read this post.', 'top-10' ), array( 'status' => 403 ) );
 		}
-		return array(
+		$counts = array(
 			'total' => (int) \get_tptn_total_count( (int) $input['post_id'] ),
 			'daily' => (int) \get_tptn_daily_count( (int) $input['post_id'] ),
 		);
+
+		return apply_filters( 'tptn_ability_post_views', $counts, (int) $input['post_id'], $input );
 	}
 }

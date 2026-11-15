@@ -203,7 +203,7 @@ class WPP_Importer {
 	/**
 	 * Get and authorize the sites requested for import.
 	 *
-	 * @since 4.6.4
+	 * @since 4.7.0
 	 * @param array $request Request data array.
 	 * @return array|\WP_Error Authorized site IDs or an error.
 	 */

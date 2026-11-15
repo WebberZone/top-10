@@ -181,6 +181,7 @@ class Tracker {
 		$vars[] = 'activate_counter';
 		$vars[] = 'view_counter';
 		$vars[] = 'top_ten_debug';
+		$vars[] = 'top_ten_referrer_host';
 		$vars[] = 'tptn_feed';
 
 		/**
@@ -225,11 +226,12 @@ class Tracker {
 			$sitewide_context = sanitize_text_field( $wp->query_vars['top_ten_sitewide_context'] ?? '' );
 			$blog_id          = absint( $wp->query_vars['top_ten_blog_id'] ?? 0 );
 			$activate_counter = absint( $wp->query_vars['activate_counter'] );
+			$referrer_host    = isset( $wp->query_vars['top_ten_referrer_host'] ) && is_string( $wp->query_vars['top_ten_referrer_host'] ) ? wp_unslash( $wp->query_vars['top_ten_referrer_host'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Pro validates this value before storage.
 
 			$is_feed = ! empty( $wp->query_vars['tptn_feed'] );
 			$source  = $is_feed ? 1 : 0;
 
-			$str = self::update_count( $id, $blog_id, $activate_counter, $source );
+			$str = self::update_count( $id, $blog_id, $activate_counter, $source, $referrer_host );
 			if ( '' !== $sitewide_context ) {
 				$str .= self::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter, $source );
 			}
@@ -362,8 +364,9 @@ class Tracker {
 		$sitewide_context = isset( $_POST['top_ten_sitewide_context'] ) ? sanitize_text_field( wp_unslash( $_POST['top_ten_sitewide_context'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$blog_id          = isset( $_POST['top_ten_blog_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['top_ten_blog_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$activate_counter = isset( $_POST['activate_counter'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['activate_counter'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$referrer_host    = isset( $_POST['top_ten_referrer_host'] ) && is_string( $_POST['top_ten_referrer_host'] ) ? wp_unslash( $_POST['top_ten_referrer_host'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Pro validates this value before storage.
 
-		$str = self::update_count( $id, $blog_id, $activate_counter, 0 );
+		$str = self::update_count( $id, $blog_id, $activate_counter, 0, $referrer_host );
 		if ( '' !== $sitewide_context ) {
 			$str .= self::update_sitewide_count( $sitewide_context, $blog_id, $activate_counter, 0 );
 		}
@@ -418,14 +421,15 @@ class Tracker {
 	 *
 	 * @since 2.6.0
 	 *
-	 * @param int $id Post ID.
-	 * @param int $blog_id Blog ID.
-	 * @param int $activate_counter Activate counter flag.
-	 * @param int $source Traffic source: 0 = web, 1 = feed.
+	 * @param int    $id Post ID.
+	 * @param int    $blog_id Blog ID.
+	 * @param int    $activate_counter Activate counter flag.
+	 * @param int    $source Traffic source: 0 = web, 1 = feed.
+	 * @param string $referrer_host External referrer origin.
 	 *
 	 * @return string Response on database update.
 	 */
-	public static function update_count( $id, $blog_id, $activate_counter, $source = 0 ) {
+	public static function update_count( $id, $blog_id, $activate_counter, $source = 0, $referrer_host = '' ) {
 
 		$str = '';
 
@@ -443,7 +447,7 @@ class Tracker {
 		$before_update_count = apply_filters( 'tptn_before_update_count', true, $id, $blog_id, $activate_counter, $source );
 
 		if ( $id > 0 && $activate_counter > 0 && $before_update_count ) {
-			$result = Database::record_view( $id, $blog_id, $activate_counter, $source );
+			$result = Database::record_view( $id, $blog_id, $activate_counter, $source, null, $referrer_host );
 			$str   .= ( false === $result ) ? 'loge' : 'log' . $result;
 		}
 

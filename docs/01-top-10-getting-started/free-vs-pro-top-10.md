@@ -62,6 +62,8 @@ Top 10 is free to use and packed with features right out of the box. The Pro upg
 | Option to disable admin bar menu | ❌ | ✅ |
 | Mini "Views Overview" dashboard widget | ❌ | ✅ |
 | [Feed vs web views dashboard report](https://webberzone.com/support/knowledgebase/feed-vs-web-statistics/) | ❌ | ✅ |
+| [Cookieless daily unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) and sorting | ❌ | ✅ |
+| [External referrer tracking and reports](https://webberzone.com/support/knowledgebase/referrer-tracking-in-top-10/) | ❌ | ✅ |
 | Dashboard access control by user role | ❌ | ✅ |
 | Choose which post types show admin columns | ❌ | ✅ |
 | Sortable admin columns on custom post types | ❌ | ✅ |

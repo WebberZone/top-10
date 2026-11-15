@@ -59,6 +59,23 @@ $result = wp_get_ability( 'top-10/get-post-views' )->execute(
 
 Both read outputs allow future additional metrics. Consumers should read the fields they need and accept additional fields.
 
+### Unique visitor fields *(Pro only)*
+
+When [unique visitor counts](https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/) are available, the read abilities add visitor fields. Each count is `null` when its period was not measured, and each coverage field is `complete`, `partial` or `unavailable`.
+
+| Ability | Field | Description |
+| --- | --- | --- |
+| `top-10/get-popular-posts` | `visitors` | Sum of measured daily unique visitors for the post over the requested `period` and `daily_range`. |
+| `top-10/get-popular-posts` | `visitor_coverage` | How completely that period was measured. |
+| `top-10/get-post-views` | `total_visitors` | Sum of measured daily unique visitors since tracking began. |
+| `top-10/get-post-views` | `daily_visitors` | Sum of measured daily unique visitors in the configured daily range. |
+| `top-10/get-post-views` | `total_visitor_coverage` | How completely the lifetime figure was measured. |
+| `top-10/get-post-views` | `daily_visitor_coverage` | How completely the daily figure was measured. |
+
+A visitor can be counted once on each day, so these totals are sums of daily counts rather than distinct people over the whole period.
+
+Use the `tptn_ability_popular_posts` and `tptn_ability_post_views` filters to add your own fields to these responses.
+
 ## Pro abilities
 
 ### `top-10/edit-post-count`
