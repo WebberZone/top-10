@@ -39,7 +39,7 @@ class Styles_Handler {
 	 */
 	public static function header() {
 
-		$custom_css = stripslashes( tptn_get_option( 'custom_css' ) );
+		$custom_css = (string) tptn_get_option( 'custom_css' );
 
 		// Add CSS to header.
 		if ( $custom_css ) {

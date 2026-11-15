@@ -151,6 +151,17 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 = 4.6.4 =
 
+**Added**
+
+* Save Changes button in settings navigation.
+**Fixed**
+
+* Settings import now runs the imported values through the settings sanitization before saving them.
+* Site administrators on multisite can no longer export or import other sites' view counts through the network-wide tables option.
+* Saving an array to a single-value setting no longer causes a fatal error.
+* Importing a settings file that contains only some settings no longer deletes the settings missing from the file.
+* Backslashes in Custom CSS, such as icon font codes, are no longer removed on the front end or on settings import.
+
 **Changed**
 
 * Hardened multisite WordPress Popular Posts imports so cross-site targets require the `manage_network_options` capability.
