@@ -167,6 +167,7 @@ Release post: https://webberzone.com/announcements/top-10-v4-7/
 
 **Fixed**
 
+* Thumbnails without alt text now output an empty `alt` attribute so screen readers skip decorative images.
 * Settings import ran imported values through settings sanitization before saving.
 * Multisite site administrators could export or import another site's view counts through the network-wide tables option.
 * Saving an array to a single-value setting caused a fatal error.
