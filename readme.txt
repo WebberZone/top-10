@@ -152,7 +152,7 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 = 4.7.0 =
 
-Release date: 15 November 2026
+Release date: 18 November 2026
 Release post: https://webberzone.com/announcements/top-10-v4-7/
 
 **Added**
@@ -164,6 +164,7 @@ Release post: https://webberzone.com/announcements/top-10-v4-7/
 **Changed**
 
 * Multisite WordPress Popular Posts imports now require `manage_network_options` for cross-site targets.
+* Popular posts lists avoid unnecessary post metadata lookups when preparing ranked posts, reducing database work.
 
 **Fixed**
 
