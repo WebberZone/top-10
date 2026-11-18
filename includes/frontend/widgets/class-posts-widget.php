@@ -323,6 +323,10 @@ class Posts_Widget extends \WP_Widget {
 			'orderby'          => isset( $instance['orderby'] ) ? $instance['orderby'] : 'visits',
 		);
 
+		if ( 'visitors' === $arguments['orderby'] && ! apply_filters( 'tptn_admin_unique_visitors_enabled', false ) ) {
+			$arguments['orderby'] = 'visits';
+		}
+
 		/**
 		 * Filters arguments passed to tptn_pop_posts for the widget.
 		 *
