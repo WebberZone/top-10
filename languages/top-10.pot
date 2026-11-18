@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: WebberZone Top 10 4.6.2\n"
+"Project-Id-Version: WebberZone Top 10 4.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/top-10\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-03T17:19:25+00:00\n"
+"POT-Creation-Date: 2026-11-18T14:14:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: top-10\n"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: includes/admin/class-admin.php:337
 #: includes/admin/class-statistics.php:72
-#: includes/admin/class-statistics.php:142
+#: includes/admin/class-statistics.php:143
 #: includes/admin/network/class-statistics.php:71
 #: includes/admin/network/class-statistics.php:141
 #: includes/frontend/feed-rss2-popular-posts.php:59
@@ -141,7 +141,20 @@ msgid "%s Views"
 msgstr ""
 
 #: includes/admin/class-columns.php:79
+#: includes/frontend/widgets/class-posts-widget.php:106
+#: includes/frontend/widgets/class-posts-widget.php:210
 msgid "Views"
+msgstr ""
+
+#: includes/admin/class-columns.php:81
+msgid "Unique Visitors"
+msgstr ""
+
+#: includes/admin/class-columns.php:172
+#: includes/admin/class-dashboard-widgets.php:278
+#: includes/admin/class-statistics-table.php:739
+#: includes/admin/class-statistics-table.php:761
+msgid "partial"
 msgstr ""
 
 #: includes/admin/class-cron.php:246
@@ -203,41 +216,45 @@ msgstr ""
 msgid "Top 10 Network Views Overview"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:334
-#: includes/admin/class-dashboard-widgets.php:351
+#: includes/admin/class-dashboard-widgets.php:277
+msgid "visitors"
+msgstr ""
+
+#: includes/admin/class-dashboard-widgets.php:366
+#: includes/admin/class-dashboard-widgets.php:384
 #: includes/admin/class-dashboard.php:577
-#: includes/admin/class-statistics-table.php:542
+#: includes/admin/class-statistics-table.php:579
 msgid "site-wide"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:369
+#: includes/admin/class-dashboard-widgets.php:403
 msgid "View all network daily popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:382
+#: includes/admin/class-dashboard-widgets.php:416
 msgid "View all daily popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:385
+#: includes/admin/class-dashboard-widgets.php:419
 msgid "View all network popular posts"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:387
+#: includes/admin/class-dashboard-widgets.php:421
 #: includes/admin/class-dashboard.php:182
 msgid "View all popular posts"
 msgstr ""
 
 #. translators: 1: Top 10 page link.
-#: includes/admin/class-dashboard-widgets.php:395
+#: includes/admin/class-dashboard-widgets.php:429
 #, php-format
 msgid "Popular posts by <a href=\"%s\" target=\"_blank\">Top 10 plugin</a>"
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:471
+#: includes/admin/class-dashboard-widgets.php:505
 msgid "Upgrade to Top 10 Pro to see your views over time chart here."
 msgstr ""
 
-#: includes/admin/class-dashboard-widgets.php:476
+#: includes/admin/class-dashboard-widgets.php:510
 #: includes/admin/class-settings.php:2086
 #: includes/admin/class-settings.php:2106
 #: includes/admin/class-settings.php:2107
@@ -396,119 +413,124 @@ msgstr ""
 msgid "You can change this by setting the constant TOP_TEN_STORE_DATA to the number of days of your choice in your wp-config.php."
 msgstr ""
 
-#: includes/admin/class-import-export.php:76
-#: includes/admin/class-import-export.php:93
+#: includes/admin/class-import-export.php:77
+#: includes/admin/class-import-export.php:94
 msgid "Top 10 Import Export Tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:77
-#: includes/admin/class-import-export.php:94
+#: includes/admin/class-import-export.php:78
+#: includes/admin/class-import-export.php:95
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/class-import-export.php:112
+#: includes/admin/class-import-export.php:113
 msgid "Data has been imported into the table"
 msgstr ""
 
-#: includes/admin/class-import-export.php:114
+#: includes/admin/class-import-export.php:115
 msgid "Data import failure. Check the number of columns for the file being imported, if you are uploading it in the right section below and that the data is correct"
 msgstr ""
 
-#: includes/admin/class-import-export.php:120
+#: includes/admin/class-import-export.php:121
 msgid "Settings have been imported successfully"
 msgstr ""
 
-#: includes/admin/class-import-export.php:126
+#: includes/admin/class-import-export.php:127
 msgid "Top 10 - Import/Export tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:140
+#: includes/admin/class-import-export.php:141
 msgid "Export/Import settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:144
+#: includes/admin/class-import-export.php:145
 msgid "Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site."
 msgstr ""
 
-#: includes/admin/class-import-export.php:148
+#: includes/admin/class-import-export.php:149
 msgid "Export Settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:156
+#: includes/admin/class-import-export.php:157
 msgid "Import the plugin settings from a .json file. This file can be obtained by exporting the settings on this/another site using the form above."
 msgstr ""
 
-#: includes/admin/class-import-export.php:162
+#: includes/admin/class-import-export.php:163
 msgid "Import Settings"
 msgstr ""
 
-#: includes/admin/class-import-export.php:173
+#: includes/admin/class-import-export.php:174
 msgid "Export tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:177
+#: includes/admin/class-import-export.php:178
 msgid "Click the buttons below to export the overall and the daily tables. The file is downloaded as an CSV file which you should be able to edit in Excel or any other compatible software."
 msgstr ""
 
-#: includes/admin/class-import-export.php:178
+#: includes/admin/class-import-export.php:179
 msgid "If you are using WordPress Multisite then this will include the counts across all sites as the plugin uses a single table to store counts."
 msgstr ""
 
-#: includes/admin/class-import-export.php:181
+#: includes/admin/class-import-export.php:182
 msgid "Include URLs in export"
 msgstr ""
 
-#: includes/admin/class-import-export.php:186
+#: includes/admin/class-import-export.php:187
 msgid "Export overall tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:187
+#: includes/admin/class-import-export.php:188
 msgid "Export daily tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:196
+#: includes/admin/class-import-export.php:197
 msgid "Import tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:200
+#: includes/admin/class-import-export.php:201
 msgid "Importing a file will add or increment counts — it does not replace existing data. To start fresh, use the Maintenance tab to truncate the tables first. Best practice is to export before importing. It is important to maintain the export format of the data to avoid corruption."
 msgstr ""
 
-#: includes/admin/class-import-export.php:202
+#: includes/admin/class-import-export.php:203
 msgid "Be careful when opening the file in Excel as it tends to change the date format. Recommended date-time format is YYYY-MM-DD H."
 msgstr ""
 
-#: includes/admin/class-import-export.php:205
+#: includes/admin/class-import-export.php:206
 msgid "Backup your database before proceeding so you will be able to restore it in case anything goes wrong."
 msgstr ""
 
-#: includes/admin/class-import-export.php:208
+#: includes/admin/class-import-export.php:209
 msgid "Use URLs instead of Post IDs in import"
 msgstr ""
 
-#: includes/admin/class-import-export.php:215
+#: includes/admin/class-import-export.php:216
 msgid "Import overall tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:217
-#: includes/admin/class-import-export.php:222
+#: includes/admin/class-import-export.php:218
+#: includes/admin/class-import-export.php:223
 msgid "CSV file"
 msgstr ""
 
-#: includes/admin/class-import-export.php:220
+#: includes/admin/class-import-export.php:221
 msgid "Import daily tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:226
+#: includes/admin/class-import-export.php:227
 msgid "Import Tables"
 msgstr ""
 
-#: includes/admin/class-import-export.php:559
+#: includes/admin/class-import-export.php:560
+#: includes/admin/class-import-export.php:572
 msgid "Please upload a valid .json file"
 msgstr ""
 
-#: includes/admin/class-import-export.php:565
+#: includes/admin/class-import-export.php:566
 msgid "Please upload a file to import"
+msgstr ""
+
+#: includes/admin/class-import-export.php:577
+msgid "Settings can only be imported from the Import/Export page."
 msgstr ""
 
 #: includes/admin/class-metabox.php:120
@@ -1025,7 +1047,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:662
 #: includes/frontend/feed-rss2-popular-posts.php:59
-#: includes/frontend/widgets/class-posts-widget.php:94
+#: includes/frontend/widgets/class-posts-widget.php:95
 msgid "Overall"
 msgstr ""
 
@@ -1139,7 +1161,7 @@ msgid "This options allows you to only show posts that have been published withi
 msgstr ""
 
 #: includes/admin/class-settings.php:786
-#: includes/frontend/widgets/class-posts-widget.php:150
+#: includes/frontend/widgets/class-posts-widget.php:162
 msgid "Post types to include"
 msgstr ""
 
@@ -1270,14 +1292,14 @@ msgid "Length of excerpt (in words)"
 msgstr ""
 
 #: includes/admin/class-settings.php:919
-#: includes/frontend/widgets/class-posts-widget.php:119
+#: includes/frontend/widgets/class-posts-widget.php:131
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:84
 msgid "Show date"
 msgstr ""
 
 #: includes/admin/class-settings.php:926
-#: includes/frontend/widgets/class-posts-widget.php:115
+#: includes/frontend/widgets/class-posts-widget.php:127
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:78
 msgid "Show author"
@@ -1368,12 +1390,12 @@ msgid "You can choose from existing image sizes above or create a custom size (t
 msgstr ""
 
 #: includes/admin/class-settings.php:1055
-#: includes/frontend/widgets/class-posts-widget.php:136
+#: includes/frontend/widgets/class-posts-widget.php:148
 msgid "Thumbnail width"
 msgstr ""
 
 #: includes/admin/class-settings.php:1063
-#: includes/frontend/widgets/class-posts-widget.php:132
+#: includes/frontend/widgets/class-posts-widget.php:144
 msgid "Thumbnail height"
 msgstr ""
 
@@ -2018,81 +2040,89 @@ msgctxt "tag delimiter"
 msgid ","
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:50
+#: includes/admin/class-statistics-table.php:57
 msgid "popular_post"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:51
+#: includes/admin/class-statistics-table.php:58
 msgid "popular_posts"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:55
+#: includes/admin/class-statistics-table.php:62
 msgid "All post types"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:328
-#: includes/admin/class-statistics-table.php:411
-#: includes/admin/class-statistics-table.php:616
+#: includes/admin/class-statistics-table.php:352
+#: includes/admin/class-statistics-table.php:444
+#: includes/admin/class-statistics-table.php:653
 msgid "Site-wide"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:493
+#: includes/admin/class-statistics-table.php:530
 msgid "No popular posts available."
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:554
+#: includes/admin/class-statistics-table.php:591
 msgid "Invalid post ID. This post might have been deleted."
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:560
+#: includes/admin/class-statistics-table.php:597
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:561
+#: includes/admin/class-statistics-table.php:598
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:563
+#: includes/admin/class-statistics-table.php:600
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:742
+#: includes/admin/class-statistics-table.php:856
 #: includes/frontend/widgets/class-count-widget.php:49
-#: includes/frontend/widgets/class-posts-widget.php:80
+#: includes/frontend/widgets/class-posts-widget.php:81
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:743
+#: includes/admin/class-statistics-table.php:857
 msgid "Total visits"
 msgstr ""
 
 #. translators: %s: Custom period label (e.g. Daily, Custom (7 days)).
-#: includes/admin/class-statistics-table.php:745
+#: includes/admin/class-statistics-table.php:859
 #, php-format
 msgid "%s visits"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:746
+#: includes/admin/class-statistics-table.php:860
 msgid "Post type"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:747
+#: includes/admin/class-statistics-table.php:861
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:748
+#: includes/admin/class-statistics-table.php:862
 msgid "Date"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:752
+#: includes/admin/class-statistics-table.php:865
+msgid "Total unique visitors"
+msgstr ""
+
+#: includes/admin/class-statistics-table.php:866
+msgid "Unique visitors in period"
+msgstr ""
+
+#: includes/admin/class-statistics-table.php:870
 msgid "Blog"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:788
+#: includes/admin/class-statistics-table.php:910
 msgid "Delete Count"
 msgstr ""
 
-#: includes/admin/class-statistics-table.php:852
+#: includes/admin/class-statistics-table.php:974
 msgid "Are you sure you want to do this"
 msgstr ""
 
@@ -2514,7 +2544,7 @@ msgid "Only import posts with at least this many views. Use this setting to filt
 msgstr ""
 
 #: includes/admin/class-wpp-importer.php:138
-#: includes/admin/class-wpp-importer.php:449
+#: includes/admin/class-wpp-importer.php:504
 msgid "Dry Run"
 msgstr ""
 
@@ -2534,160 +2564,171 @@ msgstr ""
 msgid "Run Import"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:215
-msgid "You do not have sufficient permissions to perform this action."
+#: includes/admin/class-wpp-importer.php:216
+#: includes/admin/class-wpp-importer.php:232
+#: includes/admin/class-wpp-importer.php:243
+#: includes/admin/class-wpp-importer.php:266
+msgid "One or more selected sites are invalid."
 msgstr ""
 
 #: includes/admin/class-wpp-importer.php:224
-msgid "WordPress Popular Posts plugin is not active or its tables are missing."
-msgstr ""
-
-#: includes/admin/class-wpp-importer.php:246
-#: includes/admin/class-wpp-importer.php:404
+#: includes/admin/class-wpp-importer.php:252
 msgid "No sites selected for import."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:269
+#: includes/admin/class-wpp-importer.php:259
+msgid "You are not allowed to import data for the selected site."
+msgstr ""
+
+#: includes/admin/class-wpp-importer.php:286
+msgid "You do not have sufficient permissions to perform this action."
+msgstr ""
+
+#: includes/admin/class-wpp-importer.php:295
+msgid "WordPress Popular Posts plugin is not active or its tables are missing."
+msgstr ""
+
+#: includes/admin/class-wpp-importer.php:332
 msgid "Dry run completed successfully."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:269
+#: includes/admin/class-wpp-importer.php:332
 msgid "Import completed successfully."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:340
+#: includes/admin/class-wpp-importer.php:403
 msgid "Are you sure you want to proceed with the import? This operation cannot be undone."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:341
+#: includes/admin/class-wpp-importer.php:404
 msgid "Importing data..."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:342
+#: includes/admin/class-wpp-importer.php:405
 msgid "Import completed successfully!"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:343
+#: includes/admin/class-wpp-importer.php:406
 msgid "An error occurred during import:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:344
+#: includes/admin/class-wpp-importer.php:407
 msgid "Are you sure you want to cancel the import? All progress will be lost."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:345
+#: includes/admin/class-wpp-importer.php:408
 msgid "Cancel Import"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:346
+#: includes/admin/class-wpp-importer.php:409
 msgid "Import cancelled by user."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:347
+#: includes/admin/class-wpp-importer.php:410
 msgid "Please select at least one site to import data from."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:348
+#: includes/admin/class-wpp-importer.php:411
 msgid "Minimum views must be a non-negative number."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:349
+#: includes/admin/class-wpp-importer.php:412
 msgid "Request timed out. The server might be processing a large amount of data. Try again with a smaller batch size or reduce the number of sites processed at once."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:350
+#: includes/admin/class-wpp-importer.php:413
 msgid "Processing Site"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:351
+#: includes/admin/class-wpp-importer.php:414
 msgid "Batch"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:352
+#: includes/admin/class-wpp-importer.php:415
 msgid "of"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:353
+#: includes/admin/class-wpp-importer.php:416
 msgid "Dry Run -"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:354
+#: includes/admin/class-wpp-importer.php:417
 msgid "Sites Processed:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:355
+#: includes/admin/class-wpp-importer.php:418
 msgid "Blog ID"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:356
+#: includes/admin/class-wpp-importer.php:419
 msgid "Posts Processed:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:357
+#: includes/admin/class-wpp-importer.php:420
 msgid "Total Records:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:358
+#: includes/admin/class-wpp-importer.php:421
 msgid "Total Views Found:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:359
+#: includes/admin/class-wpp-importer.php:422
 msgid "Daily Records:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:360
+#: includes/admin/class-wpp-importer.php:423
 msgid "Daily Views Found:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:361
+#: includes/admin/class-wpp-importer.php:424
 msgid "Errors:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:362
+#: includes/admin/class-wpp-importer.php:425
 msgid "Results:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:363
+#: includes/admin/class-wpp-importer.php:426
 msgid "Error:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:364
+#: includes/admin/class-wpp-importer.php:427
 msgid "Server error:"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:365
+#: includes/admin/class-wpp-importer.php:428
 msgid "Unknown error occurred during import"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:366
+#: includes/admin/class-wpp-importer.php:429
 msgid "Starting..."
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:382
+#: includes/admin/class-wpp-importer.php:445
 msgid "Nonce verification failed"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:387
+#: includes/admin/class-wpp-importer.php:450
 msgid "You are not allowed to perform this action"
 msgstr ""
 
 #. translators: 1. Blog ID.
-#: includes/admin/class-wpp-importer.php:441
+#: includes/admin/class-wpp-importer.php:496
 #, php-format
 msgid "Blog ID %d"
 msgstr ""
 
 #. translators: 1: Site name, 2: Blog ID, 3: Total records processed, 4: Daily records processed, 5: Dry run notice
-#: includes/admin/class-wpp-importer.php:444
+#: includes/admin/class-wpp-importer.php:499
 #, php-format
 msgid "Site %1$s (ID: %2$d): Total Counts Processed: %3$d, Daily Records Processed: %4$d%5$s"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:706
+#: includes/admin/class-wpp-importer.php:761
 msgid "Error importing total counts"
 msgstr ""
 
-#: includes/admin/class-wpp-importer.php:839
+#: includes/admin/class-wpp-importer.php:894
 msgid "Error importing daily counts"
 msgstr ""
 
@@ -2780,100 +2821,136 @@ msgstr ""
 msgid "Recent window in days; defaults to the configured daily range."
 msgstr ""
 
-#: includes/class-abilities.php:141
+#: includes/class-abilities.php:133
+msgid "Sum of measured daily unique visitors for this post. A client can count once each day. Unavailable periods return null."
+msgstr ""
+
+#: includes/class-abilities.php:150
 msgid "Get Post Views"
 msgstr ""
 
-#: includes/class-abilities.php:142
+#: includes/class-abilities.php:151
 msgid "Returns lifetime total and recent daily views for a readable post on the current site. The daily window follows the Top 10 daily range setting. Buffered visits appear after aggregation."
 msgstr ""
 
-#: includes/class-abilities.php:214
+#: includes/class-abilities.php:181
+msgid "Sum of measured daily unique visitors for this post since tracking began. Unavailable periods return null."
+msgstr ""
+
+#: includes/class-abilities.php:186
+msgid "Sum of measured daily unique visitors in the configured range. Unavailable periods return null."
+msgstr ""
+
+#: includes/class-abilities.php:241
 msgid "You do not have permission to read popular posts."
 msgstr ""
 
-#: includes/class-abilities.php:217
+#: includes/class-abilities.php:244
 msgid "Invalid popular posts arguments."
 msgstr ""
 
-#: includes/class-abilities.php:220
+#: includes/class-abilities.php:247
 msgid "A non-empty array of public post type names is required."
 msgstr ""
 
-#: includes/class-abilities.php:236
+#: includes/class-abilities.php:263
 msgid "Only public post types may be requested."
 msgstr ""
 
-#: includes/class-abilities.php:268
+#: includes/class-abilities.php:295
 msgid "You do not have permission to read this post."
 msgstr ""
 
-#: includes/class-database.php:1149
+#: includes/class-database.php:1274
+msgid "Could not prepare the visit aggregation batch."
+msgstr ""
+
+#: includes/class-database.php:1277
+msgid "Could not start the visit aggregation transaction."
+msgstr ""
+
+#: includes/class-database.php:1290
+msgid "Could not capture the visit aggregation batch."
+msgstr ""
+
+#: includes/class-database.php:1318
 msgid "Failed to copy visits to log table."
 msgstr ""
 
-#: includes/class-database.php:1165
+#: includes/class-database.php:1334
 msgid "Failed to aggregate visits into daily table."
 msgstr ""
 
-#: includes/class-database.php:1180
+#: includes/class-database.php:1349
 msgid "Failed to aggregate visits into overall table."
 msgstr ""
 
-#: includes/class-database.php:1185
+#: includes/class-database.php:1365
+msgid "Failed to record visitor coverage."
+msgstr ""
+
+#: includes/class-database.php:1371
+msgid "Failed to aggregate referrers."
+msgstr ""
+
+#: includes/class-database.php:1379
 msgid "Failed to drain funnel table."
 msgstr ""
 
+#: includes/class-database.php:1383
+msgid "Could not confirm the visit aggregation transaction."
+msgstr ""
+
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:1267
-#: includes/class-database.php:1363
-#: includes/class-database.php:1411
+#: includes/class-database.php:1477
+#: includes/class-database.php:1583
+#: includes/class-database.php:1631
 #, php-format
 msgid "Database backup failed on site %1$s. Error message: %2$s"
 msgstr ""
 
 #. translators: 1: Site number, 2: Error message
-#: includes/class-database.php:1286
-#: includes/class-database.php:1379
-#: includes/class-database.php:1427
+#: includes/class-database.php:1496
+#: includes/class-database.php:1599
+#: includes/class-database.php:1647
 #, php-format
 msgid "Database insert failed on site %1$s. Error message: %2$s"
 msgstr ""
 
-#: includes/class-database.php:1500
+#: includes/class-database.php:1720
 msgid "Could not count daily rows before the rollup."
 msgstr ""
 
-#: includes/class-database.php:1516
+#: includes/class-database.php:1736
 msgid "Could not calculate the projected daily row count."
 msgstr ""
 
-#: includes/class-database.php:1527
+#: includes/class-database.php:1747
 msgid "Could not count daily rollup dates."
 msgstr ""
 
-#: includes/class-database.php:1608
+#: includes/class-database.php:1835
 msgid "Could not start the daily rollup transaction."
 msgstr ""
 
-#: includes/class-database.php:1627
+#: includes/class-database.php:1854
 msgid "Could not read the daily rows for the rollup."
 msgstr ""
 
-#: includes/class-database.php:1656
+#: includes/class-database.php:1881
 msgid "Could not write the daily rollup."
 msgstr ""
 
-#: includes/class-database.php:1670
+#: includes/class-database.php:1895
 msgid "Could not remove the hourly daily rows."
 msgstr ""
 
-#: includes/class-database.php:1674
+#: includes/class-database.php:1899
 msgid "Could not commit the daily rollup."
 msgstr ""
 
-#: includes/class-database.php:1719
-#: includes/class-database.php:1725
+#: includes/class-database.php:1944
+#: includes/class-database.php:1950
 msgid "The daily rollup boundary must be a valid date in Y-m-d format."
 msgstr ""
 
@@ -2922,7 +2999,7 @@ msgid "Post ID."
 msgstr ""
 
 #: includes/frontend/class-rest-api.php:91
-#: includes/frontend/class-rest-api.php:384
+#: includes/frontend/class-rest-api.php:386
 msgid "TranslatePress language code to render the response in."
 msgstr ""
 
@@ -2931,62 +3008,66 @@ msgid "Sorry, you are not allowed to view this context."
 msgstr ""
 
 #: includes/frontend/class-rest-api.php:212
-#: includes/frontend/class-rest-api.php:300
+#: includes/frontend/class-rest-api.php:302
 msgid "Invalid post ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:352
+#: includes/frontend/class-rest-api.php:354
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:8
 msgid "Number of posts"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:359
+#: includes/frontend/class-rest-api.php:361
 msgid "Post types"
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:374
+#: includes/frontend/class-rest-api.php:376
 msgid "Whether to use daily counts instead of overall counts."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:378
+#: includes/frontend/class-rest-api.php:380
 msgid "Scope under which the request is made; determines fields present in response."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:413
-#: includes/frontend/class-rest-api.php:459
+#: includes/frontend/class-rest-api.php:415
+#: includes/frontend/class-rest-api.php:466
 msgid "ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:418
+#: includes/frontend/class-rest-api.php:420
 msgid "Site-wide tracking context: front_page, home_page, search, category, tag, taxonomy, author, post_type_archive, date_archive, archive or other. Each key maps to a fixed reserved ID in the shared count tables."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:423
+#: includes/frontend/class-rest-api.php:425
 msgid "Blog ID of the post."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:428
+#: includes/frontend/class-rest-api.php:430
 msgid "Activate counter flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:433
+#: includes/frontend/class-rest-api.php:435
 msgid "Debug flag."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:464
+#: includes/frontend/class-rest-api.php:440
+msgid "Normalized external referrer scheme and host."
+msgstr ""
+
+#: includes/frontend/class-rest-api.php:471
 msgid "Counter type."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:469
+#: includes/frontend/class-rest-api.php:476
 msgid "Blog ID."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:474
+#: includes/frontend/class-rest-api.php:481
 msgid "From date."
 msgstr ""
 
-#: includes/frontend/class-rest-api.php:479
+#: includes/frontend/class-rest-api.php:486
 msgid "To date."
 msgstr ""
 
@@ -3013,69 +3094,73 @@ msgstr ""
 msgid "Display popular posts"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:84
+#: includes/frontend/widgets/class-posts-widget.php:85
 msgid "No. of posts"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:88
+#: includes/frontend/widgets/class-posts-widget.php:89
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/components/post-display-controls.js:16
 msgid "Offset"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:92
+#: includes/frontend/widgets/class-posts-widget.php:93
 msgid "Select period"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:95
+#: includes/frontend/widgets/class-posts-widget.php:96
 msgid "Custom time period (Enter below)"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:99
+#: includes/frontend/widgets/class-posts-widget.php:100
 msgid "Days"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:102
+#: includes/frontend/widgets/class-posts-widget.php:103
 msgid "Hours"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:107
+#: includes/frontend/widgets/class-posts-widget.php:109
+msgid "Order posts by"
+msgstr ""
+
+#: includes/frontend/widgets/class-posts-widget.php:119
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:90
 msgid "Show count"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:111
+#: includes/frontend/widgets/class-posts-widget.php:123
 #: includes/frontend/blocks/build/popular-posts/index.js:1
 #: includes/frontend/blocks/src/popular-posts/edit.js:72
 msgid "Show excerpt"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:123
+#: includes/frontend/widgets/class-posts-widget.php:135
 msgid "Thumbnail options"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:125
+#: includes/frontend/widgets/class-posts-widget.php:137
 msgid "Thumbnails inline, before title"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:126
+#: includes/frontend/widgets/class-posts-widget.php:138
 msgid "Thumbnails inline, after title"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:127
+#: includes/frontend/widgets/class-posts-widget.php:139
 msgid "Only thumbnails, no text"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:128
+#: includes/frontend/widgets/class-posts-widget.php:140
 msgid "No thumbnails, only text."
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:141
+#: includes/frontend/widgets/class-posts-widget.php:153
 msgid "Only from categories (comma-separated list of term taxonomy IDs)"
 msgstr ""
 
-#: includes/frontend/widgets/class-posts-widget.php:146
+#: includes/frontend/widgets/class-posts-widget.php:158
 msgid "Include IDs"
 msgstr ""
 
