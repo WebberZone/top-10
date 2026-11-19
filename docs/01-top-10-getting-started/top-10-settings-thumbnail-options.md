@@ -15,6 +15,8 @@ featured_image: "https://webberzone.com/wp-content/uploads/2019/02/Top-10-Thumbn
 
 The **Thumbnail options** section in [Top 10](https://webberzone.com/plugins/top-10/) contains options that let you fine-tune the thumbnails displayed in the popular posts. These are global settings, and many of these can be overridden in the widget or the shortcode.
 
+Thumbnails without alt text are output with an empty `alt` attribute (from 4.7.0), so screen readers skip them as decorative images.
+
 ## Location of the post thumbnail
 
 You have four options for the thumbnail's placement: before or after the title, only thumbnails, or only text.

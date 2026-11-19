@@ -14,6 +14,8 @@ featured_image: "https://webberzone.com/wp-content/uploads/2016/12/Top-10-Genera
 
 The **General options** tab lets you configure the main options for [Top 10](https://webberzone.com/plugins/top-10/) on your WordPress blog.
 
+A **Save Changes** button in the settings navigation (added in 4.7.0) submits the settings form without scrolling to the bottom of a long tab.
+
 ## Enable cache
 
 Top 10 includes an inbuilt caching system that uses the <a href="https://codex.wordpress.org/Transients_API" target="_blank" rel="noopener">Transients API</a> to cache the plugin's complete output. The cache is built to complement other caching plugins and will work alongside them. Select this option to turn the cache on.

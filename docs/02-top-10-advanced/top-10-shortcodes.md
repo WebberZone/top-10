@@ -9,7 +9,7 @@ order: 0
 featured_image: "https://webberzone.com/wp-content/uploads/2019/04/Shortcodes-in-Top-10-WordPress-plugin.webp"
 ---
 
-[Top 10](https://webberzone.com/plugins/top-10/) has two shortcodes that you can use to display the count of the current post and a list of the popular posts.
+[Top 10](https://webberzone.com/plugins/top-10/) has two shortcodes that you can use to display the count of the current post and a list of the popular posts. Top 10 Pro adds shortcodes for popular authors, which are covered in [Popular Authors shortcodes](https://webberzone.com/support/knowledgebase/popular-authors-shortcode/).
 
 ## [[tptn_views]]
 
@@ -34,7 +34,7 @@ In addition to these attributes, the shortcode can take all options as attribute
 
 - *title_length*: A numerical value to limit the length of the titles in the display
 - *offset*: A numerical value to indicate the number of posts to displace or pass over
-- *post_types*: Comma-separated list of post types from which to select the top posts
+- *post_types*: Comma-separated list of post types from which to select the top posts. Only viewable post types are accepted. The `post_status` attribute accepts only published content
 - *daily_range* and *hour_range*: Use either or both to override the default custom period range. hour_range accepts a number between 0 and 23
 - *how_old*: Number (in days) to only show posts that have been published within this range
 - *thumb_width*: Thumbnail width. Accepts a number
@@ -48,3 +48,4 @@ In addition to these attributes, the shortcode can take all options as attribute
 - *link_nofollow*: Add nofollow attribute to links. 1 or 0
 - *link_new_window*: Add _blank attribute to links. 1 or 0
 - *include_cat_ids*: Comma-separated list of term_taxonomy_id: this can be both categories and custom taxonomies
+- *blog_id*: Blog ID to list popular posts from. Defaults to the current site. Lists across several sites need Top 10 Pro

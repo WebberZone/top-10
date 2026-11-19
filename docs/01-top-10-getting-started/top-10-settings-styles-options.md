@@ -39,4 +39,4 @@ Available in Top 10 Pro, this displays the thumbnails in a grid.
 
 ## Custom CSS
 
-You can add your own CSS here to style the output. Do not include `style` tags. The plugin will not fix your CSS code, so please ensure you included accurate code only.
+You can add your own CSS here to style the output. Do not include `style` tags. The plugin will not fix your CSS code, so please ensure you included accurate code only. Backslashes, such as those in icon font codes, are kept on save and on the front end (fixed in 4.7.0).
