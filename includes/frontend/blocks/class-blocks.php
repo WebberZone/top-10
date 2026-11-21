@@ -299,7 +299,7 @@ class Blocks {
 
 			$icon = sprintf(
 				'<span class="tptn-post-count-icon">%1$s</span>',
-				wp_kses( $svg_code_with_style, self::get_allowed_svg_tags() )
+				self::kses_svg( $svg_code_with_style )
 			);
 		}
 		if ( ! empty( $icon ) ) {
@@ -315,7 +315,7 @@ class Blocks {
 		return sprintf(
 			'<span %1$s>%2$s</span>',
 			$wrapper_attributes,
-			wp_kses( $output, self::get_allowed_svg_tags() )
+			self::kses_svg( $output )
 		);
 	}
 
@@ -336,6 +336,20 @@ class Blocks {
 		}
 
 		return self::$post_count_cache[ $cache_key ];
+	}
+
+	/**
+	 * Filter SVG markup and keep only same-document `xlink:href` references.
+	 *
+	 * @since 4.7.1
+	 *
+	 * @param string $html SVG markup.
+	 * @return string Filtered markup.
+	 */
+	private static function kses_svg( $html ) {
+		$html = wp_kses( $html, self::get_allowed_svg_tags() );
+
+		return (string) preg_replace( '/\sxlink:href\s*=\s*(["\'])(?!\s*#).*?\1/is', '', $html );
 	}
 
 	/**

@@ -150,6 +150,15 @@ Report security bugs through the [Patchstack Vulnerability Disclosure Program](h
 
 == Changelog ==
 
+= 4.7.1 =
+
+Release date: 21 November 2026
+
+**Security**
+
+* [Pro] Hardened the popular posts image blocks against reading protected custom fields.
+* Hardened the post count block's SVG icon filtering.
+
 = 4.7.0 =
 
 Release date: 18 November 2026
@@ -248,6 +257,9 @@ Release post: https://webberzone.com/announcements/top-10-v4-6/
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/top-10/releases).
 
 == Upgrade Notice ==
+
+= 4.7.1 =
+Security hardening for the Pro image blocks and the post count block. Update recommended.
 
 = 4.7.0 =
 Hardens multisite WordPress Popular Posts import permissions. Cross-site imports now require network-level capabilities.
