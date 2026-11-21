@@ -609,7 +609,7 @@ class Statistics_Table extends \WP_List_Table {
 		// Return the title contents.
 		return sprintf(
 			'<a href="%4$s" target="_blank">%1$s</a> <span style="color:grey">(id:%2$s)</span>%3$s',
-			$post->post_title,
+			esc_html( $post->post_title ),
 			$item['ID'],
 			$this->network_wide ? '' : $this->row_actions( $actions ),
 			is_multisite() ? get_blog_permalink( $item['blog_id'], $item['ID'] ) : get_permalink( $item['ID'] )

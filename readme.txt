@@ -158,6 +158,7 @@ Release date: 21 November 2026
 
 * [Pro] Hardened the popular posts image blocks against reading protected custom fields.
 * Hardened the post count block's SVG icon filtering.
+* Escaped post titles in the statistics table.
 
 = 4.7.0 =
 
